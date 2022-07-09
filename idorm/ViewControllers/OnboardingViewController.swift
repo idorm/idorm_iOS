@@ -43,7 +43,6 @@ class OnboardingViewController: UIViewController {
     
     // MARK: - Selectors
     @objc private func didTapCompleteButton() {
-        print("CompleteButton Tapped!")
     }
     
     // MARK: - Helpers
@@ -104,11 +103,9 @@ extension OnboardingViewController: UITableViewDelegate, UITableViewDataSource {
 extension OnboardingViewController: OnboardingTableViewCellDelegate {
     func didTapXmarkButton() {
         verifyCompleteButton()
-        print("XmarkButton Tapped!")
     }
     
     func didTapOmarkButton() {
         verifyCompleteButton()
-        print("OmarkButton Tapped!")
     }
 }
