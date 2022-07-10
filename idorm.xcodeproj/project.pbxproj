@@ -12,10 +12,25 @@
 		E50300FB28773A5D00611C62 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50300FA28773A5D00611C62 /* OnboardingViewController.swift */; };
 		E503010028773A5E00611C62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E50300FF28773A5E00611C62 /* Assets.xcassets */; };
 		E503010328773A5E00611C62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E503010128773A5E00611C62 /* LaunchScreen.storyboard */; };
+		E53086E22879284000A5D0A0 /* HomeRoommateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E12879284000A5D0A0 /* HomeRoommateCollectionViewCell.swift */; };
+		E53086E42879287100A5D0A0 /* HomeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E32879287100A5D0A0 /* HomeListViewModel.swift */; };
+		E53086E6287928B400A5D0A0 /* HomePopularCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E5287928B400A5D0A0 /* HomePopularCollectionViewCell.swift */; };
+		E53086E828795D2700A5D0A0 /* HomeCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E728795D2700A5D0A0 /* HomeCollectionHeaderView.swift */; };
+		E53C60AE287B34D200977909 /* LoginType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53C60AD287B34D200977909 /* LoginType.swift */; };
+		E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */; };
 		E563421828780BDE00E93D17 /* OnboardingListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E563421728780BDE00E93D17 /* OnboardingListViewModel.swift */; };
 		E563421B28780C1800E93D17 /* OnboardingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E563421A28780C1800E93D17 /* OnboardingTableViewCell.swift */; };
 		E563421E28780C3800E93D17 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E563421D28780C3800E93D17 /* SnapKit */; };
 		E56342212878246200E93D17 /* OnboardingTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56342202878246200E93D17 /* OnboardingTableHeaderView.swift */; };
+		E56342232878353100E93D17 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56342222878353100E93D17 /* TabBarController.swift */; };
+		E563422528784ED400E93D17 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E563422428784ED400E93D17 /* HomeViewController.swift */; };
+		E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7390287A863800BA2C5E /* LoginViewController.swift */; };
+		E5AD7396287A8C2F00BA2C5E /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7395287A8C2F00BA2C5E /* UIColor+Extensions.swift */; };
+		E5AD7398287A8D8800BA2C5E /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7397287A8D8800BA2C5E /* UITextField+Extensions.swift */; };
+		E5AD739D287AE08F00BA2C5E /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD739C287AE08F00BA2C5E /* PopupViewController.swift */; };
+		E5AD739F287AEF2D00BA2C5E /* PutEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD739E287AEF2D00BA2C5E /* PutEmailViewController.swift */; };
+		E5AD73A1287AFC5300BA2C5E /* AuthNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD73A0287AFC5300BA2C5E /* AuthNumberViewController.swift */; };
+		E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,9 +41,24 @@
 		E50300FF28773A5E00611C62 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E503010228773A5E00611C62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E503010428773A5E00611C62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E53086E12879284000A5D0A0 /* HomeRoommateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRoommateCollectionViewCell.swift; sourceTree = "<group>"; };
+		E53086E32879287100A5D0A0 /* HomeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListViewModel.swift; sourceTree = "<group>"; };
+		E53086E5287928B400A5D0A0 /* HomePopularCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePopularCollectionViewCell.swift; sourceTree = "<group>"; };
+		E53086E728795D2700A5D0A0 /* HomeCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionHeaderView.swift; sourceTree = "<group>"; };
+		E53C60AD287B34D200977909 /* LoginType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginType.swift; sourceTree = "<group>"; };
+		E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpViewController.swift; sourceTree = "<group>"; };
 		E563421728780BDE00E93D17 /* OnboardingListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingListViewModel.swift; sourceTree = "<group>"; };
 		E563421A28780C1800E93D17 /* OnboardingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTableViewCell.swift; sourceTree = "<group>"; };
 		E56342202878246200E93D17 /* OnboardingTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTableHeaderView.swift; sourceTree = "<group>"; };
+		E56342222878353100E93D17 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		E563422428784ED400E93D17 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		E5AD7390287A863800BA2C5E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		E5AD7395287A8C2F00BA2C5E /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		E5AD7397287A8D8800BA2C5E /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
+		E5AD739C287AE08F00BA2C5E /* PopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
+		E5AD739E287AEF2D00BA2C5E /* PutEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailViewController.swift; sourceTree = "<group>"; };
+		E5AD73A0287AFC5300BA2C5E /* AuthNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberViewController.swift; sourceTree = "<group>"; };
+		E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,12 +92,15 @@
 		E50300F528773A5D00611C62 /* idorm */ = {
 			isa = PBXGroup;
 			children = (
+				E53C60AC287B34C400977909 /* Utilities */,
 				E563421528780A4D00E93D17 /* ViewModels */,
 				E563421628780A5200E93D17 /* ViewControllers */,
 				E563421928780C0B00E93D17 /* Cells */,
 				E563421F2878244A00E93D17 /* Views */,
 				E50300F628773A5D00611C62 /* AppDelegate.swift */,
 				E50300F828773A5D00611C62 /* SceneDelegate.swift */,
+				E5AD7395287A8C2F00BA2C5E /* UIColor+Extensions.swift */,
+				E5AD7397287A8D8800BA2C5E /* UITextField+Extensions.swift */,
 				E50300FF28773A5E00611C62 /* Assets.xcassets */,
 				E503010128773A5E00611C62 /* LaunchScreen.storyboard */,
 				E503010428773A5E00611C62 /* Info.plist */,
@@ -75,10 +108,20 @@
 			path = idorm;
 			sourceTree = "<group>";
 		};
+		E53C60AC287B34C400977909 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				E53C60AD287B34D200977909 /* LoginType.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		E563421528780A4D00E93D17 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				E5AD7399287AB7BC00BA2C5E /* SignUp&Login */,
 				E563421728780BDE00E93D17 /* OnboardingListViewModel.swift */,
+				E53086E32879287100A5D0A0 /* HomeListViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -86,7 +129,10 @@
 		E563421628780A5200E93D17 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E5AD738F287A85F600BA2C5E /* SignUp&Login */,
+				E56342222878353100E93D17 /* TabBarController.swift */,
 				E50300FA28773A5D00611C62 /* OnboardingViewController.swift */,
+				E563422428784ED400E93D17 /* HomeViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -95,6 +141,8 @@
 			isa = PBXGroup;
 			children = (
 				E563421A28780C1800E93D17 /* OnboardingTableViewCell.swift */,
+				E53086E12879284000A5D0A0 /* HomeRoommateCollectionViewCell.swift */,
+				E53086E5287928B400A5D0A0 /* HomePopularCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -103,8 +151,29 @@
 			isa = PBXGroup;
 			children = (
 				E56342202878246200E93D17 /* OnboardingTableHeaderView.swift */,
+				E53086E728795D2700A5D0A0 /* HomeCollectionHeaderView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		E5AD738F287A85F600BA2C5E /* SignUp&Login */ = {
+			isa = PBXGroup;
+			children = (
+				E5AD7390287A863800BA2C5E /* LoginViewController.swift */,
+				E5AD739C287AE08F00BA2C5E /* PopupViewController.swift */,
+				E5AD739E287AEF2D00BA2C5E /* PutEmailViewController.swift */,
+				E5AD73A0287AFC5300BA2C5E /* AuthNumberViewController.swift */,
+				E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordViewController.swift */,
+				E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */,
+			);
+			path = "SignUp&Login";
+			sourceTree = "<group>";
+		};
+		E5AD7399287AB7BC00BA2C5E /* SignUp&Login */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "SignUp&Login";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -184,10 +253,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				E50300FB28773A5D00611C62 /* OnboardingViewController.swift in Sources */,
+				E53086E22879284000A5D0A0 /* HomeRoommateCollectionViewCell.swift in Sources */,
+				E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordViewController.swift in Sources */,
+				E5AD739D287AE08F00BA2C5E /* PopupViewController.swift in Sources */,
+				E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */,
 				E50300F728773A5D00611C62 /* AppDelegate.swift in Sources */,
+				E5AD7398287A8D8800BA2C5E /* UITextField+Extensions.swift in Sources */,
+				E53C60AE287B34D200977909 /* LoginType.swift in Sources */,
+				E53086E42879287100A5D0A0 /* HomeListViewModel.swift in Sources */,
 				E50300F928773A5D00611C62 /* SceneDelegate.swift in Sources */,
+				E53086E6287928B400A5D0A0 /* HomePopularCollectionViewCell.swift in Sources */,
+				E53086E828795D2700A5D0A0 /* HomeCollectionHeaderView.swift in Sources */,
+				E563422528784ED400E93D17 /* HomeViewController.swift in Sources */,
+				E5AD73A1287AFC5300BA2C5E /* AuthNumberViewController.swift in Sources */,
 				E56342212878246200E93D17 /* OnboardingTableHeaderView.swift in Sources */,
+				E56342232878353100E93D17 /* TabBarController.swift in Sources */,
 				E563421828780BDE00E93D17 /* OnboardingListViewModel.swift in Sources */,
+				E5AD7396287A8C2F00BA2C5E /* UIColor+Extensions.swift in Sources */,
+				E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */,
+				E5AD739F287AEF2D00BA2C5E /* PutEmailViewController.swift in Sources */,
 				E563421B28780C1800E93D17 /* OnboardingTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
