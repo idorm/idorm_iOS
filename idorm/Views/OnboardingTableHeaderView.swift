@@ -35,7 +35,7 @@ class OnboardingTableHeaderView: UIView {
             .forEach { addSubview($0) }
         
         titleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(16)
+            make.leading.equalToSuperview()
             make.centerY.equalToSuperview()
         }
     }

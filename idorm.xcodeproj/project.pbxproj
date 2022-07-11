@@ -18,6 +18,10 @@
 		E53086E828795D2700A5D0A0 /* HomeCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E728795D2700A5D0A0 /* HomeCollectionHeaderView.swift */; };
 		E53C60AE287B34D200977909 /* LoginType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53C60AD287B34D200977909 /* LoginType.swift */; };
 		E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */; };
+		E55794E8287C09B4002DB2B0 /* OnboardingContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55794E7287C09B4002DB2B0 /* OnboardingContainerViewController.swift */; };
+		E55794EC287C1EA4002DB2B0 /* OnboardingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55794EB287C1EA4002DB2B0 /* OnboardingDetailViewController.swift */; };
+		E55794EE287C36F5002DB2B0 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55794ED287C36F5002DB2B0 /* UIView+Extensions.swift */; };
+		E55794F0287C496D002DB2B0 /* OnboardingDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55794EF287C496D002DB2B0 /* OnboardingDetailTableViewCell.swift */; };
 		E563421828780BDE00E93D17 /* OnboardingListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E563421728780BDE00E93D17 /* OnboardingListViewModel.swift */; };
 		E563421B28780C1800E93D17 /* OnboardingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E563421A28780C1800E93D17 /* OnboardingTableViewCell.swift */; };
 		E563421E28780C3800E93D17 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E563421D28780C3800E93D17 /* SnapKit */; };
@@ -47,6 +51,10 @@
 		E53086E728795D2700A5D0A0 /* HomeCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionHeaderView.swift; sourceTree = "<group>"; };
 		E53C60AD287B34D200977909 /* LoginType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginType.swift; sourceTree = "<group>"; };
 		E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpViewController.swift; sourceTree = "<group>"; };
+		E55794E7287C09B4002DB2B0 /* OnboardingContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContainerViewController.swift; sourceTree = "<group>"; };
+		E55794EB287C1EA4002DB2B0 /* OnboardingDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDetailViewController.swift; sourceTree = "<group>"; };
+		E55794ED287C36F5002DB2B0 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		E55794EF287C496D002DB2B0 /* OnboardingDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDetailTableViewCell.swift; sourceTree = "<group>"; };
 		E563421728780BDE00E93D17 /* OnboardingListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingListViewModel.swift; sourceTree = "<group>"; };
 		E563421A28780C1800E93D17 /* OnboardingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTableViewCell.swift; sourceTree = "<group>"; };
 		E56342202878246200E93D17 /* OnboardingTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTableHeaderView.swift; sourceTree = "<group>"; };
@@ -101,6 +109,7 @@
 				E50300F828773A5D00611C62 /* SceneDelegate.swift */,
 				E5AD7395287A8C2F00BA2C5E /* UIColor+Extensions.swift */,
 				E5AD7397287A8D8800BA2C5E /* UITextField+Extensions.swift */,
+				E55794ED287C36F5002DB2B0 /* UIView+Extensions.swift */,
 				E50300FF28773A5E00611C62 /* Assets.xcassets */,
 				E503010128773A5E00611C62 /* LaunchScreen.storyboard */,
 				E503010428773A5E00611C62 /* Info.plist */,
@@ -114,6 +123,16 @@
 				E53C60AD287B34D200977909 /* LoginType.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		E55794E6287C09A2002DB2B0 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				E55794E7287C09B4002DB2B0 /* OnboardingContainerViewController.swift */,
+				E50300FA28773A5D00611C62 /* OnboardingViewController.swift */,
+				E55794EB287C1EA4002DB2B0 /* OnboardingDetailViewController.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		E563421528780A4D00E93D17 /* ViewModels */ = {
@@ -130,8 +149,8 @@
 			isa = PBXGroup;
 			children = (
 				E5AD738F287A85F600BA2C5E /* SignUp&Login */,
+				E55794E6287C09A2002DB2B0 /* Onboarding */,
 				E56342222878353100E93D17 /* TabBarController.swift */,
-				E50300FA28773A5D00611C62 /* OnboardingViewController.swift */,
 				E563422428784ED400E93D17 /* HomeViewController.swift */,
 			);
 			path = ViewControllers;
@@ -141,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				E563421A28780C1800E93D17 /* OnboardingTableViewCell.swift */,
+				E55794EF287C496D002DB2B0 /* OnboardingDetailTableViewCell.swift */,
 				E53086E12879284000A5D0A0 /* HomeRoommateCollectionViewCell.swift */,
 				E53086E5287928B400A5D0A0 /* HomePopularCollectionViewCell.swift */,
 			);
@@ -258,20 +278,24 @@
 				E5AD739D287AE08F00BA2C5E /* PopupViewController.swift in Sources */,
 				E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */,
 				E50300F728773A5D00611C62 /* AppDelegate.swift in Sources */,
+				E55794EE287C36F5002DB2B0 /* UIView+Extensions.swift in Sources */,
 				E5AD7398287A8D8800BA2C5E /* UITextField+Extensions.swift in Sources */,
 				E53C60AE287B34D200977909 /* LoginType.swift in Sources */,
 				E53086E42879287100A5D0A0 /* HomeListViewModel.swift in Sources */,
+				E55794E8287C09B4002DB2B0 /* OnboardingContainerViewController.swift in Sources */,
 				E50300F928773A5D00611C62 /* SceneDelegate.swift in Sources */,
 				E53086E6287928B400A5D0A0 /* HomePopularCollectionViewCell.swift in Sources */,
 				E53086E828795D2700A5D0A0 /* HomeCollectionHeaderView.swift in Sources */,
 				E563422528784ED400E93D17 /* HomeViewController.swift in Sources */,
 				E5AD73A1287AFC5300BA2C5E /* AuthNumberViewController.swift in Sources */,
+				E55794F0287C496D002DB2B0 /* OnboardingDetailTableViewCell.swift in Sources */,
 				E56342212878246200E93D17 /* OnboardingTableHeaderView.swift in Sources */,
 				E56342232878353100E93D17 /* TabBarController.swift in Sources */,
 				E563421828780BDE00E93D17 /* OnboardingListViewModel.swift in Sources */,
 				E5AD7396287A8C2F00BA2C5E /* UIColor+Extensions.swift in Sources */,
 				E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */,
 				E5AD739F287AEF2D00BA2C5E /* PutEmailViewController.swift in Sources */,
+				E55794EC287C1EA4002DB2B0 /* OnboardingDetailViewController.swift in Sources */,
 				E563421B28780C1800E93D17 /* OnboardingTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
