@@ -35,6 +35,9 @@
 		E5AD739F287AEF2D00BA2C5E /* PutEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD739E287AEF2D00BA2C5E /* PutEmailViewController.swift */; };
 		E5AD73A1287AFC5300BA2C5E /* AuthNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD73A0287AFC5300BA2C5E /* AuthNumberViewController.swift */; };
 		E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordViewController.swift */; };
+		E5B15F6D287FCEFE004D4164 /* RSKPlaceholderTextView in Frameworks */ = {isa = PBXBuildFile; productRef = E5B15F6C287FCEFE004D4164 /* RSKPlaceholderTextView */; };
+		E5B15F6F287FE355004D4164 /* OnboardingImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B15F6E287FE355004D4164 /* OnboardingImageViewController.swift */; };
+		E5FBBB872880304900A7158D /* SECRET.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FBBB862880304900A7158D /* SECRET.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +70,8 @@
 		E5AD739E287AEF2D00BA2C5E /* PutEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailViewController.swift; sourceTree = "<group>"; };
 		E5AD73A0287AFC5300BA2C5E /* AuthNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberViewController.swift; sourceTree = "<group>"; };
 		E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordViewController.swift; sourceTree = "<group>"; };
+		E5B15F6E287FE355004D4164 /* OnboardingImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingImageViewController.swift; sourceTree = "<group>"; };
+		E5FBBB862880304900A7158D /* SECRET.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SECRET.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +80,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E563421E28780C3800E93D17 /* SnapKit in Frameworks */,
+				E5B15F6D287FCEFE004D4164 /* RSKPlaceholderTextView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,6 +116,7 @@
 				E5AD7395287A8C2F00BA2C5E /* UIColor+Extensions.swift */,
 				E5AD7397287A8D8800BA2C5E /* UITextField+Extensions.swift */,
 				E55794ED287C36F5002DB2B0 /* UIView+Extensions.swift */,
+				E5FBBB862880304900A7158D /* SECRET.swift */,
 				E50300FF28773A5E00611C62 /* Assets.xcassets */,
 				E503010128773A5E00611C62 /* LaunchScreen.storyboard */,
 				E503010428773A5E00611C62 /* Info.plist */,
@@ -131,6 +138,7 @@
 				E55794E7287C09B4002DB2B0 /* OnboardingContainerViewController.swift */,
 				E50300FA28773A5D00611C62 /* OnboardingViewController.swift */,
 				E55794EB287C1EA4002DB2B0 /* OnboardingDetailViewController.swift */,
+				E5B15F6E287FE355004D4164 /* OnboardingImageViewController.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -214,6 +222,7 @@
 			name = idorm;
 			packageProductDependencies = (
 				E563421D28780C3800E93D17 /* SnapKit */,
+				E5B15F6C287FCEFE004D4164 /* RSKPlaceholderTextView */,
 			);
 			productName = idorm;
 			productReference = E50300F328773A5D00611C62 /* idorm.app */;
@@ -245,6 +254,7 @@
 			mainGroup = E50300EA28773A5D00611C62;
 			packageReferences = (
 				E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView" */,
 			);
 			productRefGroup = E50300F428773A5D00611C62 /* Products */;
 			projectDirPath = "";
@@ -280,6 +290,7 @@
 				E50300F728773A5D00611C62 /* AppDelegate.swift in Sources */,
 				E55794EE287C36F5002DB2B0 /* UIView+Extensions.swift in Sources */,
 				E5AD7398287A8D8800BA2C5E /* UITextField+Extensions.swift in Sources */,
+				E5FBBB872880304900A7158D /* SECRET.swift in Sources */,
 				E53C60AE287B34D200977909 /* LoginType.swift in Sources */,
 				E53086E42879287100A5D0A0 /* HomeListViewModel.swift in Sources */,
 				E55794E8287C09B4002DB2B0 /* OnboardingContainerViewController.swift in Sources */,
@@ -297,6 +308,7 @@
 				E5AD739F287AEF2D00BA2C5E /* PutEmailViewController.swift in Sources */,
 				E55794EC287C1EA4002DB2B0 /* OnboardingDetailViewController.swift in Sources */,
 				E563421B28780C1800E93D17 /* OnboardingTableViewCell.swift in Sources */,
+				E5B15F6F287FE355004D4164 /* OnboardingImageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,6 +526,14 @@
 				minimumVersion = 5.6.0;
 			};
 		};
+		E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ruslanskorb/RSKPlaceholderTextView.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 6.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -521,6 +541,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		E5B15F6C287FCEFE004D4164 /* RSKPlaceholderTextView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView" */;
+			productName = RSKPlaceholderTextView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -18,17 +18,26 @@ class OnboardingDetailViewController: UIViewController {
     weak var delegate: OnboardingDetailViewDelegate?
     
     lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView(frame: .zero, style: .plain)
         tableView.backgroundColor = .white
         tableView.register(OnboardingDetailTableViewCell.self, forCellReuseIdentifier: OnboardingDetailTableViewCell.identifier)
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        tableView.rowHeight = 70
+        tableView.rowHeight = 120
         tableView.dataSource = self
         tableView.keyboardDismissMode = .onDrag
         tableView.delegate = self
+        tableView.separatorStyle = .none
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.allowsSelection = false
         
         return tableView
+    }()
+    
+    lazy var tapGesture: UITapGestureRecognizer = {
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(didTapBackground))
+        gesture.cancelsTouchesInView = false
+        
+        return gesture
     }()
     
     // MARK: - LifeCycle
@@ -36,16 +45,23 @@ class OnboardingDetailViewController: UIViewController {
         super.viewDidLoad()
         configureUI()
     }
+
+    // MARK: - Selectors
+    @objc private func didTapBackground() {
+        view.endEditing(true)
+    }
     
     // MARK: - Helpers
     private func configureUI() {
         view.addSubview(tableView)
         
         tableView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(24)
-            make.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
+            make.leading.trailing.equalToSuperview()
             make.top.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
         }
+        
+        tableView.addGestureRecognizer(tapGesture)
     }
 }
 
@@ -55,9 +71,17 @@ extension OnboardingDetailViewController: UITableViewDataSource, UITableViewDele
         cell.viewModel = viewModel.gainOnboardingDetailVM(index: indexPath.row)
         cell.index = indexPath.row
         cell.delegate = self
-        cell.configureUI()
         
-        return cell
+        if indexPath.row == 3 {
+            cell.configureUI(type: .Optional)
+            return cell
+        } else if indexPath.row == 4 {
+            cell.configureUI(type: .Free)
+            return cell
+        } else {
+            cell.configureUI(type: .Essential)
+            return cell
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

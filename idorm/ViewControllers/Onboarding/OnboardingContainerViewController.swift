@@ -10,10 +10,16 @@ import SnapKit
 
 class OnboardingContainerViewController: UIViewController {
     // MARK: - Properties
-    var currentPage = 0
     let viewModel = OnboardingListViewModel()
     let onboardingVC = OnboardingViewController()
     let onboardingDetailVC = OnboardingDetailViewController()
+    
+    var currentPage: Int = 0 {
+        didSet {
+            let direction: UIPageViewController.NavigationDirection = oldValue <= self.currentPage ? .forward : .reverse
+            pageVC.setViewControllers([onboardingViewControllers[currentPage]], direction: direction, animated: true)
+        }
+    }
     
     lazy var pageVC: UIPageViewController = {
         let vc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
@@ -46,40 +52,28 @@ class OnboardingContainerViewController: UIViewController {
     lazy var rightArrowButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(systemName: "chevron.right"), for: .normal)
-        button.tintColor = .gray
+        button.tintColor = .mainColor
         button.addTarget(self, action: #selector(didTapRightArrowButton), for: .touchUpInside)
         
         return button
-    }()
-    
-    lazy var varLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .mainColor
-        label.text = "1"
-        
-        return label
-    }()
-    
-    lazy var slashLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .gray
-        label.text = "/"
-       
-        return label
-    }()
-    
-    lazy var pageLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .gray
-        label.text = "2"
-        
-        return label
     }()
     
     lazy var onboardingViewControllers: [UIViewController] = {
         onboardingVC.view.tag = 0
         onboardingDetailVC.view.tag = 1
         return [ onboardingVC, onboardingDetailVC ]
+    }()
+    
+    lazy var pageControl: UIPageControl = {
+        let pageControl = UIPageControl()
+        pageControl.numberOfPages = 2
+        pageControl.pageIndicatorTintColor = .gray
+        pageControl.currentPageIndicatorTintColor = .mainColor
+        pageControl.allowsContinuousInteraction = false
+        pageControl.isUserInteractionEnabled = false
+        pageControl.addTarget(self, action: #selector(pageControlDidChanged), for: .valueChanged)
+        
+        return pageControl
     }()
     
     // MARK: - LifeCycle
@@ -98,7 +92,6 @@ class OnboardingContainerViewController: UIViewController {
         pageVC.setViewControllers([onboardingViewControllers[prevPage]], direction: .reverse, animated: true)
         
         currentPage = pageVC.viewControllers!.first!.view.tag
-        varLabel.text = "\(currentPage + 1)"
         enabledBtn()
     }
     
@@ -107,8 +100,11 @@ class OnboardingContainerViewController: UIViewController {
         pageVC.setViewControllers([onboardingViewControllers[nextPage]], direction: .forward, animated: true)
         
         currentPage = pageVC.viewControllers!.first!.view.tag
-        varLabel.text = "\(currentPage + 1)"
         enabledBtn()
+    }
+    
+    @objc private func pageControlDidChanged(_ sender: UIPageControl) {
+        self.currentPage = sender.currentPage
     }
     
     // MARK: - Helpers
@@ -128,39 +124,39 @@ class OnboardingContainerViewController: UIViewController {
             pageVC.setViewControllers([firstVC], direction: .forward, animated: true, completion: nil)
         }
         
-        let pageStack = UIStackView(arrangedSubviews: [ varLabel, slashLabel, pageLabel ])
-        pageStack.axis = .horizontal
-        pageStack.spacing = 4.0
-        
-        [ leftArrowButton, rightArrowButton, pageStack, pageVC.view ]
+        [ leftArrowButton, rightArrowButton, pageControl, pageVC.view ]
             .forEach { view.addSubview($0) }
         
         pageVC.view.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-            make.bottom.equalTo(pageStack.snp.top).offset(-4)
+            make.bottom.equalTo(pageControl.snp.top).offset(-4)
         }
         
-        pageStack.snp.makeConstraints { make in
+        pageControl.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+            make.bottom.equalToSuperview().inset(32)
         }
         
         leftArrowButton.snp.makeConstraints { make in
-            make.trailing.equalTo(pageStack.snp.leading).offset(-24)
-            make.centerY.equalTo(pageStack)
+            make.leading.equalToSuperview().inset(32)
+            make.centerY.equalTo(pageControl)
         }
         
         rightArrowButton.snp.makeConstraints { make in
-            make.leading.equalTo(pageStack.snp.trailing).offset(24)
-            make.centerY.equalTo(pageStack)
+            make.trailing.equalToSuperview().inset(32)
+            make.centerY.equalTo(pageControl)
         }
     }
     
     private func enabledBtn() {
         if currentPage == 0 {
+            leftArrowButton.tintColor = .gray
+            rightArrowButton.tintColor = .mainColor
             leftArrowButton.isEnabled = false
             rightArrowButton.isEnabled = true
         } else {
+            leftArrowButton.tintColor = .mainColor
+            rightArrowButton.tintColor = .gray
             leftArrowButton.isEnabled = true
             rightArrowButton.isEnabled = false
         }
@@ -185,9 +181,11 @@ extension OnboardingContainerViewController: UIPageViewControllerDataSource, UIP
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        guard completed else { return }
-        currentPage = pageViewController.viewControllers!.first!.view.tag
-        varLabel.text = "\(currentPage + 1)"
+        guard let viewController = pageViewController.viewControllers?[0] else { return }
+        guard let index = onboardingViewControllers.firstIndex(of: viewController) else { return }
+        
+        currentPage = index
+        pageControl.currentPage = index
         enabledBtn()
     }
 }

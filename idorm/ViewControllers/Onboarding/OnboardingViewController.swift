@@ -35,6 +35,8 @@ class OnboardingViewController: UIViewController {
         tableView.allowsSelection = false
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.keyboardDismissMode = .onDrag
+        tableView.showsVerticalScrollIndicator = false
         
         return tableView
     }()
@@ -83,6 +85,15 @@ class OnboardingViewController: UIViewController {
         button.addTarget(self, action: #selector(didTapDorm3Button), for: .touchUpInside)
         
         return button
+    }()
+    
+    lazy var tapGesture: UITapGestureRecognizer = {
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapBackground))
+        singleTapGestureRecognizer.numberOfTapsRequired = 1
+        singleTapGestureRecognizer.isEnabled = true
+        singleTapGestureRecognizer.cancelsTouchesInView = false
+        
+        return singleTapGestureRecognizer
     }()
     
     // MARK: - LifeCycle
@@ -134,9 +145,14 @@ class OnboardingViewController: UIViewController {
         dorm3Button.backgroundColor = .mainColor
     }
     
+    @objc private func didTapBackground() {
+        view.endEditing(true)
+    }
+    
     // MARK: - Helpers
     private func configureUI() {
         view.backgroundColor = .white
+        view.addGestureRecognizer(tapGesture)
         
         let buttonStack = UIStackView(arrangedSubviews: [ dorm1Button, dorm2Button, dorm3Button ])
         buttonStack.axis = .horizontal
@@ -163,7 +179,7 @@ class OnboardingViewController: UIViewController {
             for index in 0..<(viewModel.questionsNumberOfRowsInSection) {
                 let indexPath = IndexPath(row: index, section: 0)
                 guard let cell = tableView.cellForRow(at: indexPath) as? OnboardingTableViewCell else { return }
-                if (cell.xmarkButton.isSelected || cell.omarkButton.isSelected) {
+                if (cell.leftButton.isSelected || cell.rightButton.isSelected) {
                     continue
                 } else {
                     completeButton.isEnabled = false
@@ -176,12 +192,16 @@ class OnboardingViewController: UIViewController {
             let row = viewModel.questionsNumberOfRowsInSection - 1
             let indexPath = IndexPath(row: row, section: 0)
             guard let cell = tableView.cellForRow(at: indexPath) as? OnboardingTableViewCell else { return }
-            if (cell.femaleButton.isSelected || cell.maleButton.isSelected) {
-                return
-            } else {
-                return
-            }
+//            if (cell.femaleButton.isSelected || cell.maleButton.isSelected) {
+//                return
+//            } else {
+//                return
+//            }
         }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
     }
 }
 
@@ -193,8 +213,14 @@ extension OnboardingViewController: UITableViewDelegate, UITableViewDataSource {
         cell.index = indexPath.row
         cell.delegate = self
         
-        if indexPath.row == viewModel.questionsNumberOfRowsInSection - 1 {
+        if indexPath.row == 0 {
+            cell.configureUI(type: .period)
+            return cell
+        } else if indexPath.row == 1 {
             cell.configureUI(type: .gender)
+            return cell
+        } else if indexPath.row == 2 {
+            cell.configureUI(type: .age)
             return cell
         } else {
             cell.configureUI(type: .ox)

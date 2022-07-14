@@ -9,27 +9,26 @@ import Foundation
 
 class OnboardingListViewModel {
     private var questions: [String] = [
-        "흡연 여부",
+        "입사 기간",
+        "본인의 성별",
+        "본인의 나이",
         "코골이 여부",
+        "흡연 여부",
         "이갈이 여부",
         "야식 허용 여부",
-        "소음이 있는 취미가 있나요?",
-        "만약 있다면 이어폰 착용 여부",
-        "본인의 성별"
+        "이어폰 착용 의사 여부"
         ]
     
     private var detailQuestions: [String] = [
         "기상시간을 알려주세요.",
-        "취침시간을 알려주세요.",
-        "정리정돈은 얼마나 하시나요.",
-        "샤워는 주로 언제/몇 분 동안 하시나요",
-        "나이를 알려주세요",
+        "정리정돈은 얼마나 하시나요?",
+        "샤워는 주로 언제/몇 분 동안 하시나요?",
         "MBTI를 알려주세요.",
-        "하고싶은 말을 작성해주세요."
+        "미래의 룸메에게 하고싶은 말은?"
     ]
     
-    var onboardingVerifyArray = [Bool](repeating: false, count: 7)
-    var onboardingDetailVerifyArray = [Bool](repeating: false, count: 7)
+    var onboardingVerifyArray = [Bool](repeating: false, count: 8)
+    var onboardingDetailVerifyArray = [Bool](repeating: false, count: 5)
 
     var questionsNumberOfRowsInSection: Int {
         return questions.count
