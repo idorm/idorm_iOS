@@ -13,8 +13,8 @@ class OnboardingTableHeaderView: UIView {
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "룸메이트 매칭을 위한 기본정보를 알려주세요!"
-        label.textColor = .gray
-        label.font = .systemFont(ofSize: 14.0)
+        label.textColor = .grey_custom
+        label.font = .init(name: Font.regular.rawValue, size: 12.0)
         
         return label
     }()
@@ -36,7 +36,7 @@ class OnboardingTableHeaderView: UIView {
         
         titleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview()
-            make.centerY.equalToSuperview()
+            make.bottom.equalToSuperview().inset(8)
         }
     }
 }

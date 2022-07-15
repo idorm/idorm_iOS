@@ -58,7 +58,7 @@ class OnboardingDetailTableViewCell: UITableViewCell {
         tf.attributedPlaceholder = NSAttributedString(string: "입력", attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray])
         tf.textColor = .black
         tf.font = .systemFont(ofSize: 14.0, weight: .medium)
-        tf.addLeftPadding()
+        tf.addLeftPadding(16)
         tf.backgroundColor = .white
         tf.keyboardType = .default
         tf.returnKeyType = .done
@@ -73,6 +73,7 @@ class OnboardingDetailTableViewCell: UITableViewCell {
         tv.font = .systemFont(ofSize: 14.0, weight: .medium)
         tv.textColor = .darkGray
         tv.delegate = self
+        tv.isScrollEnabled = false
         tv.keyboardType = .default
         tv.returnKeyType = .done
         tv.backgroundColor = .clear
@@ -138,7 +139,7 @@ class OnboardingDetailTableViewCell: UITableViewCell {
         }
         
         textView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.edges.equalToSuperview().inset(10)
         }
         
         [ infoLabel, optionalLabel, letterNumLabel, textViewContainerView, containerView ]
@@ -157,7 +158,6 @@ class OnboardingDetailTableViewCell: UITableViewCell {
         textViewContainerView.snp.makeConstraints { make in
             make.top.equalTo(infoLabel.snp.bottom).offset(8)
             make.leading.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(50.0)
         }
 
         containerView.snp.makeConstraints { make in

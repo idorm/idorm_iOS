@@ -12,6 +12,12 @@
 		E50300FB28773A5D00611C62 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50300FA28773A5D00611C62 /* OnboardingViewController.swift */; };
 		E503010028773A5E00611C62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E50300FF28773A5E00611C62 /* Assets.xcassets */; };
 		E503010328773A5E00611C62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E503010128773A5E00611C62 /* LaunchScreen.storyboard */; };
+		E508436C288133AD0047A2EC /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508436B288133AD0047A2EC /* Utilities.swift */; };
+		E508436E28813BF40047A2EC /* NotoSansCJKkr-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E508436D28813BF40047A2EC /* NotoSansCJKkr-Bold.otf */; };
+		E508437028813C030047A2EC /* NotoSansCJKkr-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = E508436F28813C030047A2EC /* NotoSansCJKkr-Medium.otf */; };
+		E508437428813C220047A2EC /* NotoSansCJKkr-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = E508437328813C220047A2EC /* NotoSansCJKkr-Regular.otf */; };
+		E508437728813CE80047A2EC /* FontManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508437628813CE80047A2EC /* FontManager.swift */; };
+		E508437B28814CAB0047A2EC /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508437A28814CAB0047A2EC /* AuthViewController.swift */; };
 		E53086E22879284000A5D0A0 /* HomeRoommateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E12879284000A5D0A0 /* HomeRoommateCollectionViewCell.swift */; };
 		E53086E42879287100A5D0A0 /* HomeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E32879287100A5D0A0 /* HomeListViewModel.swift */; };
 		E53086E6287928B400A5D0A0 /* HomePopularCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E5287928B400A5D0A0 /* HomePopularCollectionViewCell.swift */; };
@@ -48,6 +54,12 @@
 		E50300FF28773A5E00611C62 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E503010228773A5E00611C62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E503010428773A5E00611C62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E508436B288133AD0047A2EC /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		E508436D28813BF40047A2EC /* NotoSansCJKkr-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansCJKkr-Bold.otf"; sourceTree = "<group>"; };
+		E508436F28813C030047A2EC /* NotoSansCJKkr-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansCJKkr-Medium.otf"; sourceTree = "<group>"; };
+		E508437328813C220047A2EC /* NotoSansCJKkr-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansCJKkr-Regular.otf"; sourceTree = "<group>"; };
+		E508437628813CE80047A2EC /* FontManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontManager.swift; sourceTree = "<group>"; };
+		E508437A28814CAB0047A2EC /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		E53086E12879284000A5D0A0 /* HomeRoommateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRoommateCollectionViewCell.swift; sourceTree = "<group>"; };
 		E53086E32879287100A5D0A0 /* HomeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListViewModel.swift; sourceTree = "<group>"; };
 		E53086E5287928B400A5D0A0 /* HomePopularCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePopularCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -106,17 +118,16 @@
 		E50300F528773A5D00611C62 /* idorm */ = {
 			isa = PBXGroup;
 			children = (
-				E53C60AC287B34C400977909 /* Utilities */,
+				E5FBBB862880304900A7158D /* SECRET.swift */,
+				E50300F628773A5D00611C62 /* AppDelegate.swift */,
+				E50300F828773A5D00611C62 /* SceneDelegate.swift */,
 				E563421528780A4D00E93D17 /* ViewModels */,
 				E563421628780A5200E93D17 /* ViewControllers */,
 				E563421928780C0B00E93D17 /* Cells */,
 				E563421F2878244A00E93D17 /* Views */,
-				E50300F628773A5D00611C62 /* AppDelegate.swift */,
-				E50300F828773A5D00611C62 /* SceneDelegate.swift */,
-				E5AD7395287A8C2F00BA2C5E /* UIColor+Extensions.swift */,
-				E5AD7397287A8D8800BA2C5E /* UITextField+Extensions.swift */,
-				E55794ED287C36F5002DB2B0 /* UIView+Extensions.swift */,
-				E5FBBB862880304900A7158D /* SECRET.swift */,
+				E5084367288133570047A2EC /* Extensions */,
+				E53C60AC287B34C400977909 /* Utilities */,
+				E508437528813C270047A2EC /* Fonts */,
 				E50300FF28773A5E00611C62 /* Assets.xcassets */,
 				E503010128773A5E00611C62 /* LaunchScreen.storyboard */,
 				E503010428773A5E00611C62 /* Info.plist */,
@@ -124,10 +135,49 @@
 			path = idorm;
 			sourceTree = "<group>";
 		};
-		E53C60AC287B34C400977909 /* Utilities */ = {
+		E5084367288133570047A2EC /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E5AD7395287A8C2F00BA2C5E /* UIColor+Extensions.swift */,
+				E5AD7397287A8D8800BA2C5E /* UITextField+Extensions.swift */,
+				E55794ED287C36F5002DB2B0 /* UIView+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		E5084368288133710047A2EC /* SignUp&Login */ = {
 			isa = PBXGroup;
 			children = (
 				E53C60AD287B34D200977909 /* LoginType.swift */,
+			);
+			path = "SignUp&Login";
+			sourceTree = "<group>";
+		};
+		E508437528813C270047A2EC /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				E508436D28813BF40047A2EC /* NotoSansCJKkr-Bold.otf */,
+				E508437328813C220047A2EC /* NotoSansCJKkr-Regular.otf */,
+				E508436F28813C030047A2EC /* NotoSansCJKkr-Medium.otf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		E508437C28814CB10047A2EC /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				E508437A28814CAB0047A2EC /* AuthViewController.swift */,
+				E5AD73A0287AFC5300BA2C5E /* AuthNumberViewController.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		E53C60AC287B34C400977909 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				E508437628813CE80047A2EC /* FontManager.swift */,
+				E508436B288133AD0047A2EC /* Utilities.swift */,
+				E5084368288133710047A2EC /* SignUp&Login */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -187,10 +237,10 @@
 		E5AD738F287A85F600BA2C5E /* SignUp&Login */ = {
 			isa = PBXGroup;
 			children = (
+				E508437C28814CB10047A2EC /* Auth */,
 				E5AD7390287A863800BA2C5E /* LoginViewController.swift */,
 				E5AD739C287AE08F00BA2C5E /* PopupViewController.swift */,
 				E5AD739E287AEF2D00BA2C5E /* PutEmailViewController.swift */,
-				E5AD73A0287AFC5300BA2C5E /* AuthNumberViewController.swift */,
 				E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordViewController.swift */,
 				E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */,
 			);
@@ -270,8 +320,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E508437428813C220047A2EC /* NotoSansCJKkr-Regular.otf in Resources */,
 				E503010328773A5E00611C62 /* LaunchScreen.storyboard in Resources */,
 				E503010028773A5E00611C62 /* Assets.xcassets in Resources */,
+				E508436E28813BF40047A2EC /* NotoSansCJKkr-Bold.otf in Resources */,
+				E508437028813C030047A2EC /* NotoSansCJKkr-Medium.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,6 +345,7 @@
 				E5AD7398287A8D8800BA2C5E /* UITextField+Extensions.swift in Sources */,
 				E5FBBB872880304900A7158D /* SECRET.swift in Sources */,
 				E53C60AE287B34D200977909 /* LoginType.swift in Sources */,
+				E508437728813CE80047A2EC /* FontManager.swift in Sources */,
 				E53086E42879287100A5D0A0 /* HomeListViewModel.swift in Sources */,
 				E55794E8287C09B4002DB2B0 /* OnboardingContainerViewController.swift in Sources */,
 				E50300F928773A5D00611C62 /* SceneDelegate.swift in Sources */,
@@ -301,7 +355,9 @@
 				E5AD73A1287AFC5300BA2C5E /* AuthNumberViewController.swift in Sources */,
 				E55794F0287C496D002DB2B0 /* OnboardingDetailTableViewCell.swift in Sources */,
 				E56342212878246200E93D17 /* OnboardingTableHeaderView.swift in Sources */,
+				E508436C288133AD0047A2EC /* Utilities.swift in Sources */,
 				E56342232878353100E93D17 /* TabBarController.swift in Sources */,
+				E508437B28814CAB0047A2EC /* AuthViewController.swift in Sources */,
 				E563421828780BDE00E93D17 /* OnboardingListViewModel.swift in Sources */,
 				E5AD7396287A8C2F00BA2C5E /* UIColor+Extensions.swift in Sources */,
 				E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */,

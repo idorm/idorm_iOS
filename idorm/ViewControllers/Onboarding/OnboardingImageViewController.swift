@@ -28,7 +28,7 @@ class OnboardingImageViewController: UIViewController {
     
     lazy var dormLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 24.0, weight: .bold)
+        label.font = .init(name: Font.bold.rawValue, size: 24.0)
         label.text = "3 기숙사"
         label.textColor = .black
         
@@ -39,7 +39,7 @@ class OnboardingImageViewController: UIViewController {
         let label = UILabel()
         label.text = "16 주"
         label.textColor = .white
-        label.font = .systemFont(ofSize: 14.0, weight: .bold)
+        label.font = .init(name: Font.bold.rawValue, size: 12.0)
         
         return label
     }()
@@ -56,16 +56,20 @@ class OnboardingImageViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 10.0
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowOffset = CGSize(width: 0, height: 5)
+        view.layer.shadowOpacity = 0.2
         
         return view
     }()
     
     lazy var freeLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14.0, weight: .regular)
+        label.font = .init(name: Font.regular.rawValue, size: 12.0)
         label.numberOfLines = 0
+        label.textAlignment = .natural
         label.text = "룸메에게 보내는 한마디 룸메에게 보내는 한마디 룸메에게 보내는 한마디 룸메에게 보내는 한마디 룸메에게 보내는 한마디 룸메에게 보내는 한마디 룸메에게 보내는 한마디"
-        
+       
         return label
     }()
     
@@ -74,7 +78,8 @@ class OnboardingImageViewController: UIViewController {
         button.setTitle("확인", for: .normal)
         button.setTitleColor(UIColor.mainColor, for: .normal)
         button.addTarget(self, action: #selector(didTapConfirmButton), for: .touchUpInside)
-        
+        button.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .regular)
+       
         return button
     }()
     
@@ -131,7 +136,7 @@ class OnboardingImageViewController: UIViewController {
     @objc private func didTapConfirmButton() {
         
     }
- 
+    
     // MARK: - Helpers
     private func configureUI() {
         view.backgroundColor = .white
@@ -148,11 +153,11 @@ class OnboardingImageViewController: UIViewController {
             .forEach { backgroundImage.addSubview($0) }
         
         dormLabel.snp.makeConstraints { make in
-            make.leading.top.equalToSuperview().inset(24)
+            make.leading.top.equalToSuperview().inset(26)
         }
         
         buildingImageView.snp.makeConstraints { make in
-            make.trailing.equalTo(periodLabel.snp.leading).offset(-4)
+            make.trailing.equalTo(periodLabel.snp.leading).offset(-8)
             make.centerY.equalTo(periodLabel)
         }
 
@@ -163,7 +168,7 @@ class OnboardingImageViewController: UIViewController {
         
         nose.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(24)
-            make.top.equalTo(dormLabel.snp.bottom).offset(20)
+            make.top.equalTo(dormLabel.snp.bottom).offset(16)
         }
         
         teeth.snp.makeConstraints { make in
@@ -194,7 +199,7 @@ class OnboardingImageViewController: UIViewController {
         freeContainerView.addSubview(freeLabel)
         
         freeLabel.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(12.0)
+            make.leading.trailing.top.equalToSuperview().inset(10)
         }
         
         [ wakeup, clean, shower, mbti, freeContainerView ]
@@ -223,6 +228,7 @@ class OnboardingImageViewController: UIViewController {
         freeContainerView.snp.makeConstraints { make in
             make.top.equalTo(mbti.snp.bottom).offset(16.0)
             make.leading.trailing.equalToSuperview().inset(24)
+            make.bottom.equalToSuperview().inset(54)
         }
         
         [ bottomView, backgroundImage, matchingImageView ]
@@ -230,7 +236,7 @@ class OnboardingImageViewController: UIViewController {
         
         backgroundImage.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(24.0)
-            make.centerY.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(matchingImageView.snp.bottom).offset(40)
         }
 
         matchingImageView.snp.makeConstraints { make in
@@ -271,25 +277,29 @@ class OnboardingImageViewController: UIViewController {
     
     func createTopComponent(query: String, ox: Bool) -> UIButton {
         var config = UIButton.Configuration.tinted()
-        config.title = query
         config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 14)
         config.baseBackgroundColor = .white
         config.imagePlacement = .trailing
-        config.imagePadding = 4.0
+        config.imagePadding = 6.5
         config.cornerStyle = .capsule
         
         let button = UIButton(configuration: config)
+        button.setTitle(query, for: .normal)
         button.setImage(ox ? UIImage(named: "Omark") : UIImage(named: "Xmark"), for: .normal)
         button.setTitleColor(UIColor.black, for: .normal)
         button.tintColor = ox ? .mainColor : .red
+        button.titleLabel?.font = .init(name: Font.medium.rawValue, size: 20.0)
         button.backgroundColor = .white
         button.layer.cornerRadius = 16.0
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 5)
+        button.layer.shadowOpacity = 0.2
         
         let attributes = [
-            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0, weight: .medium),
+            NSAttributedString.Key.font: UIFont.init(name: Font.medium.rawValue, size: 14.0),
             NSAttributedString.Key.foregroundColor: UIColor.black
         ]
-        let attributedString = NSAttributedString(string: query, attributes: attributes)
+        let attributedString = NSAttributedString(string: query, attributes: attributes as [NSAttributedString.Key : Any])
         button.setAttributedTitle(attributedString, for: .normal)
         
         button.snp.makeConstraints { make in
@@ -302,22 +312,26 @@ class OnboardingImageViewController: UIViewController {
     func createComponent(query: String, contents: String) -> UIView {
         let queryLabel = UILabel()
         queryLabel.text = query
-        queryLabel.font = .systemFont(ofSize: 12.0, weight: .bold)
+        queryLabel.font = .init(name: Font.bold.rawValue, size: 10.0)
+        queryLabel.textColor = .black
         
         let contentsLabel = UILabel()
         contentsLabel.text = contents
-        contentsLabel.font = .systemFont(ofSize: 12.0, weight: .bold)
-        contentsLabel.textColor = .darkGray
+        contentsLabel.font = .init(name: Font.bold.rawValue, size: 10)
+        contentsLabel.textColor = .darkgrey_custom
         
         let background = UIView()
         background.backgroundColor = .white
-        background.layer.cornerRadius = 13.0
+        background.layer.cornerRadius = 12.0
+        background.layer.shadowColor = UIColor.black.cgColor
+        background.layer.shadowOffset = CGSize(width: 0, height: 5)
+        background.layer.shadowOpacity = 0.2
         
         [ queryLabel, contentsLabel ]
             .forEach { background.addSubview($0) }
         
         background.snp.makeConstraints { make in
-            make.height.equalTo(30)
+            make.height.equalTo(23)
         }
         
         queryLabel.snp.makeConstraints { make in
@@ -327,7 +341,7 @@ class OnboardingImageViewController: UIViewController {
 
         contentsLabel.snp.makeConstraints { make in
             make.leading.equalTo(queryLabel.snp.trailing).offset(8.0)
-            make.bottom.top.equalToSuperview().inset(8)
+            make.bottom.top.equalToSuperview()
         }
         
         return background

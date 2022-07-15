@@ -16,6 +16,7 @@ class PutEmailViewController: UIViewController {
     lazy var infoLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
+        label.font = .init(name: Font.medium.rawValue, size: 14.0)
         if type == .findPW {
             label.text = "가입시 사용한 인천대학교 이메일이 필요해요."
         } else {
@@ -25,30 +26,25 @@ class PutEmailViewController: UIViewController {
         return label
     }()
     
-    lazy var containerView: UIView = {
-        let view = UIView()
-        view.layer.borderWidth = 1
-        view.layer.cornerRadius = 10.0
+    lazy var inuMark: UIImageView = {
+        let iv = UIImageView()
+        iv.image = UIImage(named: "INUMark")
         
-        return view
+        return iv
     }()
     
-    lazy var emailTextField: UITextField = {
-        let tf = UITextField()
-        tf.attributedPlaceholder = NSAttributedString(string: "이메일을 입력해주세요.", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
-        tf.textColor = .gray
-        tf.addLeftPadding()
-        tf.backgroundColor = .white
-        tf.keyboardType = .emailAddress
-        tf.returnKeyType = .done
+    lazy var needEmailLabel: UILabel = {
+        let label = UILabel()
+        label.text = "인천대학교 이메일 (@inu.ac.kr)이 필요해요."
+        label.textColor = .gray
+        label.font = .systemFont(ofSize: 14.0)
         
-        return tf
+        return label
     }()
     
     lazy var confirmButton: UIButton = {
-        let button = UIButton(type: .custom)
+        let button = Utilites.returnBottonConfirmButton(string: "")
         button.addTarget(self, action: #selector(didTapConfirmButton), for: .touchUpInside)
-        button.backgroundColor = .mainColor
         if type == .findPW {
             button.setTitle("인증번호 발급받기", for: .normal)
         } else {
@@ -58,11 +54,10 @@ class PutEmailViewController: UIViewController {
         return button
     }()
     
-    lazy var bottomView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .mainColor
+    lazy var textField: UIView = {
+        let tf = Utilites.returnTextField(placeholder: "이메일을 입력해주세요")
         
-        return view
+        return tf
     }()
     
     // MARK: - LifeCycle
@@ -82,16 +77,15 @@ class PutEmailViewController: UIViewController {
     
     // MARK: - Selectors
     @objc private func didTapConfirmButton() {
-        let authVC = AuthNumberViewController(type: type)
+        let authVC = AuthViewController()
         let navVC = UINavigationController(rootViewController: authVC)
         navVC.modalPresentationStyle = .fullScreen
         present(navVC, animated: true)
         
-        authVC.dismissCompletion = { [weak self] confirmPwVC in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                guard let self = self else { return }
-                self.navigationController?.pushViewController(confirmPwVC, animated: true)
-            }
+        authVC.dismissCompletion = { [weak self] in
+            guard let self = self else { return }
+            let confirmPwVC = ConfirmPasswordViewController(type: self.type)
+            self.navigationController?.pushViewController(confirmPwVC, animated: true)
         }
     }
     
@@ -100,40 +94,38 @@ class PutEmailViewController: UIViewController {
         view.backgroundColor = .white
         navigationController?.isNavigationBarHidden = false
         
+        let inustack = UIStackView(arrangedSubviews: [ inuMark, needEmailLabel ])
+        inustack.axis = .horizontal
+        inustack.spacing = 4.0
+        
         if type == .findPW {
             navigationItem.title = "비밀번호 찾기"
+            inustack.isHidden = true
         } else {
             navigationItem.title = "회원가입"
+            inustack.isHidden = false
         }
         
-        containerView.addSubview(emailTextField)
-        
-        [ infoLabel, containerView, confirmButton, bottomView ]
+        [ infoLabel, textField, confirmButton, inustack ]
             .forEach { view.addSubview($0) }
-        
-        emailTextField.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        
+    
         infoLabel.snp.makeConstraints { make in
             make.top.leading.equalTo(view.safeAreaLayoutGuide).inset(24)
         }
         
-        containerView.snp.makeConstraints { make in
-            make.top.equalTo(infoLabel.snp.bottom).offset(16)
+        textField.snp.makeConstraints { make in
+            make.top.equalTo(infoLabel.snp.bottom).offset(8)
             make.leading.trailing.equalToSuperview().inset(24)
-            make.height.equalTo(60)
         }
         
         confirmButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
-            make.height.equalTo(65)
+            make.leading.trailing.equalToSuperview().inset(24)
+            make.bottom.equalTo(view.keyboardLayoutGuide.snp.top).offset(-20)
         }
         
-        bottomView.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(confirmButton.snp.bottom)
+        inustack.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(textField.snp.bottom).offset(16)
         }
     }
     

@@ -30,8 +30,8 @@ class OnboardingTableViewCell: UITableViewCell {
     
     lazy var questionLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .gray
-        label.font = .systemFont(ofSize: 16.0)
+        label.textColor = .darkgrey_custom
+        label.font = .init(name: Font.medium.rawValue, size: 16)
         
         return label
     }()
@@ -40,7 +40,7 @@ class OnboardingTableViewCell: UITableViewCell {
         let button = UIButton(type: .custom)
         button.tintColor = UIColor.init(rgb: 0xE3E1EC)
         button.setTitleColor(UIColor.init(rgb: 0xE3E1EC), for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .bold)
+        button.titleLabel?.font = .init(name: Font.bold.rawValue, size: 16)
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration.init(pointSize: 20.0), forImageIn: .normal)
         button.addTarget(self, action: #selector(didTapLeftButton), for: .touchUpInside)
         
@@ -51,7 +51,7 @@ class OnboardingTableViewCell: UITableViewCell {
         let button = UIButton(type: .custom)
         button.tintColor = UIColor.init(rgb: 0xE3E1EC)
         button.setTitleColor(UIColor.init(rgb: 0xE3E1EC), for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .bold)
+        button.titleLabel?.font = .init(name: Font.bold.rawValue, size: 16)
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration.init(pointSize: 20.0), forImageIn: .normal)
         button.addTarget(self, action: #selector(didTapRightButton), for: .touchUpInside)
         
@@ -62,7 +62,7 @@ class OnboardingTableViewCell: UITableViewCell {
         let tf = UITextField()
         tf.backgroundColor = UIColor.init(rgb: 0xF4F2FA)
         tf.textColor = .mainColor
-        tf.font = .systemFont(ofSize: 16.0, weight: .medium)
+        tf.font = .init(name: Font.medium.rawValue, size: 16)
         tf.textAlignment = .center
         tf.layer.cornerRadius = 8.0
         tf.keyboardType = .numberPad
@@ -74,7 +74,7 @@ class OnboardingTableViewCell: UITableViewCell {
     lazy var ageLabel: UILabel = {
         let label = UILabel()
         label.text = "세"
-        label.font = .systemFont(ofSize: 16.0, weight: .bold)
+        label.font = .init(name: Font.bold.rawValue, size: 16.0)
         label.textColor = .gray
         label.setContentHuggingPriority(.init(rawValue: 251), for: .horizontal)
         

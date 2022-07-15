@@ -33,7 +33,7 @@ class OnboardingContainerViewController: UIViewController {
         let button = UIButton(type: .custom)
         button.setTitle("완료", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .regular)
-        button.setTitleColor(UIColor.gray, for: .normal)
+        button.setTitleColor(UIColor.mainColor, for: .normal)
         button.addTarget(self, action: #selector(didTapConfirmButton), for: .touchUpInside)
         
         return button
@@ -84,7 +84,8 @@ class OnboardingContainerViewController: UIViewController {
     
     // MARK: - Selectors
     @objc private func didTapConfirmButton() {
-        
+        let onboardingImageVC = OnboardingImageViewController()
+        navigationController?.pushViewController(onboardingImageVC, animated: true)
     }
     
     @objc private func didTapLeftArrowButton() {
@@ -92,6 +93,7 @@ class OnboardingContainerViewController: UIViewController {
         pageVC.setViewControllers([onboardingViewControllers[prevPage]], direction: .reverse, animated: true)
         
         currentPage = pageVC.viewControllers!.first!.view.tag
+        pageControl.currentPage = currentPage
         enabledBtn()
     }
     
@@ -100,6 +102,7 @@ class OnboardingContainerViewController: UIViewController {
         pageVC.setViewControllers([onboardingViewControllers[nextPage]], direction: .forward, animated: true)
         
         currentPage = pageVC.viewControllers!.first!.view.tag
+        pageControl.currentPage = currentPage
         enabledBtn()
     }
     
@@ -112,8 +115,9 @@ class OnboardingContainerViewController: UIViewController {
         view.backgroundColor = .white
         navigationItem.title = "내 정보 입력"
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: confirmButton)
+        navigationController?.navigationBar.tintColor = .black
         
-        confirmButton.isEnabled = false
+//        confirmButton.isEnabled = false
         
         onboardingVC.delegate = self
         onboardingDetailVC.delegate = self
@@ -212,10 +216,10 @@ extension OnboardingContainerViewController: OnboardingDetailViewDelegate {
         if viewModel.onboardingVerifyArray.allSatisfy({ $0 == true }),
            viewModel.onboardingDetailVerifyArray.allSatisfy({ $0 == true }) {
             confirmButton.setTitleColor(UIColor.mainColor, for: .normal)
-            confirmButton.isEnabled = true
+//            confirmButton.isEnabled = true
         } else {
             confirmButton.setTitleColor(UIColor.gray, for: .normal)
-            confirmButton.isEnabled = false
+//            confirmButton.isEnabled = false
         }
     }
 }

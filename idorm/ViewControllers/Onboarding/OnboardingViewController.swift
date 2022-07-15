@@ -42,46 +42,21 @@ class OnboardingViewController: UIViewController {
     }()
     
     lazy var dorm1Button: UIButton = {
-        var config = UIButton.Configuration.tinted()
-        config.baseBackgroundColor = .clear
-        config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
-        let button = UIButton(configuration: config)
-        button.setTitle("1 기숙사", for: .normal)
-        button.isSelected = true
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14.0)
-        button.backgroundColor = UIColor.mainColor
-        button.layer.cornerRadius = 15.0
+        let button = createDormButton(string: "1 기숙사")
         button.addTarget(self, action: #selector(didTapDorm1Button), for: .touchUpInside)
         
         return button
     }()
     
     lazy var dorm2Button: UIButton = {
-        var config = UIButton.Configuration.tinted()
-        config.baseBackgroundColor = .clear
-        config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
-        let button = UIButton(configuration: config)
-        button.setTitle("2 기숙사", for: .normal)
-        button.setTitleColor(UIColor.gray, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14.0)
-        button.backgroundColor = UIColor.init(rgb: 0xF4F2FA)
-        button.layer.cornerRadius = 15.0
+        let button = createDormButton(string: "2 기숙사")
         button.addTarget(self, action: #selector(didTapDorm2Button), for: .touchUpInside)
         
         return button
     }()
     
     lazy var dorm3Button: UIButton = {
-        var config = UIButton.Configuration.tinted()
-        config.baseBackgroundColor = .clear
-        config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
-        let button = UIButton(configuration: config)
-        button.setTitle("3 기숙사", for: .normal)
-        button.setTitleColor(UIColor.gray, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 14.0)
-        button.backgroundColor = UIColor.init(rgb: 0xF4F2FA)
-        button.layer.cornerRadius = 15.0
+        let button = createDormButton(string: "3 기숙사")
         button.addTarget(self, action: #selector(didTapDorm3Button), for: .touchUpInside)
         
         return button
@@ -150,6 +125,20 @@ class OnboardingViewController: UIViewController {
     }
     
     // MARK: - Helpers
+    private func createDormButton(string: String) -> UIButton {
+        var config = UIButton.Configuration.tinted()
+        config.baseBackgroundColor = .clear
+        config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
+        let button = UIButton(configuration: config)
+        button.setTitle(string, for: .normal)
+        button.setTitleColor(UIColor.gray, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 14.0)
+        button.backgroundColor = UIColor.init(rgb: 0xF4F2FA)
+        button.layer.cornerRadius = 15.0
+        
+        return button
+    }
+    
     private func configureUI() {
         view.backgroundColor = .white
         view.addGestureRecognizer(tapGesture)
@@ -238,7 +227,7 @@ extension OnboardingViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50.0
+        return 40.0
     }
 }
 

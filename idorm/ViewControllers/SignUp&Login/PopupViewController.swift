@@ -23,7 +23,7 @@ class PopupViewController: UIViewController {
     lazy var contentsLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = .systemFont(ofSize: 16.0, weight: .medium)
+        label.font = .init(name: Font.medium.rawValue, size: 14.0)
         
         return label
     }()
@@ -32,7 +32,7 @@ class PopupViewController: UIViewController {
         let button = UIButton(type: .custom)
         button.setTitle("확인", for: .normal)
         button.setTitleColor(UIColor.mainColor, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .medium)
+        button.titleLabel?.font = .init(name: Font.medium.rawValue, size: 14.0)
         button.addTarget(self, action: #selector(didTapConfirmButton), for: .touchUpInside)
         
         return button

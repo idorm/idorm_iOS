@@ -20,7 +20,7 @@ class LoginViewController: UIViewController {
     
     lazy var loginTitleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 32.0, weight: .bold)
+        label.font = .init(name: Font.bold.rawValue, size: FontSize.largeTitle.rawValue)
         label.text = "로그인"
         label.textColor = .black
         
@@ -38,34 +38,23 @@ class LoginViewController: UIViewController {
     lazy var loginLabel: UILabel = {
         let label = UILabel()
         label.text = "인천대학교 이메일로 로그인해주세요."
-        label.textColor = .gray
-        label.font = .systemFont(ofSize: 16.0, weight: .regular)
+        label.textColor = .darkGray
+        label.font = .init(name: Font.regular.rawValue, size: FontSize.largeDescription.rawValue)
         
         return label
     }()
     
     lazy var idTextField: UITextField = {
-        let tf = UITextField()
-        tf.attributedPlaceholder = NSAttributedString(string: "이메일", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
-        tf.textColor = .gray
-        tf.backgroundColor = .init(rgb: 0xF4F2FA)
-        tf.layer.cornerRadius = 15.0
-        tf.returnKeyType = .continue
+        let tf = Utilites.returnLoginTextField(placeholder: "이메일")
         tf.keyboardType = .emailAddress
-        tf.addLeftPadding()
         
         return tf
     }()
     
     lazy var pwTextField: UITextField = {
-        let tf = UITextField()
-        tf.attributedPlaceholder = NSAttributedString(string: "비밀번호", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
-        tf.textColor = .gray
-        tf.backgroundColor = .init(rgb: 0xF4F2FA)
-        tf.layer.cornerRadius = 15.0
+        let tf = Utilites.returnLoginTextField(placeholder: "비밀번호")
+        tf.keyboardType = .alphabet
         tf.isSecureTextEntry = true
-        tf.returnKeyType = .done
-        tf.addLeftPadding()
         
         return tf
     }()
@@ -74,7 +63,7 @@ class LoginViewController: UIViewController {
         let button = UIButton(type: .custom)
         button.setTitle("로그인", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .bold)
+        button.titleLabel?.font = .init(name: Font.medium.rawValue, size: FontSize.main.rawValue)
         button.backgroundColor = .init(rgb: 0x582FFF)
         button.layer.cornerRadius = 10.0
         button.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
@@ -85,7 +74,7 @@ class LoginViewController: UIViewController {
     lazy var forgotPwButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setTitle("비밀번호를 잊으셨나요?", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .regular)
+        button.titleLabel?.font = .init(name: Font.medium.rawValue, size: FontSize.largeDescription.rawValue)
         button.setTitleColor(UIColor.gray, for: .normal)
         button.addTarget(self, action: #selector(didTapForgotPwButton), for: .touchUpInside)
         
@@ -96,7 +85,7 @@ class LoginViewController: UIViewController {
         let label = UILabel()
         label.text = "아직 계정이 없으신가요?"
         label.textColor = .gray
-        label.font = .systemFont(ofSize: 16.0, weight: .regular)
+        label.font = .init(name: Font.medium.rawValue, size: FontSize.largeDescription.rawValue)
         
         return label
     }()
@@ -105,7 +94,7 @@ class LoginViewController: UIViewController {
         let button = UIButton(type: .custom)
         button.setTitle("회원가입", for: .normal)
         button.setTitleColor(UIColor.init(rgb: 0x582FFF), for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .bold)
+        button.titleLabel?.font = .init(name: Font.medium.rawValue, size: FontSize.largeDescription.rawValue)
         button.addTarget(self, action: #selector(didTapSignUpButton), for: .touchUpInside)
         
         return button
@@ -165,7 +154,15 @@ class LoginViewController: UIViewController {
         let loginTextFieldStack = UIStackView(arrangedSubviews: [ idTextField, pwTextField ])
         loginTextFieldStack.axis = .vertical
         loginTextFieldStack.distribution = .fillEqually
-        loginTextFieldStack.spacing = 8.0
+        loginTextFieldStack.spacing = 10.0
+        
+        idTextField.snp.makeConstraints { make in
+            make.height.equalTo(54)
+        }
+        
+        pwTextField.snp.makeConstraints { make in
+            make.height.equalTo(54)
+        }
         
         let signUpStack = UIStackView(arrangedSubviews: [ signUpLabel, signUpButton ])
         signUpStack.axis = .horizontal
@@ -191,7 +188,6 @@ class LoginViewController: UIViewController {
         loginTextFieldStack.snp.makeConstraints { make in
             make.centerY.equalToSuperview().offset(-36)
             make.leading.trailing.equalToSuperview().inset(36)
-            make.height.equalTo(118)
         }
         
         loginButton.snp.makeConstraints { make in
