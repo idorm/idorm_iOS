@@ -187,7 +187,7 @@ extension OnboardingContainerViewController: UIPageViewControllerDataSource, UIP
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         guard let viewController = pageViewController.viewControllers?[0] else { return }
         guard let index = onboardingViewControllers.firstIndex(of: viewController) else { return }
-        
+     
         currentPage = index
         pageControl.currentPage = index
         enabledBtn()

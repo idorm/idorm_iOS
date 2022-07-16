@@ -43,7 +43,7 @@ class PutEmailViewController: UIViewController {
     }()
     
     lazy var confirmButton: UIButton = {
-        let button = Utilites.returnBottonConfirmButton(string: "")
+        let button = LoginUtilities.returnBottonConfirmButton(string: "")
         button.addTarget(self, action: #selector(didTapConfirmButton), for: .touchUpInside)
         if type == .findPW {
             button.setTitle("인증번호 발급받기", for: .normal)
@@ -55,7 +55,7 @@ class PutEmailViewController: UIViewController {
     }()
     
     lazy var textField: UIView = {
-        let tf = Utilites.returnTextField(placeholder: "이메일을 입력해주세요")
+        let tf = LoginUtilities.returnTextField(placeholder: "이메일을 입력해주세요")
         
         return tf
     }()

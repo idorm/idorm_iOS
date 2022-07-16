@@ -35,14 +35,14 @@ class AuthNumberViewController: UIViewController {
     }()
     
     lazy var confirmButton: UIButton = {
-        let button = Utilites.returnBottonConfirmButton(string: "인증 완료")
+        let button = LoginUtilities.returnBottonConfirmButton(string: "인증 완료")
         button.addTarget(self, action: #selector(didTapConfirmButton), for: .touchUpInside)
         
         return button
     }()
     
     lazy var textField: UIView = {
-        let tf = Utilites.returnTextField(placeholder: "인증번호를 입력해주세요.")
+        let tf = LoginUtilities.returnTextField(placeholder: "인증번호를 입력해주세요.")
         
         return tf
     }()

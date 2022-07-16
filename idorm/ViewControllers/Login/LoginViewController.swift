@@ -45,14 +45,14 @@ class LoginViewController: UIViewController {
     }()
     
     lazy var idTextField: UITextField = {
-        let tf = Utilites.returnLoginTextField(placeholder: "이메일")
+        let tf = LoginUtilities.returnLoginTextField(placeholder: "이메일")
         tf.keyboardType = .emailAddress
         
         return tf
     }()
     
     lazy var pwTextField: UITextField = {
-        let tf = Utilites.returnLoginTextField(placeholder: "비밀번호")
+        let tf = LoginUtilities.returnLoginTextField(placeholder: "비밀번호")
         tf.keyboardType = .alphabet
         tf.isSecureTextEntry = true
         
@@ -115,11 +115,11 @@ class LoginViewController: UIViewController {
     @objc private func didTapLoginButton() {
         guard let email = idTextField.text else { return }
         guard let password = pwTextField.text else { return }
-        if LoginType.isValidEmail(id: email) == false {
+        if LoginUtilities.isValidEmail(id: email) == false {
             let popupVC = PopupViewController(contents: "이메일 형식을 확인해 주세요.")
             popupVC.modalPresentationStyle = .overFullScreen
             present(popupVC, animated: false)
-        } else if LoginType.isValidPassword(pwd: password) == false {
+        } else if LoginUtilities.isValidPassword(pwd: password) == false {
             let popupVC = PopupViewController(contents: "비밀번호/아이디 확인 후 다시 시도해주세요.")
             popupVC.modalPresentationStyle = .overFullScreen
             present(popupVC, animated: false)

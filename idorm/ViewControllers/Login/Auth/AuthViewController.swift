@@ -36,7 +36,7 @@ class AuthViewController: UIViewController {
     }()
     
     lazy var portalButton: UIButton = {
-        let button = Utilites.returnBottonConfirmButton(string: "인천대 포탈 바로가기")
+        let button = LoginUtilities.returnBottonConfirmButton(string: "메일함 바로가기")
         button.setTitleColor(UIColor.darkGray, for: .normal)
         button.backgroundColor = .white
         button.layer.borderColor = UIColor.init(rgb: 0xE3E1EC).cgColor
@@ -47,7 +47,7 @@ class AuthViewController: UIViewController {
     }()
     
     lazy var confirmButton: UIButton = {
-        let button = Utilites.returnBottonConfirmButton(string: "인증번호 입력")
+        let button = LoginUtilities.returnBottonConfirmButton(string: "인증번호 입력")
         button.addTarget(self, action: #selector(didTapConfirmButton), for: .touchUpInside)
         
         return button

@@ -12,7 +12,7 @@
 		E50300FB28773A5D00611C62 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50300FA28773A5D00611C62 /* OnboardingViewController.swift */; };
 		E503010028773A5E00611C62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E50300FF28773A5E00611C62 /* Assets.xcassets */; };
 		E503010328773A5E00611C62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E503010128773A5E00611C62 /* LaunchScreen.storyboard */; };
-		E508436C288133AD0047A2EC /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508436B288133AD0047A2EC /* Utilities.swift */; };
+		E508436C288133AD0047A2EC /* LoginUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508436B288133AD0047A2EC /* LoginUtilities.swift */; };
 		E508436E28813BF40047A2EC /* NotoSansCJKkr-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E508436D28813BF40047A2EC /* NotoSansCJKkr-Bold.otf */; };
 		E508437028813C030047A2EC /* NotoSansCJKkr-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = E508436F28813C030047A2EC /* NotoSansCJKkr-Medium.otf */; };
 		E508437428813C220047A2EC /* NotoSansCJKkr-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = E508437328813C220047A2EC /* NotoSansCJKkr-Regular.otf */; };
@@ -34,6 +34,8 @@
 		E56342212878246200E93D17 /* OnboardingTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56342202878246200E93D17 /* OnboardingTableHeaderView.swift */; };
 		E56342232878353100E93D17 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56342222878353100E93D17 /* TabBarController.swift */; };
 		E563422528784ED400E93D17 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E563422428784ED400E93D17 /* HomeViewController.swift */; };
+		E5AC2DCB2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2DCA2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift */; };
+		E5AC2DCF288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2DCE288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift */; };
 		E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7390287A863800BA2C5E /* LoginViewController.swift */; };
 		E5AD7396287A8C2F00BA2C5E /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7395287A8C2F00BA2C5E /* UIColor+Extensions.swift */; };
 		E5AD7398287A8D8800BA2C5E /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7397287A8D8800BA2C5E /* UITextField+Extensions.swift */; };
@@ -54,7 +56,7 @@
 		E50300FF28773A5E00611C62 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E503010228773A5E00611C62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E503010428773A5E00611C62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E508436B288133AD0047A2EC /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		E508436B288133AD0047A2EC /* LoginUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUtilities.swift; sourceTree = "<group>"; };
 		E508436D28813BF40047A2EC /* NotoSansCJKkr-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansCJKkr-Bold.otf"; sourceTree = "<group>"; };
 		E508436F28813C030047A2EC /* NotoSansCJKkr-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansCJKkr-Medium.otf"; sourceTree = "<group>"; };
 		E508437328813C220047A2EC /* NotoSansCJKkr-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansCJKkr-Regular.otf"; sourceTree = "<group>"; };
@@ -75,6 +77,8 @@
 		E56342202878246200E93D17 /* OnboardingTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTableHeaderView.swift; sourceTree = "<group>"; };
 		E56342222878353100E93D17 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E563422428784ED400E93D17 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		E5AC2DCA2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTextFieldContainerView.swift; sourceTree = "<group>"; };
+		E5AC2DCE288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPasswordTextFieldContainerView.swift; sourceTree = "<group>"; };
 		E5AD7390287A863800BA2C5E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E5AD7395287A8C2F00BA2C5E /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		E5AD7397287A8D8800BA2C5E /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
@@ -121,6 +125,7 @@
 				E5FBBB862880304900A7158D /* SECRET.swift */,
 				E50300F628773A5D00611C62 /* AppDelegate.swift */,
 				E50300F828773A5D00611C62 /* SceneDelegate.swift */,
+				E508437628813CE80047A2EC /* FontManager.swift */,
 				E563421528780A4D00E93D17 /* ViewModels */,
 				E563421628780A5200E93D17 /* ViewControllers */,
 				E563421928780C0B00E93D17 /* Cells */,
@@ -145,12 +150,13 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		E5084368288133710047A2EC /* SignUp&Login */ = {
+		E5084368288133710047A2EC /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				E508436B288133AD0047A2EC /* LoginUtilities.swift */,
 				E53C60AD287B34D200977909 /* LoginType.swift */,
 			);
-			path = "SignUp&Login";
+			path = Login;
 			sourceTree = "<group>";
 		};
 		E508437528813C270047A2EC /* Fonts */ = {
@@ -175,9 +181,7 @@
 		E53C60AC287B34C400977909 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				E508437628813CE80047A2EC /* FontManager.swift */,
-				E508436B288133AD0047A2EC /* Utilities.swift */,
-				E5084368288133710047A2EC /* SignUp&Login */,
+				E5084368288133710047A2EC /* Login */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -196,7 +200,7 @@
 		E563421528780A4D00E93D17 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				E5AD7399287AB7BC00BA2C5E /* SignUp&Login */,
+				E5AD7399287AB7BC00BA2C5E /* Login */,
 				E563421728780BDE00E93D17 /* OnboardingListViewModel.swift */,
 				E53086E32879287100A5D0A0 /* HomeListViewModel.swift */,
 			);
@@ -206,7 +210,7 @@
 		E563421628780A5200E93D17 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				E5AD738F287A85F600BA2C5E /* SignUp&Login */,
+				E5AD738F287A85F600BA2C5E /* Login */,
 				E55794E6287C09A2002DB2B0 /* Onboarding */,
 				E56342222878353100E93D17 /* TabBarController.swift */,
 				E563422428784ED400E93D17 /* HomeViewController.swift */,
@@ -228,13 +232,39 @@
 		E563421F2878244A00E93D17 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				E56342202878246200E93D17 /* OnboardingTableHeaderView.swift */,
-				E53086E728795D2700A5D0A0 /* HomeCollectionHeaderView.swift */,
+				E5AC2DD0288303B100B82AD8 /* Login */,
+				E5AC2DCC2882F46F00B82AD8 /* Onboarding */,
+				E5AC2DCD2882F47700B82AD8 /* Home */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		E5AD738F287A85F600BA2C5E /* SignUp&Login */ = {
+		E5AC2DCC2882F46F00B82AD8 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				E5AC2DCA2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift */,
+				E56342202878246200E93D17 /* OnboardingTableHeaderView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		E5AC2DCD2882F47700B82AD8 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				E53086E728795D2700A5D0A0 /* HomeCollectionHeaderView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		E5AC2DD0288303B100B82AD8 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				E5AC2DCE288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		E5AD738F287A85F600BA2C5E /* Login */ = {
 			isa = PBXGroup;
 			children = (
 				E508437C28814CB10047A2EC /* Auth */,
@@ -244,14 +274,14 @@
 				E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordViewController.swift */,
 				E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */,
 			);
-			path = "SignUp&Login";
+			path = Login;
 			sourceTree = "<group>";
 		};
-		E5AD7399287AB7BC00BA2C5E /* SignUp&Login */ = {
+		E5AD7399287AB7BC00BA2C5E /* Login */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = "SignUp&Login";
+			path = Login;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -347,6 +377,7 @@
 				E53C60AE287B34D200977909 /* LoginType.swift in Sources */,
 				E508437728813CE80047A2EC /* FontManager.swift in Sources */,
 				E53086E42879287100A5D0A0 /* HomeListViewModel.swift in Sources */,
+				E5AC2DCF288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift in Sources */,
 				E55794E8287C09B4002DB2B0 /* OnboardingContainerViewController.swift in Sources */,
 				E50300F928773A5D00611C62 /* SceneDelegate.swift in Sources */,
 				E53086E6287928B400A5D0A0 /* HomePopularCollectionViewCell.swift in Sources */,
@@ -354,8 +385,9 @@
 				E563422528784ED400E93D17 /* HomeViewController.swift in Sources */,
 				E5AD73A1287AFC5300BA2C5E /* AuthNumberViewController.swift in Sources */,
 				E55794F0287C496D002DB2B0 /* OnboardingDetailTableViewCell.swift in Sources */,
+				E5AC2DCB2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift in Sources */,
 				E56342212878246200E93D17 /* OnboardingTableHeaderView.swift in Sources */,
-				E508436C288133AD0047A2EC /* Utilities.swift in Sources */,
+				E508436C288133AD0047A2EC /* LoginUtilities.swift in Sources */,
 				E56342232878353100E93D17 /* TabBarController.swift in Sources */,
 				E508437B28814CAB0047A2EC /* AuthViewController.swift in Sources */,
 				E563421828780BDE00E93D17 /* OnboardingListViewModel.swift in Sources */,

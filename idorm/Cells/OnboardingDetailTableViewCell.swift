@@ -45,25 +45,10 @@ class OnboardingDetailTableViewCell: UITableViewCell {
         return label
     }()
     
-    lazy var containerView: UIView = {
-        let view = UIView()
-        view.layer.borderWidth = 1
-        view.layer.cornerRadius = 10.0
+    lazy var textFieldContainerView: UIView = {
+        let view = OnboardingTextFieldContainerView(placeholder: "입력")
         
         return view
-    }()
-    
-    lazy var textField: UITextField = {
-        let tf = UITextField()
-        tf.attributedPlaceholder = NSAttributedString(string: "입력", attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray])
-        tf.textColor = .black
-        tf.font = .systemFont(ofSize: 14.0, weight: .medium)
-        tf.addLeftPadding(16)
-        tf.backgroundColor = .white
-        tf.keyboardType = .default
-        tf.returnKeyType = .done
-        
-        return tf
     }()
     
     lazy var textView: RSKPlaceholderTextView = {
@@ -90,12 +75,6 @@ class OnboardingDetailTableViewCell: UITableViewCell {
         return view
     }()
     
-    lazy var bottomView: UIView = {
-        let view = UIView()
-        
-        return view
-    }()
-    
     lazy var letterNumLabel: UILabel = {
         let label = UILabel()
         label.textColor = .gray
@@ -104,15 +83,6 @@ class OnboardingDetailTableViewCell: UITableViewCell {
         
         return label
     }()
-//    
-    // MARK: - Selectors
-    @objc private func textfieldDidChange(_ tf: UITextField) {
-//        if textField.text?.isEmpty == false {
-//            delegate?.textFieldIsEmptyFalse(index: index)
-//        } else {
-//            delegate?.textFieldIsEmptyTrue(index: index)
-//        }
-    }
     
     // MARK: - Helpers
     func configureUI(type: OnboardingOptionalType) {
@@ -124,26 +94,24 @@ class OnboardingDetailTableViewCell: UITableViewCell {
         } else if type == .Optional {
             
         } else {
-            textViewContainerView.isHidden = false
-            letterNumLabel.isHidden = false
-            containerView.isHidden = true
+            
         }
         
+        [ infoLabel, optionalLabel, textFieldContainerView, letterNumLabel, textViewContainerView ]
+            .forEach { contentView.addSubview($0) }
+        
         infoLabel.text = viewModel.question
-        
         textViewContainerView.addSubview(textView)
-        containerView.addSubview(textField)
         
-        textField.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        textFieldContainerView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(24)
+            make.top.equalTo(infoLabel.snp.bottom).offset(8)
+            make.height.equalTo(50.0)
         }
         
         textView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(10)
         }
-        
-        [ infoLabel, optionalLabel, letterNumLabel, textViewContainerView, containerView ]
-            .forEach { contentView.addSubview($0) }
         
         infoLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(24)
@@ -159,18 +127,11 @@ class OnboardingDetailTableViewCell: UITableViewCell {
             make.top.equalTo(infoLabel.snp.bottom).offset(8)
             make.leading.trailing.equalToSuperview().inset(24)
         }
-
-        containerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(24)
-            make.top.equalTo(infoLabel.snp.bottom).offset(8)
-            make.height.equalTo(50.0)
-        }
         
         letterNumLabel.snp.makeConstraints { make in
             make.centerY.equalTo(infoLabel)
             make.trailing.equalToSuperview().inset(24)
         }
-        
     }
 }
 
