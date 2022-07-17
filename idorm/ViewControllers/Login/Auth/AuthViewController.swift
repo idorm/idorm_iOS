@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import WebKit
 
 class AuthViewController: UIViewController {
     // MARK: - Properties
@@ -65,7 +66,9 @@ class AuthViewController: UIViewController {
     }
     
     @objc private func didTapPortalButton() {
-        
+        guard let url = URL(string: "https://webmail.inu.ac.kr/member/login?host_domain=inu.ac.kr&t=1658031681") else { return }
+        let webMailVC = WebMailViewController(urlRequest: URLRequest(url: url))
+        present(webMailVC, animated: true)
     }
     
     @objc private func didTapConfirmButton() {

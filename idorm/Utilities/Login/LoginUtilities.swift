@@ -9,23 +9,6 @@ import UIKit
 import SnapKit
 
 class LoginUtilities {
-    static func returnLoginTextField(placeholder: String) -> UITextField {
-        let tf = UITextField()
-        tf.attributedPlaceholder = NSAttributedString(
-            string: placeholder,
-            attributes: [
-                NSAttributedString.Key.foregroundColor: UIColor.gray,
-                NSAttributedString.Key.font: UIFont.init(name: Font.regular.rawValue, size: FontSize.main.rawValue) ?? 0
-            ])
-        tf.textColor = .gray
-        tf.backgroundColor = .init(rgb: 0xF4F2FA)
-        tf.font = .init(name: Font.regular.rawValue, size: FontSize.main.rawValue)
-        tf.layer.cornerRadius = 15.0
-        tf.addLeftPadding(16)
-        
-        return tf
-    }
-    
     static func returnBottonConfirmButton(string: String) -> UIButton {
         let button = UIButton(type: .custom)
         button.backgroundColor = .mainColor
@@ -78,5 +61,4 @@ class LoginUtilities {
         let passwordTest = NSPredicate(format: "SELF MATCHES %@", passwordRegEx)
         return passwordTest.evaluate(with: pwd)
     }
-
 }

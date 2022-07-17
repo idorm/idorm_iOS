@@ -45,14 +45,14 @@ class LoginViewController: UIViewController {
     }()
     
     lazy var idTextField: UITextField = {
-        let tf = LoginUtilities.returnLoginTextField(placeholder: "이메일")
+        let tf = returnLoginTextField(placeholder: "이메일")
         tf.keyboardType = .emailAddress
         
         return tf
     }()
     
     lazy var pwTextField: UITextField = {
-        let tf = LoginUtilities.returnLoginTextField(placeholder: "비밀번호")
+        let tf = returnLoginTextField(placeholder: "비밀번호")
         tf.keyboardType = .alphabet
         tf.isSecureTextEntry = true
         
@@ -205,6 +205,23 @@ class LoginViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
         }
+    }
+    
+    private func returnLoginTextField(placeholder: String) -> UITextField {
+        let tf = UITextField()
+        tf.attributedPlaceholder = NSAttributedString(
+            string: placeholder,
+            attributes: [
+                NSAttributedString.Key.foregroundColor: UIColor.gray,
+                NSAttributedString.Key.font: UIFont.init(name: Font.regular.rawValue, size: FontSize.main.rawValue) ?? 0
+            ])
+        tf.textColor = .gray
+        tf.backgroundColor = .init(rgb: 0xF4F2FA)
+        tf.font = .init(name: Font.regular.rawValue, size: FontSize.main.rawValue)
+        tf.layer.cornerRadius = 15.0
+        tf.addLeftPadding(16)
+        
+        return tf
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

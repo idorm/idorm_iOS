@@ -45,4 +45,8 @@ extension UIColor {
     static var darkgrey_custom: UIColor {
         return UIColor.init(rgb: 0x5B5B5B)
     }
+    
+    static var bluegrey: UIColor {
+        return UIColor.init(rgb: 0xE3E1EC)
+    }
 }

@@ -18,16 +18,20 @@ class ConfirmPasswordViewController: UIViewController {
     lazy var eightLabel = returnDescriptionLabel(text: "•  8자 이상 입력")
     lazy var mixingLabel = returnDescriptionLabel(text: "•  영문 소문자/숫자/특수 문자 조합")
     
-    lazy var passwordTextFieldContainerView: UIView = {
+    lazy var passwordTextFieldContainerView: LoginPasswordTextFieldContainerView = {
         let containerView = LoginPasswordTextFieldContainerView(placeholder: "비밀번호를 입력해주세요.")
-        containerView.delegate = self
-        containerView.textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        containerView.textField.addTarget(self, action: #selector(textFieldDidChange), for: .allEditingEvents)
+        containerView.textField.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
+        containerView.textField.addTarget(self, action: #selector(textFieldDidBeginEditing), for: .editingDidBegin)
         
         return containerView
     }()
     
     lazy var passwordTextFieldContainerView2: UITextField = {
         let tf = LoginUtilities.returnTextField(placeholder: "비밀번호를 한번 더 입력해주세요.")
+        tf.addTarget(self, action: #selector(passwordTextFieldContainerView2_editingDidBegin(_:)), for: .editingDidBegin)
+        tf.addTarget(self, action: #selector(passwordTextFieldContainerView2_EditingDidEnd(_:)), for: .editingDidEnd)
+        tf.layer.borderColor = tf.isEditing ? UIColor.mainColor.cgColor : UIColor.darkgrey_custom.cgColor
         tf.isSecureTextEntry = true
         
         return tf
@@ -93,6 +97,50 @@ class ConfirmPasswordViewController: UIViewController {
             mixingLabel.textColor = .mainColor
         } else {
             mixingLabel.textColor = .darkgrey_custom
+        }
+        
+        validConfirmPassword(text: tf.text ?? "")
+    }
+    
+    @objc private func textFieldDidEndEditing( tf: UITextField) {
+        guard let text = tf.text else { return }
+        if (text.count < 8) || (LoginUtilities.isValidPassword(pwd: text) == false) {
+            infoLabel.textColor = .red
+            passwordTextFieldContainerView.layer.borderColor = UIColor.red.cgColor
+        }
+        
+        if text.count < 8 {
+            eightLabel.textColor = .red
+        }
+        
+        if LoginUtilities.isValidPassword(pwd: text) == false {
+            mixingLabel.textColor = .red
+        }
+    }
+    
+    @objc private func textFieldDidBeginEditing(tf: UITextField) {
+        infoLabel.textColor = .black
+        eightLabel.textColor = .darkgrey_custom
+        mixingLabel.textColor = .darkgrey_custom
+        passwordTextFieldContainerView.layer.borderColor = UIColor.darkgrey_custom.cgColor
+    }
+    
+    @objc private func passwordTextFieldContainerView2_editingDidBegin(_ tf: UITextField) {
+        tf.layer.borderColor = UIColor.mainColor.cgColor
+    }
+    
+    @objc private func passwordTextFieldContainerView2_EditingDidEnd(_ tf: UITextField) {
+        tf.layer.borderColor = UIColor.darkgrey_custom.cgColor
+        
+        guard let password1Text = passwordTextFieldContainerView.textField.text else { return }
+        if tf.text != password1Text {
+            infoLabel2.text = "비밀번호가 일치하지 않습니다. 다시확인해주세요."
+            infoLabel2.textColor = .red
+            tf.layer.borderColor = UIColor.red.cgColor
+        } else {
+            infoLabel2.text = "비밀번호 확인"
+            infoLabel2.textColor = .black
+            tf.layer.borderColor = UIColor.darkgrey_custom.cgColor
         }
     }
     
@@ -163,10 +211,20 @@ class ConfirmPasswordViewController: UIViewController {
         return label
     }
     
+    private func validConfirmPassword(text: String) {
+        guard let password1Text = passwordTextFieldContainerView.textField.text else { return }
+        if passwordTextFieldContainerView2.text != password1Text {
+            infoLabel2.text = "비밀번호가 일치하지 않습니다. 다시확인해주세요."
+            infoLabel2.textColor = .red
+            passwordTextFieldContainerView2.layer.borderColor = UIColor.red.cgColor
+        } else {
+            infoLabel2.text = "비밀번호 확인"
+            infoLabel2.textColor = .black
+            passwordTextFieldContainerView2.layer.borderColor = UIColor.darkgrey_custom.cgColor
+        }
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
-}
-
-extension ConfirmPasswordViewController: LoginPasswordTextFieldContainerViewDelegate {
 }

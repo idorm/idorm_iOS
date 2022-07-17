@@ -8,13 +8,9 @@
 import UIKit
 import SnapKit
 
-protocol LoginPasswordTextFieldContainerViewDelegate: AnyObject {
-}
-
 class LoginPasswordTextFieldContainerView: UIView {
     // MARK: - Properties
     let placeholder: String
-    weak var delegate: LoginPasswordTextFieldContainerViewDelegate?
     
     lazy var textField: UITextField = {
         let tf = UITextField()
@@ -124,12 +120,12 @@ extension LoginPasswordTextFieldContainerView: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        layer.borderColor = UIColor.darkgrey_custom.cgColor
         openEyesButton.isHidden = true
         closeEyesButton.isHidden = true
         
         if LoginUtilities.isValidPasswordFinal(pwd: textField.text ?? "") {
             checkmarkButton.isHidden = false
+            layer.borderColor = UIColor.darkgrey_custom.cgColor
         } else {
             checkmarkButton.isHidden = true
         }
