@@ -10,6 +10,4 @@ import Foundation
 enum LoginType {
     case findPW
     case singUp
-    
-
 }

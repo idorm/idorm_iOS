@@ -35,6 +35,9 @@
 		E56342212878246200E93D17 /* OnboardingTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56342202878246200E93D17 /* OnboardingTableHeaderView.swift */; };
 		E56342232878353100E93D17 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56342222878353100E93D17 /* TabBarController.swift */; };
 		E563422528784ED400E93D17 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E563422428784ED400E93D17 /* HomeViewController.swift */; };
+		E58ACB85288465970031BD86 /* FMPhotoPicker in Frameworks */ = {isa = PBXBuildFile; productRef = E58ACB84288465970031BD86 /* FMPhotoPicker */; };
+		E58ACB8728846E050031BD86 /* ImagePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58ACB8628846E050031BD86 /* ImagePickerViewController.swift */; };
+		E58F96FB2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */; };
 		E5AC2DCB2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2DCA2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift */; };
 		E5AC2DCF288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2DCE288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift */; };
 		E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7390287A863800BA2C5E /* LoginViewController.swift */; };
@@ -83,6 +86,8 @@
 		E56342202878246200E93D17 /* OnboardingTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTableHeaderView.swift; sourceTree = "<group>"; };
 		E56342222878353100E93D17 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E563422428784ED400E93D17 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		E58ACB8628846E050031BD86 /* ImagePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerViewController.swift; sourceTree = "<group>"; };
+		E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerCollectionViewCell.swift; sourceTree = "<group>"; };
 		E5AC2DCA2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTextFieldContainerView.swift; sourceTree = "<group>"; };
 		E5AC2DCE288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPasswordTextFieldContainerView.swift; sourceTree = "<group>"; };
 		E5AD7390287A863800BA2C5E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -106,6 +111,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E58ACB85288465970031BD86 /* FMPhotoPicker in Frameworks */,
 				E563421E28780C3800E93D17 /* SnapKit in Frameworks */,
 				E5602DC4288441DC00C2C4BB /* BSImagePicker in Frameworks */,
 				E5B15F6D287FCEFE004D4164 /* RSKPlaceholderTextView in Frameworks */,
@@ -245,8 +251,8 @@
 		E563421928780C0B00E93D17 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				E563421A28780C1800E93D17 /* OnboardingTableViewCell.swift */,
-				E55794EF287C496D002DB2B0 /* OnboardingDetailTableViewCell.swift */,
+				E58ACB89288472480031BD86 /* Community */,
+				E58ACB88288472410031BD86 /* Onboarding */,
 				E53086E12879284000A5D0A0 /* HomeRoommateCollectionViewCell.swift */,
 				E53086E5287928B400A5D0A0 /* HomePopularCollectionViewCell.swift */,
 			);
@@ -261,6 +267,23 @@
 				E5AC2DCD2882F47700B82AD8 /* Home */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		E58ACB88288472410031BD86 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				E563421A28780C1800E93D17 /* OnboardingTableViewCell.swift */,
+				E55794EF287C496D002DB2B0 /* OnboardingDetailTableViewCell.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		E58ACB89288472480031BD86 /* Community */ = {
+			isa = PBXGroup;
+			children = (
+				E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */,
+			);
+			path = Community;
 			sourceTree = "<group>";
 		};
 		E5AC2DCC2882F46F00B82AD8 /* Onboarding */ = {
@@ -313,6 +336,7 @@
 			children = (
 				E5F5EC732884025E0026DE21 /* CommunityViewController.swift */,
 				E5BF4C5E28840EBF00B4F0B8 /* WritingViewController.swift */,
+				E58ACB8628846E050031BD86 /* ImagePickerViewController.swift */,
 			);
 			path = Community;
 			sourceTree = "<group>";
@@ -337,6 +361,7 @@
 				E563421D28780C3800E93D17 /* SnapKit */,
 				E5B15F6C287FCEFE004D4164 /* RSKPlaceholderTextView */,
 				E5602DC3288441DC00C2C4BB /* BSImagePicker */,
+				E58ACB84288465970031BD86 /* FMPhotoPicker */,
 			);
 			productName = idorm;
 			productReference = E50300F328773A5D00611C62 /* idorm.app */;
@@ -370,6 +395,7 @@
 				E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView" */,
 				E5602DC2288441DC00C2C4BB /* XCRemoteSwiftPackageReference "BSImagePicker" */,
+				E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker" */,
 			);
 			productRefGroup = E50300F428773A5D00611C62 /* Products */;
 			projectDirPath = "";
@@ -421,11 +447,13 @@
 				E563422528784ED400E93D17 /* HomeViewController.swift in Sources */,
 				E5AD73A1287AFC5300BA2C5E /* AuthNumberViewController.swift in Sources */,
 				E55794F0287C496D002DB2B0 /* OnboardingDetailTableViewCell.swift in Sources */,
+				E58F96FB2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift in Sources */,
 				E5AC2DCB2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift in Sources */,
 				E56342212878246200E93D17 /* OnboardingTableHeaderView.swift in Sources */,
 				E508436C288133AD0047A2EC /* LoginUtilities.swift in Sources */,
 				E56342232878353100E93D17 /* TabBarController.swift in Sources */,
 				E5F5EC762884027D0026DE21 /* CalandarViewController.swift in Sources */,
+				E58ACB8728846E050031BD86 /* ImagePickerViewController.swift in Sources */,
 				E508437B28814CAB0047A2EC /* AuthViewController.swift in Sources */,
 				E5F5EC78288402840026DE21 /* MypageViewController.swift in Sources */,
 				E5BF4C5F28840EBF00B4F0B8 /* WritingViewController.swift in Sources */,
@@ -662,6 +690,14 @@
 				minimumVersion = 5.6.0;
 			};
 		};
+		E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/congnd/FMPhotoPicker.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
 		E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ruslanskorb/RSKPlaceholderTextView.git";
@@ -682,6 +718,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		E58ACB84288465970031BD86 /* FMPhotoPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker" */;
+			productName = FMPhotoPicker;
 		};
 		E5B15F6C287FCEFE004D4164 /* RSKPlaceholderTextView */ = {
 			isa = XCSwiftPackageProductDependency;

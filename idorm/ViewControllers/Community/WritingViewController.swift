@@ -8,22 +8,10 @@
 import SnapKit
 import UIKit
 import RSKPlaceholderTextView
-import BSImagePicker
 import Photos
 
 class WritingViewController: UIViewController {
     // MARK: - Properties
-    var selectedAssets: [PHAsset] = []
-    var selectedImages: [UIImage] = []
-    
-    lazy var imagePicker: ImagePickerController = {
-        let imagePicker = ImagePickerController()
-        imagePicker.settings.selection.max = 10
-        imagePicker.settings.fetch.assets.supportedMediaTypes = [.image]
-                
-        return imagePicker
-    }()
-    
     lazy var pictureButton: UIButton = {
         let btn = UIButton(type: .custom)
         btn.setImage(UIImage(named: "picture"), for: .normal)
@@ -85,7 +73,7 @@ class WritingViewController: UIViewController {
             """,
             attributes: [NSAttributedString.Key.font: UIFont.init(name: Font.medium.rawValue, size: 16) ?? 0])
         textView.attributedPlaceholder = attributedString
-        
+       
         return textView
     }()
     
@@ -100,20 +88,21 @@ class WritingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        checkAlbumPermission()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print("ViewWillAppear!")
     }
     
     // MARK: - Selectors
     @objc private func didTapConfirmButton() {
-        
     }
     
     @objc private func didTapPictureButton() {
-        print("Tapped!")
-        presentImagePicker(imagePicker, select: nil, deselect: nil, cancel: nil, finish: { asset in
-            for i in 0..<asset.count {
-                self.selectedAssets.append(asset[i])
-            }
-        })
+        let imagePickerVC = ImagePickerViewController()
+        navigationController?.pushViewController(imagePickerVC, animated: true)
     }
     
     // MARK: - Helpers
@@ -154,6 +143,10 @@ class WritingViewController: UIViewController {
         }
     }
     
+    private func checkCollectionViewHidden() {
+        
+    }
+    
     private func createSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(80.0), heightDimension: .absolute(134.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -169,31 +162,20 @@ class WritingViewController: UIViewController {
         
         return section
     }
-    
-    private func convertAssetToImage() {
-        if selectedImages.count != 0 {
-            for i in 0..<selectedImages.count {
-                let imageManager = PHImageManager.default()
-                let option = PHImageRequestOptions()
-                option.isSynchronous = true
-                var thumbnail = UIImage()
-                
-                imageManager.requestImage(for: selectedAssets[i],
-                                          targetSize: CGSize(width: 80, height: 80),
-                                          contentMode: .aspectFit,
-                                          options: option) { image, info in
-                    thumbnail = image!
-                }
-                let data = thumbnail.jpegData(compressionQuality: 0.7)
-                let newImage = UIImage(data: data!)
-                
-                self.selectedImages.append(newImage! as UIImage)
+
+    private func checkAlbumPermission() {
+        PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
+            switch status {
+            case .authorized:
+                print("Album: 권한 허용")
+            case .denied:
+                print("Album: 권한 거부")
+            case .restricted, .notDetermined:
+                print("Album: 선택하지 않음")
+            default:
+                break
             }
         }
-    }
-    
-    private func checkAlbumPermission() {
-        
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
