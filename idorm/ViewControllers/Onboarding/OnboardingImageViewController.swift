@@ -277,10 +277,10 @@ class OnboardingImageViewController: UIViewController {
     
     func createTopComponent(query: String, ox: Bool) -> UIButton {
         var config = UIButton.Configuration.tinted()
-        config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 14)
+        config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
         config.baseBackgroundColor = .white
         config.imagePlacement = .trailing
-        config.imagePadding = 6.5
+        config.imagePadding = 4
         config.cornerStyle = .capsule
         
         let button = UIButton(configuration: config)

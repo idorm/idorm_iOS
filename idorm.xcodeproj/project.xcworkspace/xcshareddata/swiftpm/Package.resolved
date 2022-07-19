@@ -1,15 +1,6 @@
 {
   "pins" : [
     {
-      "identity" : "bsimagepicker",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mikaoj/BSImagePicker.git",
-      "state" : {
-        "revision" : "750f26abd0fafbcc4124adef436251888a7c962a",
-        "version" : "3.3.1"
-      }
-    },
-    {
       "identity" : "fmphotopicker",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/congnd/FMPhotoPicker.git",
@@ -25,6 +16,15 @@
       "state" : {
         "revision" : "941b263de5344c03b89c46c30e85ad48b0da24a1",
         "version" : "6.1.0"
+      }
+    },
+    {
+      "identity" : "rxswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ReactiveX/RxSwift.git",
+      "state" : {
+        "revision" : "b4307ba0b6425c0ba4178e138799946c3da594f8",
+        "version" : "6.5.0"
       }
     },
     {
