@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "rskgrowingtextview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ruslanskorb/RSKGrowingTextView.git",
+      "state" : {
+        "revision" : "2a6edcc55e4d742f0fb4d32763f612cef1c0d3c4",
+        "version" : "6.1.0"
+      }
+    },
+    {
       "identity" : "rskplaceholdertextview",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ruslanskorb/RSKPlaceholderTextView.git",

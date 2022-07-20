@@ -9,14 +9,12 @@ import SnapKit
 import UIKit
 import RSKPlaceholderTextView
 import Photos
+import RxSwift
+import RxCocoa
 
-class WritingViewController: UIViewController {
+class PostingViewController: UIViewController {
   // MARK: - Properties
-  private var selectedAssets: [PHAsset] = [] {
-    didSet {
-      print(selectedAssets)
-    }
-  }
+  private var selectedAssets: [PHAsset] = []
   
   lazy var pictureButton: UIButton = {
     let btn = UIButton(type: .custom)
@@ -28,6 +26,7 @@ class WritingViewController: UIViewController {
   
   lazy var pictCountLabel: UILabel = {
     let label = UILabel()
+    label.text = "0/10"
     label.font = .init(name: Font.medium.rawValue, size: 12)
     label.textColor = .black
     
@@ -97,7 +96,7 @@ class WritingViewController: UIViewController {
     layout.scrollDirection = .horizontal
     layout.sectionInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    collectionView.register(WritePictureCollectionViewCell.self, forCellWithReuseIdentifier: WritePictureCollectionViewCell.identifier)
+    collectionView.register(PostingPictureCollectionViewCell.self, forCellWithReuseIdentifier: PostingPictureCollectionViewCell.identifier)
     collectionView.showsHorizontalScrollIndicator = false
     collectionView.dataSource = self
     collectionView.delegate = self
@@ -203,15 +202,11 @@ class WritingViewController: UIViewController {
       }
     }
   }
-  
-  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    view.endEditing(true)
-  }
 }
 
-extension WritingViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension PostingViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WritePictureCollectionViewCell.identifier, for: indexPath) as? WritePictureCollectionViewCell else { return UICollectionViewCell() }
+    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostingPictureCollectionViewCell.identifier, for: indexPath) as? PostingPictureCollectionViewCell else { return UICollectionViewCell() }
     cell.configureUI(asset: selectedAssets[indexPath.row])
     cell.delegate = self
     
@@ -223,7 +218,7 @@ extension WritingViewController: UICollectionViewDataSource, UICollectionViewDel
   }
 }
 
-extension WritingViewController: WritePictureCollectionViewCellDelegate {
+extension PostingViewController: PostingPictureCollectionViewCellDelegate {
   func didTapXmarkbutton(asset: PHAsset) {
     if let index = self.selectedAssets.firstIndex(where: { $0.localIdentifier == asset.localIdentifier }) {
       selectedAssets.remove(at: index)
@@ -233,7 +228,7 @@ extension WritingViewController: WritePictureCollectionViewCellDelegate {
   }
 }
 
-extension WritingViewController: ImagePickerViewControllerDelegate {
+extension PostingViewController: ImagePickerViewControllerDelegate {
   func didTapConfirmButton(assets: [PHAsset]) {
     self.selectedAssets.append(contentsOf: assets)
     checkCollectionViewHidden()

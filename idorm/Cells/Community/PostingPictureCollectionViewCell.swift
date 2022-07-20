@@ -11,15 +11,15 @@ import Photos
 import RxCocoa
 import RxSwift
 
-protocol WritePictureCollectionViewCellDelegate: AnyObject {
+protocol PostingPictureCollectionViewCellDelegate: AnyObject {
   func didTapXmarkbutton(asset: PHAsset)
 }
 
-class WritePictureCollectionViewCell: UICollectionViewCell {
+class PostingPictureCollectionViewCell: UICollectionViewCell {
   // MARK: - Properties
   static let identifier = "WritePictureCollectionViewCell"
   var currentAsset: PHAsset?
-  weak var delegate: WritePictureCollectionViewCellDelegate?
+  weak var delegate: PostingPictureCollectionViewCellDelegate?
   
   lazy var imageView: UIImageView = {
     let iv = UIImageView()
@@ -40,14 +40,6 @@ class WritePictureCollectionViewCell: UICollectionViewCell {
   }()
   
   // MARK: - LifeCycle
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    bind()
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
   
   // MARK: - Selectors
   @objc private func didTapXmarkButton() {
@@ -73,8 +65,5 @@ class WritePictureCollectionViewCell: UICollectionViewCell {
       make.top.equalTo(imageView).offset(-6)
       make.trailing.equalTo(imageView).offset(6)
     }
-  }
-  
-  private func bind() {
   }
 }
