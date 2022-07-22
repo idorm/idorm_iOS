@@ -10,6 +10,8 @@ import SnapKit
 
 class CommunityDetailTableHeaderView: UIView {
   // MARK: - Properties
+  static let identifier = "CommunityDetailTableHeaderView"
+  
   let likeImg = UIImageView(image: UIImage(named: "like_medium"))
   let messageImg = UIImageView(image: UIImage(named: "message_medium"))
   let pictureImg = UIImageView(image: UIImage(named: "picture_medium"))
@@ -206,6 +208,17 @@ class CommunityDetailTableHeaderView: UIView {
       make.leading.equalTo(orderOfRegisterationButton.snp.trailing).offset(12)
       make.centerY.equalTo(orderOfRegisterationButton)
       make.bottom.equalToSuperview().inset(8)
+    }
+  }
+  
+  func test() {
+    collectionView.snp.removeConstraints()
+    separatorLine.snp.removeConstraints()
+    
+    separatorLine.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview()
+      make.top.equalTo(contentsLabel.snp.bottom).offset(24)
+      make.height.equalTo(1)
     }
   }
 }

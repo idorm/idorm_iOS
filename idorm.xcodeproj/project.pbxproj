@@ -20,7 +20,6 @@
 		E508437B28814CAB0047A2EC /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508437A28814CAB0047A2EC /* AuthViewController.swift */; };
 		E5290EFD2887BBA40004B8E6 /* CommunityPopularCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */; };
 		E5290EFF2887BBB00004B8E6 /* CommunityPostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFE2887BBB00004B8E6 /* CommunityPostCollectionViewCell.swift */; };
-		E5290F042887F3F50004B8E6 /* PostType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290F032887F3F50004B8E6 /* PostType.swift */; };
 		E5290F06288818E70004B8E6 /* CommunityDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290F05288818E70004B8E6 /* CommunityDetailViewController.swift */; };
 		E5290F0928881C6E0004B8E6 /* CommunityDetailCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290F0828881C6E0004B8E6 /* CommunityDetailCollectionHeaderView.swift */; };
 		E5290F0C288832630004B8E6 /* RSKGrowingTextView in Frameworks */ = {isa = PBXBuildFile; productRef = E5290F0B288832630004B8E6 /* RSKGrowingTextView */; };
@@ -31,7 +30,6 @@
 		E53086E42879287100A5D0A0 /* HomeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E32879287100A5D0A0 /* HomeListViewModel.swift */; };
 		E53086E6287928B400A5D0A0 /* HomePopularCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E5287928B400A5D0A0 /* HomePopularCollectionViewCell.swift */; };
 		E53086E828795D2700A5D0A0 /* HomeCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E728795D2700A5D0A0 /* HomeCollectionHeaderView.swift */; };
-		E53C60AE287B34D200977909 /* LoginType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53C60AD287B34D200977909 /* LoginType.swift */; };
 		E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */; };
 		E55794E8287C09B4002DB2B0 /* OnboardingContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55794E7287C09B4002DB2B0 /* OnboardingContainerViewController.swift */; };
 		E55794EC287C1EA4002DB2B0 /* OnboardingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55794EB287C1EA4002DB2B0 /* OnboardingDetailViewController.swift */; };
@@ -63,6 +61,8 @@
 		E5B15F6D287FCEFE004D4164 /* RSKPlaceholderTextView in Frameworks */ = {isa = PBXBuildFile; productRef = E5B15F6C287FCEFE004D4164 /* RSKPlaceholderTextView */; };
 		E5B15F6F287FE355004D4164 /* OnboardingImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B15F6E287FE355004D4164 /* OnboardingImageViewController.swift */; };
 		E5BF4C5F28840EBF00B4F0B8 /* PostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF4C5E28840EBF00B4F0B8 /* PostingViewController.swift */; };
+		E5C889062889729800CBD04E /* PanModal in Frameworks */ = {isa = PBXBuildFile; productRef = E5C889052889729800CBD04E /* PanModal */; };
+		E5C88908288972E000CBD04E /* CommunityAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C88907288972E000CBD04E /* CommunityAlertViewController.swift */; };
 		E5F5EC722883C70C0026DE21 /* WebMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC712883C70C0026DE21 /* WebMailViewController.swift */; };
 		E5F5EC742884025E0026DE21 /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC732884025E0026DE21 /* CommunityViewController.swift */; };
 		E5F5EC762884027D0026DE21 /* CalandarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC752884027D0026DE21 /* CalandarViewController.swift */; };
@@ -86,7 +86,6 @@
 		E508437A28814CAB0047A2EC /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPopularCollectionVIewCell.swift; sourceTree = "<group>"; };
 		E5290EFE2887BBB00004B8E6 /* CommunityPostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPostCollectionViewCell.swift; sourceTree = "<group>"; };
-		E5290F032887F3F50004B8E6 /* PostType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostType.swift; sourceTree = "<group>"; };
 		E5290F05288818E70004B8E6 /* CommunityDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityDetailViewController.swift; sourceTree = "<group>"; };
 		E5290F0828881C6E0004B8E6 /* CommunityDetailCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityDetailCollectionHeaderView.swift; sourceTree = "<group>"; };
 		E5290F0D288867E50004B8E6 /* CommunityDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityDetailTableViewCell.swift; sourceTree = "<group>"; };
@@ -96,7 +95,6 @@
 		E53086E32879287100A5D0A0 /* HomeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListViewModel.swift; sourceTree = "<group>"; };
 		E53086E5287928B400A5D0A0 /* HomePopularCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePopularCollectionViewCell.swift; sourceTree = "<group>"; };
 		E53086E728795D2700A5D0A0 /* HomeCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionHeaderView.swift; sourceTree = "<group>"; };
-		E53C60AD287B34D200977909 /* LoginType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginType.swift; sourceTree = "<group>"; };
 		E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpViewController.swift; sourceTree = "<group>"; };
 		E55794E7287C09B4002DB2B0 /* OnboardingContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContainerViewController.swift; sourceTree = "<group>"; };
 		E55794EB287C1EA4002DB2B0 /* OnboardingDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDetailViewController.swift; sourceTree = "<group>"; };
@@ -122,6 +120,7 @@
 		E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordViewController.swift; sourceTree = "<group>"; };
 		E5B15F6E287FE355004D4164 /* OnboardingImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingImageViewController.swift; sourceTree = "<group>"; };
 		E5BF4C5E28840EBF00B4F0B8 /* PostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingViewController.swift; sourceTree = "<group>"; };
+		E5C88907288972E000CBD04E /* CommunityAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityAlertViewController.swift; sourceTree = "<group>"; };
 		E5F5EC712883C70C0026DE21 /* WebMailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebMailViewController.swift; sourceTree = "<group>"; };
 		E5F5EC732884025E0026DE21 /* CommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewController.swift; sourceTree = "<group>"; };
 		E5F5EC752884027D0026DE21 /* CalandarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalandarViewController.swift; sourceTree = "<group>"; };
@@ -138,6 +137,7 @@
 				E5290F0C288832630004B8E6 /* RSKGrowingTextView in Frameworks */,
 				E58ACB85288465970031BD86 /* FMPhotoPicker in Frameworks */,
 				E563421E28780C3800E93D17 /* SnapKit in Frameworks */,
+				E5C889062889729800CBD04E /* PanModal in Frameworks */,
 				E57FB84F2886E1520050BBAE /* RxCocoa in Frameworks */,
 				E5B15F6D287FCEFE004D4164 /* RSKPlaceholderTextView in Frameworks */,
 				E57FB8532886E1520050BBAE /* RxSwift in Frameworks */,
@@ -195,15 +195,6 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		E5084368288133710047A2EC /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				E508436B288133AD0047A2EC /* LoginUtilities.swift */,
-				E53C60AD287B34D200977909 /* LoginType.swift */,
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
 		E508437528813C270047A2EC /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -224,15 +215,6 @@
 			path = Auth;
 			sourceTree = "<group>";
 		};
-		E5290F022887F3E60004B8E6 /* Community */ = {
-			isa = PBXGroup;
-			children = (
-				E5290F1128886D7A0004B8E6 /* CommunityUtilities.swift */,
-				E5290F032887F3F50004B8E6 /* PostType.swift */,
-			);
-			path = Community;
-			sourceTree = "<group>";
-		};
 		E5290F0728881C380004B8E6 /* Community */ = {
 			isa = PBXGroup;
 			children = (
@@ -244,8 +226,8 @@
 		E53C60AC287B34C400977909 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				E5290F022887F3E60004B8E6 /* Community */,
-				E5084368288133710047A2EC /* Login */,
+				E5290F1128886D7A0004B8E6 /* CommunityUtilities.swift */,
+				E508436B288133AD0047A2EC /* LoginUtilities.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -389,6 +371,7 @@
 				E5290F05288818E70004B8E6 /* CommunityDetailViewController.swift */,
 				E5BF4C5E28840EBF00B4F0B8 /* PostingViewController.swift */,
 				E58ACB8628846E050031BD86 /* ImagePickerViewController.swift */,
+				E5C88907288972E000CBD04E /* CommunityAlertViewController.swift */,
 			);
 			path = Community;
 			sourceTree = "<group>";
@@ -417,6 +400,7 @@
 				E57FB8502886E1520050BBAE /* RxRelay */,
 				E57FB8522886E1520050BBAE /* RxSwift */,
 				E5290F0B288832630004B8E6 /* RSKGrowingTextView */,
+				E5C889052889729800CBD04E /* PanModal */,
 			);
 			productName = idorm;
 			productReference = E50300F328773A5D00611C62 /* idorm.app */;
@@ -452,6 +436,7 @@
 				E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker" */,
 				E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift" */,
 				E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView" */,
+				E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal" */,
 			);
 			productRefGroup = E50300F428773A5D00611C62 /* Products */;
 			projectDirPath = "";
@@ -487,13 +472,11 @@
 				E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordViewController.swift in Sources */,
 				E5AD739D287AE08F00BA2C5E /* PopupViewController.swift in Sources */,
 				E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */,
-				E5290F042887F3F50004B8E6 /* PostType.swift in Sources */,
 				E5290F0928881C6E0004B8E6 /* CommunityDetailCollectionHeaderView.swift in Sources */,
 				E50300F728773A5D00611C62 /* AppDelegate.swift in Sources */,
 				E55794EE287C36F5002DB2B0 /* UIView+Extensions.swift in Sources */,
 				E5AD7398287A8D8800BA2C5E /* UITextField+Extensions.swift in Sources */,
 				E5FBBB872880304900A7158D /* SECRET.swift in Sources */,
-				E53C60AE287B34D200977909 /* LoginType.swift in Sources */,
 				E508437728813CE80047A2EC /* FontManager.swift in Sources */,
 				E53086E42879287100A5D0A0 /* HomeListViewModel.swift in Sources */,
 				E5F5EC742884025E0026DE21 /* CommunityViewController.swift in Sources */,
@@ -507,6 +490,7 @@
 				E53086E828795D2700A5D0A0 /* HomeCollectionHeaderView.swift in Sources */,
 				E563422528784ED400E93D17 /* HomeViewController.swift in Sources */,
 				E5AD73A1287AFC5300BA2C5E /* AuthNumberViewController.swift in Sources */,
+				E5C88908288972E000CBD04E /* CommunityAlertViewController.swift in Sources */,
 				E55794F0287C496D002DB2B0 /* OnboardingDetailTableViewCell.swift in Sources */,
 				E5290EFF2887BBB00004B8E6 /* CommunityPostCollectionViewCell.swift in Sources */,
 				E5290F06288818E70004B8E6 /* CommunityDetailViewController.swift in Sources */,
@@ -780,6 +764,14 @@
 				minimumVersion = 6.1.0;
 			};
 		};
+		E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/slackhq/PanModal.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 1.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -817,6 +809,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView" */;
 			productName = RSKPlaceholderTextView;
+		};
+		E5C889052889729800CBD04E /* PanModal */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal" */;
+			productName = PanModal;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

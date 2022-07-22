@@ -8,6 +8,11 @@
 import UIKit
 import SnapKit
 
+enum LoginType {
+    case findPW
+    case singUp
+}
+
 class LoginUtilities {
     static func returnBottonConfirmButton(string: String) -> UIButton {
         let button = UIButton(type: .custom)

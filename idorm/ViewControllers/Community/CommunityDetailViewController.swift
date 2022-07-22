@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import RSKGrowingTextView
+import PanModal
 
 class CommunityDetailViewController: UIViewController {
   // MARK: - Properties
@@ -40,6 +41,7 @@ class CommunityDetailViewController: UIViewController {
   lazy var optionButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "option"), for: .normal)
+    button.addTarget(self, action: #selector(didTapPostOptionButton), for: .touchUpInside)
     
     return button
   }()
@@ -52,6 +54,10 @@ class CommunityDetailViewController: UIViewController {
     tableView.estimatedSectionHeaderHeight = 100
     tableView.rowHeight = UITableView.automaticDimension
     tableView.sectionHeaderHeight = UITableView.automaticDimension
+    tableView.separatorColor = .bluegrey
+    tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    tableView.allowsSelection = false
+    tableView.keyboardDismissMode = .onDrag
     tableView.dataSource = self
     tableView.delegate = self
     
@@ -65,6 +71,10 @@ class CommunityDetailViewController: UIViewController {
   }
   
   // MARK: - Selectors
+  @objc private func didTapPostOptionButton() {
+    let communityAlertVC = CommunityAlertViewController(communityAlertType: .myPost)
+    presentPanModal(communityAlertVC)
+  }
   
   // MARK: - Helpers
   private func configureUI() {
@@ -72,7 +82,7 @@ class CommunityDetailViewController: UIViewController {
     view.backgroundColor = .white
     navigationItem.rightBarButtonItem = UIBarButtonItem(customView: optionButton)
     
-    [ bottomView, commentsTextView, sendCommentButton, tableView ]
+    [ tableView, bottomView, commentsTextView, sendCommentButton ]
       .forEach { view.addSubview($0) }
     
     commentsTextView.snp.makeConstraints { make in
@@ -93,7 +103,8 @@ class CommunityDetailViewController: UIViewController {
     }
     
     tableView.snp.makeConstraints { make in
-      make.edges.equalTo(view.safeAreaLayoutGuide)
+      make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+      make.bottom.equalTo(bottomView.snp.top)
     }
   }
   
@@ -105,7 +116,9 @@ class CommunityDetailViewController: UIViewController {
 extension CommunityDetailViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: CommunityDetailTableViewCell.identifier, for: indexPath) as? CommunityDetailTableViewCell else { return UITableViewCell() }
-    cell.backgroundColor = .mainColor
+    cell.configureUI()
+    cell.delegate = self
+    
     return cell
   }
   
@@ -115,8 +128,16 @@ extension CommunityDetailViewController: UITableViewDataSource, UITableViewDeleg
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let header = CommunityDetailTableHeaderView()
+    header.addBottomBorderWithColor(color: .white)
     header.configureUI()
     
     return header
+  }
+}
+
+extension CommunityDetailViewController: CommunityDetailTableViewCellDelegate {
+  func didTapCommentOptionButton() {
+    let communityAlertVC = CommunityAlertViewController(communityAlertType: .myComment)
+    presentPanModal(communityAlertVC)
   }
 }
