@@ -54,7 +54,7 @@
 		E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7390287A863800BA2C5E /* LoginViewController.swift */; };
 		E5AD7396287A8C2F00BA2C5E /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7395287A8C2F00BA2C5E /* UIColor+Extensions.swift */; };
 		E5AD7398287A8D8800BA2C5E /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7397287A8D8800BA2C5E /* UITextField+Extensions.swift */; };
-		E5AD739D287AE08F00BA2C5E /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD739C287AE08F00BA2C5E /* PopupViewController.swift */; };
+		E5AD739D287AE08F00BA2C5E /* LoginPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD739C287AE08F00BA2C5E /* LoginPopupViewController.swift */; };
 		E5AD739F287AEF2D00BA2C5E /* PutEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD739E287AEF2D00BA2C5E /* PutEmailViewController.swift */; };
 		E5AD73A1287AFC5300BA2C5E /* AuthNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD73A0287AFC5300BA2C5E /* AuthNumberViewController.swift */; };
 		E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordViewController.swift */; };
@@ -63,6 +63,11 @@
 		E5BF4C5F28840EBF00B4F0B8 /* PostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF4C5E28840EBF00B4F0B8 /* PostingViewController.swift */; };
 		E5C889062889729800CBD04E /* PanModal in Frameworks */ = {isa = PBXBuildFile; productRef = E5C889052889729800CBD04E /* PanModal */; };
 		E5C88908288972E000CBD04E /* CommunityAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C88907288972E000CBD04E /* CommunityAlertViewController.swift */; };
+		E5D49008288B7F0400311493 /* CommunityPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D49007288B7F0400311493 /* CommunityPopupViewController.swift */; };
+		E5D4900B288BFA0200311493 /* MatchingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D4900A288BFA0200311493 /* MatchingViewController.swift */; };
+		E5D4900E288BFB9100311493 /* MyInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D4900D288BFB9100311493 /* MyInfo.swift */; };
+		E5D49010288BFFFD00311493 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D4900F288BFFFD00311493 /* Utilities.swift */; };
+		E5D49012288C003800311493 /* MyInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D49011288C003800311493 /* MyInfoView.swift */; };
 		E5F5EC722883C70C0026DE21 /* WebMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC712883C70C0026DE21 /* WebMailViewController.swift */; };
 		E5F5EC742884025E0026DE21 /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC732884025E0026DE21 /* CommunityViewController.swift */; };
 		E5F5EC762884027D0026DE21 /* CalandarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC752884027D0026DE21 /* CalandarViewController.swift */; };
@@ -114,13 +119,18 @@
 		E5AD7390287A863800BA2C5E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E5AD7395287A8C2F00BA2C5E /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		E5AD7397287A8D8800BA2C5E /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
-		E5AD739C287AE08F00BA2C5E /* PopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
+		E5AD739C287AE08F00BA2C5E /* LoginPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPopupViewController.swift; sourceTree = "<group>"; };
 		E5AD739E287AEF2D00BA2C5E /* PutEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailViewController.swift; sourceTree = "<group>"; };
 		E5AD73A0287AFC5300BA2C5E /* AuthNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberViewController.swift; sourceTree = "<group>"; };
 		E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordViewController.swift; sourceTree = "<group>"; };
 		E5B15F6E287FE355004D4164 /* OnboardingImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingImageViewController.swift; sourceTree = "<group>"; };
 		E5BF4C5E28840EBF00B4F0B8 /* PostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingViewController.swift; sourceTree = "<group>"; };
 		E5C88907288972E000CBD04E /* CommunityAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityAlertViewController.swift; sourceTree = "<group>"; };
+		E5D49007288B7F0400311493 /* CommunityPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPopupViewController.swift; sourceTree = "<group>"; };
+		E5D4900A288BFA0200311493 /* MatchingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingViewController.swift; sourceTree = "<group>"; };
+		E5D4900D288BFB9100311493 /* MyInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyInfo.swift; sourceTree = "<group>"; };
+		E5D4900F288BFFFD00311493 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		E5D49011288C003800311493 /* MyInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyInfoView.swift; sourceTree = "<group>"; };
 		E5F5EC712883C70C0026DE21 /* WebMailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebMailViewController.swift; sourceTree = "<group>"; };
 		E5F5EC732884025E0026DE21 /* CommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewController.swift; sourceTree = "<group>"; };
 		E5F5EC752884027D0026DE21 /* CalandarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalandarViewController.swift; sourceTree = "<group>"; };
@@ -174,6 +184,7 @@
 				E563421628780A5200E93D17 /* ViewControllers */,
 				E563421928780C0B00E93D17 /* Cells */,
 				E563421F2878244A00E93D17 /* Views */,
+				E5D4900C288BFB7E00311493 /* Models */,
 				E5084367288133570047A2EC /* Extensions */,
 				E53C60AC287B34C400977909 /* Utilities */,
 				E508437528813C270047A2EC /* Fonts */,
@@ -226,6 +237,7 @@
 		E53C60AC287B34C400977909 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				E5D4900F288BFFFD00311493 /* Utilities.swift */,
 				E5290F1128886D7A0004B8E6 /* CommunityUtilities.swift */,
 				E508436B288133AD0047A2EC /* LoginUtilities.swift */,
 			);
@@ -268,6 +280,7 @@
 				E5AD738F287A85F600BA2C5E /* Login */,
 				E55794E6287C09A2002DB2B0 /* Onboarding */,
 				E5602DC5288441E700C2C4BB /* Home */,
+				E5D49009288BF9E000311493 /* Matching */,
 				E5F5EC79288404060026DE21 /* Community */,
 				E5F5EC752884027D0026DE21 /* CalandarViewController.swift */,
 				E5F5EC77288402840026DE21 /* MypageViewController.swift */,
@@ -289,6 +302,7 @@
 		E563421F2878244A00E93D17 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E5D49011288C003800311493 /* MyInfoView.swift */,
 				E5AC2DD0288303B100B82AD8 /* Login */,
 				E5AC2DCC2882F46F00B82AD8 /* Onboarding */,
 				E5AC2DCD2882F47700B82AD8 /* Home */,
@@ -349,10 +363,10 @@
 			children = (
 				E508437C28814CB10047A2EC /* Auth */,
 				E5AD7390287A863800BA2C5E /* LoginViewController.swift */,
-				E5AD739C287AE08F00BA2C5E /* PopupViewController.swift */,
 				E5AD739E287AEF2D00BA2C5E /* PutEmailViewController.swift */,
 				E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordViewController.swift */,
 				E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */,
+				E5AD739C287AE08F00BA2C5E /* LoginPopupViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -364,6 +378,22 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
+		E5D49009288BF9E000311493 /* Matching */ = {
+			isa = PBXGroup;
+			children = (
+				E5D4900A288BFA0200311493 /* MatchingViewController.swift */,
+			);
+			path = Matching;
+			sourceTree = "<group>";
+		};
+		E5D4900C288BFB7E00311493 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E5D4900D288BFB9100311493 /* MyInfo.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		E5F5EC79288404060026DE21 /* Community */ = {
 			isa = PBXGroup;
 			children = (
@@ -372,6 +402,7 @@
 				E5BF4C5E28840EBF00B4F0B8 /* PostingViewController.swift */,
 				E58ACB8628846E050031BD86 /* ImagePickerViewController.swift */,
 				E5C88907288972E000CBD04E /* CommunityAlertViewController.swift */,
+				E5D49007288B7F0400311493 /* CommunityPopupViewController.swift */,
 			);
 			path = Community;
 			sourceTree = "<group>";
@@ -470,7 +501,7 @@
 				E50300FB28773A5D00611C62 /* OnboardingViewController.swift in Sources */,
 				E53086E22879284000A5D0A0 /* HomeRoommateCollectionViewCell.swift in Sources */,
 				E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordViewController.swift in Sources */,
-				E5AD739D287AE08F00BA2C5E /* PopupViewController.swift in Sources */,
+				E5AD739D287AE08F00BA2C5E /* LoginPopupViewController.swift in Sources */,
 				E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */,
 				E5290F0928881C6E0004B8E6 /* CommunityDetailCollectionHeaderView.swift in Sources */,
 				E50300F728773A5D00611C62 /* AppDelegate.swift in Sources */,
@@ -486,6 +517,7 @@
 				E5290F0E288867E50004B8E6 /* CommunityDetailTableViewCell.swift in Sources */,
 				E57FB8562886E2710050BBAE /* PhotoLibrary+Extensions.swift in Sources */,
 				E50300F928773A5D00611C62 /* SceneDelegate.swift in Sources */,
+				E5D4900B288BFA0200311493 /* MatchingViewController.swift in Sources */,
 				E53086E6287928B400A5D0A0 /* HomePopularCollectionViewCell.swift in Sources */,
 				E53086E828795D2700A5D0A0 /* HomeCollectionHeaderView.swift in Sources */,
 				E563422528784ED400E93D17 /* HomeViewController.swift in Sources */,
@@ -496,6 +528,7 @@
 				E5290F06288818E70004B8E6 /* CommunityDetailViewController.swift in Sources */,
 				E58F96FD28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift in Sources */,
 				E58F96FB2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift in Sources */,
+				E5D49010288BFFFD00311493 /* Utilities.swift in Sources */,
 				E5AC2DCB2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift in Sources */,
 				E56342212878246200E93D17 /* OnboardingTableHeaderView.swift in Sources */,
 				E508436C288133AD0047A2EC /* LoginUtilities.swift in Sources */,
@@ -505,8 +538,11 @@
 				E508437B28814CAB0047A2EC /* AuthViewController.swift in Sources */,
 				E5F5EC78288402840026DE21 /* MypageViewController.swift in Sources */,
 				E5BF4C5F28840EBF00B4F0B8 /* PostingViewController.swift in Sources */,
+				E5D4900E288BFB9100311493 /* MyInfo.swift in Sources */,
 				E563421828780BDE00E93D17 /* OnboardingListViewModel.swift in Sources */,
+				E5D49008288B7F0400311493 /* CommunityPopupViewController.swift in Sources */,
 				E5AD7396287A8C2F00BA2C5E /* UIColor+Extensions.swift in Sources */,
+				E5D49012288C003800311493 /* MyInfoView.swift in Sources */,
 				E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */,
 				E5AD739F287AEF2D00BA2C5E /* PutEmailViewController.swift in Sources */,
 				E5F5EC722883C70C0026DE21 /* WebMailViewController.swift in Sources */,

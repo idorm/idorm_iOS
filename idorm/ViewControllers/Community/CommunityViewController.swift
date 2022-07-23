@@ -29,6 +29,7 @@ class CommunityViewController: UIViewController {
     button.setImage(UIImage(named: "bottomArrowButton"), for: .normal)
     button.setAttributedTitle(attributedString, for: .normal)
     button.setTitleColor(UIColor.black, for: .normal)
+    button.addTarget(self, action: #selector(didTapChangeDormButton), for: .touchUpInside)
     
     return button
   }()
@@ -67,6 +68,11 @@ class CommunityViewController: UIViewController {
   @objc private func didTapFloatyButton() {
     let writingVC = PostingViewController()
     navigationController?.pushViewController(writingVC, animated: true)
+  }
+  
+  @objc private func didTapChangeDormButton() {
+    let communityAlertVC = CommunityAlertViewController(communityAlertType: .selectDorm)
+    presentPanModal(communityAlertVC)
   }
   
   // MARK: - Helpers

@@ -13,14 +13,6 @@ class CommunityAlertViewController: UIViewController {
   // MARK: - Properties
   let communityAlertType: CommunityAlertType
   
-  lazy var xmarkButton: UIButton = {
-    let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "Xmark_Black"), for: .normal)
-    button.addTarget(self, action: #selector(didTapXmarkButton), for: .touchUpInside)
-    
-    return button
-  }()
-  
   let deleteCommentButton = CommunityUtilities.getBasicButton(title: "댓글 삭제", imageName: "trash")
   let reportButton = CommunityUtilities.getReportButton()
   let shareButton = CommunityUtilities.getBasicButton(title: "공유하기", imageName: "share")
@@ -29,6 +21,14 @@ class CommunityAlertViewController: UIViewController {
   let dorm1Button = CommunityUtilities.getDormNumberButton(title: "인천대 1기숙사")
   let dorm2Button = CommunityUtilities.getDormNumberButton(title: "인천대 2기숙사")
   let dorm3Button = CommunityUtilities.getDormNumberButton(title: "인천대 3기숙사")
+
+  lazy var xmarkButton: UIButton = {
+    let button = UIButton(type: .custom)
+    button.setImage(UIImage(named: "Xmark_Black"), for: .normal)
+    button.addTarget(self, action: #selector(didTapXmarkButton), for: .touchUpInside)
+    
+    return button
+  }()
   
   // MARK: - LifeCycle
   init(communityAlertType: CommunityAlertType) {
@@ -41,6 +41,12 @@ class CommunityAlertViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    reportButton.addTarget(self, action: #selector(didTapReportButton), for: .touchUpInside)
+    deletePostButton.addTarget(self, action: #selector(didTapDeletePostButton), for: .touchUpInside)
+  }
+  
   // MARK: - Selectors
   @objc private func didTapTrashButton() {
     
@@ -48,6 +54,18 @@ class CommunityAlertViewController: UIViewController {
   
   @objc private func didTapXmarkButton() {
     dismiss(animated: true)
+  }
+  
+  @objc private func didTapReportButton() {
+    let communityPopupVC = CommunityPopupViewController(contents: "게시글을 신고하고 싶으신가요?")
+    communityPopupVC.modalPresentationStyle = .overFullScreen
+    present(communityPopupVC, animated: false)
+  }
+  
+  @objc private func didTapDeletePostButton() {
+    let communityPopupVC = CommunityPopupViewController(contents: "게시글을 삭제하고 싶으신가요?")
+    communityPopupVC.modalPresentationStyle = .overFullScreen
+    present(communityPopupVC, animated: false)
   }
   
   // MARK: - Helpers
@@ -147,6 +165,10 @@ class CommunityAlertViewController: UIViewController {
 extension CommunityAlertViewController: PanModalPresentable {
   var panScrollable: UIScrollView? {
     return nil
+  }
+  
+  var cornerRadius: CGFloat {
+    return 24.0
   }
   
   var shortFormHeight: PanModalHeight {

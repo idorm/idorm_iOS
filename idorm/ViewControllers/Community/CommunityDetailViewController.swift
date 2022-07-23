@@ -57,7 +57,7 @@ class CommunityDetailViewController: UIViewController {
     tableView.separatorColor = .bluegrey
     tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     tableView.allowsSelection = false
-    tableView.keyboardDismissMode = .onDrag
+    tableView.keyboardDismissMode = .interactive
     tableView.dataSource = self
     tableView.delegate = self
     

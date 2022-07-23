@@ -104,19 +104,19 @@ class CommunityPopularCollectionVIewCell: UICollectionViewCell {
       make.bottom.equalTo(messageStack.snp.top).offset(-30)
     }
     
-    messageStack.snp.makeConstraints { make in
+    likeStack.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(10)
       make.bottom.equalToSuperview().inset(16.5)
     }
     
-    likeStack.snp.makeConstraints { make in
-      make.leading.equalTo(messageStack.snp.trailing).offset(8)
-      make.centerY.equalTo(messageStack)
+    messageStack.snp.makeConstraints { make in
+      make.leading.equalTo(likeStack.snp.trailing).offset(8)
+      make.centerY.equalTo(likeStack)
     }
     
     pictureStack.snp.makeConstraints { make in
-      make.leading.equalTo(likeStack.snp.trailing).offset(8)
-      make.centerY.equalTo(messageStack)
+      make.leading.equalTo(messageStack.snp.trailing).offset(8)
+      make.centerY.equalTo(likeStack)
     }
   }
   

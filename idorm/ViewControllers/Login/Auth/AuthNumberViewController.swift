@@ -110,7 +110,7 @@ class AuthNumberViewController: UIViewController {
             timer.invalidate()
             self.textField.backgroundColor = .init(rgb: 0xE3E1EC)
             self.timerLabel.text = "00:00"
-            let popupView = PopupViewController(contents: "인증번호가 만료되었습니다.")
+            let popupView = LoginPopupViewController(contents: "인증번호가 만료되었습니다.")
             popupView.modalPresentationStyle = .overFullScreen
             self.present(popupView, animated: false)
         }
