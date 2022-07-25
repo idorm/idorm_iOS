@@ -205,11 +205,11 @@ class MyInfoView: UIView {
     let queryLabel = UILabel()
     queryLabel.text = query
     queryLabel.textColor = .black
-    queryLabel.font = .init(name: Font.bold.rawValue, size: 10)
+    queryLabel.font = .init(name: Font.bold.rawValue, size: 14)
     queryLabel.setContentHuggingPriority(.init(rawValue: 251), for: .horizontal)
     
     let contentsLabel = UILabel()
-    contentsLabel.font = .init(name: Font.bold.rawValue, size: 10)
+    contentsLabel.font = .init(name: Font.medium.rawValue, size: 14)
     contentsLabel.textColor = .darkgrey_custom
     
     if query == "기상시간" {
@@ -230,7 +230,7 @@ class MyInfoView: UIView {
     view.addSubview(stack)
     
     view.snp.makeConstraints { make in
-      make.height.equalTo(23)
+      make.height.equalTo(30)
     }
     
     stack.snp.makeConstraints { make in
@@ -249,9 +249,9 @@ class MyInfoView: UIView {
     view.backgroundColor = .white
     
     let contentsLabel = UILabel()
-    contentsLabel.font = .init(name: Font.regular.rawValue, size: 12)
+    contentsLabel.font = .init(name: Font.medium.rawValue, size: 14)
     contentsLabel.text = myInfo.wishText
-    contentsLabel.textColor = .black
+    contentsLabel.textColor = .darkgrey_custom
     contentsLabel.numberOfLines = 0
     contentsLabel.textAlignment = .left
     

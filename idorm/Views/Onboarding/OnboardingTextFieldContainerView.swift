@@ -15,10 +15,10 @@ class OnboardingTextFieldContainerView: UIView {
     lazy var textField: UITextField = {
         let tf = UITextField()
         tf.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
-            NSAttributedString.Key.foregroundColor: UIColor.darkGray,
+            NSAttributedString.Key.foregroundColor: UIColor.grey_custom,
             NSAttributedString.Key.font: UIFont.init(name: Font.medium.rawValue, size: 14.0) ?? 0
         ])
-        tf.textColor = .darkgrey_custom
+      tf.textColor = .black
         tf.font = .init(name: Font.medium.rawValue, size: 14.0)
         tf.addLeftPadding(16)
         tf.backgroundColor = .white
@@ -72,7 +72,7 @@ class OnboardingTextFieldContainerView: UIView {
         backgroundColor = .white
         layer.borderWidth = 1
         layer.cornerRadius = 10
-        layer.borderColor = UIColor.darkgrey_custom.cgColor
+        layer.borderColor = UIColor.grey_custom.cgColor
         
         textField.snp.makeConstraints { make in
             make.leading.centerY.equalToSuperview()
