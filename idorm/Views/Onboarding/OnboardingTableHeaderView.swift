@@ -8,10 +8,15 @@
 import UIKit
 import SnapKit
 import CHIOTPField
+import RxSwift
+import RxCocoa
 
 class OnboardingTableHeaderView: UITableViewHeaderFooterView {
   // MARK: - Properties
   static let identifier = "OnboardingTableHeaderView"
+  
+  var disposeBag = DisposeBag()
+  var onChangedVerifyState = PublishSubject<(Bool, OnboardingVerifyType)>()
   
   let dormLabel = OnboardingUtilities.getBasicLabel(text: "기숙사")
   let dorm1Button = OnboardingUtilities.getBasicButton(title: "1 기숙사")
@@ -47,6 +52,7 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
     tf.font = .init(name: Font.medium.rawValue, size: 14)
     tf.cornerRadius = 10
     tf.spacing = 2
+    tf.addTarget(self, action: #selector(didChangeAgeTextField), for: .allEditingEvents)
     
     return tf
   }()
@@ -94,42 +100,53 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
     dorm1Button.isSelected = !dorm1Button.isSelected
     dorm2Button.isSelected = false
     dorm3Button.isSelected = false
+    verifyConfirmButton(type: .dorm)
   }
   
   @objc private func didTapDorm2Button() {
     dorm1Button.isSelected = false
     dorm2Button.isSelected = !dorm2Button.isSelected
     dorm3Button.isSelected = false
+    verifyConfirmButton(type: .dorm)
   }
   
   @objc private func didTapDorm3Button() {
     dorm1Button.isSelected = false
     dorm2Button.isSelected = false
     dorm3Button.isSelected = !dorm3Button.isSelected
+    verifyConfirmButton(type: .dorm)
   }
   
   @objc private func didTapMaleButton() {
     maleButton.isSelected = !maleButton.isSelected
     femaleButton.isSelected = false
+    verifyConfirmButton(type: .gender)
   }
   
   @objc private func didTapFemaleButton() {
     maleButton.isSelected = false
     femaleButton.isSelected = !femaleButton.isSelected
+    verifyConfirmButton(type: .gender)
   }
   
   @objc private func didTapPeriod16Button() {
     period16Button.isSelected = !period16Button.isSelected
     period24Button.isSelected = false
+    verifyConfirmButton(type: .period)
   }
   
   @objc private func didTapPeriod24Button() {
     period16Button.isSelected = false
     period24Button.isSelected = !period24Button.isSelected
+    verifyConfirmButton(type: .period)
   }
   
   @objc private func didTapHabitButton(_ button: UIButton) {
     button.isSelected = !button.isSelected
+  }
+  
+  @objc private func didChangeAgeTextField(_ tf: UITextField) {
+    verifyConfirmButton(type: .age)
   }
   
   // MARK: - Helpers
@@ -267,6 +284,37 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
       make.top.equalTo(ageTextField.snp.bottom).offset(16)
       make.height.equalTo(1)
       make.bottom.equalToSuperview().inset(16)
+    }
+  }
+  
+  private func verifyConfirmButton(type: OnboardingVerifyType) {
+    switch type {
+    case .dorm:
+      if dorm1Button.isSelected || dorm2Button.isSelected || dorm3Button.isSelected {
+        onChangedVerifyState.onNext((true, .dorm))
+      } else {
+        onChangedVerifyState.onNext((false, .dorm))
+      }
+    case .gender:
+      if maleButton.isSelected || femaleButton.isSelected {
+        onChangedVerifyState.onNext((true, .gender))
+      } else {
+        onChangedVerifyState.onNext((false, .gender))
+      }
+    case .period:
+      if period16Button.isSelected || period24Button.isSelected {
+        onChangedVerifyState.onNext((true, .period))
+      } else {
+        onChangedVerifyState.onNext((false, .period))
+      }
+    case .age:
+      if ageTextField.text != "" {
+        onChangedVerifyState.onNext((true, .age))
+      } else {
+        onChangedVerifyState.onNext((false, .age))
+      }
+    default:
+      break
     }
   }
 }

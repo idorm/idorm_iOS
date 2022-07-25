@@ -13,8 +13,18 @@ import RxCocoa
 class OnboardingViewController: UIViewController {
   // MARK: - Properties
   let viewModel = OnboardingListViewModel()
+  var disposeBag = DisposeBag()
+  var verifyConfirmButtonDict: [OnboardingVerifyType: Bool] = [
+    .wakeup: false,
+    .dorm: false,
+    .gender: false,
+    .age: false,
+    .period: false,
+    .cleanup: false,
+    .shower: false
+  ]
   
-  lazy var floatyBottomView = createFloatyBottomView()
+  let floatyBottomView = OnboardingFloatyBottomView()
   
   lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .grouped)
@@ -25,13 +35,19 @@ class OnboardingViewController: UIViewController {
     tableView.backgroundColor = .white
     tableView.separatorStyle = .none
     tableView.allowsSelection = false
-    tableView.keyboardDismissMode = .onDrag
     tableView.register(OnboardingTableViewCell.self, forCellReuseIdentifier: OnboardingTableViewCell.identifier)
     tableView.register(OnboardingTableHeaderView.self, forHeaderFooterViewReuseIdentifier: OnboardingTableHeaderView.identifier)
     tableView.delegate = self
     tableView.dataSource = self
     
     return tableView
+  }()
+  
+  lazy var tableViewTapGesture: UITapGestureRecognizer = {
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+    tapGesture.cancelsTouchesInView = true
+    
+    return tapGesture
   }()
   
   // MARK: - LifeCycle
@@ -48,11 +64,16 @@ class OnboardingViewController: UIViewController {
   @objc private func didTapConfirmButton() {
     print("Confirm!")
   }
-   
+  
+  @objc private func hideKeyboard() {
+    tableView.endEditing(true)
+  }
+  
   // MARK: - Helpers
   private func configureUI() {
     view.backgroundColor = .white
     navigationItem.title = "내 정보 입력"
+    tableView.addGestureRecognizer(tableViewTapGesture)
     
     [ tableView, floatyBottomView ]
       .forEach { view.addSubview($0) }
@@ -65,54 +86,17 @@ class OnboardingViewController: UIViewController {
     floatyBottomView.snp.makeConstraints { make in
       make.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
       make.leading.trailing.equalToSuperview()
+      make.height.equalTo(76)
     }
   }
   
-  private func createFloatyBottomView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .white
-    
-    var skipConfig = UIButton.Configuration.filled()
-    skipConfig.baseBackgroundColor = .blue_white
-    skipConfig.contentInsets = NSDirectionalEdgeInsets(top: 14, leading: 26, bottom: 14, trailing: 26)
-    
-    var confirmConfig = UIButton.Configuration.filled()
-    confirmConfig.baseBackgroundColor = .grey_custom
-    confirmConfig.contentInsets = NSDirectionalEdgeInsets(top: 14, leading: 26, bottom: 14, trailing: 26)
-    
-    var skipContainer = AttributeContainer()
-    skipContainer.font = .init(name: Font.medium.rawValue, size: 16)
-    skipContainer.foregroundColor = .darkgrey_custom
-    var confirmContainer = AttributeContainer()
-    confirmContainer.foregroundColor = .white
-    confirmContainer.font = .init(name: Font.medium.rawValue, size: 16)
+  private func verfiyConfirmButton(bool: Bool, type: OnboardingVerifyType) {
+    verifyConfirmButtonDict.updateValue(bool, forKey: type)
+//    guard let wakeupCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? OnboardingTableViewCell else { return }
+//    guard let cleanupCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? OnboardingTableViewCell else { return }
+//    guard let showerCell = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as? OnboardingTableViewCell else { return }
+//    guard let header = tableView.headerView(forSection: 0) as? OnboardingTableHeaderView else { return }
 
-    skipConfig.attributedTitle = AttributedString("정보 입력 건너 뛰기", attributes: skipContainer)
-    confirmConfig.attributedTitle = AttributedString("완료", attributes: confirmContainer)
-    
-    let skipButton = UIButton(configuration: skipConfig)
-    let confirmButton = UIButton(configuration: confirmConfig)
-    
-    skipButton.addTarget(self, action: #selector(didTapSkipButton), for: .touchUpInside)
-    confirmButton.addTarget(self, action: #selector(didTapConfirmButton), for: .touchUpInside)
-    
-    [ confirmButton, skipButton ].forEach { view.addSubview($0) }
-    
-    view.snp.makeConstraints { make in
-      make.height.equalTo(76)
-    }
-    
-    skipButton.snp.makeConstraints { make in
-      make.leading.equalToSuperview().inset(24)
-      make.centerY.equalToSuperview()
-    }
-    
-    confirmButton.snp.makeConstraints { make in
-      make.trailing.equalToSuperview().inset(24)
-      make.centerY.equalToSuperview()
-    }
-    
-    return view
   }
 }
 
@@ -120,12 +104,12 @@ extension OnboardingViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: OnboardingTableViewCell.identifier, for: indexPath) as? OnboardingTableViewCell else { return UITableViewCell() }
     let question = viewModel.getQuestionText(index: indexPath.row)
-    
+
     switch indexPath.row {
-    case 3, 4:
+    case 3, 4: // 옵션
       cell.configureUI(type: .optional, question: question)
       return cell
-    case 5:
+    case 5: // 프리토킹
       cell.configureUI(type: .free, question: question)
       return cell
     default:
@@ -139,7 +123,13 @@ extension OnboardingViewController: UITableViewDataSource, UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: OnboardingTableHeaderView.identifier)
+    let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: OnboardingTableHeaderView.identifier) as! OnboardingTableHeaderView
+    
+    header.onChangedVerifyState
+      .subscribe(onNext:{ [weak self] state, type in
+        self?.verfiyConfirmButton(bool: state, type: type)
+      })
+      .disposed(by: disposeBag)
     
     return header
   }

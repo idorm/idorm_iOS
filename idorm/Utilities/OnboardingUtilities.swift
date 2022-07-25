@@ -8,6 +8,16 @@
 import UIKit
 import SnapKit
 
+enum OnboardingVerifyType: String {
+  case dorm
+  case gender
+  case period
+  case wakeup
+  case cleanup
+  case shower
+  case age
+}
+
 enum OnboardingOptionalType {
   case essential
   case optional

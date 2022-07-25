@@ -12,7 +12,16 @@ import RSKGrowingTextView
 class OnboardingTableViewCell: UITableViewCell {
   // MARK: - Properties
   static let identifier = "OnboardingDetailTableViewCell"
-
+  
+  var onChangedTextField: ((String) -> Void)?
+  
+  lazy var textField: OnboardingTextFieldContainerView = {
+    let textField = OnboardingTextFieldContainerView(placeholder: "입력")
+    textField.textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+    
+    return textField
+  }()
+  
   lazy var infoLabel: UILabel = {
     let label = UILabel()
     label.textColor = .darkgrey_custom
@@ -29,12 +38,6 @@ class OnboardingTableViewCell: UITableViewCell {
     label.isHidden = true
     
     return label
-  }()
-  
-  lazy var textFieldContainerView: UIView = {
-    let view = OnboardingTextFieldContainerView(placeholder: "입력")
-    
-    return view
   }()
   
   lazy var textView: RSKGrowingTextView = {
@@ -56,15 +59,6 @@ class OnboardingTableViewCell: UITableViewCell {
     return tv
   }()
   
-  lazy var textViewContainerView: UIView = {
-    let view = UIView()
-    view.layer.borderWidth = 1
-    view.layer.cornerRadius = 10.0
-    view.isHidden = true
-    
-    return view
-  }()
-  
   lazy var letterNumLabel: UILabel = {
     let label = UILabel()
     label.textColor = .grey_custom
@@ -74,12 +68,27 @@ class OnboardingTableViewCell: UITableViewCell {
     return label
   }()
   
+  // MARK: - LifeCycle
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  // MARK: - Selectors
+  @objc private func textFieldDidChange(_ tf: UITextField) {
+    guard let changedText = tf.text else { return }
+    onChangedTextField?(changedText)
+  }
+  
   // MARK: - Helpers
   func configureUI(type: OnboardingOptionalType, question: String) {
     contentView.backgroundColor = .white
     infoLabel.text = question
     
-    [ infoLabel, optionalLabel, textFieldContainerView, letterNumLabel, textView ]
+    [ infoLabel, optionalLabel, textField, letterNumLabel, textView ]
       .forEach { contentView.addSubview($0) }
     
     switch type {
@@ -88,7 +97,7 @@ class OnboardingTableViewCell: UITableViewCell {
     case .optional:
       break
     case .free:
-      textFieldContainerView.isHidden = true
+      textField.isHidden = true
       textView.isHidden = false
       letterNumLabel.isHidden = false
     }
@@ -98,7 +107,7 @@ class OnboardingTableViewCell: UITableViewCell {
       make.top.equalToSuperview()
     }
 
-    textFieldContainerView.snp.makeConstraints { make in
+    textField.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
       make.top.equalTo(infoLabel.snp.bottom).offset(8)
       make.height.equalTo(50.0)
