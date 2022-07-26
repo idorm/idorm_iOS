@@ -46,7 +46,6 @@ class OnboardingTableViewCell: UITableViewCell {
     tv.layer.cornerRadius = 10
     tv.layer.borderColor = UIColor.grey_custom.cgColor
     tv.layer.borderWidth = 1
-    tv.delegate = self
     tv.isScrollEnabled = false
     tv.keyboardType = .default
     tv.returnKeyType = .done
@@ -136,19 +135,36 @@ class OnboardingTableViewCell: UITableViewCell {
         self.onChangedTextSubject.onNext((text, self.type))
       })
       .disposed(by: disposeBag)
-  }
-}
-
-extension OnboardingTableViewCell: UITextViewDelegate {
-  func textViewDidChange(_ textView: UITextView) {
-    if textView.text.count > 100 {
-      textView.deleteBackward()
-    }
     
-    letterNumLabel.text = "\(textView.text.count)/100pt"
+    textView.rx.text
+      .orEmpty
+      .scan("") { previous, new in
+        if new.count > 100 {
+          return previous
+        } else {
+          return new
+        }
+      }
+      .asDriver(onErrorJustReturn: "")
+      .drive(onNext: { [weak self] text in
+        self?.textView.text = text
+        
+        self?.letterNumLabel.text = "\(self?.textView.text.count ?? 0)/100pt"
+        
+        let attributedString = NSMutableAttributedString(string: "\(self?.textView.text.count ?? 0)/100pt")
+        attributedString.addAttribute(.foregroundColor, value: UIColor.idorm_blue, range: ("\(self?.textView.text.count ?? 0)/100pt" as NSString).range(of: "\(self?.textView.text.count ?? 0)"))
+        self?.letterNumLabel.attributedText = attributedString
+      })
+      .disposed(by: disposeBag)
     
-    let attributedString = NSMutableAttributedString(string: "\(textView.text.count)/100pt")
-    attributedString.addAttribute(.foregroundColor, value: UIColor.idorm_blue, range: ("\(textView.text.count)/100pt" as NSString).range(of: "\(textView.text.count)"))
-    letterNumLabel.attributedText = attributedString
+    textField.xmarkButton.rx.tap
+      .bind(onNext: { [weak self] in
+        guard let self = self else { return }
+        self.textField.textField.rx.text.onNext("")
+        self.textField.xmarkButton.isHidden = true
+        self.textField.becomeFirstResponder()
+        self.onChangedTextSubject.onNext(("", self.type))
+      })
+      .disposed(by: disposeBag)
   }
 }

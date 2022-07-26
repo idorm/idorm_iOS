@@ -39,7 +39,6 @@ class OnboardingTextFieldContainerView: UIView {
   lazy var xmarkButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "Xmark_Grey"), for: .normal)
-    button.addTarget(self, action: #selector(didTapXmarkButton), for: .touchUpInside)
     button.isHidden = true
     
     return button
@@ -61,11 +60,6 @@ class OnboardingTextFieldContainerView: UIView {
   }
   
   // MARK: - Selectors
-  @objc private func didTapXmarkButton() {
-    textField.text = ""
-    xmarkButton.isHidden = true
-    textField.becomeFirstResponder()
-  }
   
   // MARK: - Helpers
   private func configureUI() {

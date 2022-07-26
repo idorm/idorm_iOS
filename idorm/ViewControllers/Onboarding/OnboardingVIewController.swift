@@ -77,7 +77,6 @@ class OnboardingViewController: UIViewController {
   private func bind() {
     viewModel.output.enableConfirmButton
       .subscribe(onNext: { [weak self] isEnabled in
-        print(self?.viewModel.output.myInfo.value)
         if isEnabled {
           self?.floatyBottomView.confirmButton.isUserInteractionEnabled = true
           self?.floatyBottomView.confirmButton.configuration?.baseBackgroundColor = .idorm_blue

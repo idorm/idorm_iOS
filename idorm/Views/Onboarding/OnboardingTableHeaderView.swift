@@ -114,7 +114,7 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
   
   // MARK: - Selectors
   @objc private func didTapDorm1Button() {
-    dorm1Button.isSelected = !dorm1Button.isSelected
+    dorm1Button.isSelected = true
     dorm2Button.isSelected = false
     dorm3Button.isSelected = false
     onChangedDorm1Button.onNext(dorm1Button.isSelected)
@@ -122,7 +122,7 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
   
   @objc private func didTapDorm2Button() {
     dorm1Button.isSelected = false
-    dorm2Button.isSelected = !dorm2Button.isSelected
+    dorm2Button.isSelected = true
     dorm3Button.isSelected = false
     onChangedDorm2Button.onNext(dorm2Button.isSelected)
   }
@@ -130,31 +130,31 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
   @objc private func didTapDorm3Button() {
     dorm1Button.isSelected = false
     dorm2Button.isSelected = false
-    dorm3Button.isSelected = !dorm3Button.isSelected
+    dorm3Button.isSelected = true
     onChangedDorm3Button.onNext(dorm3Button.isSelected)
   }
   
   @objc private func didTapMaleButton() {
-    maleButton.isSelected = !maleButton.isSelected
+    maleButton.isSelected = true
     femaleButton.isSelected = false
     onChangedMaleButton.onNext(maleButton.isSelected)
   }
   
   @objc private func didTapFemaleButton() {
     maleButton.isSelected = false
-    femaleButton.isSelected = !femaleButton.isSelected
+    femaleButton.isSelected = true
     onChangedFemaleButton.onNext(femaleButton.isSelected)
   }
   
   @objc private func didTapPeriod16Button() {
-    period16Button.isSelected = !period16Button.isSelected
+    period16Button.isSelected = true
     period24Button.isSelected = false
     onChangedPeriod16Button.onNext(period16Button.isSelected)
   }
   
   @objc private func didTapPeriod24Button() {
     period16Button.isSelected = false
-    period24Button.isSelected = !period24Button.isSelected
+    period24Button.isSelected = true
     onChangedPeriod24Button.onNext(period24Button.isSelected)
   }
   
@@ -204,6 +204,10 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
   }
   
   private func configureUI() {
+    dorm1Button.isSelected = true
+    maleButton.isSelected = true
+    period16Button.isSelected = true
+    
     let dormStack = UIStackView(arrangedSubviews: [ dorm1Button, dorm2Button, dorm3Button ])
     dormStack.spacing = 12
     

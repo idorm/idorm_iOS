@@ -64,9 +64,9 @@ class OnboardingViewModel {
         $0?.gender != nil &&
         $0?.period != nil &&
         $0?.age.isEmpty == false &&
-        $0?.wakeupTime.isEmpty == false &&
-        $0?.cleanUpStatus.isEmpty == false &&
-        $0?.showerTime.isEmpty == false
+        $0?.wakeupTime != "" &&
+        $0?.cleanUpStatus != "" &&
+        $0?.showerTime != ""
       }
       .bind(to: output.enableConfirmButton)
       .disposed(by: disposeBag)
