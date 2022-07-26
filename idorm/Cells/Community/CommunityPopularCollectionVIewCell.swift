@@ -15,7 +15,7 @@ class CommunityPopularCollectionVIewCell: UICollectionViewCell {
   lazy var popularLabel: UILabel = {
     let label = UILabel()
     label.text = "인기"
-    label.textColor = .mainColor
+    label.textColor = .idorm_blue
     label.font = .init(name: Font.regular.rawValue, size: 10)
     
     return label

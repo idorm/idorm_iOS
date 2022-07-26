@@ -14,6 +14,6 @@ class CommunityDetailHeaderCollectionViewCell: UICollectionViewCell {
   func configureUI() {
     contentView.layer.cornerRadius = 8
     contentView.layer.masksToBounds = true
-    contentView.backgroundColor = .mainColor
+    contentView.backgroundColor = .idorm_blue
   }
 }

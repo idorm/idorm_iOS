@@ -31,7 +31,7 @@ class LoginPopupViewController: UIViewController {
     lazy var confirmButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setTitle("확인", for: .normal)
-        button.setTitleColor(UIColor.mainColor, for: .normal)
+        button.setTitleColor(UIColor.idorm_blue, for: .normal)
         button.titleLabel?.font = .init(name: Font.medium.rawValue, size: 14.0)
         button.addTarget(self, action: #selector(didTapConfirmButton), for: .touchUpInside)
         

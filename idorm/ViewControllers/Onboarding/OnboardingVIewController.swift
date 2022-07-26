@@ -12,20 +12,6 @@ import RxCocoa
 
 class OnboardingViewController: UIViewController {
   // MARK: - Properties
-  let viewModel = OnboardingListViewModel()
-  var disposeBag = DisposeBag()
-  var verifyConfirmButtonDict: [OnboardingVerifyType: Bool] = [
-    .wakeup: false,
-    .dorm: false,
-    .gender: false,
-    .age: false,
-    .period: false,
-    .cleanup: false,
-    .shower: false
-  ]
-  
-  let floatyBottomView = OnboardingFloatyBottomView()
-  
   lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .grouped)
     tableView.estimatedRowHeight = 100
@@ -49,6 +35,11 @@ class OnboardingViewController: UIViewController {
     
     return tapGesture
   }()
+
+  let floatyBottomView = OnboardingFloatyBottomView()
+  
+  let viewModel = OnboardingViewModel()
+  let disposeBag = DisposeBag()
   
   // MARK: - LifeCycle
   override func viewDidLoad() {
@@ -89,33 +80,36 @@ class OnboardingViewController: UIViewController {
       make.height.equalTo(76)
     }
   }
-  
-  private func verfiyConfirmButton(bool: Bool, type: OnboardingVerifyType) {
-    verifyConfirmButtonDict.updateValue(bool, forKey: type)
-//    guard let wakeupCell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? OnboardingTableViewCell else { return }
-//    guard let cleanupCell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? OnboardingTableViewCell else { return }
-//    guard let showerCell = tableView.cellForRow(at: IndexPath(row: 2, section: 0)) as? OnboardingTableViewCell else { return }
-//    guard let header = tableView.headerView(forSection: 0) as? OnboardingTableHeaderView else { return }
-
-  }
 }
 
 extension OnboardingViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: OnboardingTableViewCell.identifier, for: indexPath) as? OnboardingTableViewCell else { return UITableViewCell() }
     let question = viewModel.getQuestionText(index: indexPath.row)
-
-    switch indexPath.row {
-    case 3, 4: // 옵션
-      cell.configureUI(type: .optional, question: question)
-      return cell
-    case 5: // 프리토킹
-      cell.configureUI(type: .free, question: question)
-      return cell
-    default:
-      cell.configureUI(type: .essential, question: question)
-      return cell
-    }
+    let onboardingListType = OnboardingListType.allCases[indexPath.row]
+    cell.configureUI(type: onboardingListType, question: question)
+    
+    cell.onChangedTextSubject
+      .subscribe(onNext: { [weak self] text, type in
+        guard let self = self else { return }
+        switch onboardingListType {
+        case .cleanup:
+          self.viewModel.myInfo?.cleanUpStatus = text
+        case .wakeup:
+          self.viewModel.myInfo?.wakeupTime = text
+        case .shower:
+          self.viewModel.myInfo?.showerTime = text
+        case .mbti:
+          self.viewModel.myInfo?.mbti = text
+        case .chatLink:
+          self.viewModel.myInfo?.chatLink = text
+        case .wishText:
+          self.viewModel.myInfo?.wishText = text
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    return cell
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -125,10 +119,48 @@ extension OnboardingViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: OnboardingTableHeaderView.identifier) as! OnboardingTableHeaderView
     
-    header.onChangedVerifyState
-      .subscribe(onNext:{ [weak self] state, type in
-        self?.verfiyConfirmButton(bool: state, type: type)
-      })
+    header.onChangedDorm1Button
+      .bind(to: viewModel.input.dorm1ButtonTapped)
+      .disposed(by: disposeBag)
+    
+    header.onChangedDorm2Button
+      .bind(to: viewModel.input.dorm2ButtonTapped)
+      .disposed(by: disposeBag)
+    
+    header.onChangedDorm3Button
+      .bind(to: viewModel.input.dorm3ButtonTapped)
+      .disposed(by: disposeBag)
+    
+    header.onChangedMaleButton
+      .bind(to: viewModel.input.maleButtonTapped)
+      .disposed(by: disposeBag)
+    
+    header.onChangedFemaleButton
+      .bind(to: viewModel.input.femaleButtonTapped)
+      .disposed(by: disposeBag)
+    
+    header.onChangedSnoringButton
+      .bind(to: viewModel.input.snoringButtonTapped)
+      .disposed(by: disposeBag)
+    
+    header.onChangedGrindingButton
+      .bind(to: viewModel.input.grindingButtonTapped)
+      .disposed(by: disposeBag)
+    
+    header.onChangedSmokingButton
+      .bind(to: viewModel.input.smokingButtonTapped)
+      .disposed(by: disposeBag)
+    
+    header.onChangedAllowedFoodButton
+      .bind(to: viewModel.input.allowedFoodButtonTapped)
+      .disposed(by: disposeBag)
+    
+    header.onChangedAllowedEarphoneButton
+      .bind(to: viewModel.input.allowedEarphoneButtonTapped)
+      .disposed(by: disposeBag)
+    
+    header.onChangedAgeTextField
+      .bind(to: viewModel.input.ageTextFieldChanged)
       .disposed(by: disposeBag)
     
     return header

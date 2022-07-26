@@ -25,7 +25,7 @@ class TabBarController: UITabBarController {
   // MARK: - Helpers
   private func configureUI() {
     tabBar.unselectedItemTintColor = .gray
-    tabBar.tintColor = .mainColor
+    tabBar.tintColor = .idorm_blue
     tabBar.barTintColor = .white
     tabBar.backgroundColor = .white
     tabBar.layer.borderColor = UIColor.bluegrey.cgColor

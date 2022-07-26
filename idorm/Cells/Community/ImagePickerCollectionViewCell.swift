@@ -33,7 +33,7 @@ class ImagePickerCollectionViewCell: UICollectionViewCell {
   
   lazy var numberLabel: UILabel = {
     let label = UILabel()
-    label.backgroundColor = .mainColor
+    label.backgroundColor = .idorm_blue
     label.textColor = .white
     label.font = .init(name: Font.medium.rawValue, size: 12)
     label.textAlignment = .center

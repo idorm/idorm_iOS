@@ -50,7 +50,7 @@ class AuthNumberViewController: UIViewController {
     lazy var timerLabel: UILabel = {
         let label = UILabel()
         label.text = "05:00"
-        label.textColor = .mainColor
+        label.textColor = .idorm_blue
         label.font = .init(name: Font.medium.rawValue, size: 14.0)
         
         return label

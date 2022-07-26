@@ -114,7 +114,7 @@ class LoginPasswordTextFieldContainerView: UIView {
 
 extension LoginPasswordTextFieldContainerView: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        layer.borderColor = UIColor.mainColor.cgColor
+        layer.borderColor = UIColor.idorm_blue.cgColor
         openEyesButton.isHidden = false
         checkmarkButton.isHidden = true
     }

@@ -34,8 +34,8 @@ extension UIColor {
     )
   }
   
-  static var mainColor: UIColor {
-    return UIColor.init(rgb: 0x582FFF)
+  static var idorm_blue: UIColor {
+    return UIColor.init(rgb: 0x71A1FE)
   }
   
   static var grey_custom: UIColor {

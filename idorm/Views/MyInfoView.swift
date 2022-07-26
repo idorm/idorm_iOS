@@ -157,19 +157,19 @@ class MyInfoView: UIView {
     validLabel.font = .init(name: Font.bold.rawValue, size: 14)
     
     if query == "코골이" {
-      validLabel.textColor = myInfo.snore ? UIColor.red : UIColor.mainColor
-      validLabel.text = myInfo.snore ? "있음" : "없음"
+      validLabel.textColor = myInfo.snoring ? UIColor.red : UIColor.idorm_blue
+      validLabel.text = myInfo.snoring ? "있음" : "없음"
     } else if query == "이갈이" {
-      validLabel.textColor = myInfo.grinding ? UIColor.red : UIColor.mainColor
+      validLabel.textColor = myInfo.grinding ? UIColor.red : UIColor.idorm_blue
       validLabel.text = myInfo.grinding ? "있음" : "없음"
     } else if query == "흡연" {
-      validLabel.textColor = myInfo.smoke ? UIColor.red : UIColor.mainColor
+      validLabel.textColor = myInfo.smoke ? UIColor.red : UIColor.idorm_blue
       validLabel.text = myInfo.smoke ? "함" : "안함"
     } else if query == "실내음식" {
-      validLabel.textColor = myInfo.allowedFood ? UIColor.mainColor : UIColor.red
+      validLabel.textColor = myInfo.allowedFood ? UIColor.idorm_blue : UIColor.red
       validLabel.text = myInfo.allowedFood ? "가능" : "불가능"
     } else {
-      validLabel.textColor = myInfo.earphone ? UIColor.mainColor : UIColor.red
+      validLabel.textColor = myInfo.earphone ? UIColor.idorm_blue : UIColor.red
       validLabel.text = myInfo.earphone ? "가능" : "불가능"
     }
     

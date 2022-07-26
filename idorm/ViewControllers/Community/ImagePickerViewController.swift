@@ -40,7 +40,7 @@ class ImagePickerViewController: UIViewController {
   lazy var countLabel: UILabel = {
     let label = UILabel()
     label.font = .init(name: Font.medium.rawValue, size: 16)
-    label.textColor = .mainColor
+    label.textColor = .idorm_blue
     
     return label
   }()
@@ -125,7 +125,7 @@ extension ImagePickerViewController: UICollectionViewDataSource, UICollectionVie
           cell.circle.isHidden = true
           cell.numberLabel.isHidden = false
           cell.numberLabel.text = "\(i + 1)"
-          cell.layer.borderColor = UIColor.mainColor.cgColor
+          cell.layer.borderColor = UIColor.idorm_blue.cgColor
           cell.layer.borderWidth = 3
         }
       }

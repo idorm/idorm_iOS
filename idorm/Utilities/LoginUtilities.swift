@@ -16,7 +16,7 @@ enum LoginType {
 class LoginUtilities {
     static func returnBottonConfirmButton(string: String) -> UIButton {
         let button = UIButton(type: .custom)
-        button.backgroundColor = .mainColor
+        button.backgroundColor = .idorm_blue
         button.layer.cornerRadius = 10.0
         button.setTitle(string, for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)

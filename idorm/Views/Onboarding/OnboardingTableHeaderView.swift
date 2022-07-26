@@ -13,38 +13,6 @@ import RxCocoa
 
 class OnboardingTableHeaderView: UITableViewHeaderFooterView {
   // MARK: - Properties
-  static let identifier = "OnboardingTableHeaderView"
-  
-  var disposeBag = DisposeBag()
-  var onChangedVerifyState = PublishSubject<(Bool, OnboardingVerifyType)>()
-  
-  let dormLabel = OnboardingUtilities.getBasicLabel(text: "기숙사")
-  let dorm1Button = OnboardingUtilities.getBasicButton(title: "1 기숙사")
-  let dorm2Button = OnboardingUtilities.getBasicButton(title: "2 기숙사")
-  let dorm3Button = OnboardingUtilities.getBasicButton(title: "3 기숙사")
-  let dormLine = OnboardingUtilities.getSeparatorLine()
-  
-  let genderLabel = OnboardingUtilities.getBasicLabel(text: "성별")
-  let maleButton = OnboardingUtilities.getBasicButton(title: "남성")
-  let femaleButton = OnboardingUtilities.getBasicButton(title: "여성")
-  let genderLine = OnboardingUtilities.getSeparatorLine()
-  
-  let periodLabel = OnboardingUtilities.getBasicLabel(text: "입사 기간")
-  let period16Button = OnboardingUtilities.getBasicButton(title: "16 주")
-  let period24Button = OnboardingUtilities.getBasicButton(title: "24 주")
-  let periodLine = OnboardingUtilities.getSeparatorLine()
-  
-  let habitLabel = OnboardingUtilities.getBasicLabel(text: "내 습관")
-  let snoreButton = OnboardingUtilities.getBasicButton(title: "코골이")
-  let grindingButton = OnboardingUtilities.getBasicButton(title: "이갈이")
-  let smokingButton = OnboardingUtilities.getBasicButton(title: "흡연")
-  let allowedFoodButton = OnboardingUtilities.getBasicButton(title: "실내 음식 섭취 함")
-  let allowedEarphoneButton = OnboardingUtilities.getBasicButton(title: "이어폰 착용 안함")
-  let habitLine = OnboardingUtilities.getSeparatorLine()
-  
-  let ageLabel = OnboardingUtilities.getBasicLabel(text: "나이")
-  let ageLine = OnboardingUtilities.getSeparatorLine()
-
   lazy var ageTextField: CHIOTPFieldTwo = {
     let tf = CHIOTPFieldTwo()
     tf.numberOfDigits = 2
@@ -84,11 +52,60 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
     return label
   }()
   
+  let dormLabel = OnboardingUtilities.getBasicLabel(text: "기숙사")
+  let dorm1Button = OnboardingUtilities.getBasicButton(title: "1 기숙사")
+  let dorm2Button = OnboardingUtilities.getBasicButton(title: "2 기숙사")
+  let dorm3Button = OnboardingUtilities.getBasicButton(title: "3 기숙사")
+  let dormLine = OnboardingUtilities.getSeparatorLine()
+  
+  let genderLabel = OnboardingUtilities.getBasicLabel(text: "성별")
+  let maleButton = OnboardingUtilities.getBasicButton(title: "남성")
+  let femaleButton = OnboardingUtilities.getBasicButton(title: "여성")
+  let genderLine = OnboardingUtilities.getSeparatorLine()
+  
+  let periodLabel = OnboardingUtilities.getBasicLabel(text: "입사 기간")
+  let period16Button = OnboardingUtilities.getBasicButton(title: "16 주")
+  let period24Button = OnboardingUtilities.getBasicButton(title: "24 주")
+  let periodLine = OnboardingUtilities.getSeparatorLine()
+  
+  let habitLabel = OnboardingUtilities.getBasicLabel(text: "내 습관")
+  let snoreButton = OnboardingUtilities.getBasicButton(title: "코골이")
+  let grindingButton = OnboardingUtilities.getBasicButton(title: "이갈이")
+  let smokingButton = OnboardingUtilities.getBasicButton(title: "흡연")
+  let allowedFoodButton = OnboardingUtilities.getBasicButton(title: "실내 음식 섭취 함")
+  let allowedEarphoneButton = OnboardingUtilities.getBasicButton(title: "이어폰 착용 안함")
+  let habitLine = OnboardingUtilities.getSeparatorLine()
+  
+  let ageLabel = OnboardingUtilities.getBasicLabel(text: "나이")
+  let ageLine = OnboardingUtilities.getSeparatorLine()
+  
+  static let identifier = "OnboardingTableHeaderView"
+  
+  let disposeBag = DisposeBag()
+  
+  let onChangedDorm1Button = PublishSubject<Bool>()
+  let onChangedDorm2Button = PublishSubject<Bool>()
+  let onChangedDorm3Button = PublishSubject<Bool>()
+  
+  let onChangedMaleButton = PublishSubject<Bool>()
+  let onChangedFemaleButton = PublishSubject<Bool>()
+  
+  let onChangedPeriod16Button = PublishSubject<Bool>()
+  let onChangedPeriod24Button = PublishSubject<Bool>()
+  
+  let onChangedSnoringButton = PublishSubject<Bool>()
+  let onChangedGrindingButton = PublishSubject<Bool>()
+  let onChangedSmokingButton = PublishSubject<Bool>()
+  let onChangedAllowedFoodButton = PublishSubject<Bool>()
+  let onChangedAllowedEarphoneButton = PublishSubject<Bool>()
+  
+  let onChangedAgeTextField = PublishSubject<String>()
+  
   // MARK: - LifeCycle
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
     configureUI()
-    configureUIActions()
+    bind()
   }
   
   required init?(coder: NSCoder) {
@@ -100,67 +117,88 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
     dorm1Button.isSelected = !dorm1Button.isSelected
     dorm2Button.isSelected = false
     dorm3Button.isSelected = false
-    verifyConfirmButton(type: .dorm)
+    onChangedDorm1Button.onNext(dorm1Button.isSelected)
   }
   
   @objc private func didTapDorm2Button() {
     dorm1Button.isSelected = false
     dorm2Button.isSelected = !dorm2Button.isSelected
     dorm3Button.isSelected = false
-    verifyConfirmButton(type: .dorm)
+    onChangedDorm2Button.onNext(dorm2Button.isSelected)
   }
   
   @objc private func didTapDorm3Button() {
     dorm1Button.isSelected = false
     dorm2Button.isSelected = false
     dorm3Button.isSelected = !dorm3Button.isSelected
-    verifyConfirmButton(type: .dorm)
+    onChangedDorm3Button.onNext(dorm3Button.isSelected)
   }
   
   @objc private func didTapMaleButton() {
     maleButton.isSelected = !maleButton.isSelected
     femaleButton.isSelected = false
-    verifyConfirmButton(type: .gender)
+    onChangedMaleButton.onNext(maleButton.isSelected)
   }
   
   @objc private func didTapFemaleButton() {
     maleButton.isSelected = false
     femaleButton.isSelected = !femaleButton.isSelected
-    verifyConfirmButton(type: .gender)
+    onChangedFemaleButton.onNext(femaleButton.isSelected)
   }
   
   @objc private func didTapPeriod16Button() {
     period16Button.isSelected = !period16Button.isSelected
     period24Button.isSelected = false
-    verifyConfirmButton(type: .period)
+    onChangedPeriod16Button.onNext(period16Button.isSelected)
   }
   
   @objc private func didTapPeriod24Button() {
     period16Button.isSelected = false
     period24Button.isSelected = !period24Button.isSelected
-    verifyConfirmButton(type: .period)
+    onChangedPeriod24Button.onNext(period24Button.isSelected)
   }
   
-  @objc private func didTapHabitButton(_ button: UIButton) {
-    button.isSelected = !button.isSelected
+  @objc private func didTapSnoringButton() {
+    snoreButton.isSelected = !snoreButton.isSelected
+    onChangedSnoringButton.onNext(snoreButton.isSelected)
+  }
+  
+  @objc private func didTapGrindingButton() {
+    grindingButton.isSelected = !grindingButton.isSelected
+    onChangedGrindingButton.onNext(grindingButton.isEnabled)
+  }
+
+  @objc private func didTapSmokingButton() {
+    smokingButton.isSelected = !smokingButton.isSelected
+    onChangedSmokingButton.onNext(smokingButton.isSelected)
+  }
+
+  @objc private func didTapAllowedFoodButton() {
+    allowedFoodButton.isSelected = !allowedFoodButton.isSelected
+    onChangedAllowedFoodButton.onNext(allowedFoodButton.isSelected)
+  }
+  
+  @objc private func didTapAllowedEarphoneButton() {
+    allowedEarphoneButton.isSelected = !allowedEarphoneButton.isSelected
+    onChangedAllowedEarphoneButton.onNext(allowedEarphoneButton.isSelected)
   }
   
   @objc private func didChangeAgeTextField(_ tf: UITextField) {
-    verifyConfirmButton(type: .age)
+    onChangedAgeTextField.onNext(tf.text ?? "")
   }
   
   // MARK: - Helpers
-  private func configureUIActions() {
+  private func bind() {
     dorm1Button.addTarget(self, action: #selector(didTapDorm1Button), for: .touchUpInside)
     dorm2Button.addTarget(self, action: #selector(didTapDorm2Button), for: .touchUpInside)
     dorm3Button.addTarget(self, action: #selector(didTapDorm3Button), for: .touchUpInside)
     period16Button.addTarget(self, action: #selector(didTapPeriod16Button), for: .touchUpInside)
     period24Button.addTarget(self, action: #selector(didTapPeriod24Button), for: .touchUpInside)
-    snoreButton.addTarget(self, action: #selector(didTapHabitButton(_:)), for: .touchUpInside)
-    grindingButton.addTarget(self, action: #selector(didTapHabitButton(_:)), for: .touchUpInside)
-    smokingButton.addTarget(self, action: #selector(didTapHabitButton(_:)), for: .touchUpInside)
-    allowedFoodButton.addTarget(self, action: #selector(didTapHabitButton(_:)), for: .touchUpInside)
-    allowedEarphoneButton.addTarget(self, action: #selector(didTapHabitButton(_:)), for: .touchUpInside)
+    snoreButton.addTarget(self, action: #selector(didTapSnoringButton), for: .touchUpInside)
+    grindingButton.addTarget(self, action: #selector(didTapGrindingButton), for: .touchUpInside)
+    smokingButton.addTarget(self, action: #selector(didTapSmokingButton), for: .touchUpInside)
+    allowedFoodButton.addTarget(self, action: #selector(didTapAllowedFoodButton), for: .touchUpInside)
+    allowedEarphoneButton.addTarget(self, action: #selector(didTapAllowedEarphoneButton), for: .touchUpInside)
     maleButton.addTarget(self, action: #selector(didTapMaleButton), for: .touchUpInside)
     femaleButton.addTarget(self, action: #selector(didTapFemaleButton), for: .touchUpInside)
   }
@@ -287,31 +325,23 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
     }
   }
   
-  private func verifyConfirmButton(type: OnboardingVerifyType) {
+  private func verifyConfirmButton(type: OnboardingHeaderListType) {
     switch type {
     case .dorm:
       if dorm1Button.isSelected || dorm2Button.isSelected || dorm3Button.isSelected {
-        onChangedVerifyState.onNext((true, .dorm))
       } else {
-        onChangedVerifyState.onNext((false, .dorm))
       }
     case .gender:
       if maleButton.isSelected || femaleButton.isSelected {
-        onChangedVerifyState.onNext((true, .gender))
       } else {
-        onChangedVerifyState.onNext((false, .gender))
       }
     case .period:
       if period16Button.isSelected || period24Button.isSelected {
-        onChangedVerifyState.onNext((true, .period))
       } else {
-        onChangedVerifyState.onNext((false, .period))
       }
     case .age:
       if ageTextField.text != "" {
-        onChangedVerifyState.onNext((true, .age))
       } else {
-        onChangedVerifyState.onNext((false, .age))
       }
     default:
       break

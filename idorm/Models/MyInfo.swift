@@ -8,19 +8,27 @@
 import Foundation
 
 struct MyInfo {
-  let dormNumber: String
-  let period: String
-  let gender: Bool
-  let age: String
-  let snore: Bool // 코골이
-  let grinding: Bool // 이갈이
-  let smoke: Bool
-  let allowedFood: Bool
-  let earphone: Bool
-  let wakeupTime: String
-  let cleanUpStatus: String
-  let showerTime: String
-  let mbti: String?
-  let wishText: String?
-  let chakLink: String?
+  var dormNumber: Dormitory
+  var period: String
+  var gender: Bool
+  var age: String
+  var snoring: Bool
+  var grinding: Bool
+  var smoke: Bool
+  var allowedFood: Bool
+  var earphone: Bool
+  var wakeupTime: String
+  var cleanUpStatus: String
+  var showerTime: String
+  var mbti: String?
+  var wishText: String?
+  var chatLink: String?
 }
+
+enum Dormitory {
+  case no1
+  case no2
+  case no3
+}
+
+enum Join

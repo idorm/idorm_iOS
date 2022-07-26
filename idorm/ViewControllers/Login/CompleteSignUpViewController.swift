@@ -53,7 +53,7 @@ class CompleteSignUpViewController: UIViewController {
         button.setTitle("로그인 후 계속하기", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
         button.titleLabel?.font = .init(name: Font.medium.rawValue, size: 16.0)
-        button.backgroundColor = .mainColor
+        button.backgroundColor = .idorm_blue
         button.layer.cornerRadius = 20.0
         button.addTarget(self, action: #selector(didTapContinueButton), for: .touchUpInside)
         

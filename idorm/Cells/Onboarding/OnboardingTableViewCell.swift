@@ -8,19 +8,17 @@
 import UIKit
 import SnapKit
 import RSKGrowingTextView
+import RxSwift
+import RxCocoa
 
 class OnboardingTableViewCell: UITableViewCell {
   // MARK: - Properties
   static let identifier = "OnboardingDetailTableViewCell"
+  var type: OnboardingListType = .wakeup
+  var disposeBag = DisposeBag()
+  var onChangedTextSubject = PublishSubject<(String, OnboardingListType)>()
   
-  var onChangedTextField: ((String) -> Void)?
-  
-  lazy var textField: OnboardingTextFieldContainerView = {
-    let textField = OnboardingTextFieldContainerView(placeholder: "입력")
-    textField.textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-    
-    return textField
-  }()
+  let textField = OnboardingTextFieldContainerView(placeholder: "입력")
   
   lazy var infoLabel: UILabel = {
     let label = UILabel()
@@ -32,7 +30,7 @@ class OnboardingTableViewCell: UITableViewCell {
   
   lazy var optionalLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .mainColor
+    label.textColor = .idorm_blue
     label.text = "(필수)"
     label.font = .init(name: Font.regular.rawValue, size: 14)
     label.isHidden = true
@@ -71,6 +69,7 @@ class OnboardingTableViewCell: UITableViewCell {
   // MARK: - LifeCycle
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
+    bind()
   }
   
   required init?(coder: NSCoder) {
@@ -78,13 +77,9 @@ class OnboardingTableViewCell: UITableViewCell {
   }
   
   // MARK: - Selectors
-  @objc private func textFieldDidChange(_ tf: UITextField) {
-    guard let changedText = tf.text else { return }
-    onChangedTextField?(changedText)
-  }
   
   // MARK: - Helpers
-  func configureUI(type: OnboardingOptionalType, question: String) {
+  func configureUI(type: OnboardingListType, question: String) {
     contentView.backgroundColor = .white
     infoLabel.text = question
     
@@ -92,16 +87,18 @@ class OnboardingTableViewCell: UITableViewCell {
       .forEach { contentView.addSubview($0) }
     
     switch type {
-    case .essential:
+    case .wakeup, .shower, .cleanup:
       optionalLabel.isHidden = false
-    case .optional:
-      break
-    case .free:
+    case .wishText:
       textField.isHidden = true
       textView.isHidden = false
       letterNumLabel.isHidden = false
+    case .mbti, .chatLink:
+      textField.isHidden = false
+      textView.isHidden = true
+      letterNumLabel.isHidden = true
     }
-
+    
     infoLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(24)
       make.top.equalToSuperview()
@@ -129,6 +126,16 @@ class OnboardingTableViewCell: UITableViewCell {
       make.top.equalTo(infoLabel.snp.bottom).offset(8)
     }
   }
+  
+  private func bind() {
+    textField.textField.rx.text
+      .orEmpty
+      .bind(onNext: { [weak self] text in
+        guard let self = self else { return }
+        self.onChangedTextSubject.onNext((text, self.type))
+      })
+      .disposed(by: disposeBag)
+  }
 }
 
 extension OnboardingTableViewCell: UITextViewDelegate {
@@ -140,7 +147,7 @@ extension OnboardingTableViewCell: UITextViewDelegate {
     letterNumLabel.text = "\(textView.text.count)/100pt"
     
     let attributedString = NSMutableAttributedString(string: "\(textView.text.count)/100pt")
-    attributedString.addAttribute(.foregroundColor, value: UIColor.mainColor, range: ("\(textView.text.count)/100pt" as NSString).range(of: "\(textView.text.count)"))
+    attributedString.addAttribute(.foregroundColor, value: UIColor.idorm_blue, range: ("\(textView.text.count)/100pt" as NSString).range(of: "\(textView.text.count)"))
     letterNumLabel.attributedText = attributedString
   }
 }

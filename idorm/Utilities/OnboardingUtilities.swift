@@ -8,20 +8,46 @@
 import UIKit
 import SnapKit
 
-enum OnboardingVerifyType: String {
-  case dorm
-  case gender
-  case period
+enum OnboardingListType: Int, CaseIterable {
   case wakeup
   case cleanup
   case shower
-  case age
+  case mbti
+  case chatLink
+  case wishText
+  
+  var query: String {
+    switch self {
+    case .wakeup: return "기상시간을 알려주세요."
+    case .cleanup: return "정리정돈은 얼마나 하시나요?"
+    case .shower: return "샤워는 주로 언제/몇 분 동안 하시나요?"
+    case .mbti: return "MBTI를 알려주세요."
+    case .chatLink: return "룸메와 연락을 위한 개인 오픈채팅 링크를 알려주세요."
+    case .wishText: return "미래의 룸메에게 하고 싶은 말은?"
+    }
+  }
 }
 
-enum OnboardingOptionalType {
-  case essential
-  case optional
-  case free
+enum OnboardingHeaderListType: String, CaseIterable {
+  case dorm
+  case gender
+  case period
+  case snore
+  case grinding
+  case smoke
+  case allowedFood
+  case earphone
+  case age
+  
+  var query: String {
+    switch self {
+    case .dorm: return "기숙사"
+    case .gender: return "성별"
+    case .period: return "입사 기간"
+    case .snore, .grinding, .smoke, .allowedFood, .earphone: return "내 습관"
+    case .age: return "나이"
+    }
+  }
 }
 
 class OnboardingUtilities {
@@ -62,7 +88,7 @@ class OnboardingUtilities {
     let handler: UIButton.ConfigurationUpdateHandler = { button in
       switch button.state {
       case .selected:
-        button.configuration?.baseBackgroundColor = .mainColor
+        button.configuration?.baseBackgroundColor = .idorm_blue
         button.configuration?.attributedTitle?.foregroundColor = UIColor.white
         button.configuration?.background.strokeWidth = 0
       default:

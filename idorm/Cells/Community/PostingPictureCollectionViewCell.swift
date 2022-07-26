@@ -26,7 +26,7 @@ class PostingPictureCollectionViewCell: UICollectionViewCell {
     iv.clipsToBounds = true
     iv.contentMode = .scaleAspectFill
     iv.layer.cornerRadius = 10
-    iv.backgroundColor = .mainColor
+    iv.backgroundColor = .idorm_blue
     
     return iv
   }()

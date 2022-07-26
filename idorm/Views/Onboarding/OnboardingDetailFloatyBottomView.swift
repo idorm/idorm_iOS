@@ -38,7 +38,7 @@ class OnboardingDetailFloatyBottomView: UIView {
     container.font = .init(name: Font.medium.rawValue, size: 16)
     container.foregroundColor = UIColor.white
     var config = UIButton.Configuration.filled()
-    config.baseBackgroundColor = .mainColor
+    config.baseBackgroundColor = .idorm_blue
     config.contentInsets = NSDirectionalEdgeInsets(top: 14, leading: 26, bottom: 14, trailing: 26)
     config.attributedTitle = AttributedString("완료", attributes: container)
     let button = UIButton(configuration: config)

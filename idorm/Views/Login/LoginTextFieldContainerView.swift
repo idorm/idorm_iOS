@@ -1,8 +1,8 @@
 //
-//  TextFieldContainerView.swift
+//  LoginTextFieldContainerView.swift
 //  idorm
 //
-//  Created by 김응철 on 2022/07/16.
+//  Created by 김응철 on 2022/07/26.
 //
 
 import UIKit
@@ -10,8 +10,12 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-class OnboardingTextFieldContainerView: UIView {
+class LoginTextFieldContainerView: UIView {
   // MARK: - Properties
+  let placeholder: String
+  
+  var disposeBag = DisposeBag()
+  
   lazy var textField: UITextField = {
     let tf = UITextField()
     tf.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
@@ -44,9 +48,6 @@ class OnboardingTextFieldContainerView: UIView {
     
     return button
   }()
-  
-  let placeholder: String
-  private var disposeBag = DisposeBag()
   
   // MARK: - LifeCycle
   init(placeholder: String) {
@@ -92,45 +93,14 @@ class OnboardingTextFieldContainerView: UIView {
       make.trailing.equalToSuperview().inset(8)
     }
   }
-
+  
   private func bind() {
     textField.rx.text.orEmpty
-      .scan("") { pervious, new -> String in
-        if new.count >= 30 {
-          return pervious
-        } else {
-          return new
-        }
-      }
-      .asDriver(onErrorJustReturn: "")
-      .drive(textField.rx.text)
-      .disposed(by: disposeBag)
-    
-    textField.rx.controlEvent(.editingChanged)
-      .asDriver()
-      .drive(onNext: { [weak self] in
-        self?.xmarkButton.isHidden = false
-      })
-      .disposed(by: disposeBag)
-    
-    textField.rx.controlEvent(.editingDidBegin)
-      .asDriver()
-      .drive(onNext: { [weak self] in
-        self?.checkmarkButton.isHidden = true
-        self?.layer.borderColor = UIColor.idorm_blue.cgColor
-      })
-      .disposed(by: disposeBag)
-    
-    textField.rx.controlEvent(.editingDidEnd)
-      .asDriver()
-      .drive(onNext: { [weak self] in
-        let text = self?.textField.text ?? ""
-        self?.layer.borderColor = UIColor.grey_custom.cgColor
-        self?.xmarkButton.isHidden = true
-        if text.count >= 1 {
-          self?.checkmarkButton.isHidden = false
-        } else {
-          self?.checkmarkButton.isHidden = true
+      .map{ $0.count <= 20 }
+      .asSignal(onErrorJustReturn: false)
+      .emit(onNext: { [weak self] isEditable in
+        if !isEditable {
+          self?.textField.text = String(self?.textField.text?.dropLast() ?? "")
         }
       })
       .disposed(by: disposeBag)

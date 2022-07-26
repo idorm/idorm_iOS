@@ -42,6 +42,7 @@ class OnboardingFloatyBottomView: UIView {
     config.contentInsets = NSDirectionalEdgeInsets(top: 14, leading: 26, bottom: 14, trailing: 26)
     config.attributedTitle = AttributedString("완료", attributes: container)
     let button = UIButton(configuration: config)
+    button.isUserInteractionEnabled = false
     
     return button
   }()
