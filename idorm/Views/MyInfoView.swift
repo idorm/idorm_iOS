@@ -34,7 +34,7 @@ class MyInfoView: UIView {
     var container = AttributeContainer()
     container.font = UIFont.init(name: Font.bold.rawValue, size: 12)
     container.foregroundColor = UIColor.white
-    config.attributedTitle = AttributedString(myInfo?.period ?? "", attributes: container)
+//    config.attributedTitle = AttributedString(myInfo?.period ?? , attributes: container)
     config.image = UIImage(named: "Building")
     config.imagePlacement = .leading
     config.imagePadding = 8
@@ -280,7 +280,7 @@ class MyInfoView: UIView {
     let humanImageView = UIImageView(image: UIImage(named: "Human"))
     
     let genderLabel = UILabel()
-    genderLabel.text = myInfo.gender ? "남자," : "여자,"
+//    genderLabel.text = myInfo.gender ? "남자," : "여자,"
     genderLabel.font = .init(name: Font.bold.rawValue, size: 12)
     genderLabel.textColor = .darkgrey_custom
     

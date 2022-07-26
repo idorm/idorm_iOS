@@ -82,6 +82,7 @@ class OnboardingTableViewCell: UITableViewCell {
   func configureUI(type: OnboardingListType, question: String) {
     contentView.backgroundColor = .white
     infoLabel.text = question
+    self.type = type
     
     [ infoLabel, optionalLabel, textField, letterNumLabel, textView ]
       .forEach { contentView.addSubview($0) }

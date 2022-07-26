@@ -45,17 +45,10 @@ class OnboardingViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureUI()
+    bind()
   }
   
   // MARK: - Selectors
-  @objc private func didTapSkipButton() {
-    print("Skip!")
-  }
-  
-  @objc private func didTapConfirmButton() {
-    print("Confirm!")
-  }
-  
   @objc private func hideKeyboard() {
     tableView.endEditing(true)
   }
@@ -80,6 +73,21 @@ class OnboardingViewController: UIViewController {
       make.height.equalTo(76)
     }
   }
+  
+  private func bind() {
+    viewModel.output.enableConfirmButton
+      .subscribe(onNext: { [weak self] isEnabled in
+        print(self?.viewModel.output.myInfo.value)
+        if isEnabled {
+          self?.floatyBottomView.confirmButton.isUserInteractionEnabled = true
+          self?.floatyBottomView.confirmButton.configuration?.baseBackgroundColor = .idorm_blue
+        } else {
+          self?.floatyBottomView.confirmButton.isUserInteractionEnabled = false
+          self?.floatyBottomView.confirmButton.configuration?.baseBackgroundColor = .grey_custom
+        }
+      })
+      .disposed(by: disposeBag)
+  }
 }
 
 extension OnboardingViewController: UITableViewDataSource, UITableViewDelegate {
@@ -92,19 +100,25 @@ extension OnboardingViewController: UITableViewDataSource, UITableViewDelegate {
     cell.onChangedTextSubject
       .subscribe(onNext: { [weak self] text, type in
         guard let self = self else { return }
-        switch onboardingListType {
-        case .cleanup:
-          self.viewModel.myInfo?.cleanUpStatus = text
+        switch type {
         case .wakeup:
-          self.viewModel.myInfo?.wakeupTime = text
+          self.viewModel.input.wakeUpTimeTextFieldChanged
+            .accept(text)
+        case .cleanup:
+          self.viewModel.input.cleanUpTimeTextFieldChanged
+            .accept(text)
         case .shower:
-          self.viewModel.myInfo?.showerTime = text
+          self.viewModel.input.showerTimeTextFieldChanged
+            .accept(text)
         case .mbti:
-          self.viewModel.myInfo?.mbti = text
+          self.viewModel.input.mbtiTextFieldChanged
+            .accept(text)
         case .chatLink:
-          self.viewModel.myInfo?.chatLink = text
+          self.viewModel.input.chatLinkTextFieldChanged
+            .accept(text)
         case .wishText:
-          self.viewModel.myInfo?.wishText = text
+          self.viewModel.input.wishTextTextFieldChanged
+            .accept(text)
         }
       })
       .disposed(by: disposeBag)
@@ -137,6 +151,14 @@ extension OnboardingViewController: UITableViewDataSource, UITableViewDelegate {
     
     header.onChangedFemaleButton
       .bind(to: viewModel.input.femaleButtonTapped)
+      .disposed(by: disposeBag)
+    
+    header.onChangedPeriod16Button
+      .bind(to: viewModel.input.period16ButtonTapped)
+      .disposed(by: disposeBag)
+    
+    header.onChangedPeriod24Button
+      .bind(to: viewModel.input.period24ButtonTapped)
       .disposed(by: disposeBag)
     
     header.onChangedSnoringButton
