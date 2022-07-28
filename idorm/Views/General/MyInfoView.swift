@@ -210,7 +210,7 @@ class MyInfoView: UIView {
     
     let contentsLabel = UILabel()
     contentsLabel.font = .init(name: Font.medium.rawValue, size: 14)
-    contentsLabel.textColor = .darkgrey_custom
+    contentsLabel.textColor = .idorm_gray_400
     
     if query == "기상시간" {
       contentsLabel.text = myInfo.wakeupTime
@@ -251,7 +251,7 @@ class MyInfoView: UIView {
     let contentsLabel = UILabel()
     contentsLabel.font = .init(name: Font.medium.rawValue, size: 14)
     contentsLabel.text = myInfo.wishText
-    contentsLabel.textColor = .darkgrey_custom
+    contentsLabel.textColor = .idorm_gray_400
     contentsLabel.numberOfLines = 0
     contentsLabel.textAlignment = .left
     
@@ -274,7 +274,7 @@ class MyInfoView: UIView {
     
     let view = UIView()
     view.backgroundColor = .white
-    view.layer.borderColor = UIColor.bluegrey.cgColor
+    view.layer.borderColor = UIColor.idorm_gray_200.cgColor
     view.layer.borderWidth = 1
     
     let humanImageView = UIImageView(image: UIImage(named: "Human"))
@@ -282,7 +282,7 @@ class MyInfoView: UIView {
     let genderLabel = UILabel()
 //    genderLabel.text = myInfo.gender ? "남자," : "여자,"
     genderLabel.font = .init(name: Font.bold.rawValue, size: 12)
-    genderLabel.textColor = .darkgrey_custom
+    genderLabel.textColor = .idorm_gray_400
     
     let ageLabel = UILabel()
     ageLabel.text = myInfo.age + " 세"
@@ -291,7 +291,7 @@ class MyInfoView: UIView {
     
     let mbtiLabel = UILabel()
     mbtiLabel.text = myInfo.mbti
-    mbtiLabel.textColor = .grey_custom
+    mbtiLabel.textColor = .idorm_gray_300
     mbtiLabel.font = .init(name: Font.bold.rawValue, size: 12)
     
     let stack = UIStackView(arrangedSubviews: [ genderLabel, ageLabel ])

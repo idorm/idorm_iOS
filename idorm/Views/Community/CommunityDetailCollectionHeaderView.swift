@@ -25,7 +25,7 @@ class CommunityDetailTableHeaderView: UIView {
   
   lazy var myImg: UIImageView = {
     let iv = UIImageView()
-    iv.backgroundColor = .grey_custom
+    iv.backgroundColor = .idorm_gray_300
     iv.layer.cornerRadius = 8
     iv.layer.masksToBounds = true
     
@@ -43,7 +43,7 @@ class CommunityDetailTableHeaderView: UIView {
   
   lazy var timeLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .grey_custom
+    label.textColor = .idorm_gray_300
     label.font = .init(name: Font.medium.rawValue, size: 10)
     label.text = "일주일 전"
     
@@ -64,7 +64,7 @@ class CommunityDetailTableHeaderView: UIView {
   lazy var contentsLabel: UILabel = {
     let label = UILabel()
     label.font = .init(name: Font.medium.rawValue, size: 12)
-    label.textColor = .darkgrey_custom
+    label.textColor = .idorm_gray_400
     label.numberOfLines = 0
     label.text = "더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트"
     
@@ -90,7 +90,7 @@ class CommunityDetailTableHeaderView: UIView {
     let button = UIButton(type: .custom)
     button.setTitle("공감하기", for: .normal)
     button.setTitleColor(UIColor.black, for: .normal)
-    button.backgroundColor = .blue_white
+    button.backgroundColor = .idorm_gray_100
     button.layer.cornerRadius = 4
     button.layer.masksToBounds = true
     button.titleLabel?.font = .init(name: Font.medium.rawValue, size: 10)
@@ -103,7 +103,7 @@ class CommunityDetailTableHeaderView: UIView {
     let button = UIButton(type: .custom)
     button.setTitle("등록순", for: .normal)
     button.setTitleColor(UIColor.black, for: .selected)
-    button.setTitleColor(UIColor.grey_custom, for: .normal)
+    button.setTitleColor(UIColor.idorm_gray_300, for: .normal)
     button.titleLabel?.font = .init(name: Font.medium.rawValue, size: 10)
     
     return button
@@ -113,7 +113,7 @@ class CommunityDetailTableHeaderView: UIView {
     let button = UIButton(type: .custom)
     button.setTitle("최신순", for: .normal)
     button.setTitleColor(UIColor.black, for: .selected)
-    button.setTitleColor(UIColor.grey_custom, for: .normal)
+    button.setTitleColor(UIColor.idorm_gray_300, for: .normal)
     button.titleLabel?.font = .init(name: Font.medium.rawValue, size: 10)
     
     return button

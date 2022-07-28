@@ -55,7 +55,7 @@ class CommunityPopularCollectionVIewCell: UICollectionViewCell {
   
   lazy var messageCountLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .darkgrey_custom
+    label.textColor = .idorm_gray_400
     label.font = .init(name: Font.medium.rawValue, size: 10)
     label.text = "100"
     
@@ -64,7 +64,7 @@ class CommunityPopularCollectionVIewCell: UICollectionViewCell {
   
   lazy var pictureCountLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .darkgrey_custom
+    label.textColor = .idorm_gray_400
     label.font = .init(name: Font.medium.rawValue, size: 10)
     label.text = "100"
     
@@ -73,7 +73,7 @@ class CommunityPopularCollectionVIewCell: UICollectionViewCell {
 
   lazy var likeCountLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .darkgrey_custom
+    label.textColor = .idorm_gray_400
     label.font = .init(name: Font.medium.rawValue, size: 10)
     label.text = "100"
     

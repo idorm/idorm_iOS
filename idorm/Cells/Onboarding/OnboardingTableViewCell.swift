@@ -22,7 +22,7 @@ class OnboardingTableViewCell: UITableViewCell {
   
   lazy var infoLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .darkgrey_custom
+    label.textColor = .idorm_gray_400
     label.font = .init(name: Font.medium.rawValue, size: 14)
     
     return label
@@ -40,11 +40,11 @@ class OnboardingTableViewCell: UITableViewCell {
   
   lazy var textView: RSKGrowingTextView = {
     let tv = RSKGrowingTextView()
-    tv.attributedPlaceholder = NSAttributedString(string: "입력", attributes: [NSAttributedString.Key.font: UIFont.init(name: Font.regular.rawValue, size: 14) ?? 0, NSAttributedString.Key.foregroundColor: UIColor.grey_custom])
+    tv.attributedPlaceholder = NSAttributedString(string: "입력", attributes: [NSAttributedString.Key.font: UIFont.init(name: Font.regular.rawValue, size: 14) ?? 0, NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_300])
     tv.font = .init(name: Font.regular.rawValue, size: 14)
     tv.textColor = .black
     tv.layer.cornerRadius = 10
-    tv.layer.borderColor = UIColor.grey_custom.cgColor
+    tv.layer.borderColor = UIColor.idorm_gray_300.cgColor
     tv.layer.borderWidth = 1
     tv.isScrollEnabled = false
     tv.keyboardType = .default
@@ -58,7 +58,7 @@ class OnboardingTableViewCell: UITableViewCell {
   
   lazy var letterNumLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .grey_custom
+    label.textColor = .idorm_gray_300
     label.isHidden = true
     label.font = .init(name: Font.medium.rawValue, size: 14)
     

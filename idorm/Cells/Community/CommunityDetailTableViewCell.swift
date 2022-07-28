@@ -19,7 +19,7 @@ class CommunityDetailTableViewCell: UITableViewCell {
   
   lazy var myImg: UIImageView = {
     let iv = UIImageView()
-    iv.backgroundColor = .grey_custom
+    iv.backgroundColor = .idorm_gray_300
     iv.layer.cornerRadius = 8
     iv.layer.masksToBounds = true
     
@@ -37,7 +37,7 @@ class CommunityDetailTableViewCell: UITableViewCell {
   
   lazy var timeLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .grey_custom
+    label.textColor = .idorm_gray_300
     label.font = .init(name: Font.medium.rawValue, size: 10)
     label.text = "1시간 전"
     
@@ -54,7 +54,7 @@ class CommunityDetailTableViewCell: UITableViewCell {
   
   lazy var contentsLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .darkgrey_custom
+    label.textColor = .idorm_gray_400
     label.font = .init(name: Font.medium.rawValue, size: 12)
     label.numberOfLines = 0
     label.text = "댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용 댓글 내용"
@@ -66,7 +66,7 @@ class CommunityDetailTableViewCell: UITableViewCell {
     let button = UIButton(type: .custom)
     button.setTitle("답글 쓰기", for: .normal)
     button.setTitleColor(UIColor.black, for: .normal)
-    button.backgroundColor = .blue_white
+    button.backgroundColor = .idorm_gray_100
     button.titleLabel?.font = .init(name: Font.medium.rawValue, size: 10)
     button.contentEdgeInsets = UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 10)
     

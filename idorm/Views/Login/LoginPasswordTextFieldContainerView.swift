@@ -15,10 +15,10 @@ class LoginPasswordTextFieldContainerView: UIView {
     lazy var textField: UITextField = {
         let tf = UITextField()
         tf.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
-            NSAttributedString.Key.foregroundColor: UIColor.grey_custom,
+            NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_300,
             NSAttributedString.Key.font: UIFont.init(name: Font.medium.rawValue, size: 14.0) ?? 0
         ])
-        tf.textColor = .grey_custom
+        tf.textColor = .idorm_gray_300
         tf.font = .init(name: Font.medium.rawValue, size: 14.0)
         tf.addLeftPadding(16)
         tf.backgroundColor = .white
@@ -88,7 +88,7 @@ class LoginPasswordTextFieldContainerView: UIView {
         backgroundColor = .white
         layer.borderWidth = 1
         layer.cornerRadius = 10
-        layer.borderColor = UIColor.darkgrey_custom.cgColor
+        layer.borderColor = UIColor.idorm_gray_400.cgColor
         
         textField.snp.makeConstraints { make in
             make.leading.centerY.equalToSuperview()
@@ -125,7 +125,7 @@ extension LoginPasswordTextFieldContainerView: UITextFieldDelegate {
         
         if LoginUtilities.isValidPasswordFinal(pwd: textField.text ?? "") {
             checkmarkButton.isHidden = false
-            layer.borderColor = UIColor.darkgrey_custom.cgColor
+            layer.borderColor = UIColor.idorm_gray_400.cgColor
         } else {
             checkmarkButton.isHidden = true
         }

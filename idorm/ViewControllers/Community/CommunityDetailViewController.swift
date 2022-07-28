@@ -14,7 +14,7 @@ class CommunityDetailViewController: UIViewController {
   // MARK: - Properties
   lazy var commentsTextView: RSKGrowingTextView = {
     let textView = RSKGrowingTextView()
-    textView.attributedPlaceholder = NSAttributedString(string: "댓글을 입력해주세요.", attributes: [NSAttributedString.Key.font: UIFont.init(name: Font.regular.rawValue, size: 12) ?? 0, NSAttributedString.Key.foregroundColor: UIColor.darkgrey_custom])
+    textView.attributedPlaceholder = NSAttributedString(string: "댓글을 입력해주세요.", attributes: [NSAttributedString.Key.font: UIFont.init(name: Font.regular.rawValue, size: 12) ?? 0, NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_400])
     textView.layer.cornerRadius = 15
     textView.backgroundColor = .init(rgb: 0xF4F2FA)
     textView.isScrollEnabled = false
@@ -54,7 +54,7 @@ class CommunityDetailViewController: UIViewController {
     tableView.estimatedSectionHeaderHeight = 100
     tableView.rowHeight = UITableView.automaticDimension
     tableView.sectionHeaderHeight = UITableView.automaticDimension
-    tableView.separatorColor = .bluegrey
+    tableView.separatorColor = .idorm_gray_200
     tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     tableView.allowsSelection = false
     tableView.keyboardDismissMode = .interactive

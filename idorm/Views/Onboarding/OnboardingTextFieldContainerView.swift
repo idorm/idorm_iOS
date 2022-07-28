@@ -15,7 +15,7 @@ class OnboardingTextFieldContainerView: UIView {
   lazy var textField: UITextField = {
     let tf = UITextField()
     tf.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
-      NSAttributedString.Key.foregroundColor: UIColor.grey_custom,
+      NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_300,
       NSAttributedString.Key.font: UIFont.init(name: Font.medium.rawValue, size: 14.0) ?? 0
     ])
     tf.textColor = .black
@@ -69,7 +69,7 @@ class OnboardingTextFieldContainerView: UIView {
     backgroundColor = .white
     layer.borderWidth = 1
     layer.cornerRadius = 10
-    layer.borderColor = UIColor.grey_custom.cgColor
+    layer.borderColor = UIColor.idorm_gray_300.cgColor
     
     textField.snp.makeConstraints { make in
       make.leading.bottom.top.equalToSuperview()
@@ -119,7 +119,7 @@ class OnboardingTextFieldContainerView: UIView {
       .asDriver()
       .drive(onNext: { [weak self] in
         let text = self?.textField.text ?? ""
-        self?.layer.borderColor = UIColor.grey_custom.cgColor
+        self?.layer.borderColor = UIColor.idorm_gray_300.cgColor
         self?.xmarkButton.isHidden = true
         if text.count >= 1 {
           self?.checkmarkButton.isHidden = false

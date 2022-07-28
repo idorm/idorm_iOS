@@ -29,7 +29,7 @@ class CommunityPostCollectionViewCell: UICollectionViewCell {
   lazy var contentsLabel: UILabel = {
     let label = UILabel()
     label.font = .init(name: Font.medium.rawValue, size: 12)
-    label.textColor = .darkgrey_custom
+    label.textColor = .idorm_gray_400
     label.text = "내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용"
     label.numberOfLines = 1
     
@@ -38,7 +38,7 @@ class CommunityPostCollectionViewCell: UICollectionViewCell {
   
   lazy var userInfoLabel: UILabel = {
     let label = UILabel()
-    label.textColor = .grey_custom
+    label.textColor = .idorm_gray_300
     label.font = .init(name: Font.medium.rawValue, size: 10)
     label.text = "닉네임닉네임닉네임 ∙ 1분 전"
     
@@ -55,7 +55,7 @@ class CommunityPostCollectionViewCell: UICollectionViewCell {
   lazy var likeCountLabel: UILabel = {
     let label = UILabel()
     label.font = .init(name: Font.medium.rawValue, size: 10)
-    label.textColor = .grey_custom
+    label.textColor = .idorm_gray_300
     label.text = "100"
     
     return label
@@ -64,7 +64,7 @@ class CommunityPostCollectionViewCell: UICollectionViewCell {
   lazy var messageCountLabel: UILabel = {
     let label = UILabel()
     label.font = .init(name: Font.medium.rawValue, size: 10)
-    label.textColor = .grey_custom
+    label.textColor = .idorm_gray_300
     label.text = "100"
     
     return label
@@ -73,7 +73,7 @@ class CommunityPostCollectionViewCell: UICollectionViewCell {
   lazy var pictureCountLabel: UILabel = {
     let label = UILabel()
     label.font = .init(name: Font.medium.rawValue, size: 10)
-    label.textColor = .grey_custom
+    label.textColor = .idorm_gray_300
     label.text = "100"
     
     return label

@@ -36,7 +36,7 @@ class PostingViewController: UIViewController {
   lazy var confirmButton: UIButton = {
     let btn = UIButton(type: .custom)
     btn.setTitle("완료", for: .normal)
-    btn.setTitleColor(UIColor.grey_custom, for: .normal)
+    btn.setTitleColor(UIColor.idorm_gray_300, for: .normal)
     btn.titleLabel?.font = .init(name: Font.bold.rawValue, size: 16)
     btn.addTarget(self, action: #selector(didTapPostingButton), for: .touchUpInside)
     
@@ -49,7 +49,7 @@ class PostingViewController: UIViewController {
       string: "제목",
       attributes: [
         NSAttributedString.Key.font: UIFont.init(name: Font.bold.rawValue, size: 20) ?? 0,
-        NSAttributedString.Key.foregroundColor: UIColor.bluegrey
+        NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_200
       ])
     tf.attributedPlaceholder = attributedString
     tf.font = .init(name: Font.bold.rawValue, size: 20)
@@ -59,7 +59,7 @@ class PostingViewController: UIViewController {
   
   lazy var separatorLine: UIView = {
     let view = UIView()
-    view.backgroundColor = .bluegrey
+    view.backgroundColor = .idorm_gray_200
     
     return view
   }()
@@ -74,7 +74,7 @@ class PostingViewController: UIViewController {
   
   lazy var textView: RSKPlaceholderTextView = {
     let textView = RSKPlaceholderTextView()
-    textView.placeholderColor = .bluegrey
+    textView.placeholderColor = .idorm_gray_200
     textView.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     textView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     let attributedString = NSAttributedString(

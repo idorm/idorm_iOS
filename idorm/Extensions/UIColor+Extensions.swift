@@ -38,19 +38,23 @@ extension UIColor {
     return UIColor.init(rgb: 0x71A1FE)
   }
   
-  static var grey_custom: UIColor {
+  static var idorm_gray_300: UIColor {
     return UIColor.init(rgb: 0x9B9B9B)
   }
   
-  static var darkgrey_custom: UIColor {
+  static var idorm_gray_400: UIColor {
     return UIColor.init(rgb: 0x5B5B5B)
   }
   
-  static var bluegrey: UIColor {
+  static var idorm_gray_200: UIColor {
     return UIColor.init(rgb: 0xE3E1EC)
   }
   
-  static var blue_white: UIColor {
+  static var idorm_gray_100: UIColor {
     return UIColor.init(rgb: 0xF4F2FA)
+  }
+  
+  static var idorm_yellow: UIColor {
+    return UIColor.init(rgb: 0xFACD5B)
   }
 }

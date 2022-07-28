@@ -24,7 +24,7 @@ class MatchingViewController: UIViewController {
     
     let infoView = MyInfoView()
     infoView.configureUI(myinfo: myInfo)
-
+    
     view.addSubview(infoView)
     
     infoView.snp.makeConstraints { make in

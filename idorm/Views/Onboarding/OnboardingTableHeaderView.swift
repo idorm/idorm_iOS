@@ -16,7 +16,7 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
   lazy var ageTextField: CHIOTPFieldTwo = {
     let tf = CHIOTPFieldTwo()
     tf.numberOfDigits = 2
-    tf.borderColor = .bluegrey
+    tf.borderColor = .idorm_gray_200
     tf.font = .init(name: Font.medium.rawValue, size: 14)
     tf.cornerRadius = 10
     tf.spacing = 2
@@ -28,7 +28,7 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
   lazy var ageDescriptionLabel: UILabel = {
     let label = UILabel()
     label.text = "살"
-    label.textColor = .grey_custom
+    label.textColor = .idorm_gray_300
     label.font = .init(name: Font.medium.rawValue, size: 12)
     
     return label
@@ -37,7 +37,7 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
   lazy var titleLabel: UILabel = {
     let label = UILabel()
     label.text = "룸메이트 매칭을 위한 기본정보를 알려주세요!"
-    label.textColor = .grey_custom
+    label.textColor = .idorm_gray_300
     label.font = .init(name: Font.bold.rawValue, size: 12.0)
     
     return label
@@ -47,7 +47,7 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
     let label = UILabel()
     label.text = "불호요소가 있는 내 습관을 미리 알려주세요."
     label.font = .init(name: Font.medium.rawValue, size: 12)
-    label.textColor = .grey_custom
+    label.textColor = .idorm_gray_300
     
     return label
   }()

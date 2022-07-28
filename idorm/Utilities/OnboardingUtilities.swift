@@ -55,12 +55,12 @@ class OnboardingUtilities {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
     container.font = UIFont.init(name: Font.medium.rawValue, size: 14)
-    container.foregroundColor = UIColor.grey_custom
+    container.foregroundColor = UIColor.idorm_gray_300
     config.attributedTitle = AttributedString(title, attributes: container)
     config.baseBackgroundColor = .white
     config.cornerStyle = .capsule
     config.contentInsets = NSDirectionalEdgeInsets(top: 6, leading: 18, bottom: 6, trailing: 18)
-    config.background.strokeColor = .bluegrey
+    config.background.strokeColor = .idorm_gray_200
     config.background.strokeWidth = 1
     let button = UIButton(configuration: config)
     button.configurationUpdateHandler = getButtonUpdateHandler()
@@ -79,7 +79,7 @@ class OnboardingUtilities {
   
   static func getSeparatorLine() -> UIView {
     let view = UIView()
-    view.backgroundColor = .blue_white
+    view.backgroundColor = .idorm_gray_100
     
     return view
   }
@@ -93,7 +93,7 @@ class OnboardingUtilities {
         button.configuration?.background.strokeWidth = 0
       default:
         button.configuration?.baseBackgroundColor = .white
-        button.configuration?.attributedTitle?.foregroundColor = UIColor.grey_custom
+        button.configuration?.attributedTitle?.foregroundColor = UIColor.idorm_gray_300
         button.configuration?.background.strokeWidth = 1
       }
     }

@@ -49,7 +49,7 @@ class ImagePickerViewController: UIViewController {
     let button = UIButton(type: .custom)
     button.setTitle("완료", for: .normal)
     button.titleLabel?.font = .init(name: Font.bold.rawValue, size: 16)
-    button.setTitleColor(UIColor.grey_custom, for: .normal)
+    button.setTitleColor(UIColor.idorm_gray_300, for: .normal)
     button.addTarget(self, action: #selector(didTapConfirmButton), for: .touchUpInside)
     
     return button

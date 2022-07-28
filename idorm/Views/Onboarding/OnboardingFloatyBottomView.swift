@@ -8,6 +8,11 @@
 import SnapKit
 import UIKit
 
+enum OnboardingFloatyBottomViewType {
+  case normal
+  case detail
+}
+
 class OnboardingFloatyBottomView: UIView {
   // MARK: - Properties
   lazy var containerView: UIView = {
@@ -23,11 +28,15 @@ class OnboardingFloatyBottomView: UIView {
   lazy var skipButton: UIButton = {
     var container = AttributeContainer()
     container.font = .init(name: Font.medium.rawValue, size: 16)
-    container.foregroundColor = .darkgrey_custom
+    container.foregroundColor = .idorm_gray_400
     var config = UIButton.Configuration.filled()
-    config.baseBackgroundColor = .blue_white
+    config.baseBackgroundColor = .idorm_gray_100
     config.contentInsets = NSDirectionalEdgeInsets(top: 14, leading: 26, bottom: 14, trailing: 26)
-    config.attributedTitle = AttributedString("정보 입력 건너 뛰기", attributes: container)
+    if type == .normal {
+      config.attributedTitle = AttributedString("정보 입력 건너 뛰기", attributes: container)
+    } else {
+      config.attributedTitle = AttributedString("뒤로 가기", attributes: container)
+    }
     let button = UIButton(configuration: config)
     
     return button
@@ -38,27 +47,25 @@ class OnboardingFloatyBottomView: UIView {
     container.font = .init(name: Font.medium.rawValue, size: 16)
     container.foregroundColor = UIColor.white
     var config = UIButton.Configuration.filled()
-    config.baseBackgroundColor = .grey_custom
     config.contentInsets = NSDirectionalEdgeInsets(top: 14, leading: 26, bottom: 14, trailing: 26)
     config.attributedTitle = AttributedString("완료", attributes: container)
+    if type == .normal {
+      config.baseBackgroundColor = .idorm_gray_300
+    } else {
+      config.baseBackgroundColor = .idorm_blue
+    }
     let button = UIButton(configuration: config)
     button.isUserInteractionEnabled = false
     
     return button
   }()
-
+  
+  var type: OnboardingFloatyBottomViewType?
+  
   // MARK: - LifeCycle
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    configureUI()
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
   // MARK: - Helpers
-  private func configureUI() {
+  func configureUI(type: OnboardingFloatyBottomViewType) {
+    self.type = type
     addSubview(containerView)
     
     containerView.snp.makeConstraints { make in

@@ -36,7 +36,12 @@ class OnboardingViewController: UIViewController {
     return tapGesture
   }()
 
-  let floatyBottomView = OnboardingFloatyBottomView()
+  lazy var floatyBottomView: OnboardingFloatyBottomView = {
+    let floatyBottomView = OnboardingFloatyBottomView()
+    floatyBottomView.configureUI(type: .normal)
+    
+    return floatyBottomView
+  }()
   
   let viewModel = OnboardingViewModel()
   let disposeBag = DisposeBag()
@@ -56,6 +61,7 @@ class OnboardingViewController: UIViewController {
   // MARK: - Helpers
   private func configureUI() {
     view.backgroundColor = .white
+    navigationController?.navigationBar.tintColor = .black
     navigationItem.title = "내 정보 입력"
     tableView.addGestureRecognizer(tableViewTapGesture)
     
@@ -82,9 +88,20 @@ class OnboardingViewController: UIViewController {
           self?.floatyBottomView.confirmButton.configuration?.baseBackgroundColor = .idorm_blue
         } else {
           self?.floatyBottomView.confirmButton.isUserInteractionEnabled = false
-          self?.floatyBottomView.confirmButton.configuration?.baseBackgroundColor = .grey_custom
+          self?.floatyBottomView.confirmButton.configuration?.baseBackgroundColor = .idorm_gray_300
         }
       })
+      .disposed(by: disposeBag)
+    
+    floatyBottomView.confirmButton.rx.tap
+      .subscribe(
+        onNext: { [weak self] in
+          let updatedMyInfo = self?.viewModel.output.myInfo.value
+          let onboardingDetailVC = UINavigationController(rootViewController: OnboardingDetailViewController(myInfo: updatedMyInfo!))
+          onboardingDetailVC.modalPresentationStyle = .fullScreen
+          self?.present(onboardingDetailVC, animated: true)
+        }
+      )
       .disposed(by: disposeBag)
   }
 }

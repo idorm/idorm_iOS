@@ -20,7 +20,7 @@ class CompleteSignUpViewController: UIViewController {
     
     lazy var signUpLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .darkgrey_custom
+        label.textColor = .idorm_gray_400
         label.text = "가입완료를 축하드려요!"
         label.textAlignment = .center
         label.font = .init(name: Font.bold.rawValue, size: 16.0)
@@ -31,7 +31,7 @@ class CompleteSignUpViewController: UIViewController {
     lazy var descriptionLabel1: UILabel = {
         let label = UILabel()
         label.font = .init(name: Font.medium.rawValue, size: 12.0)
-        label.textColor = .grey_custom
+        label.textColor = .idorm_gray_300
         label.textAlignment = .center
         label.text = "로그인 후 인천대학교 기숙사 룸메이트 매칭을 위한"
         
@@ -41,7 +41,7 @@ class CompleteSignUpViewController: UIViewController {
     lazy var descriptionLabel2: UILabel = {
         let label = UILabel()
         label.font = .init(name: Font.medium.rawValue, size: 12.0)
-        label.textColor = .grey_custom
+        label.textColor = .idorm_gray_300
         label.textAlignment = .center
         label.text = "기본정보를 알려주세요."
         

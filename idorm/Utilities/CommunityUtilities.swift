@@ -23,7 +23,7 @@ enum CommunityAlertType: Int {
 class CommunityUtilities {
   static func getSeparatorLine() -> UIView {
     let view = UIView()
-    view.backgroundColor = .bluegrey
+    view.backgroundColor = .idorm_gray_200
     
     return view
   }
@@ -32,7 +32,7 @@ class CommunityUtilities {
     let label = UILabel()
     label.text = "100"
     label.font = .init(name: Font.medium.rawValue, size: 10)
-    label.textColor = .grey_custom
+    label.textColor = .idorm_gray_300
     
     return label
   }
@@ -41,7 +41,7 @@ class CommunityUtilities {
     let handler: UIButton.ConfigurationUpdateHandler = { button in
       switch button.state {
       case .highlighted:
-        button.configuration?.baseBackgroundColor = .blue_white
+        button.configuration?.baseBackgroundColor = .idorm_gray_100
       default:
         button.configuration?.baseBackgroundColor = .white
       }
@@ -56,7 +56,7 @@ class CommunityUtilities {
     titleContainer.foregroundColor = UIColor.black
     var subtitleContainer = AttributeContainer()
     subtitleContainer.font = UIFont.init(name: Font.medium.rawValue, size: 14)
-    subtitleContainer.foregroundColor = UIColor.darkgrey_custom
+    subtitleContainer.foregroundColor = UIColor.idorm_gray_400
     config.attributedTitle = AttributedString("신고하기", attributes: titleContainer)
     config.attributedSubtitle = AttributedString("idorm의 커뮤니티 가이드라인에 위배되는 댓글", attributes: subtitleContainer)
     config.baseBackgroundColor = .white

@@ -31,7 +31,7 @@ class ConfirmPasswordViewController: UIViewController {
         let tf = LoginUtilities.returnTextField(placeholder: "비밀번호를 한번 더 입력해주세요.")
         tf.addTarget(self, action: #selector(passwordTextFieldContainerView2_editingDidBegin(_:)), for: .editingDidBegin)
         tf.addTarget(self, action: #selector(passwordTextFieldContainerView2_EditingDidEnd(_:)), for: .editingDidEnd)
-        tf.layer.borderColor = tf.isEditing ? UIColor.idorm_blue.cgColor : UIColor.darkgrey_custom.cgColor
+        tf.layer.borderColor = tf.isEditing ? UIColor.idorm_blue.cgColor : UIColor.idorm_gray_400.cgColor
         tf.isSecureTextEntry = true
         
         return tf
@@ -90,13 +90,13 @@ class ConfirmPasswordViewController: UIViewController {
         if tf.text?.count ?? 0 >= 8 {
             eightLabel.textColor = .idorm_blue
         } else {
-            eightLabel.textColor = .darkgrey_custom
+            eightLabel.textColor = .idorm_gray_400
         }
         
         if LoginUtilities.isValidPassword(pwd: tf.text ?? "") {
             mixingLabel.textColor = .idorm_blue
         } else {
-            mixingLabel.textColor = .darkgrey_custom
+            mixingLabel.textColor = .idorm_gray_400
         }
         
         validConfirmPassword(text: tf.text ?? "")
@@ -120,9 +120,9 @@ class ConfirmPasswordViewController: UIViewController {
     
     @objc private func textFieldDidBeginEditing(tf: UITextField) {
         infoLabel.textColor = .black
-        eightLabel.textColor = .darkgrey_custom
-        mixingLabel.textColor = .darkgrey_custom
-        passwordTextFieldContainerView.layer.borderColor = UIColor.darkgrey_custom.cgColor
+        eightLabel.textColor = .idorm_gray_400
+        mixingLabel.textColor = .idorm_gray_400
+        passwordTextFieldContainerView.layer.borderColor = UIColor.idorm_gray_400.cgColor
     }
     
     @objc private func passwordTextFieldContainerView2_editingDidBegin(_ tf: UITextField) {
@@ -130,7 +130,7 @@ class ConfirmPasswordViewController: UIViewController {
     }
     
     @objc private func passwordTextFieldContainerView2_EditingDidEnd(_ tf: UITextField) {
-        tf.layer.borderColor = UIColor.darkgrey_custom.cgColor
+        tf.layer.borderColor = UIColor.idorm_gray_400.cgColor
         
         guard let password1Text = passwordTextFieldContainerView.textField.text else { return }
         if tf.text != password1Text {
@@ -140,7 +140,7 @@ class ConfirmPasswordViewController: UIViewController {
         } else {
             infoLabel2.text = "비밀번호 확인"
             infoLabel2.textColor = .black
-            tf.layer.borderColor = UIColor.darkgrey_custom.cgColor
+            tf.layer.borderColor = UIColor.idorm_gray_400.cgColor
         }
     }
     
@@ -205,7 +205,7 @@ class ConfirmPasswordViewController: UIViewController {
     private func returnDescriptionLabel(text: String) -> UILabel {
         let label = UILabel()
         label.font = .init(name: Font.medium.rawValue, size: 12.0)
-        label.textColor = .darkgrey_custom
+        label.textColor = .idorm_gray_400
         label.text = text
         
         return label
@@ -220,7 +220,7 @@ class ConfirmPasswordViewController: UIViewController {
         } else {
             infoLabel2.text = "비밀번호 확인"
             infoLabel2.textColor = .black
-            passwordTextFieldContainerView2.layer.borderColor = UIColor.darkgrey_custom.cgColor
+            passwordTextFieldContainerView2.layer.borderColor = UIColor.idorm_gray_400.cgColor
         }
     }
     

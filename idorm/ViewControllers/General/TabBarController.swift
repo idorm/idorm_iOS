@@ -12,7 +12,7 @@ class TabBarController: UITabBarController {
   let homeVC = UINavigationController(rootViewController: HomeViewController())
   let matchingVC = UINavigationController(rootViewController: MatchingViewController())
   let communityVC = UINavigationController(rootViewController: CommunityViewController())
-  let calandarVC = UINavigationController(rootViewController: CalandarViewController())
+  let calandarVC = UINavigationController(rootViewController: CalendarViewController())
   let mypageVC = UINavigationController(rootViewController: MypageViewController())
   
   
@@ -28,7 +28,7 @@ class TabBarController: UITabBarController {
     tabBar.tintColor = .idorm_blue
     tabBar.barTintColor = .white
     tabBar.backgroundColor = .white
-    tabBar.layer.borderColor = UIColor.bluegrey.cgColor
+    tabBar.layer.borderColor = UIColor.idorm_gray_200.cgColor
     tabBar.layer.borderWidth = 1
     tabBar.layer.cornerRadius = 24.0
     tabBar.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMaxXMinYCorner)
