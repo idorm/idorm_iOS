@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 import FSCalendar
 
-class MainCalendarTableHeaderView: UITableViewHeaderFooterView {
+class MainCalendarCollectionHeaderView: UICollectionReusableView {
   lazy var calendar: FSCalendar = {
     let calendar = FSCalendar()
     calendar.scope = .month
@@ -32,7 +32,7 @@ class MainCalendarTableHeaderView: UITableViewHeaderFooterView {
     return calendar
   }()
   
-  static let identifier = "MainCalendarTableHeaderView"
+  static let identifier = "MainCalendarCollectionHeaderView"
   
   // MARK: - LifeCycle
   

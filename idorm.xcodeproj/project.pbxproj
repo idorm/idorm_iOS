@@ -40,6 +40,8 @@
 		E56342212878246200E93D17 /* OnboardingTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56342202878246200E93D17 /* OnboardingTableHeaderView.swift */; };
 		E56342232878353100E93D17 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56342222878353100E93D17 /* TabBarController.swift */; };
 		E563422528784ED400E93D17 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E563422428784ED400E93D17 /* HomeViewController.swift */; };
+		E56DF4A2289354AF00E85B10 /* CalendarRoundedBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56DF4A1289354AF00E85B10 /* CalendarRoundedBackgroundView.swift */; };
+		E56DF4A428935B0800E85B10 /* UICollectionReusableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56DF4A328935B0800E85B10 /* UICollectionReusableView+Extensions.swift */; };
 		E57FB84F2886E1520050BBAE /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = E57FB84E2886E1520050BBAE /* RxCocoa */; };
 		E57FB8512886E1520050BBAE /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = E57FB8502886E1520050BBAE /* RxRelay */; };
 		E57FB8532886E1520050BBAE /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E57FB8522886E1520050BBAE /* RxSwift */; };
@@ -73,10 +75,10 @@
 		E5D49014288C3DDB00311493 /* OnboardingUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D49013288C3DDA00311493 /* OnboardingUtilities.swift */; };
 		E5D49016288C449600311493 /* OnboardingVIewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D49015288C449600311493 /* OnboardingVIewController.swift */; };
 		E5EB5F212891328500EC0425 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = E5EB5F202891328500EC0425 /* FSCalendar */; };
-		E5EB5F272891398200EC0425 /* MainCalendarTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F262891398200EC0425 /* MainCalendarTableHeaderView.swift */; };
+		E5EB5F272891398200EC0425 /* MainCalendarCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F262891398200EC0425 /* MainCalendarCollectionHeaderView.swift */; };
 		E5EB5F2A289143A100EC0425 /* CalendarChipCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F29289143A100EC0425 /* CalendarChipCollectionViewCell.swift */; };
-		E5EB5F2C2891534300EC0425 /* PersonalCalendarTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F2B2891534300EC0425 /* PersonalCalendarTableHeaderView.swift */; };
-		E5EB5F2E2891535E00EC0425 /* DormCalendarTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F2D2891535E00EC0425 /* DormCalendarTableHeaderView.swift */; };
+		E5EB5F2C2891534300EC0425 /* PersonalCalendarCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F2B2891534300EC0425 /* PersonalCalendarCollectionHeaderView.swift */; };
+		E5EB5F2E2891535E00EC0425 /* DormCalendarCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F2D2891535E00EC0425 /* DormCalendarCollectionHeaderView.swift */; };
 		E5EB5F302891558D00EC0425 /* CalendarDormCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F2F2891558D00EC0425 /* CalendarDormCollectionViewCell.swift */; };
 		E5EB5F322891589800EC0425 /* CalendarUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F312891589800EC0425 /* CalendarUtilities.swift */; };
 		E5F5EC722883C70C0026DE21 /* WebMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC712883C70C0026DE21 /* WebMailViewController.swift */; };
@@ -120,6 +122,8 @@
 		E56342202878246200E93D17 /* OnboardingTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTableHeaderView.swift; sourceTree = "<group>"; };
 		E56342222878353100E93D17 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E563422428784ED400E93D17 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		E56DF4A1289354AF00E85B10 /* CalendarRoundedBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarRoundedBackgroundView.swift; sourceTree = "<group>"; };
+		E56DF4A328935B0800E85B10 /* UICollectionReusableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionReusableView+Extensions.swift"; sourceTree = "<group>"; };
 		E57FB8552886E2710050BBAE /* PhotoLibrary+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotoLibrary+Extensions.swift"; sourceTree = "<group>"; };
 		E58131A7288E6AC6000DB8C9 /* OnboardingFloatyBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFloatyBottomView.swift; sourceTree = "<group>"; };
 		E586B6A428901B06005AB9C2 /* LoginTextFieldContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextFieldContainerView.swift; sourceTree = "<group>"; };
@@ -145,10 +149,10 @@
 		E5D49011288C003800311493 /* MyInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyInfoView.swift; sourceTree = "<group>"; };
 		E5D49013288C3DDA00311493 /* OnboardingUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingUtilities.swift; sourceTree = "<group>"; };
 		E5D49015288C449600311493 /* OnboardingVIewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVIewController.swift; sourceTree = "<group>"; };
-		E5EB5F262891398200EC0425 /* MainCalendarTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCalendarTableHeaderView.swift; sourceTree = "<group>"; };
+		E5EB5F262891398200EC0425 /* MainCalendarCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCalendarCollectionHeaderView.swift; sourceTree = "<group>"; };
 		E5EB5F29289143A100EC0425 /* CalendarChipCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarChipCollectionViewCell.swift; sourceTree = "<group>"; };
-		E5EB5F2B2891534300EC0425 /* PersonalCalendarTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCalendarTableHeaderView.swift; sourceTree = "<group>"; };
-		E5EB5F2D2891535E00EC0425 /* DormCalendarTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DormCalendarTableHeaderView.swift; sourceTree = "<group>"; };
+		E5EB5F2B2891534300EC0425 /* PersonalCalendarCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCalendarCollectionHeaderView.swift; sourceTree = "<group>"; };
+		E5EB5F2D2891535E00EC0425 /* DormCalendarCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DormCalendarCollectionHeaderView.swift; sourceTree = "<group>"; };
 		E5EB5F2F2891558D00EC0425 /* CalendarDormCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDormCollectionViewCell.swift; sourceTree = "<group>"; };
 		E5EB5F312891589800EC0425 /* CalendarUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarUtilities.swift; sourceTree = "<group>"; };
 		E5F5EC712883C70C0026DE21 /* WebMailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebMailViewController.swift; sourceTree = "<group>"; };
@@ -225,6 +229,7 @@
 				E55794ED287C36F5002DB2B0 /* UIView+Extensions.swift */,
 				E57FB8552886E2710050BBAE /* PhotoLibrary+Extensions.swift */,
 				E557E22828926F3B00F9C74D /* UIViewController+Extensions.swift */,
+				E56DF4A328935B0800E85B10 /* UICollectionReusableView+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -479,9 +484,10 @@
 		E5EB5F252891396700EC0425 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
-				E5EB5F262891398200EC0425 /* MainCalendarTableHeaderView.swift */,
-				E5EB5F2B2891534300EC0425 /* PersonalCalendarTableHeaderView.swift */,
-				E5EB5F2D2891535E00EC0425 /* DormCalendarTableHeaderView.swift */,
+				E5EB5F262891398200EC0425 /* MainCalendarCollectionHeaderView.swift */,
+				E5EB5F2B2891534300EC0425 /* PersonalCalendarCollectionHeaderView.swift */,
+				E5EB5F2D2891535E00EC0425 /* DormCalendarCollectionHeaderView.swift */,
+				E56DF4A1289354AF00E85B10 /* CalendarRoundedBackgroundView.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -490,9 +496,9 @@
 			isa = PBXGroup;
 			children = (
 				E5EB5F29289143A100EC0425 /* CalendarChipCollectionViewCell.swift */,
-				E557E22A2892759A00F9C74D /* CalendarChipTableViewCell.swift */,
 				E557E2262892593F00F9C74D /* CalendarPersonalCollectionViewCell.swift */,
 				E5EB5F2F2891558D00EC0425 /* CalendarDormCollectionViewCell.swift */,
+				E557E22A2892759A00F9C74D /* CalendarChipTableViewCell.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -606,7 +612,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E53086E22879284000A5D0A0 /* HomeRoommateCollectionViewCell.swift in Sources */,
-				E5EB5F2E2891535E00EC0425 /* DormCalendarTableHeaderView.swift in Sources */,
+				E5EB5F2E2891535E00EC0425 /* DormCalendarCollectionHeaderView.swift in Sources */,
 				E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordViewController.swift in Sources */,
 				E5EB5F302891558D00EC0425 /* CalendarDormCollectionViewCell.swift in Sources */,
 				E557E22928926F3B00F9C74D /* UIViewController+Extensions.swift in Sources */,
@@ -616,7 +622,7 @@
 				E5290F0928881C6E0004B8E6 /* CommunityDetailCollectionHeaderView.swift in Sources */,
 				E50300F728773A5D00611C62 /* AppDelegate.swift in Sources */,
 				E55794EE287C36F5002DB2B0 /* UIView+Extensions.swift in Sources */,
-				E5EB5F2C2891534300EC0425 /* PersonalCalendarTableHeaderView.swift in Sources */,
+				E5EB5F2C2891534300EC0425 /* PersonalCalendarCollectionHeaderView.swift in Sources */,
 				E5AD7398287A8D8800BA2C5E /* UITextField+Extensions.swift in Sources */,
 				E5FBBB872880304900A7158D /* SECRET.swift in Sources */,
 				E508437728813CE80047A2EC /* FontManager.swift in Sources */,
@@ -628,6 +634,7 @@
 				E557E22B2892759A00F9C74D /* CalendarChipTableViewCell.swift in Sources */,
 				E5290F0E288867E50004B8E6 /* CommunityDetailTableViewCell.swift in Sources */,
 				E57FB8562886E2710050BBAE /* PhotoLibrary+Extensions.swift in Sources */,
+				E56DF4A428935B0800E85B10 /* UICollectionReusableView+Extensions.swift in Sources */,
 				E50300F928773A5D00611C62 /* SceneDelegate.swift in Sources */,
 				E5D4900B288BFA0200311493 /* MatchingViewController.swift in Sources */,
 				E53086E6287928B400A5D0A0 /* HomePopularCollectionViewCell.swift in Sources */,
@@ -637,7 +644,7 @@
 				E5C88908288972E000CBD04E /* CommunityAlertViewController.swift in Sources */,
 				E55794F0287C496D002DB2B0 /* OnboardingTableViewCell.swift in Sources */,
 				E5290EFF2887BBB00004B8E6 /* CommunityPostCollectionViewCell.swift in Sources */,
-				E5EB5F272891398200EC0425 /* MainCalendarTableHeaderView.swift in Sources */,
+				E5EB5F272891398200EC0425 /* MainCalendarCollectionHeaderView.swift in Sources */,
 				E5290F06288818E70004B8E6 /* CommunityDetailViewController.swift in Sources */,
 				E58F96FD28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift in Sources */,
 				E58F96FB2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift in Sources */,
@@ -650,6 +657,7 @@
 				E56342232878353100E93D17 /* TabBarController.swift in Sources */,
 				E5F5EC762884027D0026DE21 /* CalendarViewController.swift in Sources */,
 				E58ACB8728846E050031BD86 /* ImagePickerViewController.swift in Sources */,
+				E56DF4A2289354AF00E85B10 /* CalendarRoundedBackgroundView.swift in Sources */,
 				E508437B28814CAB0047A2EC /* AuthViewController.swift in Sources */,
 				E5EB5F2A289143A100EC0425 /* CalendarChipCollectionViewCell.swift in Sources */,
 				E5F5EC78288402840026DE21 /* MypageViewController.swift in Sources */,

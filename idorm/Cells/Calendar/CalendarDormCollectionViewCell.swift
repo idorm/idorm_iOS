@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class CalendarDormTableViewCell: UITableViewCell {
+class CalendarDormCollectionViewCell: UICollectionViewCell {
   // MARK: - Properties
   lazy var circleView: UIView = {
     let view = UIView()
@@ -43,11 +43,12 @@ class CalendarDormTableViewCell: UITableViewCell {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(systemName: "chevron.right"), for: .normal)
     button.tintColor = .idorm_gray_400
+    button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration.init(pointSize: 14), forImageIn: .normal)
     
     return button
   }()
   
-  static let identifier = "CalendarDormTableViewCell"
+  static let identifier = "CalendarDormCollectionViewCell"
   
   // MARK: - Helpers
   func configureUI() {

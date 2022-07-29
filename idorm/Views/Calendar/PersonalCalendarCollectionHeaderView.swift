@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class PersonalCalendarTableHeaderView: UITableViewHeaderFooterView {
+class PersonalCalendarCollectionHeaderView: UICollectionReusableView {
   lazy var titleLabel: UILabel = {
     let label = UILabel()
     label.text = "개인 일정"
@@ -20,7 +20,7 @@ class PersonalCalendarTableHeaderView: UITableViewHeaderFooterView {
     return label
   }()
   
-  static let identifier = "PersonalCalendarTableHeaderView"
+  static let identifier = "PersonalCalendarCollectionHeaderView"
   
   // MARK: - LifeCycle
   
@@ -30,8 +30,8 @@ class PersonalCalendarTableHeaderView: UITableViewHeaderFooterView {
       .forEach { addSubview($0) }
     
     titleLabel.snp.makeConstraints { make in
-      make.leading.equalToSuperview()
-      make.top.equalToSuperview().inset(14)
+      make.leading.equalToSuperview().inset(24)
+      make.centerY.equalToSuperview()
     }
   }
 }
