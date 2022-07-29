@@ -51,10 +51,14 @@ extension UIColor {
   }
   
   static var idorm_gray_100: UIColor {
-    return UIColor.init(rgb: 0xF4F2FA)
+    return UIColor.init(rgb: 0xF2F5FA)
   }
   
   static var idorm_yellow: UIColor {
     return UIColor.init(rgb: 0xFACD5B)
+  }
+  
+  static var idorm_red: UIColor {
+    return UIColor.init(rgb: 0xFF6868)
   }
 }

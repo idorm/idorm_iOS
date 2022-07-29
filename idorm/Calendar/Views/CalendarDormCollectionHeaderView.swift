@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class DormCalendarCollectionHeaderView: UICollectionReusableView {
+class CalendarDormCollectionHeaderView: UICollectionReusableView {
   lazy var titleLabel: UILabel = {
     let label = UILabel()
     label.text = "기숙사 공식 일정"

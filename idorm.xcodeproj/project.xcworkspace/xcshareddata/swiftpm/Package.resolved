@@ -28,6 +28,15 @@
       }
     },
     {
+      "identity" : "jtapplecalendar",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/patchthecode/JTAppleCalendar.git",
+      "state" : {
+        "revision" : "89bc6f1c0426b3bd2856409ec600333a7d087e1b",
+        "version" : "8.0.4"
+      }
+    },
+    {
       "identity" : "panmodal",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/slackhq/PanModal.git",

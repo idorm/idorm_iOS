@@ -15,16 +15,25 @@ class CalendarViewController: UIViewController {
     let layout = createCompositionalLayout()
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
     collectionView.backgroundColor = .white
+    collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 29, right: 0)
+    collectionView.bounces = false
     collectionView.delegate = self
     collectionView.dataSource = self
     collectionView.register(CalendarChipCollectionViewCell.self, forCellWithReuseIdentifier: CalendarChipCollectionViewCell.identifier)
     collectionView.register(CalendarPersonalCollectionViewCell.self, forCellWithReuseIdentifier: CalendarPersonalCollectionViewCell.identifier)
     collectionView.register(CalendarDormCollectionViewCell.self, forCellWithReuseIdentifier: CalendarDormCollectionViewCell.identifier)
-    collectionView.register(MainCalendarCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MainCalendarCollectionHeaderView.identifier)
-    collectionView.register(PersonalCalendarCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PersonalCalendarCollectionHeaderView.identifier)
-    collectionView.register(DormCalendarCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: DormCalendarCollectionHeaderView.identifier)
+    collectionView.register(CalendarCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarCollectionHeaderView.identifier)
+    collectionView.register(CalendarPersonalCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarPersonalCollectionHeaderView.identifier)
+    collectionView.register(CalendarDormCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarDormCollectionHeaderView.identifier)
     
     return collectionView
+  }()
+  
+  lazy var topView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .idorm_gray_100
+    
+    return view
   }()
   
   // MARK: - LifeCycle
@@ -43,11 +52,21 @@ class CalendarViewController: UIViewController {
     navigationController?.navigationBar.isHidden = true
     view.backgroundColor = .white
     
-    view.addSubview(collectionView)
-  
+    [ topView, collectionView ]
+      .forEach { view.addSubview($0) }
+
     collectionView.snp.makeConstraints { make in
       make.edges.equalTo(view.safeAreaLayoutGuide)
     }
+    
+    topView.snp.makeConstraints { make in
+      make.top.leading.trailing.equalToSuperview()
+      make.bottom.equalTo(collectionView.snp.top)
+    }
+  }
+  
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    topView.backgroundColor = collectionView.contentOffset.y == 0 ? .idorm_gray_100 : .white
   }
   
   private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
@@ -73,7 +92,7 @@ class CalendarViewController: UIViewController {
     let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(100), heightDimension: .absolute(30))
     let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
     
-    let headerSize = NSCollectionLayoutSize(widthDimension: .absolute(view.frame.width), heightDimension: .absolute(300))
+    let headerSize = NSCollectionLayoutSize(widthDimension: .absolute(view.frame.width), heightDimension: .estimated(300))
     let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .topLeading)
     
     let section = NSCollectionLayoutSection(group: group)
@@ -137,15 +156,15 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
   func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
     switch indexPath.section {
     case CalendarListType.chip.listIndex:
-      guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MainCalendarCollectionHeaderView.identifier, for: indexPath) as? MainCalendarCollectionHeaderView else { return UICollectionReusableView() }
+      guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarCollectionHeaderView.identifier, for: indexPath) as? CalendarCollectionHeaderView else { return UICollectionReusableView() }
       header.configureUI()
       return header
     case CalendarListType.personal.listIndex:
-      guard let personalHeader = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PersonalCalendarCollectionHeaderView.identifier, for: indexPath) as? PersonalCalendarCollectionHeaderView else { return UICollectionReusableView() }
+      guard let personalHeader = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarPersonalCollectionHeaderView.identifier, for: indexPath) as? CalendarPersonalCollectionHeaderView else { return UICollectionReusableView() }
       personalHeader.configureUI()
       return personalHeader
     case CalendarListType.dorm.listIndex:
-      guard let dormHeader = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: DormCalendarCollectionHeaderView.identifier, for: indexPath) as? DormCalendarCollectionHeaderView else { return UICollectionReusableView() }
+      guard let dormHeader = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarDormCollectionHeaderView.identifier, for: indexPath) as? CalendarDormCollectionHeaderView else { return UICollectionReusableView() }
       dormHeader.configureUI()
       return dormHeader
     default:
