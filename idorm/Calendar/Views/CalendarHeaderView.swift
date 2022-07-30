@@ -87,7 +87,7 @@ class CalendarHeaderView: UIView {
   func configureUI(date: Date) {
     backgroundColor = .idorm_gray_100
     roundedBackgroundView.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMaxXMinYCorner)
-
+    
     monthLabel.text = transformDateToString(date)
     
     [ leftArrowButton, rightArrowButton, monthLabel, roundedBackgroundView ]

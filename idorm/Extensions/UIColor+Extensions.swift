@@ -58,7 +58,15 @@ extension UIColor {
     return UIColor.init(rgb: 0xFACD5B)
   }
   
+  static var idorm_yellow2: UIColor {
+    return UIColor.init(rgb: 0xFFDD87)
+  }
+  
   static var idorm_red: UIColor {
     return UIColor.init(rgb: 0xFF6868)
+  }
+  
+  static var idorm_card: UIColor {
+    return UIColor.init(rgb: 0x8EC2FF)
   }
 }

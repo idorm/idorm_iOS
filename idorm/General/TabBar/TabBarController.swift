@@ -13,7 +13,7 @@ class TabBarController: UITabBarController {
   let matchingVC = UINavigationController(rootViewController: MatchingViewController())
   let communityVC = UINavigationController(rootViewController: CommunityViewController())
   let calandarVC = UINavigationController(rootViewController: CalendarViewController())
-  let mypageVC = UINavigationController(rootViewController: MypageViewController())
+  let mypageVC = UINavigationController(rootViewController: MyPageViewController())
   
   
   // MARK: - LifeCycle

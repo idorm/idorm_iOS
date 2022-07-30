@@ -24,7 +24,7 @@ class CalendarChipCollectionViewCell: UICollectionViewCell {
   lazy var leftDayLabel: UILabel = {
     let label = UILabel()
     label.font = .init(name: Font.bold.rawValue, size: 12)
-    label.textColor = .idorm_blue
+    label.textColor = .black
     label.text = "오늘"
     
     return label

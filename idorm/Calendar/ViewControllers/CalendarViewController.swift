@@ -35,7 +35,7 @@ class CalendarViewController: UIViewController {
     
     return view
   }()
-  
+
   // MARK: - LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -131,6 +131,10 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
     case CalendarListType.chip.listIndex:
       guard let chipCell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarChipCollectionViewCell.identifier, for: indexPath) as? CalendarChipCollectionViewCell else { return UICollectionViewCell() }
       chipCell.configureUI()
+      if indexPath.row == 0 {
+        chipCell.contentView.layer.opacity = 1
+        chipCell.leftDayLabel.textColor = .idorm_blue
+      }
       return chipCell
     case CalendarListType.personal.listIndex:
       guard let personalCell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarPersonalCollectionViewCell.identifier, for: indexPath) as? CalendarPersonalCollectionViewCell else { return UICollectionViewCell() }
@@ -148,7 +152,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
   func numberOfSections(in collectionView: UICollectionView) -> Int {
     return CalendarListType.allCases.count
   }
-    
+
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return 10
   }
