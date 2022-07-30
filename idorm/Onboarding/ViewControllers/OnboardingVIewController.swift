@@ -10,6 +10,11 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+enum OnboardingVCType {
+  case firstTime
+  case update
+}
+
 class OnboardingViewController: UIViewController {
   // MARK: - Properties
   lazy var tableView: UITableView = {
@@ -35,18 +40,33 @@ class OnboardingViewController: UIViewController {
     
     return tapGesture
   }()
-
+  
   lazy var floatyBottomView: OnboardingFloatyBottomView = {
     let floatyBottomView = OnboardingFloatyBottomView()
-    floatyBottomView.configureUI(type: .normal)
+    switch type {
+    case .update:
+      floatyBottomView.configureUI(type: .update)
+    case .firstTime:
+      floatyBottomView.configureUI(type: .normal)
+    }
     
     return floatyBottomView
   }()
   
+  let type: OnboardingVCType
   let viewModel = OnboardingViewModel()
   let disposeBag = DisposeBag()
   
   // MARK: - LifeCycle
+  init(type: OnboardingVCType) {
+    self.type = type
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     configureUI()
@@ -62,7 +82,16 @@ class OnboardingViewController: UIViewController {
   private func configureUI() {
     view.backgroundColor = .white
     navigationController?.navigationBar.tintColor = .black
-    navigationItem.title = "내 정보 입력"
+    navigationController?.navigationBar.isHidden = false
+    tabBarController?.tabBar.isHidden = true
+    
+    switch type {
+    case .firstTime:
+      navigationItem.title = "내 정보 입력"
+    case .update:
+      navigationItem.title = "매칭 이미지 관리"
+    }
+    
     tableView.addGestureRecognizer(tableViewTapGesture)
     
     [ tableView, floatyBottomView ]

@@ -7,6 +7,8 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 class MyPageViewController: UIViewController {
   // MARK: - Properties
@@ -62,22 +64,64 @@ class MyPageViewController: UIViewController {
   lazy var likeRoommateButton = createMatchingButton(imageName: "heart(MyPage)", title: "좋아요한 룸메")
   lazy var myPostButton = createCommunityButton(imageName: "write(MyPage)", title: "내가 쓴 글")
   lazy var myCommentButton = createCommunityButton(imageName: "like(MyPage)", title: "내가 쓴 댓글")
-  lazy var myRecommendedPost = createCommunityButton(imageName: "message(MyPage)", title: "추천한 글")
+  lazy var myRecommendedPostButton = createCommunityButton(imageName: "message(MyPage)", title: "추천한 글")
   
   lazy var matchingLabel = createTitleLabel(title: "룸메이트 매칭 관리")
   lazy var communityLabel = createTitleLabel(title: "커뮤니티 관리")
   
   lazy var myProfileImage = UIImageView(image: UIImage(named: "myProfileImage(MyPage)"))
   
+  let disposeBag = DisposeBag()
+  
   // MARK: - LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()
     configureUI()
+    bind()
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     navigationController?.navigationBar.isHidden = true
+    tabBarController?.tabBar.isHidden = false
+  }
+  
+  // MARK: - Bind
+  private func bind() {
+    myPostButton.rx.tap
+      .bind(onNext: { [weak self] in
+        let myPostVC = MyPostViewController(myPostVCType: .post)
+        self?.navigationController?.pushViewController(myPostVC, animated: true)
+      })
+      .disposed(by: disposeBag)
+    
+    myCommentButton.rx.tap
+      .bind(onNext: { [weak self] in
+        let myPostVC = MyPostViewController(myPostVCType: .comments)
+        self?.navigationController?.pushViewController(myPostVC, animated: true)
+      })
+      .disposed(by: disposeBag)
+
+    myRecommendedPostButton.rx.tap
+      .bind(onNext: { [weak self] in
+        let myPostVC = MyPostViewController(myPostVCType: .recommend)
+        self?.navigationController?.pushViewController(myPostVC, animated: true)
+      })
+      .disposed(by: disposeBag)
+    
+    likeRoommateButton.rx.tap
+      .bind(onNext: { [weak self] in
+        let myPostVC = MyPostViewController(myPostVCType: .likeRoommate)
+        self?.navigationController?.pushViewController(myPostVC, animated: true)
+      })
+      .disposed(by: disposeBag)
+    
+    matchingImageManagementButton.rx.tap
+      .bind(onNext: { [weak self] in
+        let onboardingVC = OnboardingViewController(type: .update)
+        self?.navigationController?.pushViewController(onboardingVC, animated: true)
+      })
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers
@@ -135,7 +179,7 @@ class MyPageViewController: UIViewController {
       make.bottom.equalToSuperview().inset(30)
     }
     
-    let communityButtonStack = UIStackView(arrangedSubviews: [ myPostButton, myCommentButton, myRecommendedPost ])
+    let communityButtonStack = UIStackView(arrangedSubviews: [ myPostButton, myCommentButton, myRecommendedPostButton ])
     communityButtonStack.spacing = 12
     communityButtonStack.distribution = .fillEqually
     

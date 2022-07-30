@@ -11,6 +11,7 @@ import UIKit
 enum OnboardingFloatyBottomViewType {
   case normal
   case detail
+  case update
 }
 
 class OnboardingFloatyBottomView: UIView {
@@ -32,10 +33,17 @@ class OnboardingFloatyBottomView: UIView {
     var config = UIButton.Configuration.filled()
     config.baseBackgroundColor = .idorm_gray_100
     config.contentInsets = NSDirectionalEdgeInsets(top: 14, leading: 26, bottom: 14, trailing: 26)
-    if type == .normal {
-      config.attributedTitle = AttributedString("정보 입력 건너 뛰기", attributes: container)
-    } else {
+    
+    switch type! {
+    case .normal:
       config.attributedTitle = AttributedString("뒤로 가기", attributes: container)
+    case .detail:
+      config.attributedTitle = AttributedString("정보 입력 건너 뛰기", attributes: container)
+    case .update:
+      config.attributedTitle = AttributedString("입력 초기화", attributes: container)
+      config.image = UIImage(named: "reset(Onboarding)")
+      config.imagePlacement = .leading
+      config.imagePadding = 12
     }
     let button = UIButton(configuration: config)
     

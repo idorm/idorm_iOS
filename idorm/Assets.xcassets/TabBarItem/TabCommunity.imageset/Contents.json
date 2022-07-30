@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "mess1.png",
+      "filename" : "Frame 36970.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "mess2.png",
+      "filename" : "Frame 36970@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "mess3.png",
+      "filename" : "Frame 36970@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

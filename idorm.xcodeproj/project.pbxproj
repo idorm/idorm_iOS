@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C42C9CDAAD9432013C7975D9 /* Pods_idorm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F8DEFC8045A00667E5DA6CA /* Pods_idorm.framework */; };
 		E50300F728773A5D00611C62 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50300F628773A5D00611C62 /* AppDelegate.swift */; };
 		E50300F928773A5D00611C62 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50300F828773A5D00611C62 /* SceneDelegate.swift */; };
 		E503010028773A5E00611C62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E50300FF28773A5E00611C62 /* Assets.xcassets */; };
@@ -21,7 +22,7 @@
 		E525C1CF28944EC800F934B3 /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C1CE28944EC800F934B3 /* CalendarCell.swift */; };
 		E525C1D128944F5200F934B3 /* CalendarCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C1D028944F5200F934B3 /* CalendarCellType.swift */; };
 		E5290EFD2887BBA40004B8E6 /* CommunityPopularCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */; };
-		E5290EFF2887BBB00004B8E6 /* CommunityPostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFE2887BBB00004B8E6 /* CommunityPostCollectionViewCell.swift */; };
+		E5290EFF2887BBB00004B8E6 /* PostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFE2887BBB00004B8E6 /* PostCollectionViewCell.swift */; };
 		E5290F06288818E70004B8E6 /* CommunityDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290F05288818E70004B8E6 /* CommunityDetailViewController.swift */; };
 		E5290F0928881C6E0004B8E6 /* CommunityDetailCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290F0828881C6E0004B8E6 /* CommunityDetailCollectionHeaderView.swift */; };
 		E5290F0C288832630004B8E6 /* RSKGrowingTextView in Frameworks */ = {isa = PBXBuildFile; productRef = E5290F0B288832630004B8E6 /* RSKGrowingTextView */; };
@@ -47,6 +48,7 @@
 		E56DF4A72893C4CA00E85B10 /* JTAppleCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = E56DF4A62893C4CA00E85B10 /* JTAppleCalendar */; };
 		E56DF4AF2893C81F00E85B10 /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56DF4AE2893C81F00E85B10 /* CalendarHeaderView.swift */; };
 		E56DF4B52894036D00E85B10 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56DF4B42894036D00E85B10 /* CalendarViewModel.swift */; };
+		E57A42CC289596D8003D5834 /* CardSlider in Frameworks */ = {isa = PBXBuildFile; productRef = E57A42CB289596D8003D5834 /* CardSlider */; };
 		E57FB84F2886E1520050BBAE /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = E57FB84E2886E1520050BBAE /* RxCocoa */; };
 		E57FB8512886E1520050BBAE /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = E57FB8502886E1520050BBAE /* RxRelay */; };
 		E57FB8532886E1520050BBAE /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E57FB8522886E1520050BBAE /* RxSwift */; };
@@ -57,6 +59,7 @@
 		E58ACB8728846E050031BD86 /* ImagePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58ACB8628846E050031BD86 /* ImagePickerViewController.swift */; };
 		E58F96FB2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */; };
 		E58F96FD28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F96FC28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift */; };
+		E5AB97C42895671800C0CEDF /* MatchingFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AB97C32895671800C0CEDF /* MatchingFilterViewController.swift */; };
 		E5AC2DCB2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2DCA2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift */; };
 		E5AC2DCF288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2DCE288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift */; };
 		E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7390287A863800BA2C5E /* LoginViewController.swift */; };
@@ -79,6 +82,10 @@
 		E5D49012288C003800311493 /* MyInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D49011288C003800311493 /* MyInfoView.swift */; };
 		E5D49014288C3DDB00311493 /* OnboardingUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D49013288C3DDA00311493 /* OnboardingUtilities.swift */; };
 		E5D49016288C449600311493 /* OnboardingVIewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D49015288C449600311493 /* OnboardingVIewController.swift */; };
+		E5E8A3DB289505B500A48A91 /* MyPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E8A3DA289505B400A48A91 /* MyPostViewController.swift */; };
+		E5E8A3DD289505F000A48A91 /* MyPostCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E8A3DC289505F000A48A91 /* MyPostCollectionHeaderView.swift */; };
+		E5E8A3DF2895208500A48A91 /* MyCommentsCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E8A3DE2895208500A48A91 /* MyCommentsCollectionVIewCell.swift */; };
+		E5E8A3E52895319100A48A91 /* MyLikeRoommateCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E8A3E42895319100A48A91 /* MyLikeRoommateCollectionVIewCell.swift */; };
 		E5EB5F212891328500EC0425 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = E5EB5F202891328500EC0425 /* FSCalendar */; };
 		E5EB5F272891398200EC0425 /* CalendarCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F262891398200EC0425 /* CalendarCollectionHeaderView.swift */; };
 		E5EB5F2A289143A100EC0425 /* CalendarChipCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F29289143A100EC0425 /* CalendarChipCollectionViewCell.swift */; };
@@ -94,6 +101,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0AD9CEBB30E6632A4F04BAF6 /* Pods-idorm.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-idorm.release.xcconfig"; path = "Target Support Files/Pods-idorm/Pods-idorm.release.xcconfig"; sourceTree = "<group>"; };
+		4F8DEFC8045A00667E5DA6CA /* Pods_idorm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_idorm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E50300F328773A5D00611C62 /* idorm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = idorm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E50300F628773A5D00611C62 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E50300F828773A5D00611C62 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -110,7 +119,7 @@
 		E525C1CE28944EC800F934B3 /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
 		E525C1D028944F5200F934B3 /* CalendarCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCellType.swift; sourceTree = "<group>"; };
 		E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPopularCollectionVIewCell.swift; sourceTree = "<group>"; };
-		E5290EFE2887BBB00004B8E6 /* CommunityPostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPostCollectionViewCell.swift; sourceTree = "<group>"; };
+		E5290EFE2887BBB00004B8E6 /* PostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCollectionViewCell.swift; sourceTree = "<group>"; };
 		E5290F05288818E70004B8E6 /* CommunityDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityDetailViewController.swift; sourceTree = "<group>"; };
 		E5290F0828881C6E0004B8E6 /* CommunityDetailCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityDetailCollectionHeaderView.swift; sourceTree = "<group>"; };
 		E5290F0D288867E50004B8E6 /* CommunityDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityDetailTableViewCell.swift; sourceTree = "<group>"; };
@@ -139,6 +148,7 @@
 		E58ACB8628846E050031BD86 /* ImagePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerViewController.swift; sourceTree = "<group>"; };
 		E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerCollectionViewCell.swift; sourceTree = "<group>"; };
 		E58F96FC28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingPictureCollectionViewCell.swift; sourceTree = "<group>"; };
+		E5AB97C32895671800C0CEDF /* MatchingFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilterViewController.swift; sourceTree = "<group>"; };
 		E5AC2DCA2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTextFieldContainerView.swift; sourceTree = "<group>"; };
 		E5AC2DCE288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPasswordTextFieldContainerView.swift; sourceTree = "<group>"; };
 		E5AD7390287A863800BA2C5E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -158,6 +168,10 @@
 		E5D49011288C003800311493 /* MyInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyInfoView.swift; sourceTree = "<group>"; };
 		E5D49013288C3DDA00311493 /* OnboardingUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingUtilities.swift; sourceTree = "<group>"; };
 		E5D49015288C449600311493 /* OnboardingVIewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVIewController.swift; sourceTree = "<group>"; };
+		E5E8A3DA289505B400A48A91 /* MyPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPostViewController.swift; sourceTree = "<group>"; };
+		E5E8A3DC289505F000A48A91 /* MyPostCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPostCollectionHeaderView.swift; sourceTree = "<group>"; };
+		E5E8A3DE2895208500A48A91 /* MyCommentsCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommentsCollectionVIewCell.swift; sourceTree = "<group>"; };
+		E5E8A3E42895319100A48A91 /* MyLikeRoommateCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLikeRoommateCollectionVIewCell.swift; sourceTree = "<group>"; };
 		E5EB5F262891398200EC0425 /* CalendarCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionHeaderView.swift; sourceTree = "<group>"; };
 		E5EB5F29289143A100EC0425 /* CalendarChipCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarChipCollectionViewCell.swift; sourceTree = "<group>"; };
 		E5EB5F2B2891534300EC0425 /* CalendarPersonalCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPersonalCollectionHeaderView.swift; sourceTree = "<group>"; };
@@ -169,6 +183,7 @@
 		E5F5EC752884027D0026DE21 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		E5F5EC77288402840026DE21 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		E5FBBB862880304900A7158D /* SECRET.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SECRET.swift; sourceTree = "<group>"; };
+		F785A151F7E5C13515C3797A /* Pods-idorm.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-idorm.debug.xcconfig"; path = "Target Support Files/Pods-idorm/Pods-idorm.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,21 +198,43 @@
 				E5EB5F212891328500EC0425 /* FSCalendar in Frameworks */,
 				E563421E28780C3800E93D17 /* SnapKit in Frameworks */,
 				E5C889062889729800CBD04E /* PanModal in Frameworks */,
+				E57A42CC289596D8003D5834 /* CardSlider in Frameworks */,
 				E57FB84F2886E1520050BBAE /* RxCocoa in Frameworks */,
 				E5B15F6D287FCEFE004D4164 /* RSKPlaceholderTextView in Frameworks */,
 				E57FB8532886E1520050BBAE /* RxSwift in Frameworks */,
 				E5D03751288CFDE800080482 /* CHIOTPField in Frameworks */,
+				C42C9CDAAD9432013C7975D9 /* Pods_idorm.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		412A085C63CA6B4F422F3788 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F785A151F7E5C13515C3797A /* Pods-idorm.debug.xcconfig */,
+				0AD9CEBB30E6632A4F04BAF6 /* Pods-idorm.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		D01EB7A6DFE49E2BB5902EDF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4F8DEFC8045A00667E5DA6CA /* Pods_idorm.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E50300EA28773A5D00611C62 = {
 			isa = PBXGroup;
 			children = (
 				E50300F528773A5D00611C62 /* idorm */,
 				E50300F428773A5D00611C62 /* Products */,
+				412A085C63CA6B4F422F3788 /* Pods */,
+				D01EB7A6DFE49E2BB5902EDF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -215,7 +252,6 @@
 				E5FBBB862880304900A7158D /* SECRET.swift */,
 				E50300F628773A5D00611C62 /* AppDelegate.swift */,
 				E50300F828773A5D00611C62 /* SceneDelegate.swift */,
-				E508437628813CE80047A2EC /* FontManager.swift */,
 				E5D4900C288BFB7E00311493 /* Models */,
 				E56DF4CC2894063100E85B10 /* General */,
 				E56DF4BD2894041D00E85B10 /* Login */,
@@ -251,6 +287,7 @@
 		E508437528813C270047A2EC /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				E508437628813CE80047A2EC /* FontManager.swift */,
 				E508436D28813BF40047A2EC /* NotoSansCJKkr-Bold.otf */,
 				E508437328813C220047A2EC /* NotoSansCJKkr-Regular.otf */,
 				E508436F28813C030047A2EC /* NotoSansCJKkr-Medium.otf */,
@@ -375,7 +412,6 @@
 			isa = PBXGroup;
 			children = (
 				E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */,
-				E5290EFE2887BBB00004B8E6 /* CommunityPostCollectionViewCell.swift */,
 				E5290F0D288867E50004B8E6 /* CommunityDetailTableViewCell.swift */,
 				E5290F0F288869700004B8E6 /* CommunityDetailHeaderCollectionViewCell.swift */,
 				E58F96FC28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift */,
@@ -491,6 +527,7 @@
 		E56DF4C3289405CD00E85B10 /* Matching */ = {
 			isa = PBXGroup;
 			children = (
+				E5AB97C22895583C00C0CEDF /* ViewModels */,
 				E56DF4C92894060200E85B10 /* ViewControllers */,
 			);
 			path = Matching;
@@ -533,6 +570,7 @@
 			isa = PBXGroup;
 			children = (
 				E5D4900A288BFA0200311493 /* MatchingViewController.swift */,
+				E5AB97C32895671800C0CEDF /* MatchingFilterViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -540,6 +578,7 @@
 		E56DF4CA2894061000E85B10 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
+				E5E8A3D92895043F00A48A91 /* Models */,
 				E5E8A3D82894BA8B00A48A91 /* ViewModels */,
 				E5E8A3D72894BA8600A48A91 /* Cells */,
 				E5E8A3D62894BA8000A48A91 /* Views */,
@@ -552,6 +591,7 @@
 			isa = PBXGroup;
 			children = (
 				E5F5EC77288402840026DE21 /* MyPageViewController.swift */,
+				E5E8A3DA289505B400A48A91 /* MyPostViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -559,18 +599,19 @@
 		E56DF4CC2894063100E85B10 /* General */ = {
 			isa = PBXGroup;
 			children = (
-				E5D49011288C003800311493 /* MyInfoView.swift */,
-				E56DF4CD2894063B00E85B10 /* TabBar */,
+				E5E8A3E32895216200A48A91 /* Models */,
+				E5E8A3E22895215700A48A91 /* ViewControllers */,
+				E5E8A3E12895215100A48A91 /* Views */,
+				E5E8A3E02895214C00A48A91 /* Cells */,
 			);
 			path = General;
 			sourceTree = "<group>";
 		};
-		E56DF4CD2894063B00E85B10 /* TabBar */ = {
+		E5AB97C22895583C00C0CEDF /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				E56342222878353100E93D17 /* TabBarController.swift */,
 			);
-			path = TabBar;
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		E5D4900C288BFB7E00311493 /* Models */ = {
@@ -584,6 +625,7 @@
 		E5E8A3D62894BA8000A48A91 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E5E8A3DC289505F000A48A91 /* MyPostCollectionHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -591,6 +633,8 @@
 		E5E8A3D72894BA8600A48A91 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				E5E8A3DE2895208500A48A91 /* MyCommentsCollectionVIewCell.swift */,
+				E5E8A3E42895319100A48A91 /* MyLikeRoommateCollectionVIewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -602,6 +646,44 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		E5E8A3D92895043F00A48A91 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E5E8A3E02895214C00A48A91 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				E5290EFE2887BBB00004B8E6 /* PostCollectionViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		E5E8A3E12895215100A48A91 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E5D49011288C003800311493 /* MyInfoView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E5E8A3E22895215700A48A91 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E56342222878353100E93D17 /* TabBarController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		E5E8A3E32895216200A48A91 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -609,9 +691,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E503010728773A5E00611C62 /* Build configuration list for PBXNativeTarget "idorm" */;
 			buildPhases = (
+				E304725356008F0506A7A6F0 /* [CP] Check Pods Manifest.lock */,
 				E50300EF28773A5D00611C62 /* Sources */,
 				E50300F028773A5D00611C62 /* Frameworks */,
 				E50300F128773A5D00611C62 /* Resources */,
+				687CB56E04CEB658A931C7BF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -630,6 +714,7 @@
 				E5D03750288CFDE800080482 /* CHIOTPField */,
 				E5EB5F202891328500EC0425 /* FSCalendar */,
 				E56DF4A62893C4CA00E85B10 /* JTAppleCalendar */,
+				E57A42CB289596D8003D5834 /* CardSlider */,
 			);
 			productName = idorm;
 			productReference = E50300F328773A5D00611C62 /* idorm.app */;
@@ -660,15 +745,16 @@
 			);
 			mainGroup = E50300EA28773A5D00611C62;
 			packageReferences = (
-				E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit" */,
-				E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView" */,
-				E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker" */,
-				E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift" */,
-				E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView" */,
-				E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal" */,
-				E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField" */,
-				E5EB5F1F2891328500EC0425 /* XCRemoteSwiftPackageReference "FSCalendar" */,
-				E56DF4A52893C4CA00E85B10 /* XCRemoteSwiftPackageReference "JTAppleCalendar" */,
+				E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit.git" */,
+				E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView.git" */,
+				E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker.git" */,
+				E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift.git" */,
+				E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView.git" */,
+				E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal.git" */,
+				E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField.git" */,
+				E5EB5F1F2891328500EC0425 /* XCRemoteSwiftPackageReference "FSCalendar.git" */,
+				E56DF4A52893C4CA00E85B10 /* XCRemoteSwiftPackageReference "JTAppleCalendar.git" */,
+				E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider.git" */,
 			);
 			productRefGroup = E50300F428773A5D00611C62 /* Products */;
 			projectDirPath = "";
@@ -693,6 +779,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		687CB56E04CEB658A931C7BF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-idorm/Pods-idorm-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-idorm/Pods-idorm-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-idorm/Pods-idorm-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E304725356008F0506A7A6F0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-idorm-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E50300EF28773A5D00611C62 /* Sources */ = {
@@ -734,7 +862,7 @@
 				E56DF4B52894036D00E85B10 /* CalendarViewModel.swift in Sources */,
 				E5C88908288972E000CBD04E /* CommunityAlertViewController.swift in Sources */,
 				E55794F0287C496D002DB2B0 /* OnboardingTableViewCell.swift in Sources */,
-				E5290EFF2887BBB00004B8E6 /* CommunityPostCollectionViewCell.swift in Sources */,
+				E5290EFF2887BBB00004B8E6 /* PostCollectionViewCell.swift in Sources */,
 				E5EB5F272891398200EC0425 /* CalendarCollectionHeaderView.swift in Sources */,
 				E5290F06288818E70004B8E6 /* CommunityDetailViewController.swift in Sources */,
 				E58F96FD28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift in Sources */,
@@ -742,11 +870,14 @@
 				E586B6A528901B06005AB9C2 /* LoginTextFieldContainerView.swift in Sources */,
 				E5D49010288BFFFD00311493 /* Utilities.swift in Sources */,
 				E5AC2DCB2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift in Sources */,
+				E5E8A3DB289505B500A48A91 /* MyPostViewController.swift in Sources */,
+				E5E8A3DD289505F000A48A91 /* MyPostCollectionHeaderView.swift in Sources */,
 				E58131A8288E6AC6000DB8C9 /* OnboardingFloatyBottomView.swift in Sources */,
 				E56342212878246200E93D17 /* OnboardingTableHeaderView.swift in Sources */,
 				E508436C288133AD0047A2EC /* LoginUtilities.swift in Sources */,
 				E56342232878353100E93D17 /* TabBarController.swift in Sources */,
 				E56DF4AF2893C81F00E85B10 /* CalendarHeaderView.swift in Sources */,
+				E5E8A3DF2895208500A48A91 /* MyCommentsCollectionVIewCell.swift in Sources */,
 				E5F5EC762884027D0026DE21 /* CalendarViewController.swift in Sources */,
 				E58ACB8728846E050031BD86 /* ImagePickerViewController.swift in Sources */,
 				E56DF4A2289354AF00E85B10 /* CalendarRoundedBackgroundView.swift in Sources */,
@@ -756,9 +887,11 @@
 				E5BF4C5F28840EBF00B4F0B8 /* PostingViewController.swift in Sources */,
 				E5D4900E288BFB9100311493 /* MyInfo.swift in Sources */,
 				E563421828780BDE00E93D17 /* OnboardingViewModel.swift in Sources */,
+				E5AB97C42895671800C0CEDF /* MatchingFilterViewController.swift in Sources */,
 				E5D49008288B7F0400311493 /* CommunityPopupViewController.swift in Sources */,
 				E5AD7396287A8C2F00BA2C5E /* UIColor+Extensions.swift in Sources */,
 				E5D49012288C003800311493 /* MyInfoView.swift in Sources */,
+				E5E8A3E52895319100A48A91 /* MyLikeRoommateCollectionVIewCell.swift in Sources */,
 				E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */,
 				E5AD739F287AEF2D00BA2C5E /* PutEmailViewController.swift in Sources */,
 				E5F5EC722883C70C0026DE21 /* WebMailViewController.swift in Sources */,
@@ -900,6 +1033,7 @@
 		};
 		E503010828773A5E00611C62 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F785A151F7E5C13515C3797A /* Pods-idorm.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -927,6 +1061,7 @@
 		};
 		E503010928773A5E00611C62 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0AD9CEBB30E6632A4F04BAF6 /* Pods-idorm.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -976,7 +1111,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView" */ = {
+		E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ruslanskorb/RSKGrowingTextView.git";
 			requirement = {
@@ -984,7 +1119,7 @@
 				minimumVersion = 6.1.0;
 			};
 		};
-		E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+		E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
 			requirement = {
@@ -992,7 +1127,7 @@
 				minimumVersion = 5.6.0;
 			};
 		};
-		E56DF4A52893C4CA00E85B10 /* XCRemoteSwiftPackageReference "JTAppleCalendar" */ = {
+		E56DF4A52893C4CA00E85B10 /* XCRemoteSwiftPackageReference "JTAppleCalendar.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/patchthecode/JTAppleCalendar.git";
 			requirement = {
@@ -1000,7 +1135,15 @@
 				minimumVersion = 8.0.0;
 			};
 		};
-		E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+		E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider.git" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Ramotion/cardslider.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.1.0;
+			};
+		};
+		E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
 			requirement = {
@@ -1008,7 +1151,7 @@
 				minimumVersion = 6.5.0;
 			};
 		};
-		E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker" */ = {
+		E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/congnd/FMPhotoPicker.git";
 			requirement = {
@@ -1016,7 +1159,7 @@
 				minimumVersion = 1.3.0;
 			};
 		};
-		E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView" */ = {
+		E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ruslanskorb/RSKPlaceholderTextView.git";
 			requirement = {
@@ -1024,7 +1167,7 @@
 				minimumVersion = 6.1.0;
 			};
 		};
-		E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal" */ = {
+		E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/slackhq/PanModal.git";
 			requirement = {
@@ -1032,7 +1175,7 @@
 				minimumVersion = 1.2.0;
 			};
 		};
-		E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField" */ = {
+		E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ChiliLabs/CHIOTPField.git";
 			requirement = {
@@ -1040,7 +1183,7 @@
 				minimumVersion = 0.1.0;
 			};
 		};
-		E5EB5F1F2891328500EC0425 /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+		E5EB5F1F2891328500EC0425 /* XCRemoteSwiftPackageReference "FSCalendar.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/WenchaoD/FSCalendar.git";
 			requirement = {
@@ -1053,57 +1196,62 @@
 /* Begin XCSwiftPackageProductDependency section */
 		E5290F0B288832630004B8E6 /* RSKGrowingTextView */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView" */;
+			package = E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView.git" */;
 			productName = RSKGrowingTextView;
 		};
 		E563421D28780C3800E93D17 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			package = E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit.git" */;
 			productName = SnapKit;
 		};
 		E56DF4A62893C4CA00E85B10 /* JTAppleCalendar */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E56DF4A52893C4CA00E85B10 /* XCRemoteSwiftPackageReference "JTAppleCalendar" */;
+			package = E56DF4A52893C4CA00E85B10 /* XCRemoteSwiftPackageReference "JTAppleCalendar.git" */;
 			productName = JTAppleCalendar;
+		};
+		E57A42CB289596D8003D5834 /* CardSlider */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider.git" */;
+			productName = CardSlider;
 		};
 		E57FB84E2886E1520050BBAE /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift" */;
+			package = E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift.git" */;
 			productName = RxCocoa;
 		};
 		E57FB8502886E1520050BBAE /* RxRelay */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift" */;
+			package = E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift.git" */;
 			productName = RxRelay;
 		};
 		E57FB8522886E1520050BBAE /* RxSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift" */;
+			package = E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift.git" */;
 			productName = RxSwift;
 		};
 		E58ACB84288465970031BD86 /* FMPhotoPicker */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker" */;
+			package = E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker.git" */;
 			productName = FMPhotoPicker;
 		};
 		E5B15F6C287FCEFE004D4164 /* RSKPlaceholderTextView */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView" */;
+			package = E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView.git" */;
 			productName = RSKPlaceholderTextView;
 		};
 		E5C889052889729800CBD04E /* PanModal */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal" */;
+			package = E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal.git" */;
 			productName = PanModal;
 		};
 		E5D03750288CFDE800080482 /* CHIOTPField */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField" */;
+			package = E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField.git" */;
 			productName = CHIOTPField;
 		};
 		E5EB5F202891328500EC0425 /* FSCalendar */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E5EB5F1F2891328500EC0425 /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			package = E5EB5F1F2891328500EC0425 /* XCRemoteSwiftPackageReference "FSCalendar.git" */;
 			productName = FSCalendar;
 		};
 /* End XCSwiftPackageProductDependency section */

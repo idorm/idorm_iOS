@@ -1,0 +1,16 @@
+PODS:
+  - Shuffle-iOS (0.5.0)
+
+DEPENDENCIES:
+  - Shuffle-iOS
+
+SPEC REPOS:
+  trunk:
+    - Shuffle-iOS
+
+SPEC CHECKSUMS:
+  Shuffle-iOS: ff33658fb1e5eebd6a4724c156473e63754be9cb
+
+PODFILE CHECKSUM: cd2cd6f5a035eb27556afba2e1096e57ecd35c13
+
+COCOAPODS: 1.11.2

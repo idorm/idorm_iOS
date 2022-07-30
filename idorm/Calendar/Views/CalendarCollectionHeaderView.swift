@@ -126,12 +126,6 @@ extension CalendarCollectionHeaderView: FSCalendarDataSource, FSCalendarDelegate
     calendarHeaderView.onChangedMonth.onNext(calendar.currentPage)
   }
   
-  func calendar(_ calendar: FSCalendar, cellFor date: Date, at position: FSCalendarMonthPosition) -> FSCalendarCell {
-    guard let cell = calendar.dequeueReusableCell(withIdentifier: CalendarCell.identifier, for: date, at: .current) as? CalendarCell else { return FSCalendarCell() }
-    cell.configureUI()
-    return cell
-  }
-  
   func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
   }
   
@@ -148,3 +142,4 @@ extension CalendarCollectionHeaderView: FSCalendarDataSource, FSCalendarDelegate
     print(date)
   }
 }
+

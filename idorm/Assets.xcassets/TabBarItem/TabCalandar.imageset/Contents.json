@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "ca1.png",
+      "filename" : "Icon.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "ca2.png",
+      "filename" : "Icon@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "ca3.png",
+      "filename" : "Icon@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

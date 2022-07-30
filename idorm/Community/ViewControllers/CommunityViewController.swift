@@ -45,8 +45,8 @@ class CommunityViewController: UIViewController {
     let layout = createLayout()
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
     collectionView.register(CommunityPopularCollectionVIewCell.self, forCellWithReuseIdentifier: CommunityPopularCollectionVIewCell.identifieir)
-    collectionView.register(CommunityPostCollectionViewCell.self, forCellWithReuseIdentifier: CommunityPostCollectionViewCell.identifier)
-    collectionView.backgroundColor = .init(rgb: 0xF4F2FA)
+    collectionView.register(PostCollectionViewCell.self, forCellWithReuseIdentifier: PostCollectionViewCell.identifier)
+    collectionView.backgroundColor = .idorm_gray_100
     collectionView.dataSource = self
     collectionView.delegate = self
     
@@ -81,19 +81,21 @@ class CommunityViewController: UIViewController {
     navigationItem.leftBarButtonItem = UIBarButtonItem(customView: changeDormButton)
     navigationItem.rightBarButtonItem = UIBarButtonItem(customView: bellButton)
     
-    [ floatyButton, collectionView ]
+    [ collectionView, floatyButton ]
       .forEach { view.addSubview($0) }
     
     floatyButton.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.bottom.equalTo(view.safeAreaLayoutGuide).inset(24)
+      make.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
     }
     
     collectionView.snp.makeConstraints { make in
       make.edges.equalTo(view.safeAreaLayoutGuide)
     }
   }
-  
+}
+
+extension CommunityViewController {
   private func createLayout() -> UICollectionViewCompositionalLayout {
     return UICollectionViewCompositionalLayout { [weak self] sectionNumber, _ in
       if sectionNumber == 0 {
@@ -149,7 +151,7 @@ class CommunityViewController: UIViewController {
 extension CommunityViewController: UICollectionViewDataSource, UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let popularCell = collectionView.dequeueReusableCell(withReuseIdentifier: CommunityPopularCollectionVIewCell.identifieir, for: indexPath) as? CommunityPopularCollectionVIewCell,
-          let postCell = collectionView.dequeueReusableCell(withReuseIdentifier: CommunityPostCollectionViewCell.identifier, for: indexPath) as? CommunityPostCollectionViewCell
+          let postCell = collectionView.dequeueReusableCell(withReuseIdentifier: PostCollectionViewCell.identifier, for: indexPath) as? PostCollectionViewCell
     else { return UICollectionViewCell() }
     
     if indexPath.section == PostType.popular.rawValue {

@@ -328,27 +328,4 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
       make.bottom.equalToSuperview().inset(16)
     }
   }
-  
-  private func verifyConfirmButton(type: OnboardingHeaderListType) {
-    switch type {
-    case .dorm:
-      if dorm1Button.isSelected || dorm2Button.isSelected || dorm3Button.isSelected {
-      } else {
-      }
-    case .gender:
-      if maleButton.isSelected || femaleButton.isSelected {
-      } else {
-      }
-    case .period:
-      if period16Button.isSelected || period24Button.isSelected {
-      } else {
-      }
-    case .age:
-      if ageTextField.text != "" {
-      } else {
-      }
-    default:
-      break
-    }
-  }
 }
