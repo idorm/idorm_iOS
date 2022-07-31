@@ -24,7 +24,7 @@ class MyInfoView: UIView {
     let label = UILabel()
     label.font = .init(name: Font.bold.rawValue, size: 24)
     label.text = "3 기숙사"
-    label.textColor = .black
+    label.textColor = .white
     
     return label
   }()
@@ -42,8 +42,6 @@ class MyInfoView: UIView {
     
     return button
   }()
-  
-  // MARK: - LifeCycle
   
   // MARK: - Helpers
   func configureUI(myinfo: MyInfo) {
@@ -80,16 +78,16 @@ class MyInfoView: UIView {
       .forEach { backgroundImageView.addSubview($0) }
     
     dormLabel.snp.makeConstraints { make in
-      make.leading.top.equalToSuperview().inset(26)
+      make.leading.top.equalToSuperview().inset(14)
     }
     
     periodButton.snp.makeConstraints { make in
-      make.trailing.top.equalToSuperview().inset(26)
+      make.trailing.top.equalToSuperview().inset(14)
     }
     
     snoreLabel.snp.makeConstraints { make in
-      make.leading.equalToSuperview().inset(26)
-      make.top.equalTo(dormLabel.snp.bottom).offset(16)
+      make.leading.equalToSuperview().inset(14)
+      make.top.equalTo(dormLabel.snp.bottom).offset(10)
     }
     
     grindingLabel.snp.makeConstraints { make in
@@ -103,7 +101,7 @@ class MyInfoView: UIView {
     }
     
     allowedFoodLabel.snp.makeConstraints { make in
-      make.leading.equalToSuperview().inset(26)
+      make.leading.equalToSuperview().inset(14)
       make.top.equalTo(snoreLabel.snp.bottom).offset(8)
     }
     
@@ -113,27 +111,27 @@ class MyInfoView: UIView {
     }
     
     wakeupTimeLabel.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview().inset(26)
+      make.leading.trailing.equalToSuperview().inset(14)
       make.top.equalTo(allowedFoodLabel.snp.bottom).offset(16)
     }
     
     cleanupLabel.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview().inset(26)
+      make.leading.trailing.equalToSuperview().inset(14)
       make.top.equalTo(wakeupTimeLabel.snp.bottom).offset(8)
     }
     
     showerTimeLabel.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview().inset(26)
+      make.leading.trailing.equalToSuperview().inset(14)
       make.top.equalTo(cleanupLabel.snp.bottom).offset(8)
     }
   
     mbtiLabel.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview().inset(26)
+      make.leading.trailing.equalToSuperview().inset(14)
       make.top.equalTo(showerTimeLabel.snp.bottom).offset(8)
     }
     
     wishTextLabel.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview().inset(26)
+      make.leading.trailing.equalToSuperview().inset(14)
       make.top.equalTo(mbtiLabel.snp.bottom).offset(16)
     }
   }
@@ -230,7 +228,7 @@ class MyInfoView: UIView {
     view.addSubview(stack)
     
     view.snp.makeConstraints { make in
-      make.height.equalTo(30)
+      make.height.equalTo(29)
     }
     
     stack.snp.makeConstraints { make in
@@ -258,7 +256,7 @@ class MyInfoView: UIView {
     view.addSubview(contentsLabel)
     
     view.snp.makeConstraints { make in
-      make.height.equalTo(92)
+      make.height.equalTo(104)
     }
     
     contentsLabel.snp.makeConstraints { make in

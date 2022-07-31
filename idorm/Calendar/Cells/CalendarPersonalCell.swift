@@ -1,8 +1,8 @@
 //
-//  CalendarBasicCollectionViewCell.swift
+//  CalendarPersonalCollectionViewCell.swift
 //  idorm
 //
-//  Created by 김응철 on 2022/07/27.
+//  Created by 김응철 on 2022/07/28.
 //
 
 import SnapKit
@@ -10,13 +10,13 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class CalendarDormCollectionViewCell: UICollectionViewCell {
+class CalendarPersonalCell: UICollectionViewCell {
   // MARK: - Properties
   lazy var circleView: UIView = {
     let view = UIView()
     view.layer.cornerRadius = 3.5
     view.layer.masksToBounds = true
-    view.backgroundColor = .idorm_blue
+    view.backgroundColor = .idorm_yellow
     
     return view
   }()
@@ -48,7 +48,7 @@ class CalendarDormCollectionViewCell: UICollectionViewCell {
     return button
   }()
   
-  static let identifier = "CalendarDormCollectionViewCell"
+  static let identifier = "CalendarPersonalCollectionViewCell"
   
   // MARK: - Helpers
   func configureUI() {

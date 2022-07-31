@@ -10,6 +10,12 @@ import SnapKit
 import CHIOTPField
 import RxSwift
 import RxCocoa
+import RangeSeekSlider
+
+enum OnboardingTableViewType {
+  case normal
+  case matchingFilter
+}
 
 class OnboardingTableHeaderView: UITableViewHeaderFooterView {
   // MARK: - Properties
@@ -50,6 +56,30 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
     label.textColor = .idorm_gray_300
     
     return label
+  }()
+  
+  lazy var slider: RangeSeekSlider = {
+    let slider = RangeSeekSlider()
+    slider.backgroundColor = .white
+    slider.colorBetweenHandles = .idorm_blue
+    slider.tintColor = .idorm_gray_100
+    slider.labelPadding = 6
+    slider.minLabelColor = .black
+    slider.maxLabelColor = .black
+    slider.minLabelFont = .init(name: Font.medium.rawValue, size: 12)!
+    slider.maxLabelFont = .init(name: Font.medium.rawValue, size: 12)!
+    slider.minValue = 20
+    slider.maxValue = 40
+    slider.selectedMaxValue = 30
+    slider.selectedMinValue = 20
+    slider.lineHeight = 11
+    slider.handleImage = UIImage(named: "thumb(Matching)")
+    slider.minDistance = 1
+    slider.enableStep = true
+    slider.selectedHandleDiameterMultiplier = 1.0
+    slider.delegate = self
+    
+    return slider
   }()
   
   let dormLabel = OnboardingUtilities.getBasicLabel(text: "기숙사")
@@ -101,10 +131,11 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
   
   let onChangedAgeTextField = PublishSubject<String>()
   
+  var type: OnboardingTableViewType = .normal
+  
   // MARK: - LifeCycle
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
-    configureUI()
     bind()
   }
   
@@ -203,11 +234,7 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
     femaleButton.addTarget(self, action: #selector(didTapFemaleButton), for: .touchUpInside)
   }
   
-  private func configureUI() {
-    dorm1Button.isSelected = true
-    maleButton.isSelected = true
-    period16Button.isSelected = true
-    
+  func configureUI(type: OnboardingTableViewType) {
     let dormStack = UIStackView(arrangedSubviews: [ dorm1Button, dorm2Button, dorm3Button ])
     dormStack.spacing = 12
     
@@ -222,17 +249,67 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
     habitStack1.spacing = 12
     habitStack2.spacing = 12
     
-    [ titleLabel, dormLabel, dormStack, dormLine, periodLabel, periodStack, periodLine, habitLabel, habitDescriptionLabel, habitStack2, habitStack1, habitLine, ageLabel, ageTextField, ageDescriptionLabel, ageLine, genderStack, genderLine, genderLabel]
+    self.type = type
+
+    [ titleLabel, dormLabel, dormStack, dormLine, periodLabel, periodStack, periodLine, habitLabel, habitDescriptionLabel, habitStack2, habitStack1, habitLine, ageLabel, ageTextField, ageDescriptionLabel, ageLine, genderStack, genderLine, genderLabel, slider ]
       .forEach { addSubview($0) }
     
-    titleLabel.snp.makeConstraints { make in
-      make.leading.equalToSuperview().inset(25)
-      make.top.equalToSuperview().inset(20)
-    }
-    
-    dormLabel.snp.makeConstraints { make in
-      make.leading.equalToSuperview().inset(25)
-      make.top.equalTo(titleLabel.snp.bottom).offset(16)
+    switch type {
+    case .normal:
+      slider.removeFromSuperview()
+      
+      titleLabel.snp.makeConstraints { make in
+        make.leading.equalToSuperview().inset(25)
+        make.top.equalToSuperview().inset(20)
+      }
+      
+      dormLabel.snp.makeConstraints { make in
+        make.leading.equalToSuperview().inset(25)
+        make.top.equalTo(titleLabel.snp.bottom).offset(16)
+      }
+      
+      ageTextField.snp.makeConstraints { make in
+        make.top.equalTo(ageLabel.snp.bottom).offset(10)
+        make.leading.equalToSuperview().inset(25)
+        make.width.equalTo(90)
+        make.height.equalTo(33)
+      }
+
+      ageDescriptionLabel.snp.makeConstraints { make in
+        make.centerY.equalTo(ageTextField)
+        make.leading.equalTo(ageTextField.snp.trailing).offset(8)
+      }
+      
+      ageLine.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(25)
+        make.top.equalTo(ageTextField.snp.bottom).offset(16)
+        make.height.equalTo(1)
+        make.bottom.equalToSuperview().inset(16)
+      }
+    case .matchingFilter:
+      titleLabel.removeFromSuperview()
+      ageTextField.removeFromSuperview()
+      ageLine.removeFromSuperview()
+      
+      habitLabel.text = "불호 요소"
+      habitDescriptionLabel.text = "선택하신 요소를 가진 룸메이트는 나와 매칭되지 않아요."
+      ageDescriptionLabel.text = "선택하신 연령대의 룸메이트만 나와 매칭돼요."
+
+      dormLabel.snp.makeConstraints { make in
+        make.leading.equalToSuperview().inset(25)
+        make.top.equalToSuperview().inset(16)
+      }
+      
+      ageDescriptionLabel.snp.makeConstraints { make in
+        make.top.equalTo(ageLabel.snp.bottom).offset(2)
+        make.leading.equalToSuperview().inset(25)
+      }
+      
+      slider.snp.makeConstraints { make in
+        make.top.equalTo(ageDescriptionLabel.snp.bottom).offset(10)
+        make.leading.trailing.equalToSuperview().inset(25)
+        make.bottom.equalToSuperview().inset(16)
+      }
     }
     
     dormStack.snp.makeConstraints { make in
@@ -303,29 +380,14 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
       make.top.equalTo(habitStack2.snp.bottom).offset(16)
       make.height.equalTo(1)
     }
-
+    
     ageLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(25)
       make.top.equalTo(habitLine.snp.bottom).offset(16)
     }
-    
-    ageTextField.snp.makeConstraints { make in
-      make.top.equalTo(ageLabel.snp.bottom).offset(10)
-      make.leading.equalToSuperview().inset(25)
-      make.width.equalTo(90)
-      make.height.equalTo(33)
-    }
-    
-    ageDescriptionLabel.snp.makeConstraints { make in
-      make.centerY.equalTo(ageTextField)
-      make.leading.equalTo(ageTextField.snp.trailing).offset(8)
-    }
-
-    ageLine.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview().inset(25)
-      make.top.equalTo(ageTextField.snp.bottom).offset(16)
-      make.height.equalTo(1)
-      make.bottom.equalToSuperview().inset(16)
-    }
   }
+}
+
+extension OnboardingTableHeaderView: RangeSeekSliderDelegate {
+  
 }

@@ -177,6 +177,7 @@ extension OnboardingViewController: UITableViewDataSource, UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: OnboardingTableHeaderView.identifier) as! OnboardingTableHeaderView
+    header.configureUI(type: .normal)
     
     header.onChangedDorm1Button
       .bind(to: viewModel.input.dorm1ButtonTapped)

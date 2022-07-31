@@ -19,10 +19,10 @@ class CalendarViewController: UIViewController {
     collectionView.bounces = false
     collectionView.delegate = self
     collectionView.dataSource = self
-    collectionView.register(CalendarChipCollectionViewCell.self, forCellWithReuseIdentifier: CalendarChipCollectionViewCell.identifier)
-    collectionView.register(CalendarPersonalCollectionViewCell.self, forCellWithReuseIdentifier: CalendarPersonalCollectionViewCell.identifier)
-    collectionView.register(CalendarDormCollectionViewCell.self, forCellWithReuseIdentifier: CalendarDormCollectionViewCell.identifier)
-    collectionView.register(CalendarCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarCollectionHeaderView.identifier)
+    collectionView.register(CalendarChipCell.self, forCellWithReuseIdentifier: CalendarChipCell.identifier)
+    collectionView.register(CalendarPersonalCell.self, forCellWithReuseIdentifier: CalendarPersonalCell.identifier)
+    collectionView.register(CalendarDormCell.self, forCellWithReuseIdentifier: CalendarDormCell.identifier)
+    collectionView.register(CalendarHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarHeaderView.identifier)
     collectionView.register(CalendarPersonalCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarPersonalCollectionHeaderView.identifier)
     collectionView.register(CalendarDormCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarDormCollectionHeaderView.identifier)
     
@@ -66,7 +66,7 @@ class CalendarViewController: UIViewController {
   }
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    topView.backgroundColor = collectionView.contentOffset.y == 0 ? .idorm_gray_100 : .white
+    topView.backgroundColor = collectionView.contentOffset.y <= 0 ? .idorm_gray_100 : .white
   }
   
   private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
@@ -129,7 +129,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     switch indexPath.section {
     case CalendarListType.chip.listIndex:
-      guard let chipCell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarChipCollectionViewCell.identifier, for: indexPath) as? CalendarChipCollectionViewCell else { return UICollectionViewCell() }
+      guard let chipCell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarChipCell.identifier, for: indexPath) as? CalendarChipCell else { return UICollectionViewCell() }
       chipCell.configureUI()
       if indexPath.row == 0 {
         chipCell.contentView.layer.opacity = 1
@@ -137,11 +137,11 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
       }
       return chipCell
     case CalendarListType.personal.listIndex:
-      guard let personalCell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarPersonalCollectionViewCell.identifier, for: indexPath) as? CalendarPersonalCollectionViewCell else { return UICollectionViewCell() }
+      guard let personalCell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarPersonalCell.identifier, for: indexPath) as? CalendarPersonalCell else { return UICollectionViewCell() }
       personalCell.configureUI()
       return personalCell
     case CalendarListType.dorm.listIndex:
-      guard let dormCell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarDormCollectionViewCell.identifier, for: indexPath) as? CalendarDormCollectionViewCell else { return UICollectionViewCell() }
+      guard let dormCell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarDormCell.identifier, for: indexPath) as? CalendarDormCell else { return UICollectionViewCell() }
       dormCell.configureUI()
       return dormCell
     default:
@@ -160,7 +160,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
   func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
     switch indexPath.section {
     case CalendarListType.chip.listIndex:
-      guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarCollectionHeaderView.identifier, for: indexPath) as? CalendarCollectionHeaderView else { return UICollectionReusableView() }
+      guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarHeaderView.identifier, for: indexPath) as? CalendarHeaderView else { return UICollectionReusableView() }
       header.configureUI()
       return header
     case CalendarListType.personal.listIndex:

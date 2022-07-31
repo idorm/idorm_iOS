@@ -7,36 +7,51 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0004725A81B24C9724FF59003A582C27 /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999FC350C533217BD9044A78937E2D60 /* SwipeView.swift */; };
-		06C7AABA62962B4D465BE80652442C93 /* CardAnimationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA39D6712B9CA160D5F83EB25052C0C /* CardAnimationOptions.swift */; };
-		07A88B4C1D23BEA2CFE213F64489138F /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B428E5BB1B9DBF9B1AEC06BCC5A4CCD /* TapGestureRecognizer.swift */; };
-		09D16D4AE31859A69AECB9FDE44BA877 /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A8991C6F2F51DF5EDF05F9CF11A0745 /* CGPoint+Extensions.swift */; };
-		15404C20E9D1B0E3EC83EF35E157AD0D /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4F812CBF9D92BC90EE66830800C17C /* UIView+Extensions.swift */; };
-		2254657647EE46AC112857C5643A5E17 /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97B43710D4AE54A701027C9B6FDAF8B7 /* StringUtils.swift */; };
-		335921E6A2D58B4D5869676851FD34B4 /* SwipeCardStackDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C8913B3869C7533E980A907604A9E9 /* SwipeCardStackDelegate.swift */; };
-		4019CDECA2979BE7508340C565B5C0D3 /* CardStackStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B25A90A1E0587C01160BD1412861ED3 /* CardStackStateManager.swift */; };
-		46FA3994970FB1E2A2AE195754F6DA09 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4CEFC687D9677E08029EDD3E953B96 /* Array+Extensions.swift */; };
-		4FD60A0532FC6C49B1E59ED5D0DFCDBD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
-		54030902C202234E1AD0D757E79B63E3 /* CardStackAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F714C29FCC497640A4EE9758C2E053C /* CardStackAnimator.swift */; };
-		552CF1BD7CE2A8213133DADBD01E65C6 /* CardAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D414401375C26EBFC7C9B43A5DF55425 /* CardAnimator.swift */; };
-		61B8195A2A9C88EDEC0E5B796667D06D /* SwipeCardStackDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3822CB53FB1812EBEB5A56D52A0E345 /* SwipeCardStackDataSource.swift */; };
-		64F9279B93FEC6038CD8B2036A665AEE /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6999214D22B722B43AB47C26158A3E16 /* Animator.swift */; };
-		66E91EBAB7A6E1830B20C0EEF6E5106F /* SwipeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6D78B368E5C60A4CBF839C2F7651E9 /* SwipeCard.swift */; };
-		74CF40AB937EB1FA73ABADBEBD866D6B /* Shuffle-iOS-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E8ACB28FC45784DDD0BE7FF3511B34E3 /* Shuffle-iOS-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		85D9316BFDC018B3323E870A81CA82FB /* CGVector+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D6A37A8299BC5E2E0B2237490340FE /* CGVector+Extensions.swift */; };
-		8C8C8F2F72AD5E242F69AC79CF2253CC /* Pods-idorm-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 395B1F384580EA750B3FA60C47820293 /* Pods-idorm-dummy.m */; };
-		A275F89C6848DABFC323A6D531F944A4 /* CardStackAnimationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34EA0F09DEC70FA9DD9AADEAFB530B9C /* CardStackAnimationOptions.swift */; };
-		A56C2CED79E4BE117796F302DD638D58 /* Shuffle-iOS-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3178A3CD7F400802213601D716B51F63 /* Shuffle-iOS-dummy.m */; };
-		AD81BC5E5F8CB535A1FD3D9B5746DDAB /* SwipeDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86496403522A1E4F7ACBC2576047107 /* SwipeDirection.swift */; };
-		BFF2C2AF0119E5252908D432B727A0E4 /* SwipeCardStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35E55025A72698521D4FF01A9326087 /* SwipeCardStack.swift */; };
-		C1DB9DD3FAD600DFD49EF43CD6D5973A /* PanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93CE72F5F1FD41DF970347F49F40E9F9 /* PanGestureRecognizer.swift */; };
-		D0288F6CCDA843A32C3EE9C8729883CC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */; };
-		F5C10730684969A477E625A7523A382A /* Pods-idorm-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B50F8034D7AC038B5434AA5B1ED1C5F /* Pods-idorm-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FAE578EA38D734E9959068AC5CC89BEA /* SwipeCardDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365E8F40995C672BE1098FBA260F78F3 /* SwipeCardDelegate.swift */; };
+		0004725A81B24C9724FF59003A582C27 /* SwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 348D58EBE74D0C0327603D1A68294152 /* SwipeView.swift */; };
+		01C14B76205EFB8A22BA213D2CA15378 /* RangeSeekSlider-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 77440B6A97A199BD50168E163FAA630B /* RangeSeekSlider-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		06C7AABA62962B4D465BE80652442C93 /* CardAnimationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A7E533CBF4E56B911874C047CE0DE7 /* CardAnimationOptions.swift */; };
+		07A88B4C1D23BEA2CFE213F64489138F /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545429C07C4684B92FCC037F9D8F8EEF /* TapGestureRecognizer.swift */; };
+		09D16D4AE31859A69AECB9FDE44BA877 /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B508355F3AD4CF4B66D40C2AD3FC0D /* CGPoint+Extensions.swift */; };
+		15404C20E9D1B0E3EC83EF35E157AD0D /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78AB753F8EA7756137B0C4D1EDB69028 /* UIView+Extensions.swift */; };
+		2254657647EE46AC112857C5643A5E17 /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2623690A5637803634E16CE462CECECD /* StringUtils.swift */; };
+		335921E6A2D58B4D5869676851FD34B4 /* SwipeCardStackDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C340C2A479D704ABD22AA0B04BDCABB /* SwipeCardStackDelegate.swift */; };
+		4019CDECA2979BE7508340C565B5C0D3 /* CardStackStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75A767B68369116185ADA484EC8EAF89 /* CardStackStateManager.swift */; };
+		46FA3994970FB1E2A2AE195754F6DA09 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8756AB42549104494D2574F4181F85CF /* Array+Extensions.swift */; };
+		49E21F3D852BB38CFC48FA88555B20D9 /* RangeSeekSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109F2A0FD29C3CE0BABEE2E15A2A0817 /* RangeSeekSlider.swift */; };
+		54030902C202234E1AD0D757E79B63E3 /* CardStackAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A927D73714ACF335C05432C1E3092CBC /* CardStackAnimator.swift */; };
+		552CF1BD7CE2A8213133DADBD01E65C6 /* CardAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AADB4D2D3D0B65EA42E0C2F763697632 /* CardAnimator.swift */; };
+		61B8195A2A9C88EDEC0E5B796667D06D /* SwipeCardStackDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838AA9DD23861348E81EFA84FEA828B1 /* SwipeCardStackDataSource.swift */; };
+		64F9279B93FEC6038CD8B2036A665AEE /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE09DBD4EA2A69A09693B8AA3CE3FB8 /* Animator.swift */; };
+		66E91EBAB7A6E1830B20C0EEF6E5106F /* SwipeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3E3FD87FA21FF44FEBB972990DB61F /* SwipeCard.swift */; };
+		6A3A4303B4F573E5A9DCF39CA0906999 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 361EE39606F77A62E58D3A8534B4F6D7 /* UIKit.framework */; };
+		74CF40AB937EB1FA73ABADBEBD866D6B /* Shuffle-iOS-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 871C5478B68E9E519967A22F6D5231E3 /* Shuffle-iOS-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7A9BF4B59C5B1A26A89A0796C7CD2EFA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 543B56292D357C3C5AAD6AF749B048FA /* Foundation.framework */; };
+		853C8E732FC9F53B04221DF97F180A94 /* RangeSeekSlider-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C9A8290F16C0D2F9BF6FE424E2DF23 /* RangeSeekSlider-dummy.m */; };
+		85D9316BFDC018B3323E870A81CA82FB /* CGVector+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26B213E1F623F562C5FD5A85F6CAD2A1 /* CGVector+Extensions.swift */; };
+		A275F89C6848DABFC323A6D531F944A4 /* CardStackAnimationOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B455C6EE343F297EBB0596CD510ECEEC /* CardStackAnimationOptions.swift */; };
+		A56C2CED79E4BE117796F302DD638D58 /* Shuffle-iOS-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 349D85248AA012FD707B328FEDAA86A5 /* Shuffle-iOS-dummy.m */; };
+		AD81BC5E5F8CB535A1FD3D9B5746DDAB /* SwipeDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E4519AA82D75EAEA7FA346674919ED /* SwipeDirection.swift */; };
+		B3C5A1E43D319D9849BAF842E1B96C94 /* Pods-idorm-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 395B1F384580EA750B3FA60C47820293 /* Pods-idorm-dummy.m */; };
+		BFF2C2AF0119E5252908D432B727A0E4 /* SwipeCardStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B3C1823B911547115488958DE1E11F0 /* SwipeCardStack.swift */; };
+		C1DB9DD3FAD600DFD49EF43CD6D5973A /* PanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970FE262DA4D5D6B4564F43A3CF8BF5A /* PanGestureRecognizer.swift */; };
+		C6B36F97817B7C0C82F8726E7E5FCE7E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77CB9340FB50BA6D5B04E6D1D1593077 /* CoreGraphics.framework */; };
+		CD0CBBB7E37939DAE764CCA310E6A915 /* Pods-idorm-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B50F8034D7AC038B5434AA5B1ED1C5F /* Pods-idorm-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D0288F6CCDA843A32C3EE9C8729883CC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 543B56292D357C3C5AAD6AF749B048FA /* Foundation.framework */; };
+		DF965BDED7E88B3C59B16489773E6E2C /* TapticEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB226184375E294FED787797C9416ED4 /* TapticEngine.swift */; };
+		F2B9C94C77277F14439E36546F731E06 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 543B56292D357C3C5AAD6AF749B048FA /* Foundation.framework */; };
+		F483C2520A10EF17FD63D4607F61FEB4 /* RangeSeekSliderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59838E6A4125E48A19852E6A752D7ADB /* RangeSeekSliderDelegate.swift */; };
+		FAE578EA38D734E9959068AC5CC89BEA /* SwipeCardDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F23930E8CE433F912CBD03607DAFF14A /* SwipeCardDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		2A00A1E39E1C6141EBA25960422AC3A6 /* PBXContainerItemProxy */ = {
+		DA076A57DA7EAD14576435BAF4C37533 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4AFB864B337D1F74C1D79F4FC8F6C67F;
+			remoteInfo = RangeSeekSlider;
+		};
+		F79911785BBA3D7E991E310EF0584171 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
@@ -46,49 +61,72 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0C6D78B368E5C60A4CBF839C2F7651E9 /* SwipeCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwipeCard.swift; path = Sources/Shuffle/Classes/SwipeCard/SwipeCard.swift; sourceTree = "<group>"; };
-		1A8991C6F2F51DF5EDF05F9CF11A0745 /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CGPoint+Extensions.swift"; path = "Sources/Shuffle/Classes/Internal/CGPoint+Extensions.swift"; sourceTree = "<group>"; };
-		1E9861EA2543DABC08B97C5477A86E09 /* Shuffle-iOS-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Shuffle-iOS-prefix.pch"; sourceTree = "<group>"; };
-		22D9393BD19B27D285B16A090756D1E0 /* Shuffle-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Shuffle-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		109F2A0FD29C3CE0BABEE2E15A2A0817 /* RangeSeekSlider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RangeSeekSlider.swift; path = Sources/RangeSeekSlider.swift; sourceTree = "<group>"; };
+		15A7E533CBF4E56B911874C047CE0DE7 /* CardAnimationOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CardAnimationOptions.swift; path = Sources/Shuffle/Classes/SwipeCard/CardAnimationOptions.swift; sourceTree = "<group>"; };
+		2623690A5637803634E16CE462CECECD /* StringUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StringUtils.swift; path = Sources/Shuffle/Classes/Internal/StringUtils.swift; sourceTree = "<group>"; };
+		26B213E1F623F562C5FD5A85F6CAD2A1 /* CGVector+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CGVector+Extensions.swift"; path = "Sources/Shuffle/Classes/Internal/CGVector+Extensions.swift"; sourceTree = "<group>"; };
+		272A02C786A8E7D64BAD1247EEA7C2D6 /* Shuffle-iOS.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Shuffle-iOS.modulemap"; sourceTree = "<group>"; };
 		2BE45E522EE8B1B20955419141598187 /* Pods-idorm.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-idorm.modulemap"; sourceTree = "<group>"; };
-		2EA39D6712B9CA160D5F83EB25052C0C /* CardAnimationOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CardAnimationOptions.swift; path = Sources/Shuffle/Classes/SwipeCard/CardAnimationOptions.swift; sourceTree = "<group>"; };
-		3178A3CD7F400802213601D716B51F63 /* Shuffle-iOS-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Shuffle-iOS-dummy.m"; sourceTree = "<group>"; };
-		33C8913B3869C7533E980A907604A9E9 /* SwipeCardStackDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwipeCardStackDelegate.swift; path = Sources/Shuffle/Classes/SwipeCardStack/SwipeCardStackDelegate.swift; sourceTree = "<group>"; };
-		34EA0F09DEC70FA9DD9AADEAFB530B9C /* CardStackAnimationOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CardStackAnimationOptions.swift; path = Sources/Shuffle/Classes/SwipeCardStack/CardStackAnimationOptions.swift; sourceTree = "<group>"; };
-		365E8F40995C672BE1098FBA260F78F3 /* SwipeCardDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwipeCardDelegate.swift; path = Sources/Shuffle/Classes/SwipeCard/SwipeCardDelegate.swift; sourceTree = "<group>"; };
+		2D3E3FD87FA21FF44FEBB972990DB61F /* SwipeCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwipeCard.swift; path = Sources/Shuffle/Classes/SwipeCard/SwipeCard.swift; sourceTree = "<group>"; };
+		348D58EBE74D0C0327603D1A68294152 /* SwipeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwipeView.swift; path = Sources/Shuffle/Classes/SwipeCard/SwipeView.swift; sourceTree = "<group>"; };
+		349D85248AA012FD707B328FEDAA86A5 /* Shuffle-iOS-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Shuffle-iOS-dummy.m"; sourceTree = "<group>"; };
+		361EE39606F77A62E58D3A8534B4F6D7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		395B1F384580EA750B3FA60C47820293 /* Pods-idorm-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-idorm-dummy.m"; sourceTree = "<group>"; };
-		3F714C29FCC497640A4EE9758C2E053C /* CardStackAnimator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CardStackAnimator.swift; path = Sources/Shuffle/Classes/SwipeCardStack/CardStackAnimator.swift; sourceTree = "<group>"; };
+		3B6602070B53F81C4BEB12C0D4C6C43A /* RangeSeekSlider-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "RangeSeekSlider-Info.plist"; sourceTree = "<group>"; };
+		47E4519AA82D75EAEA7FA346674919ED /* SwipeDirection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwipeDirection.swift; path = Sources/Shuffle/Classes/SwipeDirection.swift; sourceTree = "<group>"; };
+		4B3C1823B911547115488958DE1E11F0 /* SwipeCardStack.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwipeCardStack.swift; path = Sources/Shuffle/Classes/SwipeCardStack/SwipeCardStack.swift; sourceTree = "<group>"; };
 		4B50F8034D7AC038B5434AA5B1ED1C5F /* Pods-idorm-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-idorm-umbrella.h"; sourceTree = "<group>"; };
+		4C340C2A479D704ABD22AA0B04BDCABB /* SwipeCardStackDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwipeCardStackDelegate.swift; path = Sources/Shuffle/Classes/SwipeCardStack/SwipeCardStackDelegate.swift; sourceTree = "<group>"; };
+		543B56292D357C3C5AAD6AF749B048FA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		545429C07C4684B92FCC037F9D8F8EEF /* TapGestureRecognizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TapGestureRecognizer.swift; path = Sources/Shuffle/Classes/Internal/TapGestureRecognizer.swift; sourceTree = "<group>"; };
 		59813AA67B7859C3E3AF1A4686F5CF22 /* Pods-idorm */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-idorm"; path = Pods_idorm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5B25A90A1E0587C01160BD1412861ED3 /* CardStackStateManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CardStackStateManager.swift; path = Sources/Shuffle/Classes/SwipeCardStack/CardStackStateManager.swift; sourceTree = "<group>"; };
-		6592344F02B1C1083E6AE6CEC4537F6A /* Shuffle-iOS.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Shuffle-iOS.modulemap"; sourceTree = "<group>"; };
-		6999214D22B722B43AB47C26158A3E16 /* Animator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Animator.swift; path = Sources/Shuffle/Classes/Internal/Animator.swift; sourceTree = "<group>"; };
-		6B428E5BB1B9DBF9B1AEC06BCC5A4CCD /* TapGestureRecognizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TapGestureRecognizer.swift; path = Sources/Shuffle/Classes/Internal/TapGestureRecognizer.swift; sourceTree = "<group>"; };
+		59838E6A4125E48A19852E6A752D7ADB /* RangeSeekSliderDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RangeSeekSliderDelegate.swift; path = Sources/RangeSeekSliderDelegate.swift; sourceTree = "<group>"; };
+		60E8250AA5355338FE53D0180F90399E /* Shuffle-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Shuffle-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		6CA0BDE9EABA7540E0C1816C66EE706E /* Pods-idorm.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-idorm.debug.xcconfig"; sourceTree = "<group>"; };
-		73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		6CE09DBD4EA2A69A09693B8AA3CE3FB8 /* Animator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Animator.swift; path = Sources/Shuffle/Classes/Internal/Animator.swift; sourceTree = "<group>"; };
 		730CEF57F5582F7E322F0C70E69C4128 /* Pods-idorm-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-idorm-frameworks.sh"; sourceTree = "<group>"; };
-		93CE72F5F1FD41DF970347F49F40E9F9 /* PanGestureRecognizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PanGestureRecognizer.swift; path = Sources/Shuffle/Classes/Internal/PanGestureRecognizer.swift; sourceTree = "<group>"; };
-		97B43710D4AE54A701027C9B6FDAF8B7 /* StringUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StringUtils.swift; path = Sources/Shuffle/Classes/Internal/StringUtils.swift; sourceTree = "<group>"; };
-		999FC350C533217BD9044A78937E2D60 /* SwipeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwipeView.swift; path = Sources/Shuffle/Classes/SwipeCard/SwipeView.swift; sourceTree = "<group>"; };
-		9C4F812CBF9D92BC90EE66830800C17C /* UIView+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIView+Extensions.swift"; path = "Sources/Shuffle/Classes/Internal/UIView+Extensions.swift"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		75A767B68369116185ADA484EC8EAF89 /* CardStackStateManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CardStackStateManager.swift; path = Sources/Shuffle/Classes/SwipeCardStack/CardStackStateManager.swift; sourceTree = "<group>"; };
+		77440B6A97A199BD50168E163FAA630B /* RangeSeekSlider-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RangeSeekSlider-umbrella.h"; sourceTree = "<group>"; };
+		77CB9340FB50BA6D5B04E6D1D1593077 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		78AB753F8EA7756137B0C4D1EDB69028 /* UIView+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIView+Extensions.swift"; path = "Sources/Shuffle/Classes/Internal/UIView+Extensions.swift"; sourceTree = "<group>"; };
+		7A891F6BE7098368D9DF999F9D39C54E /* RangeSeekSlider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = RangeSeekSlider.debug.xcconfig; sourceTree = "<group>"; };
+		838AA9DD23861348E81EFA84FEA828B1 /* SwipeCardStackDataSource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwipeCardStackDataSource.swift; path = Sources/Shuffle/Classes/SwipeCardStack/SwipeCardStackDataSource.swift; sourceTree = "<group>"; };
+		86B4FCF16035F83767A2C2DE04C263C8 /* RangeSeekSlider.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = RangeSeekSlider.release.xcconfig; sourceTree = "<group>"; };
+		871C5478B68E9E519967A22F6D5231E3 /* Shuffle-iOS-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Shuffle-iOS-umbrella.h"; sourceTree = "<group>"; };
+		8756AB42549104494D2574F4181F85CF /* Array+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Array+Extensions.swift"; path = "Sources/Shuffle/Classes/Internal/Array+Extensions.swift"; sourceTree = "<group>"; };
+		95C9A8290F16C0D2F9BF6FE424E2DF23 /* RangeSeekSlider-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "RangeSeekSlider-dummy.m"; sourceTree = "<group>"; };
+		970FE262DA4D5D6B4564F43A3CF8BF5A /* PanGestureRecognizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PanGestureRecognizer.swift; path = Sources/Shuffle/Classes/Internal/PanGestureRecognizer.swift; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A382E6D71D68A2619E4EDD35C44F5374 /* Pods-idorm.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-idorm.release.xcconfig"; sourceTree = "<group>"; };
-		AECEEDD13A7E1A3D430AC57DE826D0FF /* Shuffle-iOS-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Shuffle-iOS-Info.plist"; sourceTree = "<group>"; };
-		B3822CB53FB1812EBEB5A56D52A0E345 /* SwipeCardStackDataSource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwipeCardStackDataSource.swift; path = Sources/Shuffle/Classes/SwipeCardStack/SwipeCardStackDataSource.swift; sourceTree = "<group>"; };
-		BC4CEFC687D9677E08029EDD3E953B96 /* Array+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Array+Extensions.swift"; path = "Sources/Shuffle/Classes/Internal/Array+Extensions.swift"; sourceTree = "<group>"; };
+		A927D73714ACF335C05432C1E3092CBC /* CardStackAnimator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CardStackAnimator.swift; path = Sources/Shuffle/Classes/SwipeCardStack/CardStackAnimator.swift; sourceTree = "<group>"; };
+		AADB4D2D3D0B65EA42E0C2F763697632 /* CardAnimator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CardAnimator.swift; path = Sources/Shuffle/Classes/SwipeCard/CardAnimator.swift; sourceTree = "<group>"; };
+		B455C6EE343F297EBB0596CD510ECEEC /* CardStackAnimationOptions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CardStackAnimationOptions.swift; path = Sources/Shuffle/Classes/SwipeCardStack/CardStackAnimationOptions.swift; sourceTree = "<group>"; };
+		B8B508355F3AD4CF4B66D40C2AD3FC0D /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CGPoint+Extensions.swift"; path = "Sources/Shuffle/Classes/Internal/CGPoint+Extensions.swift"; sourceTree = "<group>"; };
+		BB226184375E294FED787797C9416ED4 /* TapticEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = TapticEngine.swift; path = Sources/TapticEngine.swift; sourceTree = "<group>"; };
+		C027A7405E856E45431E9E1E7913015F /* RangeSeekSlider.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RangeSeekSlider.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C33CA71F20791E3AA2AD47389AE49D0D /* Pods-idorm-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-idorm-acknowledgements.plist"; sourceTree = "<group>"; };
-		C35E55025A72698521D4FF01A9326087 /* SwipeCardStack.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwipeCardStack.swift; path = Sources/Shuffle/Classes/SwipeCardStack/SwipeCardStack.swift; sourceTree = "<group>"; };
 		C4EF62C7AC3E3F2F6C242BD1438DFA9A /* Pods-idorm-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-idorm-acknowledgements.markdown"; sourceTree = "<group>"; };
-		CC3B3CEA68837295B1441A8326158FF7 /* Shuffle-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Shuffle-iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		D3D6A37A8299BC5E2E0B2237490340FE /* CGVector+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CGVector+Extensions.swift"; path = "Sources/Shuffle/Classes/Internal/CGVector+Extensions.swift"; sourceTree = "<group>"; };
-		D414401375C26EBFC7C9B43A5DF55425 /* CardAnimator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CardAnimator.swift; path = Sources/Shuffle/Classes/SwipeCard/CardAnimator.swift; sourceTree = "<group>"; };
-		E8ACB28FC45784DDD0BE7FF3511B34E3 /* Shuffle-iOS-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Shuffle-iOS-umbrella.h"; sourceTree = "<group>"; };
-		EF6D82A590C3AFFDB84FB22D5172CC1B /* Shuffle-iOS */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Shuffle-iOS"; path = Shuffle_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F86496403522A1E4F7ACBC2576047107 /* SwipeDirection.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwipeDirection.swift; path = Sources/Shuffle/Classes/SwipeDirection.swift; sourceTree = "<group>"; };
+		EF6D82A590C3AFFDB84FB22D5172CC1B /* Shuffle_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Shuffle_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F23930E8CE433F912CBD03607DAFF14A /* SwipeCardDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwipeCardDelegate.swift; path = Sources/Shuffle/Classes/SwipeCard/SwipeCardDelegate.swift; sourceTree = "<group>"; };
+		F26EFF9B237D768D881F817E7CD851E5 /* Shuffle-iOS-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Shuffle-iOS-prefix.pch"; sourceTree = "<group>"; };
+		F73BA1EC6CC1BB63DE735AF0384D0BCA /* RangeSeekSlider.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = RangeSeekSlider.modulemap; sourceTree = "<group>"; };
+		F9222D0880105263469D53D760122066 /* Shuffle-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Shuffle-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		F943C42B244CC5E33A1C74A7DB4A72D1 /* Pods-idorm-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-idorm-Info.plist"; sourceTree = "<group>"; };
+		FE3F938A21179ABF0F77416ED1D7DAE2 /* Shuffle-iOS-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Shuffle-iOS-Info.plist"; sourceTree = "<group>"; };
+		FFF2EF3B7820FA50EFC15844C1A9FBF8 /* RangeSeekSlider-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RangeSeekSlider-prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		38E59D0F954749873C0E7BE0B690DADD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C6B36F97817B7C0C82F8726E7E5FCE7E /* CoreGraphics.framework in Frameworks */,
+				7A9BF4B59C5B1A26A89A0796C7CD2EFA /* Foundation.framework in Frameworks */,
+				6A3A4303B4F573E5A9DCF39CA0906999 /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		540561D8FC3512350A68B9E1C9460611 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -97,24 +135,72 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E5143589B66E143796741F3FD2E10BA1 /* Frameworks */ = {
+		BCFF2D4AFAA41422016CCAF70359FBEB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FD60A0532FC6C49B1E59ED5D0DFCDBD /* Foundation.framework in Frameworks */,
+				F2B9C94C77277F14439E36546F731E06 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		079399A550BB1C21C815512FAE6B8BB8 /* Products */ = {
+		03C5C200A0787E300053CFA8F53CA094 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				59813AA67B7859C3E3AF1A4686F5CF22 /* Pods-idorm */,
-				EF6D82A590C3AFFDB84FB22D5172CC1B /* Shuffle-iOS */,
+				37E9A611B7FA8B84E0117394CA54DC92 /* iOS */,
 			);
-			name = Products;
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0ADC500B909A5A650877E964AC7ADA6E /* RangeSeekSlider */ = {
+			isa = PBXGroup;
+			children = (
+				109F2A0FD29C3CE0BABEE2E15A2A0817 /* RangeSeekSlider.swift */,
+				59838E6A4125E48A19852E6A752D7ADB /* RangeSeekSliderDelegate.swift */,
+				BB226184375E294FED787797C9416ED4 /* TapticEngine.swift */,
+				7860C5255DCCCDBD8CC505BD0B5B5BC7 /* Support Files */,
+			);
+			path = RangeSeekSlider;
+			sourceTree = "<group>";
+		};
+		32F662E6252E23C0CE12ADB508BF0ADC /* Shuffle-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				6CE09DBD4EA2A69A09693B8AA3CE3FB8 /* Animator.swift */,
+				8756AB42549104494D2574F4181F85CF /* Array+Extensions.swift */,
+				15A7E533CBF4E56B911874C047CE0DE7 /* CardAnimationOptions.swift */,
+				AADB4D2D3D0B65EA42E0C2F763697632 /* CardAnimator.swift */,
+				B455C6EE343F297EBB0596CD510ECEEC /* CardStackAnimationOptions.swift */,
+				A927D73714ACF335C05432C1E3092CBC /* CardStackAnimator.swift */,
+				75A767B68369116185ADA484EC8EAF89 /* CardStackStateManager.swift */,
+				B8B508355F3AD4CF4B66D40C2AD3FC0D /* CGPoint+Extensions.swift */,
+				26B213E1F623F562C5FD5A85F6CAD2A1 /* CGVector+Extensions.swift */,
+				970FE262DA4D5D6B4564F43A3CF8BF5A /* PanGestureRecognizer.swift */,
+				2623690A5637803634E16CE462CECECD /* StringUtils.swift */,
+				2D3E3FD87FA21FF44FEBB972990DB61F /* SwipeCard.swift */,
+				F23930E8CE433F912CBD03607DAFF14A /* SwipeCardDelegate.swift */,
+				4B3C1823B911547115488958DE1E11F0 /* SwipeCardStack.swift */,
+				838AA9DD23861348E81EFA84FEA828B1 /* SwipeCardStackDataSource.swift */,
+				4C340C2A479D704ABD22AA0B04BDCABB /* SwipeCardStackDelegate.swift */,
+				47E4519AA82D75EAEA7FA346674919ED /* SwipeDirection.swift */,
+				348D58EBE74D0C0327603D1A68294152 /* SwipeView.swift */,
+				545429C07C4684B92FCC037F9D8F8EEF /* TapGestureRecognizer.swift */,
+				78AB753F8EA7756137B0C4D1EDB69028 /* UIView+Extensions.swift */,
+				9253A66624EA06044E6476027CAEAF48 /* Support Files */,
+			);
+			path = "Shuffle-iOS";
+			sourceTree = "<group>";
+		};
+		37E9A611B7FA8B84E0117394CA54DC92 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				77CB9340FB50BA6D5B04E6D1D1593077 /* CoreGraphics.framework */,
+				543B56292D357C3C5AAD6AF749B048FA /* Foundation.framework */,
+				361EE39606F77A62E58D3A8534B4F6D7 /* UIKit.framework */,
+			);
+			name = iOS;
 			sourceTree = "<group>";
 		};
 		4858F0EFD4E0C8B39D0A981DD4DDA96F /* Pods-idorm */ = {
@@ -134,43 +220,6 @@
 			path = "Target Support Files/Pods-idorm";
 			sourceTree = "<group>";
 		};
-		4CB5A924F4ABE712100D53E2F21E223B /* Shuffle-iOS */ = {
-			isa = PBXGroup;
-			children = (
-				6999214D22B722B43AB47C26158A3E16 /* Animator.swift */,
-				BC4CEFC687D9677E08029EDD3E953B96 /* Array+Extensions.swift */,
-				2EA39D6712B9CA160D5F83EB25052C0C /* CardAnimationOptions.swift */,
-				D414401375C26EBFC7C9B43A5DF55425 /* CardAnimator.swift */,
-				34EA0F09DEC70FA9DD9AADEAFB530B9C /* CardStackAnimationOptions.swift */,
-				3F714C29FCC497640A4EE9758C2E053C /* CardStackAnimator.swift */,
-				5B25A90A1E0587C01160BD1412861ED3 /* CardStackStateManager.swift */,
-				1A8991C6F2F51DF5EDF05F9CF11A0745 /* CGPoint+Extensions.swift */,
-				D3D6A37A8299BC5E2E0B2237490340FE /* CGVector+Extensions.swift */,
-				93CE72F5F1FD41DF970347F49F40E9F9 /* PanGestureRecognizer.swift */,
-				97B43710D4AE54A701027C9B6FDAF8B7 /* StringUtils.swift */,
-				0C6D78B368E5C60A4CBF839C2F7651E9 /* SwipeCard.swift */,
-				365E8F40995C672BE1098FBA260F78F3 /* SwipeCardDelegate.swift */,
-				C35E55025A72698521D4FF01A9326087 /* SwipeCardStack.swift */,
-				B3822CB53FB1812EBEB5A56D52A0E345 /* SwipeCardStackDataSource.swift */,
-				33C8913B3869C7533E980A907604A9E9 /* SwipeCardStackDelegate.swift */,
-				F86496403522A1E4F7ACBC2576047107 /* SwipeDirection.swift */,
-				999FC350C533217BD9044A78937E2D60 /* SwipeView.swift */,
-				6B428E5BB1B9DBF9B1AEC06BCC5A4CCD /* TapGestureRecognizer.swift */,
-				9C4F812CBF9D92BC90EE66830800C17C /* UIView+Extensions.swift */,
-				FC0D553E399872B9591E10C3A8286338 /* Support Files */,
-			);
-			name = "Shuffle-iOS";
-			path = "Shuffle-iOS";
-			sourceTree = "<group>";
-		};
-		578452D2E740E91742655AC8F1636D1F /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */,
-			);
-			name = iOS;
-			sourceTree = "<group>";
-		};
 		62246E49B81808BD8700728CC70517E1 /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -179,56 +228,82 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		8F8D473304D15C03B05F3A0B6F026758 /* Pods */ = {
+		7860C5255DCCCDBD8CC505BD0B5B5BC7 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				4CB5A924F4ABE712100D53E2F21E223B /* Shuffle-iOS */,
+				F73BA1EC6CC1BB63DE735AF0384D0BCA /* RangeSeekSlider.modulemap */,
+				95C9A8290F16C0D2F9BF6FE424E2DF23 /* RangeSeekSlider-dummy.m */,
+				3B6602070B53F81C4BEB12C0D4C6C43A /* RangeSeekSlider-Info.plist */,
+				FFF2EF3B7820FA50EFC15844C1A9FBF8 /* RangeSeekSlider-prefix.pch */,
+				77440B6A97A199BD50168E163FAA630B /* RangeSeekSlider-umbrella.h */,
+				7A891F6BE7098368D9DF999F9D39C54E /* RangeSeekSlider.debug.xcconfig */,
+				86B4FCF16035F83767A2C2DE04C263C8 /* RangeSeekSlider.release.xcconfig */,
 			);
-			name = Pods;
+			name = "Support Files";
+			path = "../Target Support Files/RangeSeekSlider";
+			sourceTree = "<group>";
+		};
+		9253A66624EA06044E6476027CAEAF48 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				272A02C786A8E7D64BAD1247EEA7C2D6 /* Shuffle-iOS.modulemap */,
+				349D85248AA012FD707B328FEDAA86A5 /* Shuffle-iOS-dummy.m */,
+				FE3F938A21179ABF0F77416ED1D7DAE2 /* Shuffle-iOS-Info.plist */,
+				F26EFF9B237D768D881F817E7CD851E5 /* Shuffle-iOS-prefix.pch */,
+				871C5478B68E9E519967A22F6D5231E3 /* Shuffle-iOS-umbrella.h */,
+				60E8250AA5355338FE53D0180F90399E /* Shuffle-iOS.debug.xcconfig */,
+				F9222D0880105263469D53D760122066 /* Shuffle-iOS.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/Shuffle-iOS";
+			sourceTree = "<group>";
+		};
+		994AD5F044C0D00C9D46951F97C60537 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				59813AA67B7859C3E3AF1A4686F5CF22 /* Pods-idorm */,
+				C027A7405E856E45431E9E1E7913015F /* RangeSeekSlider.framework */,
+				EF6D82A590C3AFFDB84FB22D5172CC1B /* Shuffle_iOS.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		CF1408CF629C7361332E53B88F7BD30C = {
 			isa = PBXGroup;
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
-				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
-				8F8D473304D15C03B05F3A0B6F026758 /* Pods */,
-				079399A550BB1C21C815512FAE6B8BB8 /* Products */,
+				03C5C200A0787E300053CFA8F53CA094 /* Frameworks */,
+				E67B5E027546AE59424F664E6282CE06 /* Pods */,
+				994AD5F044C0D00C9D46951F97C60537 /* Products */,
 				62246E49B81808BD8700728CC70517E1 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
-		D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */ = {
+		E67B5E027546AE59424F664E6282CE06 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				578452D2E740E91742655AC8F1636D1F /* iOS */,
+				0ADC500B909A5A650877E964AC7ADA6E /* RangeSeekSlider */,
+				32F662E6252E23C0CE12ADB508BF0ADC /* Shuffle-iOS */,
 			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		FC0D553E399872B9591E10C3A8286338 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				6592344F02B1C1083E6AE6CEC4537F6A /* Shuffle-iOS.modulemap */,
-				3178A3CD7F400802213601D716B51F63 /* Shuffle-iOS-dummy.m */,
-				AECEEDD13A7E1A3D430AC57DE826D0FF /* Shuffle-iOS-Info.plist */,
-				1E9861EA2543DABC08B97C5477A86E09 /* Shuffle-iOS-prefix.pch */,
-				E8ACB28FC45784DDD0BE7FF3511B34E3 /* Shuffle-iOS-umbrella.h */,
-				CC3B3CEA68837295B1441A8326158FF7 /* Shuffle-iOS.debug.xcconfig */,
-				22D9393BD19B27D285B16A090756D1E0 /* Shuffle-iOS.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/Shuffle-iOS";
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		16FF59BDB227EC6CD0C8D0788AACB827 /* Headers */ = {
+		09AE8685E8C2F6AADF17ECEAF93FF7BC /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F5C10730684969A477E625A7523A382A /* Pods-idorm-umbrella.h in Headers */,
+				CD0CBBB7E37939DAE764CCA310E6A915 /* Pods-idorm-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7927886923A4D082ECEF5F0F2754CF37 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01C14B76205EFB8A22BA213D2CA15378 /* RangeSeekSlider-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,6 +318,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		4AFB864B337D1F74C1D79F4FC8F6C67F /* RangeSeekSlider */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1C568D8A321A5E172E8A7F0E9EA04B16 /* Build configuration list for PBXNativeTarget "RangeSeekSlider" */;
+			buildPhases = (
+				7927886923A4D082ECEF5F0F2754CF37 /* Headers */,
+				BDC3D0AA3ED5E6560FD9E5D9EBBFFF03 /* Sources */,
+				38E59D0F954749873C0E7BE0B690DADD /* Frameworks */,
+				768D17AA2F8C3EC734757606E1D0F89B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RangeSeekSlider;
+			productName = RangeSeekSlider;
+			productReference = C027A7405E856E45431E9E1E7913015F /* RangeSeekSlider.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		6CE4608D13EB4E75FE6B40D38210294E /* Shuffle-iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 35D57BD2DBA6D2B5467B4281A6B3A931 /* Build configuration list for PBXNativeTarget "Shuffle-iOS" */;
@@ -258,22 +351,23 @@
 			);
 			name = "Shuffle-iOS";
 			productName = Shuffle_iOS;
-			productReference = EF6D82A590C3AFFDB84FB22D5172CC1B /* Shuffle-iOS */;
+			productReference = EF6D82A590C3AFFDB84FB22D5172CC1B /* Shuffle_iOS.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		A9029593C0BF19C35DB54FF50B2F2937 /* Pods-idorm */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 027122E047192131FEEF143CC9A9DC5F /* Build configuration list for PBXNativeTarget "Pods-idorm" */;
+			buildConfigurationList = 62CDF44014CED1ED95383AD6810B0C75 /* Build configuration list for PBXNativeTarget "Pods-idorm" */;
 			buildPhases = (
-				16FF59BDB227EC6CD0C8D0788AACB827 /* Headers */,
-				AD96931F1338A6AF01AA16A7E5E1B6D1 /* Sources */,
-				E5143589B66E143796741F3FD2E10BA1 /* Frameworks */,
-				E8924FD555B191699FAB50B9E6072F97 /* Resources */,
+				09AE8685E8C2F6AADF17ECEAF93FF7BC /* Headers */,
+				D33A0FBDF18501E9842C2C726771A3B7 /* Sources */,
+				BCFF2D4AFAA41422016CCAF70359FBEB /* Frameworks */,
+				BA8426F624079DEDFC9C75C0485EF9D2 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				DE5F6F4AAAE3DC958C50739038E0C6DE /* PBXTargetDependency */,
+				EBC7C9199A3CDE4C3CCCBAE3DC1532D6 /* PBXTargetDependency */,
+				7CB48A9A84E57B41C03EB580592FA618 /* PBXTargetDependency */,
 			);
 			name = "Pods-idorm";
 			productName = Pods_idorm;
@@ -287,7 +381,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1240;
-				LastUpgradeCheck = 1240;
+				LastUpgradeCheck = 1340;
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 13.0";
@@ -298,17 +392,25 @@
 				en,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
-			productRefGroup = 079399A550BB1C21C815512FAE6B8BB8 /* Products */;
+			productRefGroup = 994AD5F044C0D00C9D46951F97C60537 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				A9029593C0BF19C35DB54FF50B2F2937 /* Pods-idorm */,
+				4AFB864B337D1F74C1D79F4FC8F6C67F /* RangeSeekSlider */,
 				6CE4608D13EB4E75FE6B40D38210294E /* Shuffle-iOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		768D17AA2F8C3EC734757606E1D0F89B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		80E7F060AEF507A81DE404E64D2C6B7D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -316,7 +418,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E8924FD555B191699FAB50B9E6072F97 /* Resources */ = {
+		BA8426F624079DEDFC9C75C0485EF9D2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -354,63 +456,43 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		AD96931F1338A6AF01AA16A7E5E1B6D1 /* Sources */ = {
+		BDC3D0AA3ED5E6560FD9E5D9EBBFFF03 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C8C8F2F72AD5E242F69AC79CF2253CC /* Pods-idorm-dummy.m in Sources */,
+				49E21F3D852BB38CFC48FA88555B20D9 /* RangeSeekSlider.swift in Sources */,
+				853C8E732FC9F53B04221DF97F180A94 /* RangeSeekSlider-dummy.m in Sources */,
+				F483C2520A10EF17FD63D4607F61FEB4 /* RangeSeekSliderDelegate.swift in Sources */,
+				DF965BDED7E88B3C59B16489773E6E2C /* TapticEngine.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D33A0FBDF18501E9842C2C726771A3B7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B3C5A1E43D319D9849BAF842E1B96C94 /* Pods-idorm-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		DE5F6F4AAAE3DC958C50739038E0C6DE /* PBXTargetDependency */ = {
+		7CB48A9A84E57B41C03EB580592FA618 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Shuffle-iOS";
 			target = 6CE4608D13EB4E75FE6B40D38210294E /* Shuffle-iOS */;
-			targetProxy = 2A00A1E39E1C6141EBA25960422AC3A6 /* PBXContainerItemProxy */;
+			targetProxy = F79911785BBA3D7E991E310EF0584171 /* PBXContainerItemProxy */;
+		};
+		EBC7C9199A3CDE4C3CCCBAE3DC1532D6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = RangeSeekSlider;
+			target = 4AFB864B337D1F74C1D79F4FC8F6C67F /* RangeSeekSlider */;
+			targetProxy = DA076A57DA7EAD14576435BAF4C37533 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		024249A7E597713DA674152AF7F71859 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6CA0BDE9EABA7540E0C1816C66EE706E /* Pods-idorm.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-idorm/Pods-idorm-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-idorm/Pods-idorm.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
 		09909ECBA13E8F70A928465E7F7A9A92 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -477,44 +559,6 @@
 			};
 			name = Debug;
 		};
-		2119568BC5CC3E9EBD1F2715E0D00741 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A382E6D71D68A2619E4EDD35C44F5374 /* Pods-idorm.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-idorm/Pods-idorm-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-idorm/Pods-idorm.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		2DE0D8898245310716431F92FA4989FF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -577,9 +621,44 @@
 			};
 			name = Release;
 		};
+		625B7C229E3A2588306D11750287C755 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 86B4FCF16035F83767A2C2DE04C263C8 /* RangeSeekSlider.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/RangeSeekSlider/RangeSeekSlider-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/RangeSeekSlider/RangeSeekSlider-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/RangeSeekSlider/RangeSeekSlider.modulemap";
+				PRODUCT_MODULE_NAME = RangeSeekSlider;
+				PRODUCT_NAME = RangeSeekSlider;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		6EA0E4776AD61A138FDDF8892876385D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 22D9393BD19B27D285B16A090756D1E0 /* Shuffle-iOS.release.xcconfig */;
+			baseConfigurationReference = F9222D0880105263469D53D760122066 /* Shuffle-iOS.release.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -592,7 +671,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/Shuffle-iOS/Shuffle-iOS-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/Shuffle-iOS/Shuffle-iOS-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -612,9 +691,43 @@
 			};
 			name = Release;
 		};
+		90F4039893C9A3F101D1832EC4466534 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7A891F6BE7098368D9DF999F9D39C54E /* RangeSeekSlider.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/RangeSeekSlider/RangeSeekSlider-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/RangeSeekSlider/RangeSeekSlider-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/RangeSeekSlider/RangeSeekSlider.modulemap";
+				PRODUCT_MODULE_NAME = RangeSeekSlider;
+				PRODUCT_NAME = RangeSeekSlider;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 		93A79A634C1122666151A52FD32FB908 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CC3B3CEA68837295B1441A8326158FF7 /* Shuffle-iOS.debug.xcconfig */;
+			baseConfigurationReference = 60E8250AA5355338FE53D0180F90399E /* Shuffle-iOS.debug.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -627,7 +740,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/Shuffle-iOS/Shuffle-iOS-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/Shuffle-iOS/Shuffle-iOS-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -646,14 +759,89 @@
 			};
 			name = Debug;
 		};
+		DB2FCB5F540B61F0651173605E2BADD4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6CA0BDE9EABA7540E0C1816C66EE706E /* Pods-idorm.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-idorm/Pods-idorm-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-idorm/Pods-idorm.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		FD28AA8280F59F705396900984989105 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A382E6D71D68A2619E4EDD35C44F5374 /* Pods-idorm.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-idorm/Pods-idorm-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-idorm/Pods-idorm.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		027122E047192131FEEF143CC9A9DC5F /* Build configuration list for PBXNativeTarget "Pods-idorm" */ = {
+		1C568D8A321A5E172E8A7F0E9EA04B16 /* Build configuration list for PBXNativeTarget "RangeSeekSlider" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				024249A7E597713DA674152AF7F71859 /* Debug */,
-				2119568BC5CC3E9EBD1F2715E0D00741 /* Release */,
+				90F4039893C9A3F101D1832EC4466534 /* Debug */,
+				625B7C229E3A2588306D11750287C755 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -672,6 +860,15 @@
 			buildConfigurations = (
 				09909ECBA13E8F70A928465E7F7A9A92 /* Debug */,
 				2DE0D8898245310716431F92FA4989FF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		62CDF44014CED1ED95383AD6810B0C75 /* Build configuration list for PBXNativeTarget "Pods-idorm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB2FCB5F540B61F0651173605E2BADD4 /* Debug */,
+				FD28AA8280F59F705396900984989105 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

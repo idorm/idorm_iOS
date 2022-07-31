@@ -23,7 +23,3 @@ enum CalendarListType: Int, CaseIterable {
     }
   }
 }
-
-class CalendarUtilities {
-  
-}

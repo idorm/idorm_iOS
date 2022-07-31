@@ -10,7 +10,7 @@ import UIKit
 import RxCocoa
 import RxSwift
 
-class CalendarChipCollectionViewCell: UICollectionViewCell {
+class CalendarChipCell: UICollectionViewCell {
   // MARK: - Properties
   lazy var containerView: UIView = {
     let view = UIView()

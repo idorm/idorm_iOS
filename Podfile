@@ -6,6 +6,7 @@ target 'idorm' do
   use_frameworks!
 
 pod 'Shuffle-iOS'
+pod 'RangeSeekSlider'
 
   # Pods for idorm
 

@@ -9,15 +9,7 @@ import SnapKit
 import UIKit
 import RxSwift
 import RxCocoa
-import CardSlider
-
-struct Item: CardSliderItem {
-  var image: UIImage
-  var rating: Int?
-  var title: String
-  var subtitle: String?
-  var description: String?
-}
+import Shuffle_iOS
 
 class MatchingViewController: UIViewController {
   // MARK: - Properties
@@ -40,6 +32,22 @@ class MatchingViewController: UIViewController {
     
     return button
   }()
+  
+  lazy var infoView: MyInfoView = {
+    let infoView = MyInfoView()
+    infoView.configureUI(myinfo: myInfo)
+
+    return infoView
+  }()
+  
+  lazy var cardStack: SwipeCardStack = {
+    let cardStack = SwipeCardStack()
+    cardStack.cardStackInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    cardStack.dataSource = self
+    cardStack.delegate = self
+    
+    return cardStack
+  }()
 
   lazy var topRoundedBackgroundView = UIImageView(image: UIImage(named: "topRoundedBackground(Matching)"))
   let noMatchingImageView = UIImageView(image: UIImage(named: "noMatchingLabel(Matching)"))
@@ -47,28 +55,39 @@ class MatchingViewController: UIViewController {
   lazy var messageButton = createButton(imageName: "message")
   lazy var heartButton = createButton(imageName: "heart")
   
+  let disposeBag = DisposeBag()
+  
   // MARK: - LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()
     configureUI()
+    bind()
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     navigationController?.navigationBar.isHidden = true
+    tabBarController?.tabBar.isHidden = false
+  }
+  
+  // MARK: - Bind
+  private func bind() {
+    filterButton.rx.tap
+      .bind(onNext: { [weak self] in
+        let matchingFilterVC = MatchingFilterViewController()
+        self?.navigationController?.pushViewController(matchingFilterVC, animated: true)
+      })
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers
   private func configureUI() {
     view.backgroundColor = .white
     
-    let infoView = MyInfoView()
-    infoView.configureUI(myinfo: myInfo)
-    
     let buttonStack = UIStackView(arrangedSubviews: [ cancelButton, messageButton, heartButton ])
     buttonStack.spacing = 24
     
-    [ buttonStack, topRoundedBackgroundView, noMatchingImageView, filterButton, backwardButton ]
+    [ buttonStack, topRoundedBackgroundView, noMatchingImageView, backwardButton, cardStack, filterButton ]
       .forEach { view.addSubview($0) }
     
     topRoundedBackgroundView.snp.makeConstraints { make in
@@ -84,13 +103,20 @@ class MatchingViewController: UIViewController {
       make.centerX.centerY.equalToSuperview()
     }
     
+    cardStack.snp.makeConstraints { make in
+      make.top.equalTo(backwardButton.snp.bottom).offset(12)
+      make.leading.trailing.equalToSuperview().inset(24)
+      make.bottom.equalTo(buttonStack.snp.top).offset(-28)
+    }
+    
     buttonStack.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.bottom.equalTo(view.safeAreaLayoutGuide).inset(52)
+      make.bottom.equalTo(view.safeAreaLayoutGuide).inset(24)
     }
     
     backwardButton.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
+      make.top.equalTo(view.safeAreaLayoutGuide).inset(16)
     }
   }
 }
@@ -117,15 +143,35 @@ extension MatchingViewController {
     
     return button
   }
+  
+  func createCard(from infoView: MyInfoView) -> SwipeCard {
+    infoView.snp.makeConstraints { make in
+      make.width.equalTo(view.frame.width - 48)
+    }
+    
+    let card = SwipeCard()
+    card.swipeDirections = [.left, .right]
+    card.content = infoView
+    
+    let leftOverlay = UIView()
+    leftOverlay.backgroundColor = .green
+    
+    let rightOverlay = UIView()
+    rightOverlay.backgroundColor = .red
+    
+    card.setOverlays([.left: leftOverlay, .right: rightOverlay])
+    
+    return card
+  }
 }
 
-// MARK: - CardSlider
-extension MatchingViewController: CardSliderDataSource {
-  func item(for index: Int) -> CardSliderItem {
-    <#code#>
+extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelegate {
+  func cardStack(_ cardStack: SwipeCardStack, cardForIndexAt index: Int) -> SwipeCard {
+    let cardImages = [ infoView, infoView, infoView ]
+    return createCard(from: cardImages[index])
   }
   
-  func numberOfItems() -> Int {
-    <#code#>
+  func numberOfCards(in cardStack: SwipeCardStack) -> Int {
+    return 3
   }
 }

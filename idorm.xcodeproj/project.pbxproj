@@ -19,7 +19,6 @@
 		E508437728813CE80047A2EC /* FontManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508437628813CE80047A2EC /* FontManager.swift */; };
 		E508437B28814CAB0047A2EC /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508437A28814CAB0047A2EC /* AuthViewController.swift */; };
 		E525C1CD28944E2800F934B3 /* CalendarPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */; };
-		E525C1CF28944EC800F934B3 /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C1CE28944EC800F934B3 /* CalendarCell.swift */; };
 		E525C1D128944F5200F934B3 /* CalendarCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C1D028944F5200F934B3 /* CalendarCellType.swift */; };
 		E5290EFD2887BBA40004B8E6 /* CommunityPopularCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */; };
 		E5290EFF2887BBB00004B8E6 /* PostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFE2887BBB00004B8E6 /* PostCollectionViewCell.swift */; };
@@ -34,10 +33,13 @@
 		E53086E6287928B400A5D0A0 /* HomePopularCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E5287928B400A5D0A0 /* HomePopularCollectionViewCell.swift */; };
 		E53086E828795D2700A5D0A0 /* HomeCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E728795D2700A5D0A0 /* HomeCollectionHeaderView.swift */; };
 		E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */; };
+		E53D6E7528963B21004BF95B /* MatchingFilterRangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53D6E7428963B21004BF95B /* MatchingFilterRangeSlider.swift */; };
 		E55794EE287C36F5002DB2B0 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55794ED287C36F5002DB2B0 /* UIView+Extensions.swift */; };
 		E55794F0287C496D002DB2B0 /* OnboardingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55794EF287C496D002DB2B0 /* OnboardingTableViewCell.swift */; };
-		E557E2272892593F00F9C74D /* CalendarPersonalCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E557E2262892593F00F9C74D /* CalendarPersonalCollectionViewCell.swift */; };
+		E557E2272892593F00F9C74D /* CalendarPersonalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E557E2262892593F00F9C74D /* CalendarPersonalCell.swift */; };
 		E557E22928926F3B00F9C74D /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E557E22828926F3B00F9C74D /* UIViewController+Extensions.swift */; };
+		E55DE2F62896DB06004F1401 /* CustomCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55DE2F52896DB06004F1401 /* CustomCalendarCell.swift */; };
+		E55DE2F92896DDC6004F1401 /* CalendarUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55DE2F82896DDC6004F1401 /* CalendarUtilities.swift */; };
 		E563421828780BDE00E93D17 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E563421728780BDE00E93D17 /* OnboardingViewModel.swift */; };
 		E563421E28780C3800E93D17 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E563421D28780C3800E93D17 /* SnapKit */; };
 		E56342212878246200E93D17 /* OnboardingTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56342202878246200E93D17 /* OnboardingTableHeaderView.swift */; };
@@ -46,7 +48,7 @@
 		E56DF4A2289354AF00E85B10 /* CalendarRoundedBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56DF4A1289354AF00E85B10 /* CalendarRoundedBackgroundView.swift */; };
 		E56DF4A428935B0800E85B10 /* UICollectionReusableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56DF4A328935B0800E85B10 /* UICollectionReusableView+Extensions.swift */; };
 		E56DF4A72893C4CA00E85B10 /* JTAppleCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = E56DF4A62893C4CA00E85B10 /* JTAppleCalendar */; };
-		E56DF4AF2893C81F00E85B10 /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56DF4AE2893C81F00E85B10 /* CalendarHeaderView.swift */; };
+		E56DF4AF2893C81F00E85B10 /* CustomCalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56DF4AE2893C81F00E85B10 /* CustomCalendarHeaderView.swift */; };
 		E56DF4B52894036D00E85B10 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56DF4B42894036D00E85B10 /* CalendarViewModel.swift */; };
 		E57A42CC289596D8003D5834 /* CardSlider in Frameworks */ = {isa = PBXBuildFile; productRef = E57A42CB289596D8003D5834 /* CardSlider */; };
 		E57FB84F2886E1520050BBAE /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = E57FB84E2886E1520050BBAE /* RxCocoa */; };
@@ -87,12 +89,12 @@
 		E5E8A3DF2895208500A48A91 /* MyCommentsCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E8A3DE2895208500A48A91 /* MyCommentsCollectionVIewCell.swift */; };
 		E5E8A3E52895319100A48A91 /* MyLikeRoommateCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E8A3E42895319100A48A91 /* MyLikeRoommateCollectionVIewCell.swift */; };
 		E5EB5F212891328500EC0425 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = E5EB5F202891328500EC0425 /* FSCalendar */; };
-		E5EB5F272891398200EC0425 /* CalendarCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F262891398200EC0425 /* CalendarCollectionHeaderView.swift */; };
-		E5EB5F2A289143A100EC0425 /* CalendarChipCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F29289143A100EC0425 /* CalendarChipCollectionViewCell.swift */; };
+		E5EB5F272891398200EC0425 /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F262891398200EC0425 /* CalendarHeaderView.swift */; };
+		E5EB5F2A289143A100EC0425 /* CalendarChipCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F29289143A100EC0425 /* CalendarChipCell.swift */; };
 		E5EB5F2C2891534300EC0425 /* CalendarPersonalCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F2B2891534300EC0425 /* CalendarPersonalCollectionHeaderView.swift */; };
 		E5EB5F2E2891535E00EC0425 /* CalendarDormCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F2D2891535E00EC0425 /* CalendarDormCollectionHeaderView.swift */; };
-		E5EB5F302891558D00EC0425 /* CalendarDormCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F2F2891558D00EC0425 /* CalendarDormCollectionViewCell.swift */; };
-		E5EB5F322891589800EC0425 /* CalendarUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F312891589800EC0425 /* CalendarUtilities.swift */; };
+		E5EB5F302891558D00EC0425 /* CalendarDormCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F2F2891558D00EC0425 /* CalendarDormCell.swift */; };
+		E5EB5F322891589800EC0425 /* CalendarListUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F312891589800EC0425 /* CalendarListUtilities.swift */; };
 		E5F5EC722883C70C0026DE21 /* WebMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC712883C70C0026DE21 /* WebMailViewController.swift */; };
 		E5F5EC742884025E0026DE21 /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC732884025E0026DE21 /* CommunityViewController.swift */; };
 		E5F5EC762884027D0026DE21 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC752884027D0026DE21 /* CalendarViewController.swift */; };
@@ -116,7 +118,6 @@
 		E508437628813CE80047A2EC /* FontManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontManager.swift; sourceTree = "<group>"; };
 		E508437A28814CAB0047A2EC /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPostViewController.swift; sourceTree = "<group>"; };
-		E525C1CE28944EC800F934B3 /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
 		E525C1D028944F5200F934B3 /* CalendarCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCellType.swift; sourceTree = "<group>"; };
 		E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPopularCollectionVIewCell.swift; sourceTree = "<group>"; };
 		E5290EFE2887BBB00004B8E6 /* PostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -130,17 +131,20 @@
 		E53086E5287928B400A5D0A0 /* HomePopularCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePopularCollectionViewCell.swift; sourceTree = "<group>"; };
 		E53086E728795D2700A5D0A0 /* HomeCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionHeaderView.swift; sourceTree = "<group>"; };
 		E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpViewController.swift; sourceTree = "<group>"; };
+		E53D6E7428963B21004BF95B /* MatchingFilterRangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilterRangeSlider.swift; sourceTree = "<group>"; };
 		E55794ED287C36F5002DB2B0 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		E55794EF287C496D002DB2B0 /* OnboardingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTableViewCell.swift; sourceTree = "<group>"; };
-		E557E2262892593F00F9C74D /* CalendarPersonalCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPersonalCollectionViewCell.swift; sourceTree = "<group>"; };
+		E557E2262892593F00F9C74D /* CalendarPersonalCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPersonalCell.swift; sourceTree = "<group>"; };
 		E557E22828926F3B00F9C74D /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		E55DE2F52896DB06004F1401 /* CustomCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCalendarCell.swift; sourceTree = "<group>"; };
+		E55DE2F82896DDC6004F1401 /* CalendarUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarUtilities.swift; sourceTree = "<group>"; };
 		E563421728780BDE00E93D17 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		E56342202878246200E93D17 /* OnboardingTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTableHeaderView.swift; sourceTree = "<group>"; };
 		E56342222878353100E93D17 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E563422428784ED400E93D17 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		E56DF4A1289354AF00E85B10 /* CalendarRoundedBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarRoundedBackgroundView.swift; sourceTree = "<group>"; };
 		E56DF4A328935B0800E85B10 /* UICollectionReusableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionReusableView+Extensions.swift"; sourceTree = "<group>"; };
-		E56DF4AE2893C81F00E85B10 /* CalendarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
+		E56DF4AE2893C81F00E85B10 /* CustomCalendarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCalendarHeaderView.swift; sourceTree = "<group>"; };
 		E56DF4B42894036D00E85B10 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		E57FB8552886E2710050BBAE /* PhotoLibrary+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotoLibrary+Extensions.swift"; sourceTree = "<group>"; };
 		E58131A7288E6AC6000DB8C9 /* OnboardingFloatyBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFloatyBottomView.swift; sourceTree = "<group>"; };
@@ -172,12 +176,12 @@
 		E5E8A3DC289505F000A48A91 /* MyPostCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPostCollectionHeaderView.swift; sourceTree = "<group>"; };
 		E5E8A3DE2895208500A48A91 /* MyCommentsCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommentsCollectionVIewCell.swift; sourceTree = "<group>"; };
 		E5E8A3E42895319100A48A91 /* MyLikeRoommateCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLikeRoommateCollectionVIewCell.swift; sourceTree = "<group>"; };
-		E5EB5F262891398200EC0425 /* CalendarCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionHeaderView.swift; sourceTree = "<group>"; };
-		E5EB5F29289143A100EC0425 /* CalendarChipCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarChipCollectionViewCell.swift; sourceTree = "<group>"; };
+		E5EB5F262891398200EC0425 /* CalendarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
+		E5EB5F29289143A100EC0425 /* CalendarChipCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarChipCell.swift; sourceTree = "<group>"; };
 		E5EB5F2B2891534300EC0425 /* CalendarPersonalCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPersonalCollectionHeaderView.swift; sourceTree = "<group>"; };
 		E5EB5F2D2891535E00EC0425 /* CalendarDormCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDormCollectionHeaderView.swift; sourceTree = "<group>"; };
-		E5EB5F2F2891558D00EC0425 /* CalendarDormCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDormCollectionViewCell.swift; sourceTree = "<group>"; };
-		E5EB5F312891589800EC0425 /* CalendarUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarUtilities.swift; sourceTree = "<group>"; };
+		E5EB5F2F2891558D00EC0425 /* CalendarDormCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDormCell.swift; sourceTree = "<group>"; };
+		E5EB5F312891589800EC0425 /* CalendarListUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListUtilities.swift; sourceTree = "<group>"; };
 		E5F5EC712883C70C0026DE21 /* WebMailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebMailViewController.swift; sourceTree = "<group>"; };
 		E5F5EC732884025E0026DE21 /* CommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewController.swift; sourceTree = "<group>"; };
 		E5F5EC752884027D0026DE21 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
@@ -216,7 +220,6 @@
 				F785A151F7E5C13515C3797A /* Pods-idorm.debug.xcconfig */,
 				0AD9CEBB30E6632A4F04BAF6 /* Pods-idorm.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -311,8 +314,24 @@
 				E5D4900F288BFFFD00311493 /* Utilities.swift */,
 				E5D49013288C3DDA00311493 /* OnboardingUtilities.swift */,
 				E5290F1128886D7A0004B8E6 /* CommunityUtilities.swift */,
-				E5EB5F312891589800EC0425 /* CalendarUtilities.swift */,
 				E508436B288133AD0047A2EC /* LoginUtilities.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		E53D6E7328963B14004BF95B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E53D6E7428963B21004BF95B /* MatchingFilterRangeSlider.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E55DE2F72896DDBC004F1401 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				E55DE2F82896DDC6004F1401 /* CalendarUtilities.swift */,
+				E5EB5F312891589800EC0425 /* CalendarListUtilities.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -320,6 +339,7 @@
 		E56DF4A82893C73600E85B10 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				E55DE2F72896DDBC004F1401 /* Utilities */,
 				E56DF4AD2893C75C00E85B10 /* Models */,
 				E56DF4AA2893C74600E85B10 /* ViewControllers */,
 				E56DF4AC2893C75200E85B10 /* ViewModels */,
@@ -332,8 +352,8 @@
 		E56DF4A92893C74100E85B10 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				E5EB5F262891398200EC0425 /* CalendarCollectionHeaderView.swift */,
-				E56DF4AE2893C81F00E85B10 /* CalendarHeaderView.swift */,
+				E5EB5F262891398200EC0425 /* CalendarHeaderView.swift */,
+				E56DF4AE2893C81F00E85B10 /* CustomCalendarHeaderView.swift */,
 				E5EB5F2B2891534300EC0425 /* CalendarPersonalCollectionHeaderView.swift */,
 				E5EB5F2D2891535E00EC0425 /* CalendarDormCollectionHeaderView.swift */,
 				E56DF4A1289354AF00E85B10 /* CalendarRoundedBackgroundView.swift */,
@@ -353,10 +373,10 @@
 		E56DF4AB2893C74E00E85B10 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				E5EB5F29289143A100EC0425 /* CalendarChipCollectionViewCell.swift */,
-				E557E2262892593F00F9C74D /* CalendarPersonalCollectionViewCell.swift */,
-				E5EB5F2F2891558D00EC0425 /* CalendarDormCollectionViewCell.swift */,
-				E525C1CE28944EC800F934B3 /* CalendarCell.swift */,
+				E5EB5F29289143A100EC0425 /* CalendarChipCell.swift */,
+				E557E2262892593F00F9C74D /* CalendarPersonalCell.swift */,
+				E5EB5F2F2891558D00EC0425 /* CalendarDormCell.swift */,
+				E55DE2F52896DB06004F1401 /* CustomCalendarCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -527,6 +547,7 @@
 		E56DF4C3289405CD00E85B10 /* Matching */ = {
 			isa = PBXGroup;
 			children = (
+				E53D6E7328963B14004BF95B /* Views */,
 				E5AB97C22895583C00C0CEDF /* ViewModels */,
 				E56DF4C92894060200E85B10 /* ViewControllers */,
 			);
@@ -745,16 +766,16 @@
 			);
 			mainGroup = E50300EA28773A5D00611C62;
 			packageReferences = (
-				E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit.git" */,
-				E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView.git" */,
-				E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker.git" */,
-				E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift.git" */,
-				E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView.git" */,
-				E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal.git" */,
-				E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField.git" */,
-				E5EB5F1F2891328500EC0425 /* XCRemoteSwiftPackageReference "FSCalendar.git" */,
-				E56DF4A52893C4CA00E85B10 /* XCRemoteSwiftPackageReference "JTAppleCalendar.git" */,
-				E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider.git" */,
+				E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView" */,
+				E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker" */,
+				E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift" */,
+				E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView" */,
+				E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal" */,
+				E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField" */,
+				E5EB5F1F2891328500EC0425 /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				E56DF4A52893C4CA00E85B10 /* XCRemoteSwiftPackageReference "JTAppleCalendar" */,
+				E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider" */,
 			);
 			productRefGroup = E50300F428773A5D00611C62 /* Products */;
 			projectDirPath = "";
@@ -830,14 +851,14 @@
 				E53086E22879284000A5D0A0 /* HomeRoommateCollectionViewCell.swift in Sources */,
 				E5EB5F2E2891535E00EC0425 /* CalendarDormCollectionHeaderView.swift in Sources */,
 				E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordViewController.swift in Sources */,
-				E5EB5F302891558D00EC0425 /* CalendarDormCollectionViewCell.swift in Sources */,
+				E5EB5F302891558D00EC0425 /* CalendarDormCell.swift in Sources */,
 				E525C1CD28944E2800F934B3 /* CalendarPostViewController.swift in Sources */,
 				E557E22928926F3B00F9C74D /* UIViewController+Extensions.swift in Sources */,
+				E55DE2F92896DDC6004F1401 /* CalendarUtilities.swift in Sources */,
 				E5AD739D287AE08F00BA2C5E /* LoginPopupViewController.swift in Sources */,
 				E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */,
-				E525C1CF28944EC800F934B3 /* CalendarCell.swift in Sources */,
 				E525C1D128944F5200F934B3 /* CalendarCellType.swift in Sources */,
-				E557E2272892593F00F9C74D /* CalendarPersonalCollectionViewCell.swift in Sources */,
+				E557E2272892593F00F9C74D /* CalendarPersonalCell.swift in Sources */,
 				E5290F0928881C6E0004B8E6 /* CommunityDetailCollectionHeaderView.swift in Sources */,
 				E50300F728773A5D00611C62 /* AppDelegate.swift in Sources */,
 				E55794EE287C36F5002DB2B0 /* UIView+Extensions.swift in Sources */,
@@ -849,7 +870,7 @@
 				E5F5EC742884025E0026DE21 /* CommunityViewController.swift in Sources */,
 				E5AC2DCF288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift in Sources */,
 				E5290F10288869700004B8E6 /* CommunityDetailHeaderCollectionViewCell.swift in Sources */,
-				E5EB5F322891589800EC0425 /* CalendarUtilities.swift in Sources */,
+				E5EB5F322891589800EC0425 /* CalendarListUtilities.swift in Sources */,
 				E5290F0E288867E50004B8E6 /* CommunityDetailTableViewCell.swift in Sources */,
 				E57FB8562886E2710050BBAE /* PhotoLibrary+Extensions.swift in Sources */,
 				E56DF4A428935B0800E85B10 /* UICollectionReusableView+Extensions.swift in Sources */,
@@ -863,26 +884,27 @@
 				E5C88908288972E000CBD04E /* CommunityAlertViewController.swift in Sources */,
 				E55794F0287C496D002DB2B0 /* OnboardingTableViewCell.swift in Sources */,
 				E5290EFF2887BBB00004B8E6 /* PostCollectionViewCell.swift in Sources */,
-				E5EB5F272891398200EC0425 /* CalendarCollectionHeaderView.swift in Sources */,
+				E5EB5F272891398200EC0425 /* CalendarHeaderView.swift in Sources */,
 				E5290F06288818E70004B8E6 /* CommunityDetailViewController.swift in Sources */,
 				E58F96FD28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift in Sources */,
 				E58F96FB2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift in Sources */,
 				E586B6A528901B06005AB9C2 /* LoginTextFieldContainerView.swift in Sources */,
 				E5D49010288BFFFD00311493 /* Utilities.swift in Sources */,
 				E5AC2DCB2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift in Sources */,
+				E53D6E7528963B21004BF95B /* MatchingFilterRangeSlider.swift in Sources */,
 				E5E8A3DB289505B500A48A91 /* MyPostViewController.swift in Sources */,
 				E5E8A3DD289505F000A48A91 /* MyPostCollectionHeaderView.swift in Sources */,
 				E58131A8288E6AC6000DB8C9 /* OnboardingFloatyBottomView.swift in Sources */,
 				E56342212878246200E93D17 /* OnboardingTableHeaderView.swift in Sources */,
 				E508436C288133AD0047A2EC /* LoginUtilities.swift in Sources */,
 				E56342232878353100E93D17 /* TabBarController.swift in Sources */,
-				E56DF4AF2893C81F00E85B10 /* CalendarHeaderView.swift in Sources */,
+				E56DF4AF2893C81F00E85B10 /* CustomCalendarHeaderView.swift in Sources */,
 				E5E8A3DF2895208500A48A91 /* MyCommentsCollectionVIewCell.swift in Sources */,
 				E5F5EC762884027D0026DE21 /* CalendarViewController.swift in Sources */,
 				E58ACB8728846E050031BD86 /* ImagePickerViewController.swift in Sources */,
 				E56DF4A2289354AF00E85B10 /* CalendarRoundedBackgroundView.swift in Sources */,
 				E508437B28814CAB0047A2EC /* AuthViewController.swift in Sources */,
-				E5EB5F2A289143A100EC0425 /* CalendarChipCollectionViewCell.swift in Sources */,
+				E5EB5F2A289143A100EC0425 /* CalendarChipCell.swift in Sources */,
 				E5F5EC78288402840026DE21 /* MyPageViewController.swift in Sources */,
 				E5BF4C5F28840EBF00B4F0B8 /* PostingViewController.swift in Sources */,
 				E5D4900E288BFB9100311493 /* MyInfo.swift in Sources */,
@@ -896,6 +918,7 @@
 				E5AD739F287AEF2D00BA2C5E /* PutEmailViewController.swift in Sources */,
 				E5F5EC722883C70C0026DE21 /* WebMailViewController.swift in Sources */,
 				E5290EFD2887BBA40004B8E6 /* CommunityPopularCollectionVIewCell.swift in Sources */,
+				E55DE2F62896DB06004F1401 /* CustomCalendarCell.swift in Sources */,
 				E5D49016288C449600311493 /* OnboardingVIewController.swift in Sources */,
 				E5290F1228886D7A0004B8E6 /* CommunityUtilities.swift in Sources */,
 				E5B15F6F287FE355004D4164 /* OnboardingDetailViewController.swift in Sources */,
@@ -1111,7 +1134,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView.git" */ = {
+		E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ruslanskorb/RSKGrowingTextView.git";
 			requirement = {
@@ -1119,7 +1142,7 @@
 				minimumVersion = 6.1.0;
 			};
 		};
-		E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit.git" */ = {
+		E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
 			requirement = {
@@ -1127,7 +1150,7 @@
 				minimumVersion = 5.6.0;
 			};
 		};
-		E56DF4A52893C4CA00E85B10 /* XCRemoteSwiftPackageReference "JTAppleCalendar.git" */ = {
+		E56DF4A52893C4CA00E85B10 /* XCRemoteSwiftPackageReference "JTAppleCalendar" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/patchthecode/JTAppleCalendar.git";
 			requirement = {
@@ -1135,7 +1158,7 @@
 				minimumVersion = 8.0.0;
 			};
 		};
-		E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider.git" */ = {
+		E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Ramotion/cardslider.git";
 			requirement = {
@@ -1143,7 +1166,7 @@
 				minimumVersion = 0.1.0;
 			};
 		};
-		E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift.git" */ = {
+		E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
 			requirement = {
@@ -1151,7 +1174,7 @@
 				minimumVersion = 6.5.0;
 			};
 		};
-		E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker.git" */ = {
+		E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/congnd/FMPhotoPicker.git";
 			requirement = {
@@ -1159,7 +1182,7 @@
 				minimumVersion = 1.3.0;
 			};
 		};
-		E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView.git" */ = {
+		E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ruslanskorb/RSKPlaceholderTextView.git";
 			requirement = {
@@ -1167,7 +1190,7 @@
 				minimumVersion = 6.1.0;
 			};
 		};
-		E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal.git" */ = {
+		E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/slackhq/PanModal.git";
 			requirement = {
@@ -1175,7 +1198,7 @@
 				minimumVersion = 1.2.0;
 			};
 		};
-		E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField.git" */ = {
+		E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ChiliLabs/CHIOTPField.git";
 			requirement = {
@@ -1183,7 +1206,7 @@
 				minimumVersion = 0.1.0;
 			};
 		};
-		E5EB5F1F2891328500EC0425 /* XCRemoteSwiftPackageReference "FSCalendar.git" */ = {
+		E5EB5F1F2891328500EC0425 /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/WenchaoD/FSCalendar.git";
 			requirement = {
@@ -1196,62 +1219,62 @@
 /* Begin XCSwiftPackageProductDependency section */
 		E5290F0B288832630004B8E6 /* RSKGrowingTextView */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView.git" */;
+			package = E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView" */;
 			productName = RSKGrowingTextView;
 		};
 		E563421D28780C3800E93D17 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit.git" */;
+			package = E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
 		E56DF4A62893C4CA00E85B10 /* JTAppleCalendar */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E56DF4A52893C4CA00E85B10 /* XCRemoteSwiftPackageReference "JTAppleCalendar.git" */;
+			package = E56DF4A52893C4CA00E85B10 /* XCRemoteSwiftPackageReference "JTAppleCalendar" */;
 			productName = JTAppleCalendar;
 		};
 		E57A42CB289596D8003D5834 /* CardSlider */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider.git" */;
+			package = E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider" */;
 			productName = CardSlider;
 		};
 		E57FB84E2886E1520050BBAE /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift.git" */;
+			package = E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxCocoa;
 		};
 		E57FB8502886E1520050BBAE /* RxRelay */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift.git" */;
+			package = E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxRelay;
 		};
 		E57FB8522886E1520050BBAE /* RxSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift.git" */;
+			package = E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
 		};
 		E58ACB84288465970031BD86 /* FMPhotoPicker */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker.git" */;
+			package = E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker" */;
 			productName = FMPhotoPicker;
 		};
 		E5B15F6C287FCEFE004D4164 /* RSKPlaceholderTextView */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView.git" */;
+			package = E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView" */;
 			productName = RSKPlaceholderTextView;
 		};
 		E5C889052889729800CBD04E /* PanModal */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal.git" */;
+			package = E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal" */;
 			productName = PanModal;
 		};
 		E5D03750288CFDE800080482 /* CHIOTPField */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField.git" */;
+			package = E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField" */;
 			productName = CHIOTPField;
 		};
 		E5EB5F202891328500EC0425 /* FSCalendar */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E5EB5F1F2891328500EC0425 /* XCRemoteSwiftPackageReference "FSCalendar.git" */;
+			package = E5EB5F1F2891328500EC0425 /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
 		};
 /* End XCSwiftPackageProductDependency section */
