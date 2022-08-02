@@ -8,7 +8,6 @@
 import SnapKit
 import UIKit
 import RxSwift
-import RxCocoa
 import Shuffle_iOS
 
 class MatchingViewController: UIViewController {

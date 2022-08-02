@@ -9,9 +9,8 @@ import SnapKit
 import UIKit
 import RxSwift
 import RxCocoa
-import FSCalendar
 
-class CustomCalendarHeaderView: UIView {
+class WeekdayCalendarView: UIView {
   // MARK: - Properties
   lazy var leftArrowButton: UIButton = {
     let button = UIButton(type: .custom)
@@ -54,46 +53,25 @@ class CustomCalendarHeaderView: UIView {
   lazy var fridayLabel = createWeekDayLabel(title: "금")
   lazy var saturdayLabel = createWeekDayLabel(title: "토")
   
-  let disposeBag = DisposeBag()
-  
-  /// Input
-  var arrowButtonPublisher = PublishSubject<Bool>()
-  
-  /// Output
-  var onChangedMonth = PublishSubject<Date>()
-  
-  // MARK: - LifeCycle
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    bind()
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
+  var viewModel: CalendarViewModel!
+  var disposeBag = DisposeBag()
   
   // MARK: - Bind
-  private func bind() {
+  func bind() {
     leftArrowButton.rx.tap
-      .map { false }
-      .bind(to: arrowButtonPublisher)
+      .bind(to: viewModel.input.leftArrowButtonTapped)
       .disposed(by: disposeBag)
     
     rightArrowButton.rx.tap
-      .map { true }
-      .bind(to: arrowButtonPublisher)
-      .disposed(by: disposeBag)
-    
-    onChangedMonth
-      .map { [weak self] date in
-        self?.transformDateToString(date)
-      }
-      .bind(to: monthLabel.rx.text)
+      .bind(to: viewModel.input.rightArrowButtonTapped)
       .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers
-  func configureUI(date: Date) {
+  func configureUI(viewModel: CalendarViewModel) {
+    self.viewModel = viewModel
+    bind()
+    
     backgroundColor = .idorm_gray_100
     roundedBackgroundView.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMaxXMinYCorner)
     
@@ -102,7 +80,7 @@ class CustomCalendarHeaderView: UIView {
     weekdayStack.isLayoutMarginsRelativeArrangement = true
     weekdayStack.layoutMargins = UIEdgeInsets(top: 10.5, left: 17.5, bottom: 10.5, right: 17.5)
     
-    monthLabel.text = transformDateToString(date)
+    monthLabel.text = CalendarUtilities().monthString(date: Date.now)
     
     [ leftArrowButton, rightArrowButton, monthLabel, roundedBackgroundView, weekdayStack ]
       .forEach { addSubview($0) }
@@ -134,15 +112,9 @@ class CustomCalendarHeaderView: UIView {
       make.bottom.equalTo(weekdayStack.snp.bottom)
     }
   }
-  
-  func transformDateToString(_ date: Date) -> String {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "M월"
-    return formatter.string(from: date)
-  }
 }
 
-extension CustomCalendarHeaderView {
+extension WeekdayCalendarView {
   func createWeekDayLabel(title: String) -> UILabel {
     let label = UILabel()
     label.text = title

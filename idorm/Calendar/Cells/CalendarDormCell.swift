@@ -8,7 +8,6 @@
 import SnapKit
 import UIKit
 import RxSwift
-import RxCocoa
 
 class CalendarDormCell: UICollectionViewCell {
   // MARK: - Properties

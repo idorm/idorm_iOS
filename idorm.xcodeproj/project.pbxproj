@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C42C9CDAAD9432013C7975D9 /* Pods_idorm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F8DEFC8045A00667E5DA6CA /* Pods_idorm.framework */; };
+		997DFD12B4BCFE2CC94F30DB /* Pods_idorm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42FFDC247CCC711BEA16CC03 /* Pods_idorm.framework */; };
 		E50300F728773A5D00611C62 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50300F628773A5D00611C62 /* AppDelegate.swift */; };
 		E50300F928773A5D00611C62 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50300F828773A5D00611C62 /* SceneDelegate.swift */; };
 		E503010028773A5E00611C62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E50300FF28773A5E00611C62 /* Assets.xcassets */; };
@@ -47,13 +47,12 @@
 		E563422528784ED400E93D17 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E563422428784ED400E93D17 /* HomeViewController.swift */; };
 		E56DF4A2289354AF00E85B10 /* CalendarRoundedBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56DF4A1289354AF00E85B10 /* CalendarRoundedBackgroundView.swift */; };
 		E56DF4A428935B0800E85B10 /* UICollectionReusableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56DF4A328935B0800E85B10 /* UICollectionReusableView+Extensions.swift */; };
-		E56DF4A72893C4CA00E85B10 /* JTAppleCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = E56DF4A62893C4CA00E85B10 /* JTAppleCalendar */; };
-		E56DF4AF2893C81F00E85B10 /* CustomCalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56DF4AE2893C81F00E85B10 /* CustomCalendarHeaderView.swift */; };
+		E56DF4AF2893C81F00E85B10 /* WeekdayCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56DF4AE2893C81F00E85B10 /* WeekdayCalendarView.swift */; };
 		E56DF4B52894036D00E85B10 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56DF4B42894036D00E85B10 /* CalendarViewModel.swift */; };
 		E57A42CC289596D8003D5834 /* CardSlider in Frameworks */ = {isa = PBXBuildFile; productRef = E57A42CB289596D8003D5834 /* CardSlider */; };
-		E57FB84F2886E1520050BBAE /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = E57FB84E2886E1520050BBAE /* RxCocoa */; };
-		E57FB8512886E1520050BBAE /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = E57FB8502886E1520050BBAE /* RxRelay */; };
-		E57FB8532886E1520050BBAE /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E57FB8522886E1520050BBAE /* RxSwift */; };
+		E57E48F62899666000D00BDB /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = E57E48F52899666000D00BDB /* RxCocoa */; };
+		E57E48F82899666000D00BDB /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = E57E48F72899666000D00BDB /* RxRelay */; };
+		E57E48FA2899666000D00BDB /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E57E48F92899666000D00BDB /* RxSwift */; };
 		E57FB8562886E2710050BBAE /* PhotoLibrary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57FB8552886E2710050BBAE /* PhotoLibrary+Extensions.swift */; };
 		E58131A8288E6AC6000DB8C9 /* OnboardingFloatyBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58131A7288E6AC6000DB8C9 /* OnboardingFloatyBottomView.swift */; };
 		E586B6A528901B06005AB9C2 /* LoginTextFieldContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E586B6A428901B06005AB9C2 /* LoginTextFieldContainerView.swift */; };
@@ -88,8 +87,7 @@
 		E5E8A3DD289505F000A48A91 /* MyPostCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E8A3DC289505F000A48A91 /* MyPostCollectionHeaderView.swift */; };
 		E5E8A3DF2895208500A48A91 /* MyCommentsCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E8A3DE2895208500A48A91 /* MyCommentsCollectionVIewCell.swift */; };
 		E5E8A3E52895319100A48A91 /* MyLikeRoommateCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E8A3E42895319100A48A91 /* MyLikeRoommateCollectionVIewCell.swift */; };
-		E5EB5F212891328500EC0425 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = E5EB5F202891328500EC0425 /* FSCalendar */; };
-		E5EB5F272891398200EC0425 /* CalendarHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F262891398200EC0425 /* CalendarHeaderView.swift */; };
+		E5EB5F272891398200EC0425 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F262891398200EC0425 /* CalendarView.swift */; };
 		E5EB5F2A289143A100EC0425 /* CalendarChipCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F29289143A100EC0425 /* CalendarChipCell.swift */; };
 		E5EB5F2C2891534300EC0425 /* CalendarPersonalCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F2B2891534300EC0425 /* CalendarPersonalCollectionHeaderView.swift */; };
 		E5EB5F2E2891535E00EC0425 /* CalendarDormCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F2D2891535E00EC0425 /* CalendarDormCollectionHeaderView.swift */; };
@@ -103,8 +101,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0AD9CEBB30E6632A4F04BAF6 /* Pods-idorm.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-idorm.release.xcconfig"; path = "Target Support Files/Pods-idorm/Pods-idorm.release.xcconfig"; sourceTree = "<group>"; };
-		4F8DEFC8045A00667E5DA6CA /* Pods_idorm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_idorm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		35F879886CD9E5BA06578394 /* Pods-idorm.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-idorm.release.xcconfig"; path = "Target Support Files/Pods-idorm/Pods-idorm.release.xcconfig"; sourceTree = "<group>"; };
+		42FFDC247CCC711BEA16CC03 /* Pods_idorm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_idorm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		69BB34A2F8EE47053AC47F48 /* Pods-idorm.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-idorm.debug.xcconfig"; path = "Target Support Files/Pods-idorm/Pods-idorm.debug.xcconfig"; sourceTree = "<group>"; };
 		E50300F328773A5D00611C62 /* idorm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = idorm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E50300F628773A5D00611C62 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E50300F828773A5D00611C62 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -144,7 +143,7 @@
 		E563422428784ED400E93D17 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		E56DF4A1289354AF00E85B10 /* CalendarRoundedBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarRoundedBackgroundView.swift; sourceTree = "<group>"; };
 		E56DF4A328935B0800E85B10 /* UICollectionReusableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionReusableView+Extensions.swift"; sourceTree = "<group>"; };
-		E56DF4AE2893C81F00E85B10 /* CustomCalendarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCalendarHeaderView.swift; sourceTree = "<group>"; };
+		E56DF4AE2893C81F00E85B10 /* WeekdayCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayCalendarView.swift; sourceTree = "<group>"; };
 		E56DF4B42894036D00E85B10 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		E57FB8552886E2710050BBAE /* PhotoLibrary+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotoLibrary+Extensions.swift"; sourceTree = "<group>"; };
 		E58131A7288E6AC6000DB8C9 /* OnboardingFloatyBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFloatyBottomView.swift; sourceTree = "<group>"; };
@@ -176,7 +175,7 @@
 		E5E8A3DC289505F000A48A91 /* MyPostCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPostCollectionHeaderView.swift; sourceTree = "<group>"; };
 		E5E8A3DE2895208500A48A91 /* MyCommentsCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommentsCollectionVIewCell.swift; sourceTree = "<group>"; };
 		E5E8A3E42895319100A48A91 /* MyLikeRoommateCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLikeRoommateCollectionVIewCell.swift; sourceTree = "<group>"; };
-		E5EB5F262891398200EC0425 /* CalendarHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeaderView.swift; sourceTree = "<group>"; };
+		E5EB5F262891398200EC0425 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		E5EB5F29289143A100EC0425 /* CalendarChipCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarChipCell.swift; sourceTree = "<group>"; };
 		E5EB5F2B2891534300EC0425 /* CalendarPersonalCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPersonalCollectionHeaderView.swift; sourceTree = "<group>"; };
 		E5EB5F2D2891535E00EC0425 /* CalendarDormCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDormCollectionHeaderView.swift; sourceTree = "<group>"; };
@@ -187,7 +186,6 @@
 		E5F5EC752884027D0026DE21 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		E5F5EC77288402840026DE21 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		E5FBBB862880304900A7158D /* SECRET.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SECRET.swift; sourceTree = "<group>"; };
-		F785A151F7E5C13515C3797A /* Pods-idorm.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-idorm.debug.xcconfig"; path = "Target Support Files/Pods-idorm/Pods-idorm.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,19 +193,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E56DF4A72893C4CA00E85B10 /* JTAppleCalendar in Frameworks */,
-				E57FB8512886E1520050BBAE /* RxRelay in Frameworks */,
+				E57E48F82899666000D00BDB /* RxRelay in Frameworks */,
+				E57E48F62899666000D00BDB /* RxCocoa in Frameworks */,
 				E5290F0C288832630004B8E6 /* RSKGrowingTextView in Frameworks */,
 				E58ACB85288465970031BD86 /* FMPhotoPicker in Frameworks */,
-				E5EB5F212891328500EC0425 /* FSCalendar in Frameworks */,
 				E563421E28780C3800E93D17 /* SnapKit in Frameworks */,
 				E5C889062889729800CBD04E /* PanModal in Frameworks */,
 				E57A42CC289596D8003D5834 /* CardSlider in Frameworks */,
-				E57FB84F2886E1520050BBAE /* RxCocoa in Frameworks */,
 				E5B15F6D287FCEFE004D4164 /* RSKPlaceholderTextView in Frameworks */,
-				E57FB8532886E1520050BBAE /* RxSwift in Frameworks */,
 				E5D03751288CFDE800080482 /* CHIOTPField in Frameworks */,
-				C42C9CDAAD9432013C7975D9 /* Pods_idorm.framework in Frameworks */,
+				E57E48FA2899666000D00BDB /* RxSwift in Frameworks */,
+				997DFD12B4BCFE2CC94F30DB /* Pods_idorm.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,16 +213,16 @@
 		412A085C63CA6B4F422F3788 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				F785A151F7E5C13515C3797A /* Pods-idorm.debug.xcconfig */,
-				0AD9CEBB30E6632A4F04BAF6 /* Pods-idorm.release.xcconfig */,
+				69BB34A2F8EE47053AC47F48 /* Pods-idorm.debug.xcconfig */,
+				35F879886CD9E5BA06578394 /* Pods-idorm.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		D01EB7A6DFE49E2BB5902EDF /* Frameworks */ = {
+		E2593091C034F6240C996B85 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4F8DEFC8045A00667E5DA6CA /* Pods_idorm.framework */,
+				42FFDC247CCC711BEA16CC03 /* Pods_idorm.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -237,7 +233,7 @@
 				E50300F528773A5D00611C62 /* idorm */,
 				E50300F428773A5D00611C62 /* Products */,
 				412A085C63CA6B4F422F3788 /* Pods */,
-				D01EB7A6DFE49E2BB5902EDF /* Frameworks */,
+				E2593091C034F6240C996B85 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -352,8 +348,8 @@
 		E56DF4A92893C74100E85B10 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				E5EB5F262891398200EC0425 /* CalendarHeaderView.swift */,
-				E56DF4AE2893C81F00E85B10 /* CustomCalendarHeaderView.swift */,
+				E5EB5F262891398200EC0425 /* CalendarView.swift */,
+				E56DF4AE2893C81F00E85B10 /* WeekdayCalendarView.swift */,
 				E5EB5F2B2891534300EC0425 /* CalendarPersonalCollectionHeaderView.swift */,
 				E5EB5F2D2891535E00EC0425 /* CalendarDormCollectionHeaderView.swift */,
 				E56DF4A1289354AF00E85B10 /* CalendarRoundedBackgroundView.swift */,
@@ -712,11 +708,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E503010728773A5E00611C62 /* Build configuration list for PBXNativeTarget "idorm" */;
 			buildPhases = (
-				E304725356008F0506A7A6F0 /* [CP] Check Pods Manifest.lock */,
+				A5612E7851E3BB7BED3436EB /* [CP] Check Pods Manifest.lock */,
 				E50300EF28773A5D00611C62 /* Sources */,
 				E50300F028773A5D00611C62 /* Frameworks */,
 				E50300F128773A5D00611C62 /* Resources */,
-				687CB56E04CEB658A931C7BF /* [CP] Embed Pods Frameworks */,
+				05D8A5DB347A05C202DA66B2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -727,15 +723,13 @@
 				E563421D28780C3800E93D17 /* SnapKit */,
 				E5B15F6C287FCEFE004D4164 /* RSKPlaceholderTextView */,
 				E58ACB84288465970031BD86 /* FMPhotoPicker */,
-				E57FB84E2886E1520050BBAE /* RxCocoa */,
-				E57FB8502886E1520050BBAE /* RxRelay */,
-				E57FB8522886E1520050BBAE /* RxSwift */,
 				E5290F0B288832630004B8E6 /* RSKGrowingTextView */,
 				E5C889052889729800CBD04E /* PanModal */,
 				E5D03750288CFDE800080482 /* CHIOTPField */,
-				E5EB5F202891328500EC0425 /* FSCalendar */,
-				E56DF4A62893C4CA00E85B10 /* JTAppleCalendar */,
 				E57A42CB289596D8003D5834 /* CardSlider */,
+				E57E48F52899666000D00BDB /* RxCocoa */,
+				E57E48F72899666000D00BDB /* RxRelay */,
+				E57E48F92899666000D00BDB /* RxSwift */,
 			);
 			productName = idorm;
 			productReference = E50300F328773A5D00611C62 /* idorm.app */;
@@ -766,16 +760,14 @@
 			);
 			mainGroup = E50300EA28773A5D00611C62;
 			packageReferences = (
-				E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit" */,
-				E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView" */,
-				E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker" */,
-				E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift" */,
-				E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView" */,
-				E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal" */,
-				E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField" */,
-				E5EB5F1F2891328500EC0425 /* XCRemoteSwiftPackageReference "FSCalendar" */,
-				E56DF4A52893C4CA00E85B10 /* XCRemoteSwiftPackageReference "JTAppleCalendar" */,
-				E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider" */,
+				E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit.git" */,
+				E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView.git" */,
+				E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker.git" */,
+				E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView.git" */,
+				E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal.git" */,
+				E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField.git" */,
+				E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider.git" */,
+				E57E48F42899666000D00BDB /* XCRemoteSwiftPackageReference "RxSwift.git" */,
 			);
 			productRefGroup = E50300F428773A5D00611C62 /* Products */;
 			projectDirPath = "";
@@ -802,7 +794,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		687CB56E04CEB658A931C7BF /* [CP] Embed Pods Frameworks */ = {
+		05D8A5DB347A05C202DA66B2 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -819,7 +811,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-idorm/Pods-idorm-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E304725356008F0506A7A6F0 /* [CP] Check Pods Manifest.lock */ = {
+		A5612E7851E3BB7BED3436EB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -884,7 +876,7 @@
 				E5C88908288972E000CBD04E /* CommunityAlertViewController.swift in Sources */,
 				E55794F0287C496D002DB2B0 /* OnboardingTableViewCell.swift in Sources */,
 				E5290EFF2887BBB00004B8E6 /* PostCollectionViewCell.swift in Sources */,
-				E5EB5F272891398200EC0425 /* CalendarHeaderView.swift in Sources */,
+				E5EB5F272891398200EC0425 /* CalendarView.swift in Sources */,
 				E5290F06288818E70004B8E6 /* CommunityDetailViewController.swift in Sources */,
 				E58F96FD28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift in Sources */,
 				E58F96FB2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift in Sources */,
@@ -898,7 +890,7 @@
 				E56342212878246200E93D17 /* OnboardingTableHeaderView.swift in Sources */,
 				E508436C288133AD0047A2EC /* LoginUtilities.swift in Sources */,
 				E56342232878353100E93D17 /* TabBarController.swift in Sources */,
-				E56DF4AF2893C81F00E85B10 /* CustomCalendarHeaderView.swift in Sources */,
+				E56DF4AF2893C81F00E85B10 /* WeekdayCalendarView.swift in Sources */,
 				E5E8A3DF2895208500A48A91 /* MyCommentsCollectionVIewCell.swift in Sources */,
 				E5F5EC762884027D0026DE21 /* CalendarViewController.swift in Sources */,
 				E58ACB8728846E050031BD86 /* ImagePickerViewController.swift in Sources */,
@@ -1056,7 +1048,7 @@
 		};
 		E503010828773A5E00611C62 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F785A151F7E5C13515C3797A /* Pods-idorm.debug.xcconfig */;
+			baseConfigurationReference = 69BB34A2F8EE47053AC47F48 /* Pods-idorm.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1084,7 +1076,7 @@
 		};
 		E503010928773A5E00611C62 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0AD9CEBB30E6632A4F04BAF6 /* Pods-idorm.release.xcconfig */;
+			baseConfigurationReference = 35F879886CD9E5BA06578394 /* Pods-idorm.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1134,7 +1126,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView" */ = {
+		E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ruslanskorb/RSKGrowingTextView.git";
 			requirement = {
@@ -1142,7 +1134,7 @@
 				minimumVersion = 6.1.0;
 			};
 		};
-		E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+		E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
 			requirement = {
@@ -1150,15 +1142,7 @@
 				minimumVersion = 5.6.0;
 			};
 		};
-		E56DF4A52893C4CA00E85B10 /* XCRemoteSwiftPackageReference "JTAppleCalendar" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/patchthecode/JTAppleCalendar.git";
-			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 8.0.0;
-			};
-		};
-		E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider" */ = {
+		E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Ramotion/cardslider.git";
 			requirement = {
@@ -1166,7 +1150,7 @@
 				minimumVersion = 0.1.0;
 			};
 		};
-		E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+		E57E48F42899666000D00BDB /* XCRemoteSwiftPackageReference "RxSwift.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
 			requirement = {
@@ -1174,7 +1158,7 @@
 				minimumVersion = 6.5.0;
 			};
 		};
-		E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker" */ = {
+		E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/congnd/FMPhotoPicker.git";
 			requirement = {
@@ -1182,7 +1166,7 @@
 				minimumVersion = 1.3.0;
 			};
 		};
-		E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView" */ = {
+		E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ruslanskorb/RSKPlaceholderTextView.git";
 			requirement = {
@@ -1190,7 +1174,7 @@
 				minimumVersion = 6.1.0;
 			};
 		};
-		E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal" */ = {
+		E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/slackhq/PanModal.git";
 			requirement = {
@@ -1198,7 +1182,7 @@
 				minimumVersion = 1.2.0;
 			};
 		};
-		E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField" */ = {
+		E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ChiliLabs/CHIOTPField.git";
 			requirement = {
@@ -1206,76 +1190,58 @@
 				minimumVersion = 0.1.0;
 			};
 		};
-		E5EB5F1F2891328500EC0425 /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/WenchaoD/FSCalendar.git";
-			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 2.8.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		E5290F0B288832630004B8E6 /* RSKGrowingTextView */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView" */;
+			package = E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView.git" */;
 			productName = RSKGrowingTextView;
 		};
 		E563421D28780C3800E93D17 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			package = E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit.git" */;
 			productName = SnapKit;
-		};
-		E56DF4A62893C4CA00E85B10 /* JTAppleCalendar */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E56DF4A52893C4CA00E85B10 /* XCRemoteSwiftPackageReference "JTAppleCalendar" */;
-			productName = JTAppleCalendar;
 		};
 		E57A42CB289596D8003D5834 /* CardSlider */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider" */;
+			package = E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider.git" */;
 			productName = CardSlider;
 		};
-		E57FB84E2886E1520050BBAE /* RxCocoa */ = {
+		E57E48F52899666000D00BDB /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift" */;
+			package = E57E48F42899666000D00BDB /* XCRemoteSwiftPackageReference "RxSwift.git" */;
 			productName = RxCocoa;
 		};
-		E57FB8502886E1520050BBAE /* RxRelay */ = {
+		E57E48F72899666000D00BDB /* RxRelay */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift" */;
+			package = E57E48F42899666000D00BDB /* XCRemoteSwiftPackageReference "RxSwift.git" */;
 			productName = RxRelay;
 		};
-		E57FB8522886E1520050BBAE /* RxSwift */ = {
+		E57E48F92899666000D00BDB /* RxSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E57FB84D2886E1520050BBAE /* XCRemoteSwiftPackageReference "RxSwift" */;
+			package = E57E48F42899666000D00BDB /* XCRemoteSwiftPackageReference "RxSwift.git" */;
 			productName = RxSwift;
 		};
 		E58ACB84288465970031BD86 /* FMPhotoPicker */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker" */;
+			package = E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker.git" */;
 			productName = FMPhotoPicker;
 		};
 		E5B15F6C287FCEFE004D4164 /* RSKPlaceholderTextView */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView" */;
+			package = E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView.git" */;
 			productName = RSKPlaceholderTextView;
 		};
 		E5C889052889729800CBD04E /* PanModal */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal" */;
+			package = E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal.git" */;
 			productName = PanModal;
 		};
 		E5D03750288CFDE800080482 /* CHIOTPField */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField" */;
+			package = E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField.git" */;
 			productName = CHIOTPField;
-		};
-		E5EB5F202891328500EC0425 /* FSCalendar */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E5EB5F1F2891328500EC0425 /* XCRemoteSwiftPackageReference "FSCalendar" */;
-			productName = FSCalendar;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -9,19 +9,19 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
-import FSCalendar
 
-class CalendarHeaderView: UICollectionReusableView {
-  lazy var calendarHeaderView: CustomCalendarHeaderView = {
-    let view = CustomCalendarHeaderView()
-    view.configureUI(date: Date.now)
-    
-    return view
-  }()
-  
+class CalendarCollectionView: UICollectionView {
+  override var contentSize: CGSize {
+    didSet {
+      print("Dd")
+    }
+  }
+}
+
+class CalendarView: UIView {
   lazy var calendarGrid: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
-    let grid = UICollectionView(frame: .zero, collectionViewLayout: layout)
+    let grid = CustomCollectionView(frame: .zero, collectionViewLayout: layout)
     grid.backgroundColor = .white
     grid.register(CustomCalendarCell.self, forCellWithReuseIdentifier: CustomCalendarCell.identifier)
     grid.isScrollEnabled = false
@@ -31,7 +31,19 @@ class CalendarHeaderView: UICollectionReusableView {
     return grid
   }()
   
+  lazy var weekdayHeaderView: WeekdayCalendarView = {
+    let view = WeekdayCalendarView()
+    
+    return view
+  }()
+  
+  override var bounds: CGRect {
+    didSet { viewModel.output.onChangedCalendarViewHeight.onNext(bounds.height) }
+  }
+  
   static let identifier = "CalendarHeaderView"
+  
+  var viewModel: CalendarViewModel!
   let disposeBag = DisposeBag()
   var totalSquares = [String]()
   var selectedDate = Date()
@@ -39,7 +51,6 @@ class CalendarHeaderView: UICollectionReusableView {
   // MARK: - LifeCycle
   override init(frame: CGRect) {
     super.init(frame: frame)
-    bind()
     setMonthValue()
   }
   
@@ -49,25 +60,30 @@ class CalendarHeaderView: UICollectionReusableView {
   
   // MARK: - Bind
   private func bind() {
-    calendarHeaderView.arrowButtonPublisher
+    viewModel.output.onChangedMonth
       .bind(onNext: { [weak self] moveUp in
         self?.moveCurrentPage(moveUp: moveUp)
       })
-      .disposed(by: disposeBag)
+      .disposed(by: disposeBag)    
   }
   
   // MARK: - Helpers
-  func configureUI() {
-    [ calendarHeaderView, calendarGrid ]
+  func configureUI(viewModel: CalendarViewModel) {
+    self.viewModel = viewModel
+    bind()
+    weekdayHeaderView.configureUI(viewModel: viewModel)
+    
+    [ weekdayHeaderView, calendarGrid ]
       .forEach { addSubview($0) }
     
-    calendarHeaderView.snp.makeConstraints { make in
+    weekdayHeaderView.snp.makeConstraints { make in
       make.top.leading.trailing.equalToSuperview()
     }
     
     calendarGrid.snp.makeConstraints { make in
-      make.top.equalTo(calendarHeaderView.snp.bottom)
+      make.top.equalTo(weekdayHeaderView.snp.bottom)
       make.leading.trailing.equalToSuperview().inset(24)
+      make.height.equalTo(200)
       make.bottom.equalToSuperview()
     }
   }
@@ -81,37 +97,42 @@ class CalendarHeaderView: UICollectionReusableView {
     var count: Int = 1
     
     while(count <= 42) {
-      if (count <= startingSpaces || count - startingSpaces > daysInMonth) {
+      if count <= startingSpaces {
         totalSquares.append("")
+      } else if count - startingSpaces > daysInMonth {
+        break
       } else {
         totalSquares.append(String(count - startingSpaces))
       }
       count += 1
     }
-    calendarHeaderView.monthLabel.text = CalendarUtilities().monthString(date: selectedDate)
+    weekdayHeaderView.monthLabel.text = CalendarUtilities().monthString(date: selectedDate)
     calendarGrid.reloadData()
   }
   
   private func moveCurrentPage(moveUp: Bool) {
     selectedDate = moveUp ? CalendarUtilities().plusMonth(date: selectedDate) : CalendarUtilities().minusMonth(date: selectedDate)
     setMonthValue()
-  }
-  
-  private func datesRange(from: Date, to: Date) -> [Date] {
-    if from > to { return [Date]() }
-    var tempDate = from
-    var array = [tempDate]
-    
-    while tempDate > to {
-      tempDate = Calendar.current.date(byAdding: .day, value: 1, to: tempDate)!
-      array.append(tempDate)
+    calendarGrid.snp.updateConstraints { make in
+      make.height.equalTo(calendarGrid.collectionViewLayout.collectionViewContentSize.height)
     }
-    
-    return array
   }
+//
+//  private func datesRange(from: Date, to: Date) -> [Date] {
+//    if from > to { return [Date]() }
+//    var tempDate = from
+//    var array = [tempDate]
+//
+//    while tempDate > to {
+//      tempDate = Calendar.current.date(byAdding: .day, value: 1, to: tempDate)!
+//      array.append(tempDate)
+//    }
+//
+//    return array
+//  }
 }
 
-extension CalendarHeaderView: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+extension CalendarView: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return totalSquares.count
   }

@@ -7,7 +7,8 @@
 
 import UIKit
 import SnapKit
-import FSCalendar
+import RxSwift
+import RxCocoa
 
 class CalendarViewController: UIViewController {
   // MARK: - Properties
@@ -18,11 +19,12 @@ class CalendarViewController: UIViewController {
     collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 29, right: 0)
     collectionView.bounces = false
     collectionView.delegate = self
+    collectionView.isScrollEnabled = false
     collectionView.dataSource = self
     collectionView.register(CalendarChipCell.self, forCellWithReuseIdentifier: CalendarChipCell.identifier)
     collectionView.register(CalendarPersonalCell.self, forCellWithReuseIdentifier: CalendarPersonalCell.identifier)
     collectionView.register(CalendarDormCell.self, forCellWithReuseIdentifier: CalendarDormCell.identifier)
-    collectionView.register(CalendarHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarHeaderView.identifier)
+    collectionView.register(CalendarView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarView.identifier)
     collectionView.register(CalendarPersonalCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarPersonalCollectionHeaderView.identifier)
     collectionView.register(CalendarDormCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarDormCollectionHeaderView.identifier)
     
@@ -35,11 +37,38 @@ class CalendarViewController: UIViewController {
     
     return view
   }()
+  
+  lazy var calendarView: CalendarView = {
+    let view = CalendarView()
+    view.configureUI(viewModel: viewModel)
+    
+    return view
+  }()
+  
+  lazy var scrollView: UIScrollView = {
+    let sv = UIScrollView()
+    sv.backgroundColor = .white
+    sv.bounces = false
+    sv.showsVerticalScrollIndicator = false
+    
+    return sv
+  }()
+  
+  lazy var contentView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .white
+    
+    return view
+  }()
+
+  let disposeBag = DisposeBag()
+  let viewModel = CalendarViewModel()
 
   // MARK: - LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()
     configureUI()
+    bind()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -47,28 +76,71 @@ class CalendarViewController: UIViewController {
     navigationController?.navigationBar.isHidden = true
   }
   
+  // MARK: - Bind
+  private func bind() {
+    viewModel.output.onChangedCalendarViewHeight
+      .bind(onNext: { [weak self] _ in
+        self?.updateContentViewSize()
+      })
+      .disposed(by: disposeBag)
+    
+    collectionView.rx.didEndDisplayingCell
+      .bind(onNext: { [weak self] _ in
+        self?.updateContentViewSize()
+      })
+      .disposed(by: disposeBag)
+  }
+  
   // MARK: - Helpers
+  private func updateContentViewSize() {
+    let height = calendarView.frame.height + collectionView.collectionViewLayout.collectionViewContentSize.height
+    contentView.snp.updateConstraints { make in
+      make.height.equalTo(height)
+    }
+  }
+  
   private func configureUI() {
     navigationController?.navigationBar.isHidden = true
     view.backgroundColor = .white
     
-    [ topView, collectionView ]
+    [ topView, scrollView ]
       .forEach { view.addSubview($0) }
-
-    collectionView.snp.makeConstraints { make in
-      make.edges.equalTo(view.safeAreaLayoutGuide)
-    }
     
     topView.snp.makeConstraints { make in
       make.top.leading.trailing.equalToSuperview()
-      make.bottom.equalTo(collectionView.snp.top)
+      make.bottom.equalTo(scrollView.snp.top)
+    }
+    
+    scrollView.snp.makeConstraints { make in
+      make.edges.equalTo(view.safeAreaLayoutGuide)
+    }
+    
+    scrollView.addSubview(contentView)
+    
+    contentView.snp.makeConstraints { make in
+      make.top.leading.trailing.equalToSuperview()
+      make.bottom.equalToSuperview().inset(16)
+      make.width.equalTo(view.frame.width)
+      make.height.equalTo(1000)
+    }
+    
+    [ calendarView, collectionView ]
+      .forEach { contentView.addSubview($0) }
+    
+    calendarView.snp.makeConstraints { make in
+      make.top.leading.trailing.equalToSuperview()
+    }
+    
+    collectionView.snp.makeConstraints { make in
+      make.top.equalTo(calendarView.snp.bottom)
+      make.leading.trailing.equalToSuperview()
+      make.bottom.equalToSuperview()
     }
   }
-  
-  func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    topView.backgroundColor = collectionView.contentOffset.y <= 0 ? .idorm_gray_100 : .white
-  }
-  
+}
+
+/// - Compositional Layout
+extension CalendarViewController {
   private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
     let layout = UICollectionViewCompositionalLayout { [weak self] section, _ in
       switch section {
@@ -86,20 +158,15 @@ class CalendarViewController: UIViewController {
   }
   
   private func createChipLayout() -> NSCollectionLayoutSection {
-    let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(100), heightDimension: .absolute(30))
+    let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(100), heightDimension: .estimated(30))
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
     
-    let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(100), heightDimension: .absolute(30))
+    let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(100), heightDimension: .estimated(30))
     let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
     
-    let headerSize = NSCollectionLayoutSize(widthDimension: .absolute(view.frame.width), heightDimension: .estimated(300))
-    let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .topLeading)
-    
     let section = NSCollectionLayoutSection(group: group)
-    section.boundarySupplementaryItems = [header]
     section.orthogonalScrollingBehavior = .continuous
     section.interGroupSpacing = 8
-    section.supplementariesFollowContentInsets = false
     section.contentInsets = NSDirectionalEdgeInsets(top: 17, leading: 24, bottom: 0, trailing: 24)
     
     return section
@@ -116,7 +183,7 @@ class CalendarViewController: UIViewController {
     let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .topLeading)
     
     let section = NSCollectionLayoutSection(group: group)
-    section.boundarySupplementaryItems = [header]
+    section.boundarySupplementaryItems = [ header ]
     section.interGroupSpacing = 10
     section.decorationItems = [NSCollectionLayoutDecorationItem.background(elementKind: CalendarRoundedBackgroundView.reuseIdentifier) ]
     section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 24, bottom: 16, trailing: 24)
@@ -125,6 +192,7 @@ class CalendarViewController: UIViewController {
   }
 }
 
+/// DataSource, Delegate
 extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     switch indexPath.section {
@@ -152,17 +220,13 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
   func numberOfSections(in collectionView: UICollectionView) -> Int {
     return CalendarListType.allCases.count
   }
-
+  
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return 10
   }
   
   func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
     switch indexPath.section {
-    case CalendarListType.chip.listIndex:
-      guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarHeaderView.identifier, for: indexPath) as? CalendarHeaderView else { return UICollectionReusableView() }
-      header.configureUI()
-      return header
     case CalendarListType.personal.listIndex:
       guard let personalHeader = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarPersonalCollectionHeaderView.identifier, for: indexPath) as? CalendarPersonalCollectionHeaderView else { return UICollectionReusableView() }
       personalHeader.configureUI()
