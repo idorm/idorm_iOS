@@ -10,18 +10,10 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-class CalendarCollectionView: UICollectionView {
-  override var contentSize: CGSize {
-    didSet {
-      print("Dd")
-    }
-  }
-}
-
 class CalendarView: UIView {
   lazy var calendarGrid: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
-    let grid = CustomCollectionView(frame: .zero, collectionViewLayout: layout)
+    let grid = UICollectionView(frame: .zero, collectionViewLayout: layout)
     grid.backgroundColor = .white
     grid.register(CustomCalendarCell.self, forCellWithReuseIdentifier: CustomCalendarCell.identifier)
     grid.isScrollEnabled = false
@@ -45,13 +37,16 @@ class CalendarView: UIView {
   
   var viewModel: CalendarViewModel!
   let disposeBag = DisposeBag()
+  let calendar = Calendar.current
   var totalSquares = [String]()
   var selectedDate = Date()
+  var selectedDateWeekday: Int = 0
   
   // MARK: - LifeCycle
   override init(frame: CGRect) {
     super.init(frame: frame)
     setMonthValue()
+    bind()
   }
   
   required init?(coder: NSCoder) {
@@ -60,17 +55,24 @@ class CalendarView: UIView {
   
   // MARK: - Bind
   private func bind() {
-    viewModel.output.onChangedMonth
-      .bind(onNext: { [weak self] moveUp in
-        self?.moveCurrentPage(moveUp: moveUp)
+    /// 월 바꾸기
+    weekdayHeaderView.leftArrowButton.rx.tap
+      .map { false }
+      .bind(onNext: { [weak self] in
+        self?.moveCurrentPage(moveUp: $0)
       })
-      .disposed(by: disposeBag)    
+      .disposed(by: disposeBag)
+    
+    weekdayHeaderView.rightArrowButton.rx.tap
+      .map { true }
+      .bind(onNext: { [weak self] in
+        self?.moveCurrentPage(moveUp: $0)
+      })
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers
-  func configureUI(viewModel: CalendarViewModel) {
-    self.viewModel = viewModel
-    bind()
+  func configureUI() {
     weekdayHeaderView.configureUI(viewModel: viewModel)
     
     [ weekdayHeaderView, calendarGrid ]
@@ -93,6 +95,7 @@ class CalendarView: UIView {
     let daysInMonth = CalendarUtilities().daysInMonth(date: selectedDate)
     let firstDayOfMonth = CalendarUtilities().firstOfMonth(date: selectedDate)
     let startingSpaces = CalendarUtilities().weekDay(date: firstDayOfMonth)
+    self.selectedDateWeekday = startingSpaces
     
     var count: Int = 1
     
@@ -139,8 +142,31 @@ extension CalendarView: UICollectionViewDelegateFlowLayout, UICollectionViewData
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCalendarCell.identifier, for: indexPath) as! CustomCalendarCell
-    cell.configureUI(dayOfMonth: totalSquares[indexPath.row])
-    return cell
+    let dayOfMonth = totalSquares[indexPath.row]
+    
+    let todayYear = calendar.component(.year, from: .now)
+    let todayMonth = calendar.component(.month, from: .now)
+    let todayDay = calendar.component(.day, from: .now)
+    let currentYear = calendar.component(.year, from: selectedDate)
+    let currentMonth = calendar.component(.month, from: selectedDate)
+    
+    if indexPath.row < selectedDateWeekday {
+      cell.configureUI(dayOfMonth: dayOfMonth, type: [.none])
+      return cell
+    }
+    
+    if currentYear == todayYear, currentMonth == todayMonth, indexPath.row == todayDay + ( selectedDateWeekday - 1 ){
+      cell.configureUI(dayOfMonth: dayOfMonth, type: [.today])
+      return cell
+    }
+
+    if indexPath.row == 20 {
+      cell.configureUI(dayOfMonth: dayOfMonth, type: [.dorm, .personal])
+      return cell
+    } else {
+      cell.configureUI(dayOfMonth: dayOfMonth, type: [.none])
+      return cell
+    }
   }
   
   /// Grid ItemSize

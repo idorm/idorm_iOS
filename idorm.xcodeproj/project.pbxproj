@@ -19,7 +19,6 @@
 		E508437728813CE80047A2EC /* FontManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508437628813CE80047A2EC /* FontManager.swift */; };
 		E508437B28814CAB0047A2EC /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508437A28814CAB0047A2EC /* AuthViewController.swift */; };
 		E525C1CD28944E2800F934B3 /* CalendarPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */; };
-		E525C1D128944F5200F934B3 /* CalendarCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C1D028944F5200F934B3 /* CalendarCellType.swift */; };
 		E5290EFD2887BBA40004B8E6 /* CommunityPopularCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */; };
 		E5290EFF2887BBB00004B8E6 /* PostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFE2887BBB00004B8E6 /* PostCollectionViewCell.swift */; };
 		E5290F06288818E70004B8E6 /* CommunityDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290F05288818E70004B8E6 /* CommunityDetailViewController.swift */; };
@@ -76,6 +75,12 @@
 		E5C889062889729800CBD04E /* PanModal in Frameworks */ = {isa = PBXBuildFile; productRef = E5C889052889729800CBD04E /* PanModal */; };
 		E5C88908288972E000CBD04E /* CommunityAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C88907288972E000CBD04E /* CommunityAlertViewController.swift */; };
 		E5D03751288CFDE800080482 /* CHIOTPField in Frameworks */ = {isa = PBXBuildFile; productRef = E5D03750288CFDE800080482 /* CHIOTPField */; };
+		E5D31BEC289A792400510315 /* UnderlinedBackGroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D31BEB289A792400510315 /* UnderlinedBackGroundView.swift */; };
+		E5D31BEF289A8A6700510315 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = E5D31BEE289A8A6700510315 /* RxKeyboard */; };
+		E5D31BF1289AAE3D00510315 /* UIScrollView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D31BF0289AAE3D00510315 /* UIScrollView+Extensions.swift */; };
+		E5D31BF3289AB83800510315 /* SetCalendarTabmanController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D31BF2289AB83800510315 /* SetCalendarTabmanController.swift */; };
+		E5D31BF6289ABCE100510315 /* Tabman in Frameworks */ = {isa = PBXBuildFile; productRef = E5D31BF5289ABCE100510315 /* Tabman */; };
+		E5D31BF8289ABDC100510315 /* SetCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D31BF7289ABDC100510315 /* SetCalendarViewController.swift */; };
 		E5D49008288B7F0400311493 /* CommunityPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D49007288B7F0400311493 /* CommunityPopupViewController.swift */; };
 		E5D4900B288BFA0200311493 /* MatchingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D4900A288BFA0200311493 /* MatchingViewController.swift */; };
 		E5D4900E288BFB9100311493 /* MyInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D4900D288BFB9100311493 /* MyInfo.swift */; };
@@ -117,7 +122,6 @@
 		E508437628813CE80047A2EC /* FontManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontManager.swift; sourceTree = "<group>"; };
 		E508437A28814CAB0047A2EC /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPostViewController.swift; sourceTree = "<group>"; };
-		E525C1D028944F5200F934B3 /* CalendarCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCellType.swift; sourceTree = "<group>"; };
 		E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPopularCollectionVIewCell.swift; sourceTree = "<group>"; };
 		E5290EFE2887BBB00004B8E6 /* PostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCollectionViewCell.swift; sourceTree = "<group>"; };
 		E5290F05288818E70004B8E6 /* CommunityDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityDetailViewController.swift; sourceTree = "<group>"; };
@@ -164,6 +168,10 @@
 		E5B15F6E287FE355004D4164 /* OnboardingDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDetailViewController.swift; sourceTree = "<group>"; };
 		E5BF4C5E28840EBF00B4F0B8 /* PostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingViewController.swift; sourceTree = "<group>"; };
 		E5C88907288972E000CBD04E /* CommunityAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityAlertViewController.swift; sourceTree = "<group>"; };
+		E5D31BEB289A792400510315 /* UnderlinedBackGroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlinedBackGroundView.swift; sourceTree = "<group>"; };
+		E5D31BF0289AAE3D00510315 /* UIScrollView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extensions.swift"; sourceTree = "<group>"; };
+		E5D31BF2289AB83800510315 /* SetCalendarTabmanController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCalendarTabmanController.swift; sourceTree = "<group>"; };
+		E5D31BF7289ABDC100510315 /* SetCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCalendarViewController.swift; sourceTree = "<group>"; };
 		E5D49007288B7F0400311493 /* CommunityPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPopupViewController.swift; sourceTree = "<group>"; };
 		E5D4900A288BFA0200311493 /* MatchingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingViewController.swift; sourceTree = "<group>"; };
 		E5D4900D288BFB9100311493 /* MyInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyInfo.swift; sourceTree = "<group>"; };
@@ -193,7 +201,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5D31BF6289ABCE100510315 /* Tabman in Frameworks */,
 				E57E48F82899666000D00BDB /* RxRelay in Frameworks */,
+				E5D31BEF289A8A6700510315 /* RxKeyboard in Frameworks */,
 				E57E48F62899666000D00BDB /* RxCocoa in Frameworks */,
 				E5290F0C288832630004B8E6 /* RSKGrowingTextView in Frameworks */,
 				E58ACB85288465970031BD86 /* FMPhotoPicker in Frameworks */,
@@ -279,6 +289,7 @@
 				E57FB8552886E2710050BBAE /* PhotoLibrary+Extensions.swift */,
 				E557E22828926F3B00F9C74D /* UIViewController+Extensions.swift */,
 				E56DF4A328935B0800E85B10 /* UICollectionReusableView+Extensions.swift */,
+				E5D31BF0289AAE3D00510315 /* UIScrollView+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -353,6 +364,7 @@
 				E5EB5F2B2891534300EC0425 /* CalendarPersonalCollectionHeaderView.swift */,
 				E5EB5F2D2891535E00EC0425 /* CalendarDormCollectionHeaderView.swift */,
 				E56DF4A1289354AF00E85B10 /* CalendarRoundedBackgroundView.swift */,
+				E5D31BEB289A792400510315 /* UnderlinedBackGroundView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -362,6 +374,8 @@
 			children = (
 				E5F5EC752884027D0026DE21 /* CalendarViewController.swift */,
 				E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */,
+				E5D31BF2289AB83800510315 /* SetCalendarTabmanController.swift */,
+				E5D31BF7289ABDC100510315 /* SetCalendarViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -388,7 +402,6 @@
 		E56DF4AD2893C75C00E85B10 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				E525C1D028944F5200F934B3 /* CalendarCellType.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -730,6 +743,8 @@
 				E57E48F52899666000D00BDB /* RxCocoa */,
 				E57E48F72899666000D00BDB /* RxRelay */,
 				E57E48F92899666000D00BDB /* RxSwift */,
+				E5D31BEE289A8A6700510315 /* RxKeyboard */,
+				E5D31BF5289ABCE100510315 /* Tabman */,
 			);
 			productName = idorm;
 			productReference = E50300F328773A5D00611C62 /* idorm.app */;
@@ -760,14 +775,16 @@
 			);
 			mainGroup = E50300EA28773A5D00611C62;
 			packageReferences = (
-				E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit.git" */,
-				E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView.git" */,
-				E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker.git" */,
-				E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView.git" */,
-				E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal.git" */,
-				E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField.git" */,
-				E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider.git" */,
-				E57E48F42899666000D00BDB /* XCRemoteSwiftPackageReference "RxSwift.git" */,
+				E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView" */,
+				E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker" */,
+				E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView" */,
+				E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal" */,
+				E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField" */,
+				E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider" */,
+				E57E48F42899666000D00BDB /* XCRemoteSwiftPackageReference "RxSwift" */,
+				E5D31BED289A8A6700510315 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
+				E5D31BF4289ABCE100510315 /* XCRemoteSwiftPackageReference "Tabman" */,
 			);
 			productRefGroup = E50300F428773A5D00611C62 /* Products */;
 			projectDirPath = "";
@@ -849,7 +866,6 @@
 				E55DE2F92896DDC6004F1401 /* CalendarUtilities.swift in Sources */,
 				E5AD739D287AE08F00BA2C5E /* LoginPopupViewController.swift in Sources */,
 				E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */,
-				E525C1D128944F5200F934B3 /* CalendarCellType.swift in Sources */,
 				E557E2272892593F00F9C74D /* CalendarPersonalCell.swift in Sources */,
 				E5290F0928881C6E0004B8E6 /* CommunityDetailCollectionHeaderView.swift in Sources */,
 				E50300F728773A5D00611C62 /* AppDelegate.swift in Sources */,
@@ -881,6 +897,7 @@
 				E58F96FD28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift in Sources */,
 				E58F96FB2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift in Sources */,
 				E586B6A528901B06005AB9C2 /* LoginTextFieldContainerView.swift in Sources */,
+				E5D31BF3289AB83800510315 /* SetCalendarTabmanController.swift in Sources */,
 				E5D49010288BFFFD00311493 /* Utilities.swift in Sources */,
 				E5AC2DCB2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift in Sources */,
 				E53D6E7528963B21004BF95B /* MatchingFilterRangeSlider.swift in Sources */,
@@ -897,6 +914,7 @@
 				E56DF4A2289354AF00E85B10 /* CalendarRoundedBackgroundView.swift in Sources */,
 				E508437B28814CAB0047A2EC /* AuthViewController.swift in Sources */,
 				E5EB5F2A289143A100EC0425 /* CalendarChipCell.swift in Sources */,
+				E5D31BEC289A792400510315 /* UnderlinedBackGroundView.swift in Sources */,
 				E5F5EC78288402840026DE21 /* MyPageViewController.swift in Sources */,
 				E5BF4C5F28840EBF00B4F0B8 /* PostingViewController.swift in Sources */,
 				E5D4900E288BFB9100311493 /* MyInfo.swift in Sources */,
@@ -908,6 +926,7 @@
 				E5E8A3E52895319100A48A91 /* MyLikeRoommateCollectionVIewCell.swift in Sources */,
 				E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */,
 				E5AD739F287AEF2D00BA2C5E /* PutEmailViewController.swift in Sources */,
+				E5D31BF8289ABDC100510315 /* SetCalendarViewController.swift in Sources */,
 				E5F5EC722883C70C0026DE21 /* WebMailViewController.swift in Sources */,
 				E5290EFD2887BBA40004B8E6 /* CommunityPopularCollectionVIewCell.swift in Sources */,
 				E55DE2F62896DB06004F1401 /* CustomCalendarCell.swift in Sources */,
@@ -915,6 +934,7 @@
 				E5290F1228886D7A0004B8E6 /* CommunityUtilities.swift in Sources */,
 				E5B15F6F287FE355004D4164 /* OnboardingDetailViewController.swift in Sources */,
 				E5D49014288C3DDB00311493 /* OnboardingUtilities.swift in Sources */,
+				E5D31BF1289AAE3D00510315 /* UIScrollView+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1126,7 +1146,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView.git" */ = {
+		E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ruslanskorb/RSKGrowingTextView.git";
 			requirement = {
@@ -1134,7 +1154,7 @@
 				minimumVersion = 6.1.0;
 			};
 		};
-		E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit.git" */ = {
+		E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
 			requirement = {
@@ -1142,7 +1162,7 @@
 				minimumVersion = 5.6.0;
 			};
 		};
-		E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider.git" */ = {
+		E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Ramotion/cardslider.git";
 			requirement = {
@@ -1150,7 +1170,7 @@
 				minimumVersion = 0.1.0;
 			};
 		};
-		E57E48F42899666000D00BDB /* XCRemoteSwiftPackageReference "RxSwift.git" */ = {
+		E57E48F42899666000D00BDB /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
 			requirement = {
@@ -1158,7 +1178,7 @@
 				minimumVersion = 6.5.0;
 			};
 		};
-		E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker.git" */ = {
+		E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/congnd/FMPhotoPicker.git";
 			requirement = {
@@ -1166,7 +1186,7 @@
 				minimumVersion = 1.3.0;
 			};
 		};
-		E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView.git" */ = {
+		E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ruslanskorb/RSKPlaceholderTextView.git";
 			requirement = {
@@ -1174,7 +1194,7 @@
 				minimumVersion = 6.1.0;
 			};
 		};
-		E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal.git" */ = {
+		E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/slackhq/PanModal.git";
 			requirement = {
@@ -1182,7 +1202,7 @@
 				minimumVersion = 1.2.0;
 			};
 		};
-		E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField.git" */ = {
+		E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ChiliLabs/CHIOTPField.git";
 			requirement = {
@@ -1190,58 +1210,84 @@
 				minimumVersion = 0.1.0;
 			};
 		};
+		E5D31BED289A8A6700510315 /* XCRemoteSwiftPackageReference "RxKeyboard" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxKeyboard.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		E5D31BF4289ABCE100510315 /* XCRemoteSwiftPackageReference "Tabman" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/uias/Tabman.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 2.9.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		E5290F0B288832630004B8E6 /* RSKGrowingTextView */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView.git" */;
+			package = E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView" */;
 			productName = RSKGrowingTextView;
 		};
 		E563421D28780C3800E93D17 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit.git" */;
+			package = E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
 		E57A42CB289596D8003D5834 /* CardSlider */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider.git" */;
+			package = E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider" */;
 			productName = CardSlider;
 		};
 		E57E48F52899666000D00BDB /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E57E48F42899666000D00BDB /* XCRemoteSwiftPackageReference "RxSwift.git" */;
+			package = E57E48F42899666000D00BDB /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxCocoa;
 		};
 		E57E48F72899666000D00BDB /* RxRelay */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E57E48F42899666000D00BDB /* XCRemoteSwiftPackageReference "RxSwift.git" */;
+			package = E57E48F42899666000D00BDB /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxRelay;
 		};
 		E57E48F92899666000D00BDB /* RxSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E57E48F42899666000D00BDB /* XCRemoteSwiftPackageReference "RxSwift.git" */;
+			package = E57E48F42899666000D00BDB /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
 		};
 		E58ACB84288465970031BD86 /* FMPhotoPicker */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker.git" */;
+			package = E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker" */;
 			productName = FMPhotoPicker;
 		};
 		E5B15F6C287FCEFE004D4164 /* RSKPlaceholderTextView */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView.git" */;
+			package = E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView" */;
 			productName = RSKPlaceholderTextView;
 		};
 		E5C889052889729800CBD04E /* PanModal */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal.git" */;
+			package = E5C889042889729800CBD04E /* XCRemoteSwiftPackageReference "PanModal" */;
 			productName = PanModal;
 		};
 		E5D03750288CFDE800080482 /* CHIOTPField */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField.git" */;
+			package = E5D0374F288CFDE800080482 /* XCRemoteSwiftPackageReference "CHIOTPField" */;
 			productName = CHIOTPField;
+		};
+		E5D31BEE289A8A6700510315 /* RxKeyboard */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E5D31BED289A8A6700510315 /* XCRemoteSwiftPackageReference "RxKeyboard" */;
+			productName = RxKeyboard;
+		};
+		E5D31BF5289ABCE100510315 /* Tabman */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E5D31BF4289ABCE100510315 /* XCRemoteSwiftPackageReference "Tabman" */;
+			productName = Tabman;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -40,7 +40,7 @@ class CalendarViewController: UIViewController {
   
   lazy var calendarView: CalendarView = {
     let view = CalendarView()
-    view.configureUI(viewModel: viewModel)
+    view.configureUI()
     
     return view
   }()
@@ -222,7 +222,7 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
   }
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 10
+    return 2
   }
   
   func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

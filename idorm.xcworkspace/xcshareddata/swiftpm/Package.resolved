@@ -28,6 +28,15 @@
       }
     },
     {
+      "identity" : "pageboy",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/uias/Pageboy",
+      "state" : {
+        "revision" : "34ecb6e7c4e0e07494960ab2f7cc9a02293915a6",
+        "version" : "3.6.2"
+      }
+    },
+    {
       "identity" : "panmodal",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/slackhq/PanModal.git",
@@ -55,6 +64,15 @@
       }
     },
     {
+      "identity" : "rxkeyboard",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/RxSwiftCommunity/RxKeyboard.git",
+      "state" : {
+        "revision" : "085fd99d7bb4f98e671904fcfe7ff561e66574ad",
+        "version" : "2.0.0"
+      }
+    },
+    {
       "identity" : "rxswift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ReactiveX/RxSwift.git",
@@ -70,6 +88,15 @@
       "state" : {
         "revision" : "f222cbdf325885926566172f6f5f06af95473158",
         "version" : "5.6.0"
+      }
+    },
+    {
+      "identity" : "tabman",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/uias/Tabman.git",
+      "state" : {
+        "revision" : "28bcd3d3fca0a5b7c8767d19c91d57fbd04bf60d",
+        "version" : "2.9.1"
       }
     }
   ],
