@@ -17,42 +17,46 @@ class SetCalendarTabmanController: TabmanViewController {
   // MARK: - Properties
   var viewControllers: [UIViewController] = []
   
-  lazy var startSetCalendarVC: SetCalendarViewController = {
-    let vc = SetCalendarViewController()
-    
-    return vc
-  }()
-  
-  lazy var endSetCalendarVC: SetCalendarViewController = {
-    let vc = SetCalendarViewController()
-    
-    return vc
-  }()
-  
   lazy var tabmanBar: TMBar.ButtonBar = {
     let bar = TMBar.ButtonBar()
     bar.layout.separatorColor = .black
     bar.layout.contentMode = .fit
     bar.indicator.tintColor = .black
-    bar.indicator.weight = .light
+    bar.indicator.weight = .custom(value: 1)
     bar.backgroundColor = .white
     
     return bar
   }()
   
+  lazy var startSetCalendarVC = SetCalendarViewController(type: .start, viewModel: viewModel)
+  lazy var endSetCalendarVC = SetCalendarViewController(type: .end, viewModel: viewModel)
+  
+  let viewModel = SetCalendarViewModel()
+  let disposeBag = DisposeBag()
+  
   // MARK: - LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()
     configureUI()
+    bind()
   }
   
   // MARK: - Bind
   private func bind() {
+    /// 하루종일 버튼 클릭시 동기화
+    viewModel.output.onChangedAllDayButtonState
+      .bind(onNext: { [weak self] isSelected in
+        self?.startSetCalendarVC.allDayButton.isSelected = isSelected
+        self?.endSetCalendarVC.allDayButton.isSelected = isSelected
+      })
+      .disposed(by: disposeBag)
+    
     
   }
   
   // MARK: - Helpers
   private func configureUI() {
+    view.backgroundColor = .white
     viewControllers.append(startSetCalendarVC)
     viewControllers.append(endSetCalendarVC)
     
@@ -65,7 +69,6 @@ class SetCalendarTabmanController: TabmanViewController {
     }
     
     self.dataSource = self
-    
     addBar(tabmanBar, dataSource: self, at: .top)
   }
 }
@@ -100,10 +103,10 @@ extension SetCalendarTabmanController: PanModalPresentable {
   }
   
   var shortFormHeight: PanModalHeight {
-    return PanModalHeight.contentHeight(500)
+    return PanModalHeight.contentHeight(710)
   }
   
   var longFormHeight: PanModalHeight {
-    return PanModalHeight.contentHeight(500)
+    return PanModalHeight.contentHeight(710)
   }
 }

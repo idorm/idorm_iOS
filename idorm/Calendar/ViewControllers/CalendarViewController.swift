@@ -24,7 +24,7 @@ class CalendarViewController: UIViewController {
     collectionView.register(CalendarChipCell.self, forCellWithReuseIdentifier: CalendarChipCell.identifier)
     collectionView.register(CalendarPersonalCell.self, forCellWithReuseIdentifier: CalendarPersonalCell.identifier)
     collectionView.register(CalendarDormCell.self, forCellWithReuseIdentifier: CalendarDormCell.identifier)
-    collectionView.register(CalendarView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarView.identifier)
+//    collectionView.register(CalendarView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarView.identifier)
     collectionView.register(CalendarPersonalCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarPersonalCollectionHeaderView.identifier)
     collectionView.register(CalendarDormCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CalendarDormCollectionHeaderView.identifier)
     
@@ -39,8 +39,7 @@ class CalendarViewController: UIViewController {
   }()
   
   lazy var calendarView: CalendarView = {
-    let view = CalendarView()
-    view.configureUI()
+    let view = CalendarView(type: .main)
     
     return view
   }()

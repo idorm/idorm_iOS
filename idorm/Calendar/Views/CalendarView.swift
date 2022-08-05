@@ -10,6 +10,11 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
+enum CalendarViewType {
+  case main
+  case set
+}
+
 class CalendarView: UIView {
   lazy var calendarGrid: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
@@ -18,34 +23,38 @@ class CalendarView: UIView {
     grid.register(CustomCalendarCell.self, forCellWithReuseIdentifier: CustomCalendarCell.identifier)
     grid.isScrollEnabled = false
     grid.delegate = self
-    grid.dataSource = self
     
     return grid
   }()
   
   lazy var weekdayHeaderView: WeekdayCalendarView = {
     let view = WeekdayCalendarView()
+    view.configureUI()
     
     return view
   }()
   
-  override var bounds: CGRect {
-    didSet { viewModel.output.onChangedCalendarViewHeight.onNext(bounds.height) }
-  }
+//  static let identifier = "CalendarHeaderView"
   
-  static let identifier = "CalendarHeaderView"
-  
-  var viewModel: CalendarViewModel!
+  let type: CalendarViewType
   let disposeBag = DisposeBag()
-  let calendar = Calendar.current
-  var totalSquares = [String]()
-  var selectedDate = Date()
-  var selectedDateWeekday: Int = 0
+  
+  /// 월의 일 수 String 배열
+  /// 캘린더의 실질적인 데이터 값
+  let totalSquaresRelay = BehaviorRelay<[String]>(value: [])
+  /// 월이 바뀌는 Date
+  var nextDate = Date()
+  /// 1일 전에 빈 칸 갯수
+  var currentWeekDay: Int = 0
+  /// 현재 선택된 날짜
+  var selectedDate: Date?
   
   // MARK: - LifeCycle
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  init(type: CalendarViewType) {
+    self.type = type
+    super.init(frame: .zero)
     setMonthValue()
+    configureUI()
     bind()
   }
   
@@ -55,7 +64,7 @@ class CalendarView: UIView {
   
   // MARK: - Bind
   private func bind() {
-    /// 월 바꾸기
+    /// 월 바꾸기 ( 왼쪽 )
     weekdayHeaderView.leftArrowButton.rx.tap
       .map { false }
       .bind(onNext: { [weak self] in
@@ -63,20 +72,101 @@ class CalendarView: UIView {
       })
       .disposed(by: disposeBag)
     
+    /// 월 바꾸기 ( 오른쪽 )
     weekdayHeaderView.rightArrowButton.rx.tap
       .map { true }
       .bind(onNext: { [weak self] in
         self?.moveCurrentPage(moveUp: $0)
       })
       .disposed(by: disposeBag)
+    
+    /// 캘린더 셀 생성
+    totalSquaresRelay
+      .bind(to: calendarGrid.rx.items(cellIdentifier: CustomCalendarCell.identifier, cellType: CustomCalendarCell.self)) { [weak self] index, dayOfMonthString, cell in
+        guard let self = self else { return }
+        let dayOfMonth = self.totalSquaresRelay.value[index]
+        
+        let calendar = Calendar.current
+        let todayYear = calendar.component(.year, from: .now)
+        let todayMonth = calendar.component(.month, from: .now)
+        let todayDay = calendar.component(.day, from: .now)
+        let currentYear = calendar.component(.year, from: self.nextDate)
+        let currentMonth = calendar.component(.month, from: self.nextDate)
+        
+        if self.type == .set {
+          if let selectedDate = self.selectedDate {
+            let selectedYear = calendar.component(.year, from: selectedDate)
+            let selectedMonth = calendar.component(.month, from: selectedDate)
+            let selectedDay = calendar.component(.day, from: selectedDate)
+            if currentYear == selectedYear, currentMonth == selectedMonth, index == selectedDay + ( self.currentWeekDay ) {
+              cell.configureUI(dayOfMonth: dayOfMonth, type: [.set])
+            } else {
+              cell.configureUI(dayOfMonth: dayOfMonth, type: [.none])
+            }
+          } else {
+            if currentYear == todayYear, currentMonth == todayMonth, index == todayDay + ( self.currentWeekDay - 1 ) {
+              cell.configureUI(dayOfMonth: dayOfMonth, type: [.set])
+            } else {
+              cell.configureUI(dayOfMonth: dayOfMonth, type: [.none])
+            }
+          }
+        } else {
+          if index < self.currentWeekDay {
+            cell.configureUI(dayOfMonth: dayOfMonth, type: [.none])
+          }
+          
+          if currentYear == todayYear, currentMonth == todayMonth, index == todayDay + ( self.currentWeekDay - 1 ){
+            cell.configureUI(dayOfMonth: dayOfMonth, type: [.today])
+          }
+          
+          if index == 20 {
+            cell.configureUI(dayOfMonth: dayOfMonth, type: [.dorm, .personal])
+          } else {
+            cell.configureUI(dayOfMonth: dayOfMonth, type: [.none])
+          }
+        }
+      }
+      .disposed(by: disposeBag)
+    
+    /// 캘린더 특정 날짜 선택할 때
+    if type == .set {
+      calendarGrid.rx.itemSelected
+        .bind(onNext: { [weak self] indexPath in
+          guard let self = self else { return }
+          if self.totalSquaresRelay.value[indexPath.row] != "" {
+            let selectedCell = self.calendarGrid.cellForItem(at: indexPath) as! CustomCalendarCell
+            let cells = self.calendarGrid.visibleCells as! [CustomCalendarCell]
+            cells.forEach { cell in
+              cell.squareBackgroundView.isHidden = true
+              cell.dayOfMonthLabel.textColor = .idorm_gray_400
+            }
+            selectedCell.squareBackgroundView.isHidden = false
+            selectedCell.dayOfMonthLabel.textColor = .white
+            
+            let calendar = Calendar.current
+            var dateComponents = DateComponents()
+            dateComponents.year = calendar.component(.year, from: self.nextDate)
+            dateComponents.month = calendar.component(.month, from: self.nextDate)
+            dateComponents.day = indexPath.row - ( self.currentWeekDay )
+            self.selectedDate = calendar.date(from: dateComponents)!
+          } else {
+            return
+          }
+        })
+        .disposed(by: disposeBag)
+    } else {
+      
+    }
   }
   
   // MARK: - Helpers
   func configureUI() {
-    weekdayHeaderView.configureUI(viewModel: viewModel)
-    
     [ weekdayHeaderView, calendarGrid ]
       .forEach { addSubview($0) }
+    
+    if type == .set {
+      weekdayHeaderView.backgroundColor = .white
+    }
     
     weekdayHeaderView.snp.makeConstraints { make in
       make.top.leading.trailing.equalToSuperview()
@@ -91,83 +181,107 @@ class CalendarView: UIView {
   }
   
   private func setMonthValue() {
-    totalSquares.removeAll()
-    let daysInMonth = CalendarUtilities().daysInMonth(date: selectedDate)
-    let firstDayOfMonth = CalendarUtilities().firstOfMonth(date: selectedDate)
+    totalSquaresRelay.accept([])
+    let daysInMonth = CalendarUtilities().daysInMonth(date: nextDate)
+    let firstDayOfMonth = CalendarUtilities().firstOfMonth(date: nextDate)
     let startingSpaces = CalendarUtilities().weekDay(date: firstDayOfMonth)
-    self.selectedDateWeekday = startingSpaces
+    self.currentWeekDay = startingSpaces
     
     var count: Int = 1
     
     while(count <= 42) {
       if count <= startingSpaces {
-        totalSquares.append("")
+        totalSquaresRelay.accept(totalSquaresRelay.value + [""])
       } else if count - startingSpaces > daysInMonth {
         break
       } else {
-        totalSquares.append(String(count - startingSpaces))
+        totalSquaresRelay.accept(totalSquaresRelay.value + [String(count - startingSpaces)])
       }
       count += 1
     }
-    weekdayHeaderView.monthLabel.text = CalendarUtilities().monthString(date: selectedDate)
+    weekdayHeaderView.monthLabel.text = CalendarUtilities().monthString(date: nextDate)
     calendarGrid.reloadData()
   }
   
   private func moveCurrentPage(moveUp: Bool) {
-    selectedDate = moveUp ? CalendarUtilities().plusMonth(date: selectedDate) : CalendarUtilities().minusMonth(date: selectedDate)
+    nextDate = moveUp ? CalendarUtilities().plusMonth(date: nextDate) : CalendarUtilities().minusMonth(date: nextDate)
     setMonthValue()
     calendarGrid.snp.updateConstraints { make in
       make.height.equalTo(calendarGrid.collectionViewLayout.collectionViewContentSize.height)
     }
   }
-//
-//  private func datesRange(from: Date, to: Date) -> [Date] {
-//    if from > to { return [Date]() }
-//    var tempDate = from
-//    var array = [tempDate]
-//
-//    while tempDate > to {
-//      tempDate = Calendar.current.date(byAdding: .day, value: 1, to: tempDate)!
-//      array.append(tempDate)
-//    }
-//
-//    return array
-//  }
+  
+  //  private func datesRange(from: Date, to: Date) -> [Date] {
+  //    if from > to { return [Date]() }
+  //    var tempDate = from
+  //    var array = [tempDate]
+  //
+  //    while tempDate > to {
+  //      tempDate = Calendar.current.date(byAdding: .day, value: 1, to: tempDate)!
+  //      array.append(tempDate)
+  //    }
+  //
+  //    return array
+  //  }
 }
 
-extension CalendarView: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+extension CalendarView: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return totalSquares.count
+    return totalSquaresRelay.value.count
   }
   
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCalendarCell.identifier, for: indexPath) as! CustomCalendarCell
-    let dayOfMonth = totalSquares[indexPath.row]
-    
-    let todayYear = calendar.component(.year, from: .now)
-    let todayMonth = calendar.component(.month, from: .now)
-    let todayDay = calendar.component(.day, from: .now)
-    let currentYear = calendar.component(.year, from: selectedDate)
-    let currentMonth = calendar.component(.month, from: selectedDate)
-    
-    if indexPath.row < selectedDateWeekday {
-      cell.configureUI(dayOfMonth: dayOfMonth, type: [.none])
-      return cell
-    }
-    
-    if currentYear == todayYear, currentMonth == todayMonth, indexPath.row == todayDay + ( selectedDateWeekday - 1 ){
-      cell.configureUI(dayOfMonth: dayOfMonth, type: [.today])
-      return cell
-    }
-
-    if indexPath.row == 20 {
-      cell.configureUI(dayOfMonth: dayOfMonth, type: [.dorm, .personal])
-      return cell
-    } else {
-      cell.configureUI(dayOfMonth: dayOfMonth, type: [.none])
-      return cell
-    }
-  }
+//  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomCalendarCell.identifier, for: indexPath) as! CustomCalendarCell
+//    let dayOfMonth = totalSquaresRelay.value[indexPath.row]
+//
+//    let todayYear = calendar.component(.year, from: .now)
+//    let todayMonth = calendar.component(.month, from: .now)
+//    let todayDay = calendar.component(.day, from: .now)
+//    let currentYear = calendar.component(.year, from: nextDate)
+//    let currentMonth = calendar.component(.month, from: nextDate)
+//
+//    /// 캘린더 일정 등록일때 Cell Configure
+//    if type == .set {
+//      if let selectedDate = selectedDate {
+//        let selectedYear = calendar.component(.year, from: selectedDate)
+//        let selectedMonth = calendar.component(.month, from: selectedDate)
+//        let selectedDay = calendar.component(.day, from: selectedDate)
+//        if currentYear == selectedYear, currentMonth == selectedMonth, indexPath.row == selectedDay + ( currentWeekDay ) {
+//          cell.configureUI(dayOfMonth: dayOfMonth, type: [.set])
+//          return cell
+//        } else {
+//          cell.configureUI(dayOfMonth: dayOfMonth, type: [.none])
+//          return cell
+//        }
+//      } else {
+//        if currentYear == todayYear, currentMonth == todayMonth, indexPath.row == todayDay + ( currentWeekDay - 1 ) {
+//          cell.configureUI(dayOfMonth: dayOfMonth, type: [.set])
+//          return cell
+//        } else {
+//          cell.configureUI(dayOfMonth: dayOfMonth, type: [.none])
+//          return cell
+//        }
+//      }
+//    }
+//
+//    if indexPath.row < currentWeekDay {
+//      cell.configureUI(dayOfMonth: dayOfMonth, type: [.none])
+//      return cell
+//    }
+//
+//    if currentYear == todayYear, currentMonth == todayMonth, indexPath.row == todayDay + ( currentWeekDay - 1 ){
+//      cell.configureUI(dayOfMonth: dayOfMonth, type: [.today])
+//      return cell
+//    }
+//
+//    if indexPath.row == 20 {
+//      cell.configureUI(dayOfMonth: dayOfMonth, type: [.dorm, .personal])
+//      return cell
+//    } else {
+//      cell.configureUI(dayOfMonth: dayOfMonth, type: [.none])
+//      return cell
+//    }
+//  }
   
   /// Grid ItemSize
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

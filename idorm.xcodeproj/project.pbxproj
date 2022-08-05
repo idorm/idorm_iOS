@@ -31,6 +31,7 @@
 		E53086E42879287100A5D0A0 /* HomeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E32879287100A5D0A0 /* HomeListViewModel.swift */; };
 		E53086E6287928B400A5D0A0 /* HomePopularCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E5287928B400A5D0A0 /* HomePopularCollectionViewCell.swift */; };
 		E53086E828795D2700A5D0A0 /* HomeCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E728795D2700A5D0A0 /* HomeCollectionHeaderView.swift */; };
+		E5340E8A289C713D0030A44F /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = E5340E89289C713D0030A44F /* RxDataSources */; };
 		E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */; };
 		E53D6E7528963B21004BF95B /* MatchingFilterRangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53D6E7428963B21004BF95B /* MatchingFilterRangeSlider.swift */; };
 		E55794EE287C36F5002DB2B0 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55794ED287C36F5002DB2B0 /* UIView+Extensions.swift */; };
@@ -59,6 +60,7 @@
 		E58ACB8728846E050031BD86 /* ImagePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58ACB8628846E050031BD86 /* ImagePickerViewController.swift */; };
 		E58F96FB2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */; };
 		E58F96FD28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F96FC28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift */; };
+		E5A60C7C289BE72A004B77E8 /* SetCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A60C7B289BE72A004B77E8 /* SetCalendarViewModel.swift */; };
 		E5AB97C42895671800C0CEDF /* MatchingFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AB97C32895671800C0CEDF /* MatchingFilterViewController.swift */; };
 		E5AC2DCB2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2DCA2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift */; };
 		E5AC2DCF288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2DCE288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift */; };
@@ -155,6 +157,7 @@
 		E58ACB8628846E050031BD86 /* ImagePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerViewController.swift; sourceTree = "<group>"; };
 		E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerCollectionViewCell.swift; sourceTree = "<group>"; };
 		E58F96FC28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingPictureCollectionViewCell.swift; sourceTree = "<group>"; };
+		E5A60C7B289BE72A004B77E8 /* SetCalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCalendarViewModel.swift; sourceTree = "<group>"; };
 		E5AB97C32895671800C0CEDF /* MatchingFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilterViewController.swift; sourceTree = "<group>"; };
 		E5AC2DCA2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTextFieldContainerView.swift; sourceTree = "<group>"; };
 		E5AC2DCE288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPasswordTextFieldContainerView.swift; sourceTree = "<group>"; };
@@ -212,6 +215,7 @@
 				E57A42CC289596D8003D5834 /* CardSlider in Frameworks */,
 				E5B15F6D287FCEFE004D4164 /* RSKPlaceholderTextView in Frameworks */,
 				E5D03751288CFDE800080482 /* CHIOTPField in Frameworks */,
+				E5340E8A289C713D0030A44F /* RxDataSources in Frameworks */,
 				E57E48FA2899666000D00BDB /* RxSwift in Frameworks */,
 				997DFD12B4BCFE2CC94F30DB /* Pods_idorm.framework in Frameworks */,
 			);
@@ -395,6 +399,7 @@
 			isa = PBXGroup;
 			children = (
 				E56DF4B42894036D00E85B10 /* CalendarViewModel.swift */,
+				E5A60C7B289BE72A004B77E8 /* SetCalendarViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -745,6 +750,7 @@
 				E57E48F92899666000D00BDB /* RxSwift */,
 				E5D31BEE289A8A6700510315 /* RxKeyboard */,
 				E5D31BF5289ABCE100510315 /* Tabman */,
+				E5340E89289C713D0030A44F /* RxDataSources */,
 			);
 			productName = idorm;
 			productReference = E50300F328773A5D00611C62 /* idorm.app */;
@@ -785,6 +791,7 @@
 				E57E48F42899666000D00BDB /* XCRemoteSwiftPackageReference "RxSwift" */,
 				E5D31BED289A8A6700510315 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 				E5D31BF4289ABCE100510315 /* XCRemoteSwiftPackageReference "Tabman" */,
+				E5340E88289C713D0030A44F /* XCRemoteSwiftPackageReference "RxDataSources" */,
 			);
 			productRefGroup = E50300F428773A5D00611C62 /* Products */;
 			projectDirPath = "";
@@ -859,6 +866,7 @@
 			files = (
 				E53086E22879284000A5D0A0 /* HomeRoommateCollectionViewCell.swift in Sources */,
 				E5EB5F2E2891535E00EC0425 /* CalendarDormCollectionHeaderView.swift in Sources */,
+				E5A60C7C289BE72A004B77E8 /* SetCalendarViewModel.swift in Sources */,
 				E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordViewController.swift in Sources */,
 				E5EB5F302891558D00EC0425 /* CalendarDormCell.swift in Sources */,
 				E525C1CD28944E2800F934B3 /* CalendarPostViewController.swift in Sources */,
@@ -1154,6 +1162,14 @@
 				minimumVersion = 6.1.0;
 			};
 		};
+		E5340E88289C713D0030A44F /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		E563421C28780C3800E93D17 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -1233,6 +1249,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E5290F0A288832630004B8E6 /* XCRemoteSwiftPackageReference "RSKGrowingTextView" */;
 			productName = RSKGrowingTextView;
+		};
+		E5340E89289C713D0030A44F /* RxDataSources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E5340E88289C713D0030A44F /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = RxDataSources;
 		};
 		E563421D28780C3800E93D17 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -15,6 +15,7 @@ enum CalendarCellType {
   case dorm
   case personal
   case today
+  case set
 }
 
 class CustomCalendarCell: UICollectionViewCell {
@@ -56,6 +57,14 @@ class CustomCalendarCell: UICollectionViewCell {
     return view
   }()
   
+  lazy var squareBackgroundView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .idorm_blue
+    view.isHidden = true
+    
+    return view
+  }()
+  
   // MARK: - Helpers
   func configureUI(dayOfMonth: String, type: [CalendarCellType]) {
     dayOfMonthLabel.text = dayOfMonth
@@ -63,8 +72,12 @@ class CustomCalendarCell: UICollectionViewCell {
     let dotStack = UIStackView(arrangedSubviews: [ yellowDotView, blueDotView ])
     dotStack.spacing = 4
     
-    [ todayCircleView, dotStack, dayOfMonthLabel ]
+    [ todayCircleView, dotStack, squareBackgroundView, dayOfMonthLabel ]
       .forEach { contentView.addSubview($0) }
+    
+    squareBackgroundView.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
+    }
     
     dayOfMonthLabel.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
@@ -88,9 +101,15 @@ class CustomCalendarCell: UICollectionViewCell {
       make.centerX.equalTo(dayOfMonthLabel)
       make.top.equalTo(dayOfMonthLabel.snp.bottom).offset(4)
     }
-
+    
+    if type == [.set] {
+      squareBackgroundView.isHidden = false
+      dayOfMonthLabel.textColor = .white
+    }
+    
     if type == [.today] {
       todayCircleView.isHidden = false
+      squareBackgroundView.isHidden = true
     }
     
     if type == [.personal] {
@@ -110,6 +129,9 @@ class CustomCalendarCell: UICollectionViewCell {
       blueDotView.isHidden = true
       yellowDotView.isHidden = true
       todayCircleView.isHidden = true
+      squareBackgroundView.isHidden = true
+      dayOfMonthLabel.textColor = .idorm_gray_400
     }
   }
 }
+

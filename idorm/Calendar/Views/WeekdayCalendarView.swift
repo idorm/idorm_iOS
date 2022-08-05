@@ -53,25 +53,32 @@ class WeekdayCalendarView: UIView {
   lazy var fridayLabel = createWeekDayLabel(title: "금")
   lazy var saturdayLabel = createWeekDayLabel(title: "토")
   
-  var viewModel: CalendarViewModel!
   var disposeBag = DisposeBag()
+  
+  // MARK: - LifeCycle
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    configureUI()
+    bind()
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
   // MARK: - Bind
   func bind() {
-    leftArrowButton.rx.tap
-      .bind(to: viewModel.input.leftArrowButtonTapped)
-      .disposed(by: disposeBag)
-    
-    rightArrowButton.rx.tap
-      .bind(to: viewModel.input.rightArrowButtonTapped)
-      .disposed(by: disposeBag)
+//    leftArrowButton.rx.tap
+//      .bind(to: viewModel.input.leftArrowButtonTapped)
+//      .disposed(by: disposeBag)
+//
+//    rightArrowButton.rx.tap
+//      .bind(to: viewModel.input.rightArrowButtonTapped)
+//      .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers
-  func configureUI(viewModel: CalendarViewModel) {
-    self.viewModel = viewModel
-    bind()
-    
+  func configureUI() {
     backgroundColor = .idorm_gray_100
     roundedBackgroundView.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMaxXMinYCorner)
     
