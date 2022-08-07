@@ -34,6 +34,10 @@ class SetCalendarTabmanController: TabmanViewController {
   let viewModel = SetCalendarViewModel()
   let disposeBag = DisposeBag()
   
+  /// DatePicker로 선택된 시간
+  var startTime = BehaviorRelay<Date>(value: .now)
+  var endTime = BehaviorRelay<Date>(value: .now)
+  
   // MARK: - LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -43,15 +47,87 @@ class SetCalendarTabmanController: TabmanViewController {
   
   // MARK: - Bind
   private func bind() {
-    /// 하루종일 버튼 클릭시 동기화
-    viewModel.output.onChangedAllDayButtonState
-      .bind(onNext: { [weak self] isSelected in
-        self?.startSetCalendarVC.allDayButton.isSelected = isSelected
-        self?.endSetCalendarVC.allDayButton.isSelected = isSelected
+    // --------------------
+    //        Input
+    // --------------------
+    // 하루종일 버튼 클릭시 동기화
+    viewModel.input.allDayButtonState
+      .asDriver()
+      .drive(onNext: {
+        [weak self] isSelected in
+          self?.startSetCalendarVC.allDayButton.isSelected = isSelected
+          self?.endSetCalendarVC.allDayButton.isSelected = isSelected
       })
       .disposed(by: disposeBag)
     
+    // DatePicker 값 변경 시 스트림 생성
+    startSetCalendarVC.datePicker.rx.controlEvent(.valueChanged)
+      .map { [weak self] in
+        guard let self = self else { return .now }
+        return self.startSetCalendarVC.datePicker.date
+      }
+      .bind(to: viewModel.input.startTime)
+      .disposed(by: disposeBag)
     
+    endSetCalendarVC.datePicker.rx.controlEvent(.valueChanged)
+      .map { [weak self] in
+        guard let self = self else { return .now }
+        return self.endSetCalendarVC.datePicker.date
+      }
+      .bind(to: viewModel.input.endTime)
+      .disposed(by: disposeBag)
+    
+    // 선택한 시작, 종료 날짜 스트림 생성
+    startSetCalendarVC.calendarView.selectedDateSubject
+      .bind(to: viewModel.input.startDate)
+      .disposed(by: disposeBag)
+    
+    endSetCalendarVC.calendarView.selectedDateSubject
+      .bind(to: viewModel.input.endDate)
+      .disposed(by: disposeBag)
+    
+    // 하루종일 버튼 동기화
+    Observable.merge(
+      startSetCalendarVC.allDayButton.rx.tap.asObservable(),
+      endSetCalendarVC.allDayButton.rx.tap.asObservable()
+    )
+    .map { [weak self] in
+      guard let self = self else { return }
+      self.startSetCalendarVC.allDayButton.isSelected = !self.startSetCalendarVC.allDayButton.isSelected
+      self.endSetCalendarVC.allDayButton.isSelected = !self.endSetCalendarVC.allDayButton.isSelected
+    }
+    .map { [weak self] in
+      guard let self = self else { return false }
+      return self.startSetCalendarVC.allDayButton.isSelected
+    }
+    .bind(to: viewModel.input.allDayButtonState)
+    .disposed(by: disposeBag)
+    
+    // 완료버튼 선택
+    Observable.merge(
+      startSetCalendarVC.confirmButton.rx.tap.asObservable(),
+      endSetCalendarVC.confirmButton.rx.tap.asObservable()
+    )
+    .bind(to: viewModel.input.selectConfirmButton)
+    .disposed(by: disposeBag)
+    
+    // --------------------
+    //        Output
+    // --------------------
+    // 에러페이지 보여주기
+    viewModel.output.showErrorPage
+      .bind(onNext: { [weak self] in
+        let popupVC = PopupViewController(contents: "시작 날짜는 종료 날짜 이전이어야 합니다.")
+        self?.present(popupVC, animated: false)
+      })
+      .disposed(by: disposeBag)
+    
+    // 완료 버튼 누를 시에 데이터 전달 후, Dismiss
+    viewModel.output.changedCalendarDate
+      .bind(onNext: { [weak self] _ in
+        self?.dismiss(animated: true)
+      })
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers

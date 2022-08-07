@@ -86,24 +86,10 @@ class SetCalendarViewController: UIViewController {
     self.viewModel = viewModel
     super.init(nibName: nil, bundle: nil)
     configureUI()
-    bind()
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-  
-  // MARK: - Bind
-  private func bind() {
-    /// 하루종일 버튼 선택
-    allDayButton.rx.tap
-      .map { [weak self] in
-        guard let self = self else { return false }
-        self.allDayButton.isSelected = !self.allDayButton.isSelected
-        return self.allDayButton.isSelected
-      }
-      .bind(to: viewModel.output.onChangedAllDayButtonState)
-      .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers

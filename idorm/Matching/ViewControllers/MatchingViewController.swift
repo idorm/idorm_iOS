@@ -8,25 +8,19 @@
 import SnapKit
 import UIKit
 import RxSwift
-import Shuffle_iOS
+import RxCocoa
+import DeviceKit
 
 class MatchingViewController: UIViewController {
   // MARK: - Properties
   let myInfo = MyInfo(dormNumber: .no1, period: .period_16, gender: .female, age: "21", snoring: true, grinding: false, smoke: true, allowedFood: false, earphone: true, wakeupTime: "8시", cleanUpStatus: "33", showerTime: "33", mbti: "ISFJ", wishText: "하고싶은 말입니다.", chatLink: nil)
   
+  lazy var swipeDataModels = [ myInfo, myInfo, myInfo, myInfo, myInfo, myInfo ]
+  
   lazy var filterButton: UIButton = {
     var config = UIButton.Configuration.plain()
     config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
     config.image = UIImage(named: "filter(Matching)")
-    let button = UIButton(configuration: config)
-    
-    return button
-  }()
-  
-  lazy var backwardButton: UIButton = {
-    var config = UIButton.Configuration.plain()
-    config.image = UIImage(named: "backward(Matching)")
-    config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
     let button = UIButton(configuration: config)
     
     return button
@@ -39,22 +33,15 @@ class MatchingViewController: UIViewController {
     return infoView
   }()
   
-  lazy var cardStack: SwipeCardStack = {
-    let cardStack = SwipeCardStack()
-    cardStack.cardStackInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-    cardStack.dataSource = self
-    cardStack.delegate = self
-    
-    return cardStack
-  }()
-
   lazy var topRoundedBackgroundView = UIImageView(image: UIImage(named: "topRoundedBackground(Matching)"))
   let noMatchingImageView = UIImageView(image: UIImage(named: "noMatchingLabel(Matching)"))
   lazy var cancelButton = createButton(imageName: "cancel")
   lazy var messageButton = createButton(imageName: "message")
   lazy var heartButton = createButton(imageName: "heart")
+  lazy var backButton = createButton(imageName: "back")
   
   let disposeBag = DisposeBag()
+  let viewModel = MatchingViewModel()
   
   // MARK: - LifeCycle
   override func viewDidLoad() {
@@ -71,6 +58,7 @@ class MatchingViewController: UIViewController {
   
   // MARK: - Bind
   private func bind() {
+    // 필터버튼 클릭
     filterButton.rx.tap
       .bind(onNext: { [weak self] in
         let matchingFilterVC = MatchingFilterViewController()
@@ -79,14 +67,14 @@ class MatchingViewController: UIViewController {
       .disposed(by: disposeBag)
   }
   
-  // MARK: - Helpers
+  // MARK: - Configuration
   private func configureUI() {
     view.backgroundColor = .white
     
-    let buttonStack = UIStackView(arrangedSubviews: [ cancelButton, messageButton, heartButton ])
-    buttonStack.spacing = 24
+    let buttonStack = UIStackView(arrangedSubviews: [ cancelButton, backButton, messageButton, heartButton ])
+    buttonStack.spacing = 4
     
-    [ buttonStack, topRoundedBackgroundView, noMatchingImageView, backwardButton, cardStack, filterButton ]
+    [ topRoundedBackgroundView, noMatchingImageView, buttonStack, filterButton ]
       .forEach { view.addSubview($0) }
     
     topRoundedBackgroundView.snp.makeConstraints { make in
@@ -102,24 +90,57 @@ class MatchingViewController: UIViewController {
       make.centerX.centerY.equalToSuperview()
     }
     
-    cardStack.snp.makeConstraints { make in
-      make.top.equalTo(backwardButton.snp.bottom).offset(12)
-      make.leading.trailing.equalToSuperview().inset(24)
-      make.bottom.equalTo(buttonStack.snp.top).offset(-28)
-    }
-    
     buttonStack.snp.makeConstraints { make in
-      make.centerX.equalToSuperview()
-      make.bottom.equalTo(view.safeAreaLayoutGuide).inset(24)
+      make.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
     }
     
-    backwardButton.snp.makeConstraints { make in
-      make.centerX.equalToSuperview()
-      make.top.equalTo(view.safeAreaLayoutGuide).inset(16)
-    }
+//    infoView.snp.makeConstraints { make in
+//      make.center.equalToSuperview()
+//    }
+    
+    let deviceManager = DeviceManager.shared
+    
+//    if deviceManager.isFourIncheDevices() {
+//      cardStack.snp.makeConstraints { make in
+//        make.top.equalToSuperview().inset(4)
+//        make.leading.trailing.equalToSuperview().inset(12)
+//        make.bottom.equalTo(buttonStack.snp.top).offset(-4)
+//      }
+//
+//      buttonStack.snp.makeConstraints { make in
+//        make.centerX.equalToSuperview()
+//        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(4)
+//      }
+//    } else if deviceManager.isFiveIncheDevices() {
+//      cardStack.snp.makeConstraints { make in
+//        make.top.equalTo(filterButton.snp.bottom).offset(4)
+//        make.leading.trailing.equalToSuperview().inset(24)
+//        make.height.equalTo(400)
+//      }
+//
+//      buttonStack.snp.makeConstraints { make in
+//        make.centerX.equalToSuperview()
+//        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(4)
+//      }
+//    } else if deviceManager.isFiveInchePlusDevices() {
+//
+//    } else if deviceManager.isXSeriesDevices() {
+//
+//    } else {
+//      cardStack.snp.makeConstraints { make in
+//        make.centerY.equalToSuperview().offset(-120)
+//        make.leading.trailing.equalToSuperview().inset(24)
+//      }
+//
+//      buttonStack.snp.makeConstraints { make in
+//        make.centerX.equalToSuperview()
+//        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(62)
+//      }
+//    }
   }
 }
 
+// MARK: - 프로퍼티 만들기
 extension MatchingViewController {
   func createButton(imageName: String) -> UIButton {
     var config = UIButton.Configuration.plain()
@@ -137,40 +158,24 @@ extension MatchingViewController {
         button.configuration?.image = UIImage(named: name)
       }
     }
-    
     button.configurationUpdateHandler = handler
     
     return button
   }
-  
-  func createCard(from infoView: MyInfoView) -> SwipeCard {
-    infoView.snp.makeConstraints { make in
-      make.width.equalTo(view.frame.width - 48)
-    }
-    
-    let card = SwipeCard()
-    card.swipeDirections = [.left, .right]
-    card.content = infoView
-    
-    let leftOverlay = UIView()
-    leftOverlay.backgroundColor = .green
-    
-    let rightOverlay = UIView()
-    rightOverlay.backgroundColor = .red
-    
-    card.setOverlays([.left: leftOverlay, .right: rightOverlay])
-    
-    return card
-  }
 }
 
-extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelegate {
-  func cardStack(_ cardStack: SwipeCardStack, cardForIndexAt index: Int) -> SwipeCard {
-    let cardImages = [ infoView, infoView, infoView ]
-    return createCard(from: cardImages[index])
+extension MatchingViewController: SwipeCardsDataSource {
+  func numberOfCardsToShow() -> Int {
+    return swipeDataModels.count
   }
   
-  func numberOfCards(in cardStack: SwipeCardStack) -> Int {
-    return 3
+  func emptyView() -> UIView? {
+    return nil
+  }
+  
+  func card(at index: Int) -> SwipeCardView {
+    let card = SwipeCardView()
+    card.dataSource = swipeDataModels[index]
+    return card
   }
 }

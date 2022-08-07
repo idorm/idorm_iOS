@@ -10,6 +10,8 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RSKPlaceholderTextView
+import RxAppState
+
 import PanModal
 
 class CalendarPostViewController: UIViewController {
@@ -176,8 +178,23 @@ class CalendarPostViewController: UIViewController {
     /// 날짜 선택 시 캘린더 설정 하단 화면 출현
     Observable.merge(startStackTapGesture.rx.event.asObservable(), endStackTapGesture.rx.event.asObservable())
       .bind(onNext: { [weak self] _ in
+        guard let self = self else { return }
         let setCalendarVC = SetCalendarTabmanController()
-        self?.presentPanModal(setCalendarVC)
+        self.presentPanModal(setCalendarVC)
+        
+        // 날짜 정보 업데이트
+        setCalendarVC.viewModel.output.changedCalendarDate
+          .bind(onNext: { (start: Date, end: Date) in
+            self.updateDate(start: start, end: end)
+          })
+          .disposed(by: self.disposeBag)
+      })
+      .disposed(by: disposeBag)
+    
+    // 화면 진입
+    rx.viewWillAppear
+      .subscribe(onNext: { [weak self] _ in
+        
       })
       .disposed(by: disposeBag)
   }
@@ -282,6 +299,21 @@ class CalendarPostViewController: UIViewController {
       make.height.equalTo(1)
     }
     scrollView.updateContentSize()
+  }
+  
+  func updateDate(start: Date, end: Date) {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "MM월 dd일(E)"
+    dateFormatter.locale = Locale(identifier: "ko_KR")
+    
+    let timeFormatter = DateFormatter()
+    timeFormatter.dateFormat = "a hh시~"
+    timeFormatter.locale = Locale(identifier: "ko_KR")
+    
+    startDateLabel.text = dateFormatter.string(from: start)
+    startTimeLabel.text = timeFormatter.string(from: start)
+    endDateLabel.text = dateFormatter.string(from: end)
+    endTimeLabel.text = timeFormatter.string(from: end)
   }
 }
 

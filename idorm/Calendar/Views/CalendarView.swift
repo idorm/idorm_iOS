@@ -48,6 +48,7 @@ class CalendarView: UIView {
   var currentWeekDay: Int = 0
   /// 현재 선택된 날짜
   var selectedDate: Date?
+  let selectedDateSubject = PublishSubject<Date>()
   
   // MARK: - LifeCycle
   init(type: CalendarViewType) {
@@ -144,11 +145,15 @@ class CalendarView: UIView {
             selectedCell.dayOfMonthLabel.textColor = .white
             
             let calendar = Calendar.current
+            let timezone = TimeZone(secondsFromGMT: 0)!
+
             var dateComponents = DateComponents()
+            dateComponents.timeZone = timezone
             dateComponents.year = calendar.component(.year, from: self.nextDate)
             dateComponents.month = calendar.component(.month, from: self.nextDate)
-            dateComponents.day = indexPath.row - ( self.currentWeekDay )
+            dateComponents.day = indexPath.row - ( self.currentWeekDay ) + 1
             self.selectedDate = calendar.date(from: dateComponents)!
+            self.selectedDateSubject.onNext(self.selectedDate ?? Date.now)
           } else {
             return
           }

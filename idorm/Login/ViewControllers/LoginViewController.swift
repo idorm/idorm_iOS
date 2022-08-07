@@ -116,15 +116,15 @@ class LoginViewController: UIViewController {
     guard let email = idTextField.text else { return }
     guard let password = pwTextField.text else { return }
     if LoginUtilities.isValidEmail(id: email) == false {
-      let popupVC = LoginPopupViewController(contents: "이메일 형식을 확인해 주세요.")
+      let popupVC = PopupViewController(contents: "이메일 형식을 확인해 주세요.")
       popupVC.modalPresentationStyle = .overFullScreen
       present(popupVC, animated: false)
     } else if LoginUtilities.isValidPassword(pwd: password) == false {
-      let popupVC = LoginPopupViewController(contents: "비밀번호/아이디 확인 후 다시 시도해주세요.")
+      let popupVC = PopupViewController(contents: "비밀번호/아이디 확인 후 다시 시도해주세요.")
       popupVC.modalPresentationStyle = .overFullScreen
       present(popupVC, animated: false)
     } else {
-      let popupVC = LoginPopupViewController(contents: "가입되지 않은 이메일 입니다.")
+      let popupVC = PopupViewController(contents: "가입되지 않은 이메일 입니다.")
       popupVC.modalPresentationStyle = .overFullScreen
       present(popupVC, animated: false)
     }

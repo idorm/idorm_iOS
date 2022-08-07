@@ -55,7 +55,14 @@
 		E57E48FA2899666000D00BDB /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E57E48F92899666000D00BDB /* RxSwift */; };
 		E57FB8562886E2710050BBAE /* PhotoLibrary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57FB8552886E2710050BBAE /* PhotoLibrary+Extensions.swift */; };
 		E58131A8288E6AC6000DB8C9 /* OnboardingFloatyBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58131A7288E6AC6000DB8C9 /* OnboardingFloatyBottomView.swift */; };
+		E584B4B5289F21CA007AD83A /* StackContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E584B4B4289F21C9007AD83A /* StackContainerView.swift */; };
+		E584B4B8289F23D7007AD83A /* SwipeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E584B4B7289F23D7007AD83A /* SwipeCardView.swift */; };
+		E584B4BA289FC770007AD83A /* SwipeCardProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = E584B4B9289FC770007AD83A /* SwipeCardProtocols.swift */; };
+		E584B4BC289FCA6C007AD83A /* MatchingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E584B4BB289FCA6C007AD83A /* MatchingViewModel.swift */; };
 		E586B6A528901B06005AB9C2 /* LoginTextFieldContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E586B6A428901B06005AB9C2 /* LoginTextFieldContainerView.swift */; };
+		E58A6293289D46380074F646 /* RxAppState in Frameworks */ = {isa = PBXBuildFile; productRef = E58A6292289D46380074F646 /* RxAppState */; };
+		E58A6297289D6BEF0074F646 /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58A6296289D6BEF0074F646 /* DeviceManager.swift */; };
+		E58A629A289D73020074F646 /* DeviceKit in Frameworks */ = {isa = PBXBuildFile; productRef = E58A6299289D73020074F646 /* DeviceKit */; };
 		E58ACB85288465970031BD86 /* FMPhotoPicker in Frameworks */ = {isa = PBXBuildFile; productRef = E58ACB84288465970031BD86 /* FMPhotoPicker */; };
 		E58ACB8728846E050031BD86 /* ImagePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58ACB8628846E050031BD86 /* ImagePickerViewController.swift */; };
 		E58F96FB2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */; };
@@ -67,7 +74,7 @@
 		E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7390287A863800BA2C5E /* LoginViewController.swift */; };
 		E5AD7396287A8C2F00BA2C5E /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7395287A8C2F00BA2C5E /* UIColor+Extensions.swift */; };
 		E5AD7398287A8D8800BA2C5E /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7397287A8D8800BA2C5E /* UITextField+Extensions.swift */; };
-		E5AD739D287AE08F00BA2C5E /* LoginPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD739C287AE08F00BA2C5E /* LoginPopupViewController.swift */; };
+		E5AD739D287AE08F00BA2C5E /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD739C287AE08F00BA2C5E /* PopupViewController.swift */; };
 		E5AD739F287AEF2D00BA2C5E /* PutEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD739E287AEF2D00BA2C5E /* PutEmailViewController.swift */; };
 		E5AD73A1287AFC5300BA2C5E /* AuthNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD73A0287AFC5300BA2C5E /* AuthNumberViewController.swift */; };
 		E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordViewController.swift */; };
@@ -153,7 +160,12 @@
 		E56DF4B42894036D00E85B10 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		E57FB8552886E2710050BBAE /* PhotoLibrary+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotoLibrary+Extensions.swift"; sourceTree = "<group>"; };
 		E58131A7288E6AC6000DB8C9 /* OnboardingFloatyBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFloatyBottomView.swift; sourceTree = "<group>"; };
+		E584B4B4289F21C9007AD83A /* StackContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackContainerView.swift; sourceTree = "<group>"; };
+		E584B4B7289F23D7007AD83A /* SwipeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeCardView.swift; sourceTree = "<group>"; };
+		E584B4B9289FC770007AD83A /* SwipeCardProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeCardProtocols.swift; sourceTree = "<group>"; };
+		E584B4BB289FCA6C007AD83A /* MatchingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingViewModel.swift; sourceTree = "<group>"; };
 		E586B6A428901B06005AB9C2 /* LoginTextFieldContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextFieldContainerView.swift; sourceTree = "<group>"; };
+		E58A6296289D6BEF0074F646 /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 		E58ACB8628846E050031BD86 /* ImagePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerViewController.swift; sourceTree = "<group>"; };
 		E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerCollectionViewCell.swift; sourceTree = "<group>"; };
 		E58F96FC28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingPictureCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -164,7 +176,7 @@
 		E5AD7390287A863800BA2C5E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E5AD7395287A8C2F00BA2C5E /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		E5AD7397287A8D8800BA2C5E /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
-		E5AD739C287AE08F00BA2C5E /* LoginPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPopupViewController.swift; sourceTree = "<group>"; };
+		E5AD739C287AE08F00BA2C5E /* PopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
 		E5AD739E287AEF2D00BA2C5E /* PutEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailViewController.swift; sourceTree = "<group>"; };
 		E5AD73A0287AFC5300BA2C5E /* AuthNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberViewController.swift; sourceTree = "<group>"; };
 		E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordViewController.swift; sourceTree = "<group>"; };
@@ -205,10 +217,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5D31BF6289ABCE100510315 /* Tabman in Frameworks */,
+				E58A629A289D73020074F646 /* DeviceKit in Frameworks */,
 				E57E48F82899666000D00BDB /* RxRelay in Frameworks */,
 				E5D31BEF289A8A6700510315 /* RxKeyboard in Frameworks */,
 				E57E48F62899666000D00BDB /* RxCocoa in Frameworks */,
 				E5290F0C288832630004B8E6 /* RSKGrowingTextView in Frameworks */,
+				E58A6293289D46380074F646 /* RxAppState in Frameworks */,
 				E58ACB85288465970031BD86 /* FMPhotoPicker in Frameworks */,
 				E563421E28780C3800E93D17 /* SnapKit in Frameworks */,
 				E5C889062889729800CBD04E /* PanModal in Frameworks */,
@@ -265,6 +279,7 @@
 				E5FBBB862880304900A7158D /* SECRET.swift */,
 				E50300F628773A5D00611C62 /* AppDelegate.swift */,
 				E50300F828773A5D00611C62 /* SceneDelegate.swift */,
+				E58A6296289D6BEF0074F646 /* DeviceManager.swift */,
 				E5D4900C288BFB7E00311493 /* Models */,
 				E56DF4CC2894063100E85B10 /* General */,
 				E56DF4BD2894041D00E85B10 /* Login */,
@@ -528,7 +543,6 @@
 				E5AD739E287AEF2D00BA2C5E /* PutEmailViewController.swift */,
 				E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordViewController.swift */,
 				E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */,
-				E5AD739C287AE08F00BA2C5E /* LoginPopupViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -561,6 +575,7 @@
 		E56DF4C3289405CD00E85B10 /* Matching */ = {
 			isa = PBXGroup;
 			children = (
+				E584B4B6289F23C7007AD83A /* Swipe */,
 				E53D6E7328963B14004BF95B /* Views */,
 				E5AB97C22895583C00C0CEDF /* ViewModels */,
 				E56DF4C92894060200E85B10 /* ViewControllers */,
@@ -642,9 +657,20 @@
 			path = General;
 			sourceTree = "<group>";
 		};
+		E584B4B6289F23C7007AD83A /* Swipe */ = {
+			isa = PBXGroup;
+			children = (
+				E584B4B9289FC770007AD83A /* SwipeCardProtocols.swift */,
+				E584B4B7289F23D7007AD83A /* SwipeCardView.swift */,
+				E584B4B4289F21C9007AD83A /* StackContainerView.swift */,
+			);
+			path = Swipe;
+			sourceTree = "<group>";
+		};
 		E5AB97C22895583C00C0CEDF /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				E584B4BB289FCA6C007AD83A /* MatchingViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -708,6 +734,7 @@
 			isa = PBXGroup;
 			children = (
 				E56342222878353100E93D17 /* TabBarController.swift */,
+				E5AD739C287AE08F00BA2C5E /* PopupViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -751,6 +778,8 @@
 				E5D31BEE289A8A6700510315 /* RxKeyboard */,
 				E5D31BF5289ABCE100510315 /* Tabman */,
 				E5340E89289C713D0030A44F /* RxDataSources */,
+				E58A6292289D46380074F646 /* RxAppState */,
+				E58A6299289D73020074F646 /* DeviceKit */,
 			);
 			productName = idorm;
 			productReference = E50300F328773A5D00611C62 /* idorm.app */;
@@ -792,6 +821,8 @@
 				E5D31BED289A8A6700510315 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
 				E5D31BF4289ABCE100510315 /* XCRemoteSwiftPackageReference "Tabman" */,
 				E5340E88289C713D0030A44F /* XCRemoteSwiftPackageReference "RxDataSources" */,
+				E58A6291289D46380074F646 /* XCRemoteSwiftPackageReference "RxAppState" */,
+				E58A6298289D73020074F646 /* XCRemoteSwiftPackageReference "DeviceKit" */,
 			);
 			productRefGroup = E50300F428773A5D00611C62 /* Products */;
 			projectDirPath = "";
@@ -872,13 +903,14 @@
 				E525C1CD28944E2800F934B3 /* CalendarPostViewController.swift in Sources */,
 				E557E22928926F3B00F9C74D /* UIViewController+Extensions.swift in Sources */,
 				E55DE2F92896DDC6004F1401 /* CalendarUtilities.swift in Sources */,
-				E5AD739D287AE08F00BA2C5E /* LoginPopupViewController.swift in Sources */,
+				E5AD739D287AE08F00BA2C5E /* PopupViewController.swift in Sources */,
 				E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */,
 				E557E2272892593F00F9C74D /* CalendarPersonalCell.swift in Sources */,
 				E5290F0928881C6E0004B8E6 /* CommunityDetailCollectionHeaderView.swift in Sources */,
 				E50300F728773A5D00611C62 /* AppDelegate.swift in Sources */,
 				E55794EE287C36F5002DB2B0 /* UIView+Extensions.swift in Sources */,
 				E5EB5F2C2891534300EC0425 /* CalendarPersonalCollectionHeaderView.swift in Sources */,
+				E584B4B8289F23D7007AD83A /* SwipeCardView.swift in Sources */,
 				E5AD7398287A8D8800BA2C5E /* UITextField+Extensions.swift in Sources */,
 				E5FBBB872880304900A7158D /* SECRET.swift in Sources */,
 				E508437728813CE80047A2EC /* FontManager.swift in Sources */,
@@ -886,6 +918,7 @@
 				E5F5EC742884025E0026DE21 /* CommunityViewController.swift in Sources */,
 				E5AC2DCF288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift in Sources */,
 				E5290F10288869700004B8E6 /* CommunityDetailHeaderCollectionViewCell.swift in Sources */,
+				E58A6297289D6BEF0074F646 /* DeviceManager.swift in Sources */,
 				E5EB5F322891589800EC0425 /* CalendarListUtilities.swift in Sources */,
 				E5290F0E288867E50004B8E6 /* CommunityDetailTableViewCell.swift in Sources */,
 				E57FB8562886E2710050BBAE /* PhotoLibrary+Extensions.swift in Sources */,
@@ -927,6 +960,7 @@
 				E5BF4C5F28840EBF00B4F0B8 /* PostingViewController.swift in Sources */,
 				E5D4900E288BFB9100311493 /* MyInfo.swift in Sources */,
 				E563421828780BDE00E93D17 /* OnboardingViewModel.swift in Sources */,
+				E584B4BC289FCA6C007AD83A /* MatchingViewModel.swift in Sources */,
 				E5AB97C42895671800C0CEDF /* MatchingFilterViewController.swift in Sources */,
 				E5D49008288B7F0400311493 /* CommunityPopupViewController.swift in Sources */,
 				E5AD7396287A8C2F00BA2C5E /* UIColor+Extensions.swift in Sources */,
@@ -935,6 +969,7 @@
 				E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */,
 				E5AD739F287AEF2D00BA2C5E /* PutEmailViewController.swift in Sources */,
 				E5D31BF8289ABDC100510315 /* SetCalendarViewController.swift in Sources */,
+				E584B4B5289F21CA007AD83A /* StackContainerView.swift in Sources */,
 				E5F5EC722883C70C0026DE21 /* WebMailViewController.swift in Sources */,
 				E5290EFD2887BBA40004B8E6 /* CommunityPopularCollectionVIewCell.swift in Sources */,
 				E55DE2F62896DB06004F1401 /* CustomCalendarCell.swift in Sources */,
@@ -942,6 +977,7 @@
 				E5290F1228886D7A0004B8E6 /* CommunityUtilities.swift in Sources */,
 				E5B15F6F287FE355004D4164 /* OnboardingDetailViewController.swift in Sources */,
 				E5D49014288C3DDB00311493 /* OnboardingUtilities.swift in Sources */,
+				E584B4BA289FC770007AD83A /* SwipeCardProtocols.swift in Sources */,
 				E5D31BF1289AAE3D00510315 /* UIScrollView+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1194,6 +1230,22 @@
 				minimumVersion = 6.5.0;
 			};
 		};
+		E58A6291289D46380074F646 /* XCRemoteSwiftPackageReference "RxAppState" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pixeldock/RxAppState.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 1.7.0;
+			};
+		};
+		E58A6298289D73020074F646 /* XCRemoteSwiftPackageReference "DeviceKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devicekit/DeviceKit.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 4.6.0;
+			};
+		};
 		E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/congnd/FMPhotoPicker.git";
@@ -1279,6 +1331,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E57E48F42899666000D00BDB /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
+		};
+		E58A6292289D46380074F646 /* RxAppState */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E58A6291289D46380074F646 /* XCRemoteSwiftPackageReference "RxAppState" */;
+			productName = RxAppState;
+		};
+		E58A6299289D73020074F646 /* DeviceKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E58A6298289D73020074F646 /* XCRemoteSwiftPackageReference "DeviceKit" */;
+			productName = DeviceKit;
 		};
 		E58ACB84288465970031BD86 /* FMPhotoPicker */ = {
 			isa = XCSwiftPackageProductDependency;

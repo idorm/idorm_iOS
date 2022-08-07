@@ -19,6 +19,15 @@
       }
     },
     {
+      "identity" : "devicekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/devicekit/DeviceKit.git",
+      "state" : {
+        "revision" : "8e2432f99915c6aa03d73b50152bf64dc87d0813",
+        "version" : "4.6.1"
+      }
+    },
+    {
       "identity" : "fmphotopicker",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/congnd/FMPhotoPicker.git",
@@ -61,6 +70,15 @@
       "state" : {
         "revision" : "941b263de5344c03b89c46c30e85ad48b0da24a1",
         "version" : "6.1.0"
+      }
+    },
+    {
+      "identity" : "rxappstate",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pixeldock/RxAppState.git",
+      "state" : {
+        "revision" : "956f438ea16481c1bd9a8ca3bc169af7435aaf0b",
+        "version" : "1.7.1"
       }
     },
     {

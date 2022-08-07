@@ -22,7 +22,7 @@ class MyInfoView: UIView {
   
   lazy var dormLabel: UILabel = {
     let label = UILabel()
-    label.font = .init(name: Font.bold.rawValue, size: 24)
+    label.font = .init(name: Font.bold.rawValue, size: 20)
     label.text = "3 기숙사"
     label.textColor = .white
     
@@ -42,6 +42,8 @@ class MyInfoView: UIView {
     
     return button
   }()
+  
+  // MARK: - LifeCycle
   
   // MARK: - Helpers
   func configureUI(myinfo: MyInfo) {
@@ -72,17 +74,20 @@ class MyInfoView: UIView {
     bottomView.snp.makeConstraints { make in
       make.top.equalTo(backgroundImageView.snp.bottom)
       make.leading.trailing.equalTo(backgroundImageView)
+      make.height.equalTo(40)
     }
     
     [ dormLabel, periodButton, snoreLabel, grindingLabel, smokingLabel, allowedFoodLabel, allowedEarphoneLabel, wakeupTimeLabel, cleanupLabel, showerTimeLabel, mbtiLabel, wishTextLabel ]
       .forEach { backgroundImageView.addSubview($0) }
     
     dormLabel.snp.makeConstraints { make in
-      make.leading.top.equalToSuperview().inset(14)
+      make.top.equalToSuperview().inset(10)
+      make.leading.equalToSuperview().inset(14)
     }
     
     periodButton.snp.makeConstraints { make in
-      make.trailing.top.equalToSuperview().inset(14)
+      make.trailing.equalToSuperview().inset(14)
+      make.centerY.equalTo(dormLabel)
     }
     
     snoreLabel.snp.makeConstraints { make in
@@ -112,7 +117,7 @@ class MyInfoView: UIView {
     
     wakeupTimeLabel.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(14)
-      make.top.equalTo(allowedFoodLabel.snp.bottom).offset(16)
+      make.top.equalTo(allowedFoodLabel.snp.bottom).offset(10)
     }
     
     cleanupLabel.snp.makeConstraints { make in
@@ -132,7 +137,8 @@ class MyInfoView: UIView {
     
     wishTextLabel.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(14)
-      make.top.equalTo(mbtiLabel.snp.bottom).offset(16)
+      make.top.equalTo(mbtiLabel.snp.bottom).offset(10)
+      make.height.equalTo(104)
     }
   }
   
@@ -141,7 +147,7 @@ class MyInfoView: UIView {
 
     let view = UIView()
     view.backgroundColor = .white
-    view.layer.cornerRadius = 16
+    view.layer.cornerRadius = 15
     view.layer.shadowOffset = CGSize(width: 0, height: 5)
     view.layer.shadowColor = UIColor.black.cgColor
     view.layer.shadowOpacity = 0.2
@@ -179,7 +185,7 @@ class MyInfoView: UIView {
     view.addSubview(stack)
     
     view.snp.makeConstraints { make in
-      make.height.equalTo(30)
+      make.height.equalTo(29)
     }
     
     stack.snp.makeConstraints { make in
