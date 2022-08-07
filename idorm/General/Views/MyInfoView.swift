@@ -10,8 +10,6 @@ import UIKit
 
 class MyInfoView: UIView {
   // MARK: - Properties
-  var myInfo: MyInfo?
-  
   lazy var backgroundImageView: UIImageView = {
     let iv = UIImageView()
     iv.image = UIImage(named: "OnboardingBackGround")?.withRenderingMode(.alwaysOriginal)
@@ -34,7 +32,6 @@ class MyInfoView: UIView {
     var container = AttributeContainer()
     container.font = UIFont.init(name: Font.bold.rawValue, size: 12)
     container.foregroundColor = UIColor.white
-//    config.attributedTitle = AttributedString(myInfo?.period ?? , attributes: container)
     config.image = UIImage(named: "Building")
     config.imagePlacement = .leading
     config.imagePadding = 8
@@ -43,12 +40,21 @@ class MyInfoView: UIView {
     return button
   }()
   
+  let myInfo: MyInfo
+  
   // MARK: - LifeCycle
+  init(myInfo: MyInfo) {
+    self.myInfo = myInfo
+    super.init(frame: .zero)
+    configureUI()
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
   // MARK: - Helpers
-  func configureUI(myinfo: MyInfo) {
-    self.myInfo = myinfo
-    
+  func configureUI() {
     let snoreLabel = createBoolComponent(query: "코골이")
     let grindingLabel = createBoolComponent(query: "이갈이")
     let smokingLabel = createBoolComponent(query: "흡연")
@@ -143,8 +149,6 @@ class MyInfoView: UIView {
   }
   
   private func createBoolComponent(query: String) -> UIView {
-    guard let myInfo = myInfo else { return UIView() }
-
     let view = UIView()
     view.backgroundColor = .white
     view.layer.cornerRadius = 15
@@ -197,8 +201,6 @@ class MyInfoView: UIView {
   }
   
   private func createStringComponent(query: String) -> UIView {
-    guard let myInfo = myInfo else { return UIView() }
-    
     let view = UIView()
     view.layer.cornerRadius = 12
     view.backgroundColor = .white
@@ -246,8 +248,6 @@ class MyInfoView: UIView {
   }
   
   private func createWishTextLabel() -> UIView {
-    guard let myInfo = myInfo else { return UIView() }
-
     let view = UIView()
     view.layer.cornerRadius = 6
     view.backgroundColor = .white
@@ -274,8 +274,6 @@ class MyInfoView: UIView {
   }
   
   private func createBottomView() -> UIView {
-    guard let myInfo = myInfo else { return UIView() }
-    
     let view = UIView()
     view.backgroundColor = .white
     view.layer.borderColor = UIColor.idorm_gray_200.cgColor

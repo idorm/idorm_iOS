@@ -33,7 +33,7 @@ class StackContainerView: UIView, SwipeCardDelegate {
   // MARK: - LifeCycle
   override init(frame: CGRect) {
     super.init(frame: frame)
-    backgroundColor = .idorm_blue
+    backgroundColor = .clear
   }
   
   required init?(coder: NSCoder) {
@@ -41,6 +41,7 @@ class StackContainerView: UIView, SwipeCardDelegate {
   }
   
   func reloadData() {
+    removeAllCardViews()
     guard let dataSource = dataSource else { return }
     setNeedsLayout()
     layoutIfNeeded()

@@ -26,34 +26,36 @@ class MatchingViewController: UIViewController {
     return button
   }()
   
-  lazy var infoView: MyInfoView = {
-    let infoView = MyInfoView()
-    infoView.configureUI(myinfo: myInfo)
-
-    return infoView
-  }()
-  
   lazy var topRoundedBackgroundView = UIImageView(image: UIImage(named: "topRoundedBackground(Matching)"))
   let noMatchingImageView = UIImageView(image: UIImage(named: "noMatchingLabel(Matching)"))
   lazy var cancelButton = createButton(imageName: "cancel")
   lazy var messageButton = createButton(imageName: "message")
   lazy var heartButton = createButton(imageName: "heart")
   lazy var backButton = createButton(imageName: "back")
+  lazy var infoView = MyInfoView(myInfo: myInfo)
   
+  var stackContainer: StackContainerView!
   let disposeBag = DisposeBag()
   let viewModel = MatchingViewModel()
   
   // MARK: - LifeCycle
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    configureUI()
-    bind()
-  }
-  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     navigationController?.navigationBar.isHidden = true
     tabBarController?.tabBar.isHidden = false
+  }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    stackContainer.dataSource = self
+    bind()
+  }
+  
+  override func loadView() {
+    super.loadView()
+    stackContainer = StackContainerView()
+    view.addSubview(stackContainer)
+    configureUI()
   }
   
   // MARK: - Bind
@@ -61,8 +63,9 @@ class MatchingViewController: UIViewController {
     // 필터버튼 클릭
     filterButton.rx.tap
       .bind(onNext: { [weak self] in
+        guard let self = self else { return }
         let matchingFilterVC = MatchingFilterViewController()
-        self?.navigationController?.pushViewController(matchingFilterVC, animated: true)
+        self.navigationController?.pushViewController(matchingFilterVC, animated: true)
       })
       .disposed(by: disposeBag)
   }
@@ -74,7 +77,7 @@ class MatchingViewController: UIViewController {
     let buttonStack = UIStackView(arrangedSubviews: [ cancelButton, backButton, messageButton, heartButton ])
     buttonStack.spacing = 4
     
-    [ topRoundedBackgroundView, noMatchingImageView, buttonStack, filterButton ]
+    [ topRoundedBackgroundView, noMatchingImageView, buttonStack, filterButton, stackContainer ]
       .forEach { view.addSubview($0) }
     
     topRoundedBackgroundView.snp.makeConstraints { make in
@@ -94,9 +97,11 @@ class MatchingViewController: UIViewController {
       make.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
     }
     
-//    infoView.snp.makeConstraints { make in
-//      make.center.equalToSuperview()
-//    }
+    stackContainer.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+      make.height.equalTo(400)
+      make.width.equalTo(300)
+    }
     
     let deviceManager = DeviceManager.shared
     
@@ -174,8 +179,7 @@ extension MatchingViewController: SwipeCardsDataSource {
   }
   
   func card(at index: Int) -> SwipeCardView {
-    let card = SwipeCardView()
-    card.dataSource = swipeDataModels[index]
+    let card = SwipeCardView(myInfo: swipeDataModels[index])
     return card
   }
 }

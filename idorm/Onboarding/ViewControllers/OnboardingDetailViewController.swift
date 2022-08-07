@@ -12,12 +12,7 @@ import RxCocoa
 
 class OnboardingDetailViewController: UIViewController {
   // MARK: - Properties
-  lazy var myInfoView: MyInfoView = {
-    let view = MyInfoView()
-    view.configureUI(myinfo: myInfo)
-    
-    return view
-  }()
+  lazy var myInfoView = MyInfoView(myInfo: myInfo)
   
   lazy var floatyBottomView: OnboardingFloatyBottomView = {
     let floatyBottomView = OnboardingFloatyBottomView()
@@ -63,8 +58,6 @@ class OnboardingDetailViewController: UIViewController {
     view.backgroundColor = .white
     navigationItem.title = "내 프로필 이미지"
     navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
-    
-    myInfoView.myInfo = myInfo
     
     [ floatyBottomView, myInfoView ]
       .forEach { view.addSubview($0) }

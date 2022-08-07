@@ -13,26 +13,19 @@ import RxCocoa
 class SwipeCardView: UIView {
   // MARK: - Properties
   var swipeView: UIView!
-  var myInfoView: MyInfoView!
+  var infoView: MyInfoView!
   
   var delegate: SwipeCardDelegate?
   
   var divisor: CGFloat = 0
-  let baseView = UIView()
   
-  var dataSource: MyInfo? {
-    didSet {
-      guard let dataSource = dataSource else { return }
-      configureMyInfoView()
-      myInfoView.configureUI(myinfo: dataSource)
-    }
-  }
+  let myInfo: MyInfo
   
   // MARK: - LifeCycle
-  override init(frame: CGRect) {
+  init(myInfo: MyInfo) {
+    self.myInfo = myInfo
     super.init(frame: .zero)
-    configureMyInfoView()
-    addPanGestureOnCards()
+    configureUI()
   }
   
   required init?(coder: NSCoder) {
@@ -40,16 +33,25 @@ class SwipeCardView: UIView {
   }
   
   // MARK: - Configuration
-  func configureMyInfoView() {
-    myInfoView = MyInfoView()
-    addSubview(myInfoView)
+  func configureUI() {
+    swipeView = UIView()
+    swipeView.backgroundColor = .clear
+    addSubview(swipeView)
     
-    myInfoView.snp.makeConstraints { make in
+    swipeView.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
+    }
+    
+    infoView = MyInfoView(myInfo: myInfo)
+    swipeView.addSubview(infoView)
+    
+    infoView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
     }
   }
   
   func addPanGestureOnCards() {
+    self.isUserInteractionEnabled = true
     let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(sender:)))
     addGestureRecognizer(panGesture)
   }
