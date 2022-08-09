@@ -60,23 +60,68 @@ class MyPageViewController: UIViewController {
     return button
   }()
   
-  lazy var matchingImageManagementButton = createMatchingButton(imageName: "picture(MyPage)", title: "매칭 이미지 관리")
-  lazy var likeRoommateButton = createMatchingButton(imageName: "heart(MyPage)", title: "좋아요한 룸메")
-  lazy var myPostButton = createCommunityButton(imageName: "write(MyPage)", title: "내가 쓴 글")
-  lazy var myCommentButton = createCommunityButton(imageName: "like(MyPage)", title: "내가 쓴 댓글")
-  lazy var myRecommendedPostButton = createCommunityButton(imageName: "message(MyPage)", title: "추천한 글")
+  lazy var scrollView: UIScrollView = {
+    let sv = UIScrollView()
+    sv.backgroundColor = .idorm_gray_100
+    sv.bounces = false
+    
+    return sv
+  }()
   
-  lazy var matchingLabel = createTitleLabel(title: "룸메이트 매칭 관리")
-  lazy var communityLabel = createTitleLabel(title: "커뮤니티 관리")
+  lazy var contentsView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .idorm_gray_100
+    
+    return view
+  }()
+  
+  lazy var makePublicLabel: UILabel = {
+    let label = UILabel()
+    label.textColor = .idorm_gray_400
+    label.font = .init(name: Font.medium.rawValue, size: 14)
+    label.text = "내 이미지 매칭페이지에 공유하기"
+    
+    return label
+  }()
+  
+  lazy var makePublicButton: UIButton = {
+    var config = UIButton.Configuration.plain()
+    let btn = UIButton(configuration: config)
+    let handler: UIButton.ConfigurationUpdateHandler = { button in
+      switch button.state {
+      case .selected:
+        button.configuration?.image = #imageLiteral(resourceName: "toggleHover(Matching)")
+      default:
+        button.configuration?.image = UIImage(named: "toggle(Matching)")
+      }
+    }
+    btn.configurationUpdateHandler = handler
+
+    return btn
+  }()
+  
+  lazy var matchingImageManagementButton = MyPageUtilities.createMatchingButton(imageName: "picture(MyPage)", title: "매칭 이미지 관리")
+  lazy var likeRoommateButton = MyPageUtilities.createMatchingButton(imageName: "heart(MyPage)", title: "좋아요한 룸메")
+  lazy var myPostButton = MyPageUtilities.createCommunityButton(imageName: "write(MyPage)", title: "내가 쓴 글")
+  lazy var myCommentButton = MyPageUtilities.createCommunityButton(imageName: "like(MyPage)", title: "내가 쓴 댓글")
+  lazy var myRecommendedPostButton = MyPageUtilities.createCommunityButton(imageName: "message(MyPage)", title: "추천한 글")
+  
+  lazy var matchingLabel = MyPageUtilities.createTitleLabel(title: "룸메이트 매칭 관리")
+  lazy var communityLabel = MyPageUtilities.createTitleLabel(title: "커뮤니티 관리")
   
   lazy var myProfileImage = UIImageView(image: UIImage(named: "myProfileImage(MyPage)"))
+  let lionImageView = UIImageView(image: #imageLiteral(resourceName: "BottonLion(MyPage)"))
   
   let disposeBag = DisposeBag()
   
   // MARK: - LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()
-    configureUI()
+    configureTopRoundedView()
+    configureMatchingContainerView()
+    configureCommunityContainerView()
+    configureScrollView()
+    configureTopView()
     bind()
   }
 
@@ -84,6 +129,27 @@ class MyPageViewController: UIViewController {
     super.viewWillAppear(animated)
     navigationController?.navigationBar.isHidden = true
     tabBarController?.tabBar.isHidden = false
+    
+    let appearance = UITabBarAppearance()
+    appearance.configureWithOpaqueBackground()
+    appearance.backgroundColor = .idorm_gray_100
+    appearance.backgroundImage = UIImage()
+    appearance.shadowImage = UIImage()
+    appearance.shadowColor = .clear
+    tabBarController?.tabBar.standardAppearance = appearance
+    tabBarController?.tabBar.scrollEdgeAppearance = tabBarController?.tabBar.standardAppearance
+  }
+  
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    let appearance = UITabBarAppearance()
+    appearance.configureWithOpaqueBackground()
+    appearance.backgroundColor = .white
+    appearance.backgroundImage = UIImage()
+    appearance.shadowImage = UIImage()
+    appearance.shadowColor = .clear
+    tabBarController?.tabBar.standardAppearance = appearance
+    tabBarController?.tabBar.scrollEdgeAppearance = tabBarController?.tabBar.standardAppearance
   }
   
   // MARK: - Bind
@@ -101,7 +167,7 @@ class MyPageViewController: UIViewController {
         self?.navigationController?.pushViewController(myPostVC, animated: true)
       })
       .disposed(by: disposeBag)
-
+    
     myRecommendedPostButton.rx.tap
       .bind(onNext: { [weak self] in
         let myPostVC = MyPostViewController(myPostVCType: .recommend)
@@ -124,30 +190,159 @@ class MyPageViewController: UIViewController {
       .disposed(by: disposeBag)
   }
   
-  // MARK: - Helpers
-  private func configureUI() {
-    view.backgroundColor = .white
-    navigationController?.navigationBar.isHidden = true
-    topRoundedView.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMaxYCorner, .layerMaxXMaxYCorner)
+  // MARK: - Configuration
+  private func configureTopView() {
+    let topView = UIView()
+    topView.backgroundColor = .idorm_blue
+    view.addSubview(topView)
     
-    [ matchingContainerView, communityContainerView, topRoundedView ]
-      .forEach { view.addSubview($0) }
+    topView.snp.makeConstraints { make in
+      make.top.leading.trailing.equalToSuperview()
+      make.bottom.equalTo(scrollView.snp.top)
+    }
+  }
+  
+  private func configureScrollView() {
+    view.addSubview(scrollView)
+    scrollView.addSubview(contentsView)
     
-    matchingContainerView.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview().inset(24)
-      make.top.equalTo(topRoundedView.snp.bottom).offset(20)
+    scrollView.snp.makeConstraints { make in
+      make.edges.equalTo(view.safeAreaLayoutGuide)
     }
     
-    communityContainerView.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview().inset(24)
-      make.top.equalTo(matchingContainerView.snp.bottom).offset(20)
+    contentsView.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
+      make.width.equalTo(view.frame.width)
     }
+    
+    [ matchingContainerView, communityContainerView, topRoundedView, lionImageView ]
+      .forEach { contentsView.addSubview($0) }
     
     topRoundedView.snp.makeConstraints { make in
       make.top.leading.trailing.equalToSuperview()
-      make.height.equalTo(170)
+      make.height.equalTo(145)
     }
     
+    // 기기별 레이아웃
+    let deviceManager = DeviceManager.shared
+    if deviceManager.isXSeriesDevices_926() {
+      matchingContainerView.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(42)
+        make.top.equalTo(topRoundedView.snp.bottom).offset(20)
+      }
+      
+      communityContainerView.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(42)
+        make.top.equalTo(matchingContainerView.snp.bottom).offset(20)
+      }
+      
+      lionImageView.snp.makeConstraints { make in
+        make.top.equalTo(communityContainerView.snp.bottom).offset(114)
+        make.bottom.equalToSuperview()
+        make.centerX.equalToSuperview()
+      }
+    } else if deviceManager.isFourIncheDevices() {
+      matchingContainerView.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(12)
+        make.top.equalTo(topRoundedView.snp.bottom).offset(20)
+      }
+      
+      communityContainerView.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(12)
+        make.top.equalTo(matchingContainerView.snp.bottom).offset(20)
+      }
+      
+      lionImageView.snp.makeConstraints { make in
+        make.top.equalTo(communityContainerView.snp.bottom).offset(24)
+        make.bottom.equalToSuperview()
+        make.centerX.equalToSuperview()
+      }
+    } else if deviceManager.isFiveIncheDevices() {
+      matchingContainerView.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(topRoundedView.snp.bottom).offset(20)
+      }
+      
+      communityContainerView.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(matchingContainerView.snp.bottom).offset(20)
+      }
+      
+      lionImageView.snp.makeConstraints { make in
+        make.top.equalTo(communityContainerView.snp.bottom).offset(37)
+        make.bottom.equalToSuperview()
+        make.centerX.equalToSuperview()
+      }
+    } else if deviceManager.isFiveInchePlusDevices() {
+      matchingContainerView.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(32)
+        make.top.equalTo(topRoundedView.snp.bottom).offset(20)
+      }
+      
+      communityContainerView.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(32)
+        make.top.equalTo(matchingContainerView.snp.bottom).offset(20)
+      }
+      
+      lionImageView.snp.makeConstraints { make in
+        make.top.equalTo(communityContainerView.snp.bottom).offset(37)
+        make.bottom.equalToSuperview()
+        make.centerX.equalToSuperview()
+      }
+    } else if deviceManager.isXSeriesDevices_812() || deviceManager.isXSeriesDevices_844() {
+      matchingContainerView.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(topRoundedView.snp.bottom).offset(20)
+      }
+      
+      communityContainerView.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(matchingContainerView.snp.bottom).offset(20)
+      }
+      
+      lionImageView.snp.makeConstraints { make in
+        make.top.equalTo(communityContainerView.snp.bottom).offset(37)
+        make.bottom.equalToSuperview()
+        make.centerX.equalToSuperview()
+      }
+    } else if deviceManager.isXSeriesDevices_896() {
+      matchingContainerView.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(topRoundedView.snp.bottom).offset(20)
+      }
+      
+      communityContainerView.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(matchingContainerView.snp.bottom).offset(20)
+      }
+      
+      lionImageView.snp.makeConstraints { make in
+        make.top.equalTo(communityContainerView.snp.bottom).offset(87)
+        make.bottom.equalToSuperview()
+        make.centerX.equalToSuperview()
+      }
+    } else {
+      matchingContainerView.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(topRoundedView.snp.bottom).offset(20)
+      }
+      
+      communityContainerView.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(matchingContainerView.snp.bottom).offset(20)
+      }
+      
+      lionImageView.snp.makeConstraints { make in
+        make.top.equalTo(communityContainerView.snp.bottom).offset(60)
+        make.bottom.equalToSuperview()
+        make.centerX.equalToSuperview()
+      }
+    }
+  }
+  
+  private func configureTopRoundedView() {
+    topRoundedView.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMaxYCorner, .layerMaxXMaxYCorner)
+
     [ myProfileImage, updateMyProfileImageButton ]
       .forEach { topRoundedView.addSubview($0) }
     
@@ -160,12 +355,14 @@ class MyPageViewController: UIViewController {
       make.centerX.equalToSuperview()
       make.bottom.equalTo(updateMyProfileImageButton.snp.top)
     }
-    
+  }
+  
+  private func configureMatchingContainerView() {
     let matchingButtonStack = UIStackView(arrangedSubviews: [ matchingImageManagementButton, likeRoommateButton ])
     matchingButtonStack.spacing = 18
     matchingButtonStack.distribution = .fillEqually
     
-    [ matchingLabel, matchingButtonStack ]
+    [ matchingLabel, matchingButtonStack, makePublicLabel, makePublicButton ]
       .forEach { matchingContainerView.addSubview($0) }
     
     matchingLabel.snp.makeConstraints { make in
@@ -176,11 +373,23 @@ class MyPageViewController: UIViewController {
     matchingButtonStack.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(28)
       make.top.equalTo(matchingLabel.snp.bottom).offset(16)
-      make.bottom.equalToSuperview().inset(30)
     }
     
+    makePublicLabel.snp.makeConstraints { make in
+      make.leading.equalToSuperview().inset(28)
+      make.top.equalTo(matchingButtonStack.snp.bottom).offset(16)
+      make.bottom.equalToSuperview().inset(24)
+    }
+    
+    makePublicButton.snp.makeConstraints { make in
+      make.centerY.equalTo(makePublicLabel)
+      make.leading.equalTo(makePublicLabel.snp.trailing)
+    }
+  }
+  
+  private func configureCommunityContainerView() {
     let communityButtonStack = UIStackView(arrangedSubviews: [ myPostButton, myCommentButton, myRecommendedPostButton ])
-    communityButtonStack.spacing = 12
+    communityButtonStack.spacing = 5
     communityButtonStack.distribution = .fillEqually
     
     [ communityLabel, communityButtonStack ]
@@ -192,72 +401,9 @@ class MyPageViewController: UIViewController {
     }
     
     communityButtonStack.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview().inset(28)
+      make.leading.trailing.equalToSuperview().inset(21)
       make.top.equalTo(communityLabel.snp.bottom).offset(16)
-      make.bottom.equalToSuperview().inset(30)
+      make.bottom.equalToSuperview().inset(21)
     }
-  }
-  
-  private func createMatchingButton(imageName: String, title: String) -> UIButton {
-    var config = UIButton.Configuration.filled()
-    config.image = UIImage(named: imageName)
-    config.imagePlacement = .top
-    config.imagePadding = 8
-    var container = AttributeContainer()
-    container.font = .init(name: Font.regular.rawValue, size: 12)
-    container.foregroundColor = UIColor.black
-    config.attributedTitle = AttributedString(title, attributes: container)
-    config.titleAlignment = .center
-    config.contentInsets = NSDirectionalEdgeInsets(top: 18, leading: 18, bottom: 18, trailing: 18)
-    config.baseBackgroundColor = .idorm_gray_100
-    let button = UIButton(configuration: config)
-    button.layer.cornerRadius = 12
-    let handler: UIButton.ConfigurationUpdateHandler = { button in
-      switch button.state {
-      case .highlighted:
-        button.configuration?.baseBackgroundColor = .idorm_gray_200
-      default:
-        button.configuration?.baseBackgroundColor = .idorm_gray_100
-      }
-    }
-    button.configurationUpdateHandler = handler
-    
-    return button
-  }
-  
-  private func createCommunityButton(imageName: String, title: String) -> UIButton {
-    var config = UIButton.Configuration.filled()
-    config.image = UIImage(named: imageName)
-    config.imagePlacement = .top
-    config.imagePadding = 8
-    var container = AttributeContainer()
-    container.font = .init(name: Font.regular.rawValue, size: 12)
-    container.foregroundColor = UIColor.black
-    config.attributedTitle = AttributedString(title, attributes: container)
-    config.titleAlignment = .center
-    config.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 6, bottom: 12, trailing: 6)
-    config.baseBackgroundColor = .idorm_gray_100
-    let button = UIButton(configuration: config)
-    button.layer.cornerRadius = 12
-    let handler: UIButton.ConfigurationUpdateHandler = { button in
-      switch button.state {
-      case .highlighted:
-        button.configuration?.baseBackgroundColor = .idorm_gray_200
-      default:
-        button.configuration?.baseBackgroundColor = .idorm_gray_100
-      }
-    }
-    button.configurationUpdateHandler = handler
-    
-    return button
-  }
-  
-  private func createTitleLabel(title: String) -> UILabel {
-    let label = UILabel()
-    label.text = title
-    label.font = .init(name: Font.medium.rawValue, size: 16)
-    label.textColor = .black
-    
-    return label
   }
 }

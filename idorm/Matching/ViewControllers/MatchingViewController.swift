@@ -77,7 +77,7 @@ class MatchingViewController: UIViewController {
     let buttonStack = UIStackView(arrangedSubviews: [ cancelButton, backButton, messageButton, heartButton ])
     buttonStack.spacing = 4
     
-    [ topRoundedBackgroundView, noMatchingImageView, buttonStack, filterButton, stackContainer ]
+    [ topRoundedBackgroundView, buttonStack, filterButton, noMatchingImageView, stackContainer ]
       .forEach { view.addSubview($0) }
     
     topRoundedBackgroundView.snp.makeConstraints { make in
@@ -90,58 +90,98 @@ class MatchingViewController: UIViewController {
     }
     
     noMatchingImageView.snp.makeConstraints { make in
-      make.centerX.centerY.equalToSuperview()
-    }
-    
-    buttonStack.snp.makeConstraints { make in
-      make.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-    }
-    
-    stackContainer.snp.makeConstraints { make in
-      make.center.equalToSuperview()
-      make.height.equalTo(400)
-      make.width.equalTo(300)
+      make.top.equalTo(topRoundedBackgroundView.snp.bottom).offset(100)
+      make.centerX.equalToSuperview()
     }
     
     let deviceManager = DeviceManager.shared
     
-//    if deviceManager.isFourIncheDevices() {
-//      cardStack.snp.makeConstraints { make in
-//        make.top.equalToSuperview().inset(4)
-//        make.leading.trailing.equalToSuperview().inset(12)
-//        make.bottom.equalTo(buttonStack.snp.top).offset(-4)
-//      }
-//
-//      buttonStack.snp.makeConstraints { make in
-//        make.centerX.equalToSuperview()
-//        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(4)
-//      }
-//    } else if deviceManager.isFiveIncheDevices() {
-//      cardStack.snp.makeConstraints { make in
-//        make.top.equalTo(filterButton.snp.bottom).offset(4)
-//        make.leading.trailing.equalToSuperview().inset(24)
-//        make.height.equalTo(400)
-//      }
-//
-//      buttonStack.snp.makeConstraints { make in
-//        make.centerX.equalToSuperview()
-//        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(4)
-//      }
-//    } else if deviceManager.isFiveInchePlusDevices() {
-//
-//    } else if deviceManager.isXSeriesDevices() {
-//
-//    } else {
-//      cardStack.snp.makeConstraints { make in
-//        make.centerY.equalToSuperview().offset(-120)
-//        make.leading.trailing.equalToSuperview().inset(24)
-//      }
-//
-//      buttonStack.snp.makeConstraints { make in
-//        make.centerX.equalToSuperview()
-//        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(62)
-//      }
-//    }
+    if deviceManager.isFourIncheDevices() {
+      stackContainer.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(16)
+        make.top.equalToSuperview()
+        make.height.equalTo(400)
+      }
+      
+      buttonStack.snp.makeConstraints { make in
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(4)
+        make.centerX.equalToSuperview()
+      }
+    } else if deviceManager.isFiveIncheDevices() {
+      stackContainer.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(filterButton.snp.bottom).offset(16)
+        make.height.equalTo(400)
+      }
+
+      buttonStack.snp.makeConstraints { make in
+        make.centerX.equalToSuperview()
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(8)
+      }
+    } else if deviceManager.isFiveInchePlusDevices() {
+      stackContainer.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(32)
+        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.height.equalTo(400)
+      }
+      
+      buttonStack.snp.makeConstraints { make in
+        make.centerX.equalToSuperview()
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(32)
+      }
+    } else if deviceManager.isXSeriesDevices_812() {
+      buttonStack.spacing = 8
+      
+      stackContainer.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.height.equalTo(400)
+      }
+
+      buttonStack.snp.makeConstraints { make in
+        make.centerX.equalToSuperview()
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(40)
+      }
+    } else if deviceManager.isXSeriesDevices_844() {
+      buttonStack.spacing = 8
+      
+      stackContainer.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.height.equalTo(400)
+      }
+
+      buttonStack.snp.makeConstraints { make in
+        make.centerX.equalToSuperview()
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(62)
+      }
+    } else if deviceManager.isXSeriesDevices_896() {
+      buttonStack.spacing = 8
+      
+      stackContainer.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.height.equalTo(400)
+      }
+
+      buttonStack.snp.makeConstraints { make in
+        make.centerX.equalToSuperview()
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(80)
+      }
+    } else {
+      buttonStack.spacing = 8
+      
+      stackContainer.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(42)
+        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.height.equalTo(400)
+      }
+
+      buttonStack.snp.makeConstraints { make in
+        make.centerX.equalToSuperview()
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(100)
+      }
+    }
   }
 }
 
@@ -175,11 +215,31 @@ extension MatchingViewController: SwipeCardsDataSource {
   }
   
   func emptyView() -> UIView? {
-    return nil
+    return noMatchingImageView
   }
   
   func card(at index: Int) -> SwipeCardView {
     let card = SwipeCardView(myInfo: swipeDataModels[index])
+    
+    // 상단 원형 이미지 색깔 바꾸기 감지
+    card.directionObserver
+      .bind(onNext: { [weak self] direction in
+        guard let self = self else { return }
+        switch direction {
+        case .left:
+          self.topRoundedBackgroundView.tintColor = .idorm_red
+        case .right:
+          self.topRoundedBackgroundView.tintColor = .idormgree
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    card.SwipeDidEndObserver
+      .bind(onNext: {
+        
+      })
+      .disposed(by: disposeBag)
+    
     return card
   }
 }

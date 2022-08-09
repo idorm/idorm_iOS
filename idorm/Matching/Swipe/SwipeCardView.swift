@@ -10,6 +10,10 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+enum SwipeDirection {
+  case left, right
+}
+
 class SwipeCardView: UIView {
   // MARK: - Properties
   var swipeView: UIView!
@@ -17,15 +21,18 @@ class SwipeCardView: UIView {
   
   var delegate: SwipeCardDelegate?
   
-  var divisor: CGFloat = 0
-  
   let myInfo: MyInfo
+  
+  let directionObserver = PublishSubject<SwipeDirection>()
+  let SwipeDidEndObserver = PublishSubject<Void>()
+  let disposeBag = DisposeBag()
   
   // MARK: - LifeCycle
   init(myInfo: MyInfo) {
     self.myInfo = myInfo
     super.init(frame: .zero)
     configureUI()
+    addPanGestureOnCards()
   }
   
   required init?(coder: NSCoder) {
@@ -63,11 +70,14 @@ class SwipeCardView: UIView {
     let centerOfParentContainer = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
     card.center = CGPoint(x: centerOfParentContainer.x + point.x, y: centerOfParentContainer.y + point.y)
     
-    let distanceFromCenter = ((UIScreen.main.bounds.width / 2) - card.center.x)
-    divisor = ((UIScreen.main.bounds.width / 2) / 0.61)
+    let velocity = sender.velocity(in: self)
+    if abs(velocity.x) > abs(velocity.y) {
+      velocity.x < 0 ? directionObserver.onNext(.left) : directionObserver.onNext(.right)
+    }
     
     switch sender.state {
     case .ended:
+      SwipeDidEndObserver.onNext(print("SwipeDidEnd!"))
       if (card.center.x) > 400 {
         delegate?.swipeDidEnd(on: card)
         UIView.animate(withDuration: 0.2) {

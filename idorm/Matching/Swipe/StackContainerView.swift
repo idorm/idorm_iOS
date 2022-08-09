@@ -17,8 +17,7 @@ class StackContainerView: UIView, SwipeCardDelegate {
   var cardViews: [SwipeCardView] = []
   let cardsToBeVisible: Int = 3
   
-  let horizontalInset: CGFloat = 10
-  let verticalInset: CGFloat = 10
+  let verticalInset: CGFloat = 5
   
   var visibleCards: [SwipeCardView] {
     return subviews as? [SwipeCardView] ?? []
@@ -64,13 +63,9 @@ class StackContainerView: UIView, SwipeCardDelegate {
   
   func addCardFrame(index: Int, cardView: SwipeCardView) {
     var cardViewFrame = bounds
-    let horizontalInset = (CGFloat(index) * self.horizontalInset)
     let verticalInset = (CGFloat(index) * self.verticalInset)
     
-    cardViewFrame.size.width -= 2 * horizontalInset
-    cardViewFrame.origin.x += horizontalInset
     cardViewFrame.origin.y += verticalInset
-
     cardView.frame = cardViewFrame
   }
   
