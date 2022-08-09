@@ -26,7 +26,7 @@ class MatchingViewController: UIViewController {
     return button
   }()
   
-  lazy var topRoundedBackgroundView = UIImageView(image: UIImage(named: "topRoundedBackground(Matching)"))
+  lazy var topRoundedBackgroundView = UIImageView(image: UIImage(named: "topRoundedBackground(Matching)")?.withRenderingMode(.alwaysTemplate))
   let noMatchingImageView = UIImageView(image: UIImage(named: "noMatchingLabel(Matching)"))
   lazy var cancelButton = createButton(imageName: "cancel")
   lazy var messageButton = createButton(imageName: "message")
@@ -68,11 +68,46 @@ class MatchingViewController: UIViewController {
         self.navigationController?.pushViewController(matchingFilterVC, animated: true)
       })
       .disposed(by: disposeBag)
+    
+    cancelButton.rx.tap
+      .asDriver()
+      .throttle(.seconds(1))
+      .map { [weak self] in
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+          self?.topRoundedBackgroundView.tintColor = .idorm_red
+        }, completion: { isCompleted in
+          if isCompleted {
+            UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
+              self?.topRoundedBackgroundView.tintColor = .idorm_blue
+            }
+          }
+        })
+      }
+      .drive(stackContainer.cancelButtonTappedObserver)
+      .disposed(by: disposeBag)
+    
+    heartButton.rx.tap
+      .asDriver()
+      .throttle(.seconds(1))
+      .map { [weak self] in
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+          self?.topRoundedBackgroundView.tintColor = .idorm_green
+        }, completion: { isCompleted in
+          if isCompleted {
+            UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
+              self?.topRoundedBackgroundView.tintColor = .idorm_blue
+            }
+          }
+        })
+      }
+      .drive(stackContainer.heartButtonTappedObserver)
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Configuration
   private func configureUI() {
     view.backgroundColor = .white
+    topRoundedBackgroundView.tintColor = .idorm_blue
     
     let buttonStack = UIStackView(arrangedSubviews: [ cancelButton, backButton, messageButton, heartButton ])
     buttonStack.spacing = 4
@@ -227,16 +262,22 @@ extension MatchingViewController: SwipeCardsDataSource {
         guard let self = self else { return }
         switch direction {
         case .left:
-          self.topRoundedBackgroundView.tintColor = .idorm_red
+          UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
+            self.topRoundedBackgroundView.tintColor = .idorm_red
+          }
         case .right:
-          self.topRoundedBackgroundView.tintColor = .idormgree
+          UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
+            self.topRoundedBackgroundView.tintColor = .idorm_green
+          }
         }
       })
       .disposed(by: disposeBag)
-    
-    card.SwipeDidEndObserver
-      .bind(onNext: {
-        
+
+    card.swipeDidEndObserver
+      .bind(onNext: { [weak self] in
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
+          self?.topRoundedBackgroundView.tintColor = .idorm_blue
+        }
       })
       .disposed(by: disposeBag)
     

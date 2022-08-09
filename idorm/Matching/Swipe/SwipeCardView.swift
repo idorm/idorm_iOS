@@ -18,13 +18,14 @@ class SwipeCardView: UIView {
   // MARK: - Properties
   var swipeView: UIView!
   var infoView: MyInfoView!
+  var index: Int!
   
   var delegate: SwipeCardDelegate?
   
   let myInfo: MyInfo
   
   let directionObserver = PublishSubject<SwipeDirection>()
-  let SwipeDidEndObserver = PublishSubject<Void>()
+  let swipeDidEndObserver = PublishSubject<Void>()
   let disposeBag = DisposeBag()
   
   // MARK: - LifeCycle
@@ -77,7 +78,7 @@ class SwipeCardView: UIView {
     
     switch sender.state {
     case .ended:
-      SwipeDidEndObserver.onNext(print("SwipeDidEnd!"))
+      swipeDidEndObserver.onNext(print("SwipeDidEnd!"))
       if (card.center.x) > 400 {
         delegate?.swipeDidEnd(on: card)
         UIView.animate(withDuration: 0.2) {

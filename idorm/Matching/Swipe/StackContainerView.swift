@@ -29,14 +29,55 @@ class StackContainerView: UIView, SwipeCardDelegate {
     }
   }
   
+  let disposeBag = DisposeBag()
+  let heartButtonTappedObserver = PublishSubject<Void>()
+  let cancelButtonTappedObserver = PublishSubject<Void>()
+  
   // MARK: - LifeCycle
   override init(frame: CGRect) {
     super.init(frame: frame)
     backgroundColor = .clear
+    bind()
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  func bind() {
+    heartButtonTappedObserver
+      .bind(onNext: { [weak self] in
+        guard let self = self else { return }
+        let firstCard = self.visibleCards.last!
+        let moveAnimation = CGAffineTransform(translationX: 300, y: -50)
+        let rotateAnimation = CGAffineTransform(rotationAngle: 0.1)
+        UIView.animate(withDuration: 0.2) {
+          let concat = moveAnimation.concatenating(rotateAnimation)
+          firstCard.transform = concat
+        } completion: { isCompleted in
+          if isCompleted {
+            firstCard.delegate?.swipeDidEnd(on: firstCard)
+          }
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    cancelButtonTappedObserver
+      .bind(onNext: { [weak self] in
+        guard let self = self else { return }
+        let firstCard = self.visibleCards.last!
+        let moveAnimation = CGAffineTransform(translationX: -300, y: -20)
+        let rotateAnimation = CGAffineTransform(rotationAngle: 0.1)
+        UIView.animate(withDuration: 0.2) {
+          let concat = moveAnimation.concatenating(rotateAnimation)
+          firstCard.transform = concat
+        } completion: { isCompleted in
+          if isCompleted {
+            firstCard.delegate?.swipeDidEnd(on: firstCard)
+          }
+        }
+      })
+      .disposed(by: disposeBag)
   }
   
   func reloadData() {
@@ -55,6 +96,7 @@ class StackContainerView: UIView, SwipeCardDelegate {
   // MARK: - Configuration
   private func addCardView(cardView: SwipeCardView, at index: Int) {
     cardView.delegate = self
+    cardView.index = index
     addCardFrame(index: index, cardView: cardView)
     cardViews.append(cardView)
     insertSubview(cardView, at: 0)
