@@ -10,27 +10,20 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-enum SwipeDirection {
-  case left, right
-}
-
 class SwipeCardView: UIView {
   // MARK: - Properties
   var swipeView: UIView!
   var infoView: MyInfoView!
-  var index: Int!
   
   var delegate: SwipeCardDelegate?
   
   let myInfo: MyInfo
-  
-  let directionObserver = PublishSubject<SwipeDirection>()
-  let swipeDidEndObserver = PublishSubject<Void>()
-  let disposeBag = DisposeBag()
+  let viewModel: MatchingViewModel
   
   // MARK: - LifeCycle
-  init(myInfo: MyInfo) {
+  init(myInfo: MyInfo, viewModel: MatchingViewModel) {
     self.myInfo = myInfo
+    self.viewModel = viewModel
     super.init(frame: .zero)
     configureUI()
     addPanGestureOnCards()
@@ -73,22 +66,25 @@ class SwipeCardView: UIView {
     
     let velocity = sender.velocity(in: self)
     if abs(velocity.x) > abs(velocity.y) {
-      velocity.x < 0 ? directionObserver.onNext(.left) : directionObserver.onNext(.right)
+      velocity.x < 0 ? viewModel.input.swipeObserver.onNext(.cancel) : viewModel.input.swipeObserver.onNext(.heart)
     }
     
     switch sender.state {
     case .ended:
-      swipeDidEndObserver.onNext(print("SwipeDidEnd!"))
+      viewModel.input.didEndSwipeObserver.onNext(.none)
       if (card.center.x) > 400 {
         delegate?.swipeDidEnd(on: card)
+        viewModel.input.didEndSwipeObserver.onNext(.heart)
         UIView.animate(withDuration: 0.2) {
           card.center = CGPoint(x: centerOfParentContainer.x + point.x + 200, y: centerOfParentContainer.y + point.y + 75)
           card.alpha = 0
           self.layoutIfNeeded()
         }
         return
-      } else if card.center.x < -65 {
+      } else if card.center.x < -25 {
         delegate?.swipeDidEnd(on: card)
+        viewModel.input.didEndSwipeObserver.onNext(.cancel)
+        viewModel.input.cancelDeliverCardObserver.onNext(card)
         UIView.animate(withDuration: 0.2) {
           card.center = CGPoint(x: centerOfParentContainer.x + point.x - 200, y: centerOfParentContainer.y + point.y + 75)
           card.alpha = 0

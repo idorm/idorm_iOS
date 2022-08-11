@@ -10,11 +10,12 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class StackContainerView: UIView, SwipeCardDelegate {
+class StackContainerView: UIView {
   // MARK: - Properties
   var numberOfCardsToShow: Int = 0
   var remainingCards: Int = 0
   var cardViews: [SwipeCardView] = []
+  var deletedCards: [SwipeCardView] = []
   let cardsToBeVisible: Int = 3
   
   let verticalInset: CGFloat = 5
@@ -29,13 +30,13 @@ class StackContainerView: UIView, SwipeCardDelegate {
     }
   }
   
+  let viewModel: MatchingViewModel
   let disposeBag = DisposeBag()
-  let heartButtonTappedObserver = PublishSubject<Void>()
-  let cancelButtonTappedObserver = PublishSubject<Void>()
   
   // MARK: - LifeCycle
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  init(viewModel: MatchingViewModel) {
+    self.viewModel = viewModel
+    super.init(frame: .zero)
     backgroundColor = .clear
     bind()
   }
@@ -45,37 +46,53 @@ class StackContainerView: UIView, SwipeCardDelegate {
   }
   
   func bind() {
-    heartButtonTappedObserver
-      .bind(onNext: { [weak self] in
-        guard let self = self else { return }
-        let firstCard = self.visibleCards.last!
-        let moveAnimation = CGAffineTransform(translationX: 300, y: -50)
-        let rotateAnimation = CGAffineTransform(rotationAngle: 0.1)
-        UIView.animate(withDuration: 0.2) {
-          let concat = moveAnimation.concatenating(rotateAnimation)
-          firstCard.transform = concat
-        } completion: { isCompleted in
-          if isCompleted {
-            firstCard.delegate?.swipeDidEnd(on: firstCard)
+    // 스와이프 애니메이션 적용
+    viewModel.output.onChangedSwipeAnimation
+      .bind(onNext: { [weak self] type in
+        switch type {
+        case .cancel:
+          guard let self = self else { return }
+          guard let firstCard = self.visibleCards.last else { return }
+          let moveAnimation = CGAffineTransform(translationX: -300, y: -20)
+          let rotateAnimation = CGAffineTransform(rotationAngle: 0.1)
+          UIView.animate(withDuration: 0.3) {
+            let concat = moveAnimation.concatenating(rotateAnimation)
+            firstCard.transform = concat
+          } completion: { isCompleted in
+            if isCompleted {
+              firstCard.delegate?.swipeDidEnd(on: firstCard)
+              self.deletedCards.append(firstCard)
+            }
+          }
+        case .heart:
+          guard let self = self else { return }
+          guard let firstCard = self.visibleCards.last else { return }
+          let moveAnimation = CGAffineTransform(translationX: 300, y: -50)
+          let rotateAnimation = CGAffineTransform(rotationAngle: 0.1)
+          UIView.animate(withDuration: 0.3) {
+            let concat = moveAnimation.concatenating(rotateAnimation)
+            firstCard.transform = concat
+          } completion: { isCompleted in
+            if isCompleted {
+              firstCard.delegate?.swipeDidEnd(on: firstCard)
+            }
           }
         }
       })
       .disposed(by: disposeBag)
     
-    cancelButtonTappedObserver
-      .bind(onNext: { [weak self] in
-        guard let self = self else { return }
-        let firstCard = self.visibleCards.last!
-        let moveAnimation = CGAffineTransform(translationX: -300, y: -20)
-        let rotateAnimation = CGAffineTransform(rotationAngle: 0.1)
-        UIView.animate(withDuration: 0.2) {
-          let concat = moveAnimation.concatenating(rotateAnimation)
-          firstCard.transform = concat
-        } completion: { isCompleted in
-          if isCompleted {
-            firstCard.delegate?.swipeDidEnd(on: firstCard)
-          }
-        }
+    // 취소할 때 삭제된 카드 배열에 원소 추가하기
+    viewModel.output.appendRemovedCard
+      .bind(onNext: { [weak self] card in
+        self?.deletedCards.append(card)
+      })
+      .disposed(by: disposeBag)
+    
+    // 뒤로가기 버튼 누를 때, 카드 되돌리기
+    viewModel.output.revertCard
+      .asDriver(onErrorJustReturn: Void())
+      .drive(onNext: { [weak self] in
+        self?.revertCard()
       })
       .disposed(by: disposeBag)
   }
@@ -85,18 +102,18 @@ class StackContainerView: UIView, SwipeCardDelegate {
     guard let dataSource = dataSource else { return }
     setNeedsLayout()
     layoutIfNeeded()
-    numberOfCardsToShow = dataSource.numberOfCardsToShow()
+    numberOfCardsToShow = dataSource.numberOfCardsToShow() // 원본 카드 갯수
     remainingCards = numberOfCardsToShow
     
     for i in 0..<min(numberOfCardsToShow, cardsToBeVisible) {
-      addCardView(cardView: dataSource.card(at: i), at: i)
+      let card = dataSource.card(at: i)
+      addCardView(cardView: card, at: i)
     }
   }
   
   // MARK: - Configuration
   private func addCardView(cardView: SwipeCardView, at index: Int) {
     cardView.delegate = self
-    cardView.index = index
     addCardFrame(index: index, cardView: cardView)
     cardViews.append(cardView)
     insertSubview(cardView, at: 0)
@@ -116,6 +133,13 @@ class StackContainerView: UIView, SwipeCardDelegate {
       cardView.removeFromSuperview()
     }
     cardViews = []
+  }
+}
+
+extension StackContainerView: SwipeCardDelegate {
+  func revertCard() {
+    guard let lastCard = deletedCards.last else { return }
+    addSubview(lastCard)
   }
   
   func swipeDidEnd(on view: SwipeCardView) {

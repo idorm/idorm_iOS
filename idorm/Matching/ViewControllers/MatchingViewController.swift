@@ -53,15 +53,72 @@ class MatchingViewController: UIViewController {
   
   override func loadView() {
     super.loadView()
-    stackContainer = StackContainerView()
+    stackContainer = StackContainerView(viewModel: viewModel)
     view.addSubview(stackContainer)
     configureUI()
   }
   
   // MARK: - Bind
   private func bind() {
-    // 필터버튼 클릭
+    // --------------------------------
+    //             IN PUT
+    // --------------------------------
+
+    // 필터버튼 클릭 ( 수정 해야 함 )
     filterButton.rx.tap
+      .bind(to: viewModel.input.filterButtonObserver)
+      .disposed(by: disposeBag)
+    
+    // 취소버튼 클릭
+    cancelButton.rx.tap
+      .asDriver()
+      .throttle(.seconds(1))
+      .drive(viewModel.input.cancelButtonObserver)
+      .disposed(by: disposeBag)
+    
+    // 하트버튼 클릭
+    heartButton.rx.tap
+      .asDriver()
+      .throttle(.seconds(1))
+      .drive(viewModel.input.heartButtonObserver)
+      .disposed(by: disposeBag)
+    
+    // 백버튼 클릭
+    backButton.rx.tap
+      .throttle(.seconds(1), scheduler: MainScheduler.instance)
+      .bind(to: viewModel.input.backButtonObserver)
+      .disposed(by: disposeBag)
+    
+    // --------------------------------
+    //             OUT PUT
+    // --------------------------------
+    
+    viewModel.output.drawBackTopBackgroundColor
+      .bind(onNext: { [weak self] in
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
+          self?.topRoundedBackgroundView.tintColor = .idorm_blue
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    viewModel.output.onChangedTopBackgroundColor
+      .bind(onNext: { [weak self] direction in
+        guard let self = self else { return }
+        switch direction {
+        case .cancel:
+          UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+            self.topRoundedBackgroundView.tintColor = .idorm_red
+          })
+        case .heart:
+          UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+            self.topRoundedBackgroundView.tintColor = .idorm_green
+          })
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    // FilterViewController 보여주기
+    viewModel.output.showFliterVC
       .bind(onNext: { [weak self] in
         guard let self = self else { return }
         let matchingFilterVC = MatchingFilterViewController()
@@ -69,38 +126,31 @@ class MatchingViewController: UIViewController {
       })
       .disposed(by: disposeBag)
     
-    cancelButton.rx.tap
-      .asDriver()
-      .throttle(.seconds(1))
-      .map { [weak self] in
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
-          self?.topRoundedBackgroundView.tintColor = .idorm_red
-        }, completion: { isCompleted in
-          if isCompleted {
-            UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
-              self?.topRoundedBackgroundView.tintColor = .idorm_blue
+    viewModel.output.onChangedTopBackgroundColor_WithTouch
+      .bind(onNext: { [weak self] type in
+        switch type {
+        case .heart:
+          UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+            self?.topRoundedBackgroundView.tintColor = .idorm_green
+          }) { isFinished in
+            if isFinished {
+              UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
+                self?.topRoundedBackgroundView.tintColor = .idorm_blue
+              }
             }
           }
-        })
-      }
-      .drive(stackContainer.cancelButtonTappedObserver)
-      .disposed(by: disposeBag)
-    
-    heartButton.rx.tap
-      .asDriver()
-      .throttle(.seconds(1))
-      .map { [weak self] in
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
-          self?.topRoundedBackgroundView.tintColor = .idorm_green
-        }, completion: { isCompleted in
-          if isCompleted {
-            UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
-              self?.topRoundedBackgroundView.tintColor = .idorm_blue
+        case .cancel:
+          UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+            self?.topRoundedBackgroundView.tintColor = .idorm_red
+          }) { isFinished in
+            if isFinished {
+              UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
+                self?.topRoundedBackgroundView.tintColor = .idorm_blue
+              }
             }
           }
-        })
-      }
-      .drive(stackContainer.heartButtonTappedObserver)
+        }
+      })
       .disposed(by: disposeBag)
   }
   
@@ -254,33 +304,7 @@ extension MatchingViewController: SwipeCardsDataSource {
   }
   
   func card(at index: Int) -> SwipeCardView {
-    let card = SwipeCardView(myInfo: swipeDataModels[index])
-    
-    // 상단 원형 이미지 색깔 바꾸기 감지
-    card.directionObserver
-      .bind(onNext: { [weak self] direction in
-        guard let self = self else { return }
-        switch direction {
-        case .left:
-          UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-            self.topRoundedBackgroundView.tintColor = .idorm_red
-          }
-        case .right:
-          UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-            self.topRoundedBackgroundView.tintColor = .idorm_green
-          }
-        }
-      })
-      .disposed(by: disposeBag)
-
-    card.swipeDidEndObserver
-      .bind(onNext: { [weak self] in
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-          self?.topRoundedBackgroundView.tintColor = .idorm_blue
-        }
-      })
-      .disposed(by: disposeBag)
-    
+    let card = SwipeCardView(myInfo: swipeDataModels[index], viewModel: viewModel)
     return card
   }
 }

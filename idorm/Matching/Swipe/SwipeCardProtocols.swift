@@ -9,6 +9,7 @@ import UIKit
 
 protocol SwipeCardDelegate {
   func swipeDidEnd(on view: SwipeCardView)
+  func revertCard()
 }
 
 protocol SwipeCardsDataSource {

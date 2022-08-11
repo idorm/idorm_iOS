@@ -194,7 +194,7 @@ class CalendarPostViewController: UIViewController {
     // 화면 진입
     rx.viewWillAppear
       .subscribe(onNext: { [weak self] _ in
-        
+        self?.navigationController?.navigationBar.isHidden = false
       })
       .disposed(by: disposeBag)
   }

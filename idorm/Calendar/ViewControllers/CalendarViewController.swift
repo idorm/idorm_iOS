@@ -238,4 +238,9 @@ extension CalendarViewController: UICollectionViewDataSource, UICollectionViewDe
       return UICollectionReusableView()
     }
   }
+  
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let calendarPostVC = CalendarPostViewController()
+    navigationController?.pushViewController(calendarPostVC, animated: true)
+  }
 }
