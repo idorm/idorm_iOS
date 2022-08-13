@@ -139,7 +139,24 @@ class StackContainerView: UIView {
 extension StackContainerView: SwipeCardDelegate {
   func revertCard() {
     guard let lastCard = deletedCards.last else { return }
+    let rotateAnimation = CGAffineTransform(rotationAngle: .zero)
+    
+    for (cardIndex, cardView) in visibleCards.reversed().enumerated() {
+      var cardViewFrame = bounds
+      UIView.animate(withDuration: 0.2, delay: 0) {
+        cardView.center = self.center
+        let verticalInset = (CGFloat(cardIndex + 1) * self.verticalInset)
+        cardViewFrame.origin.y += verticalInset
+        cardView.frame = cardViewFrame
+      }
+    }
     addSubview(lastCard)
+    UIView.animate(withDuration: 0.2, delay: 0) {
+      lastCard.transform = rotateAnimation
+      lastCard.frame = self.bounds
+      self.layoutIfNeeded()
+    }
+    deletedCards.removeLast()
   }
   
   func swipeDidEnd(on view: SwipeCardView) {
