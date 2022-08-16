@@ -9,8 +9,21 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+enum HttpMethod: String {
+  case get = "GET"
+  case post = "POST"
+}
+
 struct Resource<T> {
   let url: URL
+  var httpMethod: HttpMethod = .get
+  var body: Data?
+}
+
+extension Resource {
+  init(url: URL) {
+    self.url = url
+  }
 }
 
 extension URLRequest {

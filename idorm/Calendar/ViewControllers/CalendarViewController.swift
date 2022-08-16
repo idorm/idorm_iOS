@@ -77,24 +77,41 @@ class CalendarViewController: UIViewController {
   
   // MARK: - Bind
   private func bind() {
-    viewModel.output.onChangedCalendarViewHeight
-      .bind(onNext: { [weak self] _ in
-        self?.updateContentViewSize()
-      })
+    // ------------------------------
+    // -----------INPUT--------------
+    // ------------------------------
+    calendarView.weekdayHeaderView.leftArrowButton.rx.tap
+      .bind(to: viewModel.input.leftArrowButtonTapped)
       .disposed(by: disposeBag)
     
-    collectionView.rx.didEndDisplayingCell
-      .bind(onNext: { [weak self] _ in
-        self?.updateContentViewSize()
+    calendarView.weekdayHeaderView.rightArrowButton.rx.tap
+      .bind(to: viewModel.input.rightArrowButtonTapped)
+      .disposed(by: disposeBag)
+    
+    rx.viewWillAppear
+      .map { _ in Void() }
+      .bind(to: viewModel.input.viewWillAppear)
+      .disposed(by: disposeBag)
+    
+    // ------------------------------
+    // -----------OUTPUT-------------
+    // ------------------------------
+    // 화면 반응 할 때 ScrollViewHeight 동적 변경
+    viewModel.output.updateScrollViewHeight
+      .asDriver(onErrorJustReturn: Void())
+      .drive(onNext: { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+          self?.updateContentViewSize()
+        }
       })
       .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers
   private func updateContentViewSize() {
-    let height = calendarView.frame.height + collectionView.collectionViewLayout.collectionViewContentSize.height
+    let totalHeight = calendarView.frame.height + collectionView.collectionViewLayout.collectionViewContentSize.height
     contentView.snp.updateConstraints { make in
-      make.height.equalTo(height)
+      make.height.equalTo(totalHeight)
     }
   }
   

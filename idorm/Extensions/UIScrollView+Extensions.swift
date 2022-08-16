@@ -12,6 +12,7 @@ extension UIScrollView {
     let unionCalculatedTotalRect = recursiveUnionInDepthFor(view: self)
     
     self.contentSize = CGSize(width: self.frame.width, height: unionCalculatedTotalRect.height)
+    print(unionCalculatedTotalRect.height)
   }
   
   private func recursiveUnionInDepthFor(view: UIView) -> CGRect {
@@ -23,4 +24,3 @@ extension UIScrollView {
     return totalRect
   }
 }
-

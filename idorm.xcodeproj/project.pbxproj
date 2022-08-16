@@ -86,6 +86,7 @@
 		E5C88908288972E000CBD04E /* CommunityAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C88907288972E000CBD04E /* CommunityAlertViewController.swift */; };
 		E5C89E4928A9ED9B0035D9C6 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C89E4828A9ED9B0035D9C6 /* URL+Extensions.swift */; };
 		E5C89E4B28A9EDA70035D9C6 /* URLRequest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C89E4A28A9EDA70035D9C6 /* URLRequest+Extensions.swift */; };
+		E5C89E4E28AA3FE70035D9C6 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C89E4D28AA3FE70035D9C6 /* WebService.swift */; };
 		E5D03751288CFDE800080482 /* CHIOTPField in Frameworks */ = {isa = PBXBuildFile; productRef = E5D03750288CFDE800080482 /* CHIOTPField */; };
 		E5D31BEC289A792400510315 /* UnderlinedBackGroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D31BEB289A792400510315 /* UnderlinedBackGroundView.swift */; };
 		E5D31BEF289A8A6700510315 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = E5D31BEE289A8A6700510315 /* RxKeyboard */; };
@@ -189,6 +190,7 @@
 		E5C88907288972E000CBD04E /* CommunityAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityAlertViewController.swift; sourceTree = "<group>"; };
 		E5C89E4828A9ED9B0035D9C6 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		E5C89E4A28A9EDA70035D9C6 /* URLRequest+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+Extensions.swift"; sourceTree = "<group>"; };
+		E5C89E4D28AA3FE70035D9C6 /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		E5D31BEB289A792400510315 /* UnderlinedBackGroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlinedBackGroundView.swift; sourceTree = "<group>"; };
 		E5D31BF0289AAE3D00510315 /* UIScrollView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extensions.swift"; sourceTree = "<group>"; };
 		E5D31BF2289AB83800510315 /* SetCalendarTabmanController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCalendarTabmanController.swift; sourceTree = "<group>"; };
@@ -286,6 +288,7 @@
 				E50300F628773A5D00611C62 /* AppDelegate.swift */,
 				E50300F828773A5D00611C62 /* SceneDelegate.swift */,
 				E58A6296289D6BEF0074F646 /* DeviceManager.swift */,
+				E5C89E4C28AA3FDA0035D9C6 /* Services */,
 				E5D4900C288BFB7E00311493 /* Models */,
 				E56DF4CC2894063100E85B10 /* General */,
 				E56DF4BD2894041D00E85B10 /* Login */,
@@ -684,6 +687,14 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		E5C89E4C28AA3FDA0035D9C6 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				E5C89E4D28AA3FE70035D9C6 /* WebService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		E5D4900C288BFB7E00311493 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -970,6 +981,7 @@
 				E5F5EC78288402840026DE21 /* MyPageViewController.swift in Sources */,
 				E5BF4C5F28840EBF00B4F0B8 /* PostingViewController.swift in Sources */,
 				E5D4900E288BFB9100311493 /* MyInfo.swift in Sources */,
+				E5C89E4E28AA3FE70035D9C6 /* WebService.swift in Sources */,
 				E563421828780BDE00E93D17 /* OnboardingViewModel.swift in Sources */,
 				E584B4BC289FCA6C007AD83A /* MatchingViewModel.swift in Sources */,
 				E5AB97C42895671800C0CEDF /* MatchingFilterViewController.swift in Sources */,

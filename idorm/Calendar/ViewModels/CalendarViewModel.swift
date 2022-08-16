@@ -12,11 +12,11 @@ class CalendarViewModel {
   struct Input {
     let leftArrowButtonTapped = PublishSubject<Void>()
     let rightArrowButtonTapped = PublishSubject<Void>()
+    let viewWillAppear = PublishSubject<Void>()
   }
   
   struct Output {
-    let onChangedMonth = PublishSubject<Bool>()
-    let onChangedCalendarViewHeight = PublishSubject<CGFloat>()
+    let updateScrollViewHeight = PublishSubject<Void>()
   }
   
   let input = Input()
@@ -24,15 +24,14 @@ class CalendarViewModel {
   let disposeBag = DisposeBag()
   
   func bind() {
-    input.leftArrowButtonTapped
-      .map { false }
-      .bind(to: output.onChangedMonth)
-      .disposed(by: disposeBag)
-    
-    input.rightArrowButtonTapped
-      .map { true }
-      .bind(to: output.onChangedMonth)
-      .disposed(by: disposeBag)
+    /// 화면 반응 할 때 ScrollViewHeight 동적 변경
+    Observable.merge(
+      input.leftArrowButtonTapped,
+      input.rightArrowButtonTapped,
+      input.viewWillAppear
+    )
+    .bind(to: output.updateScrollViewHeight)
+    .disposed(by: disposeBag)
   }
   
   init() {
