@@ -8,107 +8,137 @@
 import UIKit
 import SnapKit
 import WebKit
+import RxSwift
+import RxCocoa
 
 class AuthViewController: UIViewController {
-    // MARK: - Properties
-    var dismissCompletion: (() -> Void)?
+  // MARK: - Properties
+  var dismissCompletion: (() -> Void)?
+  
+  lazy var mailImageView: UIImageView = {
+    let iv = UIImageView()
+    iv.image = UIImage(named: "mail")
     
-    lazy var mailImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.image = UIImage(named: "mail")
-        
-        return iv
-    }()
+    return iv
+  }()
+  
+  lazy var authInfoImageView: UIImageView = {
+    let iv = UIImageView()
+    iv.image = UIImage(named: "AuthInfoLabel")
     
-    lazy var authInfoImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.image = UIImage(named: "AuthInfoLabel")
-        
-        return iv
-    }()
+    return iv
+  }()
+  
+  lazy var backButton: UIButton = {
+    let button = UIButton(type: .custom)
+    button.setImage(UIImage(named: "Xmark_Black"), for: .normal)
+    button.tintColor = .black
     
-    lazy var backButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "Xmark_Black"), for: .normal)
-        button.tintColor = .black
-        button.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
-        
-        return button
-    }()
+    return button
+  }()
+  
+  lazy var portalButton: UIButton = {
+    let button = LoginUtilities.returnBottonConfirmButton(string: "메일함 바로가기")
+    button.setTitleColor(UIColor.darkGray, for: .normal)
+    button.backgroundColor = .white
+    button.layer.borderColor = UIColor.init(rgb: 0xE3E1EC).cgColor
+    button.layer.borderWidth = 1
     
-    lazy var portalButton: UIButton = {
-        let button = LoginUtilities.returnBottonConfirmButton(string: "메일함 바로가기")
-        button.setTitleColor(UIColor.darkGray, for: .normal)
-        button.backgroundColor = .white
-        button.layer.borderColor = UIColor.init(rgb: 0xE3E1EC).cgColor
-        button.layer.borderWidth = 1
-        button.addTarget(self, action: #selector(didTapPortalButton), for: .touchUpInside)
-        
-        return button
-    }()
+    return button
+  }()
+  
+  lazy var confirmButton: UIButton = {
+    let button = LoginUtilities.returnBottonConfirmButton(string: "인증번호 입력")
     
-    lazy var confirmButton: UIButton = {
-        let button = LoginUtilities.returnBottonConfirmButton(string: "인증번호 입력")
-        button.addTarget(self, action: #selector(didTapConfirmButton), for: .touchUpInside)
-        
-        return button
-    }()
+    return button
+  }()
+  
+  let viewModel = AuthViewModel()
+  let disposeBag = DisposeBag()
+  
+  // MARK: - LifeCycle
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    configureUI()
+    bind()
+  }
+  
+  // MARK: - Bind
+  func bind() {
+    // --------------------------------
+    // --------------INPUT-------------
+    // --------------------------------
+    backButton.rx.tap
+      .bind(to: viewModel.input.backButtonTapped)
+      .disposed(by: disposeBag)
     
-    // MARK: - LifeCycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        configureUI()
-    }
+    portalButton.rx.tap
+      .bind(to: viewModel.input.portalButtonTapped)
+      .disposed(by: disposeBag)
     
-    // MARK: - Selectors
-    @objc private func didTapBackButton() {
-        dismiss(animated: true)
-    }
+    confirmButton.rx.tap
+      .bind(to: viewModel.input.confirmButtonTapped)
+      .disposed(by: disposeBag)
     
-    @objc private func didTapPortalButton() {
+    // --------------------------------
+    // -------------OUTPUT-------------
+    // --------------------------------
+    // 화면 종료
+    viewModel.output.dismissVC
+      .asDriver(onErrorJustReturn: Void())
+      .drive(onNext: { [weak self] in
+        self?.dismiss(animated: true)
+      })
+      .disposed(by: disposeBag)
+    
+    // 웹메일 웹 보여주기
+    viewModel.output.showPortalWeb
+      .asDriver(onErrorJustReturn: Void())
+      .drive(onNext: { [weak self] in
         guard let url = URL(string: "https://webmail.inu.ac.kr/member/login?host_domain=inu.ac.kr&t=1658031681") else { return }
         let webMailVC = WebMailViewController(urlRequest: URLRequest(url: url))
-        present(webMailVC, animated: true)
+        webMailVC.modalPresentationStyle = .fullScreen
+        self?.navigationController?.pushViewController(webMailVC, animated: true)
+      })
+      .disposed(by: disposeBag)
+    
+    // 인증번호 입력 페이지로 넘어가기
+    viewModel.output.showAuthNumberVC
+      .asDriver(onErrorJustReturn: Void())
+      .drive(onNext: { [weak self] in
+        let authNumberVC = AuthNumberViewController()
+        self?.navigationController?.pushViewController(authNumberVC, animated: true)
+      })
+      .disposed(by: disposeBag)
+  }
+  
+  // MARK: - Helpers
+  private func configureUI() {
+    view.backgroundColor = .white
+    navigationController?.navigationBar.tintColor = .black
+    navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
+    
+    [ mailImageView, authInfoImageView, portalButton, confirmButton ]
+      .forEach { view.addSubview($0) }
+    
+    mailImageView.snp.makeConstraints { make in
+      make.top.equalTo(view.safeAreaLayoutGuide).inset(114)
+      make.centerX.equalToSuperview()
     }
     
-    @objc private func didTapConfirmButton() {
-        let authNumberVC = AuthNumberViewController(type: .singUp)
-        navigationController?.pushViewController(authNumberVC, animated: true)
-        
-        authNumberVC.popCompletion = { [weak self] in
-            guard let self = self else { return }
-            self.dismissCompletion?()
-            self.dismiss(animated: true)
-        }
+    authInfoImageView.snp.makeConstraints { make in
+      make.top.equalTo(mailImageView.snp.bottom).offset(20)
+      make.centerX.equalToSuperview()
     }
     
-    // MARK: - Helpers
-    private func configureUI() {
-        view.backgroundColor = .white
-        navigationController?.navigationBar.tintColor = .black
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
-        
-        [ mailImageView, authInfoImageView, portalButton, confirmButton ]
-            .forEach { view.addSubview($0) }
-        
-        mailImageView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide).inset(114)
-            make.centerX.equalToSuperview()
-        }
-        
-        authInfoImageView.snp.makeConstraints { make in
-            make.top.equalTo(mailImageView.snp.bottom).offset(20)
-            make.centerX.equalToSuperview()
-        }
-        
-        confirmButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(24)
-            make.bottom.equalToSuperview().inset(85)
-        }
-        
-        portalButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(24)
-            make.bottom.equalTo(confirmButton.snp.top).offset(-8)
-        }
+    confirmButton.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview().inset(24)
+      make.bottom.equalToSuperview().inset(85)
     }
+    
+    portalButton.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview().inset(24)
+      make.bottom.equalTo(confirmButton.snp.top).offset(-8)
+    }
+  }
 }

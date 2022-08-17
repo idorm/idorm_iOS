@@ -10,7 +10,6 @@ import SnapKit
 
 class AuthNumberViewController: UIViewController {
     // MARK: - Properties
-    let type: LoginType
     var secondsLeft: Int = 300
     var timer = Timer()
     var popCompletion: (() -> Void)?
@@ -57,15 +56,6 @@ class AuthNumberViewController: UIViewController {
     }()
     
     // MARK: - LifeCycle
-    init(type: LoginType) {
-        self.type = type
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
