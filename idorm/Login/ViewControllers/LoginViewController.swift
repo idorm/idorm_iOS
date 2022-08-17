@@ -103,14 +103,10 @@ class LoginViewController: UIViewController {
   let disposeBag = DisposeBag()
   
   // MARK: - LifeCycle
-  init() {
-    super.init(nibName: nil, bundle: nil)
+  override func viewDidLoad() {
+    super.viewDidLoad()
     configureUI()
     bind()
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
   
   // MARK: - Bind
