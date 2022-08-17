@@ -7,6 +7,8 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 class LoginViewController: UIViewController {
   // MARK: - Properties
@@ -64,9 +66,8 @@ class LoginViewController: UIViewController {
     button.setTitle("로그인", for: .normal)
     button.setTitleColor(UIColor.white, for: .normal)
     button.titleLabel?.font = .init(name: Font.medium.rawValue, size: 14)
-    button.backgroundColor = .init(rgb: 0x582FFF)
+    button.backgroundColor = .idorm_blue
     button.layer.cornerRadius = 10.0
-    button.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
     
     return button
   }()
@@ -76,7 +77,6 @@ class LoginViewController: UIViewController {
     button.setTitle("비밀번호를 잊으셨나요?", for: .normal)
     button.titleLabel?.font = .init(name: Font.medium.rawValue, size: FontSize.largeDescription.rawValue)
     button.setTitleColor(UIColor.gray, for: .normal)
-    button.addTarget(self, action: #selector(didTapForgotPwButton), for: .touchUpInside)
     
     return button
   }()
@@ -93,51 +93,83 @@ class LoginViewController: UIViewController {
   lazy var signUpButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setTitle("회원가입", for: .normal)
-    button.setTitleColor(UIColor.init(rgb: 0x582FFF), for: .normal)
+    button.setTitleColor(UIColor.idorm_blue, for: .normal)
     button.titleLabel?.font = .init(name: Font.medium.rawValue, size: FontSize.largeDescription.rawValue)
-    button.addTarget(self, action: #selector(didTapSignUpButton), for: .touchUpInside)
     
     return button
   }()
   
+  let viewModel = LoginViewModel()
+  let disposeBag = DisposeBag()
+  
   // MARK: - LifeCycle
-  override func viewDidLoad() {
-    super.viewDidLoad()
+  init() {
+    super.init(nibName: nil, bundle: nil)
     configureUI()
+    bind()
   }
   
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    navigationController?.isNavigationBarHidden = true
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
   
-  // MARK: - Selectors
-  @objc private func didTapLoginButton() {
-    guard let email = idTextField.text else { return }
-    guard let password = pwTextField.text else { return }
-    if LoginUtilities.isValidEmail(id: email) == false {
-      let popupVC = PopupViewController(contents: "이메일 형식을 확인해 주세요.")
-      popupVC.modalPresentationStyle = .overFullScreen
-      present(popupVC, animated: false)
-    } else if LoginUtilities.isValidPassword(pwd: password) == false {
-      let popupVC = PopupViewController(contents: "비밀번호/아이디 확인 후 다시 시도해주세요.")
-      popupVC.modalPresentationStyle = .overFullScreen
-      present(popupVC, animated: false)
-    } else {
-      let popupVC = PopupViewController(contents: "가입되지 않은 이메일 입니다.")
-      popupVC.modalPresentationStyle = .overFullScreen
-      present(popupVC, animated: false)
-    }
-  }
-  
-  @objc private func didTapForgotPwButton() {
-    let putEmailVC = PutEmailViewController(type: .findPW)
-    navigationController?.pushViewController(putEmailVC, animated: true)
-  }
-  
-  @objc private func didTapSignUpButton() {
-    let putEmailVC = PutEmailViewController(type: .singUp)
-    navigationController?.pushViewController(putEmailVC, animated: true)
+  // MARK: - Bind
+  func bind() {
+    // ---------------------------------
+    // ---------------INPUT-------------
+    // ---------------------------------
+    loginButton.rx.tap
+      .throttle(.seconds(1), scheduler: MainScheduler.instance)
+      .bind(to: viewModel.input.loginButtonTapped)
+      .disposed(by: disposeBag)
+    
+    forgotPwButton.rx.tap
+      .throttle(.seconds(1), scheduler: MainScheduler.instance)
+      .bind(to: viewModel.input.forgotButtonTapped)
+      .disposed(by: disposeBag)
+    
+    signUpButton.rx.tap
+      .throttle(.seconds(1), scheduler: MainScheduler.instance)
+      .bind(to: viewModel.input.signUpButtonTapped)
+      .disposed(by: disposeBag)
+    
+    idTextField.rx.text
+      .orEmpty
+      .bind(to: viewModel.input.emailText)
+      .disposed(by: disposeBag)
+    
+    pwTextField.rx.text
+      .orEmpty
+      .bind(to: viewModel.input.passwordText)
+      .disposed(by: disposeBag)
+    
+    rx.viewWillAppear
+      .map { _ in Void() }
+      .bind(onNext: { [weak self] in
+        self?.navigationController?.isNavigationBarHidden = true
+      })
+      .disposed(by: disposeBag)
+    
+    // ---------------------------------
+    // --------------OUTPUT-------------
+    // ---------------------------------
+    viewModel.output.showPutEmailVC
+      .bind(onNext: { [weak self] type in
+        let putEmailVC = PutEmailViewController(type: type)
+        self?.navigationController?.pushViewController(putEmailVC, animated: true)
+      })
+      .disposed(by: disposeBag)
+    
+    viewModel.output.showErrorPopupVC
+      .asDriver(onErrorJustReturn: "")
+      .drive(onNext: { [weak self] mention in
+        let popupVC = PopupViewController(contents: mention)
+        popupVC.modalPresentationStyle = .overFullScreen
+        self?.present(popupVC, animated: false)
+      })
+      .disposed(by: disposeBag)
+    
+    
   }
   
   // MARK: - Helpers
@@ -228,4 +260,3 @@ class LoginViewController: UIViewController {
     view.endEditing(true)
   }
 }
-
