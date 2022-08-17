@@ -39,17 +39,13 @@ class EmailService {
     let request = Request(code: code)
     guard let body = try? JSONEncoder().encode(request) else { fatalError("Error Encoding data!") }
     
-    var components = URLComponents(string: "https://idorm.inuappcenter.kr:443/verifyCode/ee%40inu.ac.kr")
-    let emailParam = URLQueryItem(name: "email", value: email)
-    components?.queryItems = [emailParam]
-    
+    let components = URLComponents(string: "https://idorm.inuappcenter.kr:443/verifyCode/\(email)")
     guard let url = components?.url else { fatalError("URL is incorrect!") }
     
     var urlRequest = URLRequest(url: url)
     urlRequest.httpMethod = "POST"
     urlRequest.httpBody = body
     urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-    
     return URLSession.shared.rx.response(request: urlRequest)
   }
 }

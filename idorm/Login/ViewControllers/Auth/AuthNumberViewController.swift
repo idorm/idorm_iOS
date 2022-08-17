@@ -107,6 +107,7 @@ class AuthNumberViewController: UIViewController {
     viewModel.output.dismissVC
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
+        self?.popCompletion?()
         self?.dismiss(animated: true)
       })
       .disposed(by: disposeBag)
@@ -119,8 +120,6 @@ class AuthNumberViewController: UIViewController {
         self?.present(popupVC, animated: false)
       })
       .disposed(by: disposeBag)
-    
-    
   }
   
   @objc private func sceneWillEnterForeground(_ noti: Notification) {

@@ -94,7 +94,7 @@ class PutEmailViewController: UIViewController {
       .orEmpty
       .bind(to: viewModel.input.emailText)
       .disposed(by: disposeBag)
-
+    
     // --------------------------------
     // -------------OUTPUT-------------
     // --------------------------------
@@ -110,9 +110,18 @@ class PutEmailViewController: UIViewController {
     viewModel.output.showAuthVC
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
-        let authVC = UINavigationController(rootViewController: AuthViewController())
-        authVC.modalPresentationStyle = .fullScreen
-        self?.present(authVC, animated: true)
+        guard let self = self else { return }
+        let authVC = AuthViewController()
+        let navVC = UINavigationController(rootViewController: authVC)
+        navVC.modalPresentationStyle = .fullScreen
+        self.present(navVC, animated: true)
+        
+        authVC.dismissCompletion = {
+          let confirmPasswordVC = ConfirmPasswordViewController(type: self.type)
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.navigationController?.pushViewController(confirmPasswordVC, animated: true)
+          }
+        }
       })
       .disposed(by: disposeBag)
   }

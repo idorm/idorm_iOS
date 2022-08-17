@@ -108,6 +108,10 @@ class AuthViewController: UIViewController {
       .drive(onNext: { [weak self] in
         let authNumberVC = AuthNumberViewController()
         self?.navigationController?.pushViewController(authNumberVC, animated: true)
+        
+        authNumberVC.popCompletion = {
+          self?.dismissCompletion?()
+        }
       })
       .disposed(by: disposeBag)
   }
