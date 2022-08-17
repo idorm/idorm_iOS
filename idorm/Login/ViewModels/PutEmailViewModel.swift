@@ -37,6 +37,7 @@ class PutEmailViewModel {
         if self.isValidEmail(id: email) == false {
           self.output.showErrorPopupVC.onNext("이메일 형식을 확인해 주세요.")
         } else {
+          LoginStates.currentEmail = email
           self.output.showAuthVC.onNext(Void())
         }
       })
@@ -44,9 +45,8 @@ class PutEmailViewModel {
   }
   
   func isValidEmail(id: String) -> Bool {
-    let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+    let emailRegEx = "[A-Z0-9a-z._%+-]+@inu.ac.kr"
     let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
     return emailTest.evaluate(with: id)
   }
 }
-

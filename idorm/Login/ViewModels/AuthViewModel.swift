@@ -20,6 +20,7 @@ class AuthViewModel {
     let dismissVC = PublishSubject<Void>()
     let showPortalWeb = PublishSubject<Void>()
     let showAuthNumberVC = PublishSubject<Void>()
+    
   }
   
   let input = Input()

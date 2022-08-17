@@ -68,6 +68,7 @@ class PutEmailViewController: UIViewController {
   init(type: LoginType) {
     self.type = type
     super.init(nibName: nil, bundle: nil)
+    LoginStates.currentLoginType = type
     bind()
   }
   

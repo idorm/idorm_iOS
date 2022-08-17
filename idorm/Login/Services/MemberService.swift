@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class LoginService {
+class MemberService {
   static func postLogin(loginRequestModel: LoginRequestModel) -> Observable<(response: HTTPURLResponse, data: Data)> {
     guard let url = URL(string: "https://idorm.inuappcenter.kr:443/login") else {
       fatalError("URL is incorrect!")
