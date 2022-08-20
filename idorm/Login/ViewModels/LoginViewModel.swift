@@ -62,7 +62,7 @@ class LoginViewModel {
   
   func verifyUser() {
     let loginRequestModel = LoginRequestModel(email: self.emailText, password: self.passwordText)
-    MemberService.postLogin(loginRequestModel: loginRequestModel)
+    LoginService.postLogin(loginRequestModel: loginRequestModel)
       .subscribe(onNext: { [weak self] result in
         let statusCode = result.response.statusCode
         if (200..<300).contains(statusCode) {

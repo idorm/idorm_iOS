@@ -43,7 +43,7 @@ class PutEmailViewModel {
       })
       .disposed(by: disposeBag)
   }
-  
+
   func isValidEmail(id: String) -> Bool {
     let emailRegEx = "[A-Z0-9a-z._%+-]+@inu.ac.kr"
     let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)

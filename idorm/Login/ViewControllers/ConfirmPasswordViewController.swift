@@ -210,6 +210,7 @@ class ConfirmPasswordViewController: UIViewController {
       })
       .disposed(by: disposeBag)
     
+    viewModel.output.showCompleteVC
   }
   
   // MARK: - Helpers

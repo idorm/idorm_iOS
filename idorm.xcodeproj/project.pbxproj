@@ -22,7 +22,7 @@
 		E510D3C928AC88A000A28B90 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E510D3C828AC88A000A28B90 /* Alamofire */; };
 		E510D3CB28AC9F6E00A28B90 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CA28AC9F6E00A28B90 /* AuthViewModel.swift */; };
 		E510D3CD28ACB87D00A28B90 /* PutEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CC28ACB87D00A28B90 /* PutEmailViewModel.swift */; };
-		E510D3CF28ACC5F300A28B90 /* EmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CE28ACC5F300A28B90 /* EmailService.swift */; };
+		E510D3CF28ACC5F300A28B90 /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CE28ACC5F300A28B90 /* LoginService.swift */; };
 		E510D3D128ACC84300A28B90 /* LoginStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3D028ACC84300A28B90 /* LoginStates.swift */; };
 		E510D3D328ACCA1C00A28B90 /* AuthNumberViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3D228ACCA1C00A28B90 /* AuthNumberViewModel.swift */; };
 		E525C1CD28944E2800F934B3 /* CalendarPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */; };
@@ -89,7 +89,6 @@
 		E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordViewController.swift */; };
 		E5B15F6D287FCEFE004D4164 /* RSKPlaceholderTextView in Frameworks */ = {isa = PBXBuildFile; productRef = E5B15F6C287FCEFE004D4164 /* RSKPlaceholderTextView */; };
 		E5B15F6F287FE355004D4164 /* OnboardingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B15F6E287FE355004D4164 /* OnboardingDetailViewController.swift */; };
-		E5B7E84D28ABCA150099B631 /* MemberService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7E84C28ABCA150099B631 /* MemberService.swift */; };
 		E5B7E84F28ABCA670099B631 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7E84E28ABCA670099B631 /* LoginViewModel.swift */; };
 		E5B7E85228ABD9D40099B631 /* LoginRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7E85128ABD9D40099B631 /* LoginRequestModel.swift */; };
 		E5BF4C5F28840EBF00B4F0B8 /* PostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF4C5E28840EBF00B4F0B8 /* PostingViewController.swift */; };
@@ -148,7 +147,7 @@
 		E510D3C528AC6A6600A28B90 /* LoginResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponseModel.swift; sourceTree = "<group>"; };
 		E510D3CA28AC9F6E00A28B90 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		E510D3CC28ACB87D00A28B90 /* PutEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailViewModel.swift; sourceTree = "<group>"; };
-		E510D3CE28ACC5F300A28B90 /* EmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailService.swift; sourceTree = "<group>"; };
+		E510D3CE28ACC5F300A28B90 /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		E510D3D028ACC84300A28B90 /* LoginStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginStates.swift; sourceTree = "<group>"; };
 		E510D3D228ACCA1C00A28B90 /* AuthNumberViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberViewModel.swift; sourceTree = "<group>"; };
 		E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPostViewController.swift; sourceTree = "<group>"; };
@@ -204,7 +203,6 @@
 		E5AD73A0287AFC5300BA2C5E /* AuthNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberViewController.swift; sourceTree = "<group>"; };
 		E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordViewController.swift; sourceTree = "<group>"; };
 		E5B15F6E287FE355004D4164 /* OnboardingDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDetailViewController.swift; sourceTree = "<group>"; };
-		E5B7E84C28ABCA150099B631 /* MemberService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberService.swift; sourceTree = "<group>"; };
 		E5B7E84E28ABCA670099B631 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		E5B7E85128ABD9D40099B631 /* LoginRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRequestModel.swift; sourceTree = "<group>"; };
 		E5BF4C5E28840EBF00B4F0B8 /* PostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingViewController.swift; sourceTree = "<group>"; };
@@ -728,8 +726,7 @@
 		E5B7E84B28ABC9B00099B631 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				E5B7E84C28ABCA150099B631 /* MemberService.swift */,
-				E510D3CE28ACC5F300A28B90 /* EmailService.swift */,
+				E510D3CE28ACC5F300A28B90 /* LoginService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1049,7 +1046,6 @@
 				E5C89E4E28AA3FE70035D9C6 /* WebService.swift in Sources */,
 				E563421828780BDE00E93D17 /* OnboardingViewModel.swift in Sources */,
 				E584B4BC289FCA6C007AD83A /* MatchingViewModel.swift in Sources */,
-				E5B7E84D28ABCA150099B631 /* MemberService.swift in Sources */,
 				E510D3C628AC6A6600A28B90 /* LoginResponseModel.swift in Sources */,
 				E5AB97C42895671800C0CEDF /* MatchingFilterViewController.swift in Sources */,
 				E5D49008288B7F0400311493 /* CommunityPopupViewController.swift in Sources */,
@@ -1064,7 +1060,7 @@
 				E5290EFD2887BBA40004B8E6 /* CommunityPopularCollectionVIewCell.swift in Sources */,
 				E5370AFE28A1001C00A68D92 /* MyPageUtilities.swift in Sources */,
 				E55DE2F62896DB06004F1401 /* CustomCalendarCell.swift in Sources */,
-				E510D3CF28ACC5F300A28B90 /* EmailService.swift in Sources */,
+				E510D3CF28ACC5F300A28B90 /* LoginService.swift in Sources */,
 				E5D49016288C449600311493 /* OnboardingVIewController.swift in Sources */,
 				E5290F1228886D7A0004B8E6 /* CommunityUtilities.swift in Sources */,
 				E5B15F6F287FE355004D4164 /* OnboardingDetailViewController.swift in Sources */,

@@ -54,7 +54,7 @@ class AuthNumberViewModel {
   
   func authenticateEmail() {
     guard let currentEmail = LoginStates.currentEmail else { return }
-    EmailService.authenticateEmail(email: currentEmail)
+    LoginService.authenticateEmail(email: currentEmail, type: LoginStates.currentLoginType)
       .bind(onNext: { response in
         print(response.response.statusCode)
       })
@@ -64,7 +64,7 @@ class AuthNumberViewModel {
   func verifyCode() {
     guard let currentEmail = LoginStates.currentEmail else { return }
     let code = input.codeString.value
-    EmailService.verifyEmailCode(email: currentEmail, code: code)
+    LoginService.verifyEmailCode(email: currentEmail, code: code, type: LoginStates.currentLoginType)
       .bind(onNext: { [weak self] result in
         let statusCode = result.response.statusCode
         if (200..<300).contains(statusCode) {
