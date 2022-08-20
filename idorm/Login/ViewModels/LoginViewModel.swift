@@ -21,7 +21,6 @@ class LoginViewModel {
   struct Output {
     let showPutEmailVC = PublishSubject<LoginType>()
     let showErrorPopupVC = PublishSubject<String>()
-    let verifyUser = PublishSubject<Resource<LoginRequestModel>>()
   }
   
   init() {
@@ -71,7 +70,6 @@ class LoginViewModel {
           struct Response: Codable {
             let message: String
           }
-          
           guard let response = try? JSONDecoder().decode(Response.self, from: result.data) else { return }
           self?.output.showErrorPopupVC.onNext(response.message)
         }
