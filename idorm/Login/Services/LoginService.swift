@@ -11,13 +11,15 @@ import RxCocoa
 
 class LoginService {
   // MARK: - 로그인 요청
-  static func postLogin(loginRequestModel: LoginRequestModel) -> Observable<(response: HTTPURLResponse, data: Data)> {
-    guard let url = URL(string: "https://idorm.inuappcenter.kr:443/login") else {
-      fatalError("URL is incorrect!")
+  static func postLogin(email: String, password: String) -> Observable<(response: HTTPURLResponse, data: Data)> {
+    struct Request: Codable {
+      let email: String
+      let password: String
     }
-    guard let data = try? JSONEncoder().encode(loginRequestModel) else {
-      fatalError("Error encoding data!")
-    }
+    
+    let requestModel = Request(email: email, password: password)
+    let url = URL(string: "https://idorm.inuappcenter.kr:443/login")!
+    let data = try! JSONEncoder().encode(requestModel)
     
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
@@ -39,8 +41,7 @@ class LoginService {
       urlString = "https://idorm.inuappcenter.kr:443/email/password"
     }
     
-    guard let url = URL(string: urlString) else { fatalError("URL is incorrect!")}
-    
+    let url = URL(string: urlString)!
     let request = Request(email: email)
     guard let data = try? JSONEncoder().encode(request) else {
       fatalError("Error encoding data!")

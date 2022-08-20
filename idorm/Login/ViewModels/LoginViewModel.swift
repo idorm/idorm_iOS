@@ -61,15 +61,18 @@ class LoginViewModel {
   }
   
   func verifyUser() {
-    let loginRequestModel = LoginRequestModel(email: self.emailText, password: self.passwordText)
-    LoginService.postLogin(loginRequestModel: loginRequestModel)
+    LoginService.postLogin(email: self.emailText, password: self.passwordText)
       .subscribe(onNext: { [weak self] result in
         let statusCode = result.response.statusCode
         if (200..<300).contains(statusCode) {
           guard let accessToken = String(data: result.data, encoding: .utf8) else { return }
           print(accessToken)
         } else {
-          guard let response = try? JSONDecoder().decode(LoginResponseModel.self, from: result.data) else { return }
+          struct Response: Codable {
+            let message: String
+          }
+          
+          guard let response = try? JSONDecoder().decode(Response.self, from: result.data) else { return }
           self?.output.showErrorPopupVC.onNext(response.message)
         }
       })
