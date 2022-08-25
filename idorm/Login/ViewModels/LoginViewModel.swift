@@ -63,9 +63,10 @@ class LoginViewModel {
     LoginService.postLogin(email: self.emailText, password: self.passwordText)
       .subscribe(onNext: { [weak self] result in
         let statusCode = result.response.statusCode
-        if (200..<300).contains(statusCode) {
+        if statusCode == 200 {
           guard let accessToken = String(data: result.data, encoding: .utf8) else { return }
-          print(accessToken)
+          let userDefaults = UserDefaults.standard
+          userDefaults.set(accessToken, forKey: "Token")
         } else {
           struct Response: Codable {
             let message: String

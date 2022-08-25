@@ -11,7 +11,7 @@ import RxCocoa
 
 class LoginService {
   // MARK: - 로그인 요청
-  static func postLogin(email: String, password: String) -> Observable<(response: HTTPURLResponse, data: Data)> {
+  static func postLogin(email: String, password: String) -> ResponseResult {
     struct Request: Codable {
       let email: String
       let password: String
@@ -25,8 +25,9 @@ class LoginService {
     request.httpMethod = "POST"
     request.httpBody = data
     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    
     return URLSession.shared.rx.response(request: request)
-  }
+    }
   
   // MARK: - 이메일 인증 요청
   static func authenticateEmail(email: String, type: LoginType) -> Observable<(response: HTTPURLResponse, data: Data)> {

@@ -38,6 +38,7 @@
 		E53086E6287928B400A5D0A0 /* HomePopularCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E5287928B400A5D0A0 /* HomePopularCollectionViewCell.swift */; };
 		E53086E828795D2700A5D0A0 /* HomeCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E728795D2700A5D0A0 /* HomeCollectionHeaderView.swift */; };
 		E5340E8A289C713D0030A44F /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = E5340E89289C713D0030A44F /* RxDataSources */; };
+		E5355F2228B6FDAF00CB1C94 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5355F2128B6FDAF00CB1C94 /* NetworkManager.swift */; };
 		E5370AFE28A1001C00A68D92 /* MyPageUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5370AFD28A1001C00A68D92 /* MyPageUtilities.swift */; };
 		E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */; };
 		E53D6E7528963B21004BF95B /* MatchingFilterRangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53D6E7428963B21004BF95B /* MatchingFilterRangeSlider.swift */; };
@@ -77,7 +78,7 @@
 		E5A164B128ADC80C00554655 /* ConfirmPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A164B028ADC80C00554655 /* ConfirmPasswordViewModel.swift */; };
 		E5A60C7C289BE72A004B77E8 /* SetCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A60C7B289BE72A004B77E8 /* SetCalendarViewModel.swift */; };
 		E5AB97C42895671800C0CEDF /* MatchingFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AB97C32895671800C0CEDF /* MatchingFilterViewController.swift */; };
-		E5AC2DCB2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2DCA2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift */; };
+		E5AC2DCB2882F24000B82AD8 /* OnboardingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2DCA2882F24000B82AD8 /* OnboardingTextField.swift */; };
 		E5AC2DCF288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2DCE288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift */; };
 		E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7390287A863800BA2C5E /* LoginViewController.swift */; };
 		E5AD7396287A8C2F00BA2C5E /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7395287A8C2F00BA2C5E /* UIColor+Extensions.swift */; };
@@ -158,6 +159,7 @@
 		E53086E32879287100A5D0A0 /* HomeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListViewModel.swift; sourceTree = "<group>"; };
 		E53086E5287928B400A5D0A0 /* HomePopularCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePopularCollectionViewCell.swift; sourceTree = "<group>"; };
 		E53086E728795D2700A5D0A0 /* HomeCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionHeaderView.swift; sourceTree = "<group>"; };
+		E5355F2128B6FDAF00CB1C94 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		E5370AFD28A1001C00A68D92 /* MyPageUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageUtilities.swift; sourceTree = "<group>"; };
 		E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpViewController.swift; sourceTree = "<group>"; };
 		E53D6E7428963B21004BF95B /* MatchingFilterRangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilterRangeSlider.swift; sourceTree = "<group>"; };
@@ -189,7 +191,7 @@
 		E5A164B028ADC80C00554655 /* ConfirmPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordViewModel.swift; sourceTree = "<group>"; };
 		E5A60C7B289BE72A004B77E8 /* SetCalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCalendarViewModel.swift; sourceTree = "<group>"; };
 		E5AB97C32895671800C0CEDF /* MatchingFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilterViewController.swift; sourceTree = "<group>"; };
-		E5AC2DCA2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTextFieldContainerView.swift; sourceTree = "<group>"; };
+		E5AC2DCA2882F24000B82AD8 /* OnboardingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTextField.swift; sourceTree = "<group>"; };
 		E5AC2DCE288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPasswordTextFieldContainerView.swift; sourceTree = "<group>"; };
 		E5AD7390287A863800BA2C5E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E5AD7395287A8C2F00BA2C5E /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
@@ -362,6 +364,7 @@
 				E50300F628773A5D00611C62 /* AppDelegate.swift */,
 				E50300F828773A5D00611C62 /* SceneDelegate.swift */,
 				E58A6296289D6BEF0074F646 /* DeviceManager.swift */,
+				E5355F2128B6FDAF00CB1C94 /* NetworkManager.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -516,7 +519,7 @@
 			isa = PBXGroup;
 			children = (
 				E56342202878246200E93D17 /* OnboardingTableHeaderView.swift */,
-				E5AC2DCA2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift */,
+				E5AC2DCA2882F24000B82AD8 /* OnboardingTextField.swift */,
 				E58131A7288E6AC6000DB8C9 /* OnboardingFloatyBottomView.swift */,
 			);
 			path = Views;
@@ -995,13 +998,14 @@
 				E5D31BF3289AB83800510315 /* SetCalendarTabmanController.swift in Sources */,
 				E5D49010288BFFFD00311493 /* Utilities.swift in Sources */,
 				E5A164B128ADC80C00554655 /* ConfirmPasswordViewModel.swift in Sources */,
-				E5AC2DCB2882F24000B82AD8 /* OnboardingTextFieldContainerView.swift in Sources */,
+				E5AC2DCB2882F24000B82AD8 /* OnboardingTextField.swift in Sources */,
 				E53D6E7528963B21004BF95B /* MatchingFilterRangeSlider.swift in Sources */,
 				E5E8A3DB289505B500A48A91 /* MyPostViewController.swift in Sources */,
 				E5E8A3DD289505F000A48A91 /* MyPostCollectionHeaderView.swift in Sources */,
 				E58131A8288E6AC6000DB8C9 /* OnboardingFloatyBottomView.swift in Sources */,
 				E56342212878246200E93D17 /* OnboardingTableHeaderView.swift in Sources */,
 				E508436C288133AD0047A2EC /* LoginUtilities.swift in Sources */,
+				E5355F2228B6FDAF00CB1C94 /* NetworkManager.swift in Sources */,
 				E56342232878353100E93D17 /* TabBarController.swift in Sources */,
 				E56DF4AF2893C81F00E85B10 /* WeekdayCalendarView.swift in Sources */,
 				E5E8A3DF2895208500A48A91 /* MyCommentsCollectionVIewCell.swift in Sources */,

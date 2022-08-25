@@ -18,7 +18,7 @@ class OnboardingTableViewCell: UITableViewCell {
   var disposeBag = DisposeBag()
   var onChangedTextSubject = PublishSubject<(String, OnboardingListType)>()
   
-  let textField = OnboardingTextFieldContainerView(placeholder: "입력")
+  let textField = OnboardingTextField(placeholder: "입력")
   
   lazy var infoLabel: UILabel = {
     let label = UILabel()

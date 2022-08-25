@@ -10,7 +10,7 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-class OnboardingTextFieldContainerView: UIView {
+class OnboardingTextField: UIView {
   // MARK: - Properties
   lazy var textField: UITextField = {
     let tf = UITextField()
