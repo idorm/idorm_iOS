@@ -211,7 +211,15 @@ class ConfirmPasswordViewController: UIViewController {
       })
       .disposed(by: disposeBag)
     
+    // 회원가입 완료 페이지로 넘어가기
     viewModel.output.showCompleteVC
+      .asDriver(onErrorJustReturn: Void())
+      .drive(onNext: { [weak self] in
+        let completeVC = CompleteSignUpViewController()
+        completeVC.modalPresentationStyle = .fullScreen
+        self?.present(completeVC, animated: true)
+      })
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers

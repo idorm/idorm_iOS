@@ -13,6 +13,8 @@
 		E503010028773A5E00611C62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E50300FF28773A5E00611C62 /* Assets.xcassets */; };
 		E503010328773A5E00611C62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E503010128773A5E00611C62 /* LaunchScreen.storyboard */; };
 		E504B61728B9BCF5009B45F8 /* ConfirmPasswordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E504B61628B9BCF5009B45F8 /* ConfirmPasswordService.swift */; };
+		E504B61928B9C6E4009B45F8 /* CompleteSignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E504B61828B9C6E4009B45F8 /* CompleteSignUpViewModel.swift */; };
+		E504B61B28B9DCE3009B45F8 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E504B61A28B9DCE3009B45F8 /* TokenManager.swift */; };
 		E508436C288133AD0047A2EC /* LoginUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508436B288133AD0047A2EC /* LoginUtilities.swift */; };
 		E508436E28813BF40047A2EC /* NotoSansCJKkr-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E508436D28813BF40047A2EC /* NotoSansCJKkr-Bold.otf */; };
 		E508437028813C030047A2EC /* NotoSansCJKkr-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = E508436F28813C030047A2EC /* NotoSansCJKkr-Medium.otf */; };
@@ -140,6 +142,8 @@
 		E503010228773A5E00611C62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E503010428773A5E00611C62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E504B61628B9BCF5009B45F8 /* ConfirmPasswordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordService.swift; sourceTree = "<group>"; };
+		E504B61828B9C6E4009B45F8 /* CompleteSignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpViewModel.swift; sourceTree = "<group>"; };
+		E504B61A28B9DCE3009B45F8 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		E508436B288133AD0047A2EC /* LoginUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUtilities.swift; sourceTree = "<group>"; };
 		E508436D28813BF40047A2EC /* NotoSansCJKkr-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansCJKkr-Bold.otf"; sourceTree = "<group>"; };
 		E508436F28813C030047A2EC /* NotoSansCJKkr-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansCJKkr-Medium.otf"; sourceTree = "<group>"; };
@@ -371,6 +375,7 @@
 				E50300F828773A5D00611C62 /* SceneDelegate.swift */,
 				E58A6296289D6BEF0074F646 /* DeviceManager.swift */,
 				E5355F2128B6FDAF00CB1C94 /* NetworkManager.swift */,
+				E504B61A28B9DCE3009B45F8 /* TokenManager.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -602,9 +607,10 @@
 			children = (
 				E5B7E84E28ABCA670099B631 /* LoginViewModel.swift */,
 				E510D3CC28ACB87D00A28B90 /* PutEmailViewModel.swift */,
-				E5A164B028ADC80C00554655 /* ConfirmPasswordViewModel.swift */,
 				E510D3CA28AC9F6E00A28B90 /* AuthViewModel.swift */,
 				E510D3D228ACCA1C00A28B90 /* AuthNumberViewModel.swift */,
+				E5A164B028ADC80C00554655 /* ConfirmPasswordViewModel.swift */,
+				E504B61828B9C6E4009B45F8 /* CompleteSignUpViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -963,6 +969,7 @@
 				E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordViewController.swift in Sources */,
 				E5EB5F302891558D00EC0425 /* CalendarDormCell.swift in Sources */,
 				E525C1CD28944E2800F934B3 /* CalendarPostViewController.swift in Sources */,
+				E504B61928B9C6E4009B45F8 /* CompleteSignUpViewModel.swift in Sources */,
 				E5C89E4B28A9EDA70035D9C6 /* URLRequest+Extensions.swift in Sources */,
 				E557E22928926F3B00F9C74D /* UIViewController+Extensions.swift in Sources */,
 				E5B7E84F28ABCA670099B631 /* LoginViewModel.swift in Sources */,
@@ -1053,6 +1060,7 @@
 				E5290F1228886D7A0004B8E6 /* CommunityUtilities.swift in Sources */,
 				E5B15F6F287FE355004D4164 /* OnboardingDetailViewController.swift in Sources */,
 				E5D49014288C3DDB00311493 /* OnboardingUtilities.swift in Sources */,
+				E504B61B28B9DCE3009B45F8 /* TokenManager.swift in Sources */,
 				E584B4BA289FC770007AD83A /* SwipeCardProtocols.swift in Sources */,
 				E5D31BF1289AAE3D00510315 /* UIScrollView+Extensions.swift in Sources */,
 			);

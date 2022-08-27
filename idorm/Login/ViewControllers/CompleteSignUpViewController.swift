@@ -7,6 +7,8 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 class CompleteSignUpViewController: UIViewController {
   // MARK: - Properties
@@ -62,6 +64,9 @@ class CompleteSignUpViewController: UIViewController {
     return button
   }()
   
+  let viewModel = CompleteSignUpViewModel()
+  let disposeBag = DisposeBag()
+  
   // MARK: - LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -71,7 +76,25 @@ class CompleteSignUpViewController: UIViewController {
   
   // MARK: - Bind
   func bind() {
+    // --------------------------------
+    // --------------INPUT-------------
+    // --------------------------------
+    continueButton.rx.tap
+      .throttle(.seconds(2), latest: false, scheduler: MainScheduler.instance)
+      .bind(to: viewModel.input.continueButtonTapped)
+      .disposed(by: disposeBag)
     
+    // --------------------------------
+    // --------------OUTPUT------------
+    // --------------------------------
+    viewModel.output.showOnboardingVC
+      .asDriver(onErrorJustReturn: Void())
+      .drive(onNext: { [weak self] in
+        let onboardingVC = UINavigationController(rootViewController: OnboardingViewController(type: .firstTime))
+        onboardingVC.modalPresentationStyle = .fullScreen
+        self?.present(onboardingVC, animated: true)
+      })
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers
@@ -82,7 +105,8 @@ class CompleteSignUpViewController: UIViewController {
       .forEach { view.addSubview($0) }
     
     image.snp.makeConstraints { make in
-      make.center.equalToSuperview()
+      make.centerX.equalToSuperview()
+      make.centerY.equalToSuperview().offset(-100)
     }
     
     signUpLabel.snp.makeConstraints { make in
@@ -101,7 +125,7 @@ class CompleteSignUpViewController: UIViewController {
     }
     
     continueButton.snp.makeConstraints { make in
-      make.bottom.equalToSuperview().inset(50)
+      make.bottom.equalTo(view.safeAreaLayoutGuide).inset(40)
       make.centerX.equalToSuperview()
     }
   }

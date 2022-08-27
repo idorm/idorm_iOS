@@ -66,8 +66,7 @@ class LoginViewModel {
         let statusCode = result.response.statusCode
         if statusCode == 200 {
           guard let accessToken = String(data: result.data, encoding: .utf8) else { return }
-          let userDefaults = UserDefaults.standard
-          userDefaults.set(accessToken, forKey: "Token")
+          TokenManager.saveToken(token: accessToken)
           self?.output.showTabBarVC.onNext(Void())
         } else {
           struct Response: Codable {
