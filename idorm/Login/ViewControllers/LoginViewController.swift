@@ -165,7 +165,14 @@ class LoginViewController: UIViewController {
       })
       .disposed(by: disposeBag)
     
-    
+    viewModel.output.showTabBarVC
+      .asDriver(onErrorJustReturn: Void())
+      .drive(onNext: { [weak self] in
+        let tabBarVC = TabBarController()
+        tabBarVC.modalPresentationStyle = .fullScreen
+        self?.present(tabBarVC, animated: true)
+      })
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers

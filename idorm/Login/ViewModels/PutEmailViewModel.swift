@@ -18,11 +18,16 @@ class PutEmailViewModel {
   struct Output {
     let showAuthVC = PublishSubject<Void>()
     let showErrorPopupVC = PublishSubject<String>()
+    let buttonState = BehaviorRelay<Bool>(value: true)
   }
   
   let input = Input()
   let output = Output()
   let disposeBag = DisposeBag()
+  
+  var email: String {
+    return input.emailText.value
+  }
   
   init() {
     bind()
@@ -31,19 +36,37 @@ class PutEmailViewModel {
   func bind() {
     // 완료 버튼 클릭 시 오류 및 이동
     input.confirmButtonTapped
+      .filter {
+        self.output.buttonState.value == true
+      }
       .bind(onNext: { [weak self] in
         guard let self = self else { return }
-        let email = self.input.emailText.value
-        if self.isValidEmail(id: email) == false {
-          self.output.showErrorPopupVC.onNext("이메일 형식을 확인해 주세요.")
+        self.output.buttonState.accept(false)
+        LoginStates.currentEmail = self.email
+        self.authenticateEmail(email: self.email, type: LoginStates.currentLoginType)
+      })
+      .disposed(by: disposeBag)
+  }
+  
+  func authenticateEmail(email: String, type: LoginType) {
+    PutEmailService.authenticateEmail(email: self.email, type: LoginStates.currentLoginType)
+      .subscribe(onNext: { [weak self] result in
+        let statusCode = result.response.statusCode
+        if statusCode == 200 {
+          self?.output.showAuthVC.onNext(Void())
+          self?.output.buttonState.accept(true)
         } else {
-          LoginStates.currentEmail = email
-          self.output.showAuthVC.onNext(Void())
+          struct Response: Codable {
+            let message: String
+          }
+          guard let response = try? JSONDecoder().decode(Response.self, from: result.data) else { return }
+          self?.output.showErrorPopupVC.onNext(response.message)
+          self?.output.buttonState.accept(true)
         }
       })
       .disposed(by: disposeBag)
   }
-
+  
   func isValidEmail(id: String) -> Bool {
     let emailRegEx = "[A-Z0-9a-z._%+-]+@inu.ac.kr"
     let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)

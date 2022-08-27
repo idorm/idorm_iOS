@@ -78,7 +78,7 @@ class AuthNumberViewController: UIViewController {
       .disposed(by: disposeBag)
     
     confirmButton.rx.tap
-      .throttle(.seconds(1), latest: false, scheduler: MainScheduler.instance)
+      .throttle(.seconds(2), latest: false, scheduler: MainScheduler.instance)
       .bind(to: viewModel.input.confirmButtonTapped)
       .disposed(by: disposeBag)
     
@@ -112,7 +112,7 @@ class AuthNumberViewController: UIViewController {
       })
       .disposed(by: disposeBag)
     
-    viewModel.output.showErrorPopupVC
+    viewModel.output.showPopupVC
       .asDriver(onErrorJustReturn: "")
       .drive(onNext: { [weak self] mention in
         let popupVC = PopupViewController(contents: mention)

@@ -9,4 +9,11 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-typealias ResponseResult = Observable<(response: HTTPURLResponse, data: Data)>
+typealias ServerResponse = Observable<(response: HTTPURLResponse, data: Data)>
+
+enum NetworkType: String {
+  case get = "GET"
+  case post = "POST"
+  case fetch = "FETCH"
+}
+

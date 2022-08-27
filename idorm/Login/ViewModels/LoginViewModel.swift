@@ -21,6 +21,7 @@ class LoginViewModel {
   struct Output {
     let showPutEmailVC = PublishSubject<LoginType>()
     let showErrorPopupVC = PublishSubject<String>()
+    let showTabBarVC = PublishSubject<Void>()
   }
   
   init() {
@@ -67,6 +68,7 @@ class LoginViewModel {
           guard let accessToken = String(data: result.data, encoding: .utf8) else { return }
           let userDefaults = UserDefaults.standard
           userDefaults.set(accessToken, forKey: "Token")
+          self?.output.showTabBarVC.onNext(Void())
         } else {
           struct Response: Codable {
             let message: String

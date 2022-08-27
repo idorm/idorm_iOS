@@ -39,6 +39,8 @@
 		E53086E828795D2700A5D0A0 /* HomeCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E728795D2700A5D0A0 /* HomeCollectionHeaderView.swift */; };
 		E5340E8A289C713D0030A44F /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = E5340E89289C713D0030A44F /* RxDataSources */; };
 		E5355F2228B6FDAF00CB1C94 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5355F2128B6FDAF00CB1C94 /* NetworkManager.swift */; };
+		E5355F2428B7004100CB1C94 /* PutEmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5355F2328B7004100CB1C94 /* PutEmailService.swift */; };
+		E5355F2628B9A2DE00CB1C94 /* AuthNumberService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5355F2528B9A2DE00CB1C94 /* AuthNumberService.swift */; };
 		E5370AFE28A1001C00A68D92 /* MyPageUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5370AFD28A1001C00A68D92 /* MyPageUtilities.swift */; };
 		E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */; };
 		E53D6E7528963B21004BF95B /* MatchingFilterRangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53D6E7428963B21004BF95B /* MatchingFilterRangeSlider.swift */; };
@@ -160,6 +162,8 @@
 		E53086E5287928B400A5D0A0 /* HomePopularCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePopularCollectionViewCell.swift; sourceTree = "<group>"; };
 		E53086E728795D2700A5D0A0 /* HomeCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionHeaderView.swift; sourceTree = "<group>"; };
 		E5355F2128B6FDAF00CB1C94 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		E5355F2328B7004100CB1C94 /* PutEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailService.swift; sourceTree = "<group>"; };
+		E5355F2528B9A2DE00CB1C94 /* AuthNumberService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberService.swift; sourceTree = "<group>"; };
 		E5370AFD28A1001C00A68D92 /* MyPageUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageUtilities.swift; sourceTree = "<group>"; };
 		E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpViewController.swift; sourceTree = "<group>"; };
 		E53D6E7428963B21004BF95B /* MatchingFilterRangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilterRangeSlider.swift; sourceTree = "<group>"; };
@@ -722,6 +726,8 @@
 			isa = PBXGroup;
 			children = (
 				E510D3CE28ACC5F300A28B90 /* LoginService.swift */,
+				E5355F2328B7004100CB1C94 /* PutEmailService.swift */,
+				E5355F2528B9A2DE00CB1C94 /* AuthNumberService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1010,10 +1016,12 @@
 				E56DF4AF2893C81F00E85B10 /* WeekdayCalendarView.swift in Sources */,
 				E5E8A3DF2895208500A48A91 /* MyCommentsCollectionVIewCell.swift in Sources */,
 				E5C89E4928A9ED9B0035D9C6 /* URL+Extensions.swift in Sources */,
+				E5355F2628B9A2DE00CB1C94 /* AuthNumberService.swift in Sources */,
 				E5F5EC762884027D0026DE21 /* CalendarViewController.swift in Sources */,
 				E510D3D328ACCA1C00A28B90 /* AuthNumberViewModel.swift in Sources */,
 				E58ACB8728846E050031BD86 /* ImagePickerViewController.swift in Sources */,
 				E56DF4A2289354AF00E85B10 /* CalendarRoundedBackgroundView.swift in Sources */,
+				E5355F2428B7004100CB1C94 /* PutEmailService.swift in Sources */,
 				E508437B28814CAB0047A2EC /* AuthViewController.swift in Sources */,
 				E510D3D128ACC84300A28B90 /* LoginStates.swift in Sources */,
 				E5EB5F2A289143A100EC0425 /* CalendarChipCell.swift in Sources */,
