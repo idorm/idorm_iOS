@@ -12,6 +12,7 @@
 		E50300F928773A5D00611C62 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50300F828773A5D00611C62 /* SceneDelegate.swift */; };
 		E503010028773A5E00611C62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E50300FF28773A5E00611C62 /* Assets.xcassets */; };
 		E503010328773A5E00611C62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E503010128773A5E00611C62 /* LaunchScreen.storyboard */; };
+		E504B61728B9BCF5009B45F8 /* ConfirmPasswordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E504B61628B9BCF5009B45F8 /* ConfirmPasswordService.swift */; };
 		E508436C288133AD0047A2EC /* LoginUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508436B288133AD0047A2EC /* LoginUtilities.swift */; };
 		E508436E28813BF40047A2EC /* NotoSansCJKkr-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E508436D28813BF40047A2EC /* NotoSansCJKkr-Bold.otf */; };
 		E508437028813C030047A2EC /* NotoSansCJKkr-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = E508436F28813C030047A2EC /* NotoSansCJKkr-Medium.otf */; };
@@ -138,6 +139,7 @@
 		E50300FF28773A5E00611C62 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E503010228773A5E00611C62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E503010428773A5E00611C62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E504B61628B9BCF5009B45F8 /* ConfirmPasswordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordService.swift; sourceTree = "<group>"; };
 		E508436B288133AD0047A2EC /* LoginUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUtilities.swift; sourceTree = "<group>"; };
 		E508436D28813BF40047A2EC /* NotoSansCJKkr-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansCJKkr-Bold.otf"; sourceTree = "<group>"; };
 		E508436F28813C030047A2EC /* NotoSansCJKkr-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansCJKkr-Medium.otf"; sourceTree = "<group>"; };
@@ -728,6 +730,7 @@
 				E510D3CE28ACC5F300A28B90 /* LoginService.swift */,
 				E5355F2328B7004100CB1C94 /* PutEmailService.swift */,
 				E5355F2528B9A2DE00CB1C94 /* AuthNumberService.swift */,
+				E504B61628B9BCF5009B45F8 /* ConfirmPasswordService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -971,6 +974,7 @@
 				E50300F728773A5D00611C62 /* AppDelegate.swift in Sources */,
 				E55794EE287C36F5002DB2B0 /* UIView+Extensions.swift in Sources */,
 				E5EB5F2C2891534300EC0425 /* CalendarPersonalCollectionHeaderView.swift in Sources */,
+				E504B61728B9BCF5009B45F8 /* ConfirmPasswordService.swift in Sources */,
 				E584B4B8289F23D7007AD83A /* SwipeCardView.swift in Sources */,
 				E5AD7398287A8D8800BA2C5E /* UITextField+Extensions.swift in Sources */,
 				E5FBBB872880304900A7158D /* SECRET.swift in Sources */,

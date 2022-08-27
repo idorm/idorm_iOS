@@ -34,6 +34,7 @@ class ConfirmPasswordViewModel {
   let input = Input()
   let output = Output()
   let disposeBag = DisposeBag()
+  let service = ConfirmPasswordService()
   
   var passwordText: String { return input.passwordText.value }
   var passwordText2: String { return input.passwordText_2.value }
@@ -86,12 +87,32 @@ class ConfirmPasswordViewModel {
         if self.isValidPasswordFinal(pwd: self.passwordText),
            self.isValidPasswordFinal(pwd: self.passwordText2),
            self.passwordText == self.passwordText2 {
-          self.output.showCompleteVC.onNext(Void())
+          self.connectAPI()
         } else {
           self.output.showErrorPopupVC.onNext("조건을 다시 확인해 주세요.")
         }
       })
       .disposed(by: disposeBag)
+  }
+  
+  func connectAPI() {
+    guard let email = LoginStates.currentEmail else { return }
+    let confirmType = LoginStates.currentLoginType
+    
+    if confirmType == .singUp {
+      service.registerUser(email: email, password: passwordText)
+        .subscribe(onNext: { [weak self] response in
+          let statusCode = response.response.statusCode
+          if statusCode == 200 {
+            self?.output.showCompleteVC.onNext(Void())
+          } else {
+            self?.output.showErrorPopupVC.onNext("등록되지 않은 이메일입니다.")
+          }
+        })
+        .disposed(by: disposeBag)
+    } else {
+      
+    }
   }
   
   func isValidPasswordFinal(pwd: String) -> Bool {
@@ -106,3 +127,4 @@ class ConfirmPasswordViewModel {
       return passwordTest.evaluate(with: pwd)
   }
 }
+

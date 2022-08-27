@@ -70,6 +70,7 @@ class ConfirmPasswordViewController: UIViewController {
     // --------------INPUT-------------
     // --------------------------------
     confirmButton.rx.tap
+      .throttle(.seconds(2), latest: false, scheduler: MainScheduler.instance)
       .bind(to: viewModel.input.confirmButtonTapped)
       .disposed(by: disposeBag)
     
