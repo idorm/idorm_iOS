@@ -45,13 +45,7 @@ class PutEmailViewController: UIViewController {
   }()
   
   lazy var confirmButton: UIButton = {
-    let button = LoginUtilities.returnBottonConfirmButton(string: "")
-    if type == .findPW {
-      button.setTitle("인증번호 발급받기", for: .normal)
-    } else {
-      button.setTitle("회원가입", for: .normal)
-    }
-    
+    let button = LoginUtilities.returnBottonConfirmButton(string: "인증번호 받기")
     return button
   }()
   

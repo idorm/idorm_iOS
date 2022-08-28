@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import RxGesture
 
 class MyPageViewController: UIViewController {
   // MARK: - Properties
@@ -110,9 +111,11 @@ class MyPageViewController: UIViewController {
   lazy var communityLabel = MyPageUtilities.createTitleLabel(title: "커뮤니티 관리")
   
   lazy var myProfileImage = UIImageView(image: UIImage(named: "myProfileImage(MyPage)"))
+  lazy var gearImage = UIImageView(image: UIImage(named: "gear"))
   let lionImageView = UIImageView(image: #imageLiteral(resourceName: "BottonLion(MyPage)"))
   
   let disposeBag = DisposeBag()
+  let viewModel = MyPageViewModel()
   
   // MARK: - LifeCycle
   override func viewDidLoad() {
@@ -154,35 +157,46 @@ class MyPageViewController: UIViewController {
   
   // MARK: - Bind
   private func bind() {
+    // ---------------------------------
+    // ---------------INPUT-------------
+    // ---------------------------------
+    // 기어 이미지 터치 이벤트
+    gearImage.rx.tapGesture()
+      .map { _ in Void() }
+      .bind(to: viewModel.input.gearImageTapped)
+      .disposed(by: disposeBag)
+    
     myPostButton.rx.tap
-      .bind(onNext: { [weak self] in
-        let myPostVC = MyPostViewController(myPostVCType: .post)
-        self?.navigationController?.pushViewController(myPostVC, animated: true)
-      })
+      .map { MyPostVCType.post }
+      .bind(to: viewModel.input.myPostButtonTapped)
       .disposed(by: disposeBag)
     
     myCommentButton.rx.tap
-      .bind(onNext: { [weak self] in
-        let myPostVC = MyPostViewController(myPostVCType: .comments)
-        self?.navigationController?.pushViewController(myPostVC, animated: true)
-      })
+      .map { MyPostVCType.comments }
+      .bind(to: viewModel.input.myCommentsButtonTapped)
       .disposed(by: disposeBag)
     
     myRecommendedPostButton.rx.tap
-      .bind(onNext: { [weak self] in
-        let myPostVC = MyPostViewController(myPostVCType: .recommend)
-        self?.navigationController?.pushViewController(myPostVC, animated: true)
-      })
+      .map { MyPostVCType.recommend }
+      .bind(to: viewModel.input.myRecommendButtonTapped)
       .disposed(by: disposeBag)
     
     likeRoommateButton.rx.tap
-      .bind(onNext: { [weak self] in
-        let myPostVC = MyPostViewController(myPostVCType: .likeRoommate)
+      .map { MyPostVCType.likeRoommate }
+      .bind(to: viewModel.input.likeRoommateButtonTapped)
+      .disposed(by: disposeBag)
+    
+    // ---------------------------------
+    // --------------OUTPUT-------------
+    // ---------------------------------
+    viewModel.output.showMyPostVC
+      .bind(onNext: { [weak self] type in
+        let myPostVC = MyPostViewController(myPostVCType: type)
         self?.navigationController?.pushViewController(myPostVC, animated: true)
       })
       .disposed(by: disposeBag)
     
-    matchingImageManagementButton.rx.tap
+    viewModel.output.showOnboardingVC
       .bind(onNext: { [weak self] in
         let onboardingVC = OnboardingViewController(type: .update)
         self?.navigationController?.pushViewController(onboardingVC, animated: true)
@@ -215,12 +229,16 @@ class MyPageViewController: UIViewController {
       make.width.equalTo(view.frame.width)
     }
     
-    [ matchingContainerView, communityContainerView, topRoundedView, lionImageView ]
+    [ matchingContainerView, communityContainerView, topRoundedView, lionImageView, gearImage ]
       .forEach { contentsView.addSubview($0) }
     
     topRoundedView.snp.makeConstraints { make in
       make.top.leading.trailing.equalToSuperview()
       make.height.equalTo(145)
+    }
+    
+    gearImage.snp.makeConstraints { make in
+      make.trailing.top.equalToSuperview().inset(16)
     }
     
     // 기기별 레이아웃

@@ -10,6 +10,7 @@ import SnapKit
 import WebKit
 import RxSwift
 import RxCocoa
+import SwiftUI
 
 class AuthViewController: UIViewController {
   // MARK: - Properties
@@ -39,10 +40,10 @@ class AuthViewController: UIViewController {
   
   lazy var portalButton: UIButton = {
     let button = LoginUtilities.returnBottonConfirmButton(string: "메일함 바로가기")
-    button.setTitleColor(UIColor.darkGray, for: .normal)
-    button.backgroundColor = .white
-    button.layer.borderColor = UIColor.init(rgb: 0xE3E1EC).cgColor
-    button.layer.borderWidth = 1
+    button.configuration?.baseForegroundColor = .idorm_gray_400
+    button.configuration?.baseBackgroundColor = .white
+    button.configuration?.background.strokeWidth = 1
+    button.configuration?.background.strokeColor = .idorm_gray_200
     
     return button
   }()

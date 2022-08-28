@@ -83,6 +83,8 @@
 		E5A164B128ADC80C00554655 /* ConfirmPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A164B028ADC80C00554655 /* ConfirmPasswordViewModel.swift */; };
 		E5A60C7C289BE72A004B77E8 /* SetCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A60C7B289BE72A004B77E8 /* SetCalendarViewModel.swift */; };
 		E5AB97C42895671800C0CEDF /* MatchingFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AB97C32895671800C0CEDF /* MatchingFilterViewController.swift */; };
+		E5AC2A4828BB548E0069ABB9 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2A4728BB548E0069ABB9 /* MyPageViewModel.swift */; };
+		E5AC2A4B28BB56360069ABB9 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = E5AC2A4A28BB56360069ABB9 /* RxGesture */; };
 		E5AC2DCB2882F24000B82AD8 /* OnboardingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2DCA2882F24000B82AD8 /* OnboardingTextField.swift */; };
 		E5AC2DCF288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2DCE288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift */; };
 		E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7390287A863800BA2C5E /* LoginViewController.swift */; };
@@ -201,6 +203,7 @@
 		E5A164B028ADC80C00554655 /* ConfirmPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordViewModel.swift; sourceTree = "<group>"; };
 		E5A60C7B289BE72A004B77E8 /* SetCalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCalendarViewModel.swift; sourceTree = "<group>"; };
 		E5AB97C32895671800C0CEDF /* MatchingFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilterViewController.swift; sourceTree = "<group>"; };
+		E5AC2A4728BB548E0069ABB9 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		E5AC2DCA2882F24000B82AD8 /* OnboardingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTextField.swift; sourceTree = "<group>"; };
 		E5AC2DCE288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPasswordTextFieldContainerView.swift; sourceTree = "<group>"; };
 		E5AD7390287A863800BA2C5E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -259,6 +262,7 @@
 				E58ACB85288465970031BD86 /* FMPhotoPicker in Frameworks */,
 				E563421E28780C3800E93D17 /* SnapKit in Frameworks */,
 				E5C889062889729800CBD04E /* PanModal in Frameworks */,
+				E5AC2A4B28BB56360069ABB9 /* RxGesture in Frameworks */,
 				E57A42CC289596D8003D5834 /* CardSlider in Frameworks */,
 				E5B15F6D287FCEFE004D4164 /* RSKPlaceholderTextView in Frameworks */,
 				E510D3C928AC88A000A28B90 /* Alamofire in Frameworks */,
@@ -386,7 +390,6 @@
 				E5D4900F288BFFFD00311493 /* Utilities.swift */,
 				E5D49013288C3DDA00311493 /* OnboardingUtilities.swift */,
 				E5290F1128886D7A0004B8E6 /* CommunityUtilities.swift */,
-				E508436B288133AD0047A2EC /* LoginUtilities.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -564,6 +567,7 @@
 		E56DF4BD2894041D00E85B10 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				E508436B288133AD0047A2EC /* LoginUtilities.swift */,
 				E510D3D028ACC84300A28B90 /* LoginStates.swift */,
 				E5B7E84B28ABC9B00099B631 /* Services */,
 				E56DF4C12894043D00E85B10 /* ViewModels */,
@@ -769,6 +773,7 @@
 		E5E8A3D82894BA8B00A48A91 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				E5AC2A4728BB548E0069ABB9 /* MyPageViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -847,6 +852,7 @@
 				E58A6292289D46380074F646 /* RxAppState */,
 				E58A6299289D73020074F646 /* DeviceKit */,
 				E510D3C828AC88A000A28B90 /* Alamofire */,
+				E5AC2A4A28BB56360069ABB9 /* RxGesture */,
 			);
 			productName = idorm;
 			productReference = E50300F328773A5D00611C62 /* idorm.app */;
@@ -891,6 +897,7 @@
 				E58A6291289D46380074F646 /* XCRemoteSwiftPackageReference "RxAppState" */,
 				E58A6298289D73020074F646 /* XCRemoteSwiftPackageReference "DeviceKit" */,
 				E510D3C728AC88A000A28B90 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				E5AC2A4928BB56360069ABB9 /* XCRemoteSwiftPackageReference "RxGesture" */,
 			);
 			productRefGroup = E50300F428773A5D00611C62 /* Products */;
 			projectDirPath = "";
@@ -1046,6 +1053,7 @@
 				E5D49008288B7F0400311493 /* CommunityPopupViewController.swift in Sources */,
 				E5AD7396287A8C2F00BA2C5E /* UIColor+Extensions.swift in Sources */,
 				E5D49012288C003800311493 /* MyInfoView.swift in Sources */,
+				E5AC2A4828BB548E0069ABB9 /* MyPageViewModel.swift in Sources */,
 				E5E8A3E52895319100A48A91 /* MyLikeRoommateCollectionVIewCell.swift in Sources */,
 				E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */,
 				E5AD739F287AEF2D00BA2C5E /* PutEmailViewController.swift in Sources */,
@@ -1346,6 +1354,14 @@
 				minimumVersion = 1.3.0;
 			};
 		};
+		E5AC2A4928BB56360069ABB9 /* XCRemoteSwiftPackageReference "RxGesture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxGesture.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 		E5B15F6B287FCEFE004D4164 /* XCRemoteSwiftPackageReference "RSKPlaceholderTextView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ruslanskorb/RSKPlaceholderTextView.git";
@@ -1443,6 +1459,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker" */;
 			productName = FMPhotoPicker;
+		};
+		E5AC2A4A28BB56360069ABB9 /* RxGesture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E5AC2A4928BB56360069ABB9 /* XCRemoteSwiftPackageReference "RxGesture" */;
+			productName = RxGesture;
 		};
 		E5B15F6C287FCEFE004D4164 /* RSKPlaceholderTextView */ = {
 			isa = XCSwiftPackageProductDependency;
