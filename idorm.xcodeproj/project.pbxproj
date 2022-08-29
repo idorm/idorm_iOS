@@ -45,6 +45,9 @@
 		E5355F2428B7004100CB1C94 /* PutEmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5355F2328B7004100CB1C94 /* PutEmailService.swift */; };
 		E5355F2628B9A2DE00CB1C94 /* AuthNumberService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5355F2528B9A2DE00CB1C94 /* AuthNumberService.swift */; };
 		E5370AFE28A1001C00A68D92 /* MyPageUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5370AFD28A1001C00A68D92 /* MyPageUtilities.swift */; };
+		E53BBC0628BC3D2B001C86FC /* ManageMyInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53BBC0528BC3D2B001C86FC /* ManageMyInfoViewModel.swift */; };
+		E53BBC0828BC4058001C86FC /* ManageMyInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53BBC0728BC4058001C86FC /* ManageMyInfoTableViewCell.swift */; };
+		E53BBC0B28BCD823001C86FC /* ManageMyInfoTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53BBC0A28BCD823001C86FC /* ManageMyInfoTableHeaderView.swift */; };
 		E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */; };
 		E53D6E7528963B21004BF95B /* MatchingFilterRangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53D6E7428963B21004BF95B /* MatchingFilterRangeSlider.swift */; };
 		E55794EE287C36F5002DB2B0 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55794ED287C36F5002DB2B0 /* UIView+Extensions.swift */; };
@@ -85,6 +88,7 @@
 		E5AB97C42895671800C0CEDF /* MatchingFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AB97C32895671800C0CEDF /* MatchingFilterViewController.swift */; };
 		E5AC2A4828BB548E0069ABB9 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2A4728BB548E0069ABB9 /* MyPageViewModel.swift */; };
 		E5AC2A4B28BB56360069ABB9 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = E5AC2A4A28BB56360069ABB9 /* RxGesture */; };
+		E5AC2A4D28BB5B250069ABB9 /* ManageMyInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2A4C28BB5B250069ABB9 /* ManageMyInfoViewController.swift */; };
 		E5AC2DCB2882F24000B82AD8 /* OnboardingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2DCA2882F24000B82AD8 /* OnboardingTextField.swift */; };
 		E5AC2DCF288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2DCE288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift */; };
 		E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7390287A863800BA2C5E /* LoginViewController.swift */; };
@@ -173,6 +177,9 @@
 		E5355F2328B7004100CB1C94 /* PutEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailService.swift; sourceTree = "<group>"; };
 		E5355F2528B9A2DE00CB1C94 /* AuthNumberService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberService.swift; sourceTree = "<group>"; };
 		E5370AFD28A1001C00A68D92 /* MyPageUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageUtilities.swift; sourceTree = "<group>"; };
+		E53BBC0528BC3D2B001C86FC /* ManageMyInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMyInfoViewModel.swift; sourceTree = "<group>"; };
+		E53BBC0728BC4058001C86FC /* ManageMyInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMyInfoTableViewCell.swift; sourceTree = "<group>"; };
+		E53BBC0A28BCD823001C86FC /* ManageMyInfoTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMyInfoTableHeaderView.swift; sourceTree = "<group>"; };
 		E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpViewController.swift; sourceTree = "<group>"; };
 		E53D6E7428963B21004BF95B /* MatchingFilterRangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilterRangeSlider.swift; sourceTree = "<group>"; };
 		E55794ED287C36F5002DB2B0 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
@@ -204,6 +211,7 @@
 		E5A60C7B289BE72A004B77E8 /* SetCalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCalendarViewModel.swift; sourceTree = "<group>"; };
 		E5AB97C32895671800C0CEDF /* MatchingFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilterViewController.swift; sourceTree = "<group>"; };
 		E5AC2A4728BB548E0069ABB9 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
+		E5AC2A4C28BB5B250069ABB9 /* ManageMyInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMyInfoViewController.swift; sourceTree = "<group>"; };
 		E5AC2DCA2882F24000B82AD8 /* OnboardingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTextField.swift; sourceTree = "<group>"; };
 		E5AC2DCE288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPasswordTextFieldContainerView.swift; sourceTree = "<group>"; };
 		E5AD7390287A863800BA2C5E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -701,6 +709,7 @@
 			children = (
 				E5F5EC77288402840026DE21 /* MyPageViewController.swift */,
 				E5E8A3DA289505B400A48A91 /* MyPostViewController.swift */,
+				E5AC2A4C28BB5B250069ABB9 /* ManageMyInfoViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -757,6 +766,7 @@
 			isa = PBXGroup;
 			children = (
 				E5E8A3DC289505F000A48A91 /* MyPostCollectionHeaderView.swift */,
+				E53BBC0A28BCD823001C86FC /* ManageMyInfoTableHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -766,6 +776,7 @@
 			children = (
 				E5E8A3DE2895208500A48A91 /* MyCommentsCollectionVIewCell.swift */,
 				E5E8A3E42895319100A48A91 /* MyLikeRoommateCollectionVIewCell.swift */,
+				E53BBC0728BC4058001C86FC /* ManageMyInfoTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -774,6 +785,7 @@
 			isa = PBXGroup;
 			children = (
 				E5AC2A4728BB548E0069ABB9 /* MyPageViewModel.swift */,
+				E53BBC0528BC3D2B001C86FC /* ManageMyInfoViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -975,6 +987,7 @@
 				E5A60C7C289BE72A004B77E8 /* SetCalendarViewModel.swift in Sources */,
 				E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordViewController.swift in Sources */,
 				E5EB5F302891558D00EC0425 /* CalendarDormCell.swift in Sources */,
+				E53BBC0B28BCD823001C86FC /* ManageMyInfoTableHeaderView.swift in Sources */,
 				E525C1CD28944E2800F934B3 /* CalendarPostViewController.swift in Sources */,
 				E504B61928B9C6E4009B45F8 /* CompleteSignUpViewModel.swift in Sources */,
 				E5C89E4B28A9EDA70035D9C6 /* URLRequest+Extensions.swift in Sources */,
@@ -1010,12 +1023,15 @@
 				E563422528784ED400E93D17 /* HomeViewController.swift in Sources */,
 				E5AD73A1287AFC5300BA2C5E /* AuthNumberViewController.swift in Sources */,
 				E56DF4B52894036D00E85B10 /* CalendarViewModel.swift in Sources */,
+				E53BBC0628BC3D2B001C86FC /* ManageMyInfoViewModel.swift in Sources */,
 				E510D3CD28ACB87D00A28B90 /* PutEmailViewModel.swift in Sources */,
 				E5C88908288972E000CBD04E /* CommunityAlertViewController.swift in Sources */,
+				E5AC2A4D28BB5B250069ABB9 /* ManageMyInfoViewController.swift in Sources */,
 				E55794F0287C496D002DB2B0 /* OnboardingTableViewCell.swift in Sources */,
 				E5290EFF2887BBB00004B8E6 /* PostCollectionViewCell.swift in Sources */,
 				E5EB5F272891398200EC0425 /* CalendarView.swift in Sources */,
 				E5290F06288818E70004B8E6 /* CommunityDetailViewController.swift in Sources */,
+				E53BBC0828BC4058001C86FC /* ManageMyInfoTableViewCell.swift in Sources */,
 				E58F96FD28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift in Sources */,
 				E58F96FB2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift in Sources */,
 				E586B6A528901B06005AB9C2 /* LoginTextFieldContainerView.swift in Sources */,
