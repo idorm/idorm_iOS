@@ -12,13 +12,6 @@ import SnapKit
 
 class ManageMyInfoViewController: UIViewController {
   // MARK: - Properties
-  lazy var tableView: UITableView = {
-    let tv = UITableView(frame: .zero, style: .grouped)
-    
-    return tv
-  }()
-  
-  lazy var profileImage: UIImageView = UIImageView(image: UIImage(named: "myProfileImage(MyPage)"))
   
   let disposeBag = DisposeBag()
   let viewModel = ManageMyInfoViewModel()
@@ -56,6 +49,7 @@ class ManageMyInfoViewController: UIViewController {
         self?.configureUI()
       })
       .disposed(by: disposeBag)
+    
   }
   
   // MARK: - Helpers

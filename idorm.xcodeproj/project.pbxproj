@@ -46,8 +46,6 @@
 		E5355F2628B9A2DE00CB1C94 /* AuthNumberService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5355F2528B9A2DE00CB1C94 /* AuthNumberService.swift */; };
 		E5370AFE28A1001C00A68D92 /* MyPageUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5370AFD28A1001C00A68D92 /* MyPageUtilities.swift */; };
 		E53BBC0628BC3D2B001C86FC /* ManageMyInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53BBC0528BC3D2B001C86FC /* ManageMyInfoViewModel.swift */; };
-		E53BBC0828BC4058001C86FC /* ManageMyInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53BBC0728BC4058001C86FC /* ManageMyInfoTableViewCell.swift */; };
-		E53BBC0B28BCD823001C86FC /* ManageMyInfoTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53BBC0A28BCD823001C86FC /* ManageMyInfoTableHeaderView.swift */; };
 		E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */; };
 		E53D6E7528963B21004BF95B /* MatchingFilterRangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53D6E7428963B21004BF95B /* MatchingFilterRangeSlider.swift */; };
 		E55794EE287C36F5002DB2B0 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55794ED287C36F5002DB2B0 /* UIView+Extensions.swift */; };
@@ -178,8 +176,6 @@
 		E5355F2528B9A2DE00CB1C94 /* AuthNumberService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberService.swift; sourceTree = "<group>"; };
 		E5370AFD28A1001C00A68D92 /* MyPageUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageUtilities.swift; sourceTree = "<group>"; };
 		E53BBC0528BC3D2B001C86FC /* ManageMyInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMyInfoViewModel.swift; sourceTree = "<group>"; };
-		E53BBC0728BC4058001C86FC /* ManageMyInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMyInfoTableViewCell.swift; sourceTree = "<group>"; };
-		E53BBC0A28BCD823001C86FC /* ManageMyInfoTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMyInfoTableHeaderView.swift; sourceTree = "<group>"; };
 		E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpViewController.swift; sourceTree = "<group>"; };
 		E53D6E7428963B21004BF95B /* MatchingFilterRangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilterRangeSlider.swift; sourceTree = "<group>"; };
 		E55794ED287C36F5002DB2B0 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
@@ -766,7 +762,6 @@
 			isa = PBXGroup;
 			children = (
 				E5E8A3DC289505F000A48A91 /* MyPostCollectionHeaderView.swift */,
-				E53BBC0A28BCD823001C86FC /* ManageMyInfoTableHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -776,7 +771,6 @@
 			children = (
 				E5E8A3DE2895208500A48A91 /* MyCommentsCollectionVIewCell.swift */,
 				E5E8A3E42895319100A48A91 /* MyLikeRoommateCollectionVIewCell.swift */,
-				E53BBC0728BC4058001C86FC /* ManageMyInfoTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -987,7 +981,6 @@
 				E5A60C7C289BE72A004B77E8 /* SetCalendarViewModel.swift in Sources */,
 				E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordViewController.swift in Sources */,
 				E5EB5F302891558D00EC0425 /* CalendarDormCell.swift in Sources */,
-				E53BBC0B28BCD823001C86FC /* ManageMyInfoTableHeaderView.swift in Sources */,
 				E525C1CD28944E2800F934B3 /* CalendarPostViewController.swift in Sources */,
 				E504B61928B9C6E4009B45F8 /* CompleteSignUpViewModel.swift in Sources */,
 				E5C89E4B28A9EDA70035D9C6 /* URLRequest+Extensions.swift in Sources */,
@@ -1031,7 +1024,6 @@
 				E5290EFF2887BBB00004B8E6 /* PostCollectionViewCell.swift in Sources */,
 				E5EB5F272891398200EC0425 /* CalendarView.swift in Sources */,
 				E5290F06288818E70004B8E6 /* CommunityDetailViewController.swift in Sources */,
-				E53BBC0828BC4058001C86FC /* ManageMyInfoTableViewCell.swift in Sources */,
 				E58F96FD28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift in Sources */,
 				E58F96FB2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift in Sources */,
 				E586B6A528901B06005AB9C2 /* LoginTextFieldContainerView.swift in Sources */,
