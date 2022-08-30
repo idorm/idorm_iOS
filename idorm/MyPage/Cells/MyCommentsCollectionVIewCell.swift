@@ -98,5 +98,4 @@ class MyCommentsCollectionViewCell: UICollectionViewCell {
       make.bottom.equalToSuperview().inset(16)
     }
   }
-
 }

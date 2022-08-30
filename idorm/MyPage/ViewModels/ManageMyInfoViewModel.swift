@@ -13,6 +13,7 @@ class ManageMyInfoViewModel {
   struct Input {
     let viewDidLoad = PublishSubject<Void>()
     let viewWillAppear = PublishSubject<Void>()
+    let profileImageTapped = PublishSubject<Void>()
   }
   
   struct Output {
@@ -31,6 +32,11 @@ class ManageMyInfoViewModel {
     input.viewDidLoad
       .bind(to: output.configureUI)
       .disposed(by: disposeBag)
+    
+    input.profileImageTapped
+      .subscribe(onNext: {
+        print("Tapped!")
+      })
+      .disposed(by: disposeBag)
   }
 }
-
