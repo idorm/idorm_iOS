@@ -82,6 +82,7 @@
 		E58ACB8728846E050031BD86 /* ImagePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58ACB8628846E050031BD86 /* ImagePickerViewController.swift */; };
 		E58F96FB2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */; };
 		E58F96FD28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F96FC28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift */; };
+		E59CC58B28C358C600596DFC /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59CC58A28C358C600596DFC /* Coordinator.swift */; };
 		E5A164B128ADC80C00554655 /* ConfirmPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A164B028ADC80C00554655 /* ConfirmPasswordViewModel.swift */; };
 		E5A60C7C289BE72A004B77E8 /* SetCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A60C7B289BE72A004B77E8 /* SetCalendarViewModel.swift */; };
 		E5AB97C42895671800C0CEDF /* MatchingFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AB97C32895671800C0CEDF /* MatchingFilterViewController.swift */; };
@@ -205,6 +206,7 @@
 		E58ACB8628846E050031BD86 /* ImagePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerViewController.swift; sourceTree = "<group>"; };
 		E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerCollectionViewCell.swift; sourceTree = "<group>"; };
 		E58F96FC28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingPictureCollectionViewCell.swift; sourceTree = "<group>"; };
+		E59CC58A28C358C600596DFC /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		E5A164B028ADC80C00554655 /* ConfirmPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordViewModel.swift; sourceTree = "<group>"; };
 		E5A60C7B289BE72A004B77E8 /* SetCalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCalendarViewModel.swift; sourceTree = "<group>"; };
 		E5AB97C32895671800C0CEDF /* MatchingFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilterViewController.swift; sourceTree = "<group>"; };
@@ -573,6 +575,7 @@
 		E56DF4BD2894041D00E85B10 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				E59CC58828C358B300596DFC /* Coordinators */,
 				E508436B288133AD0047A2EC /* LoginUtilities.swift */,
 				E510D3D028ACC84300A28B90 /* LoginStates.swift */,
 				E5B7E84B28ABC9B00099B631 /* Services */,
@@ -715,6 +718,7 @@
 		E56DF4CC2894063100E85B10 /* General */ = {
 			isa = PBXGroup;
 			children = (
+				E59CC58928C358BA00596DFC /* Coordinators */,
 				E5E8A3E32895216200A48A91 /* Models */,
 				E5E8A3E22895215700A48A91 /* ViewControllers */,
 				E5E8A3E12895215100A48A91 /* Views */,
@@ -731,6 +735,21 @@
 				E584B4B4289F21C9007AD83A /* StackContainerView.swift */,
 			);
 			path = Swipe;
+			sourceTree = "<group>";
+		};
+		E59CC58828C358B300596DFC /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Coordinators;
+			sourceTree = "<group>";
+		};
+		E59CC58928C358BA00596DFC /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				E59CC58A28C358C600596DFC /* Coordinator.swift */,
+			);
+			path = Coordinators;
 			sourceTree = "<group>";
 		};
 		E5AB97C22895583C00C0CEDF /* ViewModels */ = {
@@ -981,6 +1000,7 @@
 			files = (
 				E53086E22879284000A5D0A0 /* HomeRoommateCollectionViewCell.swift in Sources */,
 				E5EB5F2E2891535E00EC0425 /* CalendarDormCollectionHeaderView.swift in Sources */,
+				E59CC58B28C358C600596DFC /* Coordinator.swift in Sources */,
 				E5A60C7C289BE72A004B77E8 /* SetCalendarViewModel.swift in Sources */,
 				E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordViewController.swift in Sources */,
 				E5EB5F302891558D00EC0425 /* CalendarDormCell.swift in Sources */,

@@ -13,7 +13,12 @@ import SnapKit
 
 class ManageMyInfoViewController: UIViewController {
   // MARK: - Properties
-  let scrollView = UIScrollView()
+  lazy var scrollView: UIScrollView = {
+    let sv = UIScrollView()
+    sv.bounces = false
+    
+    return sv
+  }()
   
   lazy var contentsView: UIView = {
     let view = UIView()
@@ -112,8 +117,9 @@ class ManageMyInfoViewController: UIViewController {
     self.view.backgroundColor = .white
     
     view.addSubview(scrollView)
+    view.addSubview(separatorLine1)
     scrollView.addSubview(contentsView)
-    [ separatorLine1, profileImage, nickNameView, changePasswordView, setupAlarmView, emailView, separatorLine2, acceptTheTermView, versionView, separatorLine3, withDrawLabel ]
+    [ profileImage, nickNameView, changePasswordView, setupAlarmView, emailView, separatorLine2, acceptTheTermView, versionView, separatorLine3, withDrawLabel ]
       .forEach { contentsView.addSubview($0) }
     
     scrollView.snp.makeConstraints { make in
@@ -126,12 +132,12 @@ class ManageMyInfoViewController: UIViewController {
     }
     
     separatorLine1.snp.makeConstraints { make in
-      make.top.leading.trailing.equalToSuperview()
+      make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
       make.height.equalTo(3)
     }
     
     profileImage.snp.makeConstraints { make in
-      make.top.equalTo(view.safeAreaLayoutGuide).inset(20)
+      make.top.equalToSuperview().inset(24)
       make.centerX.equalToSuperview()
     }
     
