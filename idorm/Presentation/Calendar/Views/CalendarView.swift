@@ -252,6 +252,6 @@ extension CalendarView: UICollectionViewDelegateFlowLayout {
   }
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let calendarPostView = UINavigationController(rootViewController: CalendarPostViewController())    
+    let calendarPostView = UINavigationController(rootViewController: CalendarPostViewController())
   }
 }

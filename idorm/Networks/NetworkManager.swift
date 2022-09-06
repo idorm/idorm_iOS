@@ -16,4 +16,3 @@ enum NetworkType: String {
   case post = "POST"
   case fetch = "FETCH"
 }
-

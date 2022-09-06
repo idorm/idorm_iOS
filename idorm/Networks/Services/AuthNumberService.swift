@@ -25,7 +25,6 @@ class AuthNumberService {
     } else {
       urlString = "https://idorm.inuappcenter.kr:443/verifyCode/password/\(encodedEmailString)"
     }
-    print(urlString)
     
     let url = URL(string: urlString)!
     var urlRequest = URLRequest(url: url)
