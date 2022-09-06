@@ -61,20 +61,16 @@ class LoginViewModel {
   }
   
   func verifyUser() {
-    LoginService.postLogin(email: self.emailText, password: self.passwordText)
-      .subscribe(onNext: { [weak self] result in
-        let statusCode = result.response.statusCode
-        if statusCode == 200 {
-          guard let accessToken = String(data: result.data, encoding: .utf8) else { return }
-          TokenManager.saveToken(token: accessToken)
+    MemberService.LoginAPI(email: self.emailText, password: self.passwordText)
+      .subscribe(onNext: { [weak self] data in
+        if let data = data {
+          let token = String(data: data, encoding: .utf8)!
+          TokenManager.saveToken(token: token)
           self?.output.showTabBarVC.onNext(Void())
-        } else {
-          struct Response: Codable {
-            let message: String
-          }
-          guard let response = try? JSONDecoder().decode(Response.self, from: result.data) else { return }
-          self?.output.showErrorPopupVC.onNext(response.message)
+          print(token)
         }
+      }, onError: { error in
+        print(error)
       })
       .disposed(by: disposeBag)
   }

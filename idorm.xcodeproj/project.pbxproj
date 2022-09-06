@@ -24,7 +24,7 @@
 		E510D3C928AC88A000A28B90 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E510D3C828AC88A000A28B90 /* Alamofire */; };
 		E510D3CB28AC9F6E00A28B90 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CA28AC9F6E00A28B90 /* AuthViewModel.swift */; };
 		E510D3CD28ACB87D00A28B90 /* PutEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CC28ACB87D00A28B90 /* PutEmailViewModel.swift */; };
-		E510D3CF28ACC5F300A28B90 /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CE28ACC5F300A28B90 /* LoginService.swift */; };
+		E510D3CF28ACC5F300A28B90 /* MemberService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CE28ACC5F300A28B90 /* MemberService.swift */; };
 		E510D3D128ACC84300A28B90 /* LoginStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3D028ACC84300A28B90 /* LoginStates.swift */; };
 		E510D3D328ACCA1C00A28B90 /* AuthNumberViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3D228ACCA1C00A28B90 /* AuthNumberViewModel.swift */; };
 		E525C1CD28944E2800F934B3 /* CalendarPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */; };
@@ -42,7 +42,6 @@
 		E53086E6287928B400A5D0A0 /* HomePopularCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E5287928B400A5D0A0 /* HomePopularCollectionViewCell.swift */; };
 		E53086E828795D2700A5D0A0 /* HomeCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53086E728795D2700A5D0A0 /* HomeCollectionHeaderView.swift */; };
 		E5340E8A289C713D0030A44F /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = E5340E89289C713D0030A44F /* RxDataSources */; };
-		E5355F2228B6FDAF00CB1C94 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5355F2128B6FDAF00CB1C94 /* NetworkManager.swift */; };
 		E5355F2428B7004100CB1C94 /* PutEmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5355F2328B7004100CB1C94 /* PutEmailService.swift */; };
 		E5355F2628B9A2DE00CB1C94 /* AuthNumberService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5355F2528B9A2DE00CB1C94 /* AuthNumberService.swift */; };
 		E5370AFE28A1001C00A68D92 /* MyPageUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5370AFD28A1001C00A68D92 /* MyPageUtilities.swift */; };
@@ -82,6 +81,9 @@
 		E58ACB8728846E050031BD86 /* ImagePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58ACB8628846E050031BD86 /* ImagePickerViewController.swift */; };
 		E58F96FB2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */; };
 		E58F96FD28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F96FC28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift */; };
+		E591B77728C6E6AC00B8B581 /* MemberServerConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591B77628C6E6AC00B8B581 /* MemberServerConstants.swift */; };
+		E591B77C28C6E99400B8B581 /* ServerConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591B77B28C6E99400B8B581 /* ServerConstants.swift */; };
+		E591B77E28C6EB0600B8B581 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591B77D28C6EB0600B8B581 /* APIService.swift */; };
 		E5A164B128ADC80C00554655 /* ConfirmPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A164B028ADC80C00554655 /* ConfirmPasswordViewModel.swift */; };
 		E5A60C7C289BE72A004B77E8 /* SetCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A60C7B289BE72A004B77E8 /* SetCalendarViewModel.swift */; };
 		E5AB97C42895671800C0CEDF /* MatchingFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AB97C32895671800C0CEDF /* MatchingFilterViewController.swift */; };
@@ -145,7 +147,7 @@
 		E50300F828773A5D00611C62 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E50300FF28773A5E00611C62 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E503010228773A5E00611C62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		E503010428773A5E00611C62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E503010428773A5E00611C62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = ../../Info.plist; sourceTree = "<group>"; };
 		E504B61628B9BCF5009B45F8 /* ConfirmPasswordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordService.swift; sourceTree = "<group>"; };
 		E504B61828B9C6E4009B45F8 /* CompleteSignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpViewModel.swift; sourceTree = "<group>"; };
 		E504B61A28B9DCE3009B45F8 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
@@ -157,7 +159,7 @@
 		E508437A28814CAB0047A2EC /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		E510D3CA28AC9F6E00A28B90 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		E510D3CC28ACB87D00A28B90 /* PutEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailViewModel.swift; sourceTree = "<group>"; };
-		E510D3CE28ACC5F300A28B90 /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
+		E510D3CE28ACC5F300A28B90 /* MemberService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberService.swift; sourceTree = "<group>"; };
 		E510D3D028ACC84300A28B90 /* LoginStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginStates.swift; sourceTree = "<group>"; };
 		E510D3D228ACCA1C00A28B90 /* AuthNumberViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberViewModel.swift; sourceTree = "<group>"; };
 		E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPostViewController.swift; sourceTree = "<group>"; };
@@ -173,7 +175,6 @@
 		E53086E32879287100A5D0A0 /* HomeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListViewModel.swift; sourceTree = "<group>"; };
 		E53086E5287928B400A5D0A0 /* HomePopularCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePopularCollectionViewCell.swift; sourceTree = "<group>"; };
 		E53086E728795D2700A5D0A0 /* HomeCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionHeaderView.swift; sourceTree = "<group>"; };
-		E5355F2128B6FDAF00CB1C94 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		E5355F2328B7004100CB1C94 /* PutEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailService.swift; sourceTree = "<group>"; };
 		E5355F2528B9A2DE00CB1C94 /* AuthNumberService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberService.swift; sourceTree = "<group>"; };
 		E5370AFD28A1001C00A68D92 /* MyPageUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageUtilities.swift; sourceTree = "<group>"; };
@@ -205,6 +206,9 @@
 		E58ACB8628846E050031BD86 /* ImagePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerViewController.swift; sourceTree = "<group>"; };
 		E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerCollectionViewCell.swift; sourceTree = "<group>"; };
 		E58F96FC28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingPictureCollectionViewCell.swift; sourceTree = "<group>"; };
+		E591B77628C6E6AC00B8B581 /* MemberServerConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberServerConstants.swift; sourceTree = "<group>"; };
+		E591B77B28C6E99400B8B581 /* ServerConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConstants.swift; sourceTree = "<group>"; };
+		E591B77D28C6EB0600B8B581 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		E5A164B028ADC80C00554655 /* ConfirmPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordViewModel.swift; sourceTree = "<group>"; };
 		E5A60C7B289BE72A004B77E8 /* SetCalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCalendarViewModel.swift; sourceTree = "<group>"; };
 		E5AB97C32895671800C0CEDF /* MatchingFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilterViewController.swift; sourceTree = "<group>"; };
@@ -303,7 +307,6 @@
 			isa = PBXGroup;
 			children = (
 				E50300F528773A5D00611C62 /* idorm */,
-				E503010428773A5E00611C62 /* Info.plist */,
 				E50300F428773A5D00611C62 /* Products */,
 				412A085C63CA6B4F422F3788 /* Pods */,
 				E2593091C034F6240C996B85 /* Frameworks */,
@@ -323,10 +326,9 @@
 			children = (
 				E54B3E2328C6E1A80062EF7E /* App */,
 				E54B3E2228C6E1A30062EF7E /* Models */,
-				E53C60AC287B34C400977909 /* Utilities */,
 				E591B77228C6E5E300B8B581 /* Networks */,
-				E54B3E1228C6D8910062EF7E /* Resources */,
 				E54B3E2428C6E25C0062EF7E /* Presentation */,
+				E54B3E1228C6D8910062EF7E /* Resources */,
 			);
 			path = idorm;
 			sourceTree = "<group>";
@@ -391,6 +393,7 @@
 			children = (
 				E503010128773A5E00611C62 /* LaunchScreen.storyboard */,
 				E50300FF28773A5E00611C62 /* Assets.xcassets */,
+				E53C60AC287B34C400977909 /* Utilities */,
 				E508437528813C270047A2EC /* Fonts */,
 				E5084367288133570047A2EC /* Extensions */,
 				E54B3E1328C6D89E0062EF7E /* Constants */,
@@ -402,6 +405,8 @@
 		E54B3E1328C6D89E0062EF7E /* Constants */ = {
 			isa = PBXGroup;
 			children = (
+				E591B77B28C6E99400B8B581 /* ServerConstants.swift */,
+				E591B77628C6E6AC00B8B581 /* MemberServerConstants.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -415,37 +420,6 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
-		E54B3E1E28C6DD440062EF7E /* APIs */ = {
-			isa = PBXGroup;
-			children = (
-				E54B3E1F28C6DFFE0062EF7E /* Member */,
-				E54B3E2028C6E00D0062EF7E /* Onboarding */,
-				E54B3E2128C6E0120062EF7E /* Email */,
-			);
-			path = APIs;
-			sourceTree = "<group>";
-		};
-		E54B3E1F28C6DFFE0062EF7E /* Member */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Member;
-			sourceTree = "<group>";
-		};
-		E54B3E2028C6E00D0062EF7E /* Onboarding */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Onboarding;
-			sourceTree = "<group>";
-		};
-		E54B3E2128C6E0120062EF7E /* Email */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Email;
-			sourceTree = "<group>";
-		};
 		E54B3E2228C6E1A30062EF7E /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -457,6 +431,7 @@
 		E54B3E2328C6E1A80062EF7E /* App */ = {
 			isa = PBXGroup;
 			children = (
+				E503010428773A5E00611C62 /* Info.plist */,
 				E50300F628773A5D00611C62 /* AppDelegate.swift */,
 				E50300F828773A5D00611C62 /* SceneDelegate.swift */,
 			);
@@ -803,9 +778,8 @@
 		E591B77228C6E5E300B8B581 /* Networks */ = {
 			isa = PBXGroup;
 			children = (
-				E5355F2128B6FDAF00CB1C94 /* NetworkManager.swift */,
+				E591B77D28C6EB0600B8B581 /* APIService.swift */,
 				E5B7E84B28ABC9B00099B631 /* Services */,
-				E54B3E1E28C6DD440062EF7E /* APIs */,
 			);
 			path = Networks;
 			sourceTree = "<group>";
@@ -853,7 +827,7 @@
 		E5B7E84B28ABC9B00099B631 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				E510D3CE28ACC5F300A28B90 /* LoginService.swift */,
+				E510D3CE28ACC5F300A28B90 /* MemberService.swift */,
 				E5355F2328B7004100CB1C94 /* PutEmailService.swift */,
 				E5355F2528B9A2DE00CB1C94 /* AuthNumberService.swift */,
 				E504B61628B9BCF5009B45F8 /* ConfirmPasswordService.swift */,
@@ -1099,6 +1073,7 @@
 				E508437728813CE80047A2EC /* FontManager.swift in Sources */,
 				E53086E42879287100A5D0A0 /* HomeListViewModel.swift in Sources */,
 				E5F5EC742884025E0026DE21 /* CommunityViewController.swift in Sources */,
+				E591B77E28C6EB0600B8B581 /* APIService.swift in Sources */,
 				E5AC2DCF288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift in Sources */,
 				E5290F10288869700004B8E6 /* CommunityDetailHeaderCollectionViewCell.swift in Sources */,
 				E58A6297289D6BEF0074F646 /* DeviceManager.swift in Sources */,
@@ -1133,10 +1108,10 @@
 				E53D6E7528963B21004BF95B /* MatchingFilterRangeSlider.swift in Sources */,
 				E5E8A3DB289505B500A48A91 /* MyPostVC.swift in Sources */,
 				E5E8A3DD289505F000A48A91 /* MyPostCollectionHeaderView.swift in Sources */,
+				E591B77C28C6E99400B8B581 /* ServerConstants.swift in Sources */,
 				E58131A8288E6AC6000DB8C9 /* OnboardingFloatyBottomView.swift in Sources */,
 				E56342212878246200E93D17 /* OnboardingTableHeaderView.swift in Sources */,
 				E508436C288133AD0047A2EC /* LoginUtilities.swift in Sources */,
-				E5355F2228B6FDAF00CB1C94 /* NetworkManager.swift in Sources */,
 				E56342232878353100E93D17 /* TabBarController.swift in Sources */,
 				E56DF4AF2893C81F00E85B10 /* WeekdayCalendarView.swift in Sources */,
 				E5E8A3DF2895208500A48A91 /* MyCommentsCollectionVIewCell.swift in Sources */,
@@ -1144,6 +1119,7 @@
 				E5355F2628B9A2DE00CB1C94 /* AuthNumberService.swift in Sources */,
 				E5F5EC762884027D0026DE21 /* CalendarViewController.swift in Sources */,
 				E510D3D328ACCA1C00A28B90 /* AuthNumberViewModel.swift in Sources */,
+				E591B77728C6E6AC00B8B581 /* MemberServerConstants.swift in Sources */,
 				E58ACB8728846E050031BD86 /* ImagePickerViewController.swift in Sources */,
 				E56DF4A2289354AF00E85B10 /* CalendarRoundedBackgroundView.swift in Sources */,
 				E5355F2428B7004100CB1C94 /* PutEmailService.swift in Sources */,
@@ -1171,7 +1147,7 @@
 				E5290EFD2887BBA40004B8E6 /* CommunityPopularCollectionVIewCell.swift in Sources */,
 				E5370AFE28A1001C00A68D92 /* MyPageUtilities.swift in Sources */,
 				E55DE2F62896DB06004F1401 /* CustomCalendarCell.swift in Sources */,
-				E510D3CF28ACC5F300A28B90 /* LoginService.swift in Sources */,
+				E510D3CF28ACC5F300A28B90 /* MemberService.swift in Sources */,
 				E5D49016288C449600311493 /* OnboardingVIewController.swift in Sources */,
 				E5290F1228886D7A0004B8E6 /* CommunityUtilities.swift in Sources */,
 				E5B15F6F287FE355004D4164 /* OnboardingDetailViewController.swift in Sources */,
@@ -1320,7 +1296,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 95JTZ6AP78;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = idorm/Info.plist;
+				INFOPLIST_FILE = idorm/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1348,7 +1324,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 95JTZ6AP78;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = idorm/Info.plist;
+				INFOPLIST_FILE = idorm/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
