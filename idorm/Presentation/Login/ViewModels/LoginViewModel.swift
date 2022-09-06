@@ -62,15 +62,22 @@ class LoginViewModel {
   
   func verifyUser() {
     MemberService.LoginAPI(email: self.emailText, password: self.passwordText)
-      .subscribe(onNext: { [weak self] data in
-        if let data = data {
-          let token = String(data: data, encoding: .utf8)!
+      .subscribe(onNext: { [weak self] response in
+        guard let statusCode = response.response?.statusCode else { return }
+        guard let data = response.data else { return }
+        switch statusCode {
+        case 200:
+          struct Response: Codable {
+            let data: String
+          }
+          let token = APIService.decode(Response.self, data: data).data
           TokenManager.saveToken(token: token)
           self?.output.showTabBarVC.onNext(Void())
-          print(token)
+        case 400:
+          
+        default:
+          fatalError("Internal Server Error!")
         }
-      }, onError: { error in
-        print(error)
       })
       .disposed(by: disposeBag)
   }

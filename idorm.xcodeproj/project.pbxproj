@@ -775,10 +775,18 @@
 			path = Swipe;
 			sourceTree = "<group>";
 		};
+		E586C62528C76AC600D773FE /* DecodeHelpers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DecodeHelpers;
+			sourceTree = "<group>";
+		};
 		E591B77228C6E5E300B8B581 /* Networks */ = {
 			isa = PBXGroup;
 			children = (
 				E591B77D28C6EB0600B8B581 /* APIService.swift */,
+				E586C62528C76AC600D773FE /* DecodeHelpers */,
 				E5B7E84B28ABC9B00099B631 /* Services */,
 			);
 			path = Networks;

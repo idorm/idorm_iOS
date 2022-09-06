@@ -16,12 +16,12 @@ struct Response: Codable {
 
 class MemberService {
   // MARK: - 로그인 요청
-  static func LoginAPI(email: String, password: String) -> Observable<Data?> {
+  static func LoginAPI(email: String, password: String) -> Observable<AFDataResponse<Data>> {
     let body: Parameters = [
       "email": email,
       "password": password
     ]
-    
-    return APIService.load(MemeberServerConstants.loginURL, httpMethod: .post, body: body)
+    let url = MemeberServerConstants.loginURL
+    return APIService.load(url, httpMethod: .post, body: body)
     }
 }
