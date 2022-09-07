@@ -21,7 +21,6 @@ class AuthNumberViewModel {
     let resetTimer = PublishSubject<Void>()
     let dismissVC = PublishSubject<Void>()
     let showPopupVC = PublishSubject<String>()
-//    let buttonState = BehaviorRelay<Bool>(value: true)
   }
   
   let input = Input()
@@ -42,8 +41,6 @@ class AuthNumberViewModel {
     input.confirmButtonTapped
       .bind(onNext: { [weak self] in
         guard let self = self else { return }
-//        guard self.output.buttonState.value == true else { return }
-//        self.output.buttonState.accept(false)
         self.requestVerifyCodeAPI()
       })
       .disposed(by: disposeBag)

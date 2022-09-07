@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import NVActivityIndicatorView
 
 class PutEmailViewController: UIViewController {
   // MARK: - Properties
@@ -54,6 +55,13 @@ class PutEmailViewController: UIViewController {
     
     return tf
   }()
+  
+  lazy var indicator = NVActivityIndicatorView(
+    frame: CGRect(x: view.frame.width / 2, y: view.frame.height / 2, width: 20, height: 20),
+    type: .lineSpinFadeLoader,
+    color: UIColor.black,
+    padding: 0
+  )
   
   let viewModel = PutEmailViewModel()
   let disposeBag = DisposeBag()
@@ -118,6 +126,21 @@ class PutEmailViewController: UIViewController {
         }
       })
       .disposed(by: disposeBag)
+    
+    // 인디케이터 애니메이션 적용
+    viewModel.output.startAnimation
+      .asDriver(onErrorJustReturn: Void())
+      .drive(onNext: { [weak self] in
+        self?.indicator.startAnimating()
+      })
+      .disposed(by: disposeBag)
+    
+    viewModel.output.stopAnimation
+      .asDriver(onErrorJustReturn: Void())
+      .drive(onNext: { [weak self] in
+        self?.indicator.stopAnimating()
+      })
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers
@@ -137,7 +160,7 @@ class PutEmailViewController: UIViewController {
       inustack.isHidden = false
     }
     
-    [ infoLabel, textField, confirmButton, inustack ]
+    [ infoLabel, textField, confirmButton, inustack, indicator ]
       .forEach { view.addSubview($0) }
     
     infoLabel.snp.makeConstraints { make in
@@ -157,6 +180,10 @@ class PutEmailViewController: UIViewController {
     inustack.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
       make.top.equalTo(textField.snp.bottom).offset(16)
+    }
+    
+    indicator.snp.makeConstraints { make in
+      make.center.equalToSuperview()
     }
   }
   

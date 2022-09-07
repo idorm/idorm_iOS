@@ -5,7 +5,7 @@
 //  Created by 김응철 on 2022/09/07.
 //
 
-final class EmailConstants {
+final class EmailServerConstants {
   /// 회원가입 이메일 인증 코드 전송
   static let emailAuthenticationURL: String = ServerConstants.baseURL + "/email"
   /// 비밀번호 변경 이메일 인증 코드 전송
