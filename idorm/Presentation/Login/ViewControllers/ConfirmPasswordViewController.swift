@@ -36,7 +36,7 @@ class ConfirmPasswordViewController: UIViewController {
   
   lazy var confirmButton: UIButton = {
     let button = LoginUtilities.returnBottonConfirmButton(string: "")
-    if type == .singUp {
+    if type == .signUp {
       button.setTitle("가입 완료", for: .normal)
     } else {
       button.setTitle("변경 완료", for: .normal)
@@ -220,13 +220,20 @@ class ConfirmPasswordViewController: UIViewController {
         self?.present(completeVC, animated: true)
       })
       .disposed(by: disposeBag)
+    
+    viewModel.output.showLoginVC
+      .asDriver(onErrorJustReturn: Void())
+      .drive(onNext: { [weak self] in
+        self?.navigationController?.popToRootViewController(animated: true)
+      })
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers
   private func configureUI() {
     view.backgroundColor = .white
     
-    if type == .singUp {
+    if type == .signUp {
       navigationItem.title = "회원가입"
     } else {
       navigationItem.title = "비밀번호 변경"

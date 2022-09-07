@@ -5,10 +5,11 @@
 //  Created by 김응철 on 2022/09/06.
 //
 
-final class MemeberServerConstants {
+final class MemberServerConstants {
+  /// 로그인 요청 URL
   static let loginURL = ServerConstants.baseURL + "/login"
-  static let memberURL = ServerConstants.baseURL + "/member"
-  static let changeMemberNicknameURL = ServerConstants.baseURL + "/member/nickname"
-  static let changeMemberPwURL = ServerConstants.baseURL + "/member/password"
+  /// 회원가입 요청 URL
   static let registerURL = ServerConstants.baseURL + "/register"
+  /// 로그인이 되어 있지 않을 때, 비밀 번호 변경 요청 URL
+  static let changePasswordURL = ServerConstants.baseURL + "/changepassword"
 }

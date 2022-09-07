@@ -10,7 +10,7 @@ import SnapKit
 
 enum LoginType {
   case findPW
-  case singUp
+  case signUp
 }
 
 class LoginUtilities {

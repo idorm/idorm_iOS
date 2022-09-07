@@ -34,7 +34,6 @@ class APIService {
       let request = AF.request(url, method: httpMethod, parameters: body, encoding: JSONEncoding.default, headers: header)
          .responseData { response in
           observer.onNext(response)
-          observer.onCompleted()
         }
       return Disposables.create {
         request.cancel()

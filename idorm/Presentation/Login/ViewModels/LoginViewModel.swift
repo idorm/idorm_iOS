@@ -48,7 +48,7 @@ class LoginViewModel {
       .disposed(by: disposeBag)
     
     input.signUpButtonTapped
-      .map { .singUp }
+      .map { .signUp }
       .bind(to: output.showPutEmailVC)
       .disposed(by: disposeBag)
     

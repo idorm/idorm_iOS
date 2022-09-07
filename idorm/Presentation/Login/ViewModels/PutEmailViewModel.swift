@@ -43,25 +43,30 @@ class PutEmailViewModel {
         guard let self = self else { return }
         self.output.buttonState.accept(false)
         LoginStates.currentEmail = self.email
-        self.authenticateEmail(email: self.email, type: LoginStates.currentLoginType)
+        self.requestEmailAPI(email: self.email, type: LoginStates.currentLoginType)
       })
       .disposed(by: disposeBag)
   }
   
-  func authenticateEmail(email: String, type: LoginType) {
-    PutEmailService.authenticateEmail(email: self.email, type: LoginStates.currentLoginType)
-      .subscribe(onNext: { [weak self] result in
-        let statusCode = result.response.statusCode
-        if statusCode == 200 {
+  func requestEmailAPI(email: String, type: LoginType) {
+    EmailService.emailAPI(email: email, type: type)
+      .subscribe(onNext: { [weak self] response in
+        guard let statusCode = response.response?.statusCode else { return }
+        guard let data = response.data else { return }
+        switch statusCode {
+        case 200:
           self?.output.showAuthVC.onNext(Void())
           self?.output.buttonState.accept(true)
-        } else {
+        case 400:
           struct Response: Codable {
             let message: String
           }
-          guard let response = try? JSONDecoder().decode(Response.self, from: result.data) else { return }
-          self?.output.showErrorPopupVC.onNext(response.message)
+          let message = APIService.decode(Response.self, data: data).message
+          self?.output.showErrorPopupVC.onNext(message)
           self?.output.buttonState.accept(true)
+        default:
+          // 오류 처리 하기
+          break
         }
       })
       .disposed(by: disposeBag)
@@ -73,3 +78,4 @@ class PutEmailViewModel {
     return emailTest.evaluate(with: id)
   }
 }
+

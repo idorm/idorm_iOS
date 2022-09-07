@@ -18,10 +18,10 @@ class AuthNumberViewModel {
   }
   
   struct Output {
-    let requestTimer = PublishSubject<Void>()
+    let resetTimer = PublishSubject<Void>()
     let dismissVC = PublishSubject<Void>()
     let showPopupVC = PublishSubject<String>()
-    let buttonState = BehaviorRelay<Bool>(value: true)
+//    let buttonState = BehaviorRelay<Bool>(value: true)
   }
   
   let input = Input()
@@ -34,49 +34,52 @@ class AuthNumberViewModel {
   
   func bind() {
     input.requestAgainButtonTapped
-      .map { [weak self] in
-        self?.requestAgainAPI()
-      }
-      .bind(to: output.requestTimer)
+      .subscribe(onNext: { [weak self] in
+        self?.requestEmailAPI()
+      })
       .disposed(by: disposeBag)
     
     input.confirmButtonTapped
       .bind(onNext: { [weak self] in
         guard let self = self else { return }
-        guard self.output.buttonState.value == true else { return }
-        self.output.buttonState.accept(false)
-        self.verifyCode()
+//        guard self.output.buttonState.value == true else { return }
+//        self.output.buttonState.accept(false)
+        self.requestVerifyCodeAPI()
       })
       .disposed(by: disposeBag)
   }
   
-  func requestAgainAPI() {
+  func requestEmailAPI() {
     guard let currentEmail = LoginStates.currentEmail else { return }
-    AuthNumberService.authenticateEmail(email: currentEmail, type: LoginStates.currentLoginType)
-      .bind(onNext: { [weak self] response in
-        let statusCode = response.response.statusCode
-        if statusCode == 200 {
+    EmailService.emailAPI(email: currentEmail, type: LoginStates.currentLoginType)
+      .subscribe(onNext: { [weak self] response in
+        guard let statusCode = response.response?.statusCode else { return }
+        switch statusCode {
+        case 200:
           self?.output.showPopupVC.onNext("인증번호가 재전송 되었습니다.")
-        } else {
+          self?.output.resetTimer.onNext(Void())
+        default:
           self?.output.showPopupVC.onNext("치명적인 오류가 발생했습니다.")
         }
       })
       .disposed(by: disposeBag)
   }
   
-  func verifyCode() {
+  func requestVerifyCodeAPI() {
     guard let currentEmail = LoginStates.currentEmail else { return }
-    print(currentEmail)
     let code = input.codeString.value
-    AuthNumberService.verifyEmailCode(email: currentEmail, code: code, type: LoginStates.currentLoginType)
-      .bind(onNext: { [weak self] result in
-        let statusCode = result.response.statusCode
-        if statusCode == 200 {
+    
+    EmailService.verifyCodeAPI(email: currentEmail, code: code, type: LoginStates.currentLoginType)
+      .subscribe(onNext: { [weak self] response in
+        guard let statusCode = response.response?.statusCode else { return }
+        switch statusCode {
+        case 200:
           self?.output.dismissVC.onNext(Void())
-        } else {
+        case 400:
           self?.output.showPopupVC.onNext("인증번호를 다시 확인해 주세요.")
+        default:
+          break
         }
-        self?.output.buttonState.accept(true)
       })
       .disposed(by: disposeBag)
   }

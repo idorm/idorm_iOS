@@ -86,7 +86,7 @@ class AuthNumberViewController: UIViewController {
       .map { _ in }
       .bind(to: viewModel.input.viewWillAppear)
       .disposed(by: disposeBag)
-    
+      
     textField.rx.text
       .orEmpty
       .bind(to: viewModel.input.codeString)
@@ -95,7 +95,7 @@ class AuthNumberViewController: UIViewController {
     // --------------------------------
     // -------------OUTPUT-------------
     // --------------------------------
-    viewModel.output.requestTimer
+    viewModel.output.resetTimer
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
         self?.timer.invalidate()

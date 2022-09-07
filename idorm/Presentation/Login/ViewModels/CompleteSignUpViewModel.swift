@@ -21,7 +21,6 @@ class CompleteSignUpViewModel {
   let input = Input()
   let output = Output()
   let disposeBag = DisposeBag()
-  let service = ConfirmPasswordService()
   
   init() {
     bind()
@@ -30,19 +29,31 @@ class CompleteSignUpViewModel {
   func bind() {
     input.continueButtonTapped
       .bind(onNext: { [weak self] in
-        self?.loginAPI()
+        self?.requestLoginAPI()
       })
       .disposed(by: disposeBag)
   }
   
-  func loginAPI() {
+  func requestLoginAPI() {
     guard let email = LoginStates.currentEmail else { return }
     guard let password = LoginStates.currentPassword else { return }
-    service.postLogin(email: email, password: password)
+    
+    MemberService.LoginAPI(email: email, password: password)
       .subscribe(onNext: { [weak self] response in
-        guard let token = String(data: response.data, encoding: .utf8) else { return }
-        TokenManager.saveToken(token: token)
-        self?.output.showOnboardingVC.onNext(Void())
+        guard let statusCode = response.response?.statusCode else { return }
+        guard let data = response.data else { return }
+        switch statusCode {
+        case 200:
+          struct Response: Codable {
+            let data: String
+          }
+          let token = APIService.decode(Response.self, data: data).data
+          TokenManager.saveToken(token: token)
+          self?.output.showOnboardingVC.onNext(Void())
+        default:
+          // 오류처리
+          break
+        }
       })
       .disposed(by: disposeBag)
   }

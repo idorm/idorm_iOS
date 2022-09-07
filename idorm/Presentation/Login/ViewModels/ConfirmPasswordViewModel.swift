@@ -29,12 +29,12 @@ class ConfirmPasswordViewModel {
     let didEndState_2 = PublishSubject<Void>()
     let showErrorPopupVC = PublishSubject<String>()
     let showCompleteVC = PublishSubject<Void>()
+    let showLoginVC = PublishSubject<Void>()
   }
   
   let input = Input()
   let output = Output()
   let disposeBag = DisposeBag()
-  let service = ConfirmPasswordService()
   
   var passwordText: String { return input.passwordText.value }
   var passwordText2: String { return input.passwordText_2.value }
@@ -87,7 +87,12 @@ class ConfirmPasswordViewModel {
         if self.isValidPasswordFinal(pwd: self.passwordText),
            self.isValidPasswordFinal(pwd: self.passwordText2),
            self.passwordText == self.passwordText2 {
-          self.registerAPI()
+          
+          if LoginStates.currentLoginType == .signUp {
+            self.requestRegisterAPI()
+          } else {
+            
+          }
         } else {
           self.output.showErrorPopupVC.onNext("조건을 다시 확인해 주세요.")
         }
@@ -95,26 +100,39 @@ class ConfirmPasswordViewModel {
       .disposed(by: disposeBag)
   }
   
-  func registerAPI() {
+  func requestRegisterAPI() {
     guard let email = LoginStates.currentEmail else { return }
-    let confirmType = LoginStates.currentLoginType
     
-    if confirmType == .singUp {
-      service.registerUser(email: email, password: passwordText)
-        .subscribe(onNext: { [weak self] response in
-          guard let self = self else { return }
-          let statusCode = response.response.statusCode
-          if statusCode == 200 {
-            LoginStates.currentPassword = self.passwordText
-            self.output.showCompleteVC.onNext(Void())
-          } else {
-            self.output.showErrorPopupVC.onNext("등록되지 않은 이메일입니다.")
-          }
-        })
-        .disposed(by: disposeBag)
-    } else {
-      
-    }
+    MemberService.registerAPI(email: email, password: passwordText)
+      .subscribe(onNext: { [weak self] response in
+        guard let statusCode = response.response?.statusCode else { return }
+        switch statusCode {
+        case 200:
+          LoginStates.currentPassword = self?.passwordText
+          self?.output.showCompleteVC.onNext(Void())
+        default:
+          self?.output.showErrorPopupVC.onNext("등록되지 않은 이메일입니다.")
+        }
+      })
+      .disposed(by: disposeBag)
+  }
+  
+  func requestChangePasswordAPI() {
+    guard let email = LoginStates.currentEmail else { return }
+    
+    MemberService.changePasswordAPI(email: email, password: passwordText)
+      .subscribe(onNext: { [weak self] response in
+        guard let statusCode = response.response?.statusCode else { return }
+        switch statusCode {
+        case 200:
+          self?.output.showErrorPopupVC.onNext("비밀번호가 변경 되었습니다.")
+          self?.output.showLoginVC.onNext(Void())
+        default:
+          // 오류 처리하기
+          break
+        }
+      })
+      .disposed(by: disposeBag)
   }
   
   func isValidPasswordFinal(pwd: String) -> Bool {
