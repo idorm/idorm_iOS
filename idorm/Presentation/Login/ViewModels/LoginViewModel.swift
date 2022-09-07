@@ -74,29 +74,15 @@ class LoginViewModel {
           TokenManager.saveToken(token: token)
           self?.output.showTabBarVC.onNext(Void())
         case 400:
-          
+          struct Response: Codable {
+            let message: String
+          }
+          let message = APIService.decode(Response.self, data: data).message
+          self?.output.showErrorPopupVC.onNext(message)
         default:
           fatalError("Internal Server Error!")
         }
       })
       .disposed(by: disposeBag)
-  }
-  
-  func isValidEmail(id: String) -> Bool {
-         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-         let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
-         return emailTest.evaluate(with: id)
-     }
-     
-  func isValidPassword(pwd: String) -> Bool {
-      let passwordRegEx = "^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{0,}"
-      let passwordTest = NSPredicate(format: "SELF MATCHES %@", passwordRegEx)
-      return passwordTest.evaluate(with: pwd)
-  }
-  
-  func isValidPasswordFinal(pwd: String) -> Bool {
-      let passwordRegEx = "^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{8,20}"
-      let passwordTest = NSPredicate(format: "SELF MATCHES %@", passwordRegEx)
-      return passwordTest.evaluate(with: pwd)
   }
 }

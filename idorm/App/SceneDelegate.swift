@@ -17,7 +17,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     window?.rootViewController = UINavigationController(rootViewController: LoginViewController())
     window?.makeKeyAndVisible()
   }
-  
+}
+
+extension SceneDelegate {
   func sceneDidEnterBackground(_ scene: UIScene) {
     NotificationCenter.default.post(name: NSNotification.Name("sceneDidEnterBackground"), object: nil)
     UserDefaults.standard.setValue(Date(), forKey: "sceneDidEnterBackground")

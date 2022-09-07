@@ -618,7 +618,6 @@
 		E56DF4BD2894041D00E85B10 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				E59CC58828C358B300596DFC /* Flow */,
 				E56DF4C12894043D00E85B10 /* ViewModels */,
 				E56DF4BF2894042D00E85B10 /* ViewControllers */,
 				E56DF4BE2894042500E85B10 /* Views */,
@@ -775,18 +774,10 @@
 			path = Swipe;
 			sourceTree = "<group>";
 		};
-		E586C62528C76AC600D773FE /* DecodeHelpers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = DecodeHelpers;
-			sourceTree = "<group>";
-		};
 		E591B77228C6E5E300B8B581 /* Networks */ = {
 			isa = PBXGroup;
 			children = (
 				E591B77D28C6EB0600B8B581 /* APIService.swift */,
-				E586C62528C76AC600D773FE /* DecodeHelpers */,
 				E5B7E84B28ABC9B00099B631 /* Services */,
 			);
 			path = Networks;
@@ -815,13 +806,6 @@
 				E5290F1128886D7A0004B8E6 /* CommunityUtilities.swift */,
 			);
 			path = Communnity;
-			sourceTree = "<group>";
-		};
-		E59CC58828C358B300596DFC /* Flow */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Flow;
 			sourceTree = "<group>";
 		};
 		E5AB97C22895583C00C0CEDF /* ViewModels */ = {

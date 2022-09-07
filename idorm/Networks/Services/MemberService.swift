@@ -10,10 +10,6 @@ import RxSwift
 import RxCocoa
 import Alamofire
 
-struct Response: Codable {
-  let message: String
-}
-
 class MemberService {
   // MARK: - 로그인 요청
   static func LoginAPI(email: String, password: String) -> Observable<AFDataResponse<Data>> {

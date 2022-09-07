@@ -30,8 +30,9 @@ class APIService {
       let header : HTTPHeaders = [
         "Content-Type" : "application/json"
       ]
+
       let request = AF.request(url, method: httpMethod, parameters: body, encoding: JSONEncoding.default, headers: header)
-        .responseData { response in
+         .responseData { response in
           observer.onNext(response)
           observer.onCompleted()
         }

@@ -115,7 +115,7 @@ class LoginViewController: UIViewController {
     // ---------------INPUT-------------
     // ---------------------------------
     loginButton.rx.tap
-      .throttle(.seconds(1), scheduler: MainScheduler.instance)
+      .throttle(.seconds(3), scheduler: MainScheduler.instance)
       .bind(to: viewModel.input.loginButtonTapped)
       .disposed(by: disposeBag)
     
