@@ -131,6 +131,7 @@ class PutEmailViewController: UIViewController {
     viewModel.output.startAnimation
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
+        self?.confirmButton.isEnabled = false
         self?.indicator.startAnimating()
       })
       .disposed(by: disposeBag)
@@ -138,6 +139,7 @@ class PutEmailViewController: UIViewController {
     viewModel.output.stopAnimation
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
+        self?.confirmButton.isEnabled = true
         self?.indicator.stopAnimating()
       })
       .disposed(by: disposeBag)
@@ -191,4 +193,3 @@ class PutEmailViewController: UIViewController {
     view.endEditing(true)
   }
 }
-

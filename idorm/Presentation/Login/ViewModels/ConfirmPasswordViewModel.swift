@@ -105,6 +105,8 @@ class ConfirmPasswordViewModel {
     
     MemberService.registerAPI(email: email, password: passwordText)
       .subscribe(onNext: { [weak self] response in
+        print(email)
+        print(self?.passwordText)
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
         case 200:

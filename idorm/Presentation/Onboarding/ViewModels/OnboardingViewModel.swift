@@ -35,12 +35,14 @@ class OnboardingViewModel {
     let mbtiTextFieldChanged = BehaviorRelay<String>(value: "")
     let chatLinkTextFieldChanged = BehaviorRelay<String>(value: "")
     let wishTextTextFieldChanged = BehaviorRelay<String>(value: "")
+    
+    let didTapSkipButton = PublishSubject<Void>()
+    let didTapConfirmButton = PublishSubject<Void>()
   }
   
   struct Output {
     let myInfo = BehaviorRelay<MyInfo?>(value: nil)
     let enableConfirmButton = PublishRelay<Bool>()
-    let didClickJumpButton = PublishRelay<Void>()
   }
   
   var myInfo = MyInfo(dormNumber: .no1, period: .period_24, gender: .female, age: "", snoring: false, grinding: false, smoke: false, allowedFood: false, earphone: false, wakeupTime: "", cleanUpStatus: "", showerTime: "", mbti: "", wishText: "", chatLink: "") /// Accpet용

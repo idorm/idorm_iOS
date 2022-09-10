@@ -50,6 +50,7 @@ class AuthNumberViewModel {
     guard let currentEmail = LoginStates.currentEmail else { return }
     EmailService.emailAPI(email: currentEmail, type: LoginStates.currentLoginType)
       .subscribe(onNext: { [weak self] response in
+        print(LoginStates.currentLoginType)
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
         case 200:

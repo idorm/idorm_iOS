@@ -18,10 +18,10 @@ final class EmailService {
     
     if type == .findPW {
       let url = EmailServerConstants.emailAuthentication_PasswordURL
-      return APIService.load(url, httpMethod: .post, body: body)
+      return APIService.load(url, httpMethod: .post, body: body, header: nil)
     } else {
       let url = EmailServerConstants.emailAuthenticationURL
-      return APIService.load(url, httpMethod: .post, body: body)
+      return APIService.load(url, httpMethod: .post, body: body, header: nil)
     }
   }
   
@@ -34,10 +34,10 @@ final class EmailService {
     
     if type == .findPW {
       let url = EmailServerConstants.verifyEmailCode_PasswordURL + "/\(path)"
-      return APIService.load(url, httpMethod: .post, body: body)
+      return APIService.load(url, httpMethod: .post, body: body, header: nil)
     } else {
       let url = EmailServerConstants.verifyEmailCodeURL + "/\(path)"
-      return APIService.load(url, httpMethod: .post, body: body)
+      return APIService.load(url, httpMethod: .post, body: body, header: nil)
     }
   }
 }

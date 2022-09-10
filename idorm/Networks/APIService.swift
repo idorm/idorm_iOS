@@ -25,7 +25,7 @@ enum ServerError: Error {
 }
 
 class APIService {
-  static func load(_ url: URLConvertible, httpMethod: HTTPMethod, body: Parameters?) -> Observable<AFDataResponse<Data>> {
+  static func load(_ url: URLConvertible, httpMethod: HTTPMethod, body: Parameters?, header: HTTPHeaders?) -> Observable<AFDataResponse<Data>> {
     return Observable.create { observer in
       let header : HTTPHeaders = [
         "Content-Type" : "application/json"

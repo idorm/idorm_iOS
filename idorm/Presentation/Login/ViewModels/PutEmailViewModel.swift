@@ -75,4 +75,3 @@ class PutEmailViewModel {
     return emailTest.evaluate(with: id)
   }
 }
-
