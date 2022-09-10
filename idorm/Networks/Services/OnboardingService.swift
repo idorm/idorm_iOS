@@ -29,11 +29,7 @@ final class OnboardingService {
       "wishText": myinfo.wishText ?? ""
     ]
     
-    let headers: HTTPHeaders = [
-      "X-AUTH-TOKEN": TokenManager.loadToken()
-    ]
-    
     let url = OnboardingServerConstants.mathcingInfoURL_Post
-    return APIService.load(url, httpMethod: .post, body: body, header: headers)
+    return APIService.load(url, httpMethod: .post, body: body)
   }
 }

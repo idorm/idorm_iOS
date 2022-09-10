@@ -10,14 +10,6 @@ import RxSwift
 import RxCocoa
 import Alamofire
 
-typealias ServerResponse = Observable<(response: HTTPURLResponse, data: Data)>
-
-enum NetworkType: String {
-  case get = "GET"
-  case post = "POST"
-  case fetch = "FETCH"
-}
-
 enum ServerError: Error {
   case unAuthorized
   case forbidden
@@ -25,12 +17,13 @@ enum ServerError: Error {
 }
 
 class APIService {
-  static func load(_ url: URLConvertible, httpMethod: HTTPMethod, body: Parameters?, header: HTTPHeaders?) -> Observable<AFDataResponse<Data>> {
+  static func load(_ url: URLConvertible, httpMethod: HTTPMethod, body: Parameters?) -> Observable<AFDataResponse<Data>> {
     return Observable.create { observer in
-      let header : HTTPHeaders = [
-        "Content-Type" : "application/json"
+      let header: HTTPHeaders = [
+        "Content-Type" : "application/json",
+        "X-AUTH-TOKEN": TokenManager.loadToken()
       ]
-
+      
       let request = AF.request(url, method: httpMethod, parameters: body, encoding: JSONEncoding.default, headers: header)
          .responseData { response in
           observer.onNext(response)

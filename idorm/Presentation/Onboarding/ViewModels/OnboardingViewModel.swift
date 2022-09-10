@@ -43,6 +43,7 @@ class OnboardingViewModel {
   struct Output {
     let myInfo = BehaviorRelay<MyInfo?>(value: nil)
     let enableConfirmButton = PublishRelay<Bool>()
+    let showOnboardingDetailVC = PublishSubject<MyInfo>()
   }
   
   var myInfo = MyInfo(dormNumber: .no1, period: .period_24, gender: .female, age: "", snoring: false, grinding: false, smoke: false, allowedFood: false, earphone: false, wakeupTime: "", cleanUpStatus: "", showerTime: "", mbti: "", wishText: "", chatLink: "") /// Accpet용
@@ -53,13 +54,13 @@ class OnboardingViewModel {
   var numberOfRowsInSection: Int {
     return OnboardingListType.allCases.count
   }
-
+  
   func getQuestionText(index: Int) -> String {
     return OnboardingListType.allCases[index].query
   }
   
-  // MARK: - LifeCycle
   init() {
+    // 완료 버튼 활성화 비활성화
     output.myInfo.asObservable()
       .map {
         $0?.dormNumber != nil &&
@@ -71,6 +72,14 @@ class OnboardingViewModel {
         $0?.showerTime != ""
       }
       .bind(to: output.enableConfirmButton)
+      .disposed(by: disposeBag)
+    
+    // 완료 버튼 클릭
+    input.didTapConfirmButton
+      .map { [unowned self] in
+        self.myInfo
+      }
+      .bind(to: output.showOnboardingDetailVC)
       .disposed(by: disposeBag)
     
     input.dorm1ButtonTapped

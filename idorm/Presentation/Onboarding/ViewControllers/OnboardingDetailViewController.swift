@@ -57,7 +57,7 @@ class OnboardingDetailViewController: UIViewController {
   private func configureUI() {
     view.backgroundColor = .white
     navigationItem.title = "내 프로필 이미지"
-    navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
+    navigationItem.hidesBackButton = true
     
     [ floatyBottomView, myInfoView ]
       .forEach { view.addSubview($0) }

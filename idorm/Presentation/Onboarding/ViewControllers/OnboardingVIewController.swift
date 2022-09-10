@@ -110,6 +110,16 @@ class OnboardingViewController: UIViewController {
   }
   
   private func bind() {
+    // ---------------------------------
+    // ---------------INPUT-------------
+    // ---------------------------------
+    floatyBottomView.confirmButton.rx.tap
+      .bind(to: viewModel.input.didTapConfirmButton)
+      .disposed(by: disposeBag)
+
+    // ---------------------------------
+    // --------------OUTPUT-------------
+    // ---------------------------------
     viewModel.output.enableConfirmButton
       .subscribe(onNext: { [weak self] isEnabled in
         if isEnabled {
@@ -122,15 +132,11 @@ class OnboardingViewController: UIViewController {
       })
       .disposed(by: disposeBag)
     
-    floatyBottomView.confirmButton.rx.tap
-      .subscribe(
-        onNext: { [weak self] in
-          let updatedMyInfo = self?.viewModel.output.myInfo.value
-          let onboardingDetailVC = UINavigationController(rootViewController: OnboardingDetailViewController(myInfo: updatedMyInfo!))
-          onboardingDetailVC.modalPresentationStyle = .fullScreen
-          self?.present(onboardingDetailVC, animated: true)
-        }
-      )
+    viewModel.output.showOnboardingDetailVC
+      .bind(onNext: { [weak self] myinfo in
+        let vc = OnboardingDetailViewController(myInfo: myinfo)
+        self?.navigationController?.pushViewController(vc, animated: true)
+      })
       .disposed(by: disposeBag)
   }
 }
@@ -234,3 +240,4 @@ extension OnboardingViewController: UITableViewDataSource, UITableViewDelegate {
     return header
   }
 }
+
