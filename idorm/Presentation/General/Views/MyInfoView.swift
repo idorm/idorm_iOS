@@ -257,7 +257,8 @@ extension MyInfoView {
     
     let contentsLabel = UILabel()
     contentsLabel.font = .init(name: Font.medium.rawValue, size: 14)
-    contentsLabel.text = "asdfsadfasdfsdafasdfads"
+    contentsLabel.text = myInfo.wishText
+    print(myInfo.wishText)
     contentsLabel.textColor = .idorm_gray_400
     contentsLabel.numberOfLines = 0
     contentsLabel.textAlignment = .left

@@ -95,8 +95,6 @@ class OnboardingTableViewCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  // MARK: - Selectors
-  
   // MARK: - Helpers
   func configureUI(type: OnboardingListType, question: String) {
     contentView.backgroundColor = .white
@@ -168,12 +166,10 @@ class OnboardingTableViewCell: UITableViewCell {
       .asDriver(onErrorJustReturn: "")
       .drive(onNext: { [weak self] text in
         guard let self = self else { return }
-        self.textView.text = text
-        
         self.letterNumLabel.text = "\(self.textView.text.count)/100pt"
         
         let attributedString = NSMutableAttributedString(string: "\(self.textView.text.count)/100pt")
-        attributedString.addAttribute(.foregroundColor, value: UIColor.idorm_blue, range: ("\(self.textView.text.count)/100pt" as NSString).range(of: "\(self.textView.text.count ?? 0)"))
+        attributedString.addAttribute(.foregroundColor, value: UIColor.idorm_blue, range: ("\(self.textView.text.count)/100pt" as NSString).range(of: "\(self.textView.text.count)"))
         self.letterNumLabel.attributedText = attributedString
         self.onChangedTextSubject.onNext((text, self.type))
       })

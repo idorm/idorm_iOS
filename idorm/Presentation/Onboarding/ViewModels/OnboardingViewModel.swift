@@ -9,7 +9,16 @@ import RxSwift
 import RxCocoa
 
 class OnboardingViewModel {
-  // MARK: - Properties
+  struct OnboardingValidConfirmButton {
+    var dorm: Bool
+    var gender: Bool
+    var period: Bool
+    var age: Bool
+    var wakeup: Bool
+    var cleanup: Bool
+    var showerTime: Bool
+  }
+  
   struct Input {
     let dorm1ButtonTapped = BehaviorRelay<Bool>(value: false)
     let dorm2ButtonTapped = BehaviorRelay<Bool>(value: false)
@@ -42,11 +51,14 @@ class OnboardingViewModel {
   
   struct Output {
     let myInfo = BehaviorRelay<MyInfo?>(value: nil)
-    let enableConfirmButton = PublishRelay<Bool>()
     let showOnboardingDetailVC = PublishSubject<MyInfo>()
+    
+    let enableConfirmButton = PublishSubject<Bool>()
+    let validConfirmButton = BehaviorRelay<OnboardingValidConfirmButton?>(value: nil)
   }
   
   var myInfo = MyInfo(dormNumber: .no1, period: .period_24, gender: .female, age: "", snoring: false, grinding: false, smoke: false, allowedFood: false, earphone: false, wakeupTime: "", cleanUpStatus: "", showerTime: "", mbti: "", wishText: "", chatLink: "") /// Accpet용
+  var validConfirm = OnboardingValidConfirmButton(dorm: false, gender: false, period: false, age: false, wakeup: false, cleanup: false, showerTime: false)
   let input = Input()
   let output = Output()
   let disposeBag = DisposeBag()
@@ -61,15 +73,21 @@ class OnboardingViewModel {
   
   init() {
     // 완료 버튼 활성화 비활성화
-    output.myInfo.asObservable()
+    output.validConfirmButton
       .map {
-        $0?.dormNumber != nil &&
-        $0?.gender != nil &&
-        $0?.period != nil &&
-        $0?.age.isEmpty == false &&
-        $0?.wakeupTime != "" &&
-        $0?.cleanUpStatus != "" &&
-        $0?.showerTime != ""
+        if
+          $0?.wakeup == true &&
+          $0?.cleanup == true &&
+          $0?.showerTime == true &&
+          $0?.age == true &&
+          $0?.dorm == true &&
+          $0?.gender == true &&
+          $0?.period == true
+        {
+          return true
+        } else {
+          return false
+        }
       }
       .bind(to: output.enableConfirmButton)
       .disposed(by: disposeBag)
@@ -87,6 +105,8 @@ class OnboardingViewModel {
         if isSelected {
           self?.myInfo.dormNumber = .no1
           self?.output.myInfo.accept(self?.myInfo)
+          self?.validConfirm.dorm = true
+          self?.output.validConfirmButton.accept(self?.validConfirm)
         }
       })
       .disposed(by: disposeBag)
@@ -96,6 +116,8 @@ class OnboardingViewModel {
         if isSelected {
           self?.myInfo.dormNumber = .no2
           self?.output.myInfo.accept(self?.myInfo)
+          self?.validConfirm.dorm = true
+          self?.output.validConfirmButton.accept(self?.validConfirm)
         }
       })
       .disposed(by: disposeBag)
@@ -105,6 +127,8 @@ class OnboardingViewModel {
         if isSelected {
           self?.myInfo.dormNumber = .no3
           self?.output.myInfo.accept(self?.myInfo)
+          self?.validConfirm.dorm = true
+          self?.output.validConfirmButton.accept(self?.validConfirm)
         }
       })
       .disposed(by: disposeBag)
@@ -114,6 +138,8 @@ class OnboardingViewModel {
         if isSelected {
           self?.myInfo.gender = .male
           self?.output.myInfo.accept(self?.myInfo)
+          self?.validConfirm.gender = true
+          self?.output.validConfirmButton.accept(self?.validConfirm)
         }
       })
       .disposed(by: disposeBag)
@@ -123,6 +149,8 @@ class OnboardingViewModel {
         if isSelected {
           self?.myInfo.gender = .female
           self?.output.myInfo.accept(self?.myInfo)
+          self?.validConfirm.gender = true
+          self?.output.validConfirmButton.accept(self?.validConfirm)
         }
       })
       .disposed(by: disposeBag)
@@ -132,6 +160,8 @@ class OnboardingViewModel {
         if isSelected {
           self?.myInfo.period = .period_16
           self?.output.myInfo.accept(self?.myInfo)
+          self?.validConfirm.period = true
+          self?.output.validConfirmButton.accept(self?.validConfirm)
         }
       })
       .disposed(by: disposeBag)
@@ -141,6 +171,8 @@ class OnboardingViewModel {
         if isSelected {
           self?.myInfo.period = .period_24
           self?.output.myInfo.accept(self?.myInfo)
+          self?.validConfirm.period = true
+          self?.output.validConfirmButton.accept(self?.validConfirm)
         }
       })
       .disposed(by: disposeBag)
@@ -184,6 +216,13 @@ class OnboardingViewModel {
       .subscribe(onNext: { [weak self] text in
         self?.myInfo.age = text
         self?.output.myInfo.accept(self?.myInfo)
+        if text != "" {
+          self?.validConfirm.age = true
+          self?.output.validConfirmButton.accept(self?.validConfirm)
+        } else {
+          self?.validConfirm.age = false
+          self?.output.validConfirmButton.accept(self?.validConfirm)
+        }
       })
       .disposed(by: disposeBag)
     
@@ -191,6 +230,13 @@ class OnboardingViewModel {
       .subscribe(onNext: { [weak self] text in
         self?.myInfo.wakeupTime = text
         self?.output.myInfo.accept(self?.myInfo)
+        if text != "" {
+          self?.validConfirm.wakeup = true
+          self?.output.validConfirmButton.accept(self?.validConfirm)
+        } else {
+          self?.validConfirm.wakeup = false
+          self?.output.validConfirmButton.accept(self?.validConfirm)
+        }
       })
       .disposed(by: disposeBag)
     
@@ -198,6 +244,13 @@ class OnboardingViewModel {
       .subscribe(onNext: { [weak self] text in
         self?.myInfo.cleanUpStatus = text
         self?.output.myInfo.accept(self?.myInfo)
+        if text != "" {
+          self?.validConfirm.cleanup = true
+          self?.output.validConfirmButton.accept(self?.validConfirm)
+        } else {
+          self?.validConfirm.cleanup = false
+          self?.output.validConfirmButton.accept(self?.validConfirm)
+        }
       })
       .disposed(by: disposeBag)
 
@@ -205,6 +258,13 @@ class OnboardingViewModel {
       .subscribe(onNext: { [weak self] text in
         self?.myInfo.showerTime = text
         self?.output.myInfo.accept(self?.myInfo)
+        if text != "" {
+          self?.validConfirm.showerTime = true
+          self?.output.validConfirmButton.accept(self?.validConfirm)
+        } else {
+          self?.validConfirm.showerTime = false
+          self?.output.validConfirmButton.accept(self?.validConfirm)
+        }
       })
       .disposed(by: disposeBag)
 
@@ -230,3 +290,4 @@ class OnboardingViewModel {
       .disposed(by: disposeBag)
   }
 }
+

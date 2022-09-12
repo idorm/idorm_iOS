@@ -48,7 +48,6 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
     tf.font = .init(name: Font.medium.rawValue, size: 14)
     tf.cornerRadius = 10
     tf.spacing = 2
-    tf.addTarget(self, action: #selector(didChangeAgeTextField), for: .allEditingEvents)
     
     return tf
   }()
@@ -99,7 +98,6 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
     slider.minDistance = 1
     slider.enableStep = true
     slider.selectedHandleDiameterMultiplier = 1.0
-    slider.delegate = self
     
     return slider
   }()
@@ -236,10 +234,6 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
     onChangedAllowedEarphoneButton.onNext(allowedEarphoneButton.isSelected)
   }
   
-  @objc private func didChangeAgeTextField(_ tf: UITextField) {
-    onChangedAgeTextField.onNext(tf.text ?? "")
-  }
-  
   // MARK: - Helpers
   private func bind() {
     dorm1Button.addTarget(self, action: #selector(didTapDorm1Button), for: .touchUpInside)
@@ -254,6 +248,15 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
     allowedEarphoneButton.addTarget(self, action: #selector(didTapAllowedEarphoneButton), for: .touchUpInside)
     maleButton.addTarget(self, action: #selector(didTapMaleButton), for: .touchUpInside)
     femaleButton.addTarget(self, action: #selector(didTapFemaleButton), for: .touchUpInside)
+    
+    ageTextField.rx.text
+      .orEmpty
+      .asDriver(onErrorJustReturn: "")
+      .drive(onNext: { [weak self] text in
+        self?.onChangedAgeTextField.onNext(text)
+        print(text)
+      })
+      .disposed(by: disposeBag)
   }
   
   func configureUI(type: OnboardingTableViewType) {
@@ -408,8 +411,4 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
       make.top.equalTo(habitLine.snp.bottom).offset(16)
     }
   }
-}
-
-extension OnboardingTableHeaderView: RangeSeekSliderDelegate {
-  
 }
