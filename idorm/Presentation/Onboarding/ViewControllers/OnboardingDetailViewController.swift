@@ -31,6 +31,7 @@ class OnboardingDetailViewController: UIViewController {
   
   let myInfo: MyInfo
   let disposeBag = DisposeBag()
+  let viewModel = OnboardingDetailViewModel()
   
   // MARK: - LifeCycle
   init(myInfo: MyInfo) {
@@ -75,10 +76,21 @@ class OnboardingDetailViewController: UIViewController {
   }
   
   private func bind() {
-    Observable
-      .merge(floatyBottomView.skipButton.rx.tap.asObservable(), backButton.rx.tap.asObservable())
-      .bind(onNext: { [weak self] _ in
-        self?.dismiss(animated: true)
+    // ---------------------------------
+    // ---------------INPUT-------------
+    // ---------------------------------
+    floatyBottomView.skipButton.rx.tap
+      .bind(to: viewModel.input.didTapBackButton)
+      .disposed(by: disposeBag)
+    
+    // ---------------------------------
+    // --------------OUTPUT-------------
+    // ---------------------------------
+    // 뒤로가기
+    viewModel.output.popVC
+      .asDriver(onErrorJustReturn: Void())
+      .drive(onNext: { [weak self] in
+        self?.navigationController?.popViewController(animated: true)
       })
       .disposed(by: disposeBag)
   }

@@ -21,7 +21,7 @@ class MyInfoView: UIView {
   lazy var dormLabel: UILabel = {
     let label = UILabel()
     label.font = .init(name: Font.bold.rawValue, size: 20)
-    label.text = "3 기숙사"
+    label.text = myInfo.dormNumber.getString
     label.textColor = .white
     
     return label
@@ -32,6 +32,7 @@ class MyInfoView: UIView {
     var container = AttributeContainer()
     container.font = UIFont.init(name: Font.bold.rawValue, size: 12)
     container.foregroundColor = UIColor.white
+    config.attributedTitle = AttributedString(myInfo.period.getString, attributes: container)
     config.image = UIImage(named: "Building")
     config.imagePlacement = .leading
     config.imagePadding = 8
@@ -147,7 +148,9 @@ class MyInfoView: UIView {
       make.height.equalTo(104)
     }
   }
-  
+}
+
+extension MyInfoView {
   private func createBoolComponent(query: String) -> UIView {
     let view = UIView()
     view.backgroundColor = .white
@@ -254,7 +257,7 @@ class MyInfoView: UIView {
     
     let contentsLabel = UILabel()
     contentsLabel.font = .init(name: Font.medium.rawValue, size: 14)
-    contentsLabel.text = myInfo.wishText
+    contentsLabel.text = "asdfsadfasdfsdafasdfads"
     contentsLabel.textColor = .idorm_gray_400
     contentsLabel.numberOfLines = 0
     contentsLabel.textAlignment = .left
@@ -266,8 +269,7 @@ class MyInfoView: UIView {
     }
     
     contentsLabel.snp.makeConstraints { make in
-      make.top.leading.trailing.equalToSuperview().inset(10)
-      make.bottom.lessThanOrEqualToSuperview().inset(10)
+      make.edges.equalToSuperview().inset(10)
     }
     
     return view
@@ -282,7 +284,7 @@ class MyInfoView: UIView {
     let humanImageView = UIImageView(image: UIImage(named: "Human"))
     
     let genderLabel = UILabel()
-//    genderLabel.text = myInfo.gender ? "남자," : "여자,"
+    genderLabel.text = myInfo.gender == .male ? "남자," : "여자,"
     genderLabel.font = .init(name: Font.bold.rawValue, size: 12)
     genderLabel.textColor = .idorm_gray_400
     
@@ -324,4 +326,6 @@ class MyInfoView: UIView {
     
     return view
   }
+
 }
+

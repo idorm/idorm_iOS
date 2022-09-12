@@ -17,6 +17,28 @@ enum OnboardingTableViewType {
   case matchingFilter
 }
 
+enum OnboardingHeaderListType: String, CaseIterable {
+  case dorm
+  case gender
+  case period
+  case snore
+  case grinding
+  case smoke
+  case allowedFood
+  case earphone
+  case age
+  
+  var query: String {
+    switch self {
+    case .dorm: return "기숙사"
+    case .gender: return "성별"
+    case .period: return "입사 기간"
+    case .snore, .grinding, .smoke, .allowedFood, .earphone: return "내 습관"
+    case .age: return "나이"
+    }
+  }
+}
+
 class OnboardingTableHeaderView: UITableViewHeaderFooterView {
   // MARK: - Properties
   lazy var ageTextField: CHIOTPFieldTwo = {

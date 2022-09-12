@@ -11,6 +11,26 @@ import RSKGrowingTextView
 import RxSwift
 import RxCocoa
 
+enum OnboardingListType: Int, CaseIterable {
+  case wakeup
+  case cleanup
+  case shower
+  case mbti
+  case chatLink
+  case wishText
+  
+  var query: String {
+    switch self {
+    case .wakeup: return "기상시간을 알려주세요."
+    case .cleanup: return "정리정돈은 얼마나 하시나요?"
+    case .shower: return "샤워는 주로 언제/몇 분 동안 하시나요?"
+    case .mbti: return "MBTI를 알려주세요."
+    case .chatLink: return "룸메와 연락을 위한 개인 오픈채팅 링크를 알려주세요."
+    case .wishText: return "미래의 룸메에게 하고 싶은 말은?"
+    }
+  }
+}
+
 class OnboardingTableViewCell: UITableViewCell {
   // MARK: - Properties
   static let identifier = "OnboardingDetailTableViewCell"
@@ -147,13 +167,15 @@ class OnboardingTableViewCell: UITableViewCell {
       }
       .asDriver(onErrorJustReturn: "")
       .drive(onNext: { [weak self] text in
-        self?.textView.text = text
+        guard let self = self else { return }
+        self.textView.text = text
         
-        self?.letterNumLabel.text = "\(self?.textView.text.count ?? 0)/100pt"
+        self.letterNumLabel.text = "\(self.textView.text.count)/100pt"
         
-        let attributedString = NSMutableAttributedString(string: "\(self?.textView.text.count ?? 0)/100pt")
-        attributedString.addAttribute(.foregroundColor, value: UIColor.idorm_blue, range: ("\(self?.textView.text.count ?? 0)/100pt" as NSString).range(of: "\(self?.textView.text.count ?? 0)"))
-        self?.letterNumLabel.attributedText = attributedString
+        let attributedString = NSMutableAttributedString(string: "\(self.textView.text.count)/100pt")
+        attributedString.addAttribute(.foregroundColor, value: UIColor.idorm_blue, range: ("\(self.textView.text.count)/100pt" as NSString).range(of: "\(self.textView.text.count ?? 0)"))
+        self.letterNumLabel.attributedText = attributedString
+        self.onChangedTextSubject.onNext((text, self.type))
       })
       .disposed(by: disposeBag)
     
