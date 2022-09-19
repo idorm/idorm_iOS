@@ -35,7 +35,7 @@ class ImagePickerCollectionViewCell: UICollectionViewCell {
     let label = UILabel()
     label.backgroundColor = .idorm_blue
     label.textColor = .white
-    label.font = .init(name: Font.medium.rawValue, size: 12)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 12)
     label.textAlignment = .center
     label.layer.masksToBounds = true
     label.layer.cornerRadius = 11

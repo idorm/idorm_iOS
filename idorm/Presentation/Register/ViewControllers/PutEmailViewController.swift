@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Then
 import SnapKit
 import RxSwift
 import RxCocoa
@@ -13,48 +14,21 @@ import NVActivityIndicatorView
 
 class PutEmailViewController: UIViewController {
   // MARK: - Properties
-  let type: LoginType
-  var confirmButtonYValue = CGFloat(0)
-  
-  lazy var infoLabel: UILabel = {
-    let label = UILabel()
-    label.textColor = .black
-    label.font = .init(name: Font.medium.rawValue, size: 14.0)
+  lazy var infoLabel = UILabel().then {
+    $0.textColor = .black
+    $0.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
     if type == .findPW {
-      label.text = "가입시 사용한 인천대학교 이메일이 필요해요."
+      $0.text = "가입시 사용한 인천대학교 이메일이 필요해요."
     } else {
-      label.text = "이메일"
+      $0.text = "이메일"
     }
-    
-    return label
-  }()
+  }
   
-  lazy var inuMark: UIImageView = {
-    let iv = UIImageView()
-    iv.image = UIImage(named: "INUMark")
-    
-    return iv
-  }()
-  
-  lazy var needEmailLabel: UILabel = {
-    let label = UILabel()
-    label.text = "인천대학교 이메일 (@inu.ac.kr)이 필요해요."
-    label.textColor = .gray
-    label.font = .systemFont(ofSize: 14.0)
-    
-    return label
-  }()
-  
-  lazy var confirmButton: UIButton = {
-    let button = LoginUtilities.returnBottonConfirmButton(string: "인증번호 받기")
-    return button
-  }()
-  
-  lazy var textField: UITextField = {
-    let tf = LoginUtilities.returnTextField(placeholder: "이메일을 입력해주세요")
-    
-    return tf
-  }()
+  let needEmailLabel = UILabel().then {
+    $0.text = "인천대학교 이메일 (@inu.ac.kr)이 필요해요."
+    $0.textColor = .idorm_gray_400
+    $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
+  }
   
   lazy var indicator = NVActivityIndicatorView(
     frame: CGRect(x: view.frame.width / 2, y: view.frame.height / 2, width: 20, height: 20),
@@ -63,8 +37,14 @@ class PutEmailViewController: UIViewController {
     padding: 0
   )
   
+  let textField = RegisterTextField("이메일을 입력해주세요")
+  let confirmButton = RegisterBottomButton("인증번호 받기")
+  let inuMark = UIImageView(image: UIImage(named: "INUMark"))
+  
   let viewModel = PutEmailViewModel()
   let disposeBag = DisposeBag()
+  
+  let type: LoginType
   
   // MARK: - LifeCycle
   init(type: LoginType) {
@@ -172,11 +152,13 @@ class PutEmailViewController: UIViewController {
     textField.snp.makeConstraints { make in
       make.top.equalTo(infoLabel.snp.bottom).offset(8)
       make.leading.trailing.equalToSuperview().inset(24)
+      make.height.equalTo(50)
     }
     
     confirmButton.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
       make.bottom.equalTo(view.keyboardLayoutGuide.snp.top).offset(-20)
+      make.height.equalTo(50)
     }
     
     inustack.snp.makeConstraints { make in

@@ -52,7 +52,7 @@ class MyPageViewController: UIViewController {
     config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration.init(pointSize: 10)
     var container = AttributeContainer()
     container.foregroundColor = UIColor.white
-    container.font = .init(name: Font.medium.rawValue, size: 14)
+    container.font = .init(name: MyFonts.medium.rawValue, size: 14)
     config.attributedTitle = AttributedString("내 정보 수정", attributes: container)
     config.baseForegroundColor = .white
     config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
@@ -79,7 +79,7 @@ class MyPageViewController: UIViewController {
   lazy var makePublicLabel: UILabel = {
     let label = UILabel()
     label.textColor = .idorm_gray_400
-    label.font = .init(name: Font.medium.rawValue, size: 14)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 14)
     label.text = "내 이미지 매칭페이지에 공유하기"
     
     return label

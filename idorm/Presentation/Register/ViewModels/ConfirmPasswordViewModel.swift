@@ -91,7 +91,7 @@ class ConfirmPasswordViewModel {
           if LoginStates.currentLoginType == .signUp {
             self.requestRegisterAPI()
           } else {
-            
+           
           }
         } else {
           self.output.showErrorPopupVC.onNext("조건을 다시 확인해 주세요.")

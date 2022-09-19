@@ -22,7 +22,7 @@ class CalendarPersonalCell: UICollectionViewCell {
   
   lazy var timeLabel: UILabel = {
     let label = UILabel()
-    label.font = .init(name: Font.medium.rawValue, size: 12)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 12)
     label.textColor = .black
     label.text = "6월 12일"
     
@@ -31,7 +31,7 @@ class CalendarPersonalCell: UICollectionViewCell {
   
   lazy var contentsLabel: UILabel = {
     let label = UILabel()
-    label.font = .init(name: Font.regular.rawValue, size: 12)
+    label.font = .init(name: MyFonts.regular.rawValue, size: 12)
     label.textColor = .idorm_gray_300
     label.text = "간식 나눔"
     

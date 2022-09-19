@@ -24,7 +24,7 @@ class CustomCalendarCell: UICollectionViewCell {
   
   lazy var dayOfMonthLabel: UILabel = {
     let label = UILabel()
-    label.font = .init(name: Font.regular.rawValue, size: 12)
+    label.font = .init(name: MyFonts.regular.rawValue, size: 12)
     label.textColor = .idorm_gray_400
     
     return label

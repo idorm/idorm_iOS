@@ -22,7 +22,7 @@ class ChangeNicknameViewController: UIViewController {
   lazy var mainLabel: UILabel = {
     let label = UILabel()
     label.textColor = .idorm_gray_400
-    label.font = .init(name: Font.regular.rawValue, size: 16)
+    label.font = .init(name: MyFonts.regular.rawValue, size: 16)
     label.text = "idorm 프로필 닉네임을 변경해주세요."
     
     return label

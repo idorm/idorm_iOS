@@ -10,16 +10,16 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-class LoginPasswordTextFieldContainerView: UIView {
+class RegisterPwTextField: UIView {
   // MARK: - Properties
   lazy var textField: UITextField = {
     let tf = UITextField()
     tf.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
       NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_300,
-      NSAttributedString.Key.font: UIFont.init(name: Font.medium.rawValue, size: 14.0) ?? 0
+      NSAttributedString.Key.font: UIFont.init(name: MyFonts.medium.rawValue, size: 14.0) ?? 0
     ])
     tf.textColor = .idorm_gray_300
-    tf.font = .init(name: Font.medium.rawValue, size: 14.0)
+    tf.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
     tf.addLeftPadding(16)
     tf.backgroundColor = .white
     tf.keyboardType = .default

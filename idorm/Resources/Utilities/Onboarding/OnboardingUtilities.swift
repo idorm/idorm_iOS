@@ -12,7 +12,7 @@ class OnboardingUtilities {
   static func getBasicButton(title: String) -> UIButton {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
-    container.font = UIFont.init(name: Font.medium.rawValue, size: 14)
+    container.font = UIFont.init(name: MyFonts.medium.rawValue, size: 14)
     container.foregroundColor = UIColor.idorm_gray_300
     config.attributedTitle = AttributedString(title, attributes: container)
     config.baseBackgroundColor = .white
@@ -29,7 +29,7 @@ class OnboardingUtilities {
   static func getBasicLabel(text: String) -> UILabel {
     let label = UILabel()
     label.text = text
-    label.font = .init(name: Font.medium.rawValue, size: 16)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 16)
     label.textColor = .black
     
     return label

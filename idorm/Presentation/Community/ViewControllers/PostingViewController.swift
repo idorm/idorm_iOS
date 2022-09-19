@@ -27,7 +27,7 @@ class PostingViewController: UIViewController {
   lazy var pictCountLabel: UILabel = {
     let label = UILabel()
     label.text = "0/10"
-    label.font = .init(name: Font.medium.rawValue, size: 12)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 12)
     label.textColor = .black
     
     return label
@@ -37,7 +37,7 @@ class PostingViewController: UIViewController {
     let btn = UIButton(type: .custom)
     btn.setTitle("완료", for: .normal)
     btn.setTitleColor(UIColor.idorm_gray_300, for: .normal)
-    btn.titleLabel?.font = .init(name: Font.bold.rawValue, size: 16)
+    btn.titleLabel?.font = .init(name: MyFonts.bold.rawValue, size: 16)
     btn.addTarget(self, action: #selector(didTapPostingButton), for: .touchUpInside)
     
     return btn
@@ -48,11 +48,11 @@ class PostingViewController: UIViewController {
     let attributedString = NSAttributedString(
       string: "제목",
       attributes: [
-        NSAttributedString.Key.font: UIFont.init(name: Font.bold.rawValue, size: 20) ?? 0,
+        NSAttributedString.Key.font: UIFont.init(name: MyFonts.bold.rawValue, size: 20) ?? 0,
         NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_200
       ])
     tf.attributedPlaceholder = attributedString
-    tf.font = .init(name: Font.bold.rawValue, size: 20)
+    tf.font = .init(name: MyFonts.bold.rawValue, size: 20)
     
     return tf
   }()
@@ -83,7 +83,7 @@ class PostingViewController: UIViewController {
             기숙사에 있는 학우들에게
             질문하거나 함께 이야기를 나누어 보세요.
             """,
-      attributes: [NSAttributedString.Key.font: UIFont.init(name: Font.medium.rawValue, size: 16) ?? 0])
+      attributes: [NSAttributedString.Key.font: UIFont.init(name: MyFonts.medium.rawValue, size: 16) ?? 0])
     textView.attributedPlaceholder = attributedString
     
     return textView

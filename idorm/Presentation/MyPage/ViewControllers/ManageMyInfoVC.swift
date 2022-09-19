@@ -61,7 +61,7 @@ class ManageMyInfoViewController: UIViewController {
   lazy var withDrawLabel: UILabel = {
     let label = UILabel()
     label.text = "회원 탈퇴"
-    label.font = .init(name: Font.regular.rawValue, size: 14)
+    label.font = .init(name: MyFonts.regular.rawValue, size: 14)
     label.textColor = .idorm_gray_300
     
     return label

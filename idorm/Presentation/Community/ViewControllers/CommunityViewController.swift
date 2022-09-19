@@ -139,7 +139,7 @@ extension CommunityViewController {
     let attributedString = NSAttributedString(
       string: text,
       attributes: [
-        NSAttributedString.Key.font: UIFont.init(name: Font.bold.rawValue, size: 20) ?? 0,
+        NSAttributedString.Key.font: UIFont.init(name: MyFonts.bold.rawValue, size: 20) ?? 0,
         NSAttributedString.Key.foregroundColor: UIColor.black
       ]
     )

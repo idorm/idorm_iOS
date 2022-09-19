@@ -17,7 +17,7 @@ class LoginUtilities {
   static func returnBottonConfirmButton(string: String) -> UIButton {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
-    container.font = .init(name: Font.regular.rawValue, size: 14.0)
+    container.font = .init(name: MyFonts.regular.rawValue, size: 14.0)
     container.foregroundColor = .white
     config.attributedTitle = AttributedString(string, attributes: container)
     config.baseBackgroundColor = .idorm_blue
@@ -35,7 +35,7 @@ class LoginUtilities {
     let textField = UITextField()
     textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
       NSAttributedString.Key.foregroundColor: UIColor.gray,
-      NSAttributedString.Key.font: UIFont.init(name: Font.medium.rawValue, size: 14.0 ) ?? 0
+      NSAttributedString.Key.font: UIFont.init(name: MyFonts.medium.rawValue, size: 14.0 ) ?? 0
     ])
     textField.textColor = .gray
     textField.addLeftPadding(14)
@@ -44,7 +44,7 @@ class LoginUtilities {
     textField.backgroundColor = .white
     textField.layer.cornerRadius = 10
     textField.returnKeyType = .done
-    textField.font = .init(name: Font.medium.rawValue, size: 14.0)
+    textField.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
     textField.snp.makeConstraints { make in
       make.height.equalTo(50.0)
     }

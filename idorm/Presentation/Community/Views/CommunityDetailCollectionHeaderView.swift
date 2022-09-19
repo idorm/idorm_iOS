@@ -36,7 +36,7 @@ class CommunityDetailTableHeaderView: UIView {
     let label = UILabel()
     label.text = "닉네임"
     label.textColor = .black
-    label.font = .init(name: Font.medium.rawValue, size: 14)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 14)
     
     return label
   }()
@@ -44,7 +44,7 @@ class CommunityDetailTableHeaderView: UIView {
   lazy var timeLabel: UILabel = {
     let label = UILabel()
     label.textColor = .idorm_gray_300
-    label.font = .init(name: Font.medium.rawValue, size: 10)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 10)
     label.text = "일주일 전"
     
     return label
@@ -53,7 +53,7 @@ class CommunityDetailTableHeaderView: UIView {
   lazy var titleLabel: UILabel = {
     let label = UILabel()
     label.text = "제목"
-    label.font = .init(name: Font.medium.rawValue, size: 14)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 14)
     label.textColor = .black
     label.textAlignment = .left
     label.numberOfLines = 2
@@ -63,7 +63,7 @@ class CommunityDetailTableHeaderView: UIView {
   
   lazy var contentsLabel: UILabel = {
     let label = UILabel()
-    label.font = .init(name: Font.medium.rawValue, size: 12)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 12)
     label.textColor = .idorm_gray_400
     label.numberOfLines = 0
     label.text = "더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트더미텍스트"
@@ -93,7 +93,7 @@ class CommunityDetailTableHeaderView: UIView {
     button.backgroundColor = .idorm_gray_100
     button.layer.cornerRadius = 4
     button.layer.masksToBounds = true
-    button.titleLabel?.font = .init(name: Font.medium.rawValue, size: 10)
+    button.titleLabel?.font = .init(name: MyFonts.medium.rawValue, size: 10)
     button.contentEdgeInsets = UIEdgeInsets(top: 6, left: 10, bottom: 6, right: 10)
     
     return button
@@ -104,7 +104,7 @@ class CommunityDetailTableHeaderView: UIView {
     button.setTitle("등록순", for: .normal)
     button.setTitleColor(UIColor.black, for: .selected)
     button.setTitleColor(UIColor.idorm_gray_300, for: .normal)
-    button.titleLabel?.font = .init(name: Font.medium.rawValue, size: 10)
+    button.titleLabel?.font = .init(name: MyFonts.medium.rawValue, size: 10)
     
     return button
   }()
@@ -114,7 +114,7 @@ class CommunityDetailTableHeaderView: UIView {
     button.setTitle("최신순", for: .normal)
     button.setTitleColor(UIColor.black, for: .selected)
     button.setTitleColor(UIColor.idorm_gray_300, for: .normal)
-    button.titleLabel?.font = .init(name: Font.medium.rawValue, size: 10)
+    button.titleLabel?.font = .init(name: MyFonts.medium.rawValue, size: 10)
     
     return button
   }()

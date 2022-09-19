@@ -20,7 +20,7 @@ class EachOfManageMyInfoView: UIView {
   // MARK: - Properties
   lazy var titleLabel: UILabel = {
     let label = UILabel()
-    label.font = .init(name: Font.regular.rawValue, size: 16)
+    label.font = .init(name: MyFonts.regular.rawValue, size: 16)
     label.textColor = .idorm_gray_400
     
     return label
@@ -28,7 +28,7 @@ class EachOfManageMyInfoView: UIView {
   
   lazy var descriptionLabel: UILabel = {
     let label = UILabel()
-    label.font = .init(name: Font.regular.rawValue, size: 16)
+    label.font = .init(name: MyFonts.regular.rawValue, size: 16)
     label.textColor = .idorm_gray_300
     
     return label

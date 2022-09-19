@@ -20,7 +20,7 @@ class MyInfoView: UIView {
   
   lazy var dormLabel: UILabel = {
     let label = UILabel()
-    label.font = .init(name: Font.bold.rawValue, size: 20)
+    label.font = .init(name: MyFonts.bold.rawValue, size: 20)
     label.text = myInfo.dormNumber.getString
     label.textColor = .white
     
@@ -30,7 +30,7 @@ class MyInfoView: UIView {
   lazy var periodButton: UIButton = {
     var config = UIButton.Configuration.plain()
     var container = AttributeContainer()
-    container.font = UIFont.init(name: Font.bold.rawValue, size: 12)
+    container.font = UIFont.init(name: MyFonts.bold.rawValue, size: 12)
     container.foregroundColor = UIColor.white
     config.attributedTitle = AttributedString(myInfo.period.getString, attributes: container)
     config.image = UIImage(named: "Building")
@@ -162,10 +162,10 @@ extension MyInfoView {
     let queryLabel = UILabel()
     queryLabel.text = query
     queryLabel.textColor = .black
-    queryLabel.font = .init(name: Font.medium.rawValue, size: 14)
+    queryLabel.font = .init(name: MyFonts.medium.rawValue, size: 14)
     
     let validLabel = UILabel()
-    validLabel.font = .init(name: Font.bold.rawValue, size: 14)
+    validLabel.font = .init(name: MyFonts.bold.rawValue, size: 14)
     
     if query == "코골이" {
       validLabel.textColor = myInfo.snoring ? UIColor.red : UIColor.idorm_blue
@@ -214,11 +214,11 @@ extension MyInfoView {
     let queryLabel = UILabel()
     queryLabel.text = query
     queryLabel.textColor = .black
-    queryLabel.font = .init(name: Font.bold.rawValue, size: 14)
+    queryLabel.font = .init(name: MyFonts.bold.rawValue, size: 14)
     queryLabel.setContentHuggingPriority(.init(rawValue: 251), for: .horizontal)
     
     let contentsLabel = UILabel()
-    contentsLabel.font = .init(name: Font.medium.rawValue, size: 14)
+    contentsLabel.font = .init(name: MyFonts.medium.rawValue, size: 14)
     contentsLabel.textColor = .idorm_gray_400
     
     if query == "기상시간" {
@@ -256,7 +256,7 @@ extension MyInfoView {
     view.backgroundColor = .white
     
     let contentsLabel = UILabel()
-    contentsLabel.font = .init(name: Font.medium.rawValue, size: 14)
+    contentsLabel.font = .init(name: MyFonts.medium.rawValue, size: 14)
     contentsLabel.text = myInfo.wishText
     print(myInfo.wishText)
     contentsLabel.textColor = .idorm_gray_400
@@ -286,18 +286,18 @@ extension MyInfoView {
     
     let genderLabel = UILabel()
     genderLabel.text = myInfo.gender == .male ? "남자," : "여자,"
-    genderLabel.font = .init(name: Font.bold.rawValue, size: 12)
+    genderLabel.font = .init(name: MyFonts.bold.rawValue, size: 12)
     genderLabel.textColor = .idorm_gray_400
     
     let ageLabel = UILabel()
     ageLabel.text = myInfo.age + " 세"
     ageLabel.textColor = .darkGray
-    ageLabel.font = .init(name: Font.bold.rawValue, size: 12)
+    ageLabel.font = .init(name: MyFonts.bold.rawValue, size: 12)
     
     let mbtiLabel = UILabel()
     mbtiLabel.text = myInfo.mbti
     mbtiLabel.textColor = .idorm_gray_300
-    mbtiLabel.font = .init(name: Font.bold.rawValue, size: 12)
+    mbtiLabel.font = .init(name: MyFonts.bold.rawValue, size: 12)
     
     let stack = UIStackView(arrangedSubviews: [ genderLabel, ageLabel ])
     stack.axis = .horizontal

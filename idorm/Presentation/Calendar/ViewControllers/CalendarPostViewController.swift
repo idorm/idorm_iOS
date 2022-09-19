@@ -21,10 +21,10 @@ class CalendarPostViewController: UIViewController {
     tf.attributedPlaceholder = NSAttributedString(
       string: "일정 등록",
       attributes: [
-        NSAttributedString.Key.font: UIFont.init(name: Font.regular.rawValue, size: 24) ?? 0,
+        NSAttributedString.Key.font: UIFont.init(name: MyFonts.regular.rawValue, size: 24) ?? 0,
         NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_300
     ])
-    tf.font = .init(name: Font.regular.rawValue, size: 24)
+    tf.font = .init(name: MyFonts.regular.rawValue, size: 24)
     tf.textColor = .black
     tf.textAlignment = .left
     
@@ -36,12 +36,12 @@ class CalendarPostViewController: UIViewController {
     tf.attributedPlaceholder = NSAttributedString(
       string: "함께하는 사람",
       attributes: [
-        NSAttributedString.Key.font: UIFont.init(name: Font.regular.rawValue, size: 14) ?? 0,
+        NSAttributedString.Key.font: UIFont.init(name: MyFonts.regular.rawValue, size: 14) ?? 0,
         NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_300
       ]
     )
     tf.textColor = .black
-    tf.font = .init(name: Font.regular.rawValue, size: 14)
+    tf.font = .init(name: MyFonts.regular.rawValue, size: 14)
     
     return tf
   }()
@@ -51,7 +51,7 @@ class CalendarPostViewController: UIViewController {
     tv.attributedPlaceholder = NSAttributedString(
       string: "메모",
       attributes: [
-        NSAttributedString.Key.font: UIFont.init(name: Font.regular.rawValue, size: 14) ?? 0,
+        NSAttributedString.Key.font: UIFont.init(name: MyFonts.regular.rawValue, size: 14) ?? 0,
         NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_300
       ]
     )
@@ -62,7 +62,7 @@ class CalendarPostViewController: UIViewController {
     tv.textColor = .black
     tv.isScrollEnabled = false
     tv.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-    tv.font = .init(name: Font.regular.rawValue, size: 14)
+    tv.font = .init(name: MyFonts.regular.rawValue, size: 14)
     tv.setContentHuggingPriority(.init(240), for: .vertical)
     
     return tv
@@ -322,7 +322,7 @@ extension CalendarPostViewController {
   func createBasicLabel(text: String) -> UILabel {
     let label = UILabel()
     label.text = text
-    label.font = .init(name: Font.regular.rawValue, size: 14)
+    label.font = .init(name: MyFonts.regular.rawValue, size: 14)
     label.textColor = .black
     
     return label

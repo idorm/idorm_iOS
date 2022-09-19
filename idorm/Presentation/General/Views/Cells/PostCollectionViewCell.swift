@@ -19,7 +19,7 @@ class PostCollectionViewCell: UICollectionViewCell {
   lazy var titleLabel: UILabel = {
     let label = UILabel()
     label.text = "제목"
-    label.font = .init(name: Font.medium.rawValue, size: 14)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 14)
     label.textColor = .black
     label.numberOfLines = 1
     
@@ -28,7 +28,7 @@ class PostCollectionViewCell: UICollectionViewCell {
   
   lazy var contentsLabel: UILabel = {
     let label = UILabel()
-    label.font = .init(name: Font.medium.rawValue, size: 12)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 12)
     label.textColor = .idorm_gray_400
     label.text = "내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용"
     label.numberOfLines = 1
@@ -39,7 +39,7 @@ class PostCollectionViewCell: UICollectionViewCell {
   lazy var userInfoLabel: UILabel = {
     let label = UILabel()
     label.textColor = .idorm_gray_300
-    label.font = .init(name: Font.medium.rawValue, size: 10)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 10)
     label.text = "닉네임닉네임닉네임 ∙ 1분 전"
     
     return label
@@ -54,7 +54,7 @@ class PostCollectionViewCell: UICollectionViewCell {
   
   lazy var likeCountLabel: UILabel = {
     let label = UILabel()
-    label.font = .init(name: Font.medium.rawValue, size: 10)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 10)
     label.textColor = .idorm_gray_300
     label.text = "100"
     
@@ -63,7 +63,7 @@ class PostCollectionViewCell: UICollectionViewCell {
   
   lazy var messageCountLabel: UILabel = {
     let label = UILabel()
-    label.font = .init(name: Font.medium.rawValue, size: 10)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 10)
     label.textColor = .idorm_gray_300
     label.text = "100"
     
@@ -72,7 +72,7 @@ class PostCollectionViewCell: UICollectionViewCell {
 
   lazy var pictureCountLabel: UILabel = {
     let label = UILabel()
-    label.font = .init(name: Font.medium.rawValue, size: 10)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 10)
     label.textColor = .idorm_gray_300
     label.text = "100"
     

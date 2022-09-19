@@ -43,7 +43,7 @@ class OnboardingTableViewCell: UITableViewCell {
   lazy var infoLabel: UILabel = {
     let label = UILabel()
     label.textColor = .idorm_gray_400
-    label.font = .init(name: Font.medium.rawValue, size: 14)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 14)
     
     return label
   }()
@@ -52,7 +52,7 @@ class OnboardingTableViewCell: UITableViewCell {
     let label = UILabel()
     label.textColor = .idorm_blue
     label.text = "(필수)"
-    label.font = .init(name: Font.regular.rawValue, size: 14)
+    label.font = .init(name: MyFonts.regular.rawValue, size: 14)
     label.isHidden = true
     
     return label
@@ -60,8 +60,8 @@ class OnboardingTableViewCell: UITableViewCell {
   
   lazy var textView: RSKGrowingTextView = {
     let tv = RSKGrowingTextView()
-    tv.attributedPlaceholder = NSAttributedString(string: "입력", attributes: [NSAttributedString.Key.font: UIFont.init(name: Font.regular.rawValue, size: 14) ?? 0, NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_300])
-    tv.font = .init(name: Font.regular.rawValue, size: 14)
+    tv.attributedPlaceholder = NSAttributedString(string: "입력", attributes: [NSAttributedString.Key.font: UIFont.init(name: MyFonts.regular.rawValue, size: 14) ?? 0, NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_300])
+    tv.font = .init(name: MyFonts.regular.rawValue, size: 14)
     tv.textColor = .black
     tv.layer.cornerRadius = 10
     tv.layer.borderColor = UIColor.idorm_gray_300.cgColor
@@ -80,7 +80,7 @@ class OnboardingTableViewCell: UITableViewCell {
     let label = UILabel()
     label.textColor = .idorm_gray_300
     label.isHidden = true
-    label.font = .init(name: Font.medium.rawValue, size: 14)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 14)
     
     return label
   }()

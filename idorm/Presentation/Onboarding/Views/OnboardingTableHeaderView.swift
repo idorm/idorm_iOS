@@ -45,7 +45,7 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
     let tf = CHIOTPFieldTwo()
     tf.numberOfDigits = 2
     tf.borderColor = .idorm_gray_200
-    tf.font = .init(name: Font.medium.rawValue, size: 14)
+    tf.font = .init(name: MyFonts.medium.rawValue, size: 14)
     tf.cornerRadius = 10
     tf.spacing = 2
     
@@ -56,7 +56,7 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
     let label = UILabel()
     label.text = "살"
     label.textColor = .idorm_gray_300
-    label.font = .init(name: Font.medium.rawValue, size: 12)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 12)
     
     return label
   }()
@@ -65,7 +65,7 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
     let label = UILabel()
     label.text = "룸메이트 매칭을 위한 기본정보를 알려주세요!"
     label.textColor = .idorm_gray_300
-    label.font = .init(name: Font.bold.rawValue, size: 12.0)
+    label.font = .init(name: MyFonts.bold.rawValue, size: 12.0)
     
     return label
   }()
@@ -73,7 +73,7 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
   lazy var habitDescriptionLabel: UILabel = {
     let label = UILabel()
     label.text = "불호요소가 있는 내 습관을 미리 알려주세요."
-    label.font = .init(name: Font.medium.rawValue, size: 12)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 12)
     label.textColor = .idorm_gray_300
     
     return label
@@ -87,8 +87,8 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
     slider.labelPadding = 6
     slider.minLabelColor = .black
     slider.maxLabelColor = .black
-    slider.minLabelFont = .init(name: Font.medium.rawValue, size: 12)!
-    slider.maxLabelFont = .init(name: Font.medium.rawValue, size: 12)!
+    slider.minLabelFont = .init(name: MyFonts.medium.rawValue, size: 12)!
+    slider.maxLabelFont = .init(name: MyFonts.medium.rawValue, size: 12)!
     slider.minValue = 20
     slider.maxValue = 40
     slider.selectedMaxValue = 30

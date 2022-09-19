@@ -23,7 +23,7 @@ class CalendarChipCell: UICollectionViewCell {
   
   lazy var leftDayLabel: UILabel = {
     let label = UILabel()
-    label.font = .init(name: Font.bold.rawValue, size: 12)
+    label.font = .init(name: MyFonts.bold.rawValue, size: 12)
     label.textColor = .black
     label.text = "오늘"
     
@@ -32,7 +32,7 @@ class CalendarChipCell: UICollectionViewCell {
   
   lazy var calendarLabel: UILabel = {
     let label = UILabel()
-    label.font = .init(name: Font.regular.rawValue, size: 12)
+    label.font = .init(name: MyFonts.regular.rawValue, size: 12)
     label.textColor = .black
     label.text = "간식나눔"
     

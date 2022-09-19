@@ -17,7 +17,7 @@ enum FontSize: CGFloat {
     case largeTitle = 24
 }
 
-enum Font: String {
+enum MyFonts: String {
     case bold = "NotoSansCJKkr-Bold"
     case regular = "NotoSansCJKkr-Regular"
     case medium = "NotoSansCJKkr-Medium"

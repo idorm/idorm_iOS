@@ -39,7 +39,7 @@ class ImagePickerViewController: UIViewController {
   
   lazy var countLabel: UILabel = {
     let label = UILabel()
-    label.font = .init(name: Font.medium.rawValue, size: 16)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 16)
     label.textColor = .idorm_blue
     
     return label
@@ -48,7 +48,7 @@ class ImagePickerViewController: UIViewController {
   lazy var confirmButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setTitle("완료", for: .normal)
-    button.titleLabel?.font = .init(name: Font.bold.rawValue, size: 16)
+    button.titleLabel?.font = .init(name: MyFonts.bold.rawValue, size: 16)
     button.setTitleColor(UIColor.idorm_gray_300, for: .normal)
     button.addTarget(self, action: #selector(didTapConfirmButton), for: .touchUpInside)
     

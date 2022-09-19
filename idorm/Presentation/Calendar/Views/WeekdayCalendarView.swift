@@ -31,7 +31,7 @@ class WeekdayCalendarView: UIView {
   lazy var monthLabel: UILabel = {
     let label = UILabel()
     label.textColor = .black
-    label.font = .init(name: Font.medium.rawValue, size: 16)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 16)
     label.text = "6월"
     
     return label
@@ -125,7 +125,7 @@ extension WeekdayCalendarView {
   func createWeekDayLabel(title: String) -> UILabel {
     let label = UILabel()
     label.text = title
-    label.font = .init(name: Font.regular.rawValue, size: 12)
+    label.font = .init(name: MyFonts.regular.rawValue, size: 12)
     if title == "일" || title == "토" {
       label.textColor = .idorm_red
     } else {

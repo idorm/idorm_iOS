@@ -63,7 +63,7 @@ extension MyPostCollectionHeaderView {
     config.imagePadding = 8
     var container = AttributeContainer()
     container.foregroundColor = UIColor.black
-    container.font = .init(name: Font.regular.rawValue, size: 14)
+    container.font = .init(name: MyFonts.regular.rawValue, size: 14)
     config.attributedTitle = AttributedString(title, attributes: container)
     config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
     let button = UIButton(configuration: config)

@@ -139,8 +139,8 @@ class SetCalendarTabmanController: TabmanViewController {
     tabmanBar.buttons.customize { button in
       button.selectedTintColor = .black
       button.tintColor = .idorm_gray_200
-      button.font = .init(name: Font.regular.rawValue, size: 14)!
-      button.selectedFont = .init(name: Font.regular.rawValue, size: 14)!
+      button.font = .init(name: MyFonts.regular.rawValue, size: 14)!
+      button.selectedFont = .init(name: MyFonts.regular.rawValue, size: 14)!
       button.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
     }
     

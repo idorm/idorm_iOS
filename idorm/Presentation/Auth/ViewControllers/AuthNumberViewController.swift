@@ -20,7 +20,7 @@ class AuthNumberViewController: UIViewController {
     let label = UILabel()
     label.text = "지금 이메일로 인증번호를 보내드렸어요!"
     label.textColor = .darkGray
-    label.font = .init(name: Font.medium.rawValue, size: 12.0)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
     
     return label
   }()
@@ -29,7 +29,7 @@ class AuthNumberViewController: UIViewController {
     let button = UIButton(type: .custom)
     button.setTitle("인증번호 재요청", for: .normal)
     button.setTitleColor(UIColor.gray, for: .normal)
-    button.titleLabel?.font = .init(name: Font.medium.rawValue, size: 12.0)
+    button.titleLabel?.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
     
     return button
   }()
@@ -50,7 +50,7 @@ class AuthNumberViewController: UIViewController {
     let label = UILabel()
     label.text = "05:00"
     label.textColor = .idorm_blue
-    label.font = .init(name: Font.medium.rawValue, size: 14.0)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
     
     return label
   }()

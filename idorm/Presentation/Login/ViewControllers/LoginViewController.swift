@@ -14,14 +14,14 @@ import RxCocoa
 class LoginViewController: UIViewController {
   // MARK: - Properties
   let loginTitleLabel = UILabel().then {
-    $0.font = .init(name: Font.bold.rawValue, size: 24)
+    $0.font = .init(name: MyFonts.bold.rawValue, size: 24)
     $0.text = "로그인"
   }
   
   let loginLabel = UILabel().then {
     $0.text = "인천대학교 이메일로 로그인해주세요."
     $0.textColor = .darkGray
-    $0.font = .init(name: Font.medium.rawValue, size: 12)
+    $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
   }
   
   let idTextField = LoginTextField("이메일").then {
@@ -36,7 +36,7 @@ class LoginViewController: UIViewController {
   let loginButton = UIButton().then {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
-    container.font = .init(name: Font.medium.rawValue, size: 14)
+    container.font = .init(name: MyFonts.medium.rawValue, size: 14)
     container.foregroundColor = UIColor.white
     config.attributedTitle = AttributedString("로그인", attributes: container)
     config.baseBackgroundColor = .idorm_blue
@@ -49,7 +49,7 @@ class LoginViewController: UIViewController {
     var config = UIButton.Configuration.plain()
     var container = AttributeContainer()
     container.foregroundColor = UIColor.idorm_gray_300
-    container.font = .init(name: Font.medium.rawValue, size: 12)
+    container.font = .init(name: MyFonts.medium.rawValue, size: 12)
     config.attributedTitle = AttributedString("비밀번호를 잊으셨나요?", attributes: container)
     
     $0.configuration = config
@@ -58,14 +58,14 @@ class LoginViewController: UIViewController {
   let signUpLabel = UILabel().then {
     $0.text = "아직 계정이 없으신가요?"
     $0.textColor = .idorm_gray_300
-    $0.font = .init(name: Font.medium.rawValue, size: FontSize.largeDescription.rawValue)
+    $0.font = .init(name: MyFonts.medium.rawValue, size: FontSize.largeDescription.rawValue)
   }
   
   let signUpButton = UIButton().then {
     var config = UIButton.Configuration.plain()
     var container = AttributeContainer()
     container.foregroundColor = UIColor.idorm_blue
-    container.font = .init(name: Font.medium.rawValue, size: 12)
+    container.font = .init(name: MyFonts.medium.rawValue, size: 12)
     config.attributedTitle = AttributedString("회원가입", attributes: container)
     config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
     

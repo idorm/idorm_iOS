@@ -23,7 +23,7 @@ class CommunityPopupViewController: UIViewController {
   lazy var contentsLabel: UILabel = {
     let label = UILabel()
     label.textColor = .black
-    label.font = .init(name: Font.medium.rawValue, size: 14)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 14)
     
     return label
   }()
@@ -32,7 +32,7 @@ class CommunityPopupViewController: UIViewController {
       let button = UIButton(type: .custom)
       button.setTitle("확인", for: .normal)
       button.setTitleColor(UIColor.idorm_gray_300, for: .normal)
-      button.titleLabel?.font = .init(name: Font.medium.rawValue, size: 14.0)
+      button.titleLabel?.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
       button.addTarget(self, action: #selector(didTapConfirmButton), for: .touchUpInside)
       
       return button
@@ -42,7 +42,7 @@ class CommunityPopupViewController: UIViewController {
     let button = UIButton(type: .custom)
     button.setTitle("취소", for: .normal)
     button.setTitleColor(UIColor.idorm_gray_300, for: .normal)
-    button.titleLabel?.font = .init(name: Font.medium.rawValue, size: 14)
+    button.titleLabel?.font = .init(name: MyFonts.medium.rawValue, size: 14)
     button.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
     
     return button

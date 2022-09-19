@@ -16,10 +16,10 @@ class OnboardingTextField: UIView {
     let tf = UITextField()
     tf.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
       NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_300,
-      NSAttributedString.Key.font: UIFont.init(name: Font.medium.rawValue, size: 14.0) ?? 0
+      NSAttributedString.Key.font: UIFont.init(name: MyFonts.medium.rawValue, size: 14.0) ?? 0
     ])
     tf.textColor = .black
-    tf.font = .init(name: Font.medium.rawValue, size: 14.0)
+    tf.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
     tf.addLeftPadding(16)
     tf.backgroundColor = .white
     tf.keyboardType = .default

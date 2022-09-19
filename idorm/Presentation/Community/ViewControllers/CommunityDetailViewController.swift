@@ -14,7 +14,7 @@ class CommunityDetailViewController: UIViewController {
   // MARK: - Properties
   lazy var commentsTextView: RSKGrowingTextView = {
     let textView = RSKGrowingTextView()
-    textView.attributedPlaceholder = NSAttributedString(string: "댓글을 입력해주세요.", attributes: [NSAttributedString.Key.font: UIFont.init(name: Font.regular.rawValue, size: 12) ?? 0, NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_400])
+    textView.attributedPlaceholder = NSAttributedString(string: "댓글을 입력해주세요.", attributes: [NSAttributedString.Key.font: UIFont.init(name: MyFonts.regular.rawValue, size: 12) ?? 0, NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_400])
     textView.layer.cornerRadius = 15
     textView.backgroundColor = .init(rgb: 0xF4F2FA)
     textView.isScrollEnabled = false

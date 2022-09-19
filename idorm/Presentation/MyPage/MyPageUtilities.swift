@@ -14,7 +14,7 @@ class MyPageUtilities {
     config.imagePlacement = .top
     config.imagePadding = 8
     var container = AttributeContainer()
-    container.font = .init(name: Font.regular.rawValue, size: 12)
+    container.font = .init(name: MyFonts.regular.rawValue, size: 12)
     container.foregroundColor = UIColor.black
     config.attributedTitle = AttributedString(title, attributes: container)
     config.titleAlignment = .center
@@ -41,7 +41,7 @@ class MyPageUtilities {
     config.imagePlacement = .top
     config.imagePadding = 8
     var container = AttributeContainer()
-    container.font = .init(name: Font.regular.rawValue, size: 12)
+    container.font = .init(name: MyFonts.regular.rawValue, size: 12)
     container.foregroundColor = UIColor.black
     config.attributedTitle = AttributedString(title, attributes: container)
     config.titleAlignment = .center
@@ -65,7 +65,7 @@ class MyPageUtilities {
   static func createTitleLabel(title: String) -> UILabel {
     let label = UILabel()
     label.text = title
-    label.font = .init(name: Font.medium.rawValue, size: 16)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 16)
     label.textColor = .black
     
     return label

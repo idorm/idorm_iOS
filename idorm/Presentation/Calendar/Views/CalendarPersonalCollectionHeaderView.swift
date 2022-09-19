@@ -13,7 +13,7 @@ class CalendarPersonalCollectionHeaderView: UICollectionReusableView {
   lazy var titleLabel: UILabel = {
     let label = UILabel()
     label.text = "개인 일정"
-    label.font = .init(name: Font.regular.rawValue, size: 12)
+    label.font = .init(name: MyFonts.regular.rawValue, size: 12)
     label.textColor = .idorm_gray_400
     
     return label

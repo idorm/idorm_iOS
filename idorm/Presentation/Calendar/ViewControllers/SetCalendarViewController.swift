@@ -40,7 +40,7 @@ class SetCalendarViewController: UIViewController {
     let label = UILabel()
     label.text = "하루종일"
     label.textColor = .black
-    label.font = .init(name: Font.regular.rawValue, size: 14)
+    label.font = .init(name: MyFonts.regular.rawValue, size: 14)
     
     return label
   }()
@@ -67,7 +67,7 @@ class SetCalendarViewController: UIViewController {
     var config = UIButton.Configuration.filled()
     config.baseBackgroundColor = .idorm_blue
     var container = AttributeContainer()
-    container.font = .init(name: Font.regular.rawValue, size: 14)
+    container.font = .init(name: MyFonts.regular.rawValue, size: 14)
     container.foregroundColor = UIColor.white
     config.attributedTitle = AttributedString("완료", attributes: container)
     let btn = UIButton(configuration: config)

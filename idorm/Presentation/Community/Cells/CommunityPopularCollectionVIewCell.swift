@@ -16,7 +16,7 @@ class CommunityPopularCollectionVIewCell: UICollectionViewCell {
     let label = UILabel()
     label.text = "인기"
     label.textColor = .idorm_blue
-    label.font = .init(name: Font.regular.rawValue, size: 10)
+    label.font = .init(name: MyFonts.regular.rawValue, size: 10)
     
     return label
   }()
@@ -24,7 +24,7 @@ class CommunityPopularCollectionVIewCell: UICollectionViewCell {
   lazy var contentsLabel: UILabel = {
     let label = UILabel()
     label.text = "3 기숙사 카페 혜윰메뉴 올려드립니다! 제가"
-    label.font = .init(name: Font.regular.rawValue, size: 12)
+    label.font = .init(name: MyFonts.regular.rawValue, size: 12)
     label.textColor = .black
     label.lineBreakMode = .byCharWrapping
     label.numberOfLines = 0
@@ -56,7 +56,7 @@ class CommunityPopularCollectionVIewCell: UICollectionViewCell {
   lazy var messageCountLabel: UILabel = {
     let label = UILabel()
     label.textColor = .idorm_gray_400
-    label.font = .init(name: Font.medium.rawValue, size: 10)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 10)
     label.text = "100"
     
     return label
@@ -65,7 +65,7 @@ class CommunityPopularCollectionVIewCell: UICollectionViewCell {
   lazy var pictureCountLabel: UILabel = {
     let label = UILabel()
     label.textColor = .idorm_gray_400
-    label.font = .init(name: Font.medium.rawValue, size: 10)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 10)
     label.text = "100"
     
     return label
@@ -74,7 +74,7 @@ class CommunityPopularCollectionVIewCell: UICollectionViewCell {
   lazy var likeCountLabel: UILabel = {
     let label = UILabel()
     label.textColor = .idorm_gray_400
-    label.font = .init(name: Font.medium.rawValue, size: 10)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 10)
     label.text = "100"
     
     return label

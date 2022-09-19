@@ -33,12 +33,12 @@ final class LoginTextField: UITextField {
       string: placeholder,
       attributes: [
         .foregroundColor: UIColor.idorm_gray_300,
-        .font: UIFont.init(name: Font.medium.rawValue, size: 14) ?? 0
+        .font: UIFont.init(name: MyFonts.medium.rawValue, size: 14) ?? 0
       ]
     )
     self.textColor = .idorm_gray_300
     self.backgroundColor = .idorm_gray_100
-    self.font = .init(name: Font.medium.rawValue, size: 14)
+    self.font = .init(name: MyFonts.medium.rawValue, size: 14)
     self.layer.cornerRadius = 14.0
     self.addLeftPadding(16)
   }

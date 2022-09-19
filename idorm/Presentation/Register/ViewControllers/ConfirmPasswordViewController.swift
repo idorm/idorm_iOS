@@ -20,8 +20,8 @@ class ConfirmPasswordViewController: UIViewController {
   lazy var eightLabel = returnDescriptionLabel(text: "•  8자 이상 입력")
   lazy var mixingLabel = returnDescriptionLabel(text: "•  영문 소문자/숫자/특수 문자 조합")
   
-  lazy var passwordTextFieldContainerView: LoginPasswordTextFieldContainerView = {
-    let containerView = LoginPasswordTextFieldContainerView(placeholder: "비밀번호를 입력해주세요.")
+  lazy var passwordTextFieldContainerView: RegisterPwTextField = {
+    let containerView = RegisterPwTextField(placeholder: "비밀번호를 입력해주세요.")
     
     return containerView
   }()
@@ -283,13 +283,13 @@ class ConfirmPasswordViewController: UIViewController {
     let label = UILabel()
     label.text = text
     label.textColor = .black
-    label.font = .init(name: Font.medium.rawValue, size: 14.0)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
     return label
   }
   
   private func returnDescriptionLabel(text: String) -> UILabel {
     let label = UILabel()
-    label.font = .init(name: Font.medium.rawValue, size: 12.0)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
     label.textColor = .idorm_gray_400
     label.text = text
     

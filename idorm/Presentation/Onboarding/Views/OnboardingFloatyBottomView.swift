@@ -29,7 +29,7 @@ class OnboardingFloatyBottomView: UIView {
   
   lazy var skipButton: UIButton = {
     var container = AttributeContainer()
-    container.font = .init(name: Font.medium.rawValue, size: 16)
+    container.font = .init(name: MyFonts.medium.rawValue, size: 16)
     container.foregroundColor = .idorm_gray_400
     var config = UIButton.Configuration.filled()
     config.baseBackgroundColor = .idorm_gray_100
@@ -58,7 +58,7 @@ class OnboardingFloatyBottomView: UIView {
   
   lazy var confirmButton: UIButton = {
     var container = AttributeContainer()
-    container.font = .init(name: Font.medium.rawValue, size: 16)
+    container.font = .init(name: MyFonts.medium.rawValue, size: 16)
     container.foregroundColor = UIColor.white
     var config = UIButton.Configuration.filled()
     config.contentInsets = NSDirectionalEdgeInsets(top: 14, leading: 26, bottom: 14, trailing: 26)
