@@ -125,6 +125,8 @@
 		E5D49016288C449600311493 /* OnboardingVIewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D49015288C449600311493 /* OnboardingVIewController.swift */; };
 		E5D98F8F28C4863900D493FF /* ChangeNickNameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D98F8E28C4863900D493FF /* ChangeNickNameVC.swift */; };
 		E5D98F9128C486CB00D493FF /* ChangeNicknameVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D98F9028C486CB00D493FF /* ChangeNicknameVM.swift */; };
+		E5E77EC128D81AD400031010 /* LoginTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E77EC028D81AD400031010 /* LoginTextField.swift */; };
+		E5E77EC428D81D7400031010 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = E5E77EC328D81D7400031010 /* Then */; };
 		E5E8A3DB289505B500A48A91 /* MyPostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E8A3DA289505B400A48A91 /* MyPostVC.swift */; };
 		E5E8A3DD289505F000A48A91 /* MyPostCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E8A3DC289505F000A48A91 /* MyPostCollectionHeaderView.swift */; };
 		E5E8A3DF2895208500A48A91 /* MyCommentsCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E8A3DE2895208500A48A91 /* MyCommentsCollectionVIewCell.swift */; };
@@ -246,6 +248,7 @@
 		E5D49015288C449600311493 /* OnboardingVIewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVIewController.swift; sourceTree = "<group>"; };
 		E5D98F8E28C4863900D493FF /* ChangeNickNameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeNickNameVC.swift; sourceTree = "<group>"; };
 		E5D98F9028C486CB00D493FF /* ChangeNicknameVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeNicknameVM.swift; sourceTree = "<group>"; };
+		E5E77EC028D81AD400031010 /* LoginTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextField.swift; sourceTree = "<group>"; };
 		E5E8A3DA289505B400A48A91 /* MyPostVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPostVC.swift; sourceTree = "<group>"; };
 		E5E8A3DC289505F000A48A91 /* MyPostCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPostCollectionHeaderView.swift; sourceTree = "<group>"; };
 		E5E8A3DE2895208500A48A91 /* MyCommentsCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommentsCollectionVIewCell.swift; sourceTree = "<group>"; };
@@ -282,6 +285,7 @@
 				E57A42CC289596D8003D5834 /* CardSlider in Frameworks */,
 				E5B15F6D287FCEFE004D4164 /* RSKPlaceholderTextView in Frameworks */,
 				E510D3C928AC88A000A28B90 /* Alamofire in Frameworks */,
+				E5E77EC428D81D7400031010 /* Then in Frameworks */,
 				E5D03751288CFDE800080482 /* CHIOTPField in Frameworks */,
 				E5340E8A289C713D0030A44F /* RxDataSources in Frameworks */,
 				E57E48FA2899666000D00BDB /* RxSwift in Frameworks */,
@@ -450,13 +454,13 @@
 			isa = PBXGroup;
 			children = (
 				E56DF4CC2894063100E85B10 /* General */,
+				E56DF4BD2894041D00E85B10 /* Login */,
 				E56DF4B6289403A400E85B10 /* Onboarding */,
 				E56DF4C2289405C000E85B10 /* Home */,
 				E56DF4C3289405CD00E85B10 /* Matching */,
 				E56DF4B02893CE4F00E85B10 /* Community */,
 				E56DF4CA2894061000E85B10 /* MyPage */,
 				E56DF4A82893C73600E85B10 /* Calendar */,
-				E56DF4BD2894041D00E85B10 /* Login */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -630,7 +634,6 @@
 				E56DF4C12894043D00E85B10 /* ViewModels */,
 				E56DF4BF2894042D00E85B10 /* ViewControllers */,
 				E56DF4BE2894042500E85B10 /* Views */,
-				E56DF4C02894043100E85B10 /* Cells */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -638,8 +641,10 @@
 		E56DF4BE2894042500E85B10 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E56DF4C02894043100E85B10 /* Cells */,
 				E5AC2DCE288303A300B82AD8 /* LoginPasswordTextFieldContainerView.swift */,
 				E586B6A428901B06005AB9C2 /* LoginTextFieldContainerView.swift */,
+				E5E77EC028D81AD400031010 /* LoginTextField.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -933,6 +938,7 @@
 				E510D3C828AC88A000A28B90 /* Alamofire */,
 				E5AC2A4A28BB56360069ABB9 /* RxGesture */,
 				E5CF7DCD28C8C02900125144 /* NVActivityIndicatorView */,
+				E5E77EC328D81D7400031010 /* Then */,
 			);
 			productName = idorm;
 			productReference = E50300F328773A5D00611C62 /* idorm.app */;
@@ -979,6 +985,7 @@
 				E510D3C728AC88A000A28B90 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				E5AC2A4928BB56360069ABB9 /* XCRemoteSwiftPackageReference "RxGesture" */,
 				E5CF7DCC28C8C02900125144 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */,
+				E5E77EC228D81D7400031010 /* XCRemoteSwiftPackageReference "Then" */,
 			);
 			productRefGroup = E50300F428773A5D00611C62 /* Products */;
 			projectDirPath = "";
@@ -1061,6 +1068,7 @@
 				E5C89E4B28A9EDA70035D9C6 /* URLRequest+Extensions.swift in Sources */,
 				E557E22928926F3B00F9C74D /* UIViewController+Extensions.swift in Sources */,
 				E5B7E84F28ABCA670099B631 /* LoginViewModel.swift in Sources */,
+				E5E77EC128D81AD400031010 /* LoginTextField.swift in Sources */,
 				E55DE2F92896DDC6004F1401 /* CalendarUtilities.swift in Sources */,
 				E5AD739D287AE08F00BA2C5E /* PopupViewController.swift in Sources */,
 				E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */,
@@ -1498,6 +1506,14 @@
 				minimumVersion = 2.9.0;
 			};
 		};
+		E5E77EC228D81D7400031010 /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1590,6 +1606,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E5D31BF4289ABCE100510315 /* XCRemoteSwiftPackageReference "Tabman" */;
 			productName = Tabman;
+		};
+		E5E77EC328D81D7400031010 /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E5E77EC228D81D7400031010 /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

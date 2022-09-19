@@ -6,98 +6,74 @@
 //
 
 import UIKit
+import Then
 import SnapKit
 import RxSwift
 import RxCocoa
 
 class LoginViewController: UIViewController {
   // MARK: - Properties
-  lazy var idormMarkImage: UIImageView = {
-    let iv = UIImageView()
-    iv.image = UIImage(named: "i dorm Mark")
-    iv.contentMode = .scaleAspectFit
-    
-    return iv
-  }()
+  let loginTitleLabel = UILabel().then {
+    $0.font = .init(name: Font.bold.rawValue, size: 24)
+    $0.text = "로그인"
+  }
   
-  lazy var loginTitleLabel: UILabel = {
-    let label = UILabel()
-    label.font = .init(name: Font.bold.rawValue, size: 24)
-    label.text = "로그인"
-    label.textColor = .black
-    
-    return label
-  }()
+  let loginLabel = UILabel().then {
+    $0.text = "인천대학교 이메일로 로그인해주세요."
+    $0.textColor = .darkGray
+    $0.font = .init(name: Font.medium.rawValue, size: 12)
+  }
   
-  lazy var INU_Mark: UIImageView = {
-    let iv = UIImageView()
-    iv.image = UIImage(named: "INUMark")
-    iv.contentMode = .scaleAspectFit
-    
-    return iv
-  }()
+  let idTextField = LoginTextField("이메일").then {
+    $0.textContentType = .emailAddress
+  }
   
-  lazy var loginLabel: UILabel = {
-    let label = UILabel()
-    label.text = "인천대학교 이메일로 로그인해주세요."
-    label.textColor = .darkGray
-    label.font = .init(name: Font.medium.rawValue, size: 12)
-    
-    return label
-  }()
+  let pwTextField = LoginTextField("비밀번호").then {
+    $0.keyboardType = .alphabet
+    $0.isSecureTextEntry = true
+  }
   
-  lazy var idTextField: UITextField = {
-    let tf = returnLoginTextField(placeholder: "이메일")
-    tf.keyboardType = .emailAddress
+  let loginButton = UIButton().then {
+    var config = UIButton.Configuration.filled()
+    var container = AttributeContainer()
+    container.font = .init(name: Font.medium.rawValue, size: 14)
+    container.foregroundColor = UIColor.white
+    config.attributedTitle = AttributedString("로그인", attributes: container)
+    config.baseBackgroundColor = .idorm_blue
+    config.background.cornerRadius = 10
     
-    return tf
-  }()
+    $0.configuration = config
+  }
   
-  lazy var pwTextField: UITextField = {
-    let tf = returnLoginTextField(placeholder: "비밀번호")
-    tf.keyboardType = .alphabet
-    tf.isSecureTextEntry = true
+  let forgotPwButton = UIButton().then {
+    var config = UIButton.Configuration.plain()
+    var container = AttributeContainer()
+    container.foregroundColor = UIColor.idorm_gray_300
+    container.font = .init(name: Font.medium.rawValue, size: 12)
+    config.attributedTitle = AttributedString("비밀번호를 잊으셨나요?", attributes: container)
     
-    return tf
-  }()
+    $0.configuration = config
+  }
   
-  lazy var loginButton: UIButton = {
-    let button = UIButton(type: .custom)
-    button.setTitle("로그인", for: .normal)
-    button.setTitleColor(UIColor.white, for: .normal)
-    button.titleLabel?.font = .init(name: Font.medium.rawValue, size: 14)
-    button.backgroundColor = .idorm_blue
-    button.layer.cornerRadius = 10.0
-    
-    return button
-  }()
+  let signUpLabel = UILabel().then {
+    $0.text = "아직 계정이 없으신가요?"
+    $0.textColor = .idorm_gray_300
+    $0.font = .init(name: Font.medium.rawValue, size: FontSize.largeDescription.rawValue)
+  }
   
-  lazy var forgotPwButton: UIButton = {
-    let button = UIButton(type: .custom)
-    button.setTitle("비밀번호를 잊으셨나요?", for: .normal)
-    button.titleLabel?.font = .init(name: Font.medium.rawValue, size: FontSize.largeDescription.rawValue)
-    button.setTitleColor(UIColor.gray, for: .normal)
+  let signUpButton = UIButton().then {
+    var config = UIButton.Configuration.plain()
+    var container = AttributeContainer()
+    container.foregroundColor = UIColor.idorm_blue
+    container.font = .init(name: Font.medium.rawValue, size: 12)
+    config.attributedTitle = AttributedString("회원가입", attributes: container)
+    config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
     
-    return button
-  }()
+    $0.configuration = config
+  }
   
-  lazy var signUpLabel: UILabel = {
-    let label = UILabel()
-    label.text = "아직 계정이 없으신가요?"
-    label.textColor = .gray
-    label.font = .init(name: Font.medium.rawValue, size: FontSize.largeDescription.rawValue)
-    
-    return label
-  }()
-  
-  lazy var signUpButton: UIButton = {
-    let button = UIButton(type: .custom)
-    button.setTitle("회원가입", for: .normal)
-    button.setTitleColor(UIColor.idorm_blue, for: .normal)
-    button.titleLabel?.font = .init(name: Font.medium.rawValue, size: FontSize.largeDescription.rawValue)
-    
-    return button
-  }()
+  let idormMarkImage = UIImageView(image: UIImage(named: "i dorm Mark"))
+  let inuMarkImage = UIImageView(image: UIImage(named: "INUMark"))
   
   let viewModel = LoginViewModel()
   let disposeBag = DisposeBag()
@@ -182,7 +158,7 @@ class LoginViewController: UIViewController {
     navigationController?.navigationBar.tintColor = .black
     navigationItem.title = "로그인"
     
-    let loginStack = UIStackView(arrangedSubviews: [ INU_Mark, loginLabel ])
+    let loginStack = UIStackView(arrangedSubviews: [ inuMarkImage, loginLabel ])
     loginStack.axis = .horizontal
     loginStack.spacing = 8.0
     
@@ -240,23 +216,6 @@ class LoginViewController: UIViewController {
       make.centerX.equalToSuperview()
       make.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
     }
-  }
-  
-  private func returnLoginTextField(placeholder: String) -> UITextField {
-    let tf = UITextField()
-    tf.attributedPlaceholder = NSAttributedString(
-      string: placeholder,
-      attributes: [
-        NSAttributedString.Key.foregroundColor: UIColor.gray,
-        NSAttributedString.Key.font: UIFont.init(name: Font.regular.rawValue, size: FontSize.main.rawValue) ?? 0
-      ])
-    tf.textColor = .gray
-    tf.backgroundColor = .init(rgb: 0xF4F2FA)
-    tf.font = .init(name: Font.regular.rawValue, size: FontSize.main.rawValue)
-    tf.layer.cornerRadius = 15.0
-    tf.addLeftPadding(16)
-    
-    return tf
   }
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
