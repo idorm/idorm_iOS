@@ -154,7 +154,7 @@
 		E50300F828773A5D00611C62 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E50300FF28773A5E00611C62 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E503010228773A5E00611C62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		E503010428773A5E00611C62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = ../../Info.plist; sourceTree = "<group>"; };
+		E503010428773A5E00611C62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = ../../../Info.plist; sourceTree = "<group>"; };
 		E504B61828B9C6E4009B45F8 /* CompleteSignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpViewModel.swift; sourceTree = "<group>"; };
 		E504B61A28B9DCE3009B45F8 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		E508436B288133AD0047A2EC /* LoginUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUtilities.swift; sourceTree = "<group>"; };
@@ -322,8 +322,8 @@
 			children = (
 				E50300F528773A5D00611C62 /* idorm */,
 				E50300F428773A5D00611C62 /* Products */,
-				412A085C63CA6B4F422F3788 /* Pods */,
 				E2593091C034F6240C996B85 /* Frameworks */,
+				412A085C63CA6B4F422F3788 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -338,11 +338,8 @@
 		E50300F528773A5D00611C62 /* idorm */ = {
 			isa = PBXGroup;
 			children = (
-				E54B3E2328C6E1A80062EF7E /* App */,
-				E54B3E2228C6E1A30062EF7E /* Models */,
-				E591B77228C6E5E300B8B581 /* Networks */,
-				E54B3E2428C6E25C0062EF7E /* Presentation */,
-				E54B3E1228C6D8910062EF7E /* Resources */,
+				E575304328D92BE900F0B57C /* Configuration */,
+				E575304428D92BEF00F0B57C /* Source */,
 			);
 			path = idorm;
 			sourceTree = "<group>";
@@ -392,20 +389,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		E54B3E1228C6D8910062EF7E /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				E503010128773A5E00611C62 /* LaunchScreen.storyboard */,
-				E50300FF28773A5E00611C62 /* Assets.xcassets */,
-				E53C60AC287B34C400977909 /* Utilities */,
-				E508437528813C270047A2EC /* Fonts */,
-				E5084367288133570047A2EC /* Extensions */,
-				E54B3E1328C6D89E0062EF7E /* Constants */,
-				E54B3E1728C6D9680062EF7E /* Managers */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		E54B3E1328C6D89E0062EF7E /* Constants */ = {
 			isa = PBXGroup;
 			children = (
@@ -434,19 +417,11 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		E54B3E2328C6E1A80062EF7E /* App */ = {
-			isa = PBXGroup;
-			children = (
-				E503010428773A5E00611C62 /* Info.plist */,
-				E50300F628773A5D00611C62 /* AppDelegate.swift */,
-				E50300F828773A5D00611C62 /* SceneDelegate.swift */,
-			);
-			path = App;
-			sourceTree = "<group>";
-		};
 		E54B3E2428C6E25C0062EF7E /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				E50300F628773A5D00611C62 /* AppDelegate.swift */,
+				E50300F828773A5D00611C62 /* SceneDelegate.swift */,
 				E56DF4CC2894063100E85B10 /* General */,
 				E5E77ECC28D8293400031010 /* Auth */,
 				E5E77EC928D8261E00031010 /* Register */,
@@ -754,6 +729,39 @@
 				E5E8A3E12895215100A48A91 /* Views */,
 			);
 			path = General;
+			sourceTree = "<group>";
+		};
+		E575304328D92BE900F0B57C /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				E575304528D92C1200F0B57C /* Base */,
+				E5084367288133570047A2EC /* Extensions */,
+				E54B3E1328C6D89E0062EF7E /* Constants */,
+				E54B3E1728C6D9680062EF7E /* Managers */,
+				E508437528813C270047A2EC /* Fonts */,
+				E53C60AC287B34C400977909 /* Utilities */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
+		E575304428D92BEF00F0B57C /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				E591B77228C6E5E300B8B581 /* Networks */,
+				E54B3E2228C6E1A30062EF7E /* Models */,
+				E54B3E2428C6E25C0062EF7E /* Presentation */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		E575304528D92C1200F0B57C /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				E503010428773A5E00611C62 /* Info.plist */,
+				E503010128773A5E00611C62 /* LaunchScreen.storyboard */,
+				E50300FF28773A5E00611C62 /* Assets.xcassets */,
+			);
+			path = Base;
 			sourceTree = "<group>";
 		};
 		E584B4B6289F23C7007AD83A /* Swipe */ = {
@@ -1356,7 +1364,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 95JTZ6AP78;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = idorm/App/Info.plist;
+				INFOPLIST_FILE = idorm/Configuration/Base/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -1384,7 +1392,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 95JTZ6AP78;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = idorm/App/Info.plist;
+				INFOPLIST_FILE = idorm/Configuration/Base/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
