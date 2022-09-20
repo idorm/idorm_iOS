@@ -9,6 +9,7 @@ import UIKit
 
 class TabBarController: UITabBarController {
   // MARK: - Properties
+  
   let homeVC = UINavigationController(rootViewController: HomeViewController())
   let matchingVC = UINavigationController(rootViewController: MatchingViewController())
   let communityVC = UINavigationController(rootViewController: CommunityViewController())
@@ -17,6 +18,7 @@ class TabBarController: UITabBarController {
   
   
   // MARK: - LifeCycle
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     configureUI()

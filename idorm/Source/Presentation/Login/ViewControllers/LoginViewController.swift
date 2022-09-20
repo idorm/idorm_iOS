@@ -11,7 +11,7 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-class LoginViewController: UIViewController {
+class LoginViewController: BaseViewController {
   // MARK: - Properties
   let loginTitleLabel = UILabel().then {
     $0.font = .init(name: MyFonts.bold.rawValue, size: 24)
@@ -74,19 +74,27 @@ class LoginViewController: UIViewController {
   
   let idormMarkImage = UIImageView(image: UIImage(named: "i dorm Mark"))
   let inuMarkImage = UIImageView(image: UIImage(named: "INUMark"))
+  var loginStack: UIStackView!
+  var loginTextFieldStack: UIStackView!
+  var signUpStack: UIStackView!
   
   let viewModel = LoginViewModel()
-  let disposeBag = DisposeBag()
   
-  // MARK: - LifeCycle
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    configureUI()
-    bind()
+  //MARK: - LifeCycle
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.navigationController?.isNavigationBarHidden = true
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    self.navigationController?.isNavigationBarHidden = false
   }
   
   // MARK: - Bind
-  func bind() {
+  override func bind() {
+    super.bind()
     // ---------------------------------
     // ---------------INPUT-------------
     // ---------------------------------
@@ -115,12 +123,11 @@ class LoginViewController: UIViewController {
       .bind(to: viewModel.input.passwordText)
       .disposed(by: disposeBag)
     
-    rx.viewWillAppear
-      .map { _ in Void() }
-      .bind(onNext: { [weak self] in
-        self?.navigationController?.isNavigationBarHidden = true
-      })
-      .disposed(by: disposeBag)
+//    rx.viewWillAppear
+//      .map { _ in Void() }
+//      .bind(onNext: { [weak self] in
+//      })
+//      .disposed(by: disposeBag)
     
     // ---------------------------------
     // --------------OUTPUT-------------
@@ -151,8 +158,18 @@ class LoginViewController: UIViewController {
       .disposed(by: disposeBag)
   }
   
-  // MARK: - Helpers
-  private func configureUI() {
+  // MARK: - Setup
+  
+  override func setupLayouts() {
+    super.setupLayouts()
+    
+    [idormMarkImage, loginTitleLabel, loginTextFieldStack, loginStack, loginButton, forgotPwButton, signUpStack]
+      .forEach { view.addSubview($0) }
+  }
+  
+  override func setupStyles() {
+    super.setupStyles()
+    
     view.backgroundColor = .white
     navigationController?.isNavigationBarHidden = true
     navigationController?.navigationBar.tintColor = .black
@@ -167,6 +184,18 @@ class LoginViewController: UIViewController {
     loginTextFieldStack.distribution = .fillEqually
     loginTextFieldStack.spacing = 10.0
     
+    let signUpStack = UIStackView(arrangedSubviews: [ signUpLabel, signUpButton ])
+    signUpStack.axis = .horizontal
+    signUpStack.spacing = 8.0
+    
+    self.loginStack = loginStack
+    self.loginTextFieldStack = loginTextFieldStack
+    self.signUpStack = signUpStack
+  }
+  
+  override func setupConstraints() {
+    super.setupConstraints()
+    
     idTextField.snp.makeConstraints { make in
       make.height.equalTo(54)
     }
@@ -174,13 +203,6 @@ class LoginViewController: UIViewController {
     pwTextField.snp.makeConstraints { make in
       make.height.equalTo(54)
     }
-    
-    let signUpStack = UIStackView(arrangedSubviews: [ signUpLabel, signUpButton ])
-    signUpStack.axis = .horizontal
-    signUpStack.spacing = 8.0
-    
-    [ idormMarkImage, loginTitleLabel, loginTextFieldStack, loginStack, loginButton, forgotPwButton, signUpStack ]
-      .forEach { view.addSubview($0) }
     
     idormMarkImage.snp.makeConstraints { make in
       make.top.leading.equalTo(view.safeAreaLayoutGuide).inset(36)
@@ -217,6 +239,8 @@ class LoginViewController: UIViewController {
       make.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
     }
   }
+  
+  // MARK: - Helpers
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     view.endEditing(true)

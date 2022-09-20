@@ -12,8 +12,9 @@ import RxSwift
 import RxCocoa
 import NVActivityIndicatorView
 
-class PutEmailViewController: UIViewController {
+class PutEmailViewController: BaseViewController {
   // MARK: - Properties
+  
   lazy var infoLabel = UILabel().then {
     $0.textColor = .black
     $0.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
@@ -40,13 +41,14 @@ class PutEmailViewController: UIViewController {
   let textField = RegisterTextField("이메일을 입력해주세요")
   let confirmButton = RegisterBottomButton("인증번호 받기")
   let inuMark = UIImageView(image: UIImage(named: "INUMark"))
+  var inuStack: UIStackView!
   
   let viewModel = PutEmailViewModel()
-  let disposeBag = DisposeBag()
   
   let type: LoginType
   
-  // MARK: - LifeCycle
+  // MARK: - Init
+  
   init(type: LoginType) {
     self.type = type
     super.init(nibName: nil, bundle: nil)
@@ -58,20 +60,22 @@ class PutEmailViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    configureUI()
-  }
-  
+  // MARK: - LifeCycle
+    
   // MARK: - Bind
-  func bind() {
+  
+  override func bind() {
+    super.bind()
     // --------------------------------
     // --------------INPUT-------------
     // --------------------------------
+    
+    // ConfirmBUtton 클릭 이벤트
     confirmButton.rx.tap
       .bind(to: viewModel.input.confirmButtonTapped)
       .disposed(by: disposeBag)
     
+    // 텍스트필드 텍스트 반응
     textField.rx.text
       .orEmpty
       .bind(to: viewModel.input.emailText)
@@ -80,6 +84,8 @@ class PutEmailViewController: UIViewController {
     // --------------------------------
     // -------------OUTPUT-------------
     // --------------------------------
+    
+    // 에러 팝업 창 띄우기
     viewModel.output.showErrorPopupVC
       .asDriver(onErrorJustReturn: "")
       .drive(onNext: { [weak self] mention in
@@ -89,6 +95,7 @@ class PutEmailViewController: UIViewController {
       })
       .disposed(by: disposeBag)
     
+    // 인증번호 페이지로 이동
     viewModel.output.showAuthVC
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -107,7 +114,7 @@ class PutEmailViewController: UIViewController {
       })
       .disposed(by: disposeBag)
     
-    // 인디케이터 애니메이션 적용
+    // 인디케이터 애니메이션 시작
     viewModel.output.startAnimation
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -116,6 +123,7 @@ class PutEmailViewController: UIViewController {
       })
       .disposed(by: disposeBag)
     
+    // 인디케이터 애니메이션 종료
     viewModel.output.stopAnimation
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -125,25 +133,36 @@ class PutEmailViewController: UIViewController {
       .disposed(by: disposeBag)
   }
   
-  // MARK: - Helpers
-  private func configureUI() {
+  // MARK: - Setup
+  
+  override func setupLayouts() {
+    super.setupLayouts()
+    
+    [infoLabel, textField, confirmButton, inuStack, indicator]
+      .forEach { view.addSubview($0) }
+  }
+  
+  override func setupStyles() {
+    super.setupStyles()
+    
     view.backgroundColor = .white
-    navigationController?.isNavigationBarHidden = false
     
     let inustack = UIStackView(arrangedSubviews: [ inuMark, needEmailLabel ])
     inustack.axis = .horizontal
     inustack.spacing = 4.0
+    self.inuStack = inustack
     
     if type == .findPW {
       navigationItem.title = "비밀번호 찾기"
-      inustack.isHidden = true
+      inuStack.isHidden = true
     } else {
       navigationItem.title = "회원가입"
-      inustack.isHidden = false
+      inuStack.isHidden = false
     }
-    
-    [ infoLabel, textField, confirmButton, inustack, indicator ]
-      .forEach { view.addSubview($0) }
+  }
+  
+  override func setupConstraints() {
+    super.setupConstraints()
     
     infoLabel.snp.makeConstraints { make in
       make.top.leading.equalTo(view.safeAreaLayoutGuide).inset(24)
@@ -161,7 +180,7 @@ class PutEmailViewController: UIViewController {
       make.height.equalTo(50)
     }
     
-    inustack.snp.makeConstraints { make in
+    inuStack.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
       make.top.equalTo(textField.snp.bottom).offset(16)
     }

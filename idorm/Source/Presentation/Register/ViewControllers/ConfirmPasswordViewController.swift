@@ -10,9 +10,23 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-class ConfirmPasswordViewController: UIViewController {
+class ConfirmPasswordViewController: BaseViewController {
   // MARK: - Properties
-  let type: LoginType
+  
+  lazy var textField2 = RegisterPwTextField(placeholder: "비밀번호를 한번 더 입력해주세요.").then {
+//    tf.layer.borderColor = tf.isEditing ? UIColor.idorm_blue.cgColor : UIColor.idorm_gray_400.cgColor
+    $0.textField.isSecureTextEntry = true
+  }
+  
+  lazy var confirmButton = RegisterBottomButton("").then {
+    if type == .signUp {
+      $0.configuration?.title = "가입 완료"
+    } else {
+      $0.configuration?.title = "변경 완료"
+    }
+  }
+  
+  let textField1 = RegisterPwTextField(placeholder: "비밀번호를 입력해주세요.")
   
   lazy var infoLabel = returnInfoLabel(text: "비밀번호")
   lazy var infoLabel2 = returnInfoLabel(text: "비밀번호 확인")
@@ -20,35 +34,12 @@ class ConfirmPasswordViewController: UIViewController {
   lazy var eightLabel = returnDescriptionLabel(text: "•  8자 이상 입력")
   lazy var mixingLabel = returnDescriptionLabel(text: "•  영문 소문자/숫자/특수 문자 조합")
   
-  lazy var passwordTextFieldContainerView: RegisterPwTextField = {
-    let containerView = RegisterPwTextField(placeholder: "비밀번호를 입력해주세요.")
-    
-    return containerView
-  }()
-  
-  lazy var passwordTextFieldContainerView2: UITextField = {
-    let tf = LoginUtilities.returnTextField(placeholder: "비밀번호를 한번 더 입력해주세요.")
-    tf.layer.borderColor = tf.isEditing ? UIColor.idorm_blue.cgColor : UIColor.idorm_gray_400.cgColor
-    tf.isSecureTextEntry = true
-    
-    return tf
-  }()
-  
-  lazy var confirmButton: UIButton = {
-    let button = LoginUtilities.returnBottonConfirmButton(string: "")
-    if type == .signUp {
-      button.setTitle("가입 완료", for: .normal)
-    } else {
-      button.setTitle("변경 완료", for: .normal)
-    }
-    
-    return button
-  }()
+  let type: LoginType
   
   let viewModel = ConfirmPasswordViewModel()
-  let disposeBag = DisposeBag()
   
-  // MARK: - LifeCycle
+  // MARK: - Init
+  
   init(type: LoginType) {
     self.type = type
     super.init(nibName: nil, bundle: nil)
@@ -58,14 +49,10 @@ class ConfirmPasswordViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    configureUI()
-    bind()
-  }
-  
   // MARK: - Bind
-  func bind() {
+  
+  override func bind() {
+    super.bind()
     // --------------------------------
     // --------------INPUT-------------
     // --------------------------------
@@ -74,29 +61,29 @@ class ConfirmPasswordViewController: UIViewController {
       .bind(to: viewModel.input.confirmButtonTapped)
       .disposed(by: disposeBag)
     
-    passwordTextFieldContainerView.textField.rx.text
+    textField1.textField.rx.text
       .orEmpty
       .distinctUntilChanged()
       .bind(to: viewModel.input.passwordText)
       .disposed(by: disposeBag)
     
-    passwordTextFieldContainerView.textField.rx.controlEvent(.editingDidEnd)
+    textField1.textField.rx.controlEvent(.editingDidEnd)
       .bind(to: viewModel.input.passwordTextFieldDidEnd)
       .disposed(by: disposeBag)
     
-    passwordTextFieldContainerView.textField.rx.controlEvent(.editingDidBegin)
+    textField1.textField.rx.controlEvent(.editingDidBegin)
       .bind(to: viewModel.input.passwordTextFieldDidBegin)
       .disposed(by: disposeBag)
     
-    passwordTextFieldContainerView2.rx.controlEvent(.editingDidBegin)
+    textField2.textField.rx.controlEvent(.editingDidBegin)
       .bind(to: viewModel.input.passwordTextFieldDidBegin_2)
       .disposed(by: disposeBag)
     
-    passwordTextFieldContainerView2.rx.controlEvent(.editingDidEnd)
+    textField2.textField.rx.controlEvent(.editingDidEnd)
       .bind(to: viewModel.input.passwordTextFieldDidEnd_2)
       .disposed(by: disposeBag)
     
-    passwordTextFieldContainerView2.rx.text
+    textField2.textField.rx.text
       .orEmpty
       .distinctUntilChanged()
       .bind(to: viewModel.input.passwordText_2)
@@ -117,7 +104,7 @@ class ConfirmPasswordViewController: UIViewController {
         self?.infoLabel.textColor = .black
         self?.eightLabel.textColor = .idorm_gray_400
         self?.mixingLabel.textColor = .idorm_gray_400
-        self?.passwordTextFieldContainerView.layer.borderColor = UIColor.idorm_gray_400.cgColor
+        self?.textField1.layer.borderColor = UIColor.idorm_gray_400.cgColor
       })
       .disposed(by: disposeBag)
 
@@ -125,7 +112,7 @@ class ConfirmPasswordViewController: UIViewController {
     viewModel.output.didBeginState_2
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
-        self?.passwordTextFieldContainerView2.layer.borderColor = UIColor.idorm_blue.cgColor
+        self?.textField2.layer.borderColor = UIColor.idorm_blue.cgColor
         self?.infoLabel2.textColor = .idorm_gray_400
       })
       .disposed(by: disposeBag)
@@ -151,7 +138,7 @@ class ConfirmPasswordViewController: UIViewController {
         }
         
         if countBool == false || combineBool == false {
-          self.passwordTextFieldContainerView.layer.borderColor = UIColor.idorm_red.cgColor
+          self.textField1.layer.borderColor = UIColor.idorm_red.cgColor
           self.infoLabel.textColor = .idorm_red
         }
       })
@@ -168,11 +155,11 @@ class ConfirmPasswordViewController: UIViewController {
         if password != password2 {
           self.infoLabel2.text = "비밀번호가 일치하지 않습니다. 다시확인해주세요."
           self.infoLabel2.textColor = .idorm_red
-          self.passwordTextFieldContainerView2.layer.borderColor = UIColor.idorm_red.cgColor
+          self.textField2.layer.borderColor = UIColor.idorm_red.cgColor
         } else {
           self.infoLabel2.text = "비밀번호 확인"
           self.infoLabel2.textColor = .black
-          self.passwordTextFieldContainerView2.layer.borderColor = UIColor.idorm_gray_400.cgColor
+          self.textField2.layer.borderColor = UIColor.idorm_gray_400.cgColor
         }
       })
       .disposed(by: disposeBag)
@@ -229,32 +216,42 @@ class ConfirmPasswordViewController: UIViewController {
       .disposed(by: disposeBag)
   }
   
-  // MARK: - Helpers
-  private func configureUI() {
-    view.backgroundColor = .white
+  // MARK: - Setup
+  
+  override func setupLayouts() {
+    super.setupLayouts()
     
+    [infoLabel, infoLabel2, textField1, textField2, confirmButton, eightLabel, mixingLabel]
+      .forEach { view.addSubview($0) }
+  }
+  
+  override func setupStyles() {
+    super.setupStyles()
+    
+    view.backgroundColor = .white
     if type == .signUp {
       navigationItem.title = "회원가입"
     } else {
       navigationItem.title = "비밀번호 변경"
     }
-    
-    [ infoLabel, infoLabel2, passwordTextFieldContainerView, passwordTextFieldContainerView2, confirmButton, eightLabel, mixingLabel ]
-      .forEach { view.addSubview($0) }
+  }
+  
+  override func setupConstraints() {
+    super.setupConstraints()
     
     infoLabel.snp.makeConstraints { make in
       make.leading.equalTo(view.safeAreaLayoutGuide).inset(24)
       make.top.equalTo(view.safeAreaLayoutGuide).inset(52)
     }
     
-    passwordTextFieldContainerView.snp.makeConstraints { make in
+    textField1.snp.makeConstraints { make in
       make.top.equalTo(infoLabel.snp.bottom).offset(8)
       make.leading.trailing.equalToSuperview().inset(24)
       make.height.equalTo(50)
     }
     
     eightLabel.snp.makeConstraints { make in
-      make.top.equalTo(passwordTextFieldContainerView.snp.bottom).offset(8)
+      make.top.equalTo(textField1.snp.bottom).offset(8)
       make.leading.equalToSuperview().inset(24)
     }
     
@@ -268,9 +265,10 @@ class ConfirmPasswordViewController: UIViewController {
       make.top.equalTo(mixingLabel.snp.bottom).offset(30)
     }
     
-    passwordTextFieldContainerView2.snp.makeConstraints { make in
+    textField2.snp.makeConstraints { make in
       make.top.equalTo(infoLabel2.snp.bottom).offset(8)
       make.trailing.leading.equalToSuperview().inset(24)
+      make.height.equalTo(50)
     }
     
     confirmButton.snp.makeConstraints { make in
@@ -279,6 +277,14 @@ class ConfirmPasswordViewController: UIViewController {
     }
   }
   
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    view.endEditing(true)
+  }
+}
+
+// MARK: - Utilities
+
+extension ConfirmPasswordViewController {
   private func returnInfoLabel(text: String) -> UILabel {
     let label = UILabel()
     label.text = text
@@ -294,22 +300,5 @@ class ConfirmPasswordViewController: UIViewController {
     label.text = text
     
     return label
-  }
-  
-  private func validConfirmPassword(text: String) {
-    guard let password1Text = passwordTextFieldContainerView.textField.text else { return }
-    if passwordTextFieldContainerView2.text != password1Text {
-      infoLabel2.text = "비밀번호가 일치하지 않습니다. 다시확인해주세요."
-      infoLabel2.textColor = .red
-      passwordTextFieldContainerView2.layer.borderColor = UIColor.red.cgColor
-    } else {
-      infoLabel2.text = "비밀번호 확인"
-      infoLabel2.textColor = .black
-      passwordTextFieldContainerView2.layer.borderColor = UIColor.idorm_gray_400.cgColor
-    }
-  }
-  
-  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    view.endEditing(true)
   }
 }

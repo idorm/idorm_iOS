@@ -34,5 +34,7 @@ final class RegisterTextField: UITextField {
     layer.borderColor = UIColor.idorm_gray_300.cgColor
     layer.cornerRadius = 10
     backgroundColor = .white
+    
+    self.frame.size.height = 50
   }
 }
