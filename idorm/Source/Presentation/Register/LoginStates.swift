@@ -9,7 +9,7 @@ import Foundation
 
 class LoginStates {
   private init() {}
-  static var currentLoginType: LoginType = .findPW
-  static var currentEmail: String?
-  static var currentPassword: String?
+  static var registerType: RegisterType = .findPW
+  static var email: String?
+  static var password: String?
 }

@@ -787,7 +787,6 @@
 		E591B77328C6E62100B8B581 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				E510D3D028ACC84300A28B90 /* LoginStates.swift */,
 				E508436B288133AD0047A2EC /* LoginUtilities.swift */,
 			);
 			path = Login;
@@ -849,6 +848,7 @@
 		E5E77EC928D8261E00031010 /* Register */ = {
 			isa = PBXGroup;
 			children = (
+				E510D3D028ACC84300A28B90 /* LoginStates.swift */,
 				E5E77ECD28D8295E00031010 /* ViewModels */,
 				E5E77ECB28D828E800031010 /* ViewControllers */,
 				E5E77ECA28D8262D00031010 /* Views */,

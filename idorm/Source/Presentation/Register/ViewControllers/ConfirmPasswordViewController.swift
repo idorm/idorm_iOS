@@ -13,8 +13,7 @@ import RxCocoa
 class ConfirmPasswordViewController: BaseViewController {
   // MARK: - Properties
   
-  lazy var textField2 = RegisterPwTextField(placeholder: "비밀번호를 한번 더 입력해주세요.").then {
-//    tf.layer.borderColor = tf.isEditing ? UIColor.idorm_blue.cgColor : UIColor.idorm_gray_400.cgColor
+  let textField2 = RegisterPwTextField(placeholder: "비밀번호를 한번 더 입력해주세요.").then {
     $0.textField.isSecureTextEntry = true
   }
   
@@ -34,13 +33,13 @@ class ConfirmPasswordViewController: BaseViewController {
   lazy var eightLabel = returnDescriptionLabel(text: "•  8자 이상 입력")
   lazy var mixingLabel = returnDescriptionLabel(text: "•  영문 소문자/숫자/특수 문자 조합")
   
-  let type: LoginType
+  let type: RegisterType
   
   let viewModel = ConfirmPasswordViewModel()
   
   // MARK: - Init
   
-  init(type: LoginType) {
+  init(type: RegisterType) {
     self.type = type
     super.init(nibName: nil, bundle: nil)
   }

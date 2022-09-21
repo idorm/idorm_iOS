@@ -43,14 +43,18 @@ class AuthViewController: BaseViewController {
     // --------------------------------
     // --------------INPUT-------------
     // --------------------------------
+    
+    /// 뒤로가기 버튼 이벤트
     backButton.rx.tap
       .bind(to: viewModel.input.backButtonTapped)
       .disposed(by: disposeBag)
     
+    /// 웹메일 바로 가기 버튼 이벤트
     portalButton.rx.tap
       .bind(to: viewModel.input.portalButtonTapped)
       .disposed(by: disposeBag)
     
+    /// 인증번호 입력 버튼 이벤트
     confirmButton.rx.tap
       .bind(to: viewModel.input.confirmButtonTapped)
       .disposed(by: disposeBag)
@@ -58,7 +62,8 @@ class AuthViewController: BaseViewController {
     // --------------------------------
     // -------------OUTPUT-------------
     // --------------------------------
-    // 화면 종료
+    
+    /// 화면 종료
     viewModel.output.dismissVC
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -66,7 +71,7 @@ class AuthViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    // 웹메일 웹 보여주기
+    /// 웹메일 페이지 보여주기
     viewModel.output.showPortalWeb
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -77,7 +82,7 @@ class AuthViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    // 인증번호 입력 페이지로 넘어가기
+    /// 인증번호 입력 페이지로 넘어가기
     viewModel.output.showAuthNumberVC
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in

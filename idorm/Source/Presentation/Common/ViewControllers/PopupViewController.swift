@@ -59,6 +59,7 @@ class PopupViewController: UIViewController {
   }
   
   // MARK: - Bind
+  
   func bind() {
     confirmButton.rx.tap
       .bind(onNext: { [weak self] in
@@ -68,6 +69,7 @@ class PopupViewController: UIViewController {
   }
   
   // MARK: - Helpers
+  
   private func configureUI() {
     contentsLabel.text = contents
     

@@ -35,8 +35,8 @@ class CompleteSignUpViewModel {
   }
   
   func requestLoginAPI() {
-    guard let email = LoginStates.currentEmail else { return }
-    guard let password = LoginStates.currentPassword else { return }
+    guard let email = LoginStates.email else { return }
+    guard let password = LoginStates.password else { return }
     
     MemberService.LoginAPI(email: email, password: password)
       .subscribe(onNext: { [weak self] response in

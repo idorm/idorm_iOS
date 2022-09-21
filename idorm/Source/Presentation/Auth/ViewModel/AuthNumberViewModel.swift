@@ -21,6 +21,8 @@ class AuthNumberViewModel {
     let resetTimer = PublishSubject<Void>()
     let dismissVC = PublishSubject<Void>()
     let showPopupVC = PublishSubject<String>()
+    let startAnimation = PublishSubject<Void>()
+    let stopAnimation = PublishSubject<Void>()
   }
   
   let input = Input()
@@ -32,51 +34,98 @@ class AuthNumberViewModel {
   }
   
   func bind() {
+    
+    /// 인증번호 재 요청 버튼 클릭 시 인증번호 API 요청
     input.requestAgainButtonTapped
       .subscribe(onNext: { [weak self] in
-        self?.requestEmailAPI()
+        switch LoginStates.registerType {
+        case .signUp:
+          self?.registerEmailAPI()
+        case .findPW:
+          self?.passwordEmailAPI()
+        }
       })
       .disposed(by: disposeBag)
     
+    /// 버튼 클릭 시 애니메이션 효과
+    Observable.merge(
+      input.requestAgainButtonTapped,
+      input.confirmButtonTapped
+    )
+    .bind(to: output.startAnimation)
+    .disposed(by: disposeBag)
+    
+    /// 완료 버튼 클릭 시 이메일 검증API 요청
     input.confirmButtonTapped
       .bind(onNext: { [weak self] in
-        guard let self = self else { return }
-        self.requestVerifyCodeAPI()
+        self?.verifyCodeAPI()
       })
       .disposed(by: disposeBag)
   }
   
-  func requestEmailAPI() {
-    guard let currentEmail = LoginStates.currentEmail else { return }
-    EmailService.emailAPI(email: currentEmail, type: LoginStates.currentLoginType)
+  func passwordEmailAPI() {
+    guard let email = LoginStates.email else { return }
+    print(email)
+    EmailService.passwordEmailAPI(email: email)
       .subscribe(onNext: { [weak self] response in
-        print(LoginStates.currentLoginType)
+        self?.output.stopAnimation.onNext(Void())
+        self?.output.resetTimer.onNext(Void())
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
         case 200:
-          self?.output.showPopupVC.onNext("인증번호가 재전송 되었습니다.")
-          self?.output.resetTimer.onNext(Void())
+          print("dd")
+          break
+        case 401:
+          self?.output.showPopupVC.onNext("이메일을 찾을 수 없습니다.")
+        case 409:
+          self?.output.showPopupVC.onNext("가입되지 않은 이메일입니다.")
         default:
-          self?.output.showPopupVC.onNext("치명적인 오류가 발생했습니다.")
+          self?.output.showPopupVC.onNext("이메일을 다시 한번 확인해주세요.")
         }
       })
       .disposed(by: disposeBag)
   }
   
-  func requestVerifyCodeAPI() {
-    guard let currentEmail = LoginStates.currentEmail else { return }
+  func registerEmailAPI() {
+    guard let email = LoginStates.email else { return }
+    EmailService.registerEmailAPI(email: email)
+      .subscribe(onNext: { [weak self] response in
+        self?.output.stopAnimation.onNext(Void())
+        self?.output.resetTimer.onNext(Void())
+        guard let statusCode = response.response?.statusCode else { return }
+        switch statusCode {
+        case 200:
+          break
+        case 400:
+          self?.output.showPopupVC.onNext("이메일을 입력해 주세요.")
+        case 401:
+          self?.output.showPopupVC.onNext("올바른 이메일 형식이 아닙니다.")
+        case 409:
+          self?.output.showPopupVC.onNext("이미 가입된 이메일입니다.")
+        default:
+          self?.output.showPopupVC.onNext("이메일을 다시 한번 확인해주세요.")
+        }
+      })
+      .disposed(by: disposeBag)
+  }
+  
+  func verifyCodeAPI() {
+    guard let email = LoginStates.email else { return }
     let code = input.codeString.value
     
-    EmailService.verifyCodeAPI(email: currentEmail, code: code, type: LoginStates.currentLoginType)
+    EmailService.verifyCodeAPI(email: email, code: code, type: LoginStates.registerType)
       .subscribe(onNext: { [weak self] response in
+        self?.output.stopAnimation.onNext(Void())
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
         case 200:
           self?.output.dismissVC.onNext(Void())
         case 400:
-          self?.output.showPopupVC.onNext("인증번호를 다시 확인해 주세요.")
+          self?.output.showPopupVC.onNext("잘못된 인증번호입니다.")
+        case 401:
+          self?.output.showPopupVC.onNext("등록되지 않은 이메일입니다.")
         default:
-          break
+          self?.output.showPopupVC.onNext("인증번호를 다시 한번 확인해주세요.")
         }
       })
       .disposed(by: disposeBag)

@@ -19,7 +19,7 @@ class LoginViewModel {
   }
   
   struct Output {
-    let showPutEmailVC = PublishSubject<LoginType>()
+    let showPutEmailVC = PublishSubject<RegisterType>()
     let showErrorPopupVC = PublishSubject<String>()
     let showTabBarVC = PublishSubject<Void>()
     let startAnimation = PublishSubject<Void>()
@@ -62,7 +62,7 @@ class LoginViewModel {
       })
       .disposed(by: disposeBag)
     
-    /// 로그인 버튼 클릭 시 interaction 조정
+    /// 로그인 버튼 클릭 시 interaction, Animation 조정
     input.loginButtonTapped
       .bind(to: output.startAnimation)
       .disposed(by: disposeBag)

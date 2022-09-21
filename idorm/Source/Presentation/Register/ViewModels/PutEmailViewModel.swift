@@ -35,43 +35,63 @@ class PutEmailViewModel {
   }
   
   func bind() {
-    // 완료 버튼 클릭 시 오류 및 이동
+    /// 완료 버튼 클릭 시 오류 및 이동
     input.confirmButtonTapped
-      .bind(onNext: { [weak self] in
-        self?.output.startAnimation.onNext(Void())
-        guard let self = self else { return }
-        LoginStates.currentEmail = self.email
-        self.requestEmailAPI(email: self.email, type: LoginStates.currentLoginType)
+      .bind(onNext: { [unowned self] in
+        LoginStates.email = self.email
+        
+        switch LoginStates.registerType {
+        case .findPW:
+          self.passwordEmailAPI()
+        case .signUp:
+          self.registerEmailAPI()
+        }
       })
+      .disposed(by: disposeBag)
+    
+    /// 완료 버튼 클릭 시 애니메이션 시작
+    input.confirmButtonTapped
+      .bind(to: output.startAnimation)
       .disposed(by: disposeBag)
   }
   
-  func requestEmailAPI(email: String, type: LoginType) {
-    EmailService.emailAPI(email: email, type: type)
+  func passwordEmailAPI() {
+    EmailService.passwordEmailAPI(email: self.email)
       .subscribe(onNext: { [weak self] response in
         guard let statusCode = response.response?.statusCode else { return }
-        guard let data = response.data else { return }
         self?.output.stopAnimation.onNext(Void())
         switch statusCode {
         case 200:
           self?.output.showAuthVC.onNext(Void())
-        case 400:
-          struct Response: Codable {
-            let message: String
-          }
-          let message = APIService.decode(Response.self, data: data).message
-          self?.output.showErrorPopupVC.onNext(message)
+        case 401:
+          self?.output.showErrorPopupVC.onNext("이메일을 찾을 수 없습니다.")
+        case 409:
+          self?.output.showErrorPopupVC.onNext("가입되지 않은 이메일입니다.")
         default:
-          // 오류 처리 하기
-          break
+          self?.output.showErrorPopupVC.onNext("이메일을 다시 한번 확인해주세요.")
         }
       })
       .disposed(by: disposeBag)
   }
   
-  func isValidEmail(id: String) -> Bool {
-    let emailRegEx = "[A-Z0-9a-z._%+-]+@inu.ac.kr"
-    let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
-    return emailTest.evaluate(with: id)
+  func registerEmailAPI() {
+    EmailService.registerEmailAPI(email: self.email)
+      .subscribe(onNext: { [weak self] response in
+        guard let statusCode = response.response?.statusCode else { return }
+        self?.output.stopAnimation.onNext(Void())
+        switch statusCode {
+        case 200:
+          self?.output.showAuthVC.onNext(Void())
+        case 400:
+          self?.output.showErrorPopupVC.onNext("이메일을 입력해 주세요.")
+        case 401:
+          self?.output.showErrorPopupVC.onNext("올바른 이메일 형식이 아닙니다.")
+        case 409:
+          self?.output.showErrorPopupVC.onNext("이미 가입된 이메일입니다.")
+        default:
+          self?.output.showErrorPopupVC.onNext("이메일을 다시 한번 확인해주세요.")
+        }
+      })
+      .disposed(by: disposeBag)
   }
 }

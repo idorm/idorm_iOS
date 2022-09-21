@@ -88,7 +88,7 @@ class ConfirmPasswordViewModel {
            self.isValidPasswordFinal(pwd: self.passwordText2),
            self.passwordText == self.passwordText2 {
           
-          if LoginStates.currentLoginType == .signUp {
+          if LoginStates.registerType == .signUp {
             self.requestRegisterAPI()
           } else {
            
@@ -101,7 +101,7 @@ class ConfirmPasswordViewModel {
   }
   
   func requestRegisterAPI() {
-    guard let email = LoginStates.currentEmail else { return }
+    guard let email = LoginStates.email else { return }
     
     MemberService.registerAPI(email: email, password: passwordText)
       .subscribe(onNext: { [weak self] response in
@@ -110,7 +110,7 @@ class ConfirmPasswordViewModel {
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
         case 200:
-          LoginStates.currentPassword = self?.passwordText
+          LoginStates.password = self?.passwordText
           self?.output.showCompleteVC.onNext(Void())
         default:
           self?.output.showErrorPopupVC.onNext("등록되지 않은 이메일입니다.")
@@ -120,7 +120,7 @@ class ConfirmPasswordViewModel {
   }
   
   func requestChangePasswordAPI() {
-    guard let email = LoginStates.currentEmail else { return }
+    guard let email = LoginStates.email else { return }
     
     MemberService.changePasswordAPI(email: email, password: passwordText)
       .subscribe(onNext: { [weak self] response in

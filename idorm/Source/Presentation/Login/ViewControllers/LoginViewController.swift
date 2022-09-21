@@ -11,7 +11,6 @@ import Then
 import SnapKit
 import RxSwift
 import RxCocoa
-import NVActivityIndicatorView
 
 class LoginViewController: BaseViewController {
   // MARK: - Properties
@@ -98,11 +97,13 @@ class LoginViewController: BaseViewController {
   }
   
   // MARK: - Bind
+  
   override func bind() {
     super.bind()
     // ---------------------------------
     // ---------------INPUT-------------
     // ---------------------------------
+    
     /// 로그인 버튼 클릭
     loginButton.rx.tap
       .bind(to: viewModel.input.loginButtonTapped)
@@ -133,6 +134,7 @@ class LoginViewController: BaseViewController {
     // ---------------------------------
     // --------------OUTPUT-------------
     // ---------------------------------
+    
     /// Register로 화면 이동
     viewModel.output.showPutEmailVC
       .bind(onNext: { [weak self] type in

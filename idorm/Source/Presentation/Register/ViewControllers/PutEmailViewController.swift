@@ -10,7 +10,11 @@ import Then
 import SnapKit
 import RxSwift
 import RxCocoa
-import NVActivityIndicatorView
+
+enum RegisterType {
+  case findPW
+  case signUp
+}
 
 class PutEmailViewController: BaseViewController {
   // MARK: - Properties
@@ -18,7 +22,7 @@ class PutEmailViewController: BaseViewController {
   lazy var infoLabel = UILabel().then {
     $0.textColor = .black
     $0.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
-    if type == .findPW {
+    if registerType == .findPW {
       $0.text = "가입시 사용한 인천대학교 이메일이 필요해요."
     } else {
       $0.text = "이메일"
@@ -31,29 +35,21 @@ class PutEmailViewController: BaseViewController {
     $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
   }
   
-  lazy var indicator = NVActivityIndicatorView(
-    frame: CGRect(x: view.frame.width / 2, y: view.frame.height / 2, width: 20, height: 20),
-    type: .lineSpinFadeLoader,
-    color: UIColor.black,
-    padding: 0
-  )
-  
+  let indicator = UIActivityIndicatorView()
   let textField = RegisterTextField("이메일을 입력해주세요")
   let confirmButton = RegisterBottomButton("인증번호 받기")
   let inuMark = UIImageView(image: UIImage(named: "INUMark"))
   var inuStack: UIStackView!
   
   let viewModel = PutEmailViewModel()
-  
-  let type: LoginType
-  
+  let registerType: RegisterType
+
   // MARK: - Init
   
-  init(type: LoginType) {
-    self.type = type
+  init(type: RegisterType) {
+    self.registerType = type
     super.init(nibName: nil, bundle: nil)
-    LoginStates.currentLoginType = type
-    bind()
+    LoginStates.registerType = type
   }
   
   required init?(coder: NSCoder) {
@@ -70,12 +66,12 @@ class PutEmailViewController: BaseViewController {
     // --------------INPUT-------------
     // --------------------------------
     
-    // ConfirmBUtton 클릭 이벤트
+    /// 인증번호 받기 버튼 클릭
     confirmButton.rx.tap
       .bind(to: viewModel.input.confirmButtonTapped)
       .disposed(by: disposeBag)
     
-    // 텍스트필드 텍스트 반응
+    /// 텍스트필드 텍스트 반응
     textField.rx.text
       .orEmpty
       .bind(to: viewModel.input.emailText)
@@ -85,17 +81,16 @@ class PutEmailViewController: BaseViewController {
     // -------------OUTPUT-------------
     // --------------------------------
     
-    // 에러 팝업 창 띄우기
+    /// 에러 팝업 창 띄우기
     viewModel.output.showErrorPopupVC
-      .asDriver(onErrorJustReturn: "")
-      .drive(onNext: { [weak self] mention in
+      .bind(onNext: { [weak self] mention in
         let popupVC = PopupViewController(contents: mention)
         popupVC.modalPresentationStyle = .overFullScreen
         self?.present(popupVC, animated: false)
       })
       .disposed(by: disposeBag)
     
-    // 인증번호 페이지로 이동
+    /// 인증번호 페이지로 이동
     viewModel.output.showAuthVC
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -106,7 +101,7 @@ class PutEmailViewController: BaseViewController {
         self.present(navVC, animated: true)
         
         authVC.dismissCompletion = {
-          let confirmPasswordVC = ConfirmPasswordViewController(type: self.type)
+          let confirmPasswordVC = ConfirmPasswordViewController(type: self.registerType)
           DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.navigationController?.pushViewController(confirmPasswordVC, animated: true)
           }
@@ -114,21 +109,19 @@ class PutEmailViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    // 인디케이터 애니메이션 시작
+    /// 인디케이터 애니메이션 시작
     viewModel.output.startAnimation
-      .asDriver(onErrorJustReturn: Void())
-      .drive(onNext: { [weak self] in
-        self?.confirmButton.isEnabled = false
+      .bind(onNext: { [weak self] in
         self?.indicator.startAnimating()
+        self?.view.isUserInteractionEnabled = false
       })
       .disposed(by: disposeBag)
     
-    // 인디케이터 애니메이션 종료
+    /// 인디케이터 애니메이션 종료
     viewModel.output.stopAnimation
-      .asDriver(onErrorJustReturn: Void())
-      .drive(onNext: { [weak self] in
-        self?.confirmButton.isEnabled = true
+      .bind(onNext: { [weak self] in
         self?.indicator.stopAnimating()
+        self?.view.isUserInteractionEnabled = true
       })
       .disposed(by: disposeBag)
   }
@@ -144,7 +137,6 @@ class PutEmailViewController: BaseViewController {
   
   override func setupStyles() {
     super.setupStyles()
-    
     view.backgroundColor = .white
     
     let inustack = UIStackView(arrangedSubviews: [ inuMark, needEmailLabel ])
@@ -152,7 +144,7 @@ class PutEmailViewController: BaseViewController {
     inustack.spacing = 4.0
     self.inuStack = inustack
     
-    if type == .findPW {
+    if registerType == .findPW {
       navigationItem.title = "비밀번호 찾기"
       inuStack.isHidden = true
     } else {
@@ -187,6 +179,7 @@ class PutEmailViewController: BaseViewController {
     
     indicator.snp.makeConstraints { make in
       make.center.equalToSuperview()
+      make.width.height.equalTo(20)
     }
   }
   
