@@ -10,65 +10,51 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-class AuthNumberViewController: UIViewController {
+class AuthNumberViewController: BaseViewController {
   // MARK: - Properties
   var secondsLeft: Int = 300
   var timer = Timer()
   var popCompletion: (() -> Void)?
   
-  lazy var infoLabel: UILabel = {
-    let label = UILabel()
-    label.text = "지금 이메일로 인증번호를 보내드렸어요!"
-    label.textColor = .darkGray
-    label.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
-    
-    return label
-  }()
+  lazy var confirmButton = RegisterBottomButton("인증 완료")
+  lazy var textField = RegisterTextField("인증번호를 입력해주세요.")
   
-  lazy var requestAgainButton: UIButton = {
-    let button = UIButton(type: .custom)
-    button.setTitle("인증번호 재요청", for: .normal)
-    button.setTitleColor(UIColor.gray, for: .normal)
-    button.titleLabel?.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
-    
-    return button
-  }()
+  lazy var infoLabel = UILabel().then {
+    $0.text = "지금 이메일로 인증번호를 보내드렸어요!"
+    $0.textColor = .darkGray
+    $0.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
+  }
   
-  lazy var confirmButton: UIButton = {
-    let button = LoginUtilities.returnBottonConfirmButton(string: "인증 완료")
+  lazy var requestAgainButton = UIButton().then {
+    var config = UIButton.Configuration.plain()
+    var container = AttributeContainer()
+    container.font = .init(name: MyFonts.medium.rawValue, size: 12)
+    container.foregroundColor = UIColor.idorm_gray_300
+    config.attributedTitle = AttributedString("인증번호 재요청", attributes: container)
     
-    return button
-  }()
+    $0.configuration = config
+  }
   
-  lazy var textField: UITextField = {
-    let tf = LoginUtilities.returnTextField(placeholder: "인증번호를 입력해주세요.")
-    
-    return tf
-  }()
-  
-  lazy var timerLabel: UILabel = {
-    let label = UILabel()
-    label.text = "05:00"
-    label.textColor = .idorm_blue
-    label.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
-    
-    return label
-  }()
+  lazy var timerLabel = UILabel().then {
+    $0.text = "05:00"
+    $0.textColor = .idorm_blue
+    $0.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
+  }
   
   let viewModel = AuthNumberViewModel()
-  let disposeBag = DisposeBag()
   
   // MARK: - LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()
-    configureUI()
+    NotificationCenter.default.addObserver(self, selector: #selector(sceneWillEnterForeground), name: NSNotification.Name("sceneWillEnterForeground"), object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(sceneWillEnterBackground), name: NSNotification.Name("sceneWillEnterBackground"), object: nil)
+    
     startTimer()
-    addNotification()
-    bind()
   }
   
   // MARK: - Bind
-  func bind() {
+  override func bind() {
+    super.bind()
     // --------------------------------
     // --------------INPUT-------------
     // --------------------------------
@@ -122,6 +108,65 @@ class AuthNumberViewController: UIViewController {
       .disposed(by: disposeBag)
   }
   
+  // MARK: - Setup
+  
+  override func setupStyles() {
+    super.setupStyles()
+    
+    navigationItem.title = "인증번호 입력"
+    view.backgroundColor = .white
+  }
+  
+  override func setupLayouts() {
+    super.setupLayouts()
+      
+    [infoLabel, requestAgainButton, textField, confirmButton, timerLabel]
+      .forEach { view.addSubview($0) }
+  }
+  
+  override func setupConstraints() {
+    super.setupConstraints()
+    
+    infoLabel.snp.makeConstraints { make in
+      make.leading.equalToSuperview().inset(24)
+      make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
+    }
+    
+    requestAgainButton.snp.makeConstraints { make in
+      make.trailing.equalToSuperview().inset(24)
+      make.centerY.equalTo(infoLabel)
+    }
+    
+    textField.snp.makeConstraints { make in
+      make.trailing.leading.equalToSuperview().inset(24)
+      make.top.equalTo(infoLabel.snp.bottom).offset(14)
+      make.height.equalTo(50)
+    }
+    
+    confirmButton.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview().inset(24)
+      make.bottom.equalTo(view.keyboardLayoutGuide.snp.top).offset(-20)
+      make.height.equalTo(50)
+    }
+    
+    timerLabel.snp.makeConstraints { make in
+      make.trailing.equalTo(textField.snp.trailing).offset(-14)
+      make.centerY.equalTo(textField)
+    }
+  }
+  
+  // MARK: - Helpers
+  
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    view.endEditing(true)
+  }
+}
+
+extension AuthNumberViewController {
+  private func startTimer() {
+    timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(startTimer(_:)), userInfo: nil, repeats: true)
+  }
+  
   @objc private func sceneWillEnterForeground(_ noti: Notification) {
     if secondsLeft > 0 {
       let time = noti.userInfo?["time"] as? Int ?? 0
@@ -152,52 +197,5 @@ class AuthNumberViewController: UIViewController {
       popupView.modalPresentationStyle = .overFullScreen
       self.present(popupView, animated: false)
     }
-  }
-  
-  // MARK: - Helpers
-  private func addNotification() {
-    NotificationCenter.default.addObserver(self, selector: #selector(sceneWillEnterForeground), name: NSNotification.Name("sceneWillEnterForeground"), object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(sceneWillEnterBackground), name: NSNotification.Name("sceneWillEnterBackground"), object: nil)
-  }
-  
-  private func startTimer() {
-    timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(startTimer(_:)), userInfo: nil, repeats: true)
-  }
-  
-  private func configureUI() {
-    navigationItem.title = "인증번호 입력"
-    view.backgroundColor = .white
-    
-    [ infoLabel, requestAgainButton, textField, confirmButton, timerLabel ]
-      .forEach { view.addSubview($0) }
-    
-    infoLabel.snp.makeConstraints { make in
-      make.leading.equalToSuperview().inset(24)
-      make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
-    }
-    
-    requestAgainButton.snp.makeConstraints { make in
-      make.trailing.equalToSuperview().inset(24)
-      make.centerY.equalTo(infoLabel)
-    }
-    
-    textField.snp.makeConstraints { make in
-      make.trailing.leading.equalToSuperview().inset(24)
-      make.top.equalTo(infoLabel.snp.bottom).offset(14)
-    }
-    
-    confirmButton.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview().inset(24)
-      make.bottom.equalTo(view.keyboardLayoutGuide.snp.top).offset(-20)
-    }
-    
-    timerLabel.snp.makeConstraints { make in
-      make.trailing.equalTo(textField.snp.trailing).offset(-14)
-      make.centerY.equalTo(textField)
-    }
-  }
-  
-  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    view.endEditing(true)
   }
 }

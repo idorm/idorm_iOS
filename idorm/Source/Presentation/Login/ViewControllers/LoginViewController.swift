@@ -6,13 +6,16 @@
 //
 
 import UIKit
+
 import Then
 import SnapKit
 import RxSwift
 import RxCocoa
+import NVActivityIndicatorView
 
 class LoginViewController: BaseViewController {
   // MARK: - Properties
+  
   let loginTitleLabel = UILabel().then {
     $0.font = .init(name: MyFonts.bold.rawValue, size: 24)
     $0.text = "로그인"
@@ -72,6 +75,8 @@ class LoginViewController: BaseViewController {
     $0.configuration = config
   }
   
+  let indicator = UIActivityIndicatorView()
+  
   let idormMarkImage = UIImageView(image: UIImage(named: "i dorm Mark"))
   let inuMarkImage = UIImageView(image: UIImage(named: "INUMark"))
   var loginStack: UIStackView!
@@ -98,40 +103,37 @@ class LoginViewController: BaseViewController {
     // ---------------------------------
     // ---------------INPUT-------------
     // ---------------------------------
+    /// 로그인 버튼 클릭
     loginButton.rx.tap
-      .throttle(.seconds(3), scheduler: MainScheduler.instance)
       .bind(to: viewModel.input.loginButtonTapped)
       .disposed(by: disposeBag)
     
+    /// 비밀번호 찾기 버튼 클릭
     forgotPwButton.rx.tap
-      .throttle(.seconds(1), scheduler: MainScheduler.instance)
       .bind(to: viewModel.input.forgotButtonTapped)
       .disposed(by: disposeBag)
     
+    /// 회원가입 버튼 클릭
     signUpButton.rx.tap
-      .throttle(.seconds(1), scheduler: MainScheduler.instance)
       .bind(to: viewModel.input.signUpButtonTapped)
       .disposed(by: disposeBag)
     
+    /// 이메일 텍스트 필드 이벤트
     idTextField.rx.text
       .orEmpty
       .bind(to: viewModel.input.emailText)
       .disposed(by: disposeBag)
     
+    /// 비밀번호 텍스트 필드 이벤트
     pwTextField.rx.text
       .orEmpty
       .bind(to: viewModel.input.passwordText)
       .disposed(by: disposeBag)
     
-//    rx.viewWillAppear
-//      .map { _ in Void() }
-//      .bind(onNext: { [weak self] in
-//      })
-//      .disposed(by: disposeBag)
-    
     // ---------------------------------
     // --------------OUTPUT-------------
     // ---------------------------------
+    /// Register로 화면 이동
     viewModel.output.showPutEmailVC
       .bind(onNext: { [weak self] type in
         let putEmailVC = PutEmailViewController(type: type)
@@ -139,6 +141,7 @@ class LoginViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
+    /// 에러 팝업 띄우기
     viewModel.output.showErrorPopupVC
       .asDriver(onErrorJustReturn: "")
       .drive(onNext: { [weak self] mention in
@@ -148,12 +151,29 @@ class LoginViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
+    /// 로그인 완료 시 토큰 받고 메인화면으로 이동
     viewModel.output.showTabBarVC
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
         let tabBarVC = TabBarController()
         tabBarVC.modalPresentationStyle = .fullScreen
         self?.present(tabBarVC, animated: true)
+      })
+      .disposed(by: disposeBag)
+    
+    /// 애니메이션 시작
+    viewModel.output.startAnimation
+      .bind(onNext: { [weak self] in
+        self?.indicator.startAnimating()
+        self?.view.isUserInteractionEnabled = false
+      })
+      .disposed(by: disposeBag)
+    
+    /// 애니메이션 종료
+    viewModel.output.stopAnimation
+      .bind(onNext: { [weak self] in
+        self?.indicator.stopAnimating()
+        self?.view.isUserInteractionEnabled = true
       })
       .disposed(by: disposeBag)
   }
@@ -163,7 +183,7 @@ class LoginViewController: BaseViewController {
   override func setupLayouts() {
     super.setupLayouts()
     
-    [idormMarkImage, loginTitleLabel, loginTextFieldStack, loginStack, loginButton, forgotPwButton, signUpStack]
+    [idormMarkImage, loginTitleLabel, loginTextFieldStack, loginStack, loginButton, forgotPwButton, signUpStack, indicator]
       .forEach { view.addSubview($0) }
   }
   
@@ -237,6 +257,11 @@ class LoginViewController: BaseViewController {
     signUpStack.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
       make.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+    }
+    
+    indicator.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+      make.width.height.equalTo(20)
     }
   }
   

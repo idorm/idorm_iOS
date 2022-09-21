@@ -6,51 +6,38 @@
 //
 
 import UIKit
+import Then
 import SnapKit
 import RxSwift
 import RxCocoa
 
-class CompleteSignUpViewController: UIViewController {
+class CompleteSignUpViewController: BaseViewController {
   // MARK: - Properties
-  lazy var image: UIImageView = {
-    let iv = UIImageView()
-    iv.image = UIImage(named: "Lion")
-    iv.contentMode = .scaleAspectFit
-    
-    return iv
-  }()
   
-  lazy var signUpLabel: UILabel = {
-    let label = UILabel()
-    label.textColor = .idorm_gray_400
-    label.text = "안녕하세요! 가입을 축하드려요."
-    label.textAlignment = .center
-    label.font = .init(name: MyFonts.bold.rawValue, size: 18.0)
-    
-    return label
-  }()
+  let image = UIImageView(image: UIImage(named: "Lion"))
   
-  lazy var descriptionLabel1: UILabel = {
-    let label = UILabel()
-    label.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
-    label.textColor = .idorm_gray_300
-    label.textAlignment = .center
-    label.text = "로그인 후 인천대학교 기숙사 룸메이트 매칭을 위한"
-    
-    return label
-  }()
+  lazy var signUpLabel = UILabel().then {
+    $0.textColor = .idorm_gray_400
+    $0.text = "안녕하세요! 가입을 축하드려요."
+    $0.textAlignment = .center
+    $0.font = .init(name: MyFonts.bold.rawValue, size: 18.0)
+  }
   
-  lazy var descriptionLabel2: UILabel = {
-    let label = UILabel()
-    label.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
-    label.textColor = .idorm_gray_300
-    label.textAlignment = .center
-    label.text = "기본정보를 알려주세요."
-    
-    return label
-  }()
+  lazy var descriptionLabel1 = UILabel().then {
+    $0.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
+    $0.textColor = .idorm_gray_300
+    $0.textAlignment = .center
+    $0.text = "로그인 후 인천대학교 기숙사 룸메이트 매칭을 위한"
+  }
   
-  lazy var continueButton: UIButton = {
+  lazy var descriptionLabel2 = UILabel().then {
+    $0.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
+    $0.textColor = .idorm_gray_300
+    $0.textAlignment = .center
+    $0.text = "기본정보를 알려주세요."
+  }
+  
+  lazy var continueButton = UIButton().then {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
     container.font = UIFont.init(name: MyFonts.medium.rawValue, size: 16)
@@ -59,23 +46,16 @@ class CompleteSignUpViewController: UIViewController {
     config.baseBackgroundColor = .idorm_blue
     config.cornerStyle = .capsule
     config.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 40, bottom: 10, trailing: 40)
-    let button = UIButton(configuration: config)
     
-    return button
-  }()
-  
-  let viewModel = CompleteSignUpViewModel()
-  let disposeBag = DisposeBag()
-  
-  // MARK: - LifeCycle
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    configureUI()
-    bind()
+    $0.configuration = config
   }
   
+  let viewModel = CompleteSignUpViewModel()
+  
   // MARK: - Bind
-  func bind() {
+  
+  override func bind() {
+    super.bind()
     // --------------------------------
     // --------------INPUT-------------
     // --------------------------------
@@ -97,12 +77,23 @@ class CompleteSignUpViewController: UIViewController {
       .disposed(by: disposeBag)
   }
   
-  // MARK: - Helpers
-  private func configureUI() {
-    view.backgroundColor = .white
+  // MARK: - Setup
+  
+  override func setupStyles() {
+    super.setupStyles()
     
-    [ image, signUpLabel, descriptionLabel1, descriptionLabel2, continueButton ]
+    view.backgroundColor = .white
+  }
+  
+  override func setupLayouts() {
+    super.setupLayouts()
+    
+    [image, signUpLabel, descriptionLabel1, descriptionLabel2, continueButton]
       .forEach { view.addSubview($0) }
+  }
+  
+  override func setupConstraints() {
+    super.setupConstraints()
     
     image.snp.makeConstraints { make in
       make.centerX.equalToSuperview()

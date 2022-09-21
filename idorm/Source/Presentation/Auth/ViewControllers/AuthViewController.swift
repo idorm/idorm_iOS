@@ -10,62 +10,36 @@ import SnapKit
 import WebKit
 import RxSwift
 import RxCocoa
-import SwiftUI
 
-class AuthViewController: UIViewController {
+class AuthViewController: BaseViewController {
   // MARK: - Properties
   var dismissCompletion: (() -> Void)?
   
-  lazy var mailImageView: UIImageView = {
-    let iv = UIImageView()
-    iv.image = UIImage(named: "mail")
+  lazy var mailImageView = UIImageView(image: UIImage(named: "mail"))
+  lazy var authInfoImageView = UIImageView(image: UIImage(named: "AuthInfoLabel"))
+  lazy var confirmButton = RegisterBottomButton("인증번호 입력")
+  
+  lazy var backButton = UIButton().then {
+    var config = UIButton.Configuration.plain()
+    config.image = UIImage(named: "Xmark_Black")
+    config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
     
-    return iv
-  }()
-  
-  lazy var authInfoImageView: UIImageView = {
-    let iv = UIImageView()
-    iv.image = UIImage(named: "AuthInfoLabel")
-    
-    return iv
-  }()
-  
-  lazy var backButton: UIButton = {
-    let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "Xmark_Black"), for: .normal)
-    button.tintColor = .black
-    
-    return button
-  }()
-  
-  lazy var portalButton: UIButton = {
-    let button = LoginUtilities.returnBottonConfirmButton(string: "메일함 바로가기")
-    button.configuration?.baseForegroundColor = .idorm_gray_400
-    button.configuration?.baseBackgroundColor = .white
-    button.configuration?.background.strokeWidth = 1
-    button.configuration?.background.strokeColor = .idorm_gray_200
-    
-    return button
-  }()
-  
-  lazy var confirmButton: UIButton = {
-    let button = LoginUtilities.returnBottonConfirmButton(string: "인증번호 입력")
-    
-    return button
-  }()
-  
-  let viewModel = AuthViewModel()
-  let disposeBag = DisposeBag()
-  
-  // MARK: - LifeCycle
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    configureUI()
-    bind()
+    $0.configuration = config
   }
   
+  lazy var portalButton = RegisterBottomButton("메일함 바로가기").then {
+    $0.configuration?.baseForegroundColor = .idorm_gray_400
+    $0.configuration?.baseBackgroundColor = .white
+    $0.configuration?.background.strokeWidth = 1
+    $0.configuration?.background.strokeColor = .idorm_gray_200
+  }
+  
+  let viewModel = AuthViewModel()
+  
   // MARK: - Bind
-  func bind() {
+  
+  override func bind() {
+    super.bind()
     // --------------------------------
     // --------------INPUT-------------
     // --------------------------------
@@ -117,14 +91,25 @@ class AuthViewController: UIViewController {
       .disposed(by: disposeBag)
   }
   
-  // MARK: - Helpers
-  private func configureUI() {
+  // MARK: - Setup
+  
+  override func setupStyles() {
+    super.setupStyles()
+    
     view.backgroundColor = .white
     navigationController?.navigationBar.tintColor = .black
     navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
+  }
+  
+  override func setupLayouts() {
+    super.setupLayouts()
     
-    [ mailImageView, authInfoImageView, portalButton, confirmButton ]
+    [mailImageView, authInfoImageView, portalButton, confirmButton]
       .forEach { view.addSubview($0) }
+  }
+  
+  override func setupConstraints() {
+    super.setupConstraints()
     
     mailImageView.snp.makeConstraints { make in
       make.top.equalTo(view.safeAreaLayoutGuide).inset(114)
@@ -139,11 +124,13 @@ class AuthViewController: UIViewController {
     confirmButton.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
       make.bottom.equalToSuperview().inset(85)
+      make.height.equalTo(50)
     }
     
     portalButton.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
       make.bottom.equalTo(confirmButton.snp.top).offset(-8)
+      make.height.equalTo(50)
     }
   }
 }

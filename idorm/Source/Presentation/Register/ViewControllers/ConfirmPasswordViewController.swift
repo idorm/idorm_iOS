@@ -274,6 +274,7 @@ class ConfirmPasswordViewController: BaseViewController {
     confirmButton.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
       make.bottom.equalTo(view.keyboardLayoutGuide.snp.top).offset(-20)
+      make.height.equalTo(50)
     }
   }
   
