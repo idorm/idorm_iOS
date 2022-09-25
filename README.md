@@ -6,4 +6,3 @@
 + UIKit
 + MVVM
 + RxSwift
-+ SnapKit
