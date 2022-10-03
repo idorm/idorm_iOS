@@ -46,7 +46,7 @@ class MatchingViewModel {
     let appendRemovedCard = PublishSubject<SwipeCardView>()
     let revertCard = PublishSubject<Void>()
     
-    let matchingCardInfos = BehaviorRelay<[MyInfo]>(value: [])
+    let matchingCardInfos = BehaviorRelay<[MatchingInfo]>(value: [])
   }
   
   let input = Input()

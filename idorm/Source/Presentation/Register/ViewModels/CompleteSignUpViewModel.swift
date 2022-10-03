@@ -16,25 +16,33 @@ class CompleteSignUpViewModel {
   
   struct Output {
     let showOnboardingVC = PublishSubject<Void>()
+    let startAnimation = PublishSubject<Void>()
+    let stopAnimation = PublishSubject<Void>()
   }
   
   let input = Input()
   let output = Output()
-  let disposeBag = DisposeBag()
+  var disposeBag = DisposeBag()
   
   init() {
     bind()
   }
   
   func bind() {
+    /// 로그인 버튼 클릭 시 회원가입API 요청
     input.continueButtonTapped
       .bind(onNext: { [weak self] in
-        self?.requestLoginAPI()
+        self?.LoginAPI()
       })
+      .disposed(by: disposeBag)
+    
+    /// 로그인 버튼 클릭 시 애니메이션 시작
+    input.continueButtonTapped
+      .bind(to: output.startAnimation)
       .disposed(by: disposeBag)
   }
   
-  func requestLoginAPI() {
+  func LoginAPI() {
     guard let email = LoginStates.email else { return }
     guard let password = LoginStates.password else { return }
     
@@ -42,17 +50,20 @@ class CompleteSignUpViewModel {
       .subscribe(onNext: { [weak self] response in
         guard let statusCode = response.response?.statusCode else { return }
         guard let data = response.data else { return }
+        self?.output.stopAnimation.onNext(Void())
         switch statusCode {
         case 200:
-          struct Response: Codable {
-            let data: String
+          struct LoginResponseModel: Codable {
+            struct Response: Codable {
+              let loginToken: String
+            }
+            let data: Response
           }
-          let token = APIService.decode(Response.self, data: data).data
+          let token = APIService.decode(LoginResponseModel.self, data: data).data.loginToken
           TokenManager.saveToken(token: token)
           self?.output.showOnboardingVC.onNext(Void())
         default:
-          // 오류처리
-          break
+          fatalError("LoginAPI ERROR!")
         }
       })
       .disposed(by: disposeBag)

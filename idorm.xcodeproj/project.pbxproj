@@ -120,7 +120,7 @@
 		E5D31BF8289ABDC100510315 /* SetCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D31BF7289ABDC100510315 /* SetCalendarViewController.swift */; };
 		E5D49008288B7F0400311493 /* CommunityPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D49007288B7F0400311493 /* CommunityPopupViewController.swift */; };
 		E5D4900B288BFA0200311493 /* MatchingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D4900A288BFA0200311493 /* MatchingViewController.swift */; };
-		E5D4900E288BFB9100311493 /* MyInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D4900D288BFB9100311493 /* MyInfo.swift */; };
+		E5D4900E288BFB9100311493 /* MatchingInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D4900D288BFB9100311493 /* MatchingInfo.swift */; };
 		E5D49012288C003800311493 /* MyInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D49011288C003800311493 /* MyInfoView.swift */; };
 		E5D49014288C3DDB00311493 /* OnboardingUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D49013288C3DDA00311493 /* OnboardingUtilities.swift */; };
 		E5D49016288C449600311493 /* OnboardingVIewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D49015288C449600311493 /* OnboardingVIewController.swift */; };
@@ -144,6 +144,7 @@
 		E5F5EC742884025E0026DE21 /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC732884025E0026DE21 /* CommunityViewController.swift */; };
 		E5F5EC762884027D0026DE21 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC752884027D0026DE21 /* CalendarViewController.swift */; };
 		E5F5EC78288402840026DE21 /* MyPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC77288402840026DE21 /* MyPageVC.swift */; };
+		E5FD982428EAF1AE005A29E2 /* MatchingPopupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD982328EAF1AE005A29E2 /* MatchingPopupVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -245,7 +246,7 @@
 		E5D31BF7289ABDC100510315 /* SetCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCalendarViewController.swift; sourceTree = "<group>"; };
 		E5D49007288B7F0400311493 /* CommunityPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPopupViewController.swift; sourceTree = "<group>"; };
 		E5D4900A288BFA0200311493 /* MatchingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingViewController.swift; sourceTree = "<group>"; };
-		E5D4900D288BFB9100311493 /* MyInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyInfo.swift; sourceTree = "<group>"; };
+		E5D4900D288BFB9100311493 /* MatchingInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingInfo.swift; sourceTree = "<group>"; };
 		E5D49011288C003800311493 /* MyInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyInfoView.swift; sourceTree = "<group>"; };
 		E5D49013288C3DDA00311493 /* OnboardingUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingUtilities.swift; sourceTree = "<group>"; };
 		E5D49015288C449600311493 /* OnboardingVIewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVIewController.swift; sourceTree = "<group>"; };
@@ -268,6 +269,7 @@
 		E5F5EC732884025E0026DE21 /* CommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewController.swift; sourceTree = "<group>"; };
 		E5F5EC752884027D0026DE21 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		E5F5EC77288402840026DE21 /* MyPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageVC.swift; sourceTree = "<group>"; };
+		E5FD982328EAF1AE005A29E2 /* MatchingPopupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingPopupVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -413,7 +415,7 @@
 		E54B3E2228C6E1A30062EF7E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				E5D4900D288BFB9100311493 /* MyInfo.swift */,
+				E5D4900D288BFB9100311493 /* MatchingInfo.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -696,6 +698,7 @@
 			children = (
 				E5D4900A288BFA0200311493 /* MatchingViewController.swift */,
 				E5AB97C32895671800C0CEDF /* MatchingFilterViewController.swift */,
+				E5FD982328EAF1AE005A29E2 /* MatchingPopupVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -1151,6 +1154,7 @@
 				E56DF4A428935B0800E85B10 /* UICollectionReusableView+Extensions.swift in Sources */,
 				E50300F928773A5D00611C62 /* SceneDelegate.swift in Sources */,
 				E5D4900B288BFA0200311493 /* MatchingViewController.swift in Sources */,
+				E5FD982428EAF1AE005A29E2 /* MatchingPopupVC.swift in Sources */,
 				E5E77EC828D825EB00031010 /* RegisterTextField.swift in Sources */,
 				E53086E6287928B400A5D0A0 /* HomePopularCollectionViewCell.swift in Sources */,
 				E53086E828795D2700A5D0A0 /* HomeCollectionHeaderView.swift in Sources */,
@@ -1200,7 +1204,7 @@
 				E5D31BEC289A792400510315 /* UnderlinedBackGroundView.swift in Sources */,
 				E5F5EC78288402840026DE21 /* MyPageVC.swift in Sources */,
 				E5BF4C5F28840EBF00B4F0B8 /* PostingViewController.swift in Sources */,
-				E5D4900E288BFB9100311493 /* MyInfo.swift in Sources */,
+				E5D4900E288BFB9100311493 /* MatchingInfo.swift in Sources */,
 				E563421828780BDE00E93D17 /* OnboardingViewModel.swift in Sources */,
 				E584B4BC289FCA6C007AD83A /* MatchingViewModel.swift in Sources */,
 				E5AB97C42895671800C0CEDF /* MatchingFilterViewController.swift in Sources */,

@@ -55,11 +55,8 @@ class ConfirmPasswordViewController: BaseViewController {
     // --------------------------------
     // --------------INPUT-------------
     // --------------------------------
-    confirmButton.rx.tap
-      .throttle(.seconds(2), latest: false, scheduler: MainScheduler.instance)
-      .bind(to: viewModel.input.confirmButtonTapped)
-      .disposed(by: disposeBag)
     
+    /// 텍스트필드 이벤트 모음
     textField1.textField.rx.text
       .orEmpty
       .distinctUntilChanged()
@@ -88,6 +85,7 @@ class ConfirmPasswordViewController: BaseViewController {
       .bind(to: viewModel.input.passwordText_2)
       .disposed(by: disposeBag)
     
+    /// 확인 버튼 이벤트
     confirmButton.rx.tap
       .bind(to: viewModel.input.confirmButtonTapped)
       .disposed(by: disposeBag)
@@ -95,11 +93,11 @@ class ConfirmPasswordViewController: BaseViewController {
     // --------------------------------
     // -------------OUTPUT-------------
     // --------------------------------
-    // 비밀번호 텍스트필드 포커싱
+    
+    /// 비밀번호 텍스트필드 포커싱
     viewModel.output.didBeginState
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
-        print("dd")
         self?.infoLabel.textColor = .black
         self?.eightLabel.textColor = .idorm_gray_400
         self?.mixingLabel.textColor = .idorm_gray_400
@@ -107,7 +105,7 @@ class ConfirmPasswordViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
 
-    // 비밀번호 확인 텍스트필드 포커싱
+    /// 비밀번호 확인 텍스트필드 포커싱
     viewModel.output.didBeginState_2
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -116,7 +114,7 @@ class ConfirmPasswordViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    // 비밀번호 텍스트필드 포커스가 해제되었을 때
+    /// 비밀번호 텍스트필드 포커스가 해제되었을 때
     viewModel.output.didEndState
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -143,7 +141,7 @@ class ConfirmPasswordViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    // 비밀번호 확인 텍스트 포커싱 해제되었을 때
+    /// 비밀번호 확인 텍스트 포커싱 해제되었을 때
     viewModel.output.didEndState_2
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -163,7 +161,7 @@ class ConfirmPasswordViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
 
-    // '8자 이상 입력' 라벨 색상 바꾸기
+    /// '8자 이상 입력' 라벨 색상 바꾸기
     viewModel.output.countState
       .asDriver(onErrorJustReturn: false)
       .drive(onNext: { [weak self] isValid in
@@ -175,7 +173,7 @@ class ConfirmPasswordViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    // 영문 소문자/숫자/특수 문자 조합 색상 바꾸기
+    /// 영문 소문자/숫자/특수 문자 조합 색상 바꾸기
     viewModel.output.combineState
       .asDriver(onErrorJustReturn: false)
       .drive(onNext: { [weak self] isValid in
@@ -187,7 +185,7 @@ class ConfirmPasswordViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    // 완료버튼 누를 때 에러 팝업 띄우기
+    /// 완료버튼 누를 때 에러 팝업 띄우기
     viewModel.output.showErrorPopupVC
       .asDriver(onErrorJustReturn: "")
       .drive(onNext: { [weak self] mention in
@@ -197,7 +195,7 @@ class ConfirmPasswordViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    // 회원가입 완료 페이지로 넘어가기
+    /// 회원가입 완료 페이지로 넘어가기
     viewModel.output.showCompleteVC
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -207,6 +205,7 @@ class ConfirmPasswordViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
+    /// 비밀번호 변경 완료 시 로그인 페이지로 넘어가기
     viewModel.output.showLoginVC
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in

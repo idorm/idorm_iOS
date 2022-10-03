@@ -9,6 +9,7 @@ import UIKit
 
 final class RegisterTextField: UITextField {
   // MARK: - Init
+  
   init(_ title: String) {
     super.init(frame: .zero)
     setupTextField(title)
@@ -19,6 +20,7 @@ final class RegisterTextField: UITextField {
   }
   
   // MARK: - Setup
+  
   private func setupTextField(_ title: String) {
     self.attributedPlaceholder = NSAttributedString(
       string: title,

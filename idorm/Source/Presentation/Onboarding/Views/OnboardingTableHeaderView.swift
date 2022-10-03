@@ -40,6 +40,7 @@ enum OnboardingHeaderListType: String, CaseIterable {
 }
 
 class OnboardingTableHeaderView: UITableViewHeaderFooterView {
+  
   // MARK: - Properties
   lazy var ageTextField: CHIOTPFieldTwo = {
     let tf = CHIOTPFieldTwo()
@@ -164,6 +165,7 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
   }
   
   // MARK: - Selectors
+  
   @objc private func didTapDorm1Button() {
     dorm1Button.isSelected = true
     dorm2Button.isSelected = false
@@ -234,7 +236,8 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
     onChangedAllowedEarphoneButton.onNext(allowedEarphoneButton.isSelected)
   }
   
-  // MARK: - Helpers
+  // MARK: - Bind
+  
   private func bind() {
     dorm1Button.addTarget(self, action: #selector(didTapDorm1Button), for: .touchUpInside)
     dorm2Button.addTarget(self, action: #selector(didTapDorm2Button), for: .touchUpInside)
@@ -249,12 +252,11 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
     maleButton.addTarget(self, action: #selector(didTapMaleButton), for: .touchUpInside)
     femaleButton.addTarget(self, action: #selector(didTapFemaleButton), for: .touchUpInside)
     
-    ageTextField.rx.text
-      .orEmpty
-      .asDriver(onErrorJustReturn: "")
-      .drive(onNext: { [weak self] text in
-        self?.onChangedAgeTextField.onNext(text)
-        print(text)
+    Observable<Int>
+      .interval(.microseconds(10000), scheduler: MainScheduler.instance)
+      .bind(onNext: { [unowned self] _ in
+        guard let ageText = self.ageTextField.text else { return }
+        self.onChangedAgeTextField.onNext(ageText)
       })
       .disposed(by: disposeBag)
   }

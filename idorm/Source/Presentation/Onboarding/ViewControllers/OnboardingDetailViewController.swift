@@ -6,13 +6,15 @@
 //
 
 import UIKit
+
+import Then
 import SnapKit
 import RxSwift
 import RxCocoa
 
-class OnboardingDetailViewController: UIViewController {
+class OnboardingDetailViewController: BaseViewController {
+  
   // MARK: - Properties
-  lazy var myInfoView = MyInfoView(myInfo: myInfo)
   
   lazy var floatyBottomView: OnboardingFloatyBottomView = {
     let floatyBottomView = OnboardingFloatyBottomView()
@@ -29,13 +31,18 @@ class OnboardingDetailViewController: UIViewController {
     return button
   }()
   
-  let myInfo: MyInfo
-  let disposeBag = DisposeBag()
-  let viewModel = OnboardingDetailViewModel()
+  let indicator = UIActivityIndicatorView()
+  lazy var myInfoView = MyInfoView(myInfo: matchingInfo)
   
-  // MARK: - LifeCycle
-  init(myInfo: MyInfo) {
-    self.myInfo = myInfo
+  var viewModel: OnboardingDetailViewModel!
+  
+  let matchingInfo: MatchingInfo
+  
+  // MARK: - Init
+  
+  init(matchingInfo: MatchingInfo) {
+    self.matchingInfo = matchingInfo
+    self.viewModel = OnboardingDetailViewModel(matchingInfo)
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -43,25 +50,23 @@ class OnboardingDetailViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    configureUI()
-    bind()
+  // MARK: - LifeCycle
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    floatyBottomView.confirmButton.isUserInteractionEnabled = true
   }
   
-  // MARK: - Selectors
-  @objc private func didTapSkipButton() {
-    navigationController?.popViewController(animated: true)
-  }
+  // MARK: - Setup
   
-  // MARK: - Helpers
-  private func configureUI() {
-    view.backgroundColor = .white
-    navigationItem.title = "내 프로필 이미지"
-    navigationItem.hidesBackButton = true
-    
-    [ floatyBottomView, myInfoView ]
+  override func setupLayouts() {
+    super.setupLayouts()
+    [floatyBottomView, myInfoView, indicator]
       .forEach { view.addSubview($0) }
+  }
+  
+  override func setupConstraints() {
+    super.setupConstraints()
     
     floatyBottomView.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
@@ -73,26 +78,66 @@ class OnboardingDetailViewController: UIViewController {
       make.leading.trailing.equalToSuperview().inset(24)
       make.centerY.equalTo(view.safeAreaLayoutGuide).offset(-50)
     }
+    
+    indicator.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+      make.width.height.equalTo(20)
+    }
   }
   
-  private func bind() {
+  override func setupStyles() {
+    super.setupStyles()
+    view.backgroundColor = .white
+    navigationItem.title = "내 프로필 이미지"
+  }
+  
+  override func bind() {
+    super.bind()
+    
     // ---------------------------------
     // ---------------INPUT-------------
     // ---------------------------------
+    
+    /// 뒤로 가기 버튼 이벤트
     floatyBottomView.skipButton.rx.tap
       .bind(to: viewModel.input.didTapBackButton)
+      .disposed(by: disposeBag)
+    
+    /// 완료 버튼 이벤트
+    floatyBottomView.confirmButton.rx.tap
+      .bind(to: viewModel.input.didTapConfirmButton)
       .disposed(by: disposeBag)
     
     // ---------------------------------
     // --------------OUTPUT-------------
     // ---------------------------------
-    // 뒤로가기
+    
+    /// 뒤로가기
     viewModel.output.popVC
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
         self?.navigationController?.popViewController(animated: true)
       })
       .disposed(by: disposeBag)
+    
+    /// 애니메이션 시작
+    viewModel.output.startAnimation
+      .bind(onNext: { [weak self] in
+        self?.indicator.startAnimating()
+        print(TokenManager.loadToken())
+        self?.view.isUserInteractionEnabled = false
+      })
+      .disposed(by: disposeBag)
+    
+    /// 애니메이션 종료
+    viewModel.output.stopAnimation
+      .bind(onNext: { [weak self] in
+        self?.indicator.stopAnimating()
+        self?.view.isUserInteractionEnabled = true
+      })
+      .disposed(by: disposeBag)
+    
+    
   }
 }
 

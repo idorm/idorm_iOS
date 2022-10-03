@@ -14,8 +14,6 @@ import RxCocoa
 class CompleteSignUpViewController: BaseViewController {
   // MARK: - Properties
   
-  let image = UIImageView(image: UIImage(named: "Lion"))
-  
   lazy var signUpLabel = UILabel().then {
     $0.textColor = .idorm_gray_400
     $0.text = "안녕하세요! 가입을 축하드려요."
@@ -50,6 +48,9 @@ class CompleteSignUpViewController: BaseViewController {
     $0.configuration = config
   }
   
+  let indicator = UIActivityIndicatorView()
+  let image = UIImageView(image: UIImage(named: "Lion"))
+  
   let viewModel = CompleteSignUpViewModel()
   
   // MARK: - Bind
@@ -59,6 +60,8 @@ class CompleteSignUpViewController: BaseViewController {
     // --------------------------------
     // --------------INPUT-------------
     // --------------------------------
+    
+    /// 로그인 후 계속하기 버튼 이벤트
     continueButton.rx.tap
       .throttle(.seconds(2), latest: false, scheduler: MainScheduler.instance)
       .bind(to: viewModel.input.continueButtonTapped)
@@ -67,12 +70,30 @@ class CompleteSignUpViewController: BaseViewController {
     // --------------------------------
     // --------------OUTPUT------------
     // --------------------------------
+    
+    /// 온보딩 페이지로 이동
     viewModel.output.showOnboardingVC
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
         let onboardingVC = UINavigationController(rootViewController: OnboardingViewController(type: .firstTime))
         onboardingVC.modalPresentationStyle = .fullScreen
         self?.present(onboardingVC, animated: true)
+      })
+      .disposed(by: disposeBag)
+    
+    /// 애니메이션 시작
+    viewModel.output.startAnimation
+      .bind(onNext: { [weak self] in
+        self?.indicator.startAnimating()
+        self?.view.isUserInteractionEnabled = false
+      })
+      .disposed(by: disposeBag)
+    
+    /// 애니메이션 종료
+    viewModel.output.stopAnimation
+      .bind(onNext: { [weak self] in
+        self?.indicator.stopAnimating()
+        self?.view.isUserInteractionEnabled = true
       })
       .disposed(by: disposeBag)
   }
@@ -88,7 +109,7 @@ class CompleteSignUpViewController: BaseViewController {
   override func setupLayouts() {
     super.setupLayouts()
     
-    [image, signUpLabel, descriptionLabel1, descriptionLabel2, continueButton]
+    [image, signUpLabel, descriptionLabel1, descriptionLabel2, continueButton, indicator]
       .forEach { view.addSubview($0) }
   }
   
@@ -118,6 +139,11 @@ class CompleteSignUpViewController: BaseViewController {
     continueButton.snp.makeConstraints { make in
       make.bottom.equalTo(view.safeAreaLayoutGuide).inset(40)
       make.centerX.equalToSuperview()
+    }
+    
+    indicator.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+      make.width.height.equalTo(20)
     }
   }
 }

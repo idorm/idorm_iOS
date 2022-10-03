@@ -50,14 +50,15 @@ class OnboardingViewModel {
   }
   
   struct Output {
-    let myInfo = BehaviorRelay<MyInfo?>(value: nil)
-    let showOnboardingDetailVC = PublishSubject<MyInfo>()
+    let myInfo = BehaviorRelay<MatchingInfo?>(value: nil)
+    let showOnboardingDetailVC = PublishSubject<MatchingInfo>()
+    let showTabBarVC = PublishSubject<Void>()
     
     let enableConfirmButton = PublishSubject<Bool>()
     let validConfirmButton = BehaviorRelay<OnboardingValidConfirmButton?>(value: nil)
   }
   
-  var myInfo = MyInfo(dormNumber: .no1, period: .period_24, gender: .female, age: "", snoring: false, grinding: false, smoke: false, allowedFood: false, earphone: false, wakeupTime: "", cleanUpStatus: "", showerTime: "", mbti: "", wishText: "", chatLink: "") /// Accpet용
+  var myInfo = MatchingInfo(dormNumber: .no1, period: .period_24, gender: .female, age: "", snoring: false, grinding: false, smoke: false, allowedFood: false, earphone: false, wakeupTime: "", cleanUpStatus: "", showerTime: "", mbti: "", wishText: "", chatLink: "") /// Accpet용
   var validConfirm = OnboardingValidConfirmButton(dorm: false, gender: false, period: false, age: false, wakeup: false, cleanup: false, showerTime: false)
   let input = Input()
   let output = Output()
@@ -72,7 +73,7 @@ class OnboardingViewModel {
   }
   
   init() {
-    // 완료 버튼 활성화 비활성화
+    /// 완료 버튼 활성화 비활성화
     output.validConfirmButton
       .map {
         if
@@ -92,7 +93,7 @@ class OnboardingViewModel {
       .bind(to: output.enableConfirmButton)
       .disposed(by: disposeBag)
     
-    // 완료 버튼 클릭
+    /// 완료 버튼 클릭
     input.didTapConfirmButton
       .map { [unowned self] in
         self.myInfo
@@ -211,7 +212,7 @@ class OnboardingViewModel {
         self?.output.myInfo.accept(self?.myInfo)
       })
       .disposed(by: disposeBag)
-
+    
     input.ageTextFieldChanged
       .subscribe(onNext: { [weak self] text in
         self?.myInfo.age = text
@@ -287,6 +288,11 @@ class OnboardingViewModel {
         self?.myInfo.wishText = text
         self?.output.myInfo.accept(self?.myInfo)
       })
+      .disposed(by: disposeBag)
+    
+    /// 정보 입력 건너 뛰기 버튼 클릭 ---> 메인 화면 이동
+    input.didTapSkipButton
+      .bind(to: output.showTabBarVC)
       .disposed(by: disposeBag)
   }
 }

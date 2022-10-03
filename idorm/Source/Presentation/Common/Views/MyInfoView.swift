@@ -41,10 +41,10 @@ class MyInfoView: UIView {
     return button
   }()
   
-  let myInfo: MyInfo
+  let myInfo: MatchingInfo
   
   // MARK: - LifeCycle
-  init(myInfo: MyInfo) {
+  init(myInfo: MatchingInfo) {
     self.myInfo = myInfo
     super.init(frame: .zero)
     configureUI()

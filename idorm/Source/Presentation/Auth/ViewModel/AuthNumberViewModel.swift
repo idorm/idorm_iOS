@@ -65,7 +65,6 @@ class AuthNumberViewModel {
   
   func passwordEmailAPI() {
     guard let email = LoginStates.email else { return }
-    print(email)
     EmailService.passwordEmailAPI(email: email)
       .subscribe(onNext: { [weak self] response in
         self?.output.stopAnimation.onNext(Void())
@@ -73,7 +72,6 @@ class AuthNumberViewModel {
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
         case 200:
-          print("dd")
           break
         case 401:
           self?.output.showPopupVC.onNext("이메일을 찾을 수 없습니다.")

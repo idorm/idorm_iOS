@@ -20,10 +20,9 @@ class APIService {
   static func load(_ url: URLConvertible, httpMethod: HTTPMethod, body: Parameters?) -> Observable<AFDataResponse<Data>> {
     return Observable.create { observer in
       let header: HTTPHeaders = [
-        "Content-Type" : "application/json",
+        "Content-Type": "application/json",
         "X-AUTH-TOKEN": TokenManager.loadToken()
       ]
-      
       let request = AF.request(url, method: httpMethod, parameters: body, encoding: JSONEncoding.default, headers: header)
          .responseData { response in
           observer.onNext(response)
@@ -36,7 +35,7 @@ class APIService {
   
   static func decode<T: Codable>(_ t: T.Type, data: Data) -> T {
     let decoder = JSONDecoder()
-    guard let json = try? decoder.decode(T.self, from: data) else { fatalError("Encoding Error!") }
+    guard let json = try? decoder.decode(T.self, from: data) else { fatalError("Decoding Error!") }
     return json
   }
 }

@@ -11,7 +11,7 @@ import Alamofire
 
 final class OnboardingService {
   /// 최초 온보딩 정보 저장 API
-  static func matchingInfoAPI_Post(myinfo: MyInfo) -> Observable<AFDataResponse<Data>> {
+  static func matchingInfoAPI_Post(myinfo: MatchingInfo) -> Observable<AFDataResponse<Data>> {
     let body: Parameters = [
       "age": myinfo.age,
       "cleanUpStatus": myinfo.cleanUpStatus,

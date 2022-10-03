@@ -17,11 +17,11 @@ class SwipeCardView: UIView {
   
   var delegate: SwipeCardDelegate?
   
-  let myInfo: MyInfo
+  let myInfo: MatchingInfo
   let viewModel: MatchingViewModel
   
   // MARK: - LifeCycle
-  init(myInfo: MyInfo, viewModel: MatchingViewModel) {
+  init(myInfo: MatchingInfo, viewModel: MatchingViewModel) {
     self.myInfo = myInfo
     self.viewModel = viewModel
     super.init(frame: .zero)

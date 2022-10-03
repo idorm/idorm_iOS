@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MyInfo {
+struct MatchingInfo {
   var dormNumber: Dormitory
   var period: JoinPeriod
   var gender: Gender

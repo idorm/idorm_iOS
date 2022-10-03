@@ -10,7 +10,7 @@ import UIKit
 
 class MyLikeRoommateCollectionViewCell: UICollectionViewCell {
   // MARK: - Properties
-  let myinfo = MyInfo(dormNumber: .no1, period: .period_16, gender: .female, age: "22", snoring: true, grinding: true, smoke: true, allowedFood: true, earphone: true, wakeupTime: "dddfsdf", cleanUpStatus: "sdfsdf", showerTime: "sdfsdf")
+  let myinfo = MatchingInfo(dormNumber: .no1, period: .period_16, gender: .female, age: "22", snoring: true, grinding: true, smoke: true, allowedFood: true, earphone: true, wakeupTime: "dddfsdf", cleanUpStatus: "sdfsdf", showerTime: "sdfsdf")
   
   lazy var infoView = MyInfoView(myInfo: myinfo)
   

@@ -89,9 +89,10 @@ class ConfirmPasswordViewModel {
            self.passwordText == self.passwordText2 {
           
           if LoginStates.registerType == .signUp {
-            self.requestRegisterAPI()
+            self.registerAPI()
           } else {
-           
+            // TODO: [] 멤버 비밀번호 바꾸기 API 삽입
+            self.changePasswordAPI()
           }
         } else {
           self.output.showErrorPopupVC.onNext("조건을 다시 확인해 주세요.")
@@ -100,13 +101,11 @@ class ConfirmPasswordViewModel {
       .disposed(by: disposeBag)
   }
   
-  func requestRegisterAPI() {
+  func registerAPI() {
     guard let email = LoginStates.email else { return }
     
     MemberService.registerAPI(email: email, password: passwordText)
       .subscribe(onNext: { [weak self] response in
-        print(email)
-        print(self?.passwordText)
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
         case 200:
@@ -119,7 +118,7 @@ class ConfirmPasswordViewModel {
       .disposed(by: disposeBag)
   }
   
-  func requestChangePasswordAPI() {
+  func changePasswordAPI() {
     guard let email = LoginStates.email else { return }
     
     MemberService.changePasswordAPI(email: email, password: passwordText)
@@ -129,9 +128,16 @@ class ConfirmPasswordViewModel {
         case 200:
           self?.output.showErrorPopupVC.onNext("비밀번호가 변경 되었습니다.")
           self?.output.showLoginVC.onNext(Void())
+        case 400:
+          self?.output.showErrorPopupVC.onNext("입력은 필수입니다.")
+        case 401:
+          self?.output.showErrorPopupVC.onNext("등록되지 않은 이메일입니다.")
+        case 404:
+          self?.output.showErrorPopupVC.onNext("비밀번호를 변경할 멤버를 찾을 수 없습니다.")
+        case 500:
+          self?.output.showErrorPopupVC.onNext("Member 비밀번호 변경 중 서버 에러 발생")
         default:
-          // 오류 처리하기
-          break
+          fatalError()
         }
       })
       .disposed(by: disposeBag)
@@ -142,7 +148,7 @@ class ConfirmPasswordViewModel {
     let passwordTest = NSPredicate(format: "SELF MATCHES %@", passwordRegEx)
     return passwordTest.evaluate(with: pwd)
   }
-  
+
   func isValidPassword(pwd: String) -> Bool {
       let passwordRegEx = "^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{0,}"
       let passwordTest = NSPredicate(format: "SELF MATCHES %@", passwordRegEx)
