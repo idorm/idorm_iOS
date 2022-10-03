@@ -10,7 +10,7 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-class PopupViewController: UIViewController {
+class PopupViewController: BaseViewController {
   // MARK: - Properties
   let contents: String
   
@@ -40,9 +40,8 @@ class PopupViewController: UIViewController {
     return button
   }()
   
-  let disposeBag = DisposeBag()
-  
   // MARK: - LifeCycle
+  
   init(contents: String) {
     self.contents = contents
     super.init(nibName: nil, bundle: nil)
@@ -52,31 +51,26 @@ class PopupViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
   
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    configureUI()
-    bind()
-  }
+  // MARK: - Setup
   
-  // MARK: - Bind
-  
-  func bind() {
-    confirmButton.rx.tap
-      .bind(onNext: { [weak self] in
-        self?.dismiss(animated: false)
-      })
-      .disposed(by: disposeBag)
-  }
-  
-  // MARK: - Helpers
-  
-  private func configureUI() {
+  override func setupStyles() {
+    super.setupStyles()
+    
     contentsLabel.text = contents
+    view.backgroundColor = .black.withAlphaComponent(0.5)
+  }
+  
+  override func setupLayouts() {
+    super.setupLayouts()
     
     view.addSubview(infoView)
-    view.backgroundColor = .black.withAlphaComponent(0.5)
     
-    [ contentsLabel, confirmButton ].forEach { infoView.addSubview($0) }
+    [ contentsLabel, confirmButton ]
+      .forEach { infoView.addSubview($0) }
+  }
+  
+  override func setupConstraints() {
+    super.setupConstraints()
     
     infoView.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(32)
@@ -92,5 +86,18 @@ class PopupViewController: UIViewController {
     confirmButton.snp.makeConstraints { make in
       make.trailing.bottom.equalToSuperview().inset(16)
     }
+  }
+  
+  // MARK: - Bind
+  
+  override func bind() {
+    super.bind()
+    
+    // 확인 버튼 클릭 이벤트
+    confirmButton.rx.tap
+      .bind(onNext: { [weak self] in
+        self?.dismiss(animated: false)
+      })
+      .disposed(by: disposeBag)
   }
 }
