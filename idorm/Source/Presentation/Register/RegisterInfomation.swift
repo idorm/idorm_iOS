@@ -7,9 +7,13 @@
 
 import Foundation
 
-class LoginStates {
+final class RegisterInfomation {
+  
   private init() {}
+  
   static var registerType: RegisterType = .findPW
+  
   static var email: String?
+  
   static var password: String?
 }

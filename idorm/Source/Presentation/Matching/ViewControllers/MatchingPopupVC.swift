@@ -46,6 +46,12 @@ final class MatchingPopupViewController: BaseViewController {
   
   // MARK: - Setup
   
+  override func setupStyles() {
+    super.setupStyles()
+    
+    view.backgroundColor = .black.withAlphaComponent(0.5)
+  }
+  
   override func setupLayouts() {
     super.setupLayouts()
     
@@ -106,3 +112,13 @@ final class MatchingPopupViewController: BaseViewController {
       .disposed(by: disposeBag)
   }
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+struct ViewControllerPreView: PreviewProvider {
+  static var previews: some View {
+    MatchingPopupViewController().toPreview()
+  }
+}
+#endif
+

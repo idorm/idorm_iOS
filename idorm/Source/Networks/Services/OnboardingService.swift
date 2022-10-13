@@ -10,7 +10,8 @@ import RxSwift
 import Alamofire
 
 final class OnboardingService {
-  /// 최초 온보딩 정보 저장 API
+  
+  /// 매칭 정보 최초 저장 API
   static func matchingInfoAPI_Post(myinfo: MatchingInfo) -> Observable<AFDataResponse<Data>> {
     let body: Parameters = [
       "age": myinfo.age,
@@ -29,7 +30,13 @@ final class OnboardingService {
       "wishText": myinfo.wishText ?? ""
     ]
     
-    let url = OnboardingServerConstants.mathcingInfoURL_Post
+    let url = OnboardingServerConstants.mathcingInfoURL
     return APIService.load(url, httpMethod: .post, body: body)
+  }
+  
+  /// 매칭 정보 단건 조회
+  static func matchingInfoAPI_Get() -> Observable<AFDataResponse<Data>> {
+    let url = OnboardingServerConstants.mathcingInfoURL
+    return APIService.load(url, httpMethod: .get, body: nil)
   }
 }

@@ -5,37 +5,52 @@
 //  Created by 김응철 on 2022/07/23.
 //
 
-import SnapKit
 import UIKit
+
+import SnapKit
 import RxSwift
 import RxCocoa
+import RxAppState
 import DeviceKit
+import Then
 
-class MatchingViewController: UIViewController {
+class MatchingViewController: BaseViewController {
+  
   // MARK: - Properties
+  
+  /// 임시 프로퍼티 입니다.
   let myInfo = MatchingInfo(dormNumber: .no1, period: .period_16, gender: .female, age: "21", snoring: true, grinding: false, smoke: true, allowedFood: false, earphone: true, wakeupTime: "8시", cleanUpStatus: "33", showerTime: "33", mbti: "ISFJ", wishText: "하고싶은 말입니다.", chatLink: nil)
-  
   lazy var swipeDataModels = [ myInfo, myInfo, myInfo, myInfo, myInfo, myInfo ]
+  lazy var infoView = MyInfoView(myInfo: myInfo)
   
-  lazy var filterButton: UIButton = {
+  lazy var filterButton = UIButton().then {
     var config = UIButton.Configuration.plain()
     config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
     config.image = UIImage(named: "filter(Matching)")
-    let button = UIButton(configuration: config)
-    
-    return button
-  }()
+    $0.configuration = config
+  }
   
-  lazy var topRoundedBackgroundView = UIImageView(image: UIImage(named: "topRoundedBackground(Matching)")?.withRenderingMode(.alwaysTemplate))
-  let noMatchingImageView = UIImageView(image: UIImage(named: "noMatchingLabel(Matching)"))
+  lazy var topRoundedBackgroundView = UIImageView().then {
+    $0.image = UIImage(named: "topRoundedBackground(Matching)")?.withRenderingMode(.alwaysTemplate)
+    $0.tintColor = .idorm_blue
+  }
+  
+  lazy var noMatchingImageView = UIImageView(image: UIImage(named: "noMatchingLabel(Matching)"))
   lazy var cancelButton = createButton(imageName: "cancel")
   lazy var messageButton = createButton(imageName: "message")
   lazy var heartButton = createButton(imageName: "heart")
   lazy var backButton = createButton(imageName: "back")
-  lazy var infoView = MyInfoView(myInfo: myInfo)
   
-  var stackContainer: StackContainerView!
-  let disposeBag = DisposeBag()
+  lazy var buttonStack = UIStackView(
+    arrangedSubviews: [cancelButton, backButton, messageButton, heartButton]
+  ).then {
+    $0.spacing = 4
+  }
+  
+  lazy var stackContainer = StackContainerView(viewModel: viewModel).then {
+    $0.dataSource = self
+  }
+  
   let viewModel = MatchingViewModel()
   
   // MARK: - LifeCycle
@@ -45,23 +60,12 @@ class MatchingViewController: UIViewController {
     tabBarController?.tabBar.isHidden = false
   }
   
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    stackContainer.dataSource = self
-    bind()
-  }
-  
-  override func loadView() {
-    super.loadView()
-    stackContainer = StackContainerView(viewModel: viewModel)
-    view.addSubview(stackContainer)
-    configureUI()
-  }
-  
   // MARK: - Bind
-  private func bind() {
+  override func bind() {
+    super.bind()
+    
     // --------------------------------
-    //             IN PUT
+    // --------------INPUT-------------
     // --------------------------------
 
     // 필터버튼 클릭 ( 수정 해야 함 )
@@ -89,10 +93,17 @@ class MatchingViewController: UIViewController {
       .bind(to: viewModel.input.backButtonObserver)
       .disposed(by: disposeBag)
     
+    // 화면 처음 진입
+    rx.viewDidLoad
+      .take(1)
+      .bind(to: viewModel.input.viewDidLoadObserver)
+      .disposed(by: disposeBag)
+    
     // --------------------------------
-    //             OUT PUT
+    // --------------OUTPUT------------
     // --------------------------------
     
+    // 백그라운드 컬러 기본 컬러로 다시 바꾸기
     viewModel.output.drawBackTopBackgroundColor
       .bind(onNext: { [weak self] in
         UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
@@ -101,6 +112,7 @@ class MatchingViewController: UIViewController {
       })
       .disposed(by: disposeBag)
     
+    // 백그라운드 컬러 변경 감지
     viewModel.output.onChangedTopBackgroundColor
       .bind(onNext: { [weak self] direction in
         guard let self = self else { return }
@@ -117,7 +129,7 @@ class MatchingViewController: UIViewController {
       })
       .disposed(by: disposeBag)
     
-    // FilterViewController 보여주기
+    // FilterVC 보여주기
     viewModel.output.showFliterVC
       .bind(onNext: { [weak self] in
         guard let self = self else { return }
@@ -126,6 +138,7 @@ class MatchingViewController: UIViewController {
       })
       .disposed(by: disposeBag)
     
+    // 백그라운드 컬러 감지 (터치할 때)
     viewModel.output.onChangedTopBackgroundColor_WithTouch
       .bind(onNext: { [weak self] type in
         switch type {
@@ -152,19 +165,29 @@ class MatchingViewController: UIViewController {
         }
       })
       .disposed(by: disposeBag)
+    
+    // 프로필 이미지 만들기 팝업 창 띄우기
+    viewModel.output.showFirstPopupVC
+      .bind(onNext: { [weak self] in
+        let matchingPopupVC = MatchingPopupViewController()
+        matchingPopupVC.modalPresentationStyle = .overFullScreen
+        self?.present(matchingPopupVC, animated: false)
+      })
+      .disposed(by: disposeBag)
   }
   
-  // MARK: - Configuration
-  private func configureUI() {
-    view.backgroundColor = .white
-    topRoundedBackgroundView.tintColor = .idorm_blue
-    
-    let buttonStack = UIStackView(arrangedSubviews: [ cancelButton, backButton, messageButton, heartButton ])
-    buttonStack.spacing = 4
-    
+  // MARK: - Setup
+  
+  override func setupLayouts() {
     [ topRoundedBackgroundView, buttonStack, filterButton, noMatchingImageView, stackContainer ]
       .forEach { view.addSubview($0) }
-    
+  }
+  
+  override func setupStyles() {
+    view.backgroundColor = .white
+  }
+  
+  override func setupConstraints() {
     topRoundedBackgroundView.snp.makeConstraints { make in
       make.top.leading.trailing.equalToSuperview()
     }
@@ -261,7 +284,7 @@ class MatchingViewController: UIViewController {
         make.top.equalTo(filterButton.snp.bottom).offset(40)
         make.height.equalTo(400)
       }
-
+      
       buttonStack.snp.makeConstraints { make in
         make.centerX.equalToSuperview()
         make.bottom.equalTo(view.safeAreaLayoutGuide).inset(100)
@@ -271,6 +294,7 @@ class MatchingViewController: UIViewController {
 }
 
 // MARK: - 프로퍼티 만들기
+
 extension MatchingViewController {
   func createButton(imageName: String) -> UIButton {
     var config = UIButton.Configuration.plain()

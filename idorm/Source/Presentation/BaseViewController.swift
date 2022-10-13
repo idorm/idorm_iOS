@@ -13,13 +13,17 @@ class BaseViewController: UIViewController {
 
   /// A dispose bag. 각 ViewController에 종속적이다.
   let disposeBag = DisposeBag()
+  
+  override func loadView() {
+    super.loadView()
+    bind()
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
     setupStyles()
     setupLayouts()
     setupConstraints()
-    bind()
   }
 
   /// UI 프로퍼티를 view에 할당합니다.

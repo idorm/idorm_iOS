@@ -10,6 +10,7 @@ import RxSwift
 import RxCocoa
 
 class OnboardingDetailViewModel {
+  
   struct Input {
     let didTapBackButton = PublishSubject<Void>()
     let didTapConfirmButton = PublishSubject<Void>()
@@ -21,6 +22,7 @@ class OnboardingDetailViewModel {
     let showTabBarVC = PublishSubject<Void>()
     let startAnimation = PublishSubject<Void>()
     let stopAnimation = PublishSubject<Void>()
+    
   }
   
   let input = Input()
@@ -53,9 +55,7 @@ class OnboardingDetailViewModel {
     OnboardingService.matchingInfoAPI_Post(myinfo: matchingInfo)
       .subscribe(onNext: { [weak self] response in
         self?.output.stopAnimation.onNext(Void())
-        let statusCode = response.response?.statusCode
-        // TODO: [] StatusCode가 response로 오지않음
-        print(statusCode)
+        guard let statusCode = response.response?.statusCode else { fatalError("Status Code is missing") }
         switch statusCode {
         case 200:
           self?.output.showTabBarVC.onNext(Void())
@@ -68,7 +68,7 @@ class OnboardingDetailViewModel {
         case 500:
           self?.output.showPopupVC.onNext("Matching save 중 서버 에러 발생")
         default:
-          fatalError()
+          break
         }
       })
       .disposed(by: disposeBag)

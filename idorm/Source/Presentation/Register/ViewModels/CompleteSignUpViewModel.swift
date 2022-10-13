@@ -29,22 +29,23 @@ class CompleteSignUpViewModel {
   }
   
   func bind() {
-    /// 로그인 버튼 클릭 시 회원가입API 요청
+    
+    // 로그인 버튼 클릭 -> 회원가입API 요청
     input.continueButtonTapped
       .bind(onNext: { [weak self] in
         self?.LoginAPI()
       })
       .disposed(by: disposeBag)
     
-    /// 로그인 버튼 클릭 시 애니메이션 시작
+    // 로그인 버튼 클릭 -> 애니메이션 시작
     input.continueButtonTapped
       .bind(to: output.startAnimation)
       .disposed(by: disposeBag)
   }
   
   func LoginAPI() {
-    guard let email = LoginStates.email else { return }
-    guard let password = LoginStates.password else { return }
+    guard let email = RegisterInfomation.email else { return }
+    guard let password = RegisterInfomation.password else { return }
     
     MemberService.LoginAPI(email: email, password: password)
       .subscribe(onNext: { [weak self] response in

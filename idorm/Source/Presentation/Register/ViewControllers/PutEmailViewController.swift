@@ -49,7 +49,7 @@ class PutEmailViewController: BaseViewController {
   init(type: RegisterType) {
     self.registerType = type
     super.init(nibName: nil, bundle: nil)
-    LoginStates.registerType = type
+    RegisterInfomation.registerType = type
   }
   
   required init?(coder: NSCoder) {
@@ -100,7 +100,7 @@ class PutEmailViewController: BaseViewController {
         navVC.modalPresentationStyle = .fullScreen
         self.present(navVC, animated: true)
         
-        authVC.dismissCompletion = {
+        authVC.pushCompletion = {
           let confirmPasswordVC = ConfirmPasswordViewController(type: self.registerType)
           DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.navigationController?.pushViewController(confirmPasswordVC, animated: true)

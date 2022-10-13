@@ -21,6 +21,7 @@ class AuthNumberViewModel {
     let resetTimer = PublishSubject<Void>()
     let dismissVC = PublishSubject<Void>()
     let showPopupVC = PublishSubject<String>()
+    
     let startAnimation = PublishSubject<Void>()
     let stopAnimation = PublishSubject<Void>()
   }
@@ -35,10 +36,10 @@ class AuthNumberViewModel {
   
   func bind() {
     
-    /// 인증번호 재 요청 버튼 클릭 시 인증번호 API 요청
+    // 인증번호 재 요청 버튼 클릭 -> 인증번호 API 요청
     input.requestAgainButtonTapped
       .subscribe(onNext: { [weak self] in
-        switch LoginStates.registerType {
+        switch RegisterInfomation.registerType {
         case .signUp:
           self?.registerEmailAPI()
         case .findPW:
@@ -47,7 +48,7 @@ class AuthNumberViewModel {
       })
       .disposed(by: disposeBag)
     
-    /// 버튼 클릭 시 애니메이션 효과
+    // 버튼 클릭 -> 애니메이션 효과
     Observable.merge(
       input.requestAgainButtonTapped,
       input.confirmButtonTapped
@@ -55,7 +56,7 @@ class AuthNumberViewModel {
     .bind(to: output.startAnimation)
     .disposed(by: disposeBag)
     
-    /// 완료 버튼 클릭 시 이메일 검증API 요청
+    // 완료 버튼 클릭 -> 이메일 검증API 요청
     input.confirmButtonTapped
       .bind(onNext: { [weak self] in
         self?.verifyCodeAPI()
@@ -64,7 +65,7 @@ class AuthNumberViewModel {
   }
   
   func passwordEmailAPI() {
-    guard let email = LoginStates.email else { return }
+    guard let email = RegisterInfomation.email else { return }
     EmailService.passwordEmailAPI(email: email)
       .subscribe(onNext: { [weak self] response in
         self?.output.stopAnimation.onNext(Void())
@@ -85,7 +86,7 @@ class AuthNumberViewModel {
   }
   
   func registerEmailAPI() {
-    guard let email = LoginStates.email else { return }
+    guard let email = RegisterInfomation.email else { return }
     EmailService.registerEmailAPI(email: email)
       .subscribe(onNext: { [weak self] response in
         self?.output.stopAnimation.onNext(Void())
@@ -108,10 +109,10 @@ class AuthNumberViewModel {
   }
   
   func verifyCodeAPI() {
-    guard let email = LoginStates.email else { return }
+    guard let email = RegisterInfomation.email else { return }
     let code = input.codeString.value
     
-    EmailService.verifyCodeAPI(email: email, code: code, type: LoginStates.registerType)
+    EmailService.verifyCodeAPI(email: email, code: code, type: RegisterInfomation.registerType)
       .subscribe(onNext: { [weak self] response in
         self?.output.stopAnimation.onNext(Void())
         guard let statusCode = response.response?.statusCode else { return }

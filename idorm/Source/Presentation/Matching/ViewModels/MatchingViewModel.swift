@@ -6,6 +6,7 @@
 //
 
 import UIKit
+
 import RxSwift
 import RxCocoa
 
@@ -27,6 +28,7 @@ class MatchingViewModel {
     let messageButtonObserver = PublishSubject<Void>()
     let heartButtonObserver = PublishSubject<Void>()
     let filterButtonObserver = PublishSubject<Void>()
+    let viewDidLoadObserver = PublishSubject<Void>()
     
     let swipeObserver = PublishSubject<MatchingType>()
     let didEndSwipeObserver = PublishSubject<SwipeType>()
@@ -43,6 +45,7 @@ class MatchingViewModel {
     let onChangedSwipeAnimation = PublishSubject<MatchingType>()
     
     let showFliterVC = PublishSubject<Void>()
+    let showFirstPopupVC = PublishSubject<Void>()
     let appendRemovedCard = PublishSubject<SwipeCardView>()
     let revertCard = PublishSubject<Void>()
     
@@ -57,7 +60,17 @@ class MatchingViewModel {
     bind()
   }
   
+  
   func bind() {
+    
+    // 화면 처음 진입 -> 온보딩 유무 체크 후 PopupVC 보여주기
+    input.viewDidLoadObserver
+      .bind(onNext: {
+        self.matchingInfoAPI()
+      })
+      .disposed(by: disposeBag)
+    
+    // 스와이프 액션 -> 배경화면 컬러 감지
     input.swipeObserver
       .bind(to: output.onChangedTopBackgroundColor)
       .disposed(by: disposeBag)
@@ -97,6 +110,21 @@ class MatchingViewModel {
     
     input.backButtonObserver
       .bind(to: output.revertCard)
+      .disposed(by: disposeBag)
+  }
+  
+  func matchingInfoAPI() {
+    OnboardingService.matchingInfoAPI_Get()
+      .bind(onNext: { [unowned self] response in
+        guard let statusCode = response.response?.statusCode else { return }
+        switch statusCode {
+        case 200:
+          break
+        default:
+          // 매칭 정보가 없을 시에 팝업 창 띄우기
+          self.output.showFirstPopupVC.onNext(Void())
+        }
+      })
       .disposed(by: disposeBag)
   }
 }

@@ -90,6 +90,9 @@ class LoginViewController: BaseViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.navigationController?.isNavigationBarHidden = true
+    
+    // 토큰 초기화
+    TokenManager.removeToken()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -105,28 +108,28 @@ class LoginViewController: BaseViewController {
     // ---------------INPUT-------------
     // ---------------------------------
     
-    /// 로그인 버튼 클릭
+    // 로그인 버튼 클릭
     loginButton.rx.tap
       .bind(to: viewModel.input.loginButtonTapped)
       .disposed(by: disposeBag)
     
-    /// 비밀번호 찾기 버튼 클릭
+    // 비밀번호 찾기 버튼 클릭
     forgotPwButton.rx.tap
       .bind(to: viewModel.input.forgotButtonTapped)
       .disposed(by: disposeBag)
     
-    /// 회원가입 버튼 클릭
+    // 회원가입 버튼 클릭
     signUpButton.rx.tap
       .bind(to: viewModel.input.signUpButtonTapped)
       .disposed(by: disposeBag)
     
-    /// 이메일 텍스트 필드 이벤트
+    // 이메일 텍스트 필드 이벤트
     idTextField.rx.text
       .orEmpty
       .bind(to: viewModel.input.emailText)
       .disposed(by: disposeBag)
     
-    /// 비밀번호 텍스트 필드 이벤트
+    // 비밀번호 텍스트 필드 이벤트
     pwTextField.rx.text
       .orEmpty
       .bind(to: viewModel.input.passwordText)

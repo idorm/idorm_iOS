@@ -6,14 +6,16 @@
 //
 
 import UIKit
+
 import SnapKit
+import Then
 import WebKit
 import RxSwift
 import RxCocoa
 
 class AuthViewController: BaseViewController {
+  
   // MARK: - Properties
-  var dismissCompletion: (() -> Void)?
   
   lazy var mailImageView = UIImageView(image: UIImage(named: "mail"))
   lazy var authInfoImageView = UIImageView(image: UIImage(named: "AuthInfoLabel"))
@@ -23,7 +25,6 @@ class AuthViewController: BaseViewController {
     var config = UIButton.Configuration.plain()
     config.image = UIImage(named: "Xmark_Black")
     config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-    
     $0.configuration = config
   }
   
@@ -34,36 +35,46 @@ class AuthViewController: BaseViewController {
     $0.configuration?.background.strokeColor = .idorm_gray_200
   }
   
+  var pushCompletion: (() -> Void)?
+  
   let viewModel = AuthViewModel()
   
   // MARK: - Bind
   
   override func bind() {
     super.bind()
+    
     // --------------------------------
     // --------------INPUT-------------
     // --------------------------------
     
-    /// 뒤로가기 버튼 이벤트
+    // 뒤로가기 버튼 이벤트
     backButton.rx.tap
       .bind(to: viewModel.input.backButtonTapped)
       .disposed(by: disposeBag)
     
-    /// 웹메일 바로 가기 버튼 이벤트
+    // 웹메일 바로 가기 버튼 이벤트
     portalButton.rx.tap
       .bind(to: viewModel.input.portalButtonTapped)
       .disposed(by: disposeBag)
     
-    /// 인증번호 입력 버튼 이벤트
+    // 인증번호 입력 버튼 이벤트
     confirmButton.rx.tap
       .bind(to: viewModel.input.confirmButtonTapped)
+      .disposed(by: disposeBag)
+    
+    // 메일 타이머 시작
+    rx.viewDidLoad
+      .bind(onNext: {
+        MailTimerChecker.shared.start()
+      })
       .disposed(by: disposeBag)
     
     // --------------------------------
     // -------------OUTPUT-------------
     // --------------------------------
     
-    /// 화면 종료
+    // 화면 종료
     viewModel.output.dismissVC
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -71,7 +82,7 @@ class AuthViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    /// 웹메일 페이지 보여주기
+    // 웹메일 페이지 보여주기
     viewModel.output.showPortalWeb
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -82,7 +93,7 @@ class AuthViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    /// 인증번호 입력 페이지로 넘어가기
+    // 인증번호 입력 페이지로 넘어가기
     viewModel.output.showAuthNumberVC
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -90,7 +101,7 @@ class AuthViewController: BaseViewController {
         self?.navigationController?.pushViewController(authNumberVC, animated: true)
         
         authNumberVC.popCompletion = {
-          self?.dismissCompletion?()
+          self?.pushCompletion?()
         }
       })
       .disposed(by: disposeBag)

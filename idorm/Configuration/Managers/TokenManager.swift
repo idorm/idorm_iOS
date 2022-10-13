@@ -20,4 +20,9 @@ class TokenManager {
     guard let token = userDefaults.string(forKey: "Token") else { return "" }
     return token
   }
+  
+  static func removeToken() {
+    let userDefaults = UserDefaults.standard
+    userDefaults.removeObject(forKey: "Token")
+  }
 }

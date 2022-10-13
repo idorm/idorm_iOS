@@ -6,6 +6,5 @@
 //
 
 final class OnboardingServerConstants {
-  /// 온보딩 정보 최초 저장 (Post)
-  static let mathcingInfoURL_Post = ServerConstants.baseURL + "/member/matchinginfo"
+  static let mathcingInfoURL = ServerConstants.baseURL + "/member/matchinginfo"
 }

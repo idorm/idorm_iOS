@@ -38,9 +38,9 @@ class PutEmailViewModel {
     /// 완료 버튼 클릭 시 오류 및 이동
     input.confirmButtonTapped
       .bind(onNext: { [unowned self] in
-        LoginStates.email = self.email
+        RegisterInfomation.email = self.email
         
-        switch LoginStates.registerType {
+        switch RegisterInfomation.registerType {
         case .findPW:
           self.passwordEmailAPI()
         case .signUp:
