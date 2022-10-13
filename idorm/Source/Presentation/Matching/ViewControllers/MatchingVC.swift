@@ -23,44 +23,49 @@ class MatchingViewController: BaseViewController {
   lazy var swipeDataModels = [ myInfo, myInfo, myInfo, myInfo, myInfo, myInfo ]
   lazy var infoView = MyInfoView(myInfo: myInfo)
   
-  lazy var filterButton = UIButton().then {
+  private lazy var filterButton = UIButton().then {
     var config = UIButton.Configuration.plain()
     config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
     config.image = UIImage(named: "filter(Matching)")
     $0.configuration = config
   }
   
-  lazy var topRoundedBackgroundView = UIImageView().then {
+  private lazy var topRoundedBackgroundView = UIImageView().then {
     $0.image = UIImage(named: "topRoundedBackground(Matching)")?.withRenderingMode(.alwaysTemplate)
     $0.tintColor = .idorm_blue
   }
   
-  lazy var noMatchingImageView = UIImageView(image: UIImage(named: "noMatchingLabel(Matching)"))
-  lazy var cancelButton = createButton(imageName: "cancel")
-  lazy var messageButton = createButton(imageName: "message")
-  lazy var heartButton = createButton(imageName: "heart")
-  lazy var backButton = createButton(imageName: "back")
+  private lazy var noMatchingImageView = UIImageView(image: UIImage(named: "noMatchingLabel(Matching)"))
+  private lazy var cancelButton = createButton(imageName: "cancel")
+  private lazy var messageButton = createButton(imageName: "message")
+  private lazy var heartButton = createButton(imageName: "heart")
+  private lazy var backButton = createButton(imageName: "back")
   
-  lazy var buttonStack = UIStackView(
+  private lazy var buttonStack = UIStackView(
     arrangedSubviews: [cancelButton, backButton, messageButton, heartButton]
   ).then {
     $0.spacing = 4
   }
   
-  lazy var stackContainer = StackContainerView(viewModel: viewModel).then {
-    $0.dataSource = self
-  }
+  private lazy var stackContainer = StackContainerView(viewModel: viewModel)
   
-  let viewModel = MatchingViewModel()
+  private let viewModel = MatchingViewModel()
   
   // MARK: - LifeCycle
+  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     navigationController?.navigationBar.isHidden = true
     tabBarController?.tabBar.isHidden = false
   }
   
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    stackContainer.dataSource = self
+  }
+  
   // MARK: - Bind
+  
   override func bind() {
     super.bind()
     
@@ -179,15 +184,20 @@ class MatchingViewController: BaseViewController {
   // MARK: - Setup
   
   override func setupLayouts() {
-    [ topRoundedBackgroundView, buttonStack, filterButton, noMatchingImageView, stackContainer ]
+    super.setupLayouts()
+    [topRoundedBackgroundView, buttonStack, filterButton, noMatchingImageView, stackContainer]
       .forEach { view.addSubview($0) }
   }
   
   override func setupStyles() {
+    super.setupStyles()
     view.backgroundColor = .white
   }
   
   override func setupConstraints() {
+    super.setupConstraints()
+    let deviceManager = DeviceManager.shared
+    
     topRoundedBackgroundView.snp.makeConstraints { make in
       make.top.leading.trailing.equalToSuperview()
     }
@@ -201,8 +211,6 @@ class MatchingViewController: BaseViewController {
       make.top.equalTo(topRoundedBackgroundView.snp.bottom).offset(100)
       make.centerX.equalToSuperview()
     }
-    
-    let deviceManager = DeviceManager.shared
     
     if deviceManager.isFourIncheDevices() {
       stackContainer.snp.makeConstraints { make in
@@ -318,6 +326,8 @@ extension MatchingViewController {
   }
 }
 
+// MARK: - SwipeCard Helpers
+
 extension MatchingViewController: SwipeCardsDataSource {
   func numberOfCardsToShow() -> Int {
     return swipeDataModels.count
@@ -332,3 +342,12 @@ extension MatchingViewController: SwipeCardsDataSource {
     return card
   }
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+struct MatchingVCPreView: PreviewProvider {
+  static var previews: some View {
+    MatchingViewController().toPreview()
+  }
+}
+#endif

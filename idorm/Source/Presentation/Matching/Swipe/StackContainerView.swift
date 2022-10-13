@@ -34,6 +34,7 @@ class StackContainerView: UIView {
   let disposeBag = DisposeBag()
   
   // MARK: - LifeCycle
+  
   init(viewModel: MatchingViewModel) {
     self.viewModel = viewModel
     super.init(frame: .zero)
@@ -112,6 +113,7 @@ class StackContainerView: UIView {
   }
   
   // MARK: - Configuration
+  
   private func addCardView(cardView: SwipeCardView, at index: Int) {
     cardView.delegate = self
     addCardFrame(index: index, cardView: cardView)

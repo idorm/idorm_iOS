@@ -87,7 +87,7 @@
 		E591B77E28C6EB0600B8B581 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591B77D28C6EB0600B8B581 /* APIService.swift */; };
 		E5A164B128ADC80C00554655 /* ConfirmPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A164B028ADC80C00554655 /* ConfirmPasswordViewModel.swift */; };
 		E5A60C7C289BE72A004B77E8 /* SetCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A60C7B289BE72A004B77E8 /* SetCalendarViewModel.swift */; };
-		E5AB97C42895671800C0CEDF /* MatchingFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AB97C32895671800C0CEDF /* MatchingFilterViewController.swift */; };
+		E5AB97C42895671800C0CEDF /* MatchingFilterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AB97C32895671800C0CEDF /* MatchingFilterVC.swift */; };
 		E5AC2A4828BB548E0069ABB9 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2A4728BB548E0069ABB9 /* MyPageViewModel.swift */; };
 		E5AC2A4B28BB56360069ABB9 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = E5AC2A4A28BB56360069ABB9 /* RxGesture */; };
 		E5AC2A4D28BB5B250069ABB9 /* ManageMyInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2A4C28BB5B250069ABB9 /* ManageMyInfoVC.swift */; };
@@ -119,7 +119,7 @@
 		E5D31BF6289ABCE100510315 /* Tabman in Frameworks */ = {isa = PBXBuildFile; productRef = E5D31BF5289ABCE100510315 /* Tabman */; };
 		E5D31BF8289ABDC100510315 /* SetCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D31BF7289ABDC100510315 /* SetCalendarViewController.swift */; };
 		E5D49008288B7F0400311493 /* CommunityPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D49007288B7F0400311493 /* CommunityPopupViewController.swift */; };
-		E5D4900B288BFA0200311493 /* MatchingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D4900A288BFA0200311493 /* MatchingViewController.swift */; };
+		E5D4900B288BFA0200311493 /* MatchingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D4900A288BFA0200311493 /* MatchingVC.swift */; };
 		E5D4900E288BFB9100311493 /* MatchingInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D4900D288BFB9100311493 /* MatchingInfo.swift */; };
 		E5D49012288C003800311493 /* MyInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D49011288C003800311493 /* MyInfoView.swift */; };
 		E5D49014288C3DDB00311493 /* OnboardingUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D49013288C3DDA00311493 /* OnboardingUtilities.swift */; };
@@ -221,7 +221,7 @@
 		E591B77D28C6EB0600B8B581 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		E5A164B028ADC80C00554655 /* ConfirmPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordViewModel.swift; sourceTree = "<group>"; };
 		E5A60C7B289BE72A004B77E8 /* SetCalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCalendarViewModel.swift; sourceTree = "<group>"; };
-		E5AB97C32895671800C0CEDF /* MatchingFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilterViewController.swift; sourceTree = "<group>"; };
+		E5AB97C32895671800C0CEDF /* MatchingFilterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilterVC.swift; sourceTree = "<group>"; };
 		E5AC2A4728BB548E0069ABB9 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		E5AC2A4C28BB5B250069ABB9 /* ManageMyInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMyInfoVC.swift; sourceTree = "<group>"; };
 		E5AC2DCA2882F24000B82AD8 /* OnboardingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTextField.swift; sourceTree = "<group>"; };
@@ -246,7 +246,7 @@
 		E5D31BF2289AB83800510315 /* SetCalendarTabmanController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCalendarTabmanController.swift; sourceTree = "<group>"; };
 		E5D31BF7289ABDC100510315 /* SetCalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCalendarViewController.swift; sourceTree = "<group>"; };
 		E5D49007288B7F0400311493 /* CommunityPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPopupViewController.swift; sourceTree = "<group>"; };
-		E5D4900A288BFA0200311493 /* MatchingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingViewController.swift; sourceTree = "<group>"; };
+		E5D4900A288BFA0200311493 /* MatchingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingVC.swift; sourceTree = "<group>"; };
 		E5D4900D288BFB9100311493 /* MatchingInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingInfo.swift; sourceTree = "<group>"; };
 		E5D49011288C003800311493 /* MyInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyInfoView.swift; sourceTree = "<group>"; };
 		E5D49013288C3DDA00311493 /* OnboardingUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingUtilities.swift; sourceTree = "<group>"; };
@@ -698,8 +698,8 @@
 		E56DF4C92894060200E85B10 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				E5D4900A288BFA0200311493 /* MatchingViewController.swift */,
-				E5AB97C32895671800C0CEDF /* MatchingFilterViewController.swift */,
+				E5D4900A288BFA0200311493 /* MatchingVC.swift */,
+				E5AB97C32895671800C0CEDF /* MatchingFilterVC.swift */,
 				E5FD982328EAF1AE005A29E2 /* MatchingPopupVC.swift */,
 			);
 			path = ViewControllers;
@@ -1157,7 +1157,7 @@
 				E57FB8562886E2710050BBAE /* PhotoLibrary+Extensions.swift in Sources */,
 				E56DF4A428935B0800E85B10 /* UICollectionReusableView+Extensions.swift in Sources */,
 				E50300F928773A5D00611C62 /* SceneDelegate.swift in Sources */,
-				E5D4900B288BFA0200311493 /* MatchingViewController.swift in Sources */,
+				E5D4900B288BFA0200311493 /* MatchingVC.swift in Sources */,
 				E5FD982428EAF1AE005A29E2 /* MatchingPopupVC.swift in Sources */,
 				E5E77EC828D825EB00031010 /* RegisterTextField.swift in Sources */,
 				E53086E6287928B400A5D0A0 /* HomePopularCollectionViewCell.swift in Sources */,
@@ -1211,7 +1211,7 @@
 				E5D4900E288BFB9100311493 /* MatchingInfo.swift in Sources */,
 				E563421828780BDE00E93D17 /* OnboardingViewModel.swift in Sources */,
 				E584B4BC289FCA6C007AD83A /* MatchingViewModel.swift in Sources */,
-				E5AB97C42895671800C0CEDF /* MatchingFilterViewController.swift in Sources */,
+				E5AB97C42895671800C0CEDF /* MatchingFilterVC.swift in Sources */,
 				E5D49008288B7F0400311493 /* CommunityPopupViewController.swift in Sources */,
 				E5AD7396287A8C2F00BA2C5E /* UIColor+Extensions.swift in Sources */,
 				E5D49012288C003800311493 /* MyInfoView.swift in Sources */,
