@@ -12,18 +12,18 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-class OnboardingDetailViewController: BaseViewController {
+final class OnboardingDetailViewController: BaseViewController {
   
   // MARK: - Properties
   
-  lazy var floatyBottomView: OnboardingFloatyBottomView = {
+  private lazy var floatyBottomView: OnboardingFloatyBottomView = {
     let floatyBottomView = OnboardingFloatyBottomView()
     floatyBottomView.configureUI(type: .detail)
     
     return floatyBottomView
   }()
   
-  lazy var backButton: UIButton = {
+  private lazy var backButton: UIButton = {
     let button = UIButton()
     button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
     button.tintColor = .black
@@ -31,11 +31,10 @@ class OnboardingDetailViewController: BaseViewController {
     return button
   }()
   
-  let indicator = UIActivityIndicatorView()
-  lazy var myInfoView = MyInfoView(myInfo: matchingInfo)
+  private lazy var indicator = UIActivityIndicatorView()
+  private lazy var myInfoView = MyInfoView(myInfo: matchingInfo)
   
-  var viewModel: OnboardingDetailViewModel!
-  
+  private var viewModel: OnboardingDetailViewModel!
   let matchingInfo: MatchingInfo
   
   // MARK: - Init
@@ -98,12 +97,12 @@ class OnboardingDetailViewController: BaseViewController {
     // ---------------INPUT-------------
     // ---------------------------------
     
-    /// 뒤로 가기 버튼 이벤트
+    // 뒤로 가기 버튼 이벤트
     floatyBottomView.skipButton.rx.tap
       .bind(to: viewModel.input.didTapBackButton)
       .disposed(by: disposeBag)
     
-    /// 완료 버튼 이벤트
+    // 완료 버튼 이벤트
     floatyBottomView.confirmButton.rx.tap
       .bind(to: viewModel.input.didTapConfirmButton)
       .disposed(by: disposeBag)
@@ -112,7 +111,7 @@ class OnboardingDetailViewController: BaseViewController {
     // --------------OUTPUT-------------
     // ---------------------------------
     
-    /// 뒤로가기
+    // 뒤로가기
     viewModel.output.popVC
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -120,24 +119,21 @@ class OnboardingDetailViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    /// 애니메이션 시작
+    // 애니메이션 시작
     viewModel.output.startAnimation
       .bind(onNext: { [weak self] in
         self?.indicator.startAnimating()
-        print(TokenManager.loadToken())
         self?.view.isUserInteractionEnabled = false
       })
       .disposed(by: disposeBag)
     
-    /// 애니메이션 종료
+    // 애니메이션 종료
     viewModel.output.stopAnimation
       .bind(onNext: { [weak self] in
         self?.indicator.stopAnimating()
         self?.view.isUserInteractionEnabled = true
       })
       .disposed(by: disposeBag)
-    
-    
   }
 }
 

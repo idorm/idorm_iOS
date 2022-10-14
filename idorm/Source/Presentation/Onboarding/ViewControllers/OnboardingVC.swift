@@ -5,8 +5,10 @@
 //  Created by 김응철 on 2022/07/24.
 //
 
-import SnapKit
 import UIKit
+
+import SnapKit
+import Then
 import RxSwift
 import RxCocoa
 
@@ -15,49 +17,48 @@ enum OnboardingVCType {
   case update
 }
 
-class OnboardingViewController: BaseViewController {
+final class OnboardingViewController: BaseViewController {
   
   // MARK: - Properties
   
-  lazy var tableView: UITableView = {
-    let tableView = UITableView(frame: .zero, style: .grouped)
-    tableView.estimatedRowHeight = 100
-    tableView.rowHeight = UITableView.automaticDimension
-    tableView.estimatedSectionHeaderHeight = 100
-    tableView.sectionHeaderHeight = UITableView.automaticDimension
-    tableView.backgroundColor = .white
-    tableView.separatorStyle = .none
-    tableView.allowsSelection = false
-    tableView.register(OnboardingTableViewCell.self, forCellReuseIdentifier: OnboardingTableViewCell.identifier)
-    tableView.register(OnboardingTableHeaderView.self, forHeaderFooterViewReuseIdentifier: OnboardingTableHeaderView.identifier)
-    tableView.addGestureRecognizer(tableViewTapGesture)
-    tableView.delegate = self
-    tableView.dataSource = self
-    
-    return tableView
-  }()
+  private lazy var tableView = UITableView(frame: .zero, style: .grouped).then {
+    $0.estimatedRowHeight = 100
+    $0.rowHeight = UITableView.automaticDimension
+    $0.estimatedSectionHeaderHeight = 100
+    $0.sectionHeaderHeight = UITableView.automaticDimension
+    $0.backgroundColor = .white
+    $0.separatorStyle = .none
+    $0.allowsSelection = false
+    $0.register(
+      OnboardingTableViewCell.self,
+      forCellReuseIdentifier: OnboardingTableViewCell.identifier
+    )
+    $0.register(
+      OnboardingTableHeaderView.self,
+      forHeaderFooterViewReuseIdentifier: OnboardingTableHeaderView.identifier
+    )
+    $0.addGestureRecognizer(tableViewTapGesture)
+    $0.delegate = self
+    $0.dataSource = self
+  }
   
-  lazy var tableViewTapGesture: UITapGestureRecognizer = {
-    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
-    tapGesture.cancelsTouchesInView = true
-    
-    return tapGesture
-  }()
+  private lazy var tableViewTapGesture = UITapGestureRecognizer().then {
+    $0.addTarget(self, action: #selector(hideKeyboard))
+    $0.cancelsTouchesInView = true
+  }
   
-  lazy var floatyBottomView: OnboardingFloatyBottomView = {
-    let floatyBottomView = OnboardingFloatyBottomView()
+  private lazy var floatyBottomView = OnboardingFloatyBottomView().then {
     switch type {
     case .update:
-      floatyBottomView.configureUI(type: .update)
+      $0.configureUI(type: .update)
     case .firstTime:
-      floatyBottomView.configureUI(type: .normal)
+      $0.configureUI(type: .normal)
     }
-    
-    return floatyBottomView
-  }()
+  }
   
-  let type: OnboardingVCType
-  let viewModel = OnboardingViewModel()
+  private let type: OnboardingVCType
+  private var header: OnboardingTableHeaderView!
+  private let viewModel = OnboardingViewModel()
   
   // MARK: - Init
   
@@ -123,12 +124,12 @@ class OnboardingViewController: BaseViewController {
     // ---------------INPUT-------------
     // ---------------------------------
     
-    /// 완료 버튼 이벤트
+    // 완료 버튼 이벤트
     floatyBottomView.confirmButton.rx.tap
       .bind(to: viewModel.input.didTapConfirmButton)
       .disposed(by: disposeBag)
     
-    /// 건너뛰기 버튼 이벤트
+    // 건너뛰기 버튼 이벤트
     floatyBottomView.skipButton.rx.tap
       .bind(to: viewModel.input.didTapSkipButton)
       .disposed(by: disposeBag)
@@ -137,7 +138,7 @@ class OnboardingViewController: BaseViewController {
     // --------------OUTPUT-------------
     // ---------------------------------
     
-    /// 완료 버튼 활성화/비활성화
+    // 완료 버튼 활성화/비활성화
     viewModel.output.enableConfirmButton
       .subscribe(onNext: { [weak self] isEnabled in
         if isEnabled {
@@ -150,7 +151,7 @@ class OnboardingViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    /// 완료 버튼 클릭시 온보딩 디테일 화면으로 이동
+    // 완료 버튼 클릭시 온보딩 디테일 화면으로 이동
     viewModel.output.showOnboardingDetailVC
       .bind(onNext: { [weak self] myinfo in
         let vc = OnboardingDetailViewController(matchingInfo: myinfo)
@@ -158,7 +159,7 @@ class OnboardingViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    /// 정보 입력 건너 뛰고 메인 화면으로 이동
+    // 정보 입력 건너 뛰고 메인 화면으로 이동
     viewModel.output.showTabBarVC
       .bind(onNext: { [weak self] in
         let tabBarVC = TabBarController()
@@ -167,53 +168,8 @@ class OnboardingViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
   }
-}
-
-// MARK: - TableView Setup
-
-extension OnboardingViewController: UITableViewDataSource, UITableViewDelegate {
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let cell = tableView.dequeueReusableCell(withIdentifier: OnboardingTableViewCell.identifier, for: indexPath) as? OnboardingTableViewCell else { return UITableViewCell() }
-    let question = viewModel.getQuestionText(index: indexPath.row)
-    let onboardingListType = OnboardingListType.allCases[indexPath.row]
-    cell.configureUI(type: onboardingListType, question: question)
-    
-    cell.onChangedTextSubject
-      .subscribe(onNext: { [weak self] text, type in
-        guard let self = self else { return }
-        switch type {
-        case .wakeup:
-          self.viewModel.input.wakeUpTimeTextFieldChanged
-            .accept(text)
-        case .cleanup:
-          self.viewModel.input.cleanUpTimeTextFieldChanged
-            .accept(text)
-        case .shower:
-          self.viewModel.input.showerTimeTextFieldChanged
-            .accept(text)
-        case .mbti:
-          self.viewModel.input.mbtiTextFieldChanged
-            .accept(text)
-        case .chatLink:
-          self.viewModel.input.chatLinkTextFieldChanged
-            .accept(text)
-        case .wishText:
-          self.viewModel.input.wishTextTextFieldChanged
-            .accept(text)
-        }
-      })
-      .disposed(by: disposeBag)
-    
-    return cell
-  }
   
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return viewModel.numberOfRowsInSection
-  }
-  
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: OnboardingTableHeaderView.identifier) as! OnboardingTableHeaderView
-    header.configureUI(type: .normal)
+  private func bindHeader() {
     
     header.onChangedDorm1Button
       .bind(to: viewModel.input.dorm1ButtonTapped)
@@ -266,6 +222,78 @@ extension OnboardingViewController: UITableViewDataSource, UITableViewDelegate {
     header.onChangedAgeTextField
       .bind(to: viewModel.input.ageTextFieldChanged)
       .disposed(by: disposeBag)
+  }
+}
+
+// MARK: - TableView Setup
+
+extension OnboardingViewController: UITableViewDataSource, UITableViewDelegate {
+  func tableView(
+    _ tableView: UITableView,
+    cellForRowAt indexPath: IndexPath
+  ) -> UITableViewCell {
+    guard let cell = tableView.dequeueReusableCell(
+      withIdentifier: OnboardingTableViewCell.identifier,
+      for: indexPath
+    ) as? OnboardingTableViewCell else {
+      return UITableViewCell()
+    }
+    let question = viewModel.getQuestionText(index: indexPath.row)
+    let onboardingListType = OnboardingListType.allCases[indexPath.row]
+    cell.configureUI(type: onboardingListType, question: question)
+    
+    cell.onChangedTextSubject
+      .subscribe(onNext: { [weak self] text, type in
+        guard let self = self else { return }
+        switch type {
+        case .wakeup:
+          self.viewModel.input.wakeUpTimeTextFieldChanged
+            .accept(text)
+        case .cleanup:
+          self.viewModel.input.cleanUpTimeTextFieldChanged
+            .accept(text)
+        case .shower:
+          self.viewModel.input.showerTimeTextFieldChanged
+            .accept(text)
+        case .mbti:
+          self.viewModel.input.mbtiTextFieldChanged
+            .accept(text)
+        case .chatLink:
+          self.viewModel.input.chatLinkTextFieldChanged
+            .accept(text)
+        case .wishText:
+          self.viewModel.input.wishTextTextFieldChanged
+            .accept(text)
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    return cell
+  }
+  
+  func tableView(
+    _ tableView: UITableView,
+    numberOfRowsInSection section: Int
+  ) -> Int {
+    return viewModel.numberOfRowsInSection
+  }
+  
+  func tableView(
+    _ tableView: UITableView,
+    viewForHeaderInSection section: Int
+  ) -> UIView? {
+    guard let header = tableView.dequeueReusableHeaderFooterView(
+      withIdentifier: OnboardingTableHeaderView.identifier
+    ) as? OnboardingTableHeaderView else {
+      return UIView()
+    }
+    header.configureUI(type: .normal)
+    
+    if self.header == nil {
+      print("안녕하세요")
+      self.header = header
+      bindHeader()
+    }
     
     return header
   }

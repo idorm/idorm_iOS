@@ -59,7 +59,9 @@ class OnboardingViewModel {
   }
   
   var myInfo = MatchingInfo(dormNumber: .no1, period: .period_24, gender: .female, age: "", snoring: false, grinding: false, smoke: false, allowedFood: false, earphone: false, wakeupTime: "", cleanUpStatus: "", showerTime: "", mbti: "", wishText: "", chatLink: "") /// Accpet용
+
   var validConfirm = OnboardingValidConfirmButton(dorm: false, gender: false, period: false, age: false, wakeup: false, cleanup: false, showerTime: false)
+  
   let input = Input()
   let output = Output()
   let disposeBag = DisposeBag()
@@ -73,7 +75,7 @@ class OnboardingViewModel {
   }
   
   init() {
-    /// 완료 버튼 활성화 비활성화
+    // 완료 버튼 활성화 비활성화
     output.validConfirmButton
       .map {
         if
@@ -93,7 +95,7 @@ class OnboardingViewModel {
       .bind(to: output.enableConfirmButton)
       .disposed(by: disposeBag)
     
-    /// 완료 버튼 클릭
+    // 완료 버튼 클릭 -> 온보딩 디테일 VC 보여주기
     input.didTapConfirmButton
       .map { [unowned self] in
         self.myInfo
@@ -290,7 +292,7 @@ class OnboardingViewModel {
       })
       .disposed(by: disposeBag)
     
-    /// 정보 입력 건너 뛰기 버튼 클릭 ---> 메인 화면 이동
+    // 정보 입력 건너 뛰기 버튼 클릭 -> 메인 화면 이동
     input.didTapSkipButton
       .bind(to: output.showTabBarVC)
       .disposed(by: disposeBag)

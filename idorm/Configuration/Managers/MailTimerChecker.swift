@@ -13,12 +13,12 @@ final class MailTimerChecker {
   
   enum Keys {
     case sceneWillEnterForeground
-    case sceneWillEnterBackground
+    case sceneDidEnterBackground
     
     var value: String {
       switch self {
-      case .sceneWillEnterBackground:
-        return "sceneWillEnterBackground"
+      case .sceneDidEnterBackground:
+        return "sceneDidEnterBackground"
       case .sceneWillEnterForeground:
         return "sceneWillEnterForeground"
       }
@@ -43,8 +43,8 @@ final class MailTimerChecker {
     )
     NotificationCenter.default.addObserver(
       self,
-      selector: #selector(sceneWillEnterBackground),
-      name: NSNotification.Name(MailTimerChecker.Keys.sceneWillEnterBackground.value), object: nil
+      selector: #selector(sceneDidEnterBackground),
+      name: NSNotification.Name(MailTimerChecker.Keys.sceneDidEnterBackground.value), object: nil
     )
   }
   
@@ -91,7 +91,7 @@ final class MailTimerChecker {
     }
   }
   
-  @objc private func sceneWillEnterBackground(_ noti: Notification) {
+  @objc private func sceneDidEnterBackground(_ noti: Notification) {
     timer.invalidate()
   }
 }

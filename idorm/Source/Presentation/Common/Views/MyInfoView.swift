@@ -21,7 +21,7 @@ class MyInfoView: UIView {
   lazy var dormLabel: UILabel = {
     let label = UILabel()
     label.font = .init(name: MyFonts.bold.rawValue, size: 20)
-    label.text = myInfo.dormNumber.getString
+    label.text = myInfo.dormNumber.rawValue
     label.textColor = .white
     
     return label
@@ -32,7 +32,7 @@ class MyInfoView: UIView {
     var container = AttributeContainer()
     container.font = UIFont.init(name: MyFonts.bold.rawValue, size: 12)
     container.foregroundColor = UIColor.white
-    config.attributedTitle = AttributedString(myInfo.period.getString, attributes: container)
+    config.attributedTitle = AttributedString(myInfo.period.rawValue, attributes: container)
     config.image = UIImage(named: "Building")
     config.imagePlacement = .leading
     config.imagePadding = 8
@@ -59,7 +59,7 @@ class MyInfoView: UIView {
     let snoreLabel = createBoolComponent(query: "코골이")
     let grindingLabel = createBoolComponent(query: "이갈이")
     let smokingLabel = createBoolComponent(query: "흡연")
-    let allowedFoodLabel = createBoolComponent(query: "실내 음식")
+    let allowedFoodLabel = createBoolComponent(query: "실내음식")
     let allowedEarphoneLabel = createBoolComponent(query: "이어폰 착용")
     
     let wakeupTimeLabel = createStringComponent(query: "기상시간")
@@ -258,7 +258,6 @@ extension MyInfoView {
     let contentsLabel = UILabel()
     contentsLabel.font = .init(name: MyFonts.medium.rawValue, size: 14)
     contentsLabel.text = myInfo.wishText
-    print(myInfo.wishText)
     contentsLabel.textColor = .idorm_gray_400
     contentsLabel.numberOfLines = 0
     contentsLabel.textAlignment = .left

@@ -26,46 +26,46 @@ struct MatchingInfo {
 }
 
 enum Dormitory: String {
-  case no1 = "기숙사1"
-  case no2 = "기숙사2"
-  case no3 = "기숙사3"
+  case no1 = "1 기숙사"
+  case no2 = "2 기숙사"
+  case no3 = "3 기숙사"
   
   var getString: String {
     switch self {
     case .no1:
-      return "1 기숙사"
+      return "DORM1"
     case .no2:
-      return "2 기숙사"
+      return "DORM2"
     case .no3:
-      return "3 기숙사"
+      return "DORM3"
     }
   }
 }
 
 enum JoinPeriod: String {
-  case period_16 = "WEEK16"
-  case period_24 = "WEEK24"
+  case period_16 = "16 주"
+  case period_24 = "24 주"
   
   var getString: String {
     switch self {
     case .period_16:
-      return "16 주"
+      return "WEEK16"
     case .period_24:
-      return "24 주"
+      return "WEEK24"
     }
   }
 }
 
 enum Gender: String {
-  case male = "MALE"
-  case female = "FEMALE"
+  case male = "남자"
+  case female = "여자"
   
   var getString: String {
     switch self {
     case .male:
-      return "남성"
+      return "MALE"
     case .female:
-      return "여성"
+      return "FEMALE"
     }
   }
 }

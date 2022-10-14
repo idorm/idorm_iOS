@@ -12,14 +12,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
   //MARK: - Init VC
   
-  func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+  func scene(
+    _ scene: UIScene,
+    willConnectTo session: UISceneSession,
+    options connectionOptions: UIScene.ConnectionOptions
+  ) {
     guard let windowScene = (scene as? UIWindowScene) else { return }
     window = UIWindow(windowScene: windowScene)
     
     if TokenManager.loadToken() == "" {
       window?.rootViewController = UINavigationController(rootViewController: LoginViewController())
     } else {
-      window?.rootViewController = TabBarController()
+      window?.rootViewController = UINavigationController(rootViewController: OnboardingViewController(type: .firstTime))
     }
     
     window?.makeKeyAndVisible()
@@ -30,13 +34,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 extension SceneDelegate {
   func sceneDidEnterBackground(_ scene: UIScene) {
-    NotificationCenter.default.post(name: NSNotification.Name("sceneDidEnterBackground"), object: nil)
-    UserDefaults.standard.setValue(Date(), forKey: "sceneDidEnterBackground")
+    NotificationCenter.default.post(
+      name: NSNotification.Name(MailTimerChecker.Keys.sceneDidEnterBackground.value),
+      object: nil
+    )
+    UserDefaults.standard.setValue(Date(), forKey: MailTimerChecker.Keys.sceneDidEnterBackground.value)
   }
   
   func sceneWillEnterForeground(_ scene: UIScene) {
-    guard let start = UserDefaults.standard.object(forKey: "sceneDidEnterBackground") as? Date else { return }
+    guard let start = UserDefaults.standard.object(
+      forKey: MailTimerChecker.Keys.sceneDidEnterBackground.value
+    ) as? Date else {
+      return
+    }
+    
     let interval = Int(Date().timeIntervalSince(start))
-    NotificationCenter.default.post(name: NSNotification.Name("sceneWillEnterForeground"), object: nil, userInfo: ["time": interval])
+    NotificationCenter.default.post(
+      name: NSNotification.Name(MailTimerChecker.Keys.sceneWillEnterForeground.value),
+      object: nil,
+      userInfo: ["time": interval]
+    )
   }
 }

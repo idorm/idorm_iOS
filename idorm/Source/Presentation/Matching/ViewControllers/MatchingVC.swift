@@ -72,8 +72,8 @@ class MatchingViewController: BaseViewController {
     // --------------------------------
     // --------------INPUT-------------
     // --------------------------------
-
-    // 필터버튼 클릭 ( 수정 해야 함 )
+    
+    // 필터버튼 클릭 (수정 해야 함)
     filterButton.rx.tap
       .bind(to: viewModel.input.filterButtonObserver)
       .disposed(by: disposeBag)

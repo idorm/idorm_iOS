@@ -6,6 +6,7 @@
 //
 
 import UIKit
+
 import SnapKit
 import CHIOTPField
 import RxSwift
@@ -218,7 +219,7 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
   
   @objc private func didTapGrindingButton() {
     grindingButton.isSelected = !grindingButton.isSelected
-    onChangedGrindingButton.onNext(grindingButton.isEnabled)
+    onChangedGrindingButton.onNext(grindingButton.isSelected)
   }
 
   @objc private func didTapSmokingButton() {
@@ -252,6 +253,7 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
     maleButton.addTarget(self, action: #selector(didTapMaleButton), for: .touchUpInside)
     femaleButton.addTarget(self, action: #selector(didTapFemaleButton), for: .touchUpInside)
     
+    // 완료 버튼 활성화 & 비활성화
     Observable<Int>
       .interval(.microseconds(10000), scheduler: MainScheduler.instance)
       .bind(onNext: { [unowned self] _ in

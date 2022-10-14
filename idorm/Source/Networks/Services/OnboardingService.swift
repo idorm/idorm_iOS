@@ -16,17 +16,18 @@ final class OnboardingService {
     let body: Parameters = [
       "age": myinfo.age,
       "cleanUpStatus": myinfo.cleanUpStatus,
-      "dormNum": myinfo.dormNumber,
+      "dormNum": myinfo.dormNumber.getString,
+      "gender": myinfo.gender.getString,
       "isAllowedFood": myinfo.allowedFood,
       "isGrinding": myinfo.grinding,
       "isSmoking": myinfo.smoke,
       "isSnoring": myinfo.snoring,
       "isWearEarphones": myinfo.earphone,
-      "joinPeriod": myinfo.period,
+      "joinPeriod": myinfo.period.getString,
       "mbti": myinfo.mbti ?? "",
       "openKakaoLink": myinfo.chatLink ?? "",
       "showerTime": myinfo.showerTime,
-      "wakeUpTime": myinfo.wakeupTime,
+      "wakeupTime": myinfo.wakeupTime,
       "wishText": myinfo.wishText ?? ""
     ]
     

@@ -37,12 +37,12 @@ class OnboardingDetailViewModel {
   }
   
   func bind() {
-    /// 이전 화면으로 돌아가기
+    // 뒤로가기 -> 이전 화면 돌아가기
     input.didTapBackButton
       .bind(to: output.popVC)
       .disposed(by: disposeBag)
     
-    /// 매칭 최초 저장
+    // 완료 버튼 이벤트 -> 온보딩 최초 저장
     input.didTapConfirmButton
       .bind(onNext: { [weak self] in
         self?.output.startAnimation.onNext(Void())
@@ -56,6 +56,7 @@ class OnboardingDetailViewModel {
       .subscribe(onNext: { [weak self] response in
         self?.output.stopAnimation.onNext(Void())
         guard let statusCode = response.response?.statusCode else { fatalError("Status Code is missing") }
+        print(statusCode)
         switch statusCode {
         case 200:
           self?.output.showTabBarVC.onNext(Void())
