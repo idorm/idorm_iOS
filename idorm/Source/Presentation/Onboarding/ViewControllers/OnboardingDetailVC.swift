@@ -134,6 +134,23 @@ final class OnboardingDetailViewController: BaseViewController {
         self?.view.isUserInteractionEnabled = true
       })
       .disposed(by: disposeBag)
+    
+    // 최초 저장 완료 후 메인 홈으로 이동
+    viewModel.output.showTabBarVC
+      .bind(onNext: { [weak self] in
+        let tabBarVC = TabBarController()
+        tabBarVC.modalPresentationStyle = .fullScreen
+        self?.present(tabBarVC, animated: true)
+      })
+      .disposed(by: disposeBag)
+    
+    // 오류 팝업 메세지 띄우기
+    viewModel.output.showPopupVC
+      .bind(onNext: { [weak self] mention in
+        let popupVC = PopupViewController(contents: mention)
+        popupVC.modalPresentationStyle = .overFullScreen
+        self?.present(popupVC, animated: false)
+      })
+      .disposed(by: disposeBag)
   }
 }
-

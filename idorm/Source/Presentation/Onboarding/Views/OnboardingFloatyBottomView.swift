@@ -1,33 +1,31 @@
-//
-//  OnboardingFloatyBottomView.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/25.
-//
-
-import SnapKit
 import UIKit
 
+import SnapKit
+import Then
+
 enum OnboardingFloatyBottomViewType {
+  /// [정보 입력 건너 뛰기], [완료]
   case normal
+  /// [뒤로가기], [완료]
   case detail
+  /// [입력초기화], [완료]
   case update
+  /// [선택초기화], [필터링 완료]
   case matchingFilter
 }
 
 class OnboardingFloatyBottomView: UIView {
-  // MARK: - Properties
-  lazy var containerView: UIView = {
-    let view = UIView()
-    view.backgroundColor = .white
-    view.layer.shadowColor = UIColor.black.cgColor
-    view.layer.shadowOffset = CGSize(width: 0, height: -4)
-    view.layer.shadowOpacity = 0.14
-    
-    return view
-  }()
   
-  lazy var skipButton: UIButton = {
+  // MARK: - Properties
+  
+  lazy var containerView = UIView().then {
+    $0.backgroundColor = .white
+    $0.layer.shadowColor = UIColor.black.cgColor
+    $0.layer.shadowOffset = CGSize(width: 0, height: -4)
+    $0.layer.shadowOpacity = 0.14
+  }
+  
+  lazy var skipButton = UIButton().then {
     var container = AttributeContainer()
     container.font = .init(name: MyFonts.medium.rawValue, size: 16)
     container.foregroundColor = .idorm_gray_400
@@ -51,12 +49,10 @@ class OnboardingFloatyBottomView: UIView {
       config.imagePlacement = .leading
       config.imagePadding = 12
     }
-    let button = UIButton(configuration: config)
-    
-    return button
-  }()
+    $0.configuration = config
+  }
   
-  lazy var confirmButton: UIButton = {
+  lazy var confirmButton = UIButton().then {
     var container = AttributeContainer()
     container.font = .init(name: MyFonts.medium.rawValue, size: 16)
     container.foregroundColor = UIColor.white
@@ -75,18 +71,14 @@ class OnboardingFloatyBottomView: UIView {
       config.attributedTitle = AttributedString("필터링 완료", attributes: container)
       config.baseBackgroundColor = .idorm_blue
     }
-    
-    let button = UIButton(configuration: config)
-    button.isUserInteractionEnabled = false
-    
-    return button
-  }()
+    $0.isUserInteractionEnabled = false
+    $0.configuration = config
+  }
   
   var type: OnboardingFloatyBottomViewType = .normal
   
-  // MARK: - LifeCycle
-  
   // MARK: - Helpers
+  
   func configureUI(type: OnboardingFloatyBottomViewType) {
     self.type = type
     addSubview(containerView)

@@ -1,13 +1,7 @@
-//
-//  OnboardingTableHeaderView.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/08.
-//
-
 import UIKit
 
 import SnapKit
+import Then
 import CHIOTPField
 import RxSwift
 import RxCocoa
@@ -40,100 +34,85 @@ enum OnboardingHeaderListType: String, CaseIterable {
   }
 }
 
-class OnboardingTableHeaderView: UITableViewHeaderFooterView {
+final class OnboardingTableHeaderView: UITableViewHeaderFooterView {
   
   // MARK: - Properties
-  lazy var ageTextField: CHIOTPFieldTwo = {
-    let tf = CHIOTPFieldTwo()
-    tf.numberOfDigits = 2
-    tf.borderColor = .idorm_gray_200
-    tf.font = .init(name: MyFonts.medium.rawValue, size: 14)
-    tf.cornerRadius = 10
-    tf.spacing = 2
-    
-    return tf
-  }()
   
-  lazy var ageDescriptionLabel: UILabel = {
-    let label = UILabel()
-    label.text = "살"
-    label.textColor = .idorm_gray_300
-    label.font = .init(name: MyFonts.medium.rawValue, size: 12)
-    
-    return label
-  }()
+  private lazy var ageTextField = CHIOTPFieldTwo().then {
+    $0.numberOfDigits = 2
+    $0.borderColor = .idorm_gray_200
+    $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
+    $0.cornerRadius = 10
+    $0.spacing = 2
+  }
+  private lazy var ageDescriptionLabel = UILabel().then {
+    $0.text = "살"
+    $0.textColor = .idorm_gray_300
+    $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
+  }
   
-  lazy var titleLabel: UILabel = {
-    let label = UILabel()
-    label.text = "룸메이트 매칭을 위한 기본정보를 알려주세요!"
-    label.textColor = .idorm_gray_300
-    label.font = .init(name: MyFonts.bold.rawValue, size: 12.0)
-    
-    return label
-  }()
+  private lazy var titleLabel = UILabel().then {
+    $0.text = "룸메이트 매칭을 위한 기본정보를 알려주세요!"
+    $0.textColor = .idorm_gray_300
+    $0.font = .init(name: MyFonts.bold.rawValue, size: 12.0)
+  }
   
-  lazy var habitDescriptionLabel: UILabel = {
-    let label = UILabel()
-    label.text = "불호요소가 있는 내 습관을 미리 알려주세요."
-    label.font = .init(name: MyFonts.medium.rawValue, size: 12)
-    label.textColor = .idorm_gray_300
-    
-    return label
-  }()
+  private lazy var habitDescriptionLabel = UILabel().then {
+    $0.text = "불호요소가 있는 내 습관을 미리 알려주세요."
+    $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
+    $0.textColor = .idorm_gray_300
+  }
   
-  lazy var slider: RangeSeekSlider = {
-    let slider = RangeSeekSlider()
-    slider.backgroundColor = .white
-    slider.colorBetweenHandles = .idorm_blue
-    slider.tintColor = .idorm_gray_100
-    slider.labelPadding = 6
-    slider.minLabelColor = .black
-    slider.maxLabelColor = .black
-    slider.minLabelFont = .init(name: MyFonts.medium.rawValue, size: 12)!
-    slider.maxLabelFont = .init(name: MyFonts.medium.rawValue, size: 12)!
-    slider.minValue = 20
-    slider.maxValue = 40
-    slider.selectedMaxValue = 30
-    slider.selectedMinValue = 20
-    slider.lineHeight = 11
-    slider.handleImage = UIImage(named: "thumb(Matching)")
-    slider.minDistance = 1
-    slider.enableStep = true
-    slider.selectedHandleDiameterMultiplier = 1.0
-    
-    return slider
-  }()
+  private lazy var slider = RangeSeekSlider().then {
+    $0.backgroundColor = .white
+    $0.colorBetweenHandles = .idorm_blue
+    $0.tintColor = .idorm_gray_100
+    $0.labelPadding = 6
+    $0.minLabelColor = .black
+    $0.maxLabelColor = .black
+    $0.minLabelFont = .init(name: MyFonts.medium.rawValue, size: 12)!
+    $0.maxLabelFont = .init(name: MyFonts.medium.rawValue, size: 12)!
+    $0.minValue = 20
+    $0.maxValue = 40
+    $0.selectedMaxValue = 30
+    $0.selectedMinValue = 20
+    $0.lineHeight = 11
+    $0.handleImage = UIImage(named: "thumb(Matching)")
+    $0.minDistance = 1
+    $0.enableStep = true
+    $0.selectedHandleDiameterMultiplier = 1.0
+  }
   
-  let dormLabel = OnboardingUtilities.getBasicLabel(text: "기숙사")
-  let dorm1Button = OnboardingUtilities.getBasicButton(title: "1 기숙사")
-  let dorm2Button = OnboardingUtilities.getBasicButton(title: "2 기숙사")
-  let dorm3Button = OnboardingUtilities.getBasicButton(title: "3 기숙사")
-  let dormLine = OnboardingUtilities.getSeparatorLine()
+  private lazy var dormLabel = OnboardingUtilities.titleLabel(text: "기숙사")
+  private lazy var dorm1Button = OnboardingUtilities.basicButton(title: "1 기숙사")
+  private lazy var dorm2Button = OnboardingUtilities.basicButton(title: "2 기숙사")
+  private lazy var dorm3Button = OnboardingUtilities.basicButton(title: "3 기숙사")
+  private lazy var dormLine = OnboardingUtilities.separatorLine()
   
-  let genderLabel = OnboardingUtilities.getBasicLabel(text: "성별")
-  let maleButton = OnboardingUtilities.getBasicButton(title: "남성")
-  let femaleButton = OnboardingUtilities.getBasicButton(title: "여성")
-  let genderLine = OnboardingUtilities.getSeparatorLine()
+  private lazy var genderLabel = OnboardingUtilities.titleLabel(text: "성별")
+  private lazy var maleButton = OnboardingUtilities.basicButton(title: "남성")
+  private lazy var femaleButton = OnboardingUtilities.basicButton(title: "여성")
+  private lazy var genderLine = OnboardingUtilities.separatorLine()
   
-  let periodLabel = OnboardingUtilities.getBasicLabel(text: "입사 기간")
-  let period16Button = OnboardingUtilities.getBasicButton(title: "16 주")
-  let period24Button = OnboardingUtilities.getBasicButton(title: "24 주")
-  let periodLine = OnboardingUtilities.getSeparatorLine()
+  private lazy var periodLabel = OnboardingUtilities.titleLabel(text: "입사 기간")
+  private lazy var period16Button = OnboardingUtilities.basicButton(title: "16 주")
+  private lazy var period24Button = OnboardingUtilities.basicButton(title: "24 주")
+  private lazy var periodLine = OnboardingUtilities.separatorLine()
   
-  let habitLabel = OnboardingUtilities.getBasicLabel(text: "내 습관")
-  let snoreButton = OnboardingUtilities.getBasicButton(title: "코골이")
-  let grindingButton = OnboardingUtilities.getBasicButton(title: "이갈이")
-  let smokingButton = OnboardingUtilities.getBasicButton(title: "흡연")
-  let allowedFoodButton = OnboardingUtilities.getBasicButton(title: "실내 음식 섭취 함")
-  let allowedEarphoneButton = OnboardingUtilities.getBasicButton(title: "이어폰 착용 안함")
-  let habitLine = OnboardingUtilities.getSeparatorLine()
+  private lazy var habitLabel = OnboardingUtilities.titleLabel(text: "내 습관")
+  private lazy var snoreButton = OnboardingUtilities.basicButton(title: "코골이")
+  private lazy var grindingButton = OnboardingUtilities.basicButton(title: "이갈이")
+  private lazy var smokingButton = OnboardingUtilities.basicButton(title: "흡연")
+  private lazy var allowedFoodButton = OnboardingUtilities.basicButton(title: "실내 음식 섭취 함")
+  private lazy var allowedEarphoneButton = OnboardingUtilities.basicButton(title: "이어폰 착용 안함")
+  private lazy var habitLine = OnboardingUtilities.separatorLine()
   
-  let ageLabel = OnboardingUtilities.getBasicLabel(text: "나이")
-  let ageLine = OnboardingUtilities.getSeparatorLine()
+  lazy var ageLabel = OnboardingUtilities.titleLabel(text: "나이")
+  lazy var ageLine = OnboardingUtilities.separatorLine()
   
   static let identifier = "OnboardingTableHeaderView"
   
-  let disposeBag = DisposeBag()
+  private let disposeBag = DisposeBag()
   
   let onChangedDorm1Button = PublishSubject<Bool>()
   let onChangedDorm2Button = PublishSubject<Bool>()
@@ -156,6 +135,7 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
   var type: OnboardingTableViewType = .normal
   
   // MARK: - LifeCycle
+  
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
     bind()
@@ -262,6 +242,8 @@ class OnboardingTableHeaderView: UITableViewHeaderFooterView {
       })
       .disposed(by: disposeBag)
   }
+  
+  // MARK: - Setup
   
   func configureUI(type: OnboardingTableViewType) {
     let dormStack = UIStackView(arrangedSubviews: [ dorm1Button, dorm2Button, dorm3Button ])

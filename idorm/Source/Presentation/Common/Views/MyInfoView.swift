@@ -5,29 +5,30 @@
 //  Created by 김응철 on 2022/07/23.
 //
 
-import SnapKit
 import UIKit
 
-class MyInfoView: UIView {
+import SnapKit
+import Then
+import RxSwift
+import RxCocoa
+
+final class MyInfoView: UIView {
+  
   // MARK: - Properties
-  lazy var backgroundImageView: UIImageView = {
-    let iv = UIImageView()
-    iv.image = UIImage(named: "OnboardingBackGround")?.withRenderingMode(.alwaysOriginal)
-    iv.contentMode = .scaleToFill
-    
-    return iv
-  }()
+  private lazy var backgroundImageView = UIImageView().then {
+    $0.image = UIImage(
+      named: "OnboardingBackGround"
+    )?.withRenderingMode(.alwaysOriginal)
+    $0.contentMode = .scaleToFill
+  }
   
-  lazy var dormLabel: UILabel = {
-    let label = UILabel()
-    label.font = .init(name: MyFonts.bold.rawValue, size: 20)
-    label.text = myInfo.dormNumber.rawValue
-    label.textColor = .white
-    
-    return label
-  }()
+  private lazy var dormLabel = UILabel().then {
+    $0.font = .init(name: MyFonts.bold.rawValue, size: 20)
+    $0.text = myInfo.dormNumber.rawValue
+    $0.textColor = .white
+  }
   
-  lazy var periodButton: UIButton = {
+  private lazy var periodButton = UIButton().then {
     var config = UIButton.Configuration.plain()
     var container = AttributeContainer()
     container.font = UIFont.init(name: MyFonts.bold.rawValue, size: 12)
@@ -36,26 +37,43 @@ class MyInfoView: UIView {
     config.image = UIImage(named: "Building")
     config.imagePlacement = .leading
     config.imagePadding = 8
-    let button = UIButton(configuration: config)
-    
-    return button
-  }()
+    $0.configuration = config
+  }
   
-  let myInfo: MatchingInfo
+  private let myInfo: MatchingInfo
+  
+  private var snoreLabel: UIView!
+  private var grindingLabel: UIView!
+  private var smokingLabel: UIView!
+  private var allowedFoodLabel: UIView!
+  private var allowedEarphoneLabel: UIView!
+  
+  private var wakeupTimeLabel: UIView!
+  private var cleanupLabel: UIView!
+  private var showerTimeLabel: UIView!
+  private var mbtiLabel: UIView!
+  
+  private var wishTextLabel: UIView!
+  
+  private var bottomView: UIView!
   
   // MARK: - LifeCycle
+  
   init(myInfo: MatchingInfo) {
     self.myInfo = myInfo
     super.init(frame: .zero)
-    configureUI()
+    setupComponents()
+    setupLayouts()
+    setupConstraints()
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
   
-  // MARK: - Helpers
-  func configureUI() {
+  // MARK: - Setup
+  
+  private func setupComponents() {
     let snoreLabel = createBoolComponent(query: "코골이")
     let grindingLabel = createBoolComponent(query: "이갈이")
     let smokingLabel = createBoolComponent(query: "흡연")
@@ -68,12 +86,32 @@ class MyInfoView: UIView {
     let mbtiLabel = createStringComponent(query: "MBTI")
     
     let wishTextLabel = createWishTextLabel()
-    
     let bottomView = createBottomView()
     
+    self.snoreLabel = snoreLabel
+    self.grindingLabel = grindingLabel
+    self.smokingLabel = smokingLabel
+    self.allowedFoodLabel = allowedFoodLabel
+    self.allowedEarphoneLabel = allowedEarphoneLabel
+    
+    self.wakeupTimeLabel = wakeupTimeLabel
+    self.cleanupLabel = cleanupLabel
+    self.showerTimeLabel = showerTimeLabel
+    self.mbtiLabel = mbtiLabel
+    
+    self.wishTextLabel = wishTextLabel
+    self.bottomView = bottomView
+  }
+  
+  private func setupLayouts() {
     [ backgroundImageView, bottomView ]
       .forEach { addSubview($0) }
     
+    [ dormLabel, periodButton, snoreLabel, grindingLabel, smokingLabel, allowedFoodLabel, allowedEarphoneLabel, wakeupTimeLabel, cleanupLabel, showerTimeLabel, mbtiLabel, wishTextLabel ]
+      .forEach { backgroundImageView.addSubview($0) }
+  }
+  
+  private func setupConstraints() {
     backgroundImageView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
     }
@@ -83,9 +121,6 @@ class MyInfoView: UIView {
       make.leading.trailing.equalTo(backgroundImageView)
       make.height.equalTo(40)
     }
-    
-    [ dormLabel, periodButton, snoreLabel, grindingLabel, smokingLabel, allowedFoodLabel, allowedEarphoneLabel, wakeupTimeLabel, cleanupLabel, showerTimeLabel, mbtiLabel, wishTextLabel ]
-      .forEach { backgroundImageView.addSubview($0) }
     
     dormLabel.snp.makeConstraints { make in
       make.top.equalToSuperview().inset(10)
@@ -149,6 +184,8 @@ class MyInfoView: UIView {
     }
   }
 }
+
+// MARK: - Helpers
 
 extension MyInfoView {
   private func createBoolComponent(query: String) -> UIView {
@@ -326,6 +363,4 @@ extension MyInfoView {
     
     return view
   }
-
 }
-

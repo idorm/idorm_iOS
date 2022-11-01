@@ -1,57 +1,48 @@
-//
-//  TextFieldContainerView.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/16.
-//
-
 import UIKit
+
 import SnapKit
+import Then
 import RxSwift
 import RxCocoa
 
 class OnboardingTextField: UIView {
+  
   // MARK: - Properties
-  lazy var textField: UITextField = {
-    let tf = UITextField()
-    tf.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
+  
+  lazy var textField = UITextField().then {
+    $0.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
       NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_300,
       NSAttributedString.Key.font: UIFont.init(name: MyFonts.medium.rawValue, size: 14.0) ?? 0
     ])
-    tf.textColor = .black
-    tf.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
-    tf.addLeftPadding(16)
-    tf.backgroundColor = .white
-    tf.keyboardType = .default
-    tf.returnKeyType = .done
-    
-    return tf
-  }()
+    $0.textColor = .black
+    $0.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
+    $0.addLeftPadding(16)
+    $0.backgroundColor = .white
+    $0.keyboardType = .default
+    $0.returnKeyType = .done
+  }
   
-  lazy var checkmarkButton: UIButton = {
-    let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "Checkmark"), for: .normal)
-    button.isHidden = true
-    
-    return button
-  }()
+  let checkmarkButton = UIButton().then {
+    $0.setImage(UIImage(named: "Checkmark"), for: .normal)
+    $0.isHidden = true
+  }
   
-  lazy var xmarkButton: UIButton = {
-    let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "Xmark_Grey"), for: .normal)
-    button.isHidden = true
-    
-    return button
-  }()
+  let xmarkButton = UIButton().then {
+    $0.setImage(UIImage(named: "Xmark_Grey"), for: .normal)
+    $0.isHidden = true
+  }
   
   let placeholder: String
   private var disposeBag = DisposeBag()
   
   // MARK: - LifeCycle
+  
   init(placeholder: String) {
     self.placeholder = placeholder
     super.init(frame: .zero)
-    configureUI()
+    setupStyles()
+    setupLayout()
+    setupConstraints()
     bind()
   }
   
@@ -59,18 +50,21 @@ class OnboardingTextField: UIView {
     fatalError("init(coder:) has not been implemented")
   }
   
-  // MARK: - Selectors
+  // MARK: - Setup
   
-  // MARK: - Helpers
-  private func configureUI() {
+  private func setupLayout() {
     [ textField, checkmarkButton, xmarkButton ]
       .forEach { addSubview($0) }
-    
+  }
+  
+  private func setupStyles() {
     backgroundColor = .white
     layer.borderWidth = 1
     layer.cornerRadius = 10
     layer.borderColor = UIColor.idorm_gray_300.cgColor
-    
+  }
+  
+  private func setupConstraints() {
     textField.snp.makeConstraints { make in
       make.leading.bottom.top.equalToSuperview()
       make.trailing.equalToSuperview().inset(40)

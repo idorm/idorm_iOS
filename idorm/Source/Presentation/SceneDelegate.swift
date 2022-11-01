@@ -1,10 +1,3 @@
-//
-//  SceneDelegate.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/08.
-//
-
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -23,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     if TokenManager.loadToken() == "" {
       window?.rootViewController = UINavigationController(rootViewController: LoginViewController())
     } else {
-      window?.rootViewController = UINavigationController(rootViewController: OnboardingViewController(type: .firstTime))
+      window?.rootViewController = UINavigationController(rootViewController: OnboardingViewController_2())
     }
     
     window?.makeKeyAndVisible()

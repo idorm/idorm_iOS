@@ -1,15 +1,9 @@
-//
-//  OnboardingViewModel.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/08.
-//
-
 import RxSwift
 import RxCocoa
 
-class OnboardingViewModel {
-  struct OnboardingValidConfirmButton {
+class OnboardingViewModel: ViewModel {
+  
+  struct OnboardingVerifyConfirmList {
     var dorm: Bool
     var gender: Bool
     var period: Bool
@@ -50,21 +44,24 @@ class OnboardingViewModel {
   }
   
   struct Output {
-    let myInfo = BehaviorRelay<MatchingInfo?>(value: nil)
+    let matchingInfo = BehaviorRelay<MatchingInfo?>(value: nil)
     let showOnboardingDetailVC = PublishSubject<MatchingInfo>()
     let showTabBarVC = PublishSubject<Void>()
+    let resetData = PublishSubject<Void>()
     
     let enableConfirmButton = PublishSubject<Bool>()
-    let validConfirmButton = BehaviorRelay<OnboardingValidConfirmButton?>(value: nil)
   }
   
-  var myInfo = MatchingInfo(dormNumber: .no1, period: .period_24, gender: .female, age: "", snoring: false, grinding: false, smoke: false, allowedFood: false, earphone: false, wakeupTime: "", cleanUpStatus: "", showerTime: "", mbti: "", wishText: "", chatLink: "") /// Accpet용
-
-  var validConfirm = OnboardingValidConfirmButton(dorm: false, gender: false, period: false, age: false, wakeup: false, cleanup: false, showerTime: false)
+  /// output.myInfo 주입 객체
+  var matchingInfo: MatchingInfo!
+  /// ConfirmButton 활성/비활성화 Stream
+  var isValidConfirmButton: BehaviorRelay<OnboardingVerifyConfirmList>!
+  /// isValidConfirmButton 주입 객체
+  var verifyConfirmButton: OnboardingVerifyConfirmList!
   
-  let input = Input()
-  let output = Output()
-  let disposeBag = DisposeBag()
+  var input = Input()
+  var output = Output()
+  var disposeBag = DisposeBag()
   
   var numberOfRowsInSection: Int {
     return OnboardingListType.allCases.count
@@ -75,17 +72,249 @@ class OnboardingViewModel {
   }
   
   init() {
+    inititalTask()
+    bind()
+  }
+  
+  func inititalTask() {
+    self.matchingInfo = MatchingInfo(
+      dormNumber: .no1,
+      period: .period_24,
+      gender: .female,
+      age: "",
+      snoring: false,
+      grinding: false,
+      smoke: false,
+      allowedFood: false,
+      earphone: false,
+      wakeupTime: "",
+      cleanUpStatus: "",
+      showerTime: "",
+      mbti: "",
+      wishText: "",
+      chatLink: ""
+    )
+    
+    self.verifyConfirmButton = OnboardingVerifyConfirmList(
+      dorm: false,
+      gender: false,
+      period: false,
+      age: false,
+      wakeup: false,
+      cleanup: false,
+      showerTime: false
+    )
+    
+    self.isValidConfirmButton = BehaviorRelay<OnboardingVerifyConfirmList>(value: self.verifyConfirmButton)
+  }
+  
+  // MARK: - Bind
+  
+  /// 데이터 변경 바인딩
+  func bindData() {
+    input.dorm1ButtonTapped
+      .subscribe(onNext: { [unowned self] isSelected in
+        if isSelected {
+          self.matchingInfo.dormNumber = .no1
+          self.output.matchingInfo.accept(self.matchingInfo)
+          self.verifyConfirmButton.dorm = true
+          self.isValidConfirmButton.accept(self.verifyConfirmButton)
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    input.dorm2ButtonTapped
+      .subscribe(onNext: { [unowned self] isSelected in
+        if isSelected {
+          self.matchingInfo.dormNumber = .no2
+          self.output.matchingInfo.accept(self.matchingInfo)
+          self.verifyConfirmButton.dorm = true
+          self.isValidConfirmButton.accept(self.verifyConfirmButton)
+        }
+      })
+      .disposed(by: disposeBag)
+
+    input.dorm3ButtonTapped
+      .subscribe(onNext: { [unowned self] isSelected in
+        if isSelected {
+          self.matchingInfo.dormNumber = .no3
+          self.output.matchingInfo.accept(self.matchingInfo)
+          self.verifyConfirmButton.dorm = true
+          self.isValidConfirmButton.accept(self.verifyConfirmButton)
+        }
+      })
+      .disposed(by: disposeBag)
+
+    input.maleButtonTapped
+      .subscribe(onNext: { [unowned self] isSelected in
+        if isSelected {
+          self.matchingInfo.gender = .male
+          self.output.matchingInfo.accept(self.matchingInfo)
+          self.verifyConfirmButton.gender = true
+          self.isValidConfirmButton.accept(self.verifyConfirmButton)
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    input.femaleButtonTapped
+      .subscribe(onNext: { [unowned self] isSelected in
+        if isSelected {
+          self.matchingInfo.gender = .female
+          self.output.matchingInfo.accept(self.matchingInfo)
+          self.verifyConfirmButton.gender = true
+          self.isValidConfirmButton.accept(self.verifyConfirmButton)
+        }
+      })
+      .disposed(by: disposeBag)
+
+    input.period16ButtonTapped
+      .subscribe(onNext: { [unowned self] isSelected in
+        if isSelected {
+          self.matchingInfo.period = .period_16
+          self.output.matchingInfo.accept(self.matchingInfo)
+          self.verifyConfirmButton.period = true
+          self.isValidConfirmButton.accept(self.verifyConfirmButton)
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    input.period24ButtonTapped
+      .subscribe(onNext: { [unowned self] isSelected in
+        if isSelected {
+          self.matchingInfo.period = .period_24
+          self.output.matchingInfo.accept(self.matchingInfo)
+          self.verifyConfirmButton.period = true
+          self.isValidConfirmButton.accept(self.verifyConfirmButton)
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    input.snoringButtonTapped
+      .subscribe(onNext: { [unowned self] isSelected in
+        self.matchingInfo.snoring = isSelected
+        self.output.matchingInfo.accept(self.matchingInfo)
+      })
+      .disposed(by: disposeBag)
+
+    input.grindingButtonTapped
+      .subscribe(onNext: { [unowned self] isSelected in
+        self.matchingInfo.grinding = isSelected
+        self.output.matchingInfo.accept(self.matchingInfo)
+      })
+      .disposed(by: disposeBag)
+
+    input.smokingButtonTapped
+      .subscribe(onNext: { [unowned self] isSelected in
+        self.matchingInfo.smoke = isSelected
+        self.output.matchingInfo.accept(self.matchingInfo)
+      })
+      .disposed(by: disposeBag)
+
+    input.allowedFoodButtonTapped
+      .subscribe(onNext: { [unowned self] isSelected in
+        self.matchingInfo.allowedFood = isSelected
+        self.output.matchingInfo.accept(self.matchingInfo)
+      })
+      .disposed(by: disposeBag)
+
+    input.allowedEarphoneButtonTapped
+      .subscribe(onNext: { [unowned self] isSelected in
+        self.matchingInfo.earphone = isSelected
+        self.output.matchingInfo.accept(self.matchingInfo)
+      })
+      .disposed(by: disposeBag)
+    
+    input.ageTextFieldChanged
+      .subscribe(onNext: { [unowned self] text in
+        self.matchingInfo.age = text
+        self.output.matchingInfo.accept(self.matchingInfo)
+        if text != "" {
+          self.verifyConfirmButton.age = true
+          self.isValidConfirmButton.accept(self.verifyConfirmButton)
+        } else {
+          self.verifyConfirmButton.age = false
+          self.isValidConfirmButton.accept(self.verifyConfirmButton)
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    input.wakeUpTimeTextFieldChanged
+      .subscribe(onNext: { [unowned self] text in
+        self.matchingInfo.wakeupTime = text
+        self.output.matchingInfo.accept(self.matchingInfo)
+        if text != "" {
+          self.verifyConfirmButton.wakeup = true
+          self.isValidConfirmButton.accept(self.verifyConfirmButton)
+        } else {
+          self.verifyConfirmButton.wakeup = false
+          self.isValidConfirmButton.accept(self.verifyConfirmButton)
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    input.cleanUpTimeTextFieldChanged
+      .subscribe(onNext: { [unowned self] text in
+        self.matchingInfo.cleanUpStatus = text
+        self.output.matchingInfo.accept(self.matchingInfo)
+        if text != "" {
+          self.verifyConfirmButton.cleanup = true
+          self.isValidConfirmButton.accept(self.verifyConfirmButton)
+        } else {
+          self.verifyConfirmButton.cleanup = false
+          self.isValidConfirmButton.accept(self.verifyConfirmButton)
+        }
+      })
+      .disposed(by: disposeBag)
+
+    input.showerTimeTextFieldChanged
+      .subscribe(onNext: { [unowned self] text in
+        self.matchingInfo.showerTime = text
+        self.output.matchingInfo.accept(self.matchingInfo)
+        if text != "" {
+          self.verifyConfirmButton.showerTime = true
+          self.isValidConfirmButton.accept(self.verifyConfirmButton)
+        } else {
+          self.verifyConfirmButton.showerTime = false
+          self.isValidConfirmButton.accept(self.verifyConfirmButton)
+        }
+      })
+      .disposed(by: disposeBag)
+
+    input.mbtiTextFieldChanged
+      .subscribe(onNext: { [unowned self] text in
+        self.matchingInfo.mbti = text
+        self.output.matchingInfo.accept(self.matchingInfo)
+      })
+      .disposed(by: disposeBag)
+
+    input.chatLinkTextFieldChanged
+      .subscribe(onNext: { [unowned self] text in
+        self.matchingInfo.chatLink = text
+        self.output.matchingInfo.accept(self.matchingInfo)
+      })
+      .disposed(by: disposeBag)
+
+    input.wishTextTextFieldChanged
+      .subscribe(onNext: { [unowned self] text in
+        self.matchingInfo.wishText = text
+        self.output.matchingInfo.accept(self.matchingInfo)
+      })
+      .disposed(by: disposeBag)
+  }
+  
+  func bind() {
+    bindData()
+    
     // 완료 버튼 활성화 비활성화
-    output.validConfirmButton
+    isValidConfirmButton
       .map {
-        if
-          $0?.wakeup == true &&
-          $0?.cleanup == true &&
-          $0?.showerTime == true &&
-          $0?.age == true &&
-          $0?.dorm == true &&
-          $0?.gender == true &&
-          $0?.period == true
+        if $0.wakeup == true &&
+            $0.cleanup == true &&
+            $0.showerTime == true &&
+            $0.age == true &&
+            $0.dorm == true &&
+            $0.gender == true &&
+            $0.period == true
         {
           return true
         } else {
@@ -97,205 +326,42 @@ class OnboardingViewModel {
     
     // 완료 버튼 클릭 -> 온보딩 디테일 VC 보여주기
     input.didTapConfirmButton
-      .map { [unowned self] in
-        self.myInfo
-      }
+      .map { [unowned self] in self.matchingInfo }
       .bind(to: output.showOnboardingDetailVC)
-      .disposed(by: disposeBag)
-    
-    input.dorm1ButtonTapped
-      .subscribe(onNext: { [weak self] isSelected in
-        if isSelected {
-          self?.myInfo.dormNumber = .no1
-          self?.output.myInfo.accept(self?.myInfo)
-          self?.validConfirm.dorm = true
-          self?.output.validConfirmButton.accept(self?.validConfirm)
-        }
-      })
-      .disposed(by: disposeBag)
-    
-    input.dorm2ButtonTapped
-      .subscribe(onNext: { [weak self] isSelected in
-        if isSelected {
-          self?.myInfo.dormNumber = .no2
-          self?.output.myInfo.accept(self?.myInfo)
-          self?.validConfirm.dorm = true
-          self?.output.validConfirmButton.accept(self?.validConfirm)
-        }
-      })
-      .disposed(by: disposeBag)
-
-    input.dorm3ButtonTapped
-      .subscribe(onNext: { [weak self] isSelected in
-        if isSelected {
-          self?.myInfo.dormNumber = .no3
-          self?.output.myInfo.accept(self?.myInfo)
-          self?.validConfirm.dorm = true
-          self?.output.validConfirmButton.accept(self?.validConfirm)
-        }
-      })
-      .disposed(by: disposeBag)
-
-    input.maleButtonTapped
-      .subscribe(onNext: { [weak self] isSelected in
-        if isSelected {
-          self?.myInfo.gender = .male
-          self?.output.myInfo.accept(self?.myInfo)
-          self?.validConfirm.gender = true
-          self?.output.validConfirmButton.accept(self?.validConfirm)
-        }
-      })
-      .disposed(by: disposeBag)
-    
-    input.femaleButtonTapped
-      .subscribe(onNext: { [weak self] isSelected in
-        if isSelected {
-          self?.myInfo.gender = .female
-          self?.output.myInfo.accept(self?.myInfo)
-          self?.validConfirm.gender = true
-          self?.output.validConfirmButton.accept(self?.validConfirm)
-        }
-      })
-      .disposed(by: disposeBag)
-
-    input.period16ButtonTapped
-      .subscribe(onNext: { [weak self] isSelected in
-        if isSelected {
-          self?.myInfo.period = .period_16
-          self?.output.myInfo.accept(self?.myInfo)
-          self?.validConfirm.period = true
-          self?.output.validConfirmButton.accept(self?.validConfirm)
-        }
-      })
-      .disposed(by: disposeBag)
-    
-    input.period24ButtonTapped
-      .subscribe(onNext: { [weak self] isSelected in
-        if isSelected {
-          self?.myInfo.period = .period_24
-          self?.output.myInfo.accept(self?.myInfo)
-          self?.validConfirm.period = true
-          self?.output.validConfirmButton.accept(self?.validConfirm)
-        }
-      })
-      .disposed(by: disposeBag)
-    
-    input.snoringButtonTapped
-      .subscribe(onNext: { [weak self] isSelected in
-        self?.myInfo.snoring = isSelected
-        self?.output.myInfo.accept(self?.myInfo)
-      })
-      .disposed(by: disposeBag)
-
-    input.grindingButtonTapped
-      .subscribe(onNext: { [weak self] isSelected in
-        self?.myInfo.grinding = isSelected
-        self?.output.myInfo.accept(self?.myInfo)
-      })
-      .disposed(by: disposeBag)
-
-    input.smokingButtonTapped
-      .subscribe(onNext: { [weak self] isSelected in
-        self?.myInfo.smoke = isSelected
-        self?.output.myInfo.accept(self?.myInfo)
-      })
-      .disposed(by: disposeBag)
-
-    input.allowedFoodButtonTapped
-      .subscribe(onNext: { [weak self] isSelected in
-        self?.myInfo.allowedFood = isSelected
-        self?.output.myInfo.accept(self?.myInfo)
-      })
-      .disposed(by: disposeBag)
-
-    input.allowedEarphoneButtonTapped
-      .subscribe(onNext: { [weak self] isSelected in
-        self?.myInfo.earphone = isSelected
-        self?.output.myInfo.accept(self?.myInfo)
-      })
-      .disposed(by: disposeBag)
-    
-    input.ageTextFieldChanged
-      .subscribe(onNext: { [weak self] text in
-        self?.myInfo.age = text
-        self?.output.myInfo.accept(self?.myInfo)
-        if text != "" {
-          self?.validConfirm.age = true
-          self?.output.validConfirmButton.accept(self?.validConfirm)
-        } else {
-          self?.validConfirm.age = false
-          self?.output.validConfirmButton.accept(self?.validConfirm)
-        }
-      })
-      .disposed(by: disposeBag)
-    
-    input.wakeUpTimeTextFieldChanged
-      .subscribe(onNext: { [weak self] text in
-        self?.myInfo.wakeupTime = text
-        self?.output.myInfo.accept(self?.myInfo)
-        if text != "" {
-          self?.validConfirm.wakeup = true
-          self?.output.validConfirmButton.accept(self?.validConfirm)
-        } else {
-          self?.validConfirm.wakeup = false
-          self?.output.validConfirmButton.accept(self?.validConfirm)
-        }
-      })
-      .disposed(by: disposeBag)
-    
-    input.cleanUpTimeTextFieldChanged
-      .subscribe(onNext: { [weak self] text in
-        self?.myInfo.cleanUpStatus = text
-        self?.output.myInfo.accept(self?.myInfo)
-        if text != "" {
-          self?.validConfirm.cleanup = true
-          self?.output.validConfirmButton.accept(self?.validConfirm)
-        } else {
-          self?.validConfirm.cleanup = false
-          self?.output.validConfirmButton.accept(self?.validConfirm)
-        }
-      })
-      .disposed(by: disposeBag)
-
-    input.showerTimeTextFieldChanged
-      .subscribe(onNext: { [weak self] text in
-        self?.myInfo.showerTime = text
-        self?.output.myInfo.accept(self?.myInfo)
-        if text != "" {
-          self?.validConfirm.showerTime = true
-          self?.output.validConfirmButton.accept(self?.validConfirm)
-        } else {
-          self?.validConfirm.showerTime = false
-          self?.output.validConfirmButton.accept(self?.validConfirm)
-        }
-      })
-      .disposed(by: disposeBag)
-
-    input.mbtiTextFieldChanged
-      .subscribe(onNext: { [weak self] text in
-        self?.myInfo.mbti = text
-        self?.output.myInfo.accept(self?.myInfo)
-      })
-      .disposed(by: disposeBag)
-
-    input.chatLinkTextFieldChanged
-      .subscribe(onNext: { [weak self] text in
-        self?.myInfo.chatLink = text
-        self?.output.myInfo.accept(self?.myInfo)
-      })
-      .disposed(by: disposeBag)
-
-    input.wishTextTextFieldChanged
-      .subscribe(onNext: { [weak self] text in
-        self?.myInfo.wishText = text
-        self?.output.myInfo.accept(self?.myInfo)
-      })
       .disposed(by: disposeBag)
     
     // 정보 입력 건너 뛰기 버튼 클릭 -> 메인 화면 이동
     input.didTapSkipButton
       .bind(to: output.showTabBarVC)
       .disposed(by: disposeBag)
+    
+    // 입력 초기화 버튼 클릭 -> 모든 입력 초기화
+    input.didTapSkipButton
+      .map { [unowned self] in self.resetData() }
+      .bind(to: output.resetData)
+      .disposed(by: disposeBag)
+  }
+  
+  // MARK: - Helpers
+  
+  private func resetData() {
+    self.matchingInfo = MatchingInfo(
+      dormNumber: .no1,
+      period: .period_24,
+      gender: .female,
+      age: "",
+      snoring: false,
+      grinding: false,
+      smoke: false,
+      allowedFood: false,
+      earphone: false,
+      wakeupTime: "",
+      cleanUpStatus: "",
+      showerTime: "",
+      mbti: "",
+      wishText: "",
+      chatLink: ""
+    )
+    output.matchingInfo.accept(self.matchingInfo)
   }
 }
-

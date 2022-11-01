@@ -1,10 +1,3 @@
-//
-//  OnboardingVIewController.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/24.
-//
-
 import UIKit
 
 import SnapKit
@@ -13,7 +6,11 @@ import RxSwift
 import RxCocoa
 
 enum OnboardingVCType {
+  /// 회원가입 후 최초 온보딩 접근
   case firstTime
+  /// 메인페이지 최초 접속 후 온보딩 접근
+  case firstTime_2
+  /// 온보딩 수정
   case update
 }
 
@@ -53,6 +50,8 @@ final class OnboardingViewController: BaseViewController {
       $0.configureUI(type: .update)
     case .firstTime:
       $0.configureUI(type: .normal)
+    case .firstTime_2:
+      $0.configureUI(type: .update)
     }
   }
   
@@ -90,6 +89,8 @@ final class OnboardingViewController: BaseViewController {
     switch type {
     case .firstTime:
       navigationItem.title = "내 정보 입력"
+    case .firstTime_2:
+      navigationItem.title = "매칭 이미지 관리"
     case .update:
       navigationItem.title = "매칭 이미지 관리"
     }
@@ -159,14 +160,22 @@ final class OnboardingViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    // 정보 입력 건너 뛰고 메인 화면으로 이동
-    viewModel.output.showTabBarVC
-      .bind(onNext: { [weak self] in
-        let tabBarVC = TabBarController()
-        tabBarVC.modalPresentationStyle = .fullScreen
-        self?.present(tabBarVC, animated: true)
-      })
-      .disposed(by: disposeBag)
+    switch type {
+    case .update, .firstTime_2:
+      break
+      
+      
+    case .firstTime:
+      
+      // 정보 입력 건너 뛰고 메인 화면으로 이동
+      viewModel.output.showTabBarVC
+        .bind(onNext: { [weak self] in
+          let tabBarVC = TabBarController()
+          tabBarVC.modalPresentationStyle = .fullScreen
+          self?.present(tabBarVC, animated: true)
+        })
+        .disposed(by: disposeBag)
+    }
   }
   
   private func bindHeader() {
@@ -290,7 +299,6 @@ extension OnboardingViewController: UITableViewDataSource, UITableViewDelegate {
     header.configureUI(type: .normal)
     
     if self.header == nil {
-      print("안녕하세요")
       self.header = header
       bindHeader()
     }
@@ -298,3 +306,12 @@ extension OnboardingViewController: UITableViewDataSource, UITableViewDelegate {
     return header
   }
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+struct OnboardingVCPreView: PreviewProvider {
+  static var previews: some View {
+    OnboardingViewController(type: .firstTime_2).toPreview()
+  }
+}
+#endif

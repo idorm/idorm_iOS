@@ -1,15 +1,9 @@
-//
-//  OnboardingUtilities.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/23.
-//
-
 import UIKit
+
 import SnapKit
 
-class OnboardingUtilities {
-  static func getBasicButton(title: String) -> UIButton {
+final class OnboardingUtilities {
+  static func basicButton(title: String) -> UIButton {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
     container.font = UIFont.init(name: MyFonts.medium.rawValue, size: 14)
@@ -26,7 +20,7 @@ class OnboardingUtilities {
     return button
   }
   
-  static func getBasicLabel(text: String) -> UILabel {
+  static func titleLabel(text: String) -> UILabel {
     let label = UILabel()
     label.text = text
     label.font = .init(name: MyFonts.medium.rawValue, size: 16)
@@ -35,13 +29,46 @@ class OnboardingUtilities {
     return label
   }
   
-  static func getSeparatorLine() -> UIView {
+  static func separatorLine() -> UIView {
     let view = UIView()
     view.backgroundColor = .idorm_gray_100
     
     return view
   }
   
+  static func descriptionLabel(_ title: String) -> UILabel {
+    let label = UILabel()
+    label.text = title
+    label.textColor = .idorm_gray_300
+    label.font = .init(name: MyFonts.bold.rawValue, size: 12.0)
+    
+    return label
+  }
+  
+  static func infoLabel(_ title: String, isEssential: Bool) -> UILabel {
+    let label = UILabel()
+    label.text = title
+    label.textColor = .idorm_gray_400
+    label.font = .init(name: MyFonts.medium.rawValue, size: 14)
+    
+    if isEssential {
+      let essentialLabel = UILabel()
+      essentialLabel.text = "(필수)"
+      essentialLabel.textColor = .idorm_blue
+      essentialLabel.font = .init(name: MyFonts.medium.rawValue, size: 14)
+      
+      label.addSubview(essentialLabel)
+      essentialLabel.snp.makeConstraints { make in
+        make.centerY.equalToSuperview()
+        make.leading.equalTo(label.snp.trailing).offset(8)
+      }
+    }
+    
+    return label
+  }
+}
+
+extension OnboardingUtilities {
   static func getButtonUpdateHandler() -> UIButton.ConfigurationUpdateHandler {
     let handler: UIButton.ConfigurationUpdateHandler = { button in
       switch button.state {
