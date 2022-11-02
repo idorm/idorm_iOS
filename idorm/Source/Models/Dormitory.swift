@@ -3,7 +3,7 @@ enum Dormitory: String {
   case no2 = "2 기숙사"
   case no3 = "3 기숙사"
   
-  var getString: String {
+  var parsingString: String {
     switch self {
     case .no1:
       return "DORM1"

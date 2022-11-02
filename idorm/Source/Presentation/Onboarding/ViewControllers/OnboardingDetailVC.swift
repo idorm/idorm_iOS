@@ -16,12 +16,7 @@ final class OnboardingDetailViewController: BaseViewController {
   
   // MARK: - Properties
   
-  private lazy var floatyBottomView: FloatyBottomView = {
-    let floatyBottomView = FloatyBottomView()
-    floatyBottomView.configureUI(type: .detail)
-    
-    return floatyBottomView
-  }()
+  private let floatyBottomView = FloatyBottomView(.back)
   
   private lazy var backButton: UIButton = {
     let button = UIButton()

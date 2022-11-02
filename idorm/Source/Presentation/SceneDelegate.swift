@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     if TokenManager.loadToken() == "" {
       window?.rootViewController = UINavigationController(rootViewController: LoginViewController())
     } else {
-      window?.rootViewController = UINavigationController(rootViewController: OnboardingViewController_2())
+      window?.rootViewController = UINavigationController(rootViewController: OnboardingViewController())
     }
     
     window?.makeKeyAndVisible()

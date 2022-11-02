@@ -2,7 +2,7 @@ enum Gender: String {
   case male = "남자"
   case female = "여자"
   
-  var getString: String {
+  var parsingString: String {
     switch self {
     case .male:
       return "MALE"

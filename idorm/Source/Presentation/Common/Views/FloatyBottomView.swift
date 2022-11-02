@@ -33,7 +33,7 @@ class FloatyBottomView: UIView {
     config.baseBackgroundColor = .idorm_gray_100
     config.contentInsets = NSDirectionalEdgeInsets(top: 14, leading: 26, bottom: 14, trailing: 26)
     
-    switch type {
+    switch floatyBottomViewType {
     case .jump:
       config.attributedTitle = AttributedString("정보 입력 건너 뛰기", attributes: container)
     case .back:
@@ -60,7 +60,7 @@ class FloatyBottomView: UIView {
     config.contentInsets = NSDirectionalEdgeInsets(top: 14, leading: 26, bottom: 14, trailing: 26)
     config.attributedTitle = AttributedString("완료", attributes: container)
     
-    switch type {
+    switch floatyBottomViewType {
     case .jump:
       config.baseBackgroundColor = .idorm_gray_300
     case .back:
@@ -75,20 +75,33 @@ class FloatyBottomView: UIView {
     $0.configuration = config
   }
   
-  var type: FloatyBottomViewType = .jump
+  let floatyBottomViewType: FloatyBottomViewType
   
-  // MARK: - Helpers
+  // MARK: - LifeCycle
   
-  func configureUI(type: FloatyBottomViewType) {
-    self.type = type
+  init(_ floatyBottomViewType: FloatyBottomViewType) {
+    self.floatyBottomViewType = floatyBottomViewType
+    super.init(frame: .zero)
+    setupLayout()
+    setupConstraints()
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  // MARK: - Setup
+  
+  private func setupLayout() {
     addSubview(containerView)
-    
+    [ skipButton, confirmButton ]
+      .forEach { containerView.addSubview($0) }
+  }
+  
+  private func setupConstraints() {
     containerView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
     }
-    
-    [ skipButton, confirmButton ]
-      .forEach { containerView.addSubview($0) }
     
     skipButton.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(24)
