@@ -5,14 +5,6 @@ import Then
 import RxSwift
 import RxCocoa
 
-enum OnboardingVCType {
-  /// 회원가입 후 최초 온보딩 접근
-  case firstTime
-  /// 메인페이지 최초 접속 후 온보딩 접근
-  case firstTime_2
-  /// 온보딩 수정
-  case update
-}
 
 final class OnboardingViewController: BaseViewController {
   
@@ -44,13 +36,13 @@ final class OnboardingViewController: BaseViewController {
     $0.cancelsTouchesInView = true
   }
   
-  private lazy var floatyBottomView = OnboardingFloatyBottomView().then {
+  private lazy var floatyBottomView = FloatyBottomView().then {
     switch type {
     case .update:
       $0.configureUI(type: .update)
     case .firstTime:
       $0.configureUI(type: .normal)
-    case .firstTime_2:
+    case .mainPage_FirstTime:
       $0.configureUI(type: .update)
     }
   }
@@ -89,7 +81,7 @@ final class OnboardingViewController: BaseViewController {
     switch type {
     case .firstTime:
       navigationItem.title = "내 정보 입력"
-    case .firstTime_2:
+    case .mainPage_FirstTime:
       navigationItem.title = "매칭 이미지 관리"
     case .update:
       navigationItem.title = "매칭 이미지 관리"
@@ -161,7 +153,7 @@ final class OnboardingViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     switch type {
-    case .update, .firstTime_2:
+    case .update, .mainPage_FirstTime:
       break
       
       
@@ -311,7 +303,7 @@ extension OnboardingViewController: UITableViewDataSource, UITableViewDelegate {
 import SwiftUI
 struct OnboardingVCPreView: PreviewProvider {
   static var previews: some View {
-    OnboardingViewController(type: .firstTime_2).toPreview()
+    OnboardingViewController(type: .mainPage_FirstTime).toPreview()
   }
 }
 #endif

@@ -80,8 +80,12 @@ class OnboardingTextField: UIView {
       make.trailing.equalToSuperview().inset(8)
     }
   }
+  
+  // MARK: - Bind
 
   private func bind() {
+    
+    // 글자 수 30자 제한
     textField.rx.text.orEmpty
       .scan("") { pervious, new -> String in
         if new.count >= 30 {
@@ -94,6 +98,7 @@ class OnboardingTextField: UIView {
       .drive(textField.rx.text)
       .disposed(by: disposeBag)
     
+    // 입력 반응 -> X버튼 활성화
     textField.rx.controlEvent(.editingChanged)
       .asDriver()
       .drive(onNext: { [weak self] in
@@ -101,6 +106,7 @@ class OnboardingTextField: UIView {
       })
       .disposed(by: disposeBag)
     
+    // 입력 시작 -> 테두리 Color 변경 & 체크 버튼 숨기기
     textField.rx.controlEvent(.editingDidBegin)
       .asDriver()
       .drive(onNext: { [weak self] in
@@ -109,6 +115,7 @@ class OnboardingTextField: UIView {
       })
       .disposed(by: disposeBag)
     
+    // 입력 종료 -> 테두리 Color 변경 & 체크 버튼 활성/비활성화
     textField.rx.controlEvent(.editingDidEnd)
       .asDriver()
       .drive(onNext: { [weak self] in
@@ -120,6 +127,13 @@ class OnboardingTextField: UIView {
         } else {
           self?.checkmarkButton.isHidden = true
         }
+      })
+      .disposed(by: disposeBag)
+    
+    // X버튼 클릭 -> 텍스트 모두 지우기
+    xmarkButton.rx.tap
+      .bind(onNext: { [unowned self] in
+        self.textField.text = ""
       })
       .disposed(by: disposeBag)
   }

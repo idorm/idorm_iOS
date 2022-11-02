@@ -4,6 +4,17 @@ import SnapKit
 import Then
 import CHIOTPField
 import RSKGrowingTextView
+import RxSwift
+import RxCocoa
+
+enum OnboardingVCType {
+  /// 회원가입 후 최초 온보딩 접근
+  case firstTime
+  /// 메인페이지 최초 접속 후 온보딩 접근
+  case mainPage_FirstTime
+  /// 온보딩 수정
+  case update
+}
 
 final class OnboardingViewController_2: BaseViewController {
   
@@ -98,6 +109,11 @@ final class OnboardingViewController_2: BaseViewController {
     $0.textContainerInset = UIEdgeInsets(top: 15, left: 9, bottom: 15, right: 9)
   }
   
+  private let letterNumLabel = UILabel().then {
+    $0.textColor = .idorm_gray_300
+    $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
+  }
+  
   // MARK: - LifeCycle
   
   override func viewDidLoad() {
@@ -113,13 +129,14 @@ final class OnboardingViewController_2: BaseViewController {
     view.addSubview(scrollView)
     scrollView.addSubview(contentView)
     
-    [titleLabel, dormLabel, dormStack, dormLine, genderLabel, genderStack, genderLine, periodLabel, periodStack, periodLine, habitLabel, habitStack1, habitStack2, habitLine, habitDescriptionLabel, ageLabel, ageDescriptionLabel, ageTextField, ageLine, wakeUpInfoLabel, wakeUpTextField, cleanUpInfoLabel, cleanUpTextField, showerInfoLabel, showerTextField, mbtiInfoLabel, mbtiTextField, chatInfoLabel, chatTextField, wishInfoLabel, wishTextView]
+    [titleLabel, dormLabel, dormStack, dormLine, genderLabel, genderStack, genderLine, periodLabel, periodStack, periodLine, habitLabel, habitStack1, habitStack2, habitLine, habitDescriptionLabel, ageLabel, ageDescriptionLabel, ageTextField, ageLine, wakeUpInfoLabel, wakeUpTextField, cleanUpInfoLabel, cleanUpTextField, showerInfoLabel, showerTextField, mbtiInfoLabel, mbtiTextField, chatInfoLabel, chatTextField, wishInfoLabel, wishTextView, letterNumLabel]
       .forEach { contentView.addSubview($0) }
   }
   
   override func setupStyles() {
     super.setupStyles()
     contentView.backgroundColor = .white
+    view.backgroundColor = .white
   }
   
   override func setupConstraints() {
@@ -301,9 +318,14 @@ final class OnboardingViewController_2: BaseViewController {
       make.top.equalTo(wishInfoLabel.snp.bottom).offset(8)
       make.bottom.equalToSuperview().inset(90)
     }
+    
+    letterNumLabel.snp.makeConstraints { make in
+      make.centerY.equalTo(wishInfoLabel)
+      make.trailing.equalToSuperview().inset(25)
+    }
   }
   
-  func setupStackView() {
+  private func setupStackView() {
     let dormStack = UIStackView(arrangedSubviews: [ dorm1Button, dorm2Button, dorm3Button ])
     dormStack.spacing = 12
     self.dormStack = dormStack
@@ -322,6 +344,41 @@ final class OnboardingViewController_2: BaseViewController {
     habitStack2.spacing = 12
     self.habitStack1 = habitStack1
     self.habitStack2 = habitStack2
+  }
+  
+  // MARK: - Bind
+  
+  override func bind() {
+    super.bind()
+    
+    // MARK: - Input
+
+    // 텍스트뷰 글자수 제한
+    wishTextView.rx.text
+      .orEmpty
+      .scan("") { previous, new in
+        if new.count > 100 {
+          return previous
+        } else {
+          return new
+        }
+      }
+      .bind(to: wishTextView.rx.text)
+      .disposed(by: disposeBag)
+    
+    // 텍스트뷰 반응 -> 글자수 레이블 반응
+    wishTextView.rx.text
+      .orEmpty
+      .bind(onNext: { [unowned self] text in
+        self.letterNumLabel.text = "\(text.count)/100pt"
+        let attributedString = NSMutableAttributedString(string: "\(text.count)/100pt")
+        attributedString.addAttribute(.foregroundColor, value: UIColor.idorm_blue, range: ("\(text.count)/100pt" as NSString).range(of: "\(text.count)"))
+        self.letterNumLabel.attributedText = attributedString
+//        self.onChangedTextSubject.onNext((text, self.type))
+      })
+      .disposed(by: disposeBag)
+    
+    // MARK: - Output
   }
 }
 

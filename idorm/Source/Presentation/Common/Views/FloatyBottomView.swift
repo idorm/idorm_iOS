@@ -3,18 +3,18 @@ import UIKit
 import SnapKit
 import Then
 
-enum OnboardingFloatyBottomViewType {
+enum FloatyBottomViewType {
   /// [정보 입력 건너 뛰기], [완료]
-  case normal
+  case jump
   /// [뒤로가기], [완료]
-  case detail
+  case back
   /// [입력초기화], [완료]
-  case update
+  case reset
   /// [선택초기화], [필터링 완료]
-  case matchingFilter
+  case filter
 }
 
-class OnboardingFloatyBottomView: UIView {
+class FloatyBottomView: UIView {
   
   // MARK: - Properties
   
@@ -34,16 +34,16 @@ class OnboardingFloatyBottomView: UIView {
     config.contentInsets = NSDirectionalEdgeInsets(top: 14, leading: 26, bottom: 14, trailing: 26)
     
     switch type {
-    case .normal:
+    case .jump:
       config.attributedTitle = AttributedString("정보 입력 건너 뛰기", attributes: container)
-    case .detail:
+    case .back:
       config.attributedTitle = AttributedString("뒤로 가기", attributes: container)
-    case .update:
+    case .reset:
       config.attributedTitle = AttributedString("입력 초기화", attributes: container)
       config.image = UIImage(named: "reset(Onboarding)")
       config.imagePlacement = .leading
       config.imagePadding = 12
-    case .matchingFilter:
+    case .filter:
       config.attributedTitle = AttributedString("선택 초기화", attributes: container)
       config.image = UIImage(named: "reset(Onboarding)")
       config.imagePlacement = .leading
@@ -61,13 +61,13 @@ class OnboardingFloatyBottomView: UIView {
     config.attributedTitle = AttributedString("완료", attributes: container)
     
     switch type {
-    case .normal:
+    case .jump:
       config.baseBackgroundColor = .idorm_gray_300
-    case .detail:
+    case .back:
       config.baseBackgroundColor = .idorm_blue
-    case .update:
+    case .reset:
       config.baseBackgroundColor = .idorm_blue
-    case .matchingFilter:
+    case .filter:
       config.attributedTitle = AttributedString("필터링 완료", attributes: container)
       config.baseBackgroundColor = .idorm_blue
     }
@@ -75,11 +75,11 @@ class OnboardingFloatyBottomView: UIView {
     $0.configuration = config
   }
   
-  var type: OnboardingFloatyBottomViewType = .normal
+  var type: FloatyBottomViewType = .jump
   
   // MARK: - Helpers
   
-  func configureUI(type: OnboardingFloatyBottomViewType) {
+  func configureUI(type: FloatyBottomViewType) {
     self.type = type
     addSubview(containerView)
     

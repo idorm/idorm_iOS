@@ -24,8 +24,8 @@ class MatchingFilterViewController: UIViewController {
     return tv
   }()
   
-  lazy var floatyBottomView: OnboardingFloatyBottomView = {
-    let view = OnboardingFloatyBottomView()
+  lazy var floatyBottomView: FloatyBottomView = {
+    let view = FloatyBottomView()
     view.configureUI(type: .matchingFilter)
     
     return view

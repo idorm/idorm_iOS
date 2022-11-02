@@ -28,6 +28,9 @@
 		E510D3CF28ACC5F300A28B90 /* MemberService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CE28ACC5F300A28B90 /* MemberService.swift */; };
 		E510D3D128ACC84300A28B90 /* RegisterInfomation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3D028ACC84300A28B90 /* RegisterInfomation.swift */; };
 		E510D3D328ACCA1C00A28B90 /* AuthNumberViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3D228ACCA1C00A28B90 /* AuthNumberViewModel.swift */; };
+		E5226D582911F3610065C809 /* Dormitory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D572911F3610065C809 /* Dormitory.swift */; };
+		E5226D5A2911F36B0065C809 /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D592911F36B0065C809 /* Gender.swift */; };
+		E5226D5C2911F3760065C809 /* JoinPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D5B2911F3760065C809 /* JoinPeriod.swift */; };
 		E525C1CD28944E2800F934B3 /* CalendarPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */; };
 		E5290EFD2887BBA40004B8E6 /* CommunityPopularCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */; };
 		E5290EFF2887BBB00004B8E6 /* PostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFE2887BBB00004B8E6 /* PostCollectionViewCell.swift */; };
@@ -48,7 +51,6 @@
 		E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */; };
 		E53D6E7528963B21004BF95B /* MatchingFilterRangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53D6E7428963B21004BF95B /* MatchingFilterRangeSlider.swift */; };
 		E55794EE287C36F5002DB2B0 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55794ED287C36F5002DB2B0 /* UIView+Extensions.swift */; };
-		E55794F0287C496D002DB2B0 /* OnboardingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55794EF287C496D002DB2B0 /* OnboardingTableViewCell.swift */; };
 		E557E2272892593F00F9C74D /* CalendarPersonalCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E557E2262892593F00F9C74D /* CalendarPersonalCell.swift */; };
 		E55DE2F62896DB06004F1401 /* CustomCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55DE2F52896DB06004F1401 /* CustomCalendarCell.swift */; };
 		E55DE2F92896DDC6004F1401 /* CalendarUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55DE2F82896DDC6004F1401 /* CalendarUtilities.swift */; };
@@ -69,7 +71,7 @@
 		E57E48F82899666000D00BDB /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = E57E48F72899666000D00BDB /* RxRelay */; };
 		E57E48FA2899666000D00BDB /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E57E48F92899666000D00BDB /* RxSwift */; };
 		E57FB8562886E2710050BBAE /* PhotoLibrary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57FB8552886E2710050BBAE /* PhotoLibrary+Extensions.swift */; };
-		E58131A8288E6AC6000DB8C9 /* OnboardingFloatyBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58131A7288E6AC6000DB8C9 /* OnboardingFloatyBottomView.swift */; };
+		E58131A8288E6AC6000DB8C9 /* FloatyBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58131A7288E6AC6000DB8C9 /* FloatyBottomView.swift */; };
 		E584B4B5289F21CA007AD83A /* StackContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E584B4B4289F21C9007AD83A /* StackContainerView.swift */; };
 		E584B4B8289F23D7007AD83A /* SwipeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E584B4B7289F23D7007AD83A /* SwipeCardView.swift */; };
 		E584B4BA289FC770007AD83A /* SwipeCardProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = E584B4B9289FC770007AD83A /* SwipeCardProtocols.swift */; };
@@ -174,6 +176,9 @@
 		E510D3CE28ACC5F300A28B90 /* MemberService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberService.swift; sourceTree = "<group>"; };
 		E510D3D028ACC84300A28B90 /* RegisterInfomation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterInfomation.swift; sourceTree = "<group>"; };
 		E510D3D228ACCA1C00A28B90 /* AuthNumberViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberViewModel.swift; sourceTree = "<group>"; };
+		E5226D572911F3610065C809 /* Dormitory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dormitory.swift; sourceTree = "<group>"; };
+		E5226D592911F36B0065C809 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
+		E5226D5B2911F3760065C809 /* JoinPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinPeriod.swift; sourceTree = "<group>"; };
 		E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPostViewController.swift; sourceTree = "<group>"; };
 		E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPopularCollectionVIewCell.swift; sourceTree = "<group>"; };
 		E5290EFE2887BBB00004B8E6 /* PostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -192,7 +197,6 @@
 		E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpViewController.swift; sourceTree = "<group>"; };
 		E53D6E7428963B21004BF95B /* MatchingFilterRangeSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilterRangeSlider.swift; sourceTree = "<group>"; };
 		E55794ED287C36F5002DB2B0 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
-		E55794EF287C496D002DB2B0 /* OnboardingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTableViewCell.swift; sourceTree = "<group>"; };
 		E557E2262892593F00F9C74D /* CalendarPersonalCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPersonalCell.swift; sourceTree = "<group>"; };
 		E55DE2F52896DB06004F1401 /* CustomCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCalendarCell.swift; sourceTree = "<group>"; };
 		E55DE2F82896DDC6004F1401 /* CalendarUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarUtilities.swift; sourceTree = "<group>"; };
@@ -208,7 +212,7 @@
 		E572172628C8712F00DA1E90 /* EmailServerConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailServerConstants.swift; sourceTree = "<group>"; };
 		E573B86B28CCBAD100E0DAB3 /* OnboardingDetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDetailVM.swift; sourceTree = "<group>"; };
 		E57FB8552886E2710050BBAE /* PhotoLibrary+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotoLibrary+Extensions.swift"; sourceTree = "<group>"; };
-		E58131A7288E6AC6000DB8C9 /* OnboardingFloatyBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFloatyBottomView.swift; sourceTree = "<group>"; };
+		E58131A7288E6AC6000DB8C9 /* FloatyBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatyBottomView.swift; sourceTree = "<group>"; };
 		E584B4B4289F21C9007AD83A /* StackContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackContainerView.swift; sourceTree = "<group>"; };
 		E584B4B7289F23D7007AD83A /* SwipeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeCardView.swift; sourceTree = "<group>"; };
 		E584B4B9289FC770007AD83A /* SwipeCardProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeCardProtocols.swift; sourceTree = "<group>"; };
@@ -414,6 +418,9 @@
 			isa = PBXGroup;
 			children = (
 				E5D4900D288BFB9100311493 /* MatchingInfo.swift */,
+				E5226D572911F3610065C809 /* Dormitory.swift */,
+				E5226D592911F36B0065C809 /* Gender.swift */,
+				E5226D5B2911F3760065C809 /* JoinPeriod.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -570,10 +577,8 @@
 		E56DF4B7289403AC00E85B10 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				E56DF4BB289403C300E85B10 /* Cells */,
 				E56342202878246200E93D17 /* OnboardingTableHeaderView.swift */,
 				E5AC2DCA2882F24000B82AD8 /* OnboardingTextField.swift */,
-				E58131A7288E6AC6000DB8C9 /* OnboardingFloatyBottomView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -586,14 +591,6 @@
 				E5B15F6E287FE355004D4164 /* OnboardingDetailVC.swift */,
 			);
 			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		E56DF4BB289403C300E85B10 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				E55794EF287C496D002DB2B0 /* OnboardingTableViewCell.swift */,
-			);
-			path = Cells;
 			sourceTree = "<group>";
 		};
 		E56DF4BC289403CD00E85B10 /* ViewModels */ = {
@@ -921,6 +918,7 @@
 		E5E8A3E12895215100A48A91 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E58131A7288E6AC6000DB8C9 /* FloatyBottomView.swift */,
 				E5D49011288C003800311493 /* MyInfoView.swift */,
 				E5E8A3E02895214C00A48A91 /* Cells */,
 			);
@@ -1146,17 +1144,19 @@
 				E510D3CD28ACB87D00A28B90 /* PutEmailViewModel.swift in Sources */,
 				E5C88908288972E000CBD04E /* CommunityAlertViewController.swift in Sources */,
 				E5AC2A4D28BB5B250069ABB9 /* ManageMyInfoVC.swift in Sources */,
-				E55794F0287C496D002DB2B0 /* OnboardingTableViewCell.swift in Sources */,
 				E5290EFF2887BBB00004B8E6 /* PostCollectionViewCell.swift in Sources */,
 				E5D98F9128C486CB00D493FF /* ChangeNicknameVM.swift in Sources */,
 				E5EB5F272891398200EC0425 /* CalendarView.swift in Sources */,
+				E5226D5C2911F3760065C809 /* JoinPeriod.swift in Sources */,
 				E5290F06288818E70004B8E6 /* CommunityDetailViewController.swift in Sources */,
 				E5D98F8F28C4863900D493FF /* ChangeNickNameVC.swift in Sources */,
 				E58F96FD28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift in Sources */,
 				E58F96FB2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift in Sources */,
+				E5226D5A2911F36B0065C809 /* Gender.swift in Sources */,
 				E586B6A528901B06005AB9C2 /* LoginTextFieldContainerView.swift in Sources */,
 				E5D31BF3289AB83800510315 /* SetCalendarTabmanController.swift in Sources */,
 				E5A164B128ADC80C00554655 /* ConfirmPasswordViewModel.swift in Sources */,
+				E5226D582911F3610065C809 /* Dormitory.swift in Sources */,
 				E5AC2DCB2882F24000B82AD8 /* OnboardingTextField.swift in Sources */,
 				E5909CE628D94B610083075D /* BaseViewController.swift in Sources */,
 				E572172728C8712F00DA1E90 /* EmailServerConstants.swift in Sources */,
@@ -1164,7 +1164,7 @@
 				E5E8A3DB289505B500A48A91 /* MyPostVC.swift in Sources */,
 				E5E8A3DD289505F000A48A91 /* MyPostCollectionHeaderView.swift in Sources */,
 				E591B77C28C6E99400B8B581 /* ServerConstants.swift in Sources */,
-				E58131A8288E6AC6000DB8C9 /* OnboardingFloatyBottomView.swift in Sources */,
+				E58131A8288E6AC6000DB8C9 /* FloatyBottomView.swift in Sources */,
 				E56342212878246200E93D17 /* OnboardingTableHeaderView.swift in Sources */,
 				E508436C288133AD0047A2EC /* LoginUtilities.swift in Sources */,
 				E56342232878353100E93D17 /* TabBarController.swift in Sources */,
