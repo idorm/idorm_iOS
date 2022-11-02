@@ -14,4 +14,24 @@ struct MatchingInfo {
   var mbti: String?
   var wishText: String?
   var chatLink: String?
+  
+  static func initialValue() -> MatchingInfo {
+    return MatchingInfo(
+      dormNumber: .no1,
+      period: .period_24,
+      gender: .female,
+      age: "",
+      snoring: false,
+      grinding: false,
+      smoke: false,
+      allowedFood: false,
+      earphone: false,
+      wakeupTime: "",
+      cleanUpStatus: "",
+      showerTime: "",
+      mbti: "",
+      wishText: "",
+      chatLink: ""
+    )
+  }
 }

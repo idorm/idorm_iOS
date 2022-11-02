@@ -21,7 +21,9 @@ final class OnboardingViewController: BaseViewController {
   // MARK: - Properties
   
   private let titleLabel = OnboardingUtilities.descriptionLabel("룸메이트 매칭을 위한 기본정보를 알려주세요!")
-  private let floatyBottomView = FloatyBottomView(.reset)
+  private var floatyBottomView: FloatyBottomView!
+  private let viewModel = OnboardingViewModel()
+  private let onboardingVCType: OnboardingVCType
   
   // MARK: - ScrollView
   private let scrollView = UIScrollView()
@@ -119,7 +121,17 @@ final class OnboardingViewController: BaseViewController {
   
   override func viewDidLoad() {
     setupStackView()
+    setupFloatyBottomView()
     super.viewDidLoad()
+  }
+  
+  init(_ onboardingVCType: OnboardingVCType) {
+    self.onboardingVCType = onboardingVCType
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
   
   // MARK: - Setup
@@ -139,6 +151,13 @@ final class OnboardingViewController: BaseViewController {
     super.setupStyles()
     contentView.backgroundColor = .white
     view.backgroundColor = .white
+    
+    switch onboardingVCType {
+    case .mainPage_FirstTime, .update:
+      navigationItem.title = "매칭 이미지 관리"
+    case .firstTime:
+      navigationItem.title = "내 정보 입력"
+    }
   }
   
   override func setupConstraints() {
@@ -146,12 +165,13 @@ final class OnboardingViewController: BaseViewController {
     
     floatyBottomView.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
-      make.bottom.equalToSuperview()
+      make.bottom.equalTo(view.safeAreaLayoutGuide)
       make.height.equalTo(76)
     }
     
     scrollView.snp.makeConstraints { make in
-      make.edges.equalToSuperview()
+      make.top.leading.trailing.equalToSuperview()
+      make.bottom.equalTo(floatyBottomView.snp.top)
     }
     
     contentView.snp.makeConstraints { make in
@@ -354,6 +374,18 @@ final class OnboardingViewController: BaseViewController {
     self.habitStack2 = habitStack2
   }
   
+  private func setupFloatyBottomView() {
+    switch onboardingVCType {
+    case .firstTime:
+      self.floatyBottomView = FloatyBottomView(.jump)
+    case .mainPage_FirstTime:
+      self.floatyBottomView = FloatyBottomView(.reset)
+    case .update:
+      self.floatyBottomView = FloatyBottomView(.back)
+    }
+    self.floatyBottomView.confirmButton.isEnabled = false
+  }
+  
   // MARK: - Bind
   
   override func bind() {
@@ -386,7 +418,268 @@ final class OnboardingViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
+    // 스킵 버튼 이벤트
+    floatyBottomView.skipButton.rx.tap
+      .map { [unowned self] in self.floatyBottomView.floatyBottomViewType }
+      .bind(to: viewModel.input.didTapSkipButton)
+      .disposed(by: disposeBag)
+    
+    // 완료 버튼 이벤트
+    floatyBottomView.confirmButton.rx.tap
+      .bind(to: viewModel.input.didTapConfirmButton)
+      .disposed(by: disposeBag)
+    
+    // 1기숙사 버튼 클릭
+    dorm1Button.rx.tap
+      .map { [weak self] _ -> Dormitory in
+        self?.toggleDromButton(.no1)
+        return Dormitory.no1
+      }
+      .bind(to: viewModel.input.isSelectedDormButton)
+      .disposed(by: disposeBag)
+    
+    // 2기숙사 버튼 클릭
+    dorm2Button.rx.tap
+      .map { [weak self] _ -> Dormitory in
+        self?.toggleDromButton(.no2)
+        return Dormitory.no2
+      }
+      .bind(to: viewModel.input.isSelectedDormButton)
+      .disposed(by: disposeBag)
+
+    // 3기숙사 버튼 클릭
+    dorm3Button.rx.tap
+      .map { [weak self] _ -> Dormitory in
+        self?.toggleDromButton(.no3)
+        return Dormitory.no3
+      }
+      .bind(to: viewModel.input.isSelectedDormButton)
+      .disposed(by: disposeBag)
+    
+    // 남성 버튼 클릭
+    maleButton.rx.tap
+      .map { [weak self] _ -> Gender in
+        self?.toggleGenderButton(.male)
+        return Gender.male
+      }
+      .bind(to: viewModel.input.isSelectedGenderButton)
+      .disposed(by: disposeBag)
+    
+    // 여성 버튼 클릭
+    femaleButton.rx.tap
+      .map { [weak self] _ -> Gender in
+        self?.toggleGenderButton(.female)
+        return Gender.female
+      }
+      .bind(to: viewModel.input.isSelectedGenderButton)
+      .disposed(by: disposeBag)
+
+    // 16주 버튼 클릭
+    period16Button.rx.tap
+      .map { [weak self] _ -> JoinPeriod in
+        self?.togglePeriodButton(.period_16)
+        return JoinPeriod.period_16
+      }
+      .bind(to: viewModel.input.isSelectedPeriodButton)
+      .disposed(by: disposeBag)
+    
+    // 24주 버튼 클릭
+    period24Button.rx.tap
+      .map { [weak self] _ -> JoinPeriod in
+        self?.togglePeriodButton(.period_24)
+        return JoinPeriod.period_24
+      }
+      .bind(to: viewModel.input.isSelectedPeriodButton)
+      .disposed(by: disposeBag)
+    
+    // 코골이 버튼 클릭
+    snoreButton.rx.tap
+      .map { [weak self] _ -> Habit in
+        self?.snoreButton.isSelected.toggle()
+        return Habit.snoring
+      }
+      .bind(to: viewModel.input.isSelectedHabitButton)
+      .disposed(by: disposeBag)
+    
+    // 이갈이 버튼 클릭
+    grindingButton.rx.tap
+      .map { [weak self] _ -> Habit in
+        self?.grindingButton.isSelected.toggle()
+        return Habit.grinding
+      }
+      .bind(to: viewModel.input.isSelectedHabitButton)
+      .disposed(by: disposeBag)
+    
+    // 흡연 버튼 클릭
+    smokingButton.rx.tap
+      .map { [weak self] _ -> Habit in
+        self?.smokingButton.isSelected.toggle()
+        return Habit.smoking
+      }
+      .bind(to: viewModel.input.isSelectedHabitButton)
+      .disposed(by: disposeBag)
+    
+    // 실내음식섭취 버튼 클릭
+    allowedFoodButton.rx.tap
+      .map { [weak self] _ -> Habit in
+        self?.allowedFoodButton.isSelected.toggle()
+        return Habit.allowedFood
+      }
+      .bind(to: viewModel.input.isSelectedHabitButton)
+      .disposed(by: disposeBag)
+    
+    // 이어폰착용안함 버튼 클릭
+    allowedEarphoneButton.rx.tap
+      .map { [weak self] _ -> Habit in
+        self?.allowedEarphoneButton.isSelected.toggle()
+        return Habit.allowedEarphone
+      }
+      .bind(to: viewModel.input.isSelectedHabitButton)
+      .disposed(by: disposeBag)
+    
+    // 나이 텍스트 반응 전달
+    ageTextField.rx.text
+      .orEmpty
+      .map { (QueryList.age, $0) }
+      .bind(to: viewModel.input.onChangedQueryText)
+      .disposed(by: disposeBag)
+    
+    // 기상 시간 텍스트 반응
+    wakeUpTextField.textField.rx.text
+      .orEmpty
+      .map { (QueryList.wakeUp, $0) }
+      .bind(to: viewModel.input.onChangedQueryText)
+      .disposed(by: disposeBag)
+    
+    // 정리 정돈 텍스트 반응
+    cleanUpTextField.textField.rx.text
+      .orEmpty
+      .map { (QueryList.cleanUp, $0) }
+      .bind(to: viewModel.input.onChangedQueryText)
+      .disposed(by: disposeBag)
+    
+    // 샤워 텍스트 반응
+    showerTextField.textField.rx.text
+      .orEmpty
+      .map { (QueryList.shower, $0) }
+      .bind(to: viewModel.input.onChangedQueryText)
+      .disposed(by: disposeBag)
+    
+    // mbti 텍스트 반응
+    mbtiTextField.textField.rx.text
+      .orEmpty
+      .map { (QueryList.mbti, $0) }
+      .bind(to: viewModel.input.onChangedQueryText)
+      .disposed(by: disposeBag)
+    
+    // 오픈채팅 텍스트 반응
+    chatTextField.textField.rx.text
+      .orEmpty
+      .map { (QueryList.chatLink, $0) }
+      .bind(to: viewModel.input.onChangedQueryText)
+      .disposed(by: disposeBag)
+  
+    // 하고 싶은 말 텍스트 반응
+    wishTextView.rx.text
+      .orEmpty
+      .map { (QueryList.wishText, $0) }
+      .bind(to: viewModel.input.onChangedQueryText)
+      .disposed(by: disposeBag)
+    
     // MARK: - Output
+    
+    // 완료 버튼 활성&비활성
+    viewModel.output.enableConfirmButton
+      .bind(onNext: { [unowned self] isEnable in
+        if isEnable {
+          self.floatyBottomView.confirmButton.isEnabled = true
+        } else {
+          self.floatyBottomView.confirmButton.isEnabled = false
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    // 입력 초기화
+    viewModel.output.resetData
+      .bind(onNext: { [weak self] in
+        self?.resetData()
+      })
+      .disposed(by: disposeBag)
+    
+    // 메인페이지로 넘어가기
+    viewModel.output.showTabBarVC
+      .bind(onNext: { [weak self] in
+        let tabBarVC = TabBarController()
+        tabBarVC.modalPresentationStyle = .fullScreen
+        self?.present(tabBarVC, animated: true)
+      })
+      .disposed(by: disposeBag)
+  }
+  
+  // MARK: - Helpers
+  
+  private func resetData() {
+    [dorm1Button, dorm2Button, dorm3Button,
+     maleButton, femaleButton,
+     period16Button, period24Button,
+     snoreButton, grindingButton, smokingButton, allowedFoodButton, allowedEarphoneButton]
+      .forEach { $0.isSelected = false }
+    
+    [wakeUpTextField, cleanUpTextField, showerTextField, mbtiTextField, chatTextField]
+      .forEach {
+        $0.textField.text = ""
+        $0.checkmarkButton.isHidden = true
+      }
+    
+    ageTextField.text = ""
+    ageTextField.labels.forEach {
+      $0.text = ""
+    }
+    wishTextView.text = ""
+    floatyBottomView.confirmButton.isEnabled = false
+  }
+}
+
+// MARK: - Button Toggle
+
+extension OnboardingViewController {
+  private func toggleDromButton(_ dorm: Dormitory) {
+    switch dorm {
+    case .no1:
+      dorm1Button.isSelected = true
+      dorm2Button.isSelected = false
+      dorm3Button.isSelected = false
+    case .no2:
+      dorm1Button.isSelected = false
+      dorm2Button.isSelected = true
+      dorm3Button.isSelected = false
+    case .no3:
+      dorm1Button.isSelected = false
+      dorm2Button.isSelected = false
+      dorm3Button.isSelected = true
+    }
+  }
+  
+  private func toggleGenderButton(_ gender: Gender) {
+    switch gender {
+    case .female:
+      femaleButton.isSelected = true
+      maleButton.isSelected = false
+    case .male:
+      femaleButton.isSelected = false
+      maleButton.isSelected = true
+    }
+  }
+  
+  private func togglePeriodButton(_ period: JoinPeriod) {
+    switch period {
+    case .period_16:
+      period16Button.isSelected = true
+      period24Button.isSelected = false
+    case .period_24:
+      period16Button.isSelected = false
+      period24Button.isSelected = true
+    }
   }
 }
 
@@ -394,8 +687,7 @@ final class OnboardingViewController: BaseViewController {
 import SwiftUI
 struct OnboardingViewController_PreView: PreviewProvider {
   static var previews: some View {
-    OnboardingViewController().toPreview()
+    OnboardingViewController(.mainPage_FirstTime).toPreview()
   }
 }
 #endif
-

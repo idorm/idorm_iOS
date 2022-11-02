@@ -1,41 +1,36 @@
-//
-//  CompleteSignUpViewController.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/11.
-//
-
 import UIKit
+
 import Then
 import SnapKit
 import RxSwift
 import RxCocoa
 
 class CompleteSignUpViewController: BaseViewController {
+  
   // MARK: - Properties
   
-  lazy var signUpLabel = UILabel().then {
+  private lazy var signUpLabel = UILabel().then {
     $0.textColor = .idorm_gray_400
     $0.text = "안녕하세요! 가입을 축하드려요."
     $0.textAlignment = .center
     $0.font = .init(name: MyFonts.bold.rawValue, size: 18.0)
   }
   
-  lazy var descriptionLabel1 = UILabel().then {
+  private lazy var descriptionLabel1 = UILabel().then {
     $0.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
     $0.textColor = .idorm_gray_300
     $0.textAlignment = .center
     $0.text = "로그인 후 인천대학교 기숙사 룸메이트 매칭을 위한"
   }
   
-  lazy var descriptionLabel2 = UILabel().then {
+  private lazy var descriptionLabel2 = UILabel().then {
     $0.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
     $0.textColor = .idorm_gray_300
     $0.textAlignment = .center
     $0.text = "기본정보를 알려주세요."
   }
   
-  lazy var continueButton = UIButton().then {
+  private lazy var continueButton = UIButton().then {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
     container.font = UIFont.init(name: MyFonts.medium.rawValue, size: 16)
@@ -48,15 +43,16 @@ class CompleteSignUpViewController: BaseViewController {
     $0.configuration = config
   }
   
-  let indicator = UIActivityIndicatorView()
-  let image = UIImageView(image: UIImage(named: "Lion"))
+  private let indicator = UIActivityIndicatorView()
+  private let image = UIImageView(image: UIImage(named: "Lion"))
   
-  let viewModel = CompleteSignUpViewModel()
+  private let viewModel = CompleteSignUpViewModel()
   
   // MARK: - Bind
   
   override func bind() {
     super.bind()
+    
     // --------------------------------
     // --------------INPUT-------------
     // --------------------------------
@@ -73,11 +69,10 @@ class CompleteSignUpViewController: BaseViewController {
     
     /// 온보딩 페이지로 이동
     viewModel.output.showOnboardingVC
-      .asDriver(onErrorJustReturn: Void())
-      .drive(onNext: { [weak self] in
-        let onboardingVC = UINavigationController(rootViewController: OnboardingViewController(type: .firstTime))
+      .bind(onNext: { [unowned self] in
+        let onboardingVC = UINavigationController(rootViewController: OnboardingViewController(.firstTime))
         onboardingVC.modalPresentationStyle = .fullScreen
-        self?.present(onboardingVC, animated: true)
+        self.present(onboardingVC, animated: true)
       })
       .disposed(by: disposeBag)
     

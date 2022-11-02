@@ -16,7 +16,6 @@ class BaseViewController: UIViewController {
   
   override func loadView() {
     super.loadView()
-    bind()
   }
 
   override func viewDidLoad() {
@@ -24,6 +23,7 @@ class BaseViewController: UIViewController {
     setupStyles()
     setupLayouts()
     setupConstraints()
+    bind()
   }
 
   /// UI 프로퍼티를 view에 할당합니다.

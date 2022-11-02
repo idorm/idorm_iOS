@@ -62,7 +62,7 @@ class FloatyBottomView: UIView {
     
     switch floatyBottomViewType {
     case .jump:
-      config.baseBackgroundColor = .idorm_gray_300
+      config.baseBackgroundColor = .idorm_blue
     case .back:
       config.baseBackgroundColor = .idorm_blue
     case .reset:

@@ -31,6 +31,9 @@
 		E5226D5A2911F36B0065C809 /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D592911F36B0065C809 /* Gender.swift */; };
 		E5226D5C2911F3760065C809 /* JoinPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D5B2911F3760065C809 /* JoinPeriod.swift */; };
 		E5226D5E2911F7110065C809 /* OnboardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D5D2911F7110065C809 /* OnboardingVC.swift */; };
+		E5226D60291207AA0065C809 /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D5F291207AA0065C809 /* Habit.swift */; };
+		E5226D6329122AD20065C809 /* QueryList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D6229122AD20065C809 /* QueryList.swift */; };
+		E5226D65291246750065C809 /* OnboardingVerifyConfirmList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D64291246750065C809 /* OnboardingVerifyConfirmList.swift */; };
 		E525C1CD28944E2800F934B3 /* CalendarPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */; };
 		E5290EFD2887BBA40004B8E6 /* CommunityPopularCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */; };
 		E5290EFF2887BBB00004B8E6 /* PostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFE2887BBB00004B8E6 /* PostCollectionViewCell.swift */; };
@@ -56,7 +59,6 @@
 		E55DE2F92896DDC6004F1401 /* CalendarUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55DE2F82896DDC6004F1401 /* CalendarUtilities.swift */; };
 		E563421828780BDE00E93D17 /* OnboardingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E563421728780BDE00E93D17 /* OnboardingVM.swift */; };
 		E563421E28780C3800E93D17 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E563421D28780C3800E93D17 /* SnapKit */; };
-		E56342212878246200E93D17 /* OnboardingTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56342202878246200E93D17 /* OnboardingTableHeaderView.swift */; };
 		E56342232878353100E93D17 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56342222878353100E93D17 /* TabBarController.swift */; };
 		E563422528784ED400E93D17 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E563422428784ED400E93D17 /* HomeViewController.swift */; };
 		E56DF4A2289354AF00E85B10 /* CalendarRoundedBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56DF4A1289354AF00E85B10 /* CalendarRoundedBackgroundView.swift */; };
@@ -178,6 +180,9 @@
 		E5226D592911F36B0065C809 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
 		E5226D5B2911F3760065C809 /* JoinPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinPeriod.swift; sourceTree = "<group>"; };
 		E5226D5D2911F7110065C809 /* OnboardingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingVC.swift; sourceTree = "<group>"; };
+		E5226D5F291207AA0065C809 /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
+		E5226D6229122AD20065C809 /* QueryList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryList.swift; sourceTree = "<group>"; };
+		E5226D64291246750065C809 /* OnboardingVerifyConfirmList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVerifyConfirmList.swift; sourceTree = "<group>"; };
 		E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPostViewController.swift; sourceTree = "<group>"; };
 		E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPopularCollectionVIewCell.swift; sourceTree = "<group>"; };
 		E5290EFE2887BBB00004B8E6 /* PostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -200,7 +205,6 @@
 		E55DE2F52896DB06004F1401 /* CustomCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCalendarCell.swift; sourceTree = "<group>"; };
 		E55DE2F82896DDC6004F1401 /* CalendarUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarUtilities.swift; sourceTree = "<group>"; };
 		E563421728780BDE00E93D17 /* OnboardingVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVM.swift; sourceTree = "<group>"; };
-		E56342202878246200E93D17 /* OnboardingTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTableHeaderView.swift; sourceTree = "<group>"; };
 		E56342222878353100E93D17 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E563422428784ED400E93D17 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		E56DF4A1289354AF00E85B10 /* CalendarRoundedBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarRoundedBackgroundView.swift; sourceTree = "<group>"; };
@@ -382,6 +386,15 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		E5226D6129122A900065C809 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E5226D6229122AD20065C809 /* QueryList.swift */,
+				E5226D64291246750065C809 /* OnboardingVerifyConfirmList.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		E53D6E7328963B14004BF95B /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -419,6 +432,7 @@
 				E5226D572911F3610065C809 /* Dormitory.swift */,
 				E5226D592911F36B0065C809 /* Gender.swift */,
 				E5226D5B2911F3760065C809 /* JoinPeriod.swift */,
+				E5226D5F291207AA0065C809 /* Habit.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -568,6 +582,7 @@
 				E56DF4BC289403CD00E85B10 /* ViewModels */,
 				E56DF4B8289403B600E85B10 /* ViewControllers */,
 				E56DF4B7289403AC00E85B10 /* Views */,
+				E5226D6129122A900065C809 /* Models */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -575,7 +590,6 @@
 		E56DF4B7289403AC00E85B10 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				E56342202878246200E93D17 /* OnboardingTableHeaderView.swift */,
 				E5AC2DCA2882F24000B82AD8 /* OnboardingTextField.swift */,
 			);
 			path = Views;
@@ -1092,6 +1106,7 @@
 				E5EB5F2E2891535E00EC0425 /* CalendarDormCollectionHeaderView.swift in Sources */,
 				E5A60C7C289BE72A004B77E8 /* SetCalendarViewModel.swift in Sources */,
 				E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordViewController.swift in Sources */,
+				E5226D60291207AA0065C809 /* Habit.swift in Sources */,
 				E5EB5F302891558D00EC0425 /* CalendarDormCell.swift in Sources */,
 				E5FC8F1B29113A25002812FA /* ViewModel.swift in Sources */,
 				E525C1CD28944E2800F934B3 /* CalendarPostViewController.swift in Sources */,
@@ -1105,6 +1120,7 @@
 				E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */,
 				E557E2272892593F00F9C74D /* CalendarPersonalCell.swift in Sources */,
 				E5CF7DC728C8BDDD00125144 /* OnboardingService.swift in Sources */,
+				E5226D6329122AD20065C809 /* QueryList.swift in Sources */,
 				E5CF7DC928C8BE1C00125144 /* OnboardingServerConstants.swift in Sources */,
 				E5290F0928881C6E0004B8E6 /* CommunityDetailCollectionHeaderView.swift in Sources */,
 				E50300F728773A5D00611C62 /* AppDelegate.swift in Sources */,
@@ -1120,6 +1136,7 @@
 				E5290F10288869700004B8E6 /* CommunityDetailHeaderCollectionViewCell.swift in Sources */,
 				E58A6297289D6BEF0074F646 /* DeviceManager.swift in Sources */,
 				E510D3CB28AC9F6E00A28B90 /* AuthViewModel.swift in Sources */,
+				E5226D65291246750065C809 /* OnboardingVerifyConfirmList.swift in Sources */,
 				E5E77EC628D822FB00031010 /* RegisterBottomButton.swift in Sources */,
 				E5FD982628EAF8F0005A29E2 /* MailTimerChecker.swift in Sources */,
 				E5EB5F322891589800EC0425 /* CalendarListUtilities.swift in Sources */,
@@ -1161,7 +1178,6 @@
 				E5E8A3DD289505F000A48A91 /* MyPostCollectionHeaderView.swift in Sources */,
 				E591B77C28C6E99400B8B581 /* ServerConstants.swift in Sources */,
 				E58131A8288E6AC6000DB8C9 /* FloatyBottomView.swift in Sources */,
-				E56342212878246200E93D17 /* OnboardingTableHeaderView.swift in Sources */,
 				E508436C288133AD0047A2EC /* LoginUtilities.swift in Sources */,
 				E56342232878353100E93D17 /* TabBarController.swift in Sources */,
 				E5226D5E2911F7110065C809 /* OnboardingVC.swift in Sources */,

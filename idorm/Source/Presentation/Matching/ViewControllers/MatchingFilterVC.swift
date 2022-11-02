@@ -24,12 +24,7 @@ class MatchingFilterViewController: UIViewController {
     return tv
   }()
   
-  lazy var floatyBottomView: FloatyBottomView = {
-    let view = FloatyBottomView()
-    view.configureUI(type: .matchingFilter)
-    
-    return view
-  }()
+  private let floatyBottomView = FloatyBottomView(.filter)
   
   // MARK: - LifeCycle
   override func viewDidLoad() {

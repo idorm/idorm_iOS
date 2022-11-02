@@ -198,7 +198,7 @@ class MyPageViewController: UIViewController {
     
     viewModel.output.showOnboardingVC
       .bind(onNext: { [weak self] in
-        let onboardingVC = OnboardingViewController(type: .update)
+        let onboardingVC = OnboardingViewController(.update)
         self?.navigationController?.pushViewController(onboardingVC, animated: true)
       })
       .disposed(by: disposeBag)
