@@ -1,4 +1,4 @@
-enum QueryList {
+enum OnboardingQueryList {
   case age
   case wakeUp
   case cleanUp

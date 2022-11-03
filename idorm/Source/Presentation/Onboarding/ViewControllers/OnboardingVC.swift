@@ -7,15 +7,6 @@ import RSKGrowingTextView
 import RxSwift
 import RxCocoa
 
-enum OnboardingVCType {
-  /// 회원가입 후 최초 온보딩 접근
-  case firstTime
-  /// 메인페이지 최초 접속 후 온보딩 접근
-  case mainPage_FirstTime
-  /// 온보딩 수정
-  case update
-}
-
 final class OnboardingViewController: BaseViewController {
   
   // MARK: - Properties
@@ -122,6 +113,7 @@ final class OnboardingViewController: BaseViewController {
   override func viewDidLoad() {
     setupStackView()
     setupFloatyBottomView()
+    setupScrollView()
     super.viewDidLoad()
   }
   
@@ -165,7 +157,7 @@ final class OnboardingViewController: BaseViewController {
     
     floatyBottomView.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
-      make.bottom.equalTo(view.safeAreaLayoutGuide)
+      make.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
       make.height.equalTo(76)
     }
     
@@ -361,11 +353,11 @@ final class OnboardingViewController: BaseViewController {
     let genderStack = UIStackView(arrangedSubviews: [ maleButton, femaleButton ])
     genderStack.spacing = 12
     self.genderStack = genderStack
-
+    
     let periodStack = UIStackView(arrangedSubviews: [ period16Button, period24Button ])
     periodStack.spacing = 12
     self.periodStack = periodStack
-
+    
     let habitStack1 = UIStackView(arrangedSubviews: [ snoreButton, grindingButton, smokingButton ])
     let habitStack2 = UIStackView(arrangedSubviews: [ allowedFoodButton, allowedEarphoneButton ])
     habitStack1.spacing = 12
@@ -386,13 +378,20 @@ final class OnboardingViewController: BaseViewController {
     self.floatyBottomView.confirmButton.isEnabled = false
   }
   
+  private func setupScrollView() {
+    scrollView.keyboardDismissMode = .onDrag
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapScrollView))
+    tapGesture.cancelsTouchesInView = false
+    scrollView.addGestureRecognizer(tapGesture)
+  }
+  
   // MARK: - Bind
   
   override func bind() {
     super.bind()
     
     // MARK: - Input
-
+    
     // 텍스트뷰 글자수 제한
     wishTextView.rx.text
       .orEmpty
@@ -414,7 +413,7 @@ final class OnboardingViewController: BaseViewController {
         let attributedString = NSMutableAttributedString(string: "\(text.count)/100pt")
         attributedString.addAttribute(.foregroundColor, value: UIColor.idorm_blue, range: ("\(text.count)/100pt" as NSString).range(of: "\(text.count)"))
         self.letterNumLabel.attributedText = attributedString
-//        self.onChangedTextSubject.onNext((text, self.type))
+        //        self.onChangedTextSubject.onNext((text, self.type))
       })
       .disposed(by: disposeBag)
     
@@ -446,7 +445,7 @@ final class OnboardingViewController: BaseViewController {
       }
       .bind(to: viewModel.input.isSelectedDormButton)
       .disposed(by: disposeBag)
-
+    
     // 3기숙사 버튼 클릭
     dorm3Button.rx.tap
       .map { [weak self] _ -> Dormitory in
@@ -473,7 +472,7 @@ final class OnboardingViewController: BaseViewController {
       }
       .bind(to: viewModel.input.isSelectedGenderButton)
       .disposed(by: disposeBag)
-
+    
     // 16주 버튼 클릭
     period16Button.rx.tap
       .map { [weak self] _ -> JoinPeriod in
@@ -540,56 +539,56 @@ final class OnboardingViewController: BaseViewController {
     // 나이 텍스트 반응 전달
     ageTextField.rx.text
       .orEmpty
-      .map { (QueryList.age, $0) }
+      .map { (OnboardingQueryList.age, $0) }
       .bind(to: viewModel.input.onChangedQueryText)
       .disposed(by: disposeBag)
     
     // 기상 시간 텍스트 반응
     wakeUpTextField.textField.rx.text
       .orEmpty
-      .map { (QueryList.wakeUp, $0) }
+      .map { (OnboardingQueryList.wakeUp, $0) }
       .bind(to: viewModel.input.onChangedQueryText)
       .disposed(by: disposeBag)
     
     // 정리 정돈 텍스트 반응
     cleanUpTextField.textField.rx.text
       .orEmpty
-      .map { (QueryList.cleanUp, $0) }
+      .map { (OnboardingQueryList.cleanUp, $0) }
       .bind(to: viewModel.input.onChangedQueryText)
       .disposed(by: disposeBag)
     
     // 샤워 텍스트 반응
     showerTextField.textField.rx.text
       .orEmpty
-      .map { (QueryList.shower, $0) }
+      .map { (OnboardingQueryList.shower, $0) }
       .bind(to: viewModel.input.onChangedQueryText)
       .disposed(by: disposeBag)
     
     // mbti 텍스트 반응
     mbtiTextField.textField.rx.text
       .orEmpty
-      .map { (QueryList.mbti, $0) }
+      .map { (OnboardingQueryList.mbti, $0) }
       .bind(to: viewModel.input.onChangedQueryText)
       .disposed(by: disposeBag)
     
     // 오픈채팅 텍스트 반응
     chatTextField.textField.rx.text
       .orEmpty
-      .map { (QueryList.chatLink, $0) }
+      .map { (OnboardingQueryList.chatLink, $0) }
       .bind(to: viewModel.input.onChangedQueryText)
       .disposed(by: disposeBag)
-  
+    
     // 하고 싶은 말 텍스트 반응
     wishTextView.rx.text
       .orEmpty
-      .map { (QueryList.wishText, $0) }
+      .map { (OnboardingQueryList.wishText, $0) }
       .bind(to: viewModel.input.onChangedQueryText)
       .disposed(by: disposeBag)
     
     // MARK: - Output
     
     // 완료 버튼 활성&비활성
-    viewModel.output.enableConfirmButton
+    viewModel.output.isEnableConfirmButton
       .bind(onNext: { [unowned self] isEnable in
         if isEnable {
           self.floatyBottomView.confirmButton.isEnabled = true
@@ -637,6 +636,10 @@ final class OnboardingViewController: BaseViewController {
     }
     wishTextView.text = ""
     floatyBottomView.confirmButton.isEnabled = false
+  }
+  
+  @objc private func didTapScrollView() {
+    self.view.endEditing(true)
   }
 }
 

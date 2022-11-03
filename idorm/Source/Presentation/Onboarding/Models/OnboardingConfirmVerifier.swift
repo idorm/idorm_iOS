@@ -1,4 +1,4 @@
-struct OnboardingVerifyConfirmList {
+struct OnboardingConfirmVerifier {
   var dorm: Bool
   var gender: Bool
   var period: Bool
@@ -7,8 +7,8 @@ struct OnboardingVerifyConfirmList {
   var cleanup: Bool
   var showerTime: Bool
   
-  static func initialValue() -> OnboardingVerifyConfirmList {
-    return OnboardingVerifyConfirmList(
+  static func initialValue() -> OnboardingConfirmVerifier {
+    return OnboardingConfirmVerifier(
       dorm: false,
       gender: false,
       period: false,

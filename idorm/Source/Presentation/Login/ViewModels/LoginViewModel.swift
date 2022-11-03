@@ -1,15 +1,7 @@
-//
-//  LoginViewModel.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/08/16.
-//
-
-import Foundation
 import RxSwift
 import RxCocoa
 
-class LoginViewModel {
+final class LoginViewModel: ViewModel {
   struct Input {
     let loginButtonTapped = PublishSubject<Void>()
     let forgotButtonTapped = PublishSubject<Void>()
@@ -30,9 +22,9 @@ class LoginViewModel {
     bind()
   }
   
-  let input = Input()
-  let output = Output()
-  let disposeBag = DisposeBag()
+  var input = Input()
+  var output = Output()
+  var disposeBag = DisposeBag()
   
   var emailText: String {
     return input.emailText.value
@@ -43,32 +35,33 @@ class LoginViewModel {
   }
   
   func bind() {
-    /// 비밀번호 찾기, 회원 가입 버튼 클릭 시에 화면전환
+    
+    // 비밀번호 찾기 버튼 클릭 -> PutEmialVC 이동
     input.forgotButtonTapped
       .map { .findPW }
       .bind(to: output.showPutEmailVC)
       .disposed(by: disposeBag)
     
-    /// 회원가입 버튼 클릭 시 화면전환
+    // 회원가입 버튼 클릭 -> PutEmailVC로 이동
     input.signUpButtonTapped
       .map { .signUp }
       .bind(to: output.showPutEmailVC)
       .disposed(by: disposeBag)
     
-    /// 로그인 시도 서버로 요청
+    // 로그인 버튼 클릭 -> 로그인 시도 서버로 요청
     input.loginButtonTapped
       .bind(onNext: { [weak self] in
         self?.loginAPI()
       })
       .disposed(by: disposeBag)
     
-    /// 로그인 버튼 클릭 시 interaction, Animation 조정
+    // 로그인 버튼 클릭 -> Animation 시작
     input.loginButtonTapped
       .bind(to: output.startAnimation)
       .disposed(by: disposeBag)
   }
   
-  func loginAPI() {
+  private func loginAPI() {
     MemberService.LoginAPI(email: self.emailText, password: self.passwordText)
       .subscribe(onNext: { [weak self] response in
         guard let statusCode = response.response?.statusCode else { return }
@@ -96,4 +89,3 @@ class LoginViewModel {
       .disposed(by: disposeBag)
   }
 }
-

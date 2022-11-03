@@ -1,8 +1,9 @@
 import UIKit
 
-import SnapKit
+import Then
+import RangeSeekSlider
 
-final class OnboardingUtilities {
+final class MatchingUtilities {
   static func basicButton(title: String) -> UIButton {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
@@ -28,7 +29,7 @@ final class OnboardingUtilities {
     
     return label
   }
-  
+
   static func separatorLine() -> UIView {
     let view = UIView()
     view.backgroundColor = .idorm_gray_100
@@ -40,35 +41,35 @@ final class OnboardingUtilities {
     let label = UILabel()
     label.text = title
     label.textColor = .idorm_gray_300
-    label.font = .init(name: MyFonts.bold.rawValue, size: 12.0)
+    label.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
     
     return label
   }
   
-  static func infoLabel(_ title: String, isEssential: Bool) -> UILabel {
-    let label = UILabel()
-    label.text = title
-    label.textColor = .idorm_gray_400
-    label.font = .init(name: MyFonts.medium.rawValue, size: 14)
-    
-    if isEssential {
-      let essentialLabel = UILabel()
-      essentialLabel.text = "(필수)"
-      essentialLabel.textColor = .idorm_blue
-      essentialLabel.font = .init(name: MyFonts.medium.rawValue, size: 14)
-      
-      label.addSubview(essentialLabel)
-      essentialLabel.snp.makeConstraints { make in
-        make.centerY.equalToSuperview()
-        make.leading.equalTo(label.snp.trailing).offset(8)
-      }
+  static func slider() -> RangeSeekSlider {
+    return RangeSeekSlider().then {
+      $0.backgroundColor = .white
+      $0.colorBetweenHandles = .idorm_blue
+      $0.tintColor = .idorm_gray_100
+      $0.labelPadding = 6
+      $0.minLabelColor = .black
+      $0.maxLabelColor = .black
+      $0.minLabelFont = .init(name: MyFonts.medium.rawValue, size: 12)!
+      $0.maxLabelFont = .init(name: MyFonts.medium.rawValue, size: 12)!
+      $0.minValue = 20
+      $0.maxValue = 40
+      $0.selectedMaxValue = 30
+      $0.selectedMinValue = 20
+      $0.lineHeight = 11
+      $0.handleImage = UIImage(named: "thumb(Matching)")
+      $0.minDistance = 1
+      $0.enableStep = true
+      $0.selectedHandleDiameterMultiplier = 1.0
     }
-    
-    return label
   }
 }
 
-extension OnboardingUtilities {
+extension MatchingUtilities {
   static func getButtonUpdateHandler() -> UIButton.ConfigurationUpdateHandler {
     let handler: UIButton.ConfigurationUpdateHandler = { button in
       switch button.state {

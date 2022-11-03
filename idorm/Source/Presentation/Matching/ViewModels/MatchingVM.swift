@@ -60,7 +60,6 @@ class MatchingViewModel {
     bind()
   }
   
-  
   func bind() {
     
     // 화면 처음 진입 -> 온보딩 유무 체크 후 PopupVC 보여주기

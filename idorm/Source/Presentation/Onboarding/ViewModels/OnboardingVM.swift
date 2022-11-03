@@ -8,169 +8,160 @@ class OnboardingViewModel: ViewModel {
     let isSelectedGenderButton = PublishSubject<Gender>()
     let isSelectedPeriodButton = PublishSubject<JoinPeriod>()
     let isSelectedHabitButton = PublishSubject<Habit>()
-    let onChangedQueryText = PublishSubject<(QueryList, String)>()
+    let onChangedQueryText = PublishSubject<(OnboardingQueryList, String)>()
     let didTapSkipButton = PublishSubject<FloatyBottomViewType>()
     let didTapConfirmButton = PublishSubject<Void>()
   }
   
   struct Output {
-    let matchingInfo = BehaviorRelay<MatchingInfo?>(value: nil)
+    let matchingInfo = BehaviorRelay<MatchingInfo>(value: MatchingInfo.initialValue())
+    let isEnableConfirmButton = PublishSubject<Bool>()
     let showOnboardingDetailVC = PublishSubject<MatchingInfo>()
     let showTabBarVC = PublishSubject<Void>()
     let resetData = PublishSubject<Void>()
-    
-    let enableConfirmButton = PublishSubject<Bool>()
   }
   
-  /// output.matchinInfo 주입 객체
-  var matchingInfo = MatchingInfo.initialValue()
-  /// ConfirmButton 활성/비활성화 Stream
-  var isEnableConfirmButton: BehaviorRelay<OnboardingVerifyConfirmList>!
-  /// isValidConfirmButton 주입 객체
-  var verifyConfirmButton = OnboardingVerifyConfirmList.initialValue()
+  struct State {
+    let confirmVerifierObserver = BehaviorRelay<OnboardingConfirmVerifier>(value: OnboardingConfirmVerifier.initialValue())
+  }
   
+  var state = State()
   var input = Input()
   var output = Output()
   var disposeBag = DisposeBag()
   
+  var currentMatchingInfo: MatchingInfo { return output.matchingInfo.value }
+  var currentConfirmVerifier: OnboardingConfirmVerifier { return state.confirmVerifierObserver.value }
+  
   init() {
-    inititalTask()
+    mutate()
     bind()
   }
   
-  func inititalTask() {
-    self.verifyConfirmButton = OnboardingVerifyConfirmList(
-      dorm: false,
-      gender: false,
-      period: false,
-      age: false,
-      wakeup: false,
-      cleanup: false,
-      showerTime: false
-    )
-    
-    self.isEnableConfirmButton = BehaviorRelay<OnboardingVerifyConfirmList>(value: self.verifyConfirmButton)
-  }
-  
   // MARK: - Bind
+  
+  func mutate() {
+    
+    // 완료 버튼 활성&비활성화 -> Bool Stream 전달
+    state.confirmVerifierObserver
+      .map {
+        if $0.dorm && $0.period && $0.age && $0.cleanup && $0.gender && $0.showerTime && $0.wakeup {
+          return true
+        } else {
+          return false
+        }
+      }
+      .bind(to: output.isEnableConfirmButton)
+      .disposed(by: disposeBag)
+  }
   
   func bind() {
     
     // 기숙사 버튼 반응 -> (완료 버튼 활성/비활성 & 매칭 정보 전달)
     input.isSelectedDormButton
       .bind(onNext: { [unowned self] dorm in
-        self.matchingInfo.dormNumber = dorm
-        self.output.matchingInfo.accept(self.matchingInfo)
-        self.verifyConfirmButton.dorm = true
-        self.isEnableConfirmButton.accept(self.verifyConfirmButton)
+        var newInfo = self.currentMatchingInfo
+        var newVerifier = self.currentConfirmVerifier
+        newInfo.dormNumber = dorm
+        self.output.matchingInfo.accept(newInfo)
+        newVerifier.dorm = true
+        self.state.confirmVerifierObserver.accept(newVerifier)
       })
       .disposed(by: disposeBag)
     
     // 성별 버튼 반응 -> (완료 버튼 활성/비활성 & 매칭 정보 전달)
     input.isSelectedGenderButton
       .bind(onNext: { [unowned self] gender in
-        self.matchingInfo.gender = gender
-        self.output.matchingInfo.accept(self.matchingInfo)
-        self.verifyConfirmButton.gender = true
-        self.isEnableConfirmButton.accept(self.verifyConfirmButton)
+        var newInfo = self.currentMatchingInfo
+        var newVerifier = self.currentConfirmVerifier
+        newInfo.gender = gender
+        self.output.matchingInfo.accept(newInfo)
+        newVerifier.gender = true
+        self.state.confirmVerifierObserver.accept(newVerifier)
       })
       .disposed(by: disposeBag)
     
     // 기간 버튼 반응 -> (완료 버튼 활성/비활성 & 매칭 정보 전달)
     input.isSelectedPeriodButton
       .bind(onNext: { [unowned self] period in
-        self.matchingInfo.period = period
-        self.output.matchingInfo.accept(self.matchingInfo)
-        self.verifyConfirmButton.period = true
-        self.isEnableConfirmButton.accept(self.verifyConfirmButton)
+        var newInfo = self.currentMatchingInfo
+        var newVerifier = self.currentConfirmVerifier
+        newInfo.period = period
+        self.output.matchingInfo.accept(newInfo)
+        newVerifier.period = true
+        self.state.confirmVerifierObserver.accept(newVerifier)
       })
       .disposed(by: disposeBag)
     
     // 습관 버튼 클릭 -> 매칭 정보 전달
     input.isSelectedHabitButton
       .bind(onNext: { [unowned self] habit in
+        var newInfo = self.currentMatchingInfo
         switch habit {
         case .snoring:
-          self.matchingInfo.snoring.toggle()
+          newInfo.snoring.toggle()
         case .grinding:
-          self.matchingInfo.grinding.toggle()
+          newInfo.grinding.toggle()
         case .smoking:
-          self.matchingInfo.smoke.toggle()
+          newInfo.smoke.toggle()
         case .allowedFood:
-          self.matchingInfo.allowedFood.toggle()
+          newInfo.allowedFood.toggle()
         case .allowedEarphone:
-          self.matchingInfo.earphone.toggle()
+          newInfo.earphone.toggle()
         }
-        self.output.matchingInfo.accept(self.matchingInfo)
+        self.output.matchingInfo.accept(newInfo)
       })
       .disposed(by: disposeBag)
     
     // 질의 응답 반응 -> (완료 버튼 활성/비활성 & 매칭 정보 전달)
     input.onChangedQueryText
       .bind(onNext: { [unowned self] (queryList, contents) in
+        var newInfo = self.currentMatchingInfo
+        var newVerifier = self.currentConfirmVerifier
         switch queryList {
         case .age:
-          self.matchingInfo.age = contents
+          newInfo.age = contents
           if contents == "" {
-            self.verifyConfirmButton.age = false
+            newVerifier.age = false
           } else {
-            self.verifyConfirmButton.age = true
+            newVerifier.age = true
           }
         case .wakeUp:
-          self.matchingInfo.wakeupTime = contents
+          newInfo.wakeupTime = contents
           if contents == "" {
-            self.verifyConfirmButton.wakeup = false
+            newVerifier.wakeup = false
           } else {
-            self.verifyConfirmButton.wakeup = true
+            newVerifier.wakeup = true
           }
         case .cleanUp:
-          self.matchingInfo.cleanUpStatus = contents
+          newInfo.cleanUpStatus = contents
           if contents == "" {
-            self.verifyConfirmButton.cleanup = false
+            newVerifier.cleanup = false
           } else {
-            self.verifyConfirmButton.cleanup = true
+            newVerifier.cleanup = true
           }
         case .chatLink:
-          self.matchingInfo.chatLink = contents
+          newInfo.chatLink = contents
         case .mbti:
-          self.matchingInfo.mbti = contents
+          newInfo.mbti = contents
         case .shower:
-          self.matchingInfo.showerTime = contents
+          newInfo.showerTime = contents
           if contents == "" {
-            self.verifyConfirmButton.showerTime = false
+            newVerifier.showerTime = false
           } else {
-            self.verifyConfirmButton.showerTime = true
+            newVerifier.showerTime = true
           }
         case .wishText:
-          self.matchingInfo.wishText = contents
+          newInfo.wishText = contents
         }
-        self.isEnableConfirmButton.accept(self.verifyConfirmButton)
-        self.output.matchingInfo.accept(self.matchingInfo)
+        self.state.confirmVerifierObserver.accept(newVerifier)
+        self.output.matchingInfo.accept(newInfo)
       })
-      .disposed(by: disposeBag)
-    
-    // 완료 버튼 활성화 비활성화 Stream
-    isEnableConfirmButton
-      .map {
-        if $0.wakeup == true &&
-            $0.cleanup == true &&
-            $0.showerTime == true &&
-            $0.age == true &&
-            $0.dorm == true &&
-            $0.gender == true &&
-            $0.period == true
-        {
-          return true
-        } else {
-          return false
-        }
-      }
-      .bind(to: output.enableConfirmButton)
       .disposed(by: disposeBag)
     
     // 완료 버튼 클릭 -> 온보딩 디테일 VC 보여주기
     input.didTapConfirmButton
-      .map { [unowned self] in self.matchingInfo }
+      .map { [unowned self] in self.currentMatchingInfo }
       .bind(to: output.showOnboardingDetailVC)
       .disposed(by: disposeBag)
     
@@ -193,9 +184,7 @@ class OnboardingViewModel: ViewModel {
   // MARK: - Helpers
   
   private func resetData() {
-    self.matchingInfo = MatchingInfo.initialValue()
-    self.verifyConfirmButton = OnboardingVerifyConfirmList.initialValue()
-    self.isEnableConfirmButton.accept(self.verifyConfirmButton)
-    output.matchingInfo.accept(self.matchingInfo)
+    output.matchingInfo.accept(MatchingInfo.initialValue())
+    state.confirmVerifierObserver.accept(OnboardingConfirmVerifier.initialValue())
   }
 }

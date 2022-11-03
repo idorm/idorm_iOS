@@ -16,8 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     if TokenManager.loadToken() == "" {
       window?.rootViewController = UINavigationController(rootViewController: LoginViewController())
     } else {
-      // 임시
-      window?.rootViewController = UINavigationController(rootViewController: OnboardingViewController(.mainPage_FirstTime))
+      window?.rootViewController = TabBarController()
     }
     window?.makeKeyAndVisible()
   }

@@ -1,10 +1,3 @@
-//
-//  LoginViewController.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/10.
-//
-
 import UIKit
 
 import Then
@@ -12,31 +5,31 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-class LoginViewController: BaseViewController {
+final class LoginViewController: BaseViewController {
   
   // MARK: - Properties
   
-  let loginTitleLabel = UILabel().then {
+  private let loginTitleLabel = UILabel().then {
     $0.font = .init(name: MyFonts.bold.rawValue, size: 24)
     $0.text = "로그인"
   }
   
-  let loginLabel = UILabel().then {
+  private let loginLabel = UILabel().then {
     $0.text = "인천대학교 이메일로 로그인해주세요."
     $0.textColor = .darkGray
     $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
   }
   
-  let idTextField = LoginTextField("이메일").then {
+  private let idTextField = LoginTextField("이메일").then {
     $0.textContentType = .emailAddress
   }
   
-  let pwTextField = LoginTextField("비밀번호").then {
+  private let pwTextField = LoginTextField("비밀번호").then {
     $0.keyboardType = .alphabet
     $0.isSecureTextEntry = true
   }
   
-  let loginButton = UIButton().then {
+  private let loginButton = UIButton().then {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
     container.font = .init(name: MyFonts.medium.rawValue, size: 14)
@@ -48,7 +41,7 @@ class LoginViewController: BaseViewController {
     $0.configuration = config
   }
   
-  let forgotPwButton = UIButton().then {
+  private let forgotPwButton = UIButton().then {
     var config = UIButton.Configuration.plain()
     var container = AttributeContainer()
     container.foregroundColor = UIColor.idorm_gray_300
@@ -58,13 +51,13 @@ class LoginViewController: BaseViewController {
     $0.configuration = config
   }
   
-  let signUpLabel = UILabel().then {
+  private let signUpLabel = UILabel().then {
     $0.text = "아직 계정이 없으신가요?"
     $0.textColor = .idorm_gray_300
     $0.font = .init(name: MyFonts.medium.rawValue, size: FontSize.largeDescription.rawValue)
   }
   
-  let signUpButton = UIButton().then {
+  private let signUpButton = UIButton().then {
     var config = UIButton.Configuration.plain()
     var container = AttributeContainer()
     container.foregroundColor = UIColor.idorm_blue
@@ -75,15 +68,15 @@ class LoginViewController: BaseViewController {
     $0.configuration = config
   }
   
-  let indicator = UIActivityIndicatorView()
+  private let indicator = UIActivityIndicatorView()
   
-  let idormMarkImage = UIImageView(image: UIImage(named: "i dorm Mark"))
-  let inuMarkImage = UIImageView(image: UIImage(named: "INUMark"))
-  var loginStack: UIStackView!
-  var loginTextFieldStack: UIStackView!
-  var signUpStack: UIStackView!
+  private let idormMarkImage = UIImageView(image: UIImage(named: "i dorm Mark"))
+  private let inuMarkImage = UIImageView(image: UIImage(named: "INUMark"))
+  private var loginStack: UIStackView!
+  private var loginTextFieldStack: UIStackView!
+  private var signUpStack: UIStackView!
   
-  let viewModel = LoginViewModel()
+  private let viewModel = LoginViewModel()
   
   //MARK: - LifeCycle
   
@@ -104,6 +97,7 @@ class LoginViewController: BaseViewController {
   
   override func bind() {
     super.bind()
+    
     // ---------------------------------
     // ---------------INPUT-------------
     // ---------------------------------
@@ -139,7 +133,7 @@ class LoginViewController: BaseViewController {
     // --------------OUTPUT-------------
     // ---------------------------------
     
-    /// Register로 화면 이동
+    // Register로 화면 이동
     viewModel.output.showPutEmailVC
       .bind(onNext: { [weak self] type in
         let putEmailVC = PutEmailViewController(type: type)
@@ -147,17 +141,16 @@ class LoginViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    /// 에러 팝업 띄우기
+    // 에러 팝업 띄우기
     viewModel.output.showErrorPopupVC
-      .asDriver(onErrorJustReturn: "")
-      .drive(onNext: { [weak self] mention in
+      .bind(onNext: { [weak self] mention in
         let popupVC = PopupViewController(contents: mention)
         popupVC.modalPresentationStyle = .overFullScreen
         self?.present(popupVC, animated: false)
       })
       .disposed(by: disposeBag)
     
-    /// 로그인 완료 시 토큰 받고 메인화면으로 이동
+    // 로그인 완료 시 토큰 받고 메인화면으로 이동
     viewModel.output.showTabBarVC
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -167,7 +160,7 @@ class LoginViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    /// 애니메이션 시작
+    // 애니메이션 시작
     viewModel.output.startAnimation
       .bind(onNext: { [weak self] in
         self?.indicator.startAnimating()
@@ -175,7 +168,7 @@ class LoginViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    /// 애니메이션 종료
+    // 애니메이션 종료
     viewModel.output.stopAnimation
       .bind(onNext: { [weak self] in
         self?.indicator.stopAnimating()
@@ -277,3 +270,12 @@ class LoginViewController: BaseViewController {
     view.endEditing(true)
   }
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+struct LoginVC_PreView: PreviewProvider {
+  static var previews: some View {
+    LoginViewController().toPreview()
+  }
+}
+#endif
