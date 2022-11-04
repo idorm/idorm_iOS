@@ -23,15 +23,16 @@ class MatchingViewController: BaseViewController {
     $0.tintColor = .idorm_blue
   }
   
-  private let noMatchingImageView = UIImageView(image: UIImage(named: "noMatchingLabel(Matching)"))
+  private let informationImageView = UIImageView()
   private let cancelButton = MatchingUtilities.matchingButton(imageName: "cancel")
   private let messageButton = MatchingUtilities.matchingButton(imageName: "message")
   private let heartButton = MatchingUtilities.matchingButton(imageName: "heart")
   private let backButton = MatchingUtilities.matchingButton(imageName: "back")
   private var buttonStack: UIStackView!
   
-  private lazy var cardStack = SwipeCardStack()
+  private let cardStack = SwipeCardStack()
   private let viewModel = MatchingViewModel()
+  private let loadingIndicator = UIActivityIndicatorView()
   
   // MARK: - LifeCycle
   
@@ -39,15 +40,15 @@ class MatchingViewController: BaseViewController {
     super.viewWillAppear(animated)
     navigationController?.navigationBar.isHidden = true
     tabBarController?.tabBar.isHidden = false
-    
-    // 화면 접속 이벤트
-    viewModel.input.viewWillAppearObserver.onNext(Void())
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
     cardStack.dataSource = self
     cardStack.delegate = self
+    
+    // 화면 접속 이벤트
+    viewModel.input.viewDidLoadObserver.onNext(Void())
   }
   
   // MARK: - Bind
@@ -161,6 +162,7 @@ class MatchingViewController: BaseViewController {
     // 프로필 이미지 만들기 팝업 창 띄우기
     viewModel.output.showFirstPopupVC
       .bind(onNext: { [weak self] in
+        self?.informationImageView.image = UIImage(named: "noMatchingInfomation")
         let matchingPopupVC = MatchingPopupViewController()
         matchingPopupVC.modalPresentationStyle = .overFullScreen
         self?.present(matchingPopupVC, animated: false)
@@ -173,13 +175,40 @@ class MatchingViewController: BaseViewController {
         self.cardStack.reloadData()
       })
       .disposed(by: disposeBag)
+    
+    // 로딩 시작
+    viewModel.output.startLoading
+      .bind(onNext: { [unowned self] in
+        self.loadingIndicator.startAnimating()
+      })
+      .disposed(by: disposeBag)
+    
+    // 로딩 종료
+    viewModel.output.stopLoading
+      .bind(onNext: { [unowned self] in
+        self.loadingIndicator.stopAnimating()
+      })
+      .disposed(by: disposeBag)
+    
+    // 매칭 이미지 뷰 변경
+    viewModel.output.informationImageViewStatus
+      .bind(onNext: { [unowned self] type in
+        let imageName = type.imageName
+        switch type {
+        case .noMatchingCard:
+          self.informationImageView.image = UIImage(named: imageName)
+        case .noMatchingInformation:
+          self.informationImageView.image = UIImage(named: imageName)
+        }
+      })
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Setup
   
   override func setupLayouts() {
     super.setupLayouts()
-    [topRoundedBackgroundView, buttonStack, filterButton, noMatchingImageView, cardStack]
+    [topRoundedBackgroundView, buttonStack, filterButton, informationImageView, cardStack, loadingIndicator]
       .forEach { view.addSubview($0) }
   }
   
@@ -196,6 +225,10 @@ class MatchingViewController: BaseViewController {
     super.setupConstraints()
     let deviceManager = DeviceManager.shared
     
+    loadingIndicator.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+    }
+    
     topRoundedBackgroundView.snp.makeConstraints { make in
       make.top.leading.trailing.equalToSuperview()
     }
@@ -205,14 +238,14 @@ class MatchingViewController: BaseViewController {
       make.trailing.equalToSuperview().inset(24)
     }
     
-    noMatchingImageView.snp.makeConstraints { make in
-      make.top.equalTo(topRoundedBackgroundView.snp.bottom).offset(100)
+    informationImageView.snp.makeConstraints { make in
+      make.centerY.equalTo(cardStack).offset(50)
       make.centerX.equalToSuperview()
     }
     
     if deviceManager.isFourIncheDevices() {
       cardStack.snp.makeConstraints { make in
-        make.leading.trailing.equalToSuperview().inset(16)
+        make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalToSuperview()
         make.height.equalTo(420)
       }
@@ -234,7 +267,7 @@ class MatchingViewController: BaseViewController {
       }
     } else if deviceManager.isFiveInchePlusDevices() {
       cardStack.snp.makeConstraints { make in
-        make.leading.trailing.equalToSuperview().inset(32)
+        make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
         make.height.equalTo(400)
       }
@@ -286,14 +319,14 @@ class MatchingViewController: BaseViewController {
       buttonStack.spacing = 8
       
       cardStack.snp.makeConstraints { make in
-        make.leading.trailing.equalToSuperview().inset(42)
+        make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
         make.height.equalTo(420)
       }
       
       buttonStack.snp.makeConstraints { make in
         make.centerX.equalToSuperview()
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(100)
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(50)
       }
     }
   }

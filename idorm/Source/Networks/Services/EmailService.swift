@@ -1,15 +1,10 @@
-//
-//  EmailService.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/09/07.
-//
-
 import Foundation
+
 import RxSwift
 import Alamofire
 
 final class EmailService {
+  
   /// 이메일 인증 코드 전송 API
   static func registerEmailAPI(email: String) -> Observable<AFDataResponse<Data>> {
     let body: Parameters = [

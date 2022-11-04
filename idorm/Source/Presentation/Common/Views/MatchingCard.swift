@@ -17,7 +17,7 @@ final class MatchingCard: UIView {
   
   private lazy var dormLabel = UILabel().then {
     $0.font = .init(name: MyFonts.bold.rawValue, size: 20)
-    $0.text = myInfo.dormNumber.cardString
+    $0.text = matchingInfo.dormNumber.cardString
     $0.textColor = .white
   }
   
@@ -26,14 +26,14 @@ final class MatchingCard: UIView {
     var container = AttributeContainer()
     container.font = UIFont.init(name: MyFonts.bold.rawValue, size: 12)
     container.foregroundColor = UIColor.white
-    config.attributedTitle = AttributedString(myInfo.period.cardString, attributes: container)
+    config.attributedTitle = AttributedString(matchingInfo.period.cardString, attributes: container)
     config.image = UIImage(named: "Building")
     config.imagePlacement = .leading
     config.imagePadding = 8
     $0.configuration = config
   }
   
-  private let myInfo: MatchingInfo
+  private let matchingInfo: MatchingInfo
   
   private var snoreLabel: UIView!
   private var grindingLabel: UIView!
@@ -48,12 +48,12 @@ final class MatchingCard: UIView {
   
   private var wishTextLabel: UIView!
   
-  private var bottomView: UIView!
+  private var bottomView: MatchingCardBottomView!
   
   // MARK: - LifeCycle
   
   init(myInfo: MatchingInfo) {
-    self.myInfo = myInfo
+    self.matchingInfo = myInfo
     super.init(frame: .zero)
     setupComponents()
     setupLayouts()
@@ -79,7 +79,7 @@ final class MatchingCard: UIView {
     let mbtiLabel = createStringComponent(query: "MBTI")
     
     let wishTextLabel = createWishTextLabel()
-    let bottomView = createBottomView()
+    let bottomView = MatchingCardBottomView(matchingInfo)
     
     self.snoreLabel = snoreLabel
     self.grindingLabel = grindingLabel
@@ -178,7 +178,7 @@ final class MatchingCard: UIView {
   }
 }
 
-// MARK: - Helpers
+// MARK: - UI
 
 extension MatchingCard {
   private func createBoolComponent(query: String) -> UIView {
@@ -198,20 +198,20 @@ extension MatchingCard {
     validLabel.font = .init(name: MyFonts.bold.rawValue, size: 14)
     
     if query == "코골이" {
-      validLabel.textColor = myInfo.snoring ? UIColor.red : UIColor.idorm_blue
-      validLabel.text = myInfo.snoring ? "있음" : "없음"
+      validLabel.textColor = matchingInfo.snoring ? UIColor.red : UIColor.idorm_blue
+      validLabel.text = matchingInfo.snoring ? "있음" : "없음"
     } else if query == "이갈이" {
-      validLabel.textColor = myInfo.grinding ? UIColor.red : UIColor.idorm_blue
-      validLabel.text = myInfo.grinding ? "있음" : "없음"
+      validLabel.textColor = matchingInfo.grinding ? UIColor.red : UIColor.idorm_blue
+      validLabel.text = matchingInfo.grinding ? "있음" : "없음"
     } else if query == "흡연" {
-      validLabel.textColor = myInfo.smoke ? UIColor.red : UIColor.idorm_blue
-      validLabel.text = myInfo.smoke ? "함" : "안함"
+      validLabel.textColor = matchingInfo.smoke ? UIColor.red : UIColor.idorm_blue
+      validLabel.text = matchingInfo.smoke ? "함" : "안함"
     } else if query == "실내음식" {
-      validLabel.textColor = myInfo.allowedFood ? UIColor.idorm_blue : UIColor.red
-      validLabel.text = myInfo.allowedFood ? "가능" : "불가능"
+      validLabel.textColor = matchingInfo.allowedFood ? UIColor.idorm_blue : UIColor.red
+      validLabel.text = matchingInfo.allowedFood ? "가능" : "불가능"
     } else {
-      validLabel.textColor = myInfo.earphone ? UIColor.idorm_blue : UIColor.red
-      validLabel.text = myInfo.earphone ? "가능" : "불가능"
+      validLabel.textColor = matchingInfo.earphone ? UIColor.idorm_blue : UIColor.red
+      validLabel.text = matchingInfo.earphone ? "가능" : "불가능"
     }
     
     let stack = UIStackView(arrangedSubviews: [ queryLabel, validLabel ])
@@ -245,20 +245,20 @@ extension MatchingCard {
     queryLabel.text = query
     queryLabel.textColor = .black
     queryLabel.font = .init(name: MyFonts.bold.rawValue, size: 14)
-    queryLabel.setContentHuggingPriority(.init(rawValue: 251), for: .horizontal)
+    queryLabel.setContentCompressionResistancePriority(.init(751), for: .horizontal)
     
     let contentsLabel = UILabel()
     contentsLabel.font = .init(name: MyFonts.medium.rawValue, size: 14)
     contentsLabel.textColor = .idorm_gray_400
     
     if query == "기상시간" {
-      contentsLabel.text = myInfo.wakeupTime
+      contentsLabel.text = matchingInfo.wakeupTime
     } else if query == "정리정돈" {
-      contentsLabel.text = myInfo.cleanUpStatus
+      contentsLabel.text = matchingInfo.cleanUpStatus
     } else if query == "샤워시간" {
-      contentsLabel.text = myInfo.showerTime
+      contentsLabel.text = matchingInfo.showerTime
     } else if query == "MBTI" {
-      contentsLabel.text = myInfo.mbti
+      contentsLabel.text = matchingInfo.mbti
     }
     
     let stack = UIStackView(arrangedSubviews: [ queryLabel, contentsLabel ])
@@ -287,7 +287,7 @@ extension MatchingCard {
     
     let contentsLabel = UILabel()
     contentsLabel.font = .init(name: MyFonts.medium.rawValue, size: 14)
-    contentsLabel.text = myInfo.wishText
+    contentsLabel.text = matchingInfo.wishText
     contentsLabel.textColor = .idorm_gray_400
     contentsLabel.numberOfLines = 0
     contentsLabel.textAlignment = .left
@@ -300,58 +300,6 @@ extension MatchingCard {
     
     contentsLabel.snp.makeConstraints { make in
       make.edges.equalToSuperview().inset(10)
-    }
-    
-    return view
-  }
-  
-  private func createBottomView() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .white
-    view.layer.borderColor = UIColor.idorm_gray_200.cgColor
-    view.layer.borderWidth = 1
-    
-    let humanImageView = UIImageView(image: UIImage(named: "Human"))
-    
-    let genderLabel = UILabel()
-    genderLabel.text = myInfo.gender == .male ? "남자," : "여자,"
-    genderLabel.font = .init(name: MyFonts.bold.rawValue, size: 12)
-    genderLabel.textColor = .idorm_gray_400
-    
-    let ageLabel = UILabel()
-    ageLabel.text = myInfo.age + " 세"
-    ageLabel.textColor = .darkGray
-    ageLabel.font = .init(name: MyFonts.bold.rawValue, size: 12)
-    
-    let mbtiLabel = UILabel()
-    mbtiLabel.text = myInfo.mbti
-    mbtiLabel.textColor = .idorm_gray_300
-    mbtiLabel.font = .init(name: MyFonts.bold.rawValue, size: 12)
-    
-    let stack = UIStackView(arrangedSubviews: [ genderLabel, ageLabel ])
-    stack.axis = .horizontal
-    stack.spacing = 4
-    
-    [ humanImageView, stack, mbtiLabel ]
-      .forEach { view.addSubview($0) }
-    
-    view.snp.makeConstraints { make in
-      make.height.equalTo(40)
-    }
-    
-    humanImageView.snp.makeConstraints { make in
-      make.centerY.equalToSuperview()
-      make.leading.equalToSuperview().inset(12)
-    }
-    
-    stack.snp.makeConstraints { make in
-      make.leading.equalTo(humanImageView.snp.trailing).offset(8)
-      make.centerY.equalTo(humanImageView)
-    }
-    
-    mbtiLabel.snp.makeConstraints { make in
-      make.trailing.equalToSuperview().inset(26)
-      make.centerY.equalTo(humanImageView)
     }
     
     return view

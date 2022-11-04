@@ -5,25 +5,37 @@ import RxCocoa
 
 final class MatchingViewModel: ViewModel {
   struct Input {
+    // UI
     let cancelButtonObserver = PublishSubject<Void>()
     let backButtonObserver = PublishSubject<Void>()
     let messageButtonObserver = PublishSubject<Void>()
     let heartButtonObserver = PublishSubject<Void>()
     let filterButtonObserver = PublishSubject<Void>()
-    let viewWillAppearObserver = PublishSubject<Void>()
     
+    // LifeCycle
+    let viewDidLoadObserver = PublishSubject<Void>()
+    
+    // Card
     let swipeObserver = PublishSubject<MatchingType>()
     let didEndSwipeObserver = PublishSubject<MatchingSwipeType>()
   }
   
   struct Output {
+    // UI
     let onChangedTopBackgroundColor = PublishSubject<MatchingType>()
     let onChangedTopBackgroundColor_WithTouch = PublishSubject<MatchingType>()
     let drawBackTopBackgroundColor = PublishSubject<Void>()
+    let informationImageViewStatus = PublishSubject<MatchingImageViewType>()
     
+    // Presentation
     let showFliterVC = PublishSubject<Void>()
     let showFirstPopupVC = PublishSubject<Void>()
     
+    // Loading
+    let startLoading = PublishSubject<Void>()
+    let stopLoading = PublishSubject<Void>()
+    
+    // Card
     let reloadCardStack = PublishSubject<Void>()
     let matchingMembers = BehaviorRelay<[MatchingMember]>(value: [])
   }
@@ -36,10 +48,12 @@ final class MatchingViewModel: ViewModel {
     bind()
   }
   
+  // MARK: - Bind
+  
   func bind() {
     
     // 화면 처음 진입 -> 매칭 정보 유무 체크
-    input.viewWillAppearObserver
+    input.viewDidLoadObserver
       .bind(onNext: {
         self.requestMatchingInfoAPI()
       })
@@ -57,13 +71,13 @@ final class MatchingViewModel: ViewModel {
       .disposed(by: disposeBag)
     
     // 취소 버튼 클릭 -> 배경화면 컬러 변경
-    input.heartButtonObserver
+    input.cancelButtonObserver
       .map { MatchingType.cancel }
       .bind(to: output.onChangedTopBackgroundColor_WithTouch)
       .disposed(by: disposeBag)
     
     // 좋아요 버튼 클릭 -> 배경화면 컬러 변경
-    input.cancelButtonObserver
+    input.heartButtonObserver
       .map { MatchingType.heart }
       .bind(to: output.onChangedTopBackgroundColor_WithTouch)
       .disposed(by: disposeBag)
@@ -91,6 +105,7 @@ extension MatchingViewModel {
         default:
           // 매칭 정보가 없을 시에 팝업 창 띄우기
           self.output.showFirstPopupVC.onNext(Void())
+          self.output.informationImageViewStatus.onNext(.noMatchingInformation)
         }
       })
       .disposed(by: disposeBag)
@@ -98,6 +113,7 @@ extension MatchingViewModel {
   
   /// 멤버들의 매칭 정보 불러오기 API
   private func requestMatchingAPI() {
+    self.output.startLoading.onNext(Void())
     MatchingService.matchingAPI()
       .bind(onNext: { [unowned self] response in
         guard let statusCode = response.response?.statusCode else { return }
@@ -120,8 +136,12 @@ extension MatchingViewModel {
         default:
           break
         }
+        self.output.stopLoading.onNext(Void())
         self.output.reloadCardStack.onNext(Void())
+        self.output.informationImageViewStatus.onNext(.noMatchingCard)
       })
       .disposed(by: disposeBag)
   }
+  
+  
 }

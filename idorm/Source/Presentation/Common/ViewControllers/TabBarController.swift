@@ -36,18 +36,18 @@ class TabBarController: UITabBarController {
     tabBar.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMaxXMinYCorner)
     
     homeVC.tabBarItem = returnTabBarItem(text: "홈", imageName: "TabHome")
-    communityVC.tabBarItem = returnTabBarItem(text: "커뮤니티", imageName: "TabCommunity")
-    calandarVC.tabBarItem = returnTabBarItem(text: "캘린더", imageName: "TabCalandar")
+//    communityVC.tabBarItem = returnTabBarItem(text: "커뮤니티", imageName: "TabCommunity")
+//    calandarVC.tabBarItem = returnTabBarItem(text: "캘린더", imageName: "TabCalandar")
     mypageVC.tabBarItem = returnTabBarItem(text: "마이페이지", imageName: "TabMypage")
     matchingVC.tabBarItem = returnTabBarItem(text: "룸메 매칭", imageName: "TabRoommate")
     
     homeVC.navigationBar.tintColor = .black
-    communityVC.navigationBar.tintColor = .black
-    calandarVC.navigationBar.tintColor = .black
+//    communityVC.navigationBar.tintColor = .black
+//    calandarVC.navigationBar.tintColor = .black
     mypageVC.navigationBar.tintColor = .black
     matchingVC.navigationBar.tintColor = .black
     
-    viewControllers = [ homeVC, matchingVC, communityVC, calandarVC, mypageVC ]
+    viewControllers = [ homeVC, matchingVC, mypageVC ]
   }
   
   private func returnTabBarItem(text: String, imageName: String) -> UITabBarItem {
