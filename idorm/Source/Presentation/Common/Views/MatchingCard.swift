@@ -1,10 +1,3 @@
-//
-//  InfoView.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/23.
-//
-
 import UIKit
 
 import SnapKit
@@ -12,7 +5,7 @@ import Then
 import RxSwift
 import RxCocoa
 
-final class MyInfoView: UIView {
+final class MatchingCard: UIView {
   
   // MARK: - Properties
   private lazy var backgroundImageView = UIImageView().then {
@@ -24,7 +17,7 @@ final class MyInfoView: UIView {
   
   private lazy var dormLabel = UILabel().then {
     $0.font = .init(name: MyFonts.bold.rawValue, size: 20)
-    $0.text = myInfo.dormNumber.rawValue
+    $0.text = myInfo.dormNumber.cardString
     $0.textColor = .white
   }
   
@@ -33,7 +26,7 @@ final class MyInfoView: UIView {
     var container = AttributeContainer()
     container.font = UIFont.init(name: MyFonts.bold.rawValue, size: 12)
     container.foregroundColor = UIColor.white
-    config.attributedTitle = AttributedString(myInfo.period.rawValue, attributes: container)
+    config.attributedTitle = AttributedString(myInfo.period.cardString, attributes: container)
     config.image = UIImage(named: "Building")
     config.imagePlacement = .leading
     config.imagePadding = 8
@@ -187,7 +180,7 @@ final class MyInfoView: UIView {
 
 // MARK: - Helpers
 
-extension MyInfoView {
+extension MatchingCard {
   private func createBoolComponent(query: String) -> UIView {
     let view = UIView()
     view.backgroundColor = .white
@@ -348,7 +341,7 @@ extension MyInfoView {
     
     humanImageView.snp.makeConstraints { make in
       make.centerY.equalToSuperview()
-      make.leading.equalToSuperview().inset(26)
+      make.leading.equalToSuperview().inset(12)
     }
     
     stack.snp.makeConstraints { make in

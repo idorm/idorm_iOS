@@ -1,6 +1,6 @@
-enum Gender: String {
-  case male = "남자"
-  case female = "여자"
+enum Gender: String, Codable {
+  case male = "MALE"
+  case female = "FEMALE"
   
   var parsingString: String {
     switch self {
@@ -8,6 +8,13 @@ enum Gender: String {
       return "MALE"
     case .female:
       return "FEMALE"
+    }
+  }
+  
+  var cardString: String {
+    switch self {
+    case .male: return "남자"
+    case .female: return "여자"
     }
   }
 }

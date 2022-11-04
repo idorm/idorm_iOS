@@ -1,54 +1,36 @@
-//
-//  MatchingViewController.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/23.
-//
-
 import UIKit
 
 import SnapKit
 import RxSwift
 import RxCocoa
-import RxAppState
 import DeviceKit
 import Then
+import Shuffle_iOS
 
 class MatchingViewController: BaseViewController {
   
   // MARK: - Properties
   
-  /// 임시 프로퍼티 입니다.
-  let myInfo = MatchingInfo(dormNumber: .no1, period: .period_16, gender: .female, age: "21", snoring: true, grinding: false, smoke: true, allowedFood: false, earphone: true, wakeupTime: "8시", cleanUpStatus: "33", showerTime: "33", mbti: "ISFJ", wishText: "하고싶은 말입니다.", chatLink: nil)
-  lazy var swipeDataModels = [ myInfo, myInfo, myInfo, myInfo, myInfo, myInfo ]
-  lazy var infoView = MyInfoView(myInfo: myInfo)
-  
-  private lazy var filterButton = UIButton().then {
+  private let filterButton = UIButton().then {
     var config = UIButton.Configuration.plain()
     config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
     config.image = UIImage(named: "filter(Matching)")
     $0.configuration = config
   }
   
-  private lazy var topRoundedBackgroundView = UIImageView().then {
+  private let topRoundedBackgroundView = UIImageView().then {
     $0.image = UIImage(named: "topRoundedBackground(Matching)")?.withRenderingMode(.alwaysTemplate)
     $0.tintColor = .idorm_blue
   }
   
-  private lazy var noMatchingImageView = UIImageView(image: UIImage(named: "noMatchingLabel(Matching)"))
-  private lazy var cancelButton = createButton(imageName: "cancel")
-  private lazy var messageButton = createButton(imageName: "message")
-  private lazy var heartButton = createButton(imageName: "heart")
-  private lazy var backButton = createButton(imageName: "back")
+  private let noMatchingImageView = UIImageView(image: UIImage(named: "noMatchingLabel(Matching)"))
+  private let cancelButton = MatchingUtilities.matchingButton(imageName: "cancel")
+  private let messageButton = MatchingUtilities.matchingButton(imageName: "message")
+  private let heartButton = MatchingUtilities.matchingButton(imageName: "heart")
+  private let backButton = MatchingUtilities.matchingButton(imageName: "back")
+  private var buttonStack: UIStackView!
   
-  private lazy var buttonStack = UIStackView(
-    arrangedSubviews: [cancelButton, backButton, messageButton, heartButton]
-  ).then {
-    $0.spacing = 4
-  }
-  
-  private lazy var stackContainer = StackContainerView(viewModel: viewModel)
-  
+  private lazy var cardStack = SwipeCardStack()
   private let viewModel = MatchingViewModel()
   
   // MARK: - LifeCycle
@@ -57,11 +39,15 @@ class MatchingViewController: BaseViewController {
     super.viewWillAppear(animated)
     navigationController?.navigationBar.isHidden = true
     tabBarController?.tabBar.isHidden = false
+    
+    // 화면 접속 이벤트
+    viewModel.input.viewWillAppearObserver.onNext(Void())
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    stackContainer.dataSource = self
+    cardStack.dataSource = self
+    cardStack.delegate = self
   }
   
   // MARK: - Bind
@@ -73,35 +59,36 @@ class MatchingViewController: BaseViewController {
     // --------------INPUT-------------
     // --------------------------------
     
-    // 필터버튼 클릭 (수정 해야 함)
+    // 필터버튼 클릭
     filterButton.rx.tap
       .bind(to: viewModel.input.filterButtonObserver)
       .disposed(by: disposeBag)
     
     // 취소버튼 클릭
     cancelButton.rx.tap
-      .asDriver()
-      .throttle(.seconds(1))
-      .drive(viewModel.input.cancelButtonObserver)
+      .throttle(.seconds(1), scheduler: MainScheduler.instance)
+      .map { [unowned self] in
+        cardStack.swipe(.left, animated: true)
+      }
+      .bind(to: viewModel.input.cancelButtonObserver)
       .disposed(by: disposeBag)
     
     // 하트버튼 클릭
     heartButton.rx.tap
-      .asDriver()
-      .throttle(.seconds(1))
-      .drive(viewModel.input.heartButtonObserver)
+      .throttle(.seconds(1), scheduler: MainScheduler.instance)
+      .map { [unowned self] in
+        cardStack.swipe(.right, animated: true)
+      }
+      .bind(to: viewModel.input.heartButtonObserver)
       .disposed(by: disposeBag)
     
     // 백버튼 클릭
     backButton.rx.tap
       .throttle(.seconds(1), scheduler: MainScheduler.instance)
+      .map { [unowned self] in
+        cardStack.undoLastSwipe(animated: true)
+      }
       .bind(to: viewModel.input.backButtonObserver)
-      .disposed(by: disposeBag)
-    
-    // 화면 처음 진입
-    rx.viewDidLoad
-      .take(1)
-      .bind(to: viewModel.input.viewDidLoadObserver)
       .disposed(by: disposeBag)
     
     // --------------------------------
@@ -179,19 +166,30 @@ class MatchingViewController: BaseViewController {
         self?.present(matchingPopupVC, animated: false)
       })
       .disposed(by: disposeBag)
+    
+    // 카드 스택 뷰 리로드
+    viewModel.output.reloadCardStack
+      .bind(onNext: { [unowned self] in
+        self.cardStack.reloadData()
+      })
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Setup
   
   override func setupLayouts() {
     super.setupLayouts()
-    [topRoundedBackgroundView, buttonStack, filterButton, noMatchingImageView, stackContainer]
+    [topRoundedBackgroundView, buttonStack, filterButton, noMatchingImageView, cardStack]
       .forEach { view.addSubview($0) }
   }
   
   override func setupStyles() {
     super.setupStyles()
     view.backgroundColor = .white
+    
+    let buttonStack = UIStackView(arrangedSubviews: [cancelButton, backButton, messageButton, heartButton])
+    buttonStack.spacing = 4
+    self.buttonStack = buttonStack
   }
   
   override func setupConstraints() {
@@ -213,10 +211,10 @@ class MatchingViewController: BaseViewController {
     }
     
     if deviceManager.isFourIncheDevices() {
-      stackContainer.snp.makeConstraints { make in
+      cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(16)
         make.top.equalToSuperview()
-        make.height.equalTo(400)
+        make.height.equalTo(420)
       }
       
       buttonStack.snp.makeConstraints { make in
@@ -224,10 +222,10 @@ class MatchingViewController: BaseViewController {
         make.centerX.equalToSuperview()
       }
     } else if deviceManager.isFiveIncheDevices() {
-      stackContainer.snp.makeConstraints { make in
+      cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(16)
-        make.height.equalTo(400)
+        make.height.equalTo(420)
       }
 
       buttonStack.snp.makeConstraints { make in
@@ -235,7 +233,7 @@ class MatchingViewController: BaseViewController {
         make.bottom.equalTo(view.safeAreaLayoutGuide).inset(8)
       }
     } else if deviceManager.isFiveInchePlusDevices() {
-      stackContainer.snp.makeConstraints { make in
+      cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(32)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
         make.height.equalTo(400)
@@ -248,10 +246,10 @@ class MatchingViewController: BaseViewController {
     } else if deviceManager.isXSeriesDevices_812() {
       buttonStack.spacing = 8
       
-      stackContainer.snp.makeConstraints { make in
+      cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(400)
+        make.height.equalTo(420)
       }
 
       buttonStack.snp.makeConstraints { make in
@@ -261,10 +259,10 @@ class MatchingViewController: BaseViewController {
     } else if deviceManager.isXSeriesDevices_844() {
       buttonStack.spacing = 8
       
-      stackContainer.snp.makeConstraints { make in
+      cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(400)
+        make.height.equalTo(420)
       }
 
       buttonStack.snp.makeConstraints { make in
@@ -274,10 +272,10 @@ class MatchingViewController: BaseViewController {
     } else if deviceManager.isXSeriesDevices_896() {
       buttonStack.spacing = 8
       
-      stackContainer.snp.makeConstraints { make in
+      cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(400)
+        make.height.equalTo(420)
       }
 
       buttonStack.snp.makeConstraints { make in
@@ -287,10 +285,10 @@ class MatchingViewController: BaseViewController {
     } else {
       buttonStack.spacing = 8
       
-      stackContainer.snp.makeConstraints { make in
+      cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(42)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(400)
+        make.height.equalTo(420)
       }
       
       buttonStack.snp.makeConstraints { make in
@@ -301,47 +299,55 @@ class MatchingViewController: BaseViewController {
   }
 }
 
-// MARK: - 프로퍼티 만들기
+// MARK: - Card Swipe
 
-extension MatchingViewController {
-  func createButton(imageName: String) -> UIButton {
-    var config = UIButton.Configuration.plain()
-    let name = imageName + "(Matching)"
-    let hoveredName = imageName + "Hover(Matching)"
-    config.image = UIImage(named: name)
-    config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-    let button = UIButton(configuration: config)
+extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, UIGestureRecognizerDelegate {
+  func card(from matchingMember: MatchingMember) -> SwipeCard {
+    let matchingInfo = MatchingInfo(dormNumber: matchingMember.dormNum, period: matchingMember.joinPeriod, gender: matchingMember.gender, age: String(matchingMember.age), snoring: matchingMember.isSnoring, grinding: matchingMember.isGrinding, smoke: matchingMember.isSmoking, allowedFood: matchingMember.isAllowedFood, earphone: matchingMember.isWearEarphones, wakeupTime: matchingMember.wakeUpTime, cleanUpStatus: matchingMember.cleanUpStatus, showerTime: matchingMember.showerTime)
+
+    let card = SwipeCard()
+    card.swipeDirections = [.left, .right]
+    card.content = MatchingCard(myInfo: matchingInfo)
+    card.footerHeight = 0
+    card.panGestureRecognizer.addTarget(self, action: #selector(handlePanGesture))
     
-    let handler: UIButton.ConfigurationUpdateHandler = { button in
-      switch button.state {
-      case .highlighted:
-        button.configuration?.image = UIImage(named: hoveredName)
-      default:
-        button.configuration?.image = UIImage(named: name)
-      }
-    }
-    button.configurationUpdateHandler = handler
-    
-    return button
-  }
-}
-
-// MARK: - SwipeCard Helpers
-
-extension MatchingViewController: SwipeCardsDataSource {
-  func numberOfCardsToShow() -> Int {
-    return swipeDataModels.count
-  }
-  
-  func emptyView() -> UIView? {
-    return noMatchingImageView
-  }
-  
-  func card(at index: Int) -> SwipeCardView {
-    let card = SwipeCardView(myInfo: swipeDataModels[index], viewModel: viewModel)
     return card
   }
+  
+  func cardStack(_ cardStack: Shuffle_iOS.SwipeCardStack, cardForIndexAt index: Int) -> Shuffle_iOS.SwipeCard {
+    return card(from: viewModel.output.matchingMembers.value[index])
+  }
+  
+  func numberOfCards(in cardStack: Shuffle_iOS.SwipeCardStack) -> Int {
+    return viewModel.output.matchingMembers.value.count
+  }
+  
+  func cardStack(_ cardStack: SwipeCardStack, didSwipeCardAt index: Int, with direction: SwipeDirection) {
+    
+  }
+  
+  @objc private func handlePanGesture(sender: UIPanGestureRecognizer) {
+    let card = sender.view as! SwipeCard
+    let velocity = sender.velocity(in: card)
+    
+    if abs(velocity.x) > abs(velocity.y) {
+      if velocity.x < 0 {
+        // 취소 스와이프 감지
+        viewModel.input.swipeObserver.onNext(.cancel)
+      } else {
+        // 좋아요 스와이프 감지
+        viewModel.input.swipeObserver.onNext(.heart)
+      }
+    }
+    
+    if sender.state == .ended {
+      // 스와이프 종료 이벤트
+      viewModel.input.didEndSwipeObserver.onNext(.none)
+    }
+  }
 }
+
+// MARK: - Preview
 
 #if canImport(SwiftUI) && DEBUG
 import SwiftUI

@@ -1,10 +1,3 @@
-//
-//  AuthViewController.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/15.
-//
-
 import UIKit
 
 import SnapKit
@@ -150,3 +143,14 @@ class AuthViewController: BaseViewController {
     }
   }
 }
+
+// MARK: - Preview
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+struct AuthVC_PreView: PreviewProvider {
+  static var previews: some View {
+    AuthViewController().toPreview()
+  }
+}
+#endif 

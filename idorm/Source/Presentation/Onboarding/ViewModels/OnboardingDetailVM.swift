@@ -49,7 +49,6 @@ class OnboardingDetailViewModel {
       .subscribe(onNext: { [weak self] response in
         self?.output.stopAnimation.onNext(Void())
         guard let statusCode = response.response?.statusCode else { fatalError("Status Code is missing") }
-        print(statusCode)
         switch statusCode {
         case 200:
           self?.output.showTabBarVC.onNext(Void())

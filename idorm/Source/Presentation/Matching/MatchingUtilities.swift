@@ -87,3 +87,26 @@ extension MatchingUtilities {
     return handler
   }
 }
+
+extension MatchingUtilities {
+  static func matchingButton(imageName: String) -> UIButton {
+    var config = UIButton.Configuration.plain()
+    let name = imageName + "(Matching)"
+    let hoveredName = imageName + "Hover(Matching)"
+    config.image = UIImage(named: name)
+    config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+    let button = UIButton(configuration: config)
+    
+    let handler: UIButton.ConfigurationUpdateHandler = { button in
+      switch button.state {
+      case .highlighted:
+        button.configuration?.image = UIImage(named: hoveredName)
+      default:
+        button.configuration?.image = UIImage(named: name)
+      }
+    }
+    button.configurationUpdateHandler = handler
+    
+    return button
+  }
+}

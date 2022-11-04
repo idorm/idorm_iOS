@@ -27,7 +27,7 @@ final class OnboardingDetailViewController: BaseViewController {
   }()
   
   private lazy var indicator = UIActivityIndicatorView()
-  private lazy var myInfoView = MyInfoView(myInfo: matchingInfo)
+  private lazy var myInfoView = MatchingCard(myInfo: matchingInfo)
   
   private var viewModel: OnboardingDetailViewModel!
   let matchingInfo: MatchingInfo
