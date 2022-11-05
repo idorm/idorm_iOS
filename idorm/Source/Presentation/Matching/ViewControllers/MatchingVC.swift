@@ -56,9 +56,7 @@ class MatchingViewController: BaseViewController {
   override func bind() {
     super.bind()
     
-    // --------------------------------
-    // --------------INPUT-------------
-    // --------------------------------
+    // MARK: - Input
     
     // 필터버튼 클릭
     filterButton.rx.tap
@@ -92,9 +90,7 @@ class MatchingViewController: BaseViewController {
       .bind(to: viewModel.input.backButtonObserver)
       .disposed(by: disposeBag)
     
-    // --------------------------------
-    // --------------OUTPUT------------
-    // --------------------------------
+    // MARK: - Output
     
     // 백그라운드 컬러 기본 컬러로 다시 바꾸기
     viewModel.output.drawBackTopBackgroundColor
@@ -126,8 +122,23 @@ class MatchingViewController: BaseViewController {
     viewModel.output.showFliterVC
       .bind(onNext: { [weak self] in
         guard let self = self else { return }
-        let matchingFilterVC = MatchingFilterViewController()
-        self.navigationController?.pushViewController(matchingFilterVC, animated: true)
+        let viewController = MatchingFilterViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+        
+        // 선택 초기화 -> POP 필터VC -> 카드 다시 요청
+        viewController.viewModel.output.requestCards
+          .take(1)
+          .bind(onNext: {
+            self.viewModel.requestMatchingAPI()
+          })
+          .disposed(by: self.disposeBag)
+        
+        // 필터링 완료 -> POP 필터VC -> 필터링 카드 요청
+        viewController.viewModel.output.requestFilteredCards
+          .take(1)
+          .bind(onNext: {
+          })
+          .disposed(by: self.disposeBag)
       })
       .disposed(by: disposeBag)
     
@@ -182,7 +193,7 @@ class MatchingViewController: BaseViewController {
         self.loadingIndicator.startAnimating()
       })
       .disposed(by: disposeBag)
-    
+
     // 로딩 종료
     viewModel.output.stopLoading
       .bind(onNext: { [unowned self] in
@@ -356,7 +367,13 @@ extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelega
   }
   
   func cardStack(_ cardStack: SwipeCardStack, didSwipeCardAt index: Int, with direction: SwipeDirection) {
-    
+    let card = viewModel.output.matchingMembers.value[index]
+    let memberId = card.memberId
+    switch direction {
+    case .left: viewModel.input.dislikeMemberObserver.onNext(memberId)
+    case .right: viewModel.input.likeMemberObserver.onNext(memberId)
+    default: break
+    }
   }
   
   @objc private func handlePanGesture(sender: UIPanGestureRecognizer) {

@@ -1,12 +1,6 @@
-//
-//  MyLikeRoommateCollectionVIewCell.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/30.
-//
+import UIKit
 
 import SnapKit
-import UIKit
 
 class MyLikeRoommateCollectionViewCell: UICollectionViewCell {
   // MARK: - Properties

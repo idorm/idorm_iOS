@@ -12,7 +12,7 @@ final class MatchingFilterViewController: BaseViewController {
   private let scrollView = UIScrollView()
   private let contentView = UIView()
   private let floatyBottomView = FloatyBottomView(.filter)
-  private let viewModel = MatchingFilterViewModel()
+  let viewModel = MatchingFilterViewModel()
   private let matchingFilterShared = MatchingFilterStates.shared
   
   // MARK: - Dorm
@@ -185,7 +185,7 @@ final class MatchingFilterViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     // 데이터 초기화 후 뒤로가기
-    viewModel.output.resetFilter
+    viewModel.output.popVC
       .bind(onNext: { [unowned self] in
         self.navigationController?.popViewController(animated: true)
       })

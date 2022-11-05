@@ -3,6 +3,7 @@ import RxCocoa
 
 final class MatchingFilterViewModel: ViewModel {
   struct Input {
+    // UI
     let skipButtonTapped = PublishSubject<Void>()
     let confirmButtonTapped = PublishSubject<Void>()
     let isSelectedDormButton = PublishSubject<Dormitory>()
@@ -12,8 +13,10 @@ final class MatchingFilterViewModel: ViewModel {
   }
   
   struct Output {
-    let resetFilter = PublishSubject<Void>()
+    let popVC = PublishSubject<Void>()
     let isEnableConfirmButton = PublishSubject<Bool>()
+    let requestCards = PublishSubject<Void>()
+    let requestFilteredCards = PublishSubject<Void>()
   }
   
   struct State {
@@ -49,18 +52,31 @@ final class MatchingFilterViewModel: ViewModel {
       }
       .bind(to: output.isEnableConfirmButton)
       .disposed(by: disposeBag)
+    
+    input.skipButtonTapped
+      .bind(to: output.requestCards)
+      .disposed(by: disposeBag)
   }
   
   func bind() {
     
     // 선택 초기화 버튼 -> 뒤로 가기 & 매칭 필터 정보 초기화
     input.skipButtonTapped
-      .map { [unowned self] in
-        matchingFilterShared.matchingFilterObserver.accept(nil)
-      }
-      .bind(to: output.resetFilter)
+      .bind(onNext: { [unowned self] in
+        self.matchingFilterShared.matchingFilterObserver.accept(nil)
+        self.output.requestCards.onNext(Void())
+        self.output.popVC.onNext(Void())
+      })
       .disposed(by: disposeBag)
     
+    // 필터링 완료 버튼 이벤트 -> 뒤로가기 & 필터 매칭 카드 요청
+    input.confirmButtonTapped
+      .bind(onNext: { [unowned self] in
+        self.output.popVC.onNext(Void())
+        self.output.requestFilteredCards.onNext(Void())
+      })
+      .disposed(by: disposeBag)
+
     // 기숙사 버튼 이벤트 -> 매칭필터 정보 전달 & 필터링 버튼 드라이버 전달
     input.isSelectedDormButton
       .bind(onNext: { [unowned self] dorm in

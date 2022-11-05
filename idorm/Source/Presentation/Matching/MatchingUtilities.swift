@@ -4,6 +4,9 @@ import Then
 import RangeSeekSlider
 
 final class MatchingUtilities {
+  
+  // MARK: - MatchingFilterVC
+  
   static func basicButton(title: String) -> UIButton {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
@@ -87,6 +90,8 @@ extension MatchingUtilities {
     return handler
   }
 }
+
+// MARK: - MatchingVC
 
 extension MatchingUtilities {
   static func matchingButton(imageName: String) -> UIButton {

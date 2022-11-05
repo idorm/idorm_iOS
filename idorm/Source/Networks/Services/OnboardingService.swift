@@ -26,12 +26,12 @@ final class OnboardingService {
     ]
     
     let url = OnboardingServerConstants.mathcingInfoURL
-    return APIService.load(url, httpMethod: .post, body: body)
+    return APIService.load(url, httpMethod: .post, body: body, encoding: .json)
   }
   
   /// 매칭 정보 단건 조회
   static func matchingInfoAPI_Get() -> Observable<AFDataResponse<Data>> {
     let url = OnboardingServerConstants.mathcingInfoURL
-    return APIService.load(url, httpMethod: .get, body: nil)
+    return APIService.load(url, httpMethod: .get, body: nil, encoding: .json)
   }
 }

@@ -1,11 +1,5 @@
-//
-//  APIService.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/09/06.
-//
-
 import Foundation
+
 import RxSwift
 import RxCocoa
 import Alamofire
@@ -16,15 +10,27 @@ enum ServerError: Error {
   case errorMessage
 }
 
+enum Encoding {
+  case json
+  case query
+}
+
 class APIService {
-  static func load(_ url: URLConvertible, httpMethod: HTTPMethod, body: Parameters?) -> Observable<AFDataResponse<Data>> {
+  static func load(_ url: URLConvertible, httpMethod: HTTPMethod, body: Parameters?, encoding: Encoding) -> Observable<AFDataResponse<Data>> {
     return Observable.create { observer in
       let header: HTTPHeaders = [
         "Content-Type": "application/json",
         "X-AUTH-TOKEN": TokenManager.loadToken()
       ]
-      let request = AF.request(url, method: httpMethod, parameters: body, encoding: JSONEncoding.default, headers: header)
-         .responseData { response in
+      let request: DataRequest
+      if encoding == .query {
+        request = AF.request(url, method: httpMethod, parameters: body, encoding: JSONEncoding.default, headers: header)
+      } else {
+        request = AF.request(url, method: httpMethod, parameters: body, encoding: URLEncoding.queryString, headers: header)
+      }
+      
+      request
+        .responseData { response in
           observer.onNext(response)
         }
       return Disposables.create {

@@ -12,7 +12,7 @@ final class EmailService {
     ]
     
     let url = EmailServerConstants.emailAuthenticationURL
-    return APIService.load(url, httpMethod: .post, body: body)
+    return APIService.load(url, httpMethod: .post, body: body, encoding: .json)
   }
   
   static func passwordEmailAPI(email: String) -> Observable<AFDataResponse<Data>> {
@@ -21,7 +21,7 @@ final class EmailService {
     ]
     
     let url = EmailServerConstants.emailAuthentication_PasswordURL
-    return APIService.load(url, httpMethod: .post, body: body)
+    return APIService.load(url, httpMethod: .post, body: body, encoding: .json)
   }
   
   /// 이메일 코드 검증 API
@@ -33,10 +33,10 @@ final class EmailService {
     
     if type == .findPW {
       let url = EmailServerConstants.verifyEmailCode_PasswordURL + "/\(path)"
-      return APIService.load(url, httpMethod: .post, body: body)
+      return APIService.load(url, httpMethod: .post, body: body, encoding: .json)
     } else {
       let url = EmailServerConstants.verifyEmailCodeURL + "/\(path)"
-      return APIService.load(url, httpMethod: .post, body: body)
+      return APIService.load(url, httpMethod: .post, body: body, encoding: .json)
     }
   }
 }
