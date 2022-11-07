@@ -26,11 +26,36 @@ final class MyPageViewController: BaseViewController {
     setupScrollView()
     super.viewDidLoad()
   }
-
+  
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     navigationController?.navigationBar.isHidden = false
     tabBarController?.tabBar.isHidden = false
+    
+    let navigationBarAppearance = AppearanceManager.navigationAppearance(from: .idorm_blue, shadow: false)
+    navigationController?.navigationBar.standardAppearance = navigationBarAppearance
+    navigationController?.navigationBar.scrollEdgeAppearance = navigationBarAppearance
+    navigationController?.navigationBar.compactAppearance = navigationBarAppearance
+    
+    let tabBarAppearance = AppearanceManager.tabbarAppearance(from: .idorm_gray_100)
+    tabBarController?.tabBar.standardAppearance = tabBarAppearance
+    tabBarController?.tabBar.scrollEdgeAppearance = tabBarAppearance
+    
+    // 화면 접근시 이벤트 방출
+    viewModel.input.viewWillAppearObserver.onNext(Void())
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    
+    let navigationBarAppearance = AppearanceManager.navigationAppearance(from: .white, shadow: false)
+    navigationController?.navigationBar.standardAppearance = navigationBarAppearance
+    navigationController?.navigationBar.scrollEdgeAppearance = navigationBarAppearance
+    navigationController?.navigationBar.compactAppearance = navigationBarAppearance
+    
+    let tabBarAppearance = AppearanceManager.tabbarAppearance(from: .white)
+    tabBarController?.tabBar.standardAppearance = tabBarAppearance
+    tabBarController?.tabBar.scrollEdgeAppearance = tabBarAppearance
   }
   
   // MARK: - Bind
@@ -38,7 +63,41 @@ final class MyPageViewController: BaseViewController {
   override func bind() {
     super.bind()
     
+    // MARK: - Input
     
+    // 설정 버튼 클릭 이벤트
+    gearButton.rx.tap
+      .bind(to: viewModel.input.gearButtonTapped)
+      .disposed(by: disposeBag)
+
+    // 공유 버튼 토글
+    matchingContainerView.shareButton.rx.tap
+      .throttle(.seconds(1), scheduler: MainScheduler.instance)
+      .map { [unowned self] in
+        self.matchingContainerView.shareButton.isSelected.toggle()
+        return self.matchingContainerView.shareButton.isSelected
+      }
+      .bind(to: viewModel.input.shareButtonTapped)
+      .disposed(by: disposeBag)
+    
+    // MARK: - Output
+    
+    // 내 정보 관리 페이지로 이동
+    viewModel.output.pushManageMyInfoVC
+      .bind(onNext: { [unowned self] in
+        let manageMyInfoVC = ManageMyInfoViewController()
+        manageMyInfoVC.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(manageMyInfoVC, animated: true)
+      })
+      .disposed(by: disposeBag)
+    
+    // 내 멤버 조회 완료 후 UI 업데이트
+    MemberInfomationState.shared.currentMemberInfomation
+      .bind(onNext: { [unowned self] memberInfo in
+        let nickname = memberInfo.nickname
+        self.topProfileView.nicknameLabel.text = nickname
+      })
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Setup
@@ -56,30 +115,12 @@ final class MyPageViewController: BaseViewController {
   override func setupStyles() {
     super.setupStyles()
     
+    view.backgroundColor = .white
     let gearButton = UIButton()
     gearButton.setImage(UIImage(named: "gear"), for: .normal)
     self.gearButton = gearButton
     
-    view.backgroundColor = .white
     navigationItem.rightBarButtonItem = UIBarButtonItem(customView: gearButton)
-    
-    // MARK: - NavigationBarAppearance
-    let navigationBarAppearance = UINavigationBarAppearance()
-    navigationBarAppearance.backgroundColor = .idorm_blue
-    navigationBarAppearance.shadowImage = UIImage()
-    navigationBarAppearance.shadowColor = .clear
-    navigationController?.navigationBar.standardAppearance = navigationBarAppearance
-    navigationController?.navigationBar.scrollEdgeAppearance = navigationBarAppearance
-    
-    // MARK: - TabBarAppearance
-    let appearance = UITabBarAppearance()
-    appearance.configureWithOpaqueBackground()
-    appearance.backgroundColor = .idorm_gray_100
-    appearance.backgroundImage = UIImage()
-    appearance.shadowImage = UIImage()
-    appearance.shadowColor = .clear
-    tabBarController?.tabBar.standardAppearance = appearance
-    tabBarController?.tabBar.scrollEdgeAppearance = appearance
   }
   
   override func setupLayouts() {
@@ -101,7 +142,8 @@ final class MyPageViewController: BaseViewController {
     
     contentView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
-      make.width.equalTo(view.frame.width)
+      make.width.equalTo(scrollView.snp.width)
+      make.height.equalTo(scrollView.snp.height)
     }
     
     topProfileView.snp.makeConstraints { make in
@@ -116,7 +158,7 @@ final class MyPageViewController: BaseViewController {
     
     lionImageView.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+      make.bottom.equalToSuperview()
     }
   }
 }

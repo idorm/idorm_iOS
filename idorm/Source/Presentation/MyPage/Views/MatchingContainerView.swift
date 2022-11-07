@@ -27,6 +27,7 @@ final class MatchingContainerView: UIView {
         button.configuration?.image = #imageLiteral(resourceName: "toggleHover(Matching)")
       default:
         button.configuration?.image = UIImage(named: "toggle(Matching)")
+        button.configuration?.baseBackgroundColor = .clear
       }
     }
     $0.configuration = config

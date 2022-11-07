@@ -1,13 +1,7 @@
-//
-//  RegisterTextField.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/09/19.
-//
-
 import UIKit
 
 final class RegisterTextField: UITextField {
+  
   // MARK: - Init
   
   init(_ title: String) {

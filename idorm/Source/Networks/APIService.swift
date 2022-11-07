@@ -23,15 +23,19 @@ class APIService {
         "X-AUTH-TOKEN": TokenManager.loadToken()
       ]
       let request: DataRequest
-      if encoding == .query {
+      if encoding == .json {
         request = AF.request(url, method: httpMethod, parameters: body, encoding: JSONEncoding.default, headers: header)
       } else {
         request = AF.request(url, method: httpMethod, parameters: body, encoding: URLEncoding.queryString, headers: header)
       }
       
-      request
-        .responseData { response in
-          observer.onNext(response)
+      DispatchQueue.global().async {
+        request
+          .responseData { response in
+            DispatchQueue.main.async {
+              observer.onNext(response)
+            }
+          }
         }
       return Disposables.create {
         request.cancel()

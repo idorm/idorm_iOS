@@ -7,13 +7,13 @@ final class TopProfileView: UIView {
   
   // MARK: - Properties
   
-  private let nicknameLabel = UILabel().then {
+  let nicknameLabel = UILabel().then {
     $0.text = "닉네임닉네임닉네임"
     $0.textColor = .idorm_gray_100
     $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
   }
   
-  private let profileImageView = UIImageView(image: UIImage(named: "myProfileImage(MyPage)"))
+  let profileImageView = UIImageView(image: UIImage(named: "myProfileImage(MyPage)"))
   
   // MARK: - LifeCycle
   

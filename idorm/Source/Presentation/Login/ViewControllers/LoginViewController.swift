@@ -238,7 +238,7 @@ final class LoginViewController: BaseViewController {
     }
     
     loginTextFieldStack.snp.makeConstraints { make in
-      make.centerY.equalToSuperview().offset(-36)
+      make.centerY.equalToSuperview().offset(-26)
       make.leading.trailing.equalToSuperview().inset(36)
     }
     

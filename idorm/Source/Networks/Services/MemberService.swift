@@ -34,4 +34,21 @@ final class MemberService {
     let url = MemberServerConstants.changePasswordURL
     return APIService.load(url, httpMethod: .patch, body: body, encoding: .json)
   }
+  
+  /// 멤버 닉네임 변경 API
+  static func changeNicknameAPI(from nickname: String) ->
+  Observable<AFDataResponse<Data>> {
+    let url = MemberServerConstants.changeNicknameURL
+    let body: Parameters = [
+      "nickname": nickname
+    ]
+    
+    return APIService.load(url, httpMethod: .patch, body: body, encoding: .json)
+  }
+  
+  /// 멤버 정보 단건 조회
+  static func memberAPI() -> Observable<AFDataResponse<Data>> {
+    let url = MemberServerConstants.memberURL
+    return APIService.load(url, httpMethod: .get, body: nil, encoding: .json)
+  }
 }

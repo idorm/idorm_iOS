@@ -84,7 +84,7 @@ final class OnboardingViewController: BaseViewController {
   private let mbtiTextField = OnboardingTextField(placeholder: "입력")
   
   // MARK: - OpenChat
-  private let chatInfoLabel = OnboardingUtilities.infoLabel("룸메와 연락을 위한 개인 오픈채팅 링크를 알려주세요.", isEssential: false)
+  private let chatInfoLabel = OnboardingUtilities.infoLabel("룸메와 연락을 위한 개인 오픈채팅 링크를 알려주세요.", isEssential: true)
   private let chatTextField = OnboardingTextField(placeholder: "입력")
   
   // MARK: - WishText
@@ -102,12 +102,12 @@ final class OnboardingViewController: BaseViewController {
     $0.backgroundColor = .clear
     $0.textContainerInset = UIEdgeInsets(top: 15, left: 9, bottom: 15, right: 9)
   }
-  
+
   private let letterNumLabel = UILabel().then {
     $0.textColor = .idorm_gray_300
     $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
   }
-  
+
   // MARK: - LifeCycle
   
   override func viewDidLoad() {
@@ -306,19 +306,8 @@ final class OnboardingViewController: BaseViewController {
       make.height.equalTo(50)
     }
     
-    mbtiInfoLabel.snp.makeConstraints { make in
-      make.leading.equalToSuperview().inset(25)
-      make.top.equalTo(showerTextField.snp.bottom).offset(32)
-    }
-    
-    mbtiTextField.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview().inset(25)
-      make.top.equalTo(mbtiInfoLabel.snp.bottom).offset(8)
-      make.height.equalTo(50)
-    }
-    
     chatInfoLabel.snp.makeConstraints { make in
-      make.top.equalTo(mbtiTextField.snp.bottom).offset(32)
+      make.top.equalTo(showerTextField.snp.bottom).offset(32)
       make.leading.equalToSuperview().inset(25)
     }
     
@@ -328,9 +317,20 @@ final class OnboardingViewController: BaseViewController {
       make.height.equalTo(50)
     }
     
-    wishInfoLabel.snp.makeConstraints { make in
+    mbtiInfoLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(25)
       make.top.equalTo(chatTextField.snp.bottom).offset(32)
+    }
+    
+    mbtiTextField.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview().inset(25)
+      make.top.equalTo(mbtiInfoLabel.snp.bottom).offset(8)
+      make.height.equalTo(50)
+    }
+    
+    wishInfoLabel.snp.makeConstraints { make in
+      make.leading.equalToSuperview().inset(25)
+      make.top.equalTo(mbtiTextField.snp.bottom).offset(32)
     }
     
     wishTextView.snp.makeConstraints { make in

@@ -1,198 +1,199 @@
-//
-//  ManageMyInfoViewController.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/08/28.
-//
-
 import UIKit
+
+import Then
 import RxSwift
 import RxCocoa
 import RxGesture
 import SnapKit
 
-class ManageMyInfoViewController: UIViewController {
+final class ManageMyInfoViewController: BaseViewController {
+  
   // MARK: - Properties
-  lazy var scrollView: UIScrollView = {
-    let sv = UIScrollView()
-    sv.bounces = false
-    
-    return sv
-  }()
   
-  lazy var contentsView: UIView = {
-    let view = UIView()
-    view.backgroundColor = .white
-    
-    return view
-  }()
+  private var scrollView: UIScrollView!
+  private var contentView: UIView!
   
-  lazy var separatorLine1: UIView = {
-    let line = UIView()
-    line.backgroundColor = .idorm_gray_100
-    
-    return line
-  }()
+  private let profileImage = UIImageView(image: UIImage(named: "myProfileImage(MyPage)"))
   
-  lazy var separatorLine2: UIView = {
-    let line = UIView()
-    line.backgroundColor = .idorm_gray_100
-    
-    return line
-  }()
+  private var nickNameView: ManageMyInfoView!
+  private var changePasswordView: ManageMyInfoView!
+  private var emailView: ManageMyInfoView!
+  private var versionView: ManageMyInfoView!
   
-  lazy var separatorLine3: UIView = {
-    let line = UIView()
-    line.backgroundColor = .idorm_gray_100
-    
-    return line
-  }()
+  private var separatorLine1: UIView!
+  private var separatorLine2: UIView!
   
-  lazy var profileImage = UIImageView(image: UIImage(named: "myProfileImage(MyPage)"))
-  
-  lazy var nickNameView = EachOfManageMyInfoView(type: .both(description: "닉네임닉네임"), title: "닉네임")
-  lazy var changePasswordView = EachOfManageMyInfoView(type: .onlyArrow, title: "비밀번호 변경")
-  lazy var setupAlarmView = EachOfManageMyInfoView(type: .onlyArrow, title: "알림 설정")
-  lazy var emailView = EachOfManageMyInfoView(type: .onlyDescription(description: "asdf@inu.ac.kr"), title: "이메일")
-  
-  lazy var acceptTheTermView = EachOfManageMyInfoView(type: .onlyArrow, title: "서비스 약관 동의")
-  lazy var versionView = EachOfManageMyInfoView(type: .onlyDescription(description: "1.0.0"), title: "버전정보")
-  
-  lazy var withDrawLabel: UILabel = {
-    let label = UILabel()
-    label.text = "회원 탈퇴"
-    label.font = .init(name: MyFonts.regular.rawValue, size: 14)
-    label.textColor = .idorm_gray_300
-    
-    return label
-  }()
-  
-  let disposeBag = DisposeBag()
-  let viewModel = ManageMyInfoViewModel()
-  
-  // MARK: - LifeCycle
-  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    bind()
+  private let withDrawLabel = UILabel().then {
+    $0.text = "회원 탈퇴"
+    $0.font = .init(name: MyFonts.regular.rawValue, size: 14)
+    $0.textColor = .idorm_gray_300
   }
   
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+  private let viewModel = ManageMyInfoViewModel()
+  
+  // MARK: - LifeCycle
+  
+  override func viewDidLoad() {
+    setupScrollView()
+    setupComponents()
+    super.viewDidLoad()
   }
   
   // MARK: - Bind
-  func bind() {
-    // --------------------------------
-    // --------------INPUT-------------
-    // --------------------------------
-    rx.viewDidLoad
-      .bind(to: viewModel.input.viewDidLoad)
+  
+  override func bind() {
+    super.bind()
+    
+    // MARK: - Input
+    
+    // 화면 접속 시 UI 업데이트
+    Observable.just(Void())
+      .bind(onNext: { [unowned self] in
+        self.updateUI()
+      })
       .disposed(by: disposeBag)
     
-    rx.viewWillAppear
+    // 닉네임 버튼 클릭 이벤트
+    nickNameView.rx.tapGesture()
       .map { _ in Void() }
-      .bind(to: viewModel.input.viewWillAppear)
+      .bind(to: viewModel.input.nicknameButtonTapped)
       .disposed(by: disposeBag)
     
-    profileImage.rx.tapGesture()
-      .skip(1)
-      .map { _ in Void() }
-      .bind(to: viewModel.input.profileImageTapped)
+    // MARK: - Output
+    
+    // ChangeNickNameVC 보여주기
+    viewModel.output.showChangeNicknameVC
+      .bind(onNext: { [weak self] in
+        let changeNicknameVC = ChangeNicknameViewController()
+        self?.navigationController?.pushViewController(changeNicknameVC, animated: true)
+      })
       .disposed(by: disposeBag)
     
-    // --------------------------------
-    // -------------OUTPUT-------------
-    // --------------------------------
-    viewModel.output.configureUI
-      .asDriver(onErrorJustReturn: Void())
-      .drive(onNext: { [weak self] in
-        self?.configureUI()
+    // 멤버 정보 변경되면 UI 업데이트
+    MemberInfomationState.shared.currentMemberInfomation
+      .bind(onNext: { [unowned self] memberInfo in
+        self.nickNameView.descriptionLabel.text = memberInfo.nickname
       })
       .disposed(by: disposeBag)
   }
   
-  // MARK: - Helpers
-  func configureUI() {
-    self.navigationItem.title = "내 정보 관리"
-    self.view.backgroundColor = .white
+  // MARK: - Setup
+  
+  private func setupScrollView() {
+    let scrollView = UIScrollView()
+    scrollView.contentInsetAdjustmentBehavior = .never
+    self.scrollView = scrollView
+    
+    let contentView = UIView()
+    contentView.backgroundColor = .white
+    self.contentView = contentView
+  }
+  
+  private func setupComponents() {
+    self.nickNameView = ManageMyInfoView(type: .both(description: "닉네임닉네임"), title: "닉네임")
+    self.changePasswordView = ManageMyInfoView(type: .onlyArrow, title: "비밀번호 변경")
+    self.emailView = ManageMyInfoView(type: .onlyDescription(description: "asdf@inu.ac.kr"), title: "이메일")
+    self.versionView = ManageMyInfoView(type: .onlyDescription(description: "1.0.0"), title: "버전정보")
+    
+    self.separatorLine1 = MyPageUtilities.separatorLine()
+    self.separatorLine2 = MyPageUtilities.separatorLine()
+  }
+  
+  override func setupStyles() {
+    super.setupStyles()
+    
+    navigationItem.title = "내 정보 관리"
+    view.backgroundColor = .white
+  }
+  
+  override func setupLayouts() {
+    super.setupLayouts()
     
     view.addSubview(scrollView)
-    view.addSubview(separatorLine1)
-    scrollView.addSubview(contentsView)
-    [ profileImage, nickNameView, changePasswordView, setupAlarmView, emailView, separatorLine2, acceptTheTermView, versionView, separatorLine3, withDrawLabel ]
-      .forEach { contentsView.addSubview($0) }
+    scrollView.addSubview(contentView)
+    
+    [profileImage, nickNameView, changePasswordView, emailView, separatorLine1, versionView, separatorLine2, withDrawLabel]
+      .forEach { contentView.addSubview($0) }
+  }
+  
+  override func setupConstraints() {
+    super.setupConstraints()
     
     scrollView.snp.makeConstraints { make in
-      make.edges.equalToSuperview()
+      make.top.equalTo(view.safeAreaLayoutGuide)
+      make.bottom.leading.trailing.equalToSuperview()
     }
     
-    contentsView.snp.makeConstraints { make in
+    contentView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
       make.width.equalTo(view.frame.width)
     }
     
-    separatorLine1.snp.makeConstraints { make in
-      make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-      make.height.equalTo(3)
-    }
-    
     profileImage.snp.makeConstraints { make in
-      make.top.equalToSuperview().inset(24)
       make.centerX.equalToSuperview()
+      make.top.equalToSuperview().inset(24)
     }
     
     nickNameView.snp.makeConstraints { make in
-      make.top.equalTo(profileImage.snp.bottom).offset(50)
       make.leading.trailing.equalToSuperview()
-      make.height.equalTo(30)
+      make.top.equalTo(profileImage.snp.bottom).offset(24)
+      make.height.equalTo(45)
     }
     
     changePasswordView.snp.makeConstraints { make in
-      make.top.equalTo(nickNameView.snp.bottom).offset(20)
       make.leading.trailing.equalToSuperview()
-      make.height.equalTo(30)
-    }
-    
-    setupAlarmView.snp.makeConstraints { make in
-      make.top.equalTo(changePasswordView.snp.bottom).offset(20)
-      make.leading.trailing.equalToSuperview()
-      make.height.equalTo(30)
+      make.top.equalTo(nickNameView.snp.bottom)
+      make.height.equalTo(45)
     }
     
     emailView.snp.makeConstraints { make in
-      make.top.equalTo(setupAlarmView.snp.bottom).offset(20)
       make.leading.trailing.equalToSuperview()
-      make.height.equalTo(30)
+      make.top.equalTo(changePasswordView.snp.bottom)
+      make.height.equalTo(45)
     }
     
-    separatorLine2.snp.makeConstraints { make in
-      make.top.equalTo(emailView.snp.bottom).offset(24)
+    separatorLine1.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
+      make.top.equalTo(emailView.snp.bottom).offset(32)
       make.height.equalTo(6)
     }
     
-    acceptTheTermView.snp.makeConstraints { make in
-      make.top.equalTo(separatorLine2.snp.bottom).offset(24)
-      make.leading.trailing.equalToSuperview()
-      make.height.equalTo(30)
-    }
-    
     versionView.snp.makeConstraints { make in
-      make.top.equalTo(acceptTheTermView.snp.bottom).offset(20)
       make.leading.trailing.equalToSuperview()
-      make.height.equalTo(30)
+      make.top.equalTo(separatorLine1.snp.bottom).offset(24)
+      make.height.equalTo(45)
     }
     
-    separatorLine3.snp.makeConstraints { make in
-      make.top.equalTo(versionView.snp.bottom).offset(24)
+    separatorLine2.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
+      make.top.equalTo(versionView.snp.bottom).offset(32)
       make.height.equalTo(6)
     }
     
     withDrawLabel.snp.makeConstraints { make in
-      make.top.equalTo(separatorLine3.snp.bottom).offset(24)
       make.leading.equalToSuperview().inset(24)
-      make.bottom.equalToSuperview().inset(24)
+      make.top.equalTo(separatorLine2.snp.bottom).offset(32)
+      make.bottom.equalToSuperview()
     }
   }
+  
+  // MARK: - Helpers
+  
+  private func updateUI() {
+    let memberInfo =  MemberInfomationState.shared.currentMemberInfomation.value
+    nickNameView.descriptionLabel.text = memberInfo.nickname ?? "닉네임"
+    emailView.descriptionLabel.text = memberInfo.email
+    // TODO: [] 프로필 이미지 설정해주기
+  }
 }
+
+// MARK: - Preview
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+struct ManageMyInfoVC_PreView: PreviewProvider {
+  static var previews: some View {
+    ManageMyInfoViewController().toPreview()
+  }
+}
+#endif

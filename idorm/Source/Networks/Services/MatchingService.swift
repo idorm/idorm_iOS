@@ -8,7 +8,7 @@ final class MatchingService {
   /// 매칭 멤버 조회
   static func matchingAPI() -> Observable<AFDataResponse<Data>> {
     let url = MatchingConstants.matchingURL
-    return APIService.load(url, httpMethod: .get, body: nil, encoding: .query)
+    return APIService.load(url, httpMethod: .get, body: nil, encoding: .json)
   }
   
   /// 필터링된 매칭 멤버 조회

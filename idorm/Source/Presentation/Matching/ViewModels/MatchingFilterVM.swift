@@ -13,8 +13,13 @@ final class MatchingFilterViewModel: ViewModel {
   }
   
   struct Output {
+    // Presentation
     let popVC = PublishSubject<Void>()
+    
+    // UI
     let isEnableConfirmButton = PublishSubject<Bool>()
+    
+    // Card
     let requestCards = PublishSubject<Void>()
     let requestFilteredCards = PublishSubject<Void>()
   }
@@ -32,7 +37,7 @@ final class MatchingFilterViewModel: ViewModel {
   /// 현재 필터링 완료 버튼 활성화 정도
   var currentFilterConfirmVerifier: FilteringConfirmVerifier { return state.confirmVerifierObserver.value }
   /// 현재 매칭 필터 정보
-  var currentMatchingFilter: MatchingFilter? { return matchingFilterShared.matchingFilterObserver.value }
+  var currentMatchingFilter: MatchingFilter { return matchingFilterShared.matchingFilterObserver.value }
   
   init() {
     bind()
@@ -60,10 +65,21 @@ final class MatchingFilterViewModel: ViewModel {
   
   func bind() {
     
+    // 현재 필터 정보 있으면 드라이버 활성화
+    Observable.just(matchingFilterShared.isExistedFilter.value)
+      .filter { $0 }
+      .subscribe(onNext: { [unowned self] _ in
+        var newVerifier = self.currentFilterConfirmVerifier
+        newVerifier.dorm = true
+        newVerifier.period = true
+        self.state.confirmVerifierObserver.accept(newVerifier)
+      })
+      .disposed(by: disposeBag)
+    
     // 선택 초기화 버튼 -> 뒤로 가기 & 매칭 필터 정보 초기화
     input.skipButtonTapped
       .bind(onNext: { [unowned self] in
-        self.matchingFilterShared.matchingFilterObserver.accept(nil)
+        self.matchingFilterShared.isExistedFilter.accept(false)
         self.output.requestCards.onNext(Void())
         self.output.popVC.onNext(Void())
       })
@@ -72,6 +88,7 @@ final class MatchingFilterViewModel: ViewModel {
     // 필터링 완료 버튼 이벤트 -> 뒤로가기 & 필터 매칭 카드 요청
     input.confirmButtonTapped
       .bind(onNext: { [unowned self] in
+        self.matchingFilterShared.isExistedFilter.accept(true)
         self.output.popVC.onNext(Void())
         self.output.requestFilteredCards.onNext(Void())
       })
@@ -85,11 +102,11 @@ final class MatchingFilterViewModel: ViewModel {
         newVerifier.dorm = true
         switch dorm {
         case .no1:
-          newFilter?.dormNum = .no1
+          newFilter.dormNum = .no1
         case .no2:
-          newFilter?.dormNum = .no2
+          newFilter.dormNum = .no2
         case .no3:
-          newFilter?.dormNum = .no3
+          newFilter.dormNum = .no3
         }
         self.matchingFilterShared.matchingFilterObserver.accept(newFilter)
         self.state.confirmVerifierObserver.accept(newVerifier)
@@ -104,9 +121,9 @@ final class MatchingFilterViewModel: ViewModel {
         newVerifier.period = true
         switch period {
         case .period_16:
-          newFilter?.period = .period_16
+          newFilter.period = .period_16
         case .period_24:
-          newFilter?.period = .period_24
+          newFilter.period = .period_24
         }
         self.matchingFilterShared.matchingFilterObserver.accept(newFilter)
         self.state.confirmVerifierObserver.accept(newVerifier)
@@ -119,15 +136,15 @@ final class MatchingFilterViewModel: ViewModel {
         var newFilter = self.currentMatchingFilter
         switch habit {
         case .snoring:
-          newFilter?.isSnoring.toggle()
+          newFilter.isSnoring.toggle()
         case .smoking:
-          newFilter?.isSmoking.toggle()
+          newFilter.isSmoking.toggle()
         case .grinding:
-          newFilter?.isGrinding.toggle()
+          newFilter.isGrinding.toggle()
         case .allowedFood:
-          newFilter?.isAllowedFood.toggle()
+          newFilter.isAllowedFood.toggle()
         case .allowedEarphone:
-          newFilter?.isWearEarphones.toggle()
+          newFilter.isWearEarphones.toggle()
         }
         self.matchingFilterShared.matchingFilterObserver.accept(newFilter)
       })
@@ -137,8 +154,8 @@ final class MatchingFilterViewModel: ViewModel {
     input.onChangedAgeSlider
       .bind(onNext: { [unowned self] (minValue: Int, maxValue: Int) in
         var newFilter = self.currentMatchingFilter
-        newFilter?.minAge = minValue
-        newFilter?.maxAge = maxValue
+        newFilter.minAge = minValue
+        newFilter.maxAge = maxValue
         self.matchingFilterShared.matchingFilterObserver.accept(newFilter)
       })
       .disposed(by: disposeBag)

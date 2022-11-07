@@ -36,19 +36,23 @@ class MatchingViewController: BaseViewController {
   
   // MARK: - LifeCycle
   
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    navigationController?.navigationBar.isHidden = true
-    tabBarController?.tabBar.isHidden = false
-  }
-  
   override func viewDidLoad() {
     super.viewDidLoad()
     cardStack.dataSource = self
     cardStack.delegate = self
-    
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    navigationController?.isNavigationBarHidden = true
+    tabBarController?.tabBar.isHidden = false
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
     // 화면 접속 이벤트
-    viewModel.input.viewDidLoadObserver.onNext(Void())
+    viewModel.input.viewDidAppearObserver.onNext(Void())
   }
   
   // MARK: - Bind
@@ -123,6 +127,7 @@ class MatchingViewController: BaseViewController {
       .bind(onNext: { [weak self] in
         guard let self = self else { return }
         let viewController = MatchingFilterViewController()
+        viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
         
         // 선택 초기화 -> POP 필터VC -> 카드 다시 요청
@@ -135,8 +140,8 @@ class MatchingViewController: BaseViewController {
         
         // 필터링 완료 -> POP 필터VC -> 필터링 카드 요청
         viewController.viewModel.output.requestFilteredCards
-          .take(1)
           .bind(onNext: {
+            self.viewModel.requestFilteredMemberAPI()
           })
           .disposed(by: self.disposeBag)
       })
@@ -206,7 +211,7 @@ class MatchingViewController: BaseViewController {
       .bind(onNext: { [unowned self] type in
         let imageName = type.imageName
         switch type {
-        case .noMatchingCard:
+        case .noMatchingCardInformation:
           self.informationImageView.image = UIImage(named: imageName)
         case .noMatchingInformation:
           self.informationImageView.image = UIImage(named: imageName)
@@ -234,7 +239,6 @@ class MatchingViewController: BaseViewController {
   
   override func setupConstraints() {
     super.setupConstraints()
-    let deviceManager = DeviceManager.shared
     
     loadingIndicator.snp.makeConstraints { make in
       make.center.equalToSuperview()
@@ -254,7 +258,9 @@ class MatchingViewController: BaseViewController {
       make.centerX.equalToSuperview()
     }
     
-    if deviceManager.isFourIncheDevices() {
+    let deviceManager = DeviceManager.shared
+    
+    if deviceManager.isResoultion568() {
       cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalToSuperview()
@@ -265,10 +271,10 @@ class MatchingViewController: BaseViewController {
         make.bottom.equalTo(view.safeAreaLayoutGuide).inset(4)
         make.centerX.equalToSuperview()
       }
-    } else if deviceManager.isFiveIncheDevices() {
+    } else if deviceManager.isResolution667() {
       cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
-        make.top.equalTo(filterButton.snp.bottom).offset(16)
+        make.top.equalTo(filterButton.snp.bottom).offset(4)
         make.height.equalTo(420)
       }
 
@@ -276,18 +282,18 @@ class MatchingViewController: BaseViewController {
         make.centerX.equalToSuperview()
         make.bottom.equalTo(view.safeAreaLayoutGuide).inset(8)
       }
-    } else if deviceManager.isFiveInchePlusDevices() {
+    } else if deviceManager.isResolution736() {
       cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(400)
+        make.height.equalTo(420)
       }
       
       buttonStack.snp.makeConstraints { make in
         make.centerX.equalToSuperview()
         make.bottom.equalTo(view.safeAreaLayoutGuide).inset(32)
       }
-    } else if deviceManager.isXSeriesDevices_812() {
+    } else if deviceManager.isResolution812() {
       buttonStack.spacing = 8
       
       cardStack.snp.makeConstraints { make in
@@ -295,12 +301,12 @@ class MatchingViewController: BaseViewController {
         make.top.equalTo(filterButton.snp.bottom).offset(40)
         make.height.equalTo(420)
       }
-
+      
       buttonStack.snp.makeConstraints { make in
         make.centerX.equalToSuperview()
         make.bottom.equalTo(view.safeAreaLayoutGuide).inset(40)
       }
-    } else if deviceManager.isXSeriesDevices_844() {
+    } else if deviceManager.isResolution844() {
       buttonStack.spacing = 8
       
       cardStack.snp.makeConstraints { make in
@@ -313,7 +319,7 @@ class MatchingViewController: BaseViewController {
         make.centerX.equalToSuperview()
         make.bottom.equalTo(view.safeAreaLayoutGuide).inset(62)
       }
-    } else if deviceManager.isXSeriesDevices_896() {
+    } else if deviceManager.isResolution852() {
       buttonStack.spacing = 8
       
       cardStack.snp.makeConstraints { make in
@@ -324,11 +330,48 @@ class MatchingViewController: BaseViewController {
 
       buttonStack.snp.makeConstraints { make in
         make.centerX.equalToSuperview()
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(80)
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(62)
       }
-    } else {
+    } else if deviceManager.isResolution896(){
       buttonStack.spacing = 8
       
+      cardStack.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.height.equalTo(420)
+      }
+      
+      buttonStack.snp.makeConstraints { make in
+        make.centerX.equalToSuperview()
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(80)
+      }
+    } else if deviceManager.isResolution926() {
+      buttonStack.spacing = 8
+      
+      cardStack.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(32)
+        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.height.equalTo(420)
+      }
+      
+      buttonStack.snp.makeConstraints { make in
+        make.centerX.equalToSuperview()
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(100)
+      }
+    } else if deviceManager.isResolution932() {
+      buttonStack.spacing = 8
+      
+      cardStack.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(32)
+        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.height.equalTo(420)
+      }
+      
+      buttonStack.snp.makeConstraints { make in
+        make.centerX.equalToSuperview()
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(100)
+      }
+    } else {
       cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
@@ -365,7 +408,7 @@ extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelega
   func numberOfCards(in cardStack: Shuffle_iOS.SwipeCardStack) -> Int {
     return viewModel.output.matchingMembers.value.count
   }
-  
+
   func cardStack(_ cardStack: SwipeCardStack, didSwipeCardAt index: Int, with direction: SwipeDirection) {
     let card = viewModel.output.matchingMembers.value[index]
     let memberId = card.memberId

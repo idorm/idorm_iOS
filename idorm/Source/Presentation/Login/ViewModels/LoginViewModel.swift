@@ -3,6 +3,7 @@ import RxCocoa
 
 final class LoginViewModel: ViewModel {
   struct Input {
+    // UI
     let loginButtonTapped = PublishSubject<Void>()
     let forgotButtonTapped = PublishSubject<Void>()
     let signUpButtonTapped = PublishSubject<Void>()
@@ -11,9 +12,12 @@ final class LoginViewModel: ViewModel {
   }
   
   struct Output {
+    // Presentation
     let showPutEmailVC = PublishSubject<RegisterType>()
     let showErrorPopupVC = PublishSubject<String>()
     let showTabBarVC = PublishSubject<Void>()
+    
+    // UI
     let startAnimation = PublishSubject<Void>()
     let stopAnimation = PublishSubject<Void>()
   }
@@ -51,7 +55,7 @@ final class LoginViewModel: ViewModel {
     // 로그인 버튼 클릭 -> 로그인 시도 서버로 요청
     input.loginButtonTapped
       .bind(onNext: { [weak self] in
-        self?.loginAPI()
+        self?.requestLoginAPI()
       })
       .disposed(by: disposeBag)
     
@@ -60,8 +64,12 @@ final class LoginViewModel: ViewModel {
       .bind(to: output.startAnimation)
       .disposed(by: disposeBag)
   }
-  
-  private func loginAPI() {
+}
+
+// MARK: - Network
+
+extension LoginViewModel {
+  private func requestLoginAPI() {
     MemberService.LoginAPI(email: self.emailText, password: self.passwordText)
       .subscribe(onNext: { [weak self] response in
         guard let statusCode = response.response?.statusCode else { return }

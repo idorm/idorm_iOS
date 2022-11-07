@@ -51,13 +51,14 @@ final class MatchingFilterViewController: BaseViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    tabBarController?.tabBar.isHidden = true
-    navigationController?.navigationBar.isHidden = false
+    navigationController?.isNavigationBarHidden = false
     floatyBottomView.confirmButton.isEnabled = false
     
     // MARK: - 현재 필터 정보 확인 후 UI 업데이트
-    guard let currentFilter = matchingFilterShared.matchingFilterObserver.value else { return }
-    updateFilteredUI(currentFilter)
+    if matchingFilterShared.isExistedFilter.value == true {
+      let filter = matchingFilterShared.matchingFilterObserver.value
+      updateFilteredUI(filter)
+    }
   }
   
   override func viewDidLoad() {
@@ -184,7 +185,7 @@ final class MatchingFilterViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    // 데이터 초기화 후 뒤로가기
+    // 뒤로가기
     viewModel.output.popVC
       .bind(onNext: { [unowned self] in
         self.navigationController?.popViewController(animated: true)
@@ -225,7 +226,7 @@ final class MatchingFilterViewController: BaseViewController {
     }
     
     floatyBottomView.snp.makeConstraints { make in
-      make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+      make.leading.trailing.bottom.equalToSuperview()
       make.height.equalTo(84)
     }
     
@@ -330,14 +331,14 @@ final class MatchingFilterViewController: BaseViewController {
   
   private func updateFilteredUI(_ filter: MatchingFilter) {
     toggleDromButton(filter.dormNum)
-    togglePeriodButton(filter.joinPeriod)
+    togglePeriodButton(filter.period)
     snoreButton.isSelected = filter.isSnoring
     grindingButton.isSelected = filter.isGrinding
     smokingButton.isSelected = filter.isSmoking
     allowedFoodButton.isSelected = filter.isAllowedFood
     allowedEarphoneButton.isSelected = filter.isWearEarphones
-    slider.minValue = CGFloat(filter.minAge)
-    slider.maxValue = CGFloat(filter.maxAge)
+    slider.selectedMinValue = CGFloat(filter.minAge)
+    slider.selectedMaxValue = CGFloat(filter.maxAge)
     floatyBottomView.confirmButton.isEnabled = true
   }
 }

@@ -1,16 +1,11 @@
-//
-//  ConfirmPasswordViewController.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/11.
-//
-
 import UIKit
+
 import SnapKit
 import RxSwift
 import RxCocoa
 
-class ConfirmPasswordViewController: BaseViewController {
+final class ConfirmPasswordViewController: BaseViewController {
+  
   // MARK: - Properties
   
   let textField2 = RegisterPwTextField(placeholder: "비밀번호를 한번 더 입력해주세요.").then {
@@ -301,3 +296,13 @@ extension ConfirmPasswordViewController {
     return label
   }
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+struct ConfirmPasswordVC_PreView: PreviewProvider {
+  static var previews: some View {
+    ConfirmPasswordViewController(type: .findPW).toPreview()
+  }
+}
+#endif
+

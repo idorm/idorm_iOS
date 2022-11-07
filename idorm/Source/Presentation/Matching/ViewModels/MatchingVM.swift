@@ -13,7 +13,7 @@ final class MatchingViewModel: ViewModel {
     let filterButtonObserver = PublishSubject<Void>()
         
     // LifeCycle
-    let viewDidLoadObserver = PublishSubject<Void>()
+    let viewDidAppearObserver = PublishSubject<Void>()
     
     // Card
     let swipeObserver = PublishSubject<MatchingType>()
@@ -56,7 +56,8 @@ final class MatchingViewModel: ViewModel {
   func bind() {
     
     // 화면 처음 진입 -> 매칭 정보 유무 체크
-    input.viewDidLoadObserver
+    input.viewDidAppearObserver
+      .take(1)
       .bind(onNext: {
         self.requestMatchingInfoAPI()
       })
@@ -113,7 +114,7 @@ extension MatchingViewModel {
   /// 첫 화면 진입 시 매칭 정보 유무 확인 API
   func requestMatchingInfoAPI() {
     OnboardingService.matchingInfoAPI_Get()
-      .bind(onNext: { [unowned self] response in
+      .subscribe(onNext: { [unowned self] response in
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
         case 200:
@@ -132,7 +133,7 @@ extension MatchingViewModel {
   func requestMatchingAPI() {
     self.output.startLoading.onNext(Void())
     MatchingService.matchingAPI()
-      .bind(onNext: { [unowned self] response in
+      .subscribe(onNext: { [unowned self] response in
         guard let statusCode = response.response?.statusCode else { return }
         guard let data = response.data else { return }
         switch statusCode {
@@ -155,28 +156,28 @@ extension MatchingViewModel {
         }
         self.output.stopLoading.onNext(Void())
         self.output.reloadCardStack.onNext(Void())
-        self.output.informationImageViewStatus.onNext(.noMatchingCard)
+        self.output.informationImageViewStatus.onNext(.noMatchingCardInformation)
       })
       .disposed(by: disposeBag)
   }
   
   /// 필터링된 매칭 멤버 조회
   func requestFilteredMemberAPI() {
-    guard let filter = MatchingFilterStates.shared.matchingFilterObserver.value else { return }
+    self.output.startLoading.onNext(Void())
+    let filter = MatchingFilterStates.shared.matchingFilterObserver.value
     MatchingService.filteredMatchingAPI(filter)
-      .bind(onNext: { [unowned self] response in
+      .subscribe(onNext: { [unowned self] response in
         guard let statusCode = response.response?.statusCode else { return }
-        guard let data = response.data else { return }
-        print(statusCode)
         switch statusCode {
         case 200: // 매칭 멤버 조회 완료
+          guard let data = response.data else { fatalError() }
           struct ResponseModel: Codable {
             let data: [MatchingMember]
           }
           let newMembers = APIService.decode(ResponseModel.self, data: data).data
           self.output.matchingMembers.accept(newMembers)
         case 204: // 매칭되는 멤버가 없습니다.
-          break
+          self.output.matchingMembers.accept([])
         case 401: // 로그인한 멤버가 존재하지 않습니다.
           break
         case 409: // 매칭정보가 존재하지 않습니다.
@@ -184,6 +185,8 @@ extension MatchingViewModel {
         default: // 서버오류
           break
         }
+        self.output.reloadCardStack.onNext(Void())
+        self.output.stopLoading.onNext(Void())
       })
       .disposed(by: disposeBag)
   }
@@ -191,7 +194,7 @@ extension MatchingViewModel {
   /// 좋아요 멤버 추가 API
   func requestMatchingLikedMembers_POST(_ memberId: Int) {
     MatchingService.matchingLikedMembers_Post(memberId)
-      .bind(onNext: { [unowned self] response in
+      .subscribe(onNext: { [unowned self] response in
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
         case 200: break
@@ -207,7 +210,7 @@ extension MatchingViewModel {
   /// 싫어요 멤버 추가 API
   func requestMatchingDislikedMembers_POST(_ memberId: Int) {
     MatchingService.matchingDislikedMembers_Post(memberId)
-      .bind(onNext: { [unowned self] response in
+      .subscribe(onNext: { [unowned self] response in
         guard let statusCode = response.response?.statusCode else { return }
         print(statusCode)
         switch statusCode {

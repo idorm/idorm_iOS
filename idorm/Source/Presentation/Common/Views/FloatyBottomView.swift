@@ -71,7 +71,6 @@ class FloatyBottomView: UIView {
       config.attributedTitle = AttributedString("필터링 완료", attributes: container)
       config.baseBackgroundColor = .idorm_blue
     }
-    $0.isUserInteractionEnabled = false
     $0.configuration = config
   }
   

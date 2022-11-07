@@ -1,11 +1,6 @@
-//
-//  MyPageUtilities.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/08/08.
-//
-
 import UIKit
+
+// MARK: - MyPageVC
 
 class MyPageUtilities {
   static func createMatchingButton(imageName: String, title: String) -> UIButton {
@@ -69,5 +64,15 @@ class MyPageUtilities {
     label.textColor = .black
     
     return label
+  }
+}
+
+// MARK: - ManageMyInfoVC
+
+extension MyPageUtilities {
+  static func separatorLine() -> UIView {
+    let line = UIView()
+    line.backgroundColor = .idorm_gray_100
+    return line
   }
 }

@@ -5,5 +5,6 @@ final class MatchingFilterStates {
   static let shared = MatchingFilterStates()
   private init() {}
   
-  var matchingFilterObserver = BehaviorRelay<MatchingFilter?>(value: nil)
+  let matchingFilterObserver = BehaviorRelay<MatchingFilter>(value: MatchingFilter.initialValue())
+  let isExistedFilter = BehaviorRelay<Bool>(value: false)
 }
