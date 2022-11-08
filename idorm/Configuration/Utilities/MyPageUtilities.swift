@@ -3,6 +3,7 @@ import UIKit
 // MARK: - MyPageVC
 
 class MyPageUtilities {
+  /// 마이페이지의 매칭 관련 버튼을 생성합니다.
   static func createMatchingButton(imageName: String, title: String) -> UIButton {
     var config = UIButton.Configuration.filled()
     config.image = UIImage(named: imageName)
@@ -30,6 +31,7 @@ class MyPageUtilities {
     return button
   }
   
+  /// 마이페이지의 커뮤니티 관련 버튼을 생성합니다.
   static func createCommunityButton(imageName: String, title: String) -> UIButton {
     var config = UIButton.Configuration.filled()
     config.image = UIImage(named: imageName)
@@ -57,6 +59,7 @@ class MyPageUtilities {
     return button
   }
   
+  /// 마이페이지의 제목 레이블을 생성합니다.
   static func createTitleLabel(title: String) -> UILabel {
     let label = UILabel()
     label.text = title

@@ -1,54 +1,7 @@
-//
-//  CommunityUtilities.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/21.
-//
-
 import UIKit
 
-enum PostType: Int, CaseIterable {
-  case popular
-  case post
-}
-
-enum CommunityAlertType: Int {
-  case myComment = 171
-  case someoneComment = 129
-  case myPost = 250
-  case someonePost = 166
-  case selectDorm = 182
-}
-
-class CommunityUtilities {
-  static func getSeparatorLine() -> UIView {
-    let view = UIView()
-    view.backgroundColor = .idorm_gray_200
-    
-    return view
-  }
-  
-  static func getCountLabel() -> UILabel {
-    let label = UILabel()
-    label.text = "100"
-    label.font = .init(name: MyFonts.medium.rawValue, size: 10)
-    label.textColor = .idorm_gray_300
-    
-    return label
-  }
-  
-  static func getButtonUpdateHandler() -> UIButton.ConfigurationUpdateHandler {
-    let handler: UIButton.ConfigurationUpdateHandler = { button in
-      switch button.state {
-      case .highlighted:
-        button.configuration?.baseBackgroundColor = .idorm_gray_100
-      default:
-        button.configuration?.baseBackgroundColor = .white
-      }
-    }
-    return handler
-  }
-  
+final class BottomAlertUtilities {
+  /// 신고하기 버튼을 반환합니다.
   static func getReportButton() -> UIButton {
     var config = UIButton.Configuration.filled()
     var titleContainer = AttributeContainer()
@@ -67,6 +20,7 @@ class CommunityUtilities {
     return button
   }
   
+  /// 일반 버튼을 반환합니다.
   static func getBasicButton(title: String, imageName: String) -> UIButton {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
@@ -83,7 +37,8 @@ class CommunityUtilities {
     
     return button
   }
-  
+
+  /// 기숙사 별 버튼을 반환합니다.
   static func getDormNumberButton(title: String) -> UIButton {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()

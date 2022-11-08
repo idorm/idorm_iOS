@@ -1,8 +1,19 @@
 import UIKit
 
+import RxSwift
+import RxCocoa
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+  
+  var disposeBag = DisposeBag()
+  
+  func application(
+    _ application: UIApplication,
+    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+  ) -> Bool {
+    
+    // MARK: - Setup UI
     
     let appearance = AppearanceManager.navigationAppearance(from: .white, shadow: false)
     UINavigationBar.appearance().compactAppearance = appearance
@@ -20,6 +31,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
     UITabBar.appearance().standardAppearance = tabBarAppearance
     
+    // MARK: - 사용자 정보 불러오기
+    requestMemberAPI()
+    
     return true
+  }
+}
+
+// MARK: - Network
+
+extension AppDelegate {
+  /// 멤버 단건 조회 API 요청
+  func requestMemberAPI() {
+    MemberService.memberAPI()
+      .subscribe(onNext: { response in
+        guard let statusCode = response.response?.statusCode else { return }
+        switch statusCode {
+        case 200: // 멤버 단건 조회 완료
+          guard let data = response.data else { return }
+          struct ResponseModel: Codable {
+            let data: MemberInfomation
+          }
+          let memberInformation = APIService.decode(ResponseModel.self, data: data).data
+          MemberInfomationState.shared.currentMemberInfomation.accept(memberInformation)
+        default: break
+        }
+      })
+      .disposed(by: disposeBag)
   }
 }

@@ -125,6 +125,20 @@ final class ChangeNicknameViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     // MARK: - Output
+    
+    // 뒤로가기
+    viewModel.output.popVC
+      .bind(onNext: { [weak self] in
+        self?.navigationController?.popViewController(animated: true)
+      })
+      .disposed(by: disposeBag)
+    
+    // 완료 버튼 활성 & 비활성
+    viewModel.output.isEnableInteraction
+      .bind(onNext: { [unowned self] in
+        self.confirmButton.isEnabled = $0
+      })
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers

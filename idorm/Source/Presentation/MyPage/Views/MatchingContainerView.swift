@@ -8,8 +8,11 @@ final class MatchingContainerView: UIView {
   // MARK: - Properties
   
   private var titleLabel: UILabel!
+  
   var manageMatchingImageButton: UIButton!
   var likedRoommateButton: UIButton!
+  var dislikedRoommateButton: UIButton!
+  
   var buttonStack: UIStackView!
   var shareStack: UIStackView!
   
@@ -52,14 +55,16 @@ final class MatchingContainerView: UIView {
   
   private func setupComponents() {
     self.titleLabel = MyPageUtilities.createTitleLabel(title: "룸메이트 매칭 관리")
-    self.manageMatchingImageButton = MyPageUtilities.createMatchingButton(imageName: "picture(MyPage)", title: "매칭 이미지 관리")
+    self.manageMatchingImageButton = MyPageUtilities.createMatchingButton(imageName: "picture(MyPage)", title: "매칭 이미지")
     self.likedRoommateButton = MyPageUtilities.createMatchingButton(imageName: "heart(MyPage)", title: "좋아요한 룸메")
+    self.dislikedRoommateButton = MyPageUtilities.createMatchingButton(imageName: "dislike(MyPage)", title: "싫어요한 룸메")
     
     let buttonStack = UIStackView()
     buttonStack.addArrangedSubview(manageMatchingImageButton)
+    buttonStack.addArrangedSubview(dislikedRoommateButton)
     buttonStack.addArrangedSubview(likedRoommateButton)
     buttonStack.axis = .horizontal
-    buttonStack.spacing = 34
+    buttonStack.spacing = 12
     self.buttonStack = buttonStack
     
     let shareStack = UIStackView()

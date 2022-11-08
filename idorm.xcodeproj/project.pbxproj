@@ -94,6 +94,7 @@
 		E591B77728C6E6AC00B8B581 /* MemberServerConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591B77628C6E6AC00B8B581 /* MemberServerConstants.swift */; };
 		E591B77C28C6E99400B8B581 /* ServerConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591B77B28C6E99400B8B581 /* ServerConstants.swift */; };
 		E591B77E28C6EB0600B8B581 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591B77D28C6EB0600B8B581 /* APIService.swift */; };
+		E5985E972919CD5C006D9276 /* Tabman in Frameworks */ = {isa = PBXBuildFile; productRef = E5985E962919CD5C006D9276 /* Tabman */; };
 		E5A164B128ADC80C00554655 /* ConfirmPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A164B028ADC80C00554655 /* ConfirmPasswordViewModel.swift */; };
 		E5A60C7C289BE72A004B77E8 /* SetCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A60C7B289BE72A004B77E8 /* SetCalendarViewModel.swift */; };
 		E5AB97C42895671800C0CEDF /* MatchingFilterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AB97C32895671800C0CEDF /* MatchingFilterVC.swift */; };
@@ -118,6 +119,9 @@
 		E5B15F6F287FE355004D4164 /* OnboardingDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B15F6E287FE355004D4164 /* OnboardingDetailVC.swift */; };
 		E5B7E84F28ABCA670099B631 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7E84E28ABCA670099B631 /* LoginViewModel.swift */; };
 		E5BF4C5F28840EBF00B4F0B8 /* PostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF4C5E28840EBF00B4F0B8 /* PostingViewController.swift */; };
+		E5C261492919D15E00623C0E /* MyPageBottomAlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C261482919D15E00623C0E /* MyPageBottomAlertVC.swift */; };
+		E5C2614B2919D21300623C0E /* MyPageBottomAlertVCType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C2614A2919D21300623C0E /* MyPageBottomAlertVCType.swift */; };
+		E5C2614E2919D3AA00623C0E /* BottomAlertUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C2614D2919D3AA00623C0E /* BottomAlertUtilities.swift */; };
 		E5C889062889729800CBD04E /* PanModal in Frameworks */ = {isa = PBXBuildFile; productRef = E5C889052889729800CBD04E /* PanModal */; };
 		E5C88908288972E000CBD04E /* CommunityAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C88907288972E000CBD04E /* CommunityAlertViewController.swift */; };
 		E5C89E4928A9ED9B0035D9C6 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C89E4828A9ED9B0035D9C6 /* URL+Extensions.swift */; };
@@ -130,7 +134,6 @@
 		E5D31BEF289A8A6700510315 /* RxKeyboard in Frameworks */ = {isa = PBXBuildFile; productRef = E5D31BEE289A8A6700510315 /* RxKeyboard */; };
 		E5D31BF1289AAE3D00510315 /* UIScrollView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D31BF0289AAE3D00510315 /* UIScrollView+Extensions.swift */; };
 		E5D31BF3289AB83800510315 /* SetCalendarTabmanController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D31BF2289AB83800510315 /* SetCalendarTabmanController.swift */; };
-		E5D31BF6289ABCE100510315 /* Tabman in Frameworks */ = {isa = PBXBuildFile; productRef = E5D31BF5289ABCE100510315 /* Tabman */; };
 		E5D31BF8289ABDC100510315 /* SetCalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D31BF7289ABDC100510315 /* SetCalendarViewController.swift */; };
 		E5D49008288B7F0400311493 /* CommunityPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D49007288B7F0400311493 /* CommunityPopupViewController.swift */; };
 		E5D4900B288BFA0200311493 /* MatchingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D4900A288BFA0200311493 /* MatchingVC.swift */; };
@@ -143,10 +146,7 @@
 		E5E77EC428D81D7400031010 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = E5E77EC328D81D7400031010 /* Then */; };
 		E5E77EC628D822FB00031010 /* RegisterBottomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E77EC528D822FB00031010 /* RegisterBottomButton.swift */; };
 		E5E77EC828D825EB00031010 /* RegisterTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E77EC728D825EB00031010 /* RegisterTextField.swift */; };
-		E5E8A3DB289505B500A48A91 /* MyPostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E8A3DA289505B400A48A91 /* MyPostVC.swift */; };
-		E5E8A3DD289505F000A48A91 /* MyPostCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E8A3DC289505F000A48A91 /* MyPostCollectionHeaderView.swift */; };
 		E5E8A3DF2895208500A48A91 /* MyCommentsCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E8A3DE2895208500A48A91 /* MyCommentsCollectionVIewCell.swift */; };
-		E5E8A3E52895319100A48A91 /* MyLikeRoommateCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E8A3E42895319100A48A91 /* MyLikeRoommateCollectionVIewCell.swift */; };
 		E5EB5F272891398200EC0425 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F262891398200EC0425 /* CalendarView.swift */; };
 		E5EB5F2A289143A100EC0425 /* CalendarChipCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F29289143A100EC0425 /* CalendarChipCell.swift */; };
 		E5EB5F2C2891534300EC0425 /* CalendarPersonalCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F2B2891534300EC0425 /* CalendarPersonalCollectionHeaderView.swift */; };
@@ -155,6 +155,10 @@
 		E5EB5F322891589800EC0425 /* CalendarListUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB5F312891589800EC0425 /* CalendarListUtilities.swift */; };
 		E5ED81AD2918C5E600CB32EB /* MemberInfomation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ED81AC2918C5E600CB32EB /* MemberInfomation.swift */; };
 		E5ED81AF2918C76B00CB32EB /* MemberInfomationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ED81AE2918C76B00CB32EB /* MemberInfomationState.swift */; };
+		E5F5656E2918FF280043FCB4 /* MyRoommateVCType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5656D2918FF270043FCB4 /* MyRoommateVCType.swift */; };
+		E5F565702918FF5A0043FCB4 /* MyRoommateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5656F2918FF5A0043FCB4 /* MyRoommateVC.swift */; };
+		E5F56572291902B60043FCB4 /* MyRoommateHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F56571291902B60043FCB4 /* MyRoommateHeaderView.swift */; };
+		E5F56574291908DE0043FCB4 /* MyRoommateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F56573291908DE0043FCB4 /* MyRoommateCell.swift */; };
 		E5F5EC722883C70C0026DE21 /* WebMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC712883C70C0026DE21 /* WebMailViewController.swift */; };
 		E5F5EC742884025E0026DE21 /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC732884025E0026DE21 /* CommunityViewController.swift */; };
 		E5F5EC762884027D0026DE21 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC752884027D0026DE21 /* CalendarViewController.swift */; };
@@ -266,6 +270,9 @@
 		E5B15F6E287FE355004D4164 /* OnboardingDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDetailVC.swift; sourceTree = "<group>"; };
 		E5B7E84E28ABCA670099B631 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		E5BF4C5E28840EBF00B4F0B8 /* PostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingViewController.swift; sourceTree = "<group>"; };
+		E5C261482919D15E00623C0E /* MyPageBottomAlertVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageBottomAlertVC.swift; sourceTree = "<group>"; };
+		E5C2614A2919D21300623C0E /* MyPageBottomAlertVCType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageBottomAlertVCType.swift; sourceTree = "<group>"; };
+		E5C2614D2919D3AA00623C0E /* BottomAlertUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomAlertUtilities.swift; sourceTree = "<group>"; };
 		E5C88907288972E000CBD04E /* CommunityAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityAlertViewController.swift; sourceTree = "<group>"; };
 		E5C89E4828A9ED9B0035D9C6 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		E5C89E4A28A9EDA70035D9C6 /* URLRequest+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+Extensions.swift"; sourceTree = "<group>"; };
@@ -285,10 +292,7 @@
 		E5E77EC028D81AD400031010 /* LoginTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextField.swift; sourceTree = "<group>"; };
 		E5E77EC528D822FB00031010 /* RegisterBottomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterBottomButton.swift; sourceTree = "<group>"; };
 		E5E77EC728D825EB00031010 /* RegisterTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterTextField.swift; sourceTree = "<group>"; };
-		E5E8A3DA289505B400A48A91 /* MyPostVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPostVC.swift; sourceTree = "<group>"; };
-		E5E8A3DC289505F000A48A91 /* MyPostCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPostCollectionHeaderView.swift; sourceTree = "<group>"; };
 		E5E8A3DE2895208500A48A91 /* MyCommentsCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommentsCollectionVIewCell.swift; sourceTree = "<group>"; };
-		E5E8A3E42895319100A48A91 /* MyLikeRoommateCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLikeRoommateCollectionVIewCell.swift; sourceTree = "<group>"; };
 		E5EB5F262891398200EC0425 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		E5EB5F29289143A100EC0425 /* CalendarChipCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarChipCell.swift; sourceTree = "<group>"; };
 		E5EB5F2B2891534300EC0425 /* CalendarPersonalCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPersonalCollectionHeaderView.swift; sourceTree = "<group>"; };
@@ -297,6 +301,10 @@
 		E5EB5F312891589800EC0425 /* CalendarListUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListUtilities.swift; sourceTree = "<group>"; };
 		E5ED81AC2918C5E600CB32EB /* MemberInfomation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberInfomation.swift; sourceTree = "<group>"; };
 		E5ED81AE2918C76B00CB32EB /* MemberInfomationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberInfomationState.swift; sourceTree = "<group>"; };
+		E5F5656D2918FF270043FCB4 /* MyRoommateVCType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoommateVCType.swift; sourceTree = "<group>"; };
+		E5F5656F2918FF5A0043FCB4 /* MyRoommateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoommateVC.swift; sourceTree = "<group>"; };
+		E5F56571291902B60043FCB4 /* MyRoommateHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoommateHeaderView.swift; sourceTree = "<group>"; };
+		E5F56573291908DE0043FCB4 /* MyRoommateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoommateCell.swift; sourceTree = "<group>"; };
 		E5F5EC712883C70C0026DE21 /* WebMailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebMailViewController.swift; sourceTree = "<group>"; };
 		E5F5EC732884025E0026DE21 /* CommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewController.swift; sourceTree = "<group>"; };
 		E5F5EC752884027D0026DE21 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
@@ -311,12 +319,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E5D31BF6289ABCE100510315 /* Tabman in Frameworks */,
 				E55DDAE72917735C00E62ECB /* DeviceKit in Frameworks */,
 				E57E48F82899666000D00BDB /* RxRelay in Frameworks */,
 				E5D31BEF289A8A6700510315 /* RxKeyboard in Frameworks */,
 				E57E48F62899666000D00BDB /* RxCocoa in Frameworks */,
 				E5290F0C288832630004B8E6 /* RSKGrowingTextView in Frameworks */,
+				E5985E972919CD5C006D9276 /* Tabman in Frameworks */,
 				E58A6293289D46380074F646 /* RxAppState in Frameworks */,
 				E58ACB85288465970031BD86 /* FMPhotoPicker in Frameworks */,
 				E563421E28780C3800E93D17 /* SnapKit in Frameworks */,
@@ -413,11 +421,11 @@
 			children = (
 				E5D4900D288BFB9100311493 /* MatchingInfo.swift */,
 				E54FF43A2913E1DE001826F1 /* MatchingMember.swift */,
+				E5ED81AC2918C5E600CB32EB /* MemberInfomation.swift */,
 				E5226D572911F3610065C809 /* Dormitory.swift */,
 				E5226D592911F36B0065C809 /* Gender.swift */,
 				E5226D5B2911F3760065C809 /* JoinPeriod.swift */,
 				E5226D5F291207AA0065C809 /* Habit.swift */,
-				E5ED81AC2918C5E600CB32EB /* MemberInfomation.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -470,8 +478,9 @@
 		E54B3E2228C6E1A30062EF7E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				E53EF8452915391600EC419D /* Matching */,
 				E53EF842291538C200EC419D /* Common */,
+				E5F5656C2918FEEB0043FCB4 /* MyPage */,
+				E53EF8452915391600EC419D /* Matching */,
 				E53EF844291538FA00EC419D /* Onboarding */,
 			);
 			path = Models;
@@ -570,7 +579,6 @@
 		E56DF4B02893CE4F00E85B10 /* Community */ = {
 			isa = PBXGroup;
 			children = (
-				E5290F1128886D7A0004B8E6 /* CommunityUtilities.swift */,
 				E56DF4B32893CE6700E85B10 /* Cells */,
 				E56DF4B22893CE6100E85B10 /* ViewControllers */,
 				E56DF4B12893CE5B00E85B10 /* Views */,
@@ -614,7 +622,6 @@
 		E56DF4B6289403A400E85B10 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				E5D49013288C3DDA00311493 /* OnboardingUtilities.swift */,
 				E56DF4BC289403CD00E85B10 /* ViewModels */,
 				E56DF4B8289403B600E85B10 /* ViewControllers */,
 				E56DF4B7289403AC00E85B10 /* Views */,
@@ -651,7 +658,6 @@
 		E56DF4BD2894041D00E85B10 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				E508436B288133AD0047A2EC /* LoginUtilities.swift */,
 				E56DF4C12894043D00E85B10 /* ViewModels */,
 				E56DF4BF2894042D00E85B10 /* ViewControllers */,
 				E56DF4BE2894042500E85B10 /* Views */,
@@ -696,7 +702,6 @@
 			isa = PBXGroup;
 			children = (
 				E58F652F29134C2B00E58862 /* MatchingFilterState.swift */,
-				E5AEA5C629129AC50062F6A5 /* MatchingUtilities.swift */,
 				E56DF4C92894060200E85B10 /* ViewControllers */,
 				E5AB97C22895583C00C0CEDF /* ViewModels */,
 			);
@@ -733,7 +738,6 @@
 			isa = PBXGroup;
 			children = (
 				E5ED81AE2918C76B00CB32EB /* MemberInfomationState.swift */,
-				E5370AFD28A1001C00A68D92 /* MyPageUtilities.swift */,
 				E5E8A3D62894BA8000A48A91 /* Views */,
 				E5E8A3D92895043F00A48A91 /* Models */,
 				E5E8A3D82894BA8B00A48A91 /* ViewModels */,
@@ -748,7 +752,8 @@
 				E5F5EC77288402840026DE21 /* MyPageVC.swift */,
 				E5AC2A4C28BB5B250069ABB9 /* ManageMyInfoVC.swift */,
 				E5D98F8E28C4863900D493FF /* ChangeNickNameVC.swift */,
-				E5E8A3DA289505B400A48A91 /* MyPostVC.swift */,
+				E5F5656F2918FF5A0043FCB4 /* MyRoommateVC.swift */,
+				E5C261482919D15E00623C0E /* MyPageBottomAlertVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -757,7 +762,6 @@
 			isa = PBXGroup;
 			children = (
 				E5FC8F1A29113A25002812FA /* ViewModel.swift */,
-				E5909CE528D94B610083075D /* BaseViewController.swift */,
 				E50300F628773A5D00611C62 /* AppDelegate.swift */,
 				E50300F828773A5D00611C62 /* SceneDelegate.swift */,
 				E5E8A3E22895215700A48A91 /* ViewControllers */,
@@ -774,6 +778,7 @@
 				E54B3E1328C6D89E0062EF7E /* Constants */,
 				E54B3E1728C6D9680062EF7E /* Managers */,
 				E508437528813C270047A2EC /* Fonts */,
+				E5C2614C2919D2C500623C0E /* Utilities */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -845,6 +850,19 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		E5C2614C2919D2C500623C0E /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				E5C2614D2919D3AA00623C0E /* BottomAlertUtilities.swift */,
+				E5370AFD28A1001C00A68D92 /* MyPageUtilities.swift */,
+				E5290F1128886D7A0004B8E6 /* CommunityUtilities.swift */,
+				E5AEA5C629129AC50062F6A5 /* MatchingUtilities.swift */,
+				E5D49013288C3DDA00311493 /* OnboardingUtilities.swift */,
+				E508436B288133AD0047A2EC /* LoginUtilities.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		E5E77EC928D8261E00031010 /* Register */ = {
 			isa = PBXGroup;
 			children = (
@@ -899,10 +917,10 @@
 			isa = PBXGroup;
 			children = (
 				E5E8A3D72894BA8600A48A91 /* Cells */,
-				E5E8A3DC289505F000A48A91 /* MyPostCollectionHeaderView.swift */,
 				E52CD85528BE371F00A262ED /* ManageMyInfoView.swift */,
 				E52E96B12915FAB6009E1773 /* MatchingContainerView.swift */,
 				E52E96B329160870009E1773 /* TopProfileView.swift */,
+				E5F56571291902B60043FCB4 /* MyRoommateHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -911,7 +929,7 @@
 			isa = PBXGroup;
 			children = (
 				E5E8A3DE2895208500A48A91 /* MyCommentsCollectionVIewCell.swift */,
-				E5E8A3E42895319100A48A91 /* MyLikeRoommateCollectionVIewCell.swift */,
+				E5F56573291908DE0043FCB4 /* MyRoommateCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -956,10 +974,20 @@
 		E5E8A3E22895215700A48A91 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E5909CE528D94B610083075D /* BaseViewController.swift */,
 				E56342222878353100E93D17 /* TabBarController.swift */,
 				E5AD739C287AE08F00BA2C5E /* PopupViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		E5F5656C2918FEEB0043FCB4 /* MyPage */ = {
+			isa = PBXGroup;
+			children = (
+				E5F5656D2918FF270043FCB4 /* MyRoommateVCType.swift */,
+				E5C2614A2919D21300623C0E /* MyPageBottomAlertVCType.swift */,
+			);
+			path = MyPage;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -992,7 +1020,6 @@
 				E57E48F72899666000D00BDB /* RxRelay */,
 				E57E48F92899666000D00BDB /* RxSwift */,
 				E5D31BEE289A8A6700510315 /* RxKeyboard */,
-				E5D31BF5289ABCE100510315 /* Tabman */,
 				E5340E89289C713D0030A44F /* RxDataSources */,
 				E58A6292289D46380074F646 /* RxAppState */,
 				E510D3C828AC88A000A28B90 /* Alamofire */,
@@ -1000,6 +1027,7 @@
 				E5CF7DCD28C8C02900125144 /* NVActivityIndicatorView */,
 				E5E77EC328D81D7400031010 /* Then */,
 				E55DDAE62917735C00E62ECB /* DeviceKit */,
+				E5985E962919CD5C006D9276 /* Tabman */,
 			);
 			productName = idorm;
 			productReference = E50300F328773A5D00611C62 /* idorm.app */;
@@ -1039,7 +1067,6 @@
 				E57A42CA289596D8003D5834 /* XCRemoteSwiftPackageReference "cardslider" */,
 				E57E48F42899666000D00BDB /* XCRemoteSwiftPackageReference "RxSwift" */,
 				E5D31BED289A8A6700510315 /* XCRemoteSwiftPackageReference "RxKeyboard" */,
-				E5D31BF4289ABCE100510315 /* XCRemoteSwiftPackageReference "Tabman" */,
 				E5340E88289C713D0030A44F /* XCRemoteSwiftPackageReference "RxDataSources" */,
 				E58A6291289D46380074F646 /* XCRemoteSwiftPackageReference "RxAppState" */,
 				E510D3C728AC88A000A28B90 /* XCRemoteSwiftPackageReference "Alamofire" */,
@@ -1047,6 +1074,7 @@
 				E5CF7DCC28C8C02900125144 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */,
 				E5E77EC228D81D7400031010 /* XCRemoteSwiftPackageReference "Then" */,
 				E55DDAE52917735C00E62ECB /* XCRemoteSwiftPackageReference "DeviceKit" */,
+				E5985E952919CD5C006D9276 /* XCRemoteSwiftPackageReference "Tabman" */,
 			);
 			productRefGroup = E50300F428773A5D00611C62 /* Products */;
 			projectDirPath = "";
@@ -1120,6 +1148,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5EB5F2E2891535E00EC0425 /* CalendarDormCollectionHeaderView.swift in Sources */,
+				E5C2614B2919D21300623C0E /* MyPageBottomAlertVCType.swift in Sources */,
 				E5A60C7C289BE72A004B77E8 /* SetCalendarViewModel.swift in Sources */,
 				E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordViewController.swift in Sources */,
 				E5226D60291207AA0065C809 /* Habit.swift in Sources */,
@@ -1131,6 +1160,7 @@
 				E5C89E4B28A9EDA70035D9C6 /* URLRequest+Extensions.swift in Sources */,
 				E5B7E84F28ABCA670099B631 /* LoginViewModel.swift in Sources */,
 				E5E77EC128D81AD400031010 /* LoginTextField.swift in Sources */,
+				E5C261492919D15E00623C0E /* MyPageBottomAlertVC.swift in Sources */,
 				E55DE2F92896DDC6004F1401 /* CalendarUtilities.swift in Sources */,
 				E509438A28F8291D004D3A58 /* Preview.swift in Sources */,
 				E5AD739D287AE08F00BA2C5E /* PopupViewController.swift in Sources */,
@@ -1155,6 +1185,7 @@
 				E58A6297289D6BEF0074F646 /* DeviceManager.swift in Sources */,
 				E52E96B22915FAB6009E1773 /* MatchingContainerView.swift in Sources */,
 				E510D3CB28AC9F6E00A28B90 /* AuthViewModel.swift in Sources */,
+				E5C2614E2919D3AA00623C0E /* BottomAlertUtilities.swift in Sources */,
 				E5226D65291246750065C809 /* OnboardingConfirmVerifier.swift in Sources */,
 				E5E77EC628D822FB00031010 /* RegisterBottomButton.swift in Sources */,
 				E5ED81AF2918C76B00CB32EB /* MemberInfomationState.swift in Sources */,
@@ -1164,6 +1195,7 @@
 				E57FB8562886E2710050BBAE /* PhotoLibrary+Extensions.swift in Sources */,
 				E56DF4A428935B0800E85B10 /* UICollectionReusableView+Extensions.swift in Sources */,
 				E50300F928773A5D00611C62 /* SceneDelegate.swift in Sources */,
+				E5F56574291908DE0043FCB4 /* MyRoommateCell.swift in Sources */,
 				E5AEA5CE2912A4D60062F6A5 /* MatchingFilter.swift in Sources */,
 				E5AEA5D22912ABD30062F6A5 /* FilteringConfirmDriver.swift in Sources */,
 				E58F653029134C2B00E58862 /* MatchingFilterState.swift in Sources */,
@@ -1173,6 +1205,7 @@
 				E5E77EC828D825EB00031010 /* RegisterTextField.swift in Sources */,
 				E5323936291500DA004312BA /* MatchingImageViewType.swift in Sources */,
 				E563422528784ED400E93D17 /* HomeVC.swift in Sources */,
+				E5F56572291902B60043FCB4 /* MyRoommateHeaderView.swift in Sources */,
 				E5AD73A1287AFC5300BA2C5E /* AuthNumberViewController.swift in Sources */,
 				E573B86C28CCBAD100E0DAB3 /* OnboardingDetailVM.swift in Sources */,
 				E56DF4B52894036D00E85B10 /* CalendarViewModel.swift in Sources */,
@@ -1198,8 +1231,6 @@
 				E5AC2DCB2882F24000B82AD8 /* OnboardingTextField.swift in Sources */,
 				E5909CE628D94B610083075D /* BaseViewController.swift in Sources */,
 				E572172728C8712F00DA1E90 /* EmailServerConstants.swift in Sources */,
-				E5E8A3DB289505B500A48A91 /* MyPostVC.swift in Sources */,
-				E5E8A3DD289505F000A48A91 /* MyPostCollectionHeaderView.swift in Sources */,
 				E591B77C28C6E99400B8B581 /* ServerConstants.swift in Sources */,
 				E58131A8288E6AC6000DB8C9 /* FloatyBottomView.swift in Sources */,
 				E508436C288133AD0047A2EC /* LoginUtilities.swift in Sources */,
@@ -1209,7 +1240,9 @@
 				E56DF4AF2893C81F00E85B10 /* WeekdayCalendarView.swift in Sources */,
 				E5ED81AD2918C5E600CB32EB /* MemberInfomation.swift in Sources */,
 				E5E8A3DF2895208500A48A91 /* MyCommentsCollectionVIewCell.swift in Sources */,
+				E5F565702918FF5A0043FCB4 /* MyRoommateVC.swift in Sources */,
 				E5C89E4928A9ED9B0035D9C6 /* URL+Extensions.swift in Sources */,
+				E5F5656E2918FF280043FCB4 /* MyRoommateVCType.swift in Sources */,
 				E572172528C8711E00DA1E90 /* EmailService.swift in Sources */,
 				E54FF4392913D53E001826F1 /* MatchingConstants.swift in Sources */,
 				E5F5EC762884027D0026DE21 /* CalendarViewController.swift in Sources */,
@@ -1232,7 +1265,6 @@
 				E5AD7396287A8C2F00BA2C5E /* UIColor+Extensions.swift in Sources */,
 				E5D49012288C003800311493 /* MatchingCard.swift in Sources */,
 				E5AC2A4828BB548E0069ABB9 /* MyPageVM.swift in Sources */,
-				E5E8A3E52895319100A48A91 /* MyLikeRoommateCollectionVIewCell.swift in Sources */,
 				E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */,
 				E5AD739F287AEF2D00BA2C5E /* PutEmailViewController.swift in Sources */,
 				E53239342914F4A7004312BA /* MatchingCardBottomView.swift in Sources */,
@@ -1532,6 +1564,14 @@
 				minimumVersion = 1.3.0;
 			};
 		};
+		E5985E952919CD5C006D9276 /* XCRemoteSwiftPackageReference "Tabman" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/uias/Tabman.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 		E5AC2A4928BB56360069ABB9 /* XCRemoteSwiftPackageReference "RxGesture" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RxSwiftCommunity/RxGesture.git";
@@ -1578,14 +1618,6 @@
 			requirement = {
 				kind = upToNextMinorVersion;
 				minimumVersion = 2.0.0;
-			};
-		};
-		E5D31BF4289ABCE100510315 /* XCRemoteSwiftPackageReference "Tabman" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/uias/Tabman.git";
-			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 2.9.0;
 			};
 		};
 		E5E77EC228D81D7400031010 /* XCRemoteSwiftPackageReference "Then" */ = {
@@ -1654,6 +1686,11 @@
 			package = E58ACB83288465970031BD86 /* XCRemoteSwiftPackageReference "FMPhotoPicker" */;
 			productName = FMPhotoPicker;
 		};
+		E5985E962919CD5C006D9276 /* Tabman */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E5985E952919CD5C006D9276 /* XCRemoteSwiftPackageReference "Tabman" */;
+			productName = Tabman;
+		};
 		E5AC2A4A28BB56360069ABB9 /* RxGesture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E5AC2A4928BB56360069ABB9 /* XCRemoteSwiftPackageReference "RxGesture" */;
@@ -1683,11 +1720,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E5D31BED289A8A6700510315 /* XCRemoteSwiftPackageReference "RxKeyboard" */;
 			productName = RxKeyboard;
-		};
-		E5D31BF5289ABCE100510315 /* Tabman */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E5D31BF4289ABCE100510315 /* XCRemoteSwiftPackageReference "Tabman" */;
-			productName = Tabman;
 		};
 		E5E77EC328D81D7400031010 /* Then */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -1,11 +1,11 @@
 struct MemberInfomation: Codable {
-  let id: Int
-  let email: String
-  let nickname: String?
-  let profilePhotoFileName: String?
-  let profilePhotoUrl: String?
-  let matchingInfoId: Int
-  let loginToken: String?
+  var id: Int
+  var email: String
+  var nickname: String?
+  var profilePhotoFileName: String?
+  var profilePhotoUrl: String?
+  var matchingInfoId: Int
+  var loginToken: String?
   
   static func initialValue() -> MemberInfomation {
     return MemberInfomation(id: 1, email: "", nickname: nil, profilePhotoFileName: nil, profilePhotoUrl: nil, matchingInfoId: 1, loginToken: nil)
