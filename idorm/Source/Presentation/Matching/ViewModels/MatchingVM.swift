@@ -197,11 +197,14 @@ extension MatchingViewModel {
       .subscribe(onNext: { [unowned self] response in
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
-        case 200: break
-        case 401: break
-        case 409: break
-        case 500: break
-        default: break
+        case 200: // 좋아요 멤버 추가 완료
+          break
+        case 401: // 로그인이 필요합니다.
+          break
+        case 409: // 매칭 정보가 존재하지 않습니다. 혹은 관리자 혹은 본인을 싫어요한 멤버로 설정할 수 있습니다.
+          break
+        default: // 서버 에러 발생
+          break
         }
       })
       .disposed(by: disposeBag)
@@ -214,11 +217,14 @@ extension MatchingViewModel {
         guard let statusCode = response.response?.statusCode else { return }
         print(statusCode)
         switch statusCode {
-        case 200: break
-        case 401: break
-        case 409: break
-        case 500: break
-        default: break
+        case 200: // 싫어요 멤버 추가 완료
+          break
+        case 401: // 로그인이 필요합니다.
+          break
+        case 409: // 매칭 정보가 존재하지 않습니다. 혹은 관리자 혹은 본인을 싫어요한 멤버로 설정할 수 있습니다.
+          break
+        default: // 서버 에러 발생
+          break
         }
       })
       .disposed(by: disposeBag)

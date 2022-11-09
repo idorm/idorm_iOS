@@ -12,7 +12,7 @@
 		E50300F928773A5D00611C62 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50300F828773A5D00611C62 /* SceneDelegate.swift */; };
 		E503010028773A5E00611C62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E50300FF28773A5E00611C62 /* Assets.xcassets */; };
 		E503010328773A5E00611C62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E503010128773A5E00611C62 /* LaunchScreen.storyboard */; };
-		E504B61928B9C6E4009B45F8 /* CompleteSignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E504B61828B9C6E4009B45F8 /* CompleteSignUpViewModel.swift */; };
+		E504B61928B9C6E4009B45F8 /* CompleteSignUpVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E504B61828B9C6E4009B45F8 /* CompleteSignUpVM.swift */; };
 		E504B61B28B9DCE3009B45F8 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E504B61A28B9DCE3009B45F8 /* TokenManager.swift */; };
 		E508436C288133AD0047A2EC /* LoginUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508436B288133AD0047A2EC /* LoginUtilities.swift */; };
 		E508436E28813BF40047A2EC /* NotoSansCJKkr-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E508436D28813BF40047A2EC /* NotoSansCJKkr-Bold.otf */; };
@@ -23,10 +23,12 @@
 		E509438A28F8291D004D3A58 /* Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E509438928F8291D004D3A58 /* Preview.swift */; };
 		E510D3C928AC88A000A28B90 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E510D3C828AC88A000A28B90 /* Alamofire */; };
 		E510D3CB28AC9F6E00A28B90 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CA28AC9F6E00A28B90 /* AuthViewModel.swift */; };
-		E510D3CD28ACB87D00A28B90 /* PutEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CC28ACB87D00A28B90 /* PutEmailViewModel.swift */; };
+		E510D3CD28ACB87D00A28B90 /* PutEmailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CC28ACB87D00A28B90 /* PutEmailVM.swift */; };
 		E510D3CF28ACC5F300A28B90 /* MemberService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CE28ACC5F300A28B90 /* MemberService.swift */; };
 		E510D3D128ACC84300A28B90 /* RegisterInfomation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3D028ACC84300A28B90 /* RegisterInfomation.swift */; };
 		E510D3D328ACCA1C00A28B90 /* AuthNumberViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3D228ACCA1C00A28B90 /* AuthNumberViewModel.swift */; };
+		E517F241291B2BCB00350947 /* RegisterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E517F240291B2BCB00350947 /* RegisterType.swift */; };
+		E517F243291B2ED400350947 /* RegisterUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E517F242291B2ED400350947 /* RegisterUtilities.swift */; };
 		E5226D582911F3610065C809 /* Dormitory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D572911F3610065C809 /* Dormitory.swift */; };
 		E5226D5A2911F36B0065C809 /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D592911F36B0065C809 /* Gender.swift */; };
 		E5226D5C2911F3760065C809 /* JoinPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D5B2911F3760065C809 /* JoinPeriod.swift */; };
@@ -52,7 +54,7 @@
 		E5340E8A289C713D0030A44F /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = E5340E89289C713D0030A44F /* RxDataSources */; };
 		E5370AFE28A1001C00A68D92 /* MyPageUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5370AFD28A1001C00A68D92 /* MyPageUtilities.swift */; };
 		E53BBC0628BC3D2B001C86FC /* ManageMyInfoVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53BBC0528BC3D2B001C86FC /* ManageMyInfoVM.swift */; };
-		E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */; };
+		E53C60B0287B37CB00977909 /* CompleteSignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53C60AF287B37CB00977909 /* CompleteSignUpVC.swift */; };
 		E54FF4332913D142001826F1 /* MatchingSwipeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54FF4322913D142001826F1 /* MatchingSwipeType.swift */; };
 		E54FF4352913D2F8001826F1 /* MatchingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54FF4342913D2F8001826F1 /* MatchingType.swift */; };
 		E54FF4372913D4AD001826F1 /* MatchingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54FF4362913D4AD001826F1 /* MatchingService.swift */; };
@@ -75,6 +77,7 @@
 		E56DF4B52894036D00E85B10 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56DF4B42894036D00E85B10 /* CalendarViewModel.swift */; };
 		E572172528C8711E00DA1E90 /* EmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572172428C8711E00DA1E90 /* EmailService.swift */; };
 		E572172728C8712F00DA1E90 /* EmailServerConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572172628C8712F00DA1E90 /* EmailServerConstants.swift */; };
+		E573712F2919E8D200DB6088 /* MyPageBottomAlertVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E573712E2919E8D200DB6088 /* MyPageBottomAlertVM.swift */; };
 		E573B86C28CCBAD100E0DAB3 /* OnboardingDetailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E573B86B28CCBAD100E0DAB3 /* OnboardingDetailVM.swift */; };
 		E57A42CC289596D8003D5834 /* CardSlider in Frameworks */ = {isa = PBXBuildFile; productRef = E57A42CB289596D8003D5834 /* CardSlider */; };
 		E57E48F62899666000D00BDB /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = E57E48F52899666000D00BDB /* RxCocoa */; };
@@ -95,7 +98,7 @@
 		E591B77C28C6E99400B8B581 /* ServerConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591B77B28C6E99400B8B581 /* ServerConstants.swift */; };
 		E591B77E28C6EB0600B8B581 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591B77D28C6EB0600B8B581 /* APIService.swift */; };
 		E5985E972919CD5C006D9276 /* Tabman in Frameworks */ = {isa = PBXBuildFile; productRef = E5985E962919CD5C006D9276 /* Tabman */; };
-		E5A164B128ADC80C00554655 /* ConfirmPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A164B028ADC80C00554655 /* ConfirmPasswordViewModel.swift */; };
+		E5A164B128ADC80C00554655 /* ConfirmPasswordVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A164B028ADC80C00554655 /* ConfirmPasswordVM.swift */; };
 		E5A60C7C289BE72A004B77E8 /* SetCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A60C7B289BE72A004B77E8 /* SetCalendarViewModel.swift */; };
 		E5AB97C42895671800C0CEDF /* MatchingFilterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AB97C32895671800C0CEDF /* MatchingFilterVC.swift */; };
 		E5AC2A4828BB548E0069ABB9 /* MyPageVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2A4728BB548E0069ABB9 /* MyPageVM.swift */; };
@@ -107,9 +110,9 @@
 		E5AD7396287A8C2F00BA2C5E /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7395287A8C2F00BA2C5E /* UIColor+Extensions.swift */; };
 		E5AD7398287A8D8800BA2C5E /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7397287A8D8800BA2C5E /* UITextField+Extensions.swift */; };
 		E5AD739D287AE08F00BA2C5E /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD739C287AE08F00BA2C5E /* PopupViewController.swift */; };
-		E5AD739F287AEF2D00BA2C5E /* PutEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD739E287AEF2D00BA2C5E /* PutEmailViewController.swift */; };
+		E5AD739F287AEF2D00BA2C5E /* PutEmailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD739E287AEF2D00BA2C5E /* PutEmailVC.swift */; };
 		E5AD73A1287AFC5300BA2C5E /* AuthNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD73A0287AFC5300BA2C5E /* AuthNumberViewController.swift */; };
-		E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordViewController.swift */; };
+		E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordVC.swift */; };
 		E5AEA5C729129AC50062F6A5 /* MatchingUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AEA5C629129AC50062F6A5 /* MatchingUtilities.swift */; };
 		E5AEA5CB2912A30B0062F6A5 /* OnboardingVCType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AEA5CA2912A30B0062F6A5 /* OnboardingVCType.swift */; };
 		E5AEA5CE2912A4D60062F6A5 /* MatchingFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AEA5CD2912A4D60062F6A5 /* MatchingFilter.swift */; };
@@ -177,7 +180,7 @@
 		E50300F828773A5D00611C62 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E50300FF28773A5E00611C62 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E503010228773A5E00611C62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		E504B61828B9C6E4009B45F8 /* CompleteSignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpViewModel.swift; sourceTree = "<group>"; };
+		E504B61828B9C6E4009B45F8 /* CompleteSignUpVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpVM.swift; sourceTree = "<group>"; };
 		E504B61A28B9DCE3009B45F8 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		E508436B288133AD0047A2EC /* LoginUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUtilities.swift; sourceTree = "<group>"; };
 		E508436D28813BF40047A2EC /* NotoSansCJKkr-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansCJKkr-Bold.otf"; sourceTree = "<group>"; };
@@ -187,10 +190,12 @@
 		E508437A28814CAB0047A2EC /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		E509438928F8291D004D3A58 /* Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preview.swift; sourceTree = "<group>"; };
 		E510D3CA28AC9F6E00A28B90 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
-		E510D3CC28ACB87D00A28B90 /* PutEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailViewModel.swift; sourceTree = "<group>"; };
+		E510D3CC28ACB87D00A28B90 /* PutEmailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailVM.swift; sourceTree = "<group>"; };
 		E510D3CE28ACC5F300A28B90 /* MemberService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberService.swift; sourceTree = "<group>"; };
 		E510D3D028ACC84300A28B90 /* RegisterInfomation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterInfomation.swift; sourceTree = "<group>"; };
 		E510D3D228ACCA1C00A28B90 /* AuthNumberViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberViewModel.swift; sourceTree = "<group>"; };
+		E517F240291B2BCB00350947 /* RegisterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterType.swift; sourceTree = "<group>"; };
+		E517F242291B2ED400350947 /* RegisterUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUtilities.swift; sourceTree = "<group>"; };
 		E5226D572911F3610065C809 /* Dormitory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dormitory.swift; sourceTree = "<group>"; };
 		E5226D592911F36B0065C809 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
 		E5226D5B2911F3760065C809 /* JoinPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinPeriod.swift; sourceTree = "<group>"; };
@@ -214,7 +219,7 @@
 		E5323935291500DA004312BA /* MatchingImageViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingImageViewType.swift; sourceTree = "<group>"; };
 		E5370AFD28A1001C00A68D92 /* MyPageUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageUtilities.swift; sourceTree = "<group>"; };
 		E53BBC0528BC3D2B001C86FC /* ManageMyInfoVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMyInfoVM.swift; sourceTree = "<group>"; };
-		E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpViewController.swift; sourceTree = "<group>"; };
+		E53C60AF287B37CB00977909 /* CompleteSignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpVC.swift; sourceTree = "<group>"; };
 		E54FF4322913D142001826F1 /* MatchingSwipeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingSwipeType.swift; sourceTree = "<group>"; };
 		E54FF4342913D2F8001826F1 /* MatchingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingType.swift; sourceTree = "<group>"; };
 		E54FF4362913D4AD001826F1 /* MatchingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingService.swift; sourceTree = "<group>"; };
@@ -235,6 +240,7 @@
 		E56DF4B42894036D00E85B10 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		E572172428C8711E00DA1E90 /* EmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailService.swift; sourceTree = "<group>"; };
 		E572172628C8712F00DA1E90 /* EmailServerConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailServerConstants.swift; sourceTree = "<group>"; };
+		E573712E2919E8D200DB6088 /* MyPageBottomAlertVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageBottomAlertVM.swift; sourceTree = "<group>"; };
 		E573B86B28CCBAD100E0DAB3 /* OnboardingDetailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDetailVM.swift; sourceTree = "<group>"; };
 		E57FB8552886E2710050BBAE /* PhotoLibrary+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotoLibrary+Extensions.swift"; sourceTree = "<group>"; };
 		E58131A7288E6AC6000DB8C9 /* FloatyBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatyBottomView.swift; sourceTree = "<group>"; };
@@ -248,7 +254,7 @@
 		E591B77628C6E6AC00B8B581 /* MemberServerConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberServerConstants.swift; sourceTree = "<group>"; };
 		E591B77B28C6E99400B8B581 /* ServerConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConstants.swift; sourceTree = "<group>"; };
 		E591B77D28C6EB0600B8B581 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
-		E5A164B028ADC80C00554655 /* ConfirmPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordViewModel.swift; sourceTree = "<group>"; };
+		E5A164B028ADC80C00554655 /* ConfirmPasswordVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordVM.swift; sourceTree = "<group>"; };
 		E5A60C7B289BE72A004B77E8 /* SetCalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCalendarViewModel.swift; sourceTree = "<group>"; };
 		E5AB97C32895671800C0CEDF /* MatchingFilterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilterVC.swift; sourceTree = "<group>"; };
 		E5AC2A4728BB548E0069ABB9 /* MyPageVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageVM.swift; sourceTree = "<group>"; };
@@ -259,9 +265,9 @@
 		E5AD7395287A8C2F00BA2C5E /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		E5AD7397287A8D8800BA2C5E /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
 		E5AD739C287AE08F00BA2C5E /* PopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
-		E5AD739E287AEF2D00BA2C5E /* PutEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailViewController.swift; sourceTree = "<group>"; };
+		E5AD739E287AEF2D00BA2C5E /* PutEmailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailVC.swift; sourceTree = "<group>"; };
 		E5AD73A0287AFC5300BA2C5E /* AuthNumberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberViewController.swift; sourceTree = "<group>"; };
-		E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordViewController.swift; sourceTree = "<group>"; };
+		E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordVC.swift; sourceTree = "<group>"; };
 		E5AEA5C629129AC50062F6A5 /* MatchingUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingUtilities.swift; sourceTree = "<group>"; };
 		E5AEA5CA2912A30B0062F6A5 /* OnboardingVCType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVCType.swift; sourceTree = "<group>"; };
 		E5AEA5CD2912A4D60062F6A5 /* MatchingFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilter.swift; sourceTree = "<group>"; };
@@ -416,6 +422,14 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		E517F23F291B2BB300350947 /* Regitser */ = {
+			isa = PBXGroup;
+			children = (
+				E517F240291B2BCB00350947 /* RegisterType.swift */,
+			);
+			path = Regitser;
+			sourceTree = "<group>";
+		};
 		E53EF842291538C200EC419D /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -478,7 +492,9 @@
 		E54B3E2228C6E1A30062EF7E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E5C2614A2919D21300623C0E /* MyPageBottomAlertVCType.swift */,
 				E53EF842291538C200EC419D /* Common */,
+				E517F23F291B2BB300350947 /* Regitser */,
 				E5F5656C2918FEEB0043FCB4 /* MyPage */,
 				E53EF8452915391600EC419D /* Matching */,
 				E53EF844291538FA00EC419D /* Onboarding */,
@@ -854,6 +870,7 @@
 			isa = PBXGroup;
 			children = (
 				E5C2614D2919D3AA00623C0E /* BottomAlertUtilities.swift */,
+				E517F242291B2ED400350947 /* RegisterUtilities.swift */,
 				E5370AFD28A1001C00A68D92 /* MyPageUtilities.swift */,
 				E5290F1128886D7A0004B8E6 /* CommunityUtilities.swift */,
 				E5AEA5C629129AC50062F6A5 /* MatchingUtilities.swift */,
@@ -887,9 +904,9 @@
 		E5E77ECB28D828E800031010 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				E5AD739E287AEF2D00BA2C5E /* PutEmailViewController.swift */,
-				E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordViewController.swift */,
-				E53C60AF287B37CB00977909 /* CompleteSignUpViewController.swift */,
+				E5AD739E287AEF2D00BA2C5E /* PutEmailVC.swift */,
+				E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordVC.swift */,
+				E53C60AF287B37CB00977909 /* CompleteSignUpVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -906,9 +923,9 @@
 		E5E77ECD28D8295E00031010 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				E510D3CC28ACB87D00A28B90 /* PutEmailViewModel.swift */,
-				E5A164B028ADC80C00554655 /* ConfirmPasswordViewModel.swift */,
-				E504B61828B9C6E4009B45F8 /* CompleteSignUpViewModel.swift */,
+				E510D3CC28ACB87D00A28B90 /* PutEmailVM.swift */,
+				E5A164B028ADC80C00554655 /* ConfirmPasswordVM.swift */,
+				E504B61828B9C6E4009B45F8 /* CompleteSignUpVM.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -940,6 +957,7 @@
 				E5AC2A4728BB548E0069ABB9 /* MyPageVM.swift */,
 				E53BBC0528BC3D2B001C86FC /* ManageMyInfoVM.swift */,
 				E5D98F9028C486CB00D493FF /* ChangeNicknameVM.swift */,
+				E573712E2919E8D200DB6088 /* MyPageBottomAlertVM.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -985,7 +1003,6 @@
 			isa = PBXGroup;
 			children = (
 				E5F5656D2918FF270043FCB4 /* MyRoommateVCType.swift */,
-				E5C2614A2919D21300623C0E /* MyPageBottomAlertVCType.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -1150,12 +1167,12 @@
 				E5EB5F2E2891535E00EC0425 /* CalendarDormCollectionHeaderView.swift in Sources */,
 				E5C2614B2919D21300623C0E /* MyPageBottomAlertVCType.swift in Sources */,
 				E5A60C7C289BE72A004B77E8 /* SetCalendarViewModel.swift in Sources */,
-				E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordViewController.swift in Sources */,
+				E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordVC.swift in Sources */,
 				E5226D60291207AA0065C809 /* Habit.swift in Sources */,
 				E5EB5F302891558D00EC0425 /* CalendarDormCell.swift in Sources */,
 				E5FC8F1B29113A25002812FA /* ViewModel.swift in Sources */,
 				E525C1CD28944E2800F934B3 /* CalendarPostViewController.swift in Sources */,
-				E504B61928B9C6E4009B45F8 /* CompleteSignUpViewModel.swift in Sources */,
+				E504B61928B9C6E4009B45F8 /* CompleteSignUpVM.swift in Sources */,
 				E5AEA5C729129AC50062F6A5 /* MatchingUtilities.swift in Sources */,
 				E5C89E4B28A9EDA70035D9C6 /* URLRequest+Extensions.swift in Sources */,
 				E5B7E84F28ABCA670099B631 /* LoginViewModel.swift in Sources */,
@@ -1164,16 +1181,18 @@
 				E55DE2F92896DDC6004F1401 /* CalendarUtilities.swift in Sources */,
 				E509438A28F8291D004D3A58 /* Preview.swift in Sources */,
 				E5AD739D287AE08F00BA2C5E /* PopupViewController.swift in Sources */,
-				E53C60B0287B37CB00977909 /* CompleteSignUpViewController.swift in Sources */,
+				E53C60B0287B37CB00977909 /* CompleteSignUpVC.swift in Sources */,
 				E557E2272892593F00F9C74D /* CalendarPersonalCell.swift in Sources */,
 				E5CF7DC728C8BDDD00125144 /* OnboardingService.swift in Sources */,
 				E5226D6329122AD20065C809 /* OnboardingQueryList.swift in Sources */,
 				E5CF7DC928C8BE1C00125144 /* OnboardingServerConstants.swift in Sources */,
 				E5290F0928881C6E0004B8E6 /* CommunityDetailCollectionHeaderView.swift in Sources */,
+				E573712F2919E8D200DB6088 /* MyPageBottomAlertVM.swift in Sources */,
 				E50300F728773A5D00611C62 /* AppDelegate.swift in Sources */,
 				E5AEA5CB2912A30B0062F6A5 /* OnboardingVCType.swift in Sources */,
 				E55794EE287C36F5002DB2B0 /* UIView+Extensions.swift in Sources */,
 				E5EB5F2C2891534300EC0425 /* CalendarPersonalCollectionHeaderView.swift in Sources */,
+				E517F241291B2BCB00350947 /* RegisterType.swift in Sources */,
 				E5AD7398287A8D8800BA2C5E /* UITextField+Extensions.swift in Sources */,
 				E508437728813CE80047A2EC /* FontManager.swift in Sources */,
 				E53086E42879287100A5D0A0 /* HomeVM.swift in Sources */,
@@ -1210,7 +1229,7 @@
 				E573B86C28CCBAD100E0DAB3 /* OnboardingDetailVM.swift in Sources */,
 				E56DF4B52894036D00E85B10 /* CalendarViewModel.swift in Sources */,
 				E53BBC0628BC3D2B001C86FC /* ManageMyInfoVM.swift in Sources */,
-				E510D3CD28ACB87D00A28B90 /* PutEmailViewModel.swift in Sources */,
+				E510D3CD28ACB87D00A28B90 /* PutEmailVM.swift in Sources */,
 				E5C88908288972E000CBD04E /* CommunityAlertViewController.swift in Sources */,
 				E54FF4352913D2F8001826F1 /* MatchingType.swift in Sources */,
 				E5AC2A4D28BB5B250069ABB9 /* ManageMyInfoVC.swift in Sources */,
@@ -1226,7 +1245,7 @@
 				E5226D5A2911F36B0065C809 /* Gender.swift in Sources */,
 				E5D31BF3289AB83800510315 /* SetCalendarTabmanController.swift in Sources */,
 				E54FF4372913D4AD001826F1 /* MatchingService.swift in Sources */,
-				E5A164B128ADC80C00554655 /* ConfirmPasswordViewModel.swift in Sources */,
+				E5A164B128ADC80C00554655 /* ConfirmPasswordVM.swift in Sources */,
 				E5226D582911F3610065C809 /* Dormitory.swift in Sources */,
 				E5AC2DCB2882F24000B82AD8 /* OnboardingTextField.swift in Sources */,
 				E5909CE628D94B610083075D /* BaseViewController.swift in Sources */,
@@ -1252,6 +1271,7 @@
 				E56DF4A2289354AF00E85B10 /* CalendarRoundedBackgroundView.swift in Sources */,
 				E508437B28814CAB0047A2EC /* AuthViewController.swift in Sources */,
 				E510D3D128ACC84300A28B90 /* RegisterInfomation.swift in Sources */,
+				E517F243291B2ED400350947 /* RegisterUtilities.swift in Sources */,
 				E5EB5F2A289143A100EC0425 /* CalendarChipCell.swift in Sources */,
 				E52CD85628BE371F00A262ED /* ManageMyInfoView.swift in Sources */,
 				E5D31BEC289A792400510315 /* UnderlinedBackGroundView.swift in Sources */,
@@ -1266,7 +1286,7 @@
 				E5D49012288C003800311493 /* MatchingCard.swift in Sources */,
 				E5AC2A4828BB548E0069ABB9 /* MyPageVM.swift in Sources */,
 				E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */,
-				E5AD739F287AEF2D00BA2C5E /* PutEmailViewController.swift in Sources */,
+				E5AD739F287AEF2D00BA2C5E /* PutEmailVC.swift in Sources */,
 				E53239342914F4A7004312BA /* MatchingCardBottomView.swift in Sources */,
 				E54FF4332913D142001826F1 /* MatchingSwipeType.swift in Sources */,
 				E54FF43B2913E1DE001826F1 /* MatchingMember.swift in Sources */,

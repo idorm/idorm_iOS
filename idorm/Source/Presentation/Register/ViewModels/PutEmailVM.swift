@@ -1,46 +1,40 @@
-//
-//  FindPwOrSignUpViewModel.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/08/17.
-//
-
-import Foundation
 import RxSwift
 import RxCocoa
 
-class PutEmailViewModel {
+final class PutEmailViewModel: ViewModel {
   struct Input {
+    // Interaction
     let emailText = BehaviorRelay<String>(value: "")
     let confirmButtonTapped = PublishSubject<Void>()
   }
   
   struct Output {
+    // Presentation
     let showAuthVC = PublishSubject<Void>()
     let showErrorPopupVC = PublishSubject<String>()
-    let startAnimation = PublishSubject<Void>()
-    let stopAnimation = PublishSubject<Void>()
+    
+    // UI
+    let animationState = PublishSubject<Bool>()
   }
   
-  let input = Input()
-  let output = Output()
-  let disposeBag = DisposeBag()
+  var input = Input()
+  var output = Output()
+  var disposeBag = DisposeBag()
   
-  var email: String {
-    return input.emailText.value
-  }
+  var email: String { return input.emailText.value }
   
   init() {
     bind()
   }
   
   func bind() {
-    /// 완료 버튼 클릭 시 오류 및 이동
+    
+    // 완료 버튼 클릭 -> 오류 및 이동
     input.confirmButtonTapped
       .bind(onNext: { [unowned self] in
-        RegisterInfomation.email = self.email
+        RegisterInfomation.shared.email = self.email
         
-        switch RegisterInfomation.registerType {
+        switch RegisterInfomation.shared.registerType {
         case .findPW:
           self.passwordEmailAPI()
         case .signUp:
@@ -48,18 +42,19 @@ class PutEmailViewModel {
         }
       })
       .disposed(by: disposeBag)
-    
-    /// 완료 버튼 클릭 시 애니메이션 시작
-    input.confirmButtonTapped
-      .bind(to: output.startAnimation)
-      .disposed(by: disposeBag)
   }
+}
+
+// MARK: - Network
+
+extension PutEmailViewModel {
   
+  // 비밀번호 변경 인증 메일 요청 API
   func passwordEmailAPI() {
+    output.animationState.onNext(true)
     EmailService.passwordEmailAPI(email: self.email)
       .subscribe(onNext: { [weak self] response in
         guard let statusCode = response.response?.statusCode else { return }
-        self?.output.stopAnimation.onNext(Void())
         switch statusCode {
         case 200:
           self?.output.showAuthVC.onNext(Void())
@@ -70,15 +65,16 @@ class PutEmailViewModel {
         default:
           self?.output.showErrorPopupVC.onNext("이메일을 다시 한번 확인해주세요.")
         }
+        self?.output.animationState.onNext(false)
       })
       .disposed(by: disposeBag)
   }
   
+  // 회원가입 인증 메일 요청 API
   func registerEmailAPI() {
     EmailService.registerEmailAPI(email: self.email)
       .subscribe(onNext: { [weak self] response in
         guard let statusCode = response.response?.statusCode else { return }
-        self?.output.stopAnimation.onNext(Void())
         switch statusCode {
         case 200:
           self?.output.showAuthVC.onNext(Void())
@@ -91,6 +87,7 @@ class PutEmailViewModel {
         default:
           self?.output.showErrorPopupVC.onNext("이메일을 다시 한번 확인해주세요.")
         }
+        self?.output.animationState.onNext(false)
       })
       .disposed(by: disposeBag)
   }

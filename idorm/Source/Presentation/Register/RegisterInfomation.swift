@@ -1,19 +1,13 @@
-//
-//  LoginManager.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/08/17.
-//
-
 import Foundation
 
 final class RegisterInfomation {
   
   private init() {}
+  static let shared = RegisterInfomation()
   
-  static var registerType: RegisterType = .findPW
+  var registerType: RegisterType = .findPW
   
-  static var email: String?
+  var email: String?
   
-  static var password: String?
+  var password: String?
 }

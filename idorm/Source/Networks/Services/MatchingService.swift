@@ -51,4 +51,24 @@ final class MatchingService {
     let url = MatchingConstants.matchingDislikeMembersURL + "?selectedMemberId=\(memberId)"
     return APIService.load(url, httpMethod: .post, body: nil, encoding: .query)
   }
+  
+  /// 매칭 좋아요 매칭멤버 삭제
+  static func matchingLikedMembers_Delete(_ memberId: Int) -> Observable<AFDataResponse<Data>> {
+    let url = MatchingConstants.matchingLikedMembersURL
+    let body: Parameters = [
+      "selectedMemberId": memberId
+    ]
+    
+    return APIService.load(url, httpMethod: .delete, body: body, encoding: .query)
+  }
+  
+  /// 매칭 싫어요 매칭멤버 삭제
+  static func matchingDislikedMembers_Delete(_ memberId: Int) -> Observable<AFDataResponse<Data>> {
+    let url = MatchingConstants.matchingDislikeMembersURL
+    let body: Parameters = [
+      "selectedMemberId": memberId
+    ]
+    
+    return APIService.load(url, httpMethod: .delete, body: body, encoding: .query)
+  }
 }

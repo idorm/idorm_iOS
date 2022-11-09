@@ -1,25 +1,15 @@
-//
-//  FindPasswordViewController.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/10.
-//
-
 import UIKit
+
 import Then
 import SnapKit
 import RxSwift
 import RxCocoa
 
-enum RegisterType {
-  case findPW
-  case signUp
-}
-
-class PutEmailViewController: BaseViewController {
+final class PutEmailViewController: BaseViewController {
+  
   // MARK: - Properties
   
-  lazy var infoLabel = UILabel().then {
+  private lazy var infoLabel = UILabel().then {
     $0.textColor = .black
     $0.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
     if registerType == .findPW {
@@ -29,59 +19,54 @@ class PutEmailViewController: BaseViewController {
     }
   }
   
-  let needEmailLabel = UILabel().then {
+  private let needEmailLabel = UILabel().then {
     $0.text = "인천대학교 이메일 (@inu.ac.kr)이 필요해요."
     $0.textColor = .idorm_gray_400
     $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
   }
   
-  let indicator = UIActivityIndicatorView()
-  let textField = RegisterTextField("이메일을 입력해주세요")
-  let confirmButton = RegisterBottomButton("인증번호 받기")
-  let inuMark = UIImageView(image: UIImage(named: "INUMark"))
-  var inuStack: UIStackView!
+  private let indicator = UIActivityIndicatorView()
+  private let textField = RegisterTextField("이메일을 입력해주세요")
+  private let confirmButton = RegisterBottomButton("인증번호 받기")
+  private let inuMark = UIImageView(image: UIImage(named: "INUMark"))
+  private var inuStack: UIStackView!
   
-  let viewModel = PutEmailViewModel()
-  let registerType: RegisterType
+  private let viewModel = PutEmailViewModel()
+  private let registerType: RegisterType
 
-  // MARK: - Init
+  // MARK: - LifeCycle
   
   init(type: RegisterType) {
     self.registerType = type
     super.init(nibName: nil, bundle: nil)
-    RegisterInfomation.registerType = type
+    RegisterInfomation.shared.registerType = type
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
-  // MARK: - LifeCycle
     
   // MARK: - Bind
   
   override func bind() {
     super.bind()
-    // --------------------------------
-    // --------------INPUT-------------
-    // --------------------------------
     
-    /// 인증번호 받기 버튼 클릭
+    // MARK: - Input
+    
+    // 인증번호 받기 버튼 클릭
     confirmButton.rx.tap
       .bind(to: viewModel.input.confirmButtonTapped)
       .disposed(by: disposeBag)
     
-    /// 텍스트필드 텍스트 반응
+    // 텍스트필드 텍스트 반응
     textField.rx.text
       .orEmpty
       .bind(to: viewModel.input.emailText)
       .disposed(by: disposeBag)
     
-    // --------------------------------
-    // -------------OUTPUT-------------
-    // --------------------------------
+    // MARK: - Output
     
-    /// 에러 팝업 창 띄우기
+    // 에러 팝업 창 띄우기
     viewModel.output.showErrorPopupVC
       .bind(onNext: { [weak self] mention in
         let popupVC = PopupViewController(contents: mention)
@@ -90,7 +75,7 @@ class PutEmailViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    /// 인증번호 페이지로 이동
+    // 인증번호 페이지로 이동
     viewModel.output.showAuthVC
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -109,19 +94,16 @@ class PutEmailViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    /// 인디케이터 애니메이션 시작
-    viewModel.output.startAnimation
+    // 애니메이션 상태 변경
+    viewModel.output.animationState
       .bind(onNext: { [weak self] in
-        self?.indicator.startAnimating()
-        self?.view.isUserInteractionEnabled = false
-      })
-      .disposed(by: disposeBag)
-    
-    /// 인디케이터 애니메이션 종료
-    viewModel.output.stopAnimation
-      .bind(onNext: { [weak self] in
-        self?.indicator.stopAnimating()
-        self?.view.isUserInteractionEnabled = true
+        if $0 {
+          self?.indicator.startAnimating()
+          self?.view.isUserInteractionEnabled = false
+        } else {
+          self?.indicator.stopAnimating()
+          self?.view.isUserInteractionEnabled = true
+        }
       })
       .disposed(by: disposeBag)
   }
@@ -182,6 +164,8 @@ class PutEmailViewController: BaseViewController {
       make.width.height.equalTo(20)
     }
   }
+  
+  // MARK: - Helpers
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     view.endEditing(true)

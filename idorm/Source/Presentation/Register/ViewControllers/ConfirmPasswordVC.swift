@@ -1,6 +1,7 @@
 import UIKit
 
 import SnapKit
+import Then
 import RxSwift
 import RxCocoa
 
@@ -22,17 +23,15 @@ final class ConfirmPasswordViewController: BaseViewController {
   
   let textField1 = RegisterPwTextField(placeholder: "비밀번호를 입력해주세요.")
   
-  lazy var infoLabel = returnInfoLabel(text: "비밀번호")
-  lazy var infoLabel2 = returnInfoLabel(text: "비밀번호 확인")
+  private let infoLabel = RegisterUtilities.infoLabel(text: "비밀번호")
+  private let infoLabel2 = RegisterUtilities.infoLabel(text: "비밀번호 확인")
+  private let eightLabel = RegisterUtilities.descriptionLabel(text: "•  8자 이상 입력")
+  private let mixingLabel = RegisterUtilities.descriptionLabel(text: "•  영문 소문자/숫자/특수 문자 조합")
   
-  lazy var eightLabel = returnDescriptionLabel(text: "•  8자 이상 입력")
-  lazy var mixingLabel = returnDescriptionLabel(text: "•  영문 소문자/숫자/특수 문자 조합")
+  private let type: RegisterType
+  private let viewModel = ConfirmPasswordViewModel()
   
-  let type: RegisterType
-  
-  let viewModel = ConfirmPasswordViewModel()
-  
-  // MARK: - Init
+  // MARK: - LifeCycle
   
   init(type: RegisterType) {
     self.type = type
@@ -47,11 +46,10 @@ final class ConfirmPasswordViewController: BaseViewController {
   
   override func bind() {
     super.bind()
-    // --------------------------------
-    // --------------INPUT-------------
-    // --------------------------------
     
-    /// 텍스트필드 이벤트 모음
+    // MARK: - Input
+    
+    // 텍스트필드 이벤트 모음
     textField1.textField.rx.text
       .orEmpty
       .distinctUntilChanged()
@@ -80,16 +78,14 @@ final class ConfirmPasswordViewController: BaseViewController {
       .bind(to: viewModel.input.passwordText_2)
       .disposed(by: disposeBag)
     
-    /// 확인 버튼 이벤트
+    // 확인 버튼 이벤트
     confirmButton.rx.tap
       .bind(to: viewModel.input.confirmButtonTapped)
       .disposed(by: disposeBag)
     
-    // --------------------------------
-    // -------------OUTPUT-------------
-    // --------------------------------
+    // MARK: - Output
     
-    /// 비밀번호 텍스트필드 포커싱
+    // 비밀번호 텍스트필드 포커싱
     viewModel.output.didBeginState
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -100,7 +96,7 @@ final class ConfirmPasswordViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
 
-    /// 비밀번호 확인 텍스트필드 포커싱
+    // 비밀번호 확인 텍스트필드 포커싱
     viewModel.output.didBeginState_2
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -109,7 +105,7 @@ final class ConfirmPasswordViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    /// 비밀번호 텍스트필드 포커스가 해제되었을 때
+    // 비밀번호 텍스트필드 포커스가 해제되었을 때
     viewModel.output.didEndState
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -136,7 +132,7 @@ final class ConfirmPasswordViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    /// 비밀번호 확인 텍스트 포커싱 해제되었을 때
+    // 비밀번호 확인 텍스트 포커싱 해제되었을 때
     viewModel.output.didEndState_2
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -156,7 +152,7 @@ final class ConfirmPasswordViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
 
-    /// '8자 이상 입력' 라벨 색상 바꾸기
+    // '8자 이상 입력' 라벨 색상 바꾸기
     viewModel.output.countState
       .asDriver(onErrorJustReturn: false)
       .drive(onNext: { [weak self] isValid in
@@ -168,7 +164,7 @@ final class ConfirmPasswordViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    /// 영문 소문자/숫자/특수 문자 조합 색상 바꾸기
+    // 영문 소문자/숫자/특수 문자 조합 색상 바꾸기
     viewModel.output.combineState
       .asDriver(onErrorJustReturn: false)
       .drive(onNext: { [weak self] isValid in
@@ -180,7 +176,7 @@ final class ConfirmPasswordViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    /// 완료버튼 누를 때 에러 팝업 띄우기
+    // 완료버튼 누를 때 에러 팝업 띄우기
     viewModel.output.showErrorPopupVC
       .asDriver(onErrorJustReturn: "")
       .drive(onNext: { [weak self] mention in
@@ -190,7 +186,7 @@ final class ConfirmPasswordViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    /// 회원가입 완료 페이지로 넘어가기
+    // 회원가입 완료 페이지로 넘어가기
     viewModel.output.showCompleteVC
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -200,7 +196,7 @@ final class ConfirmPasswordViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    /// 비밀번호 변경 완료 시 로그인 페이지로 넘어가기
+    // 비밀번호 변경 완료 시 로그인 페이지로 넘어가기
     viewModel.output.showLoginVC
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
@@ -271,31 +267,14 @@ final class ConfirmPasswordViewController: BaseViewController {
     }
   }
   
+  // MARK: - Helpers
+  
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     view.endEditing(true)
   }
 }
 
-// MARK: - Utilities
-
-extension ConfirmPasswordViewController {
-  private func returnInfoLabel(text: String) -> UILabel {
-    let label = UILabel()
-    label.text = text
-    label.textColor = .black
-    label.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
-    return label
-  }
-  
-  private func returnDescriptionLabel(text: String) -> UILabel {
-    let label = UILabel()
-    label.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
-    label.textColor = .idorm_gray_400
-    label.text = text
-    
-    return label
-  }
-}
+// MARK: - Preview
 
 #if canImport(SwiftUI) && DEBUG
 import SwiftUI

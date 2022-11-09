@@ -1,27 +1,25 @@
-//
-//  CompleteSignUpViewModel.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/08/27.
-//
-
 import Foundation
+
 import RxSwift
 import RxCocoa
 
-class CompleteSignUpViewModel {
+final class CompleteSignUpViewModel: ViewModel {
   struct Input {
+    // Interaction
     let continueButtonTapped = PublishSubject<Void>()
   }
   
   struct Output {
+    // Presentation
     let showOnboardingVC = PublishSubject<Void>()
+    
+    // UI
     let startAnimation = PublishSubject<Void>()
     let stopAnimation = PublishSubject<Void>()
   }
   
-  let input = Input()
-  let output = Output()
+  var input = Input()
+  var output = Output()
   var disposeBag = DisposeBag()
   
   init() {
@@ -42,10 +40,14 @@ class CompleteSignUpViewModel {
       .bind(to: output.startAnimation)
       .disposed(by: disposeBag)
   }
-  
+}
+
+// MARK: - Network
+
+extension CompleteSignUpViewModel {
   func LoginAPI() {
-    guard let email = RegisterInfomation.email else { return }
-    guard let password = RegisterInfomation.password else { return }
+    guard let email = RegisterInfomation.shared.email else { return }
+    guard let password = RegisterInfomation.shared.password else { return }
     
     MemberService.LoginAPI(email: email, password: password)
       .subscribe(onNext: { [weak self] response in

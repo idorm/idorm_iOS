@@ -1,16 +1,11 @@
-//
-//  ConfirmPasswordViewModel.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/08/18.
-//
-
 import Foundation
+
 import RxSwift
 import RxCocoa
 
-class ConfirmPasswordViewModel {
+final class ConfirmPasswordViewModel: ViewModel {
   struct Input {
+    // Interaction
     let confirmButtonTapped = PublishSubject<Void>()
     let passwordText = BehaviorRelay<String>(value: "")
     let passwordText_2 = BehaviorRelay<String>(value: "")
@@ -21,20 +16,23 @@ class ConfirmPasswordViewModel {
   }
   
   struct Output {
+    // UI
     let countState = BehaviorRelay<Bool>(value: false)
     let combineState = BehaviorRelay<Bool>(value: false)
     let didBeginState = PublishSubject<Void>()
     let didBeginState_2 = PublishSubject<Void>()
     let didEndState = PublishSubject<Void>()
     let didEndState_2 = PublishSubject<Void>()
+    
+    // Presentation
     let showErrorPopupVC = PublishSubject<String>()
     let showCompleteVC = PublishSubject<Void>()
     let showLoginVC = PublishSubject<Void>()
   }
   
-  let input = Input()
-  let output = Output()
-  let disposeBag = DisposeBag()
+  var input = Input()
+  var output = Output()
+  var disposeBag = DisposeBag()
   
   var passwordText: String { return input.passwordText.value }
   var passwordText2: String { return input.passwordText_2.value }
@@ -88,7 +86,7 @@ class ConfirmPasswordViewModel {
            self.isValidPasswordFinal(pwd: self.passwordText2),
            self.passwordText == self.passwordText2 {
           
-          if RegisterInfomation.registerType == .signUp {
+          if RegisterInfomation.shared.registerType == .signUp {
             self.registerAPI()
           } else {
             // TODO: [] 멤버 비밀번호 바꾸기 API 삽입
@@ -102,14 +100,14 @@ class ConfirmPasswordViewModel {
   }
   
   func registerAPI() {
-    guard let email = RegisterInfomation.email else { return }
+    guard let email = RegisterInfomation.shared.email else { return }
     
     MemberService.registerAPI(email: email, password: passwordText)
       .subscribe(onNext: { [weak self] response in
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
         case 200:
-          RegisterInfomation.password = self?.passwordText
+          RegisterInfomation.shared.password = self?.passwordText
           self?.output.showCompleteVC.onNext(Void())
         default:
           self?.output.showErrorPopupVC.onNext("등록되지 않은 이메일입니다.")
@@ -119,7 +117,7 @@ class ConfirmPasswordViewModel {
   }
   
   func changePasswordAPI() {
-    guard let email = RegisterInfomation.email else { return }
+    guard let email = RegisterInfomation.shared.email else { return }
     
     MemberService.changePasswordAPI(email: email, password: passwordText)
       .subscribe(onNext: { [weak self] response in
