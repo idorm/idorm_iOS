@@ -1,6 +1,8 @@
 import UIKit
 
+/// 탭바와 네비게이션 속성을 바꿔주는 싱글톤 객체입니다.
 final class AppearanceManager {
+  
   static func navigationAppearance(from color: UIColor, shadow: Bool) -> UINavigationBarAppearance {
     let appearance = UINavigationBarAppearance()
     let backButtonAppearance = UIBarButtonItemAppearance()

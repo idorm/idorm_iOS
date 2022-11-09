@@ -1,11 +1,5 @@
-//
-//  MailTimerChecker.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/10/03.
-//
-
 import Foundation
+
 import RxSwift
 import RxCocoa
 

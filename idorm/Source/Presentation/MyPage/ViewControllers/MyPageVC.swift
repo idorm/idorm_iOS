@@ -25,6 +25,7 @@ final class MyPageViewController: BaseViewController {
   override func viewDidLoad() {
     setupScrollView()
     super.viewDidLoad()
+    updateUI()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -69,6 +70,12 @@ final class MyPageViewController: BaseViewController {
     gearButton.rx.tap
       .bind(to: viewModel.input.gearButtonTapped)
       .disposed(by: disposeBag)
+    
+    // 마이페이지 버튼 클릭 이벤트
+    matchingContainerView.manageMatchingImageButton.rx.tap
+      .bind(to: viewModel.input.manageButtonTapped)
+      .disposed(by: disposeBag)
+    // TODO: 마이페이지 버튼 클릭 이벤트
 
     // 공유 버튼 토글
     matchingContainerView.shareButton.rx.tap
@@ -92,7 +99,7 @@ final class MyPageViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     // 내 멤버 조회 완료 후 UI 업데이트
-    MemberInfomationState.shared.currentMemberInfomation
+    MemberInfoStorage.shared.memberInfo
       .bind(onNext: { [unowned self] memberInfo in
         let nickname = memberInfo.nickname
         self.topProfileView.nicknameLabel.text = nickname
@@ -159,6 +166,16 @@ final class MyPageViewController: BaseViewController {
     lionImageView.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
       make.bottom.equalToSuperview()
+    }
+  }
+  
+  // MARK: - Helpers
+  
+  private func updateUI() {
+    if MemberInfoStorage.shared.hasMatchingInfo {
+      matchingContainerView.shareButton.isSelected = true
+    } else {
+      matchingContainerView.shareButton.isSelected = false
     }
   }
 }

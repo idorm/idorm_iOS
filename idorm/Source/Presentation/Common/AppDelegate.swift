@@ -31,8 +31,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
     UITabBar.appearance().standardAppearance = tabBarAppearance
     
-    // MARK: - 사용자 정보 불러오기
-    requestMemberAPI()
+    if TokenStorage.shared.hasToken() {
+      requestMemberAPI()
+      requestMatchingInfo()
+    }
     
     return true
   }
@@ -41,20 +43,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 // MARK: - Network
 
 extension AppDelegate {
+  
   /// 멤버 단건 조회 API 요청
   func requestMemberAPI() {
-    MemberService.memberAPI()
+    MemberService.shared.memberAPI()
       .subscribe(onNext: { response in
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
         case 200: // 멤버 단건 조회 완료
           guard let data = response.data else { return }
           struct ResponseModel: Codable {
-            let data: MemberInfomation
+            let data: MemberInfo
           }
           let memberInformation = APIService.decode(ResponseModel.self, data: data).data
-          MemberInfomationState.shared.currentMemberInfomation.accept(memberInformation)
+          MemberInfoStorage.shared.memberInfo.accept(memberInformation)
         default: break
+        }
+      })
+      .disposed(by: disposeBag)
+  }
+  
+  func requestMatchingInfo() {
+    OnboardingService.shared.matchingInfoAPI_Get()
+      .subscribe(onNext: { response in
+        guard let statusCode = response.response?.statusCode else { return }
+        switch statusCode {
+        case 200:
+          guard let data = response.data else { return }
+          struct ResponseModel: Codable {
+            let data: MatchingInfo_Lookup
+          }
+          let matchingInfo = APIService.decode(ResponseModel.self, data: data).data
+          MemberInfoStorage.shared.matchingInfo.accept(matchingInfo)
+        case 409:
+          break
+        default: // 서버 오류 & 로그인 오류
+          fatalError()
         }
       })
       .disposed(by: disposeBag)

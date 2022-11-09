@@ -1,10 +1,12 @@
 import UIKit
 
+import RxSwift
+import RxCocoa
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+  
   var window: UIWindow?
-  
-  //MARK: - Init VC
-  
+
   func scene(
     _ scene: UIScene,
     willConnectTo session: UISceneSession,
@@ -13,7 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let windowScene = (scene as? UIWindowScene) else { return }
     window = UIWindow(windowScene: windowScene)
     
-    if TokenManager.loadToken() == "" {
+    if TokenStorage.shared.loadToken() == "" {
       window?.rootViewController = UINavigationController(rootViewController: LoginViewController())
     } else {
       window?.rootViewController = TabBarController()

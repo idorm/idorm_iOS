@@ -12,9 +12,12 @@ enum FloatyBottomViewType {
   case reset
   /// [선택초기화], [필터링 완료]
   case filter
+  /// [정보수정], [완료]
+  case correction
 }
 
-class FloatyBottomView: UIView {
+/// 하단에 붙어있는 두 개의 버튼이 있는 View입니다.
+final class FloatyBottomView: UIView {
   
   // MARK: - Properties
   
@@ -48,6 +51,8 @@ class FloatyBottomView: UIView {
       config.image = UIImage(named: "reset(Onboarding)")
       config.imagePlacement = .leading
       config.imagePadding = 12
+    case .correction:
+      config.attributedTitle = AttributedString("정보 수정", attributes: container)
     }
     $0.configuration = config
   }
@@ -61,11 +66,7 @@ class FloatyBottomView: UIView {
     config.attributedTitle = AttributedString("완료", attributes: container)
     
     switch floatyBottomViewType {
-    case .jump:
-      config.baseBackgroundColor = .idorm_blue
-    case .back:
-      config.baseBackgroundColor = .idorm_blue
-    case .reset:
+    case .jump, .back, .reset, .correction:
       config.baseBackgroundColor = .idorm_blue
     case .filter:
       config.attributedTitle = AttributedString("필터링 완료", attributes: container)

@@ -28,7 +28,7 @@ final class MatchingFilterViewModel: ViewModel {
     let confirmVerifierObserver = BehaviorRelay<FilteringConfirmVerifier>(value: FilteringConfirmVerifier.initialValue())
   }
   
-  let matchingFilterShared = MatchingFilterStates.shared
+  let matchingFilterShared = MatchingFilterStorage.shared
   var input = Input()
   var output = Output()
   var state = State()

@@ -1,9 +1,9 @@
 import Foundation
 
-final class RegisterInfomation {
+final class Logger {
   
   private init() {}
-  static let shared = RegisterInfomation()
+  static let shared = Logger()
   
   var registerType: RegisterType = .findPW
   

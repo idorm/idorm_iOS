@@ -1,9 +1,10 @@
 import RxSwift
 import RxCocoa
 
-class OnboardingViewModel: ViewModel {
+final class OnboardingViewModel: ViewModel {
   
   struct Input {
+    // Interaction
     let isSelectedDormButton = PublishSubject<Dormitory>()
     let isSelectedGenderButton = PublishSubject<Gender>()
     let isSelectedPeriodButton = PublishSubject<JoinPeriod>()
@@ -14,11 +15,16 @@ class OnboardingViewModel: ViewModel {
   }
   
   struct Output {
+    // State
     let matchingInfo = BehaviorRelay<MatchingInfo>(value: MatchingInfo.initialValue())
+    
+    // UI
     let isEnableConfirmButton = PublishSubject<Bool>()
     let showOnboardingDetailVC = PublishSubject<MatchingInfo>()
-    let showTabBarVC = PublishSubject<Void>()
     let resetData = PublishSubject<Void>()
+    
+    // Presentation
+    let showTabBarVC = PublishSubject<Void>()
   }
   
   struct State {
@@ -174,7 +180,7 @@ class OnboardingViewModel: ViewModel {
           self?.output.resetData.onNext(Void())
         case .jump:
           self?.output.showTabBarVC.onNext(Void())
-        case .back, .filter:
+        case .back, .filter, .correction:
           break
         }
       })

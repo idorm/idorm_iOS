@@ -5,6 +5,9 @@ import RxSwift
 
 final class MatchingService {
   
+  static let shared = MatchingService()
+  private init() {}
+  
   /// 매칭 멤버 조회
   static func matchingAPI() -> Observable<AFDataResponse<Data>> {
     let url = MatchingConstants.matchingURL

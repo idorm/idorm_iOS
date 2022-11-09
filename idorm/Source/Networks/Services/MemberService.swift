@@ -5,8 +5,12 @@ import RxCocoa
 import Alamofire
 
 final class MemberService {
+  
+  static let shared = MemberService()
+  private init() {}
+  
   /// 로그인 요청 API
-  static func LoginAPI(email: String, password: String) -> Observable<AFDataResponse<Data>> {
+  func LoginAPI(email: String, password: String) -> Observable<AFDataResponse<Data>> {
     let body: Parameters = [
       "email": email,
       "password": password
@@ -16,7 +20,7 @@ final class MemberService {
   }
   
   /// 회원가입 요청 API
-  static func registerAPI(email: String, password: String) -> Observable<AFDataResponse<Data>> {
+  func registerAPI(email: String, password: String) -> Observable<AFDataResponse<Data>> {
     let body: Parameters = [
       "email": email,
       "password": password
@@ -26,7 +30,7 @@ final class MemberService {
   }
   
   /// 로그아웃 상태에서 비밀번호 바꾸기 API
-  static func changePasswordAPI(email: String, password: String) -> Observable<AFDataResponse<Data>> {
+  func changePasswordAPI(email: String, password: String) -> Observable<AFDataResponse<Data>> {
     let body: Parameters = [
       "email": email,
       "password": password
@@ -36,7 +40,7 @@ final class MemberService {
   }
   
   /// 멤버 닉네임 변경 API
-  static func changeNicknameAPI(from nickname: String) ->
+  func changeNicknameAPI(from nickname: String) ->
   Observable<AFDataResponse<Data>> {
     let url = MemberServerConstants.changeNicknameURL
     let body: Parameters = [
@@ -47,7 +51,7 @@ final class MemberService {
   }
   
   /// 멤버 정보 단건 조회
-  static func memberAPI() -> Observable<AFDataResponse<Data>> {
+  func memberAPI() -> Observable<AFDataResponse<Data>> {
     let url = MemberServerConstants.memberURL
     return APIService.load(url, httpMethod: .get, body: nil, encoding: .json)
   }

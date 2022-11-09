@@ -8,6 +8,7 @@ import RxCocoa
 final class MatchingCard: UIView {
   
   // MARK: - Properties
+  
   private lazy var backgroundImageView = UIImageView().then {
     $0.image = UIImage(
       named: "OnboardingBackGround"
@@ -178,7 +179,7 @@ final class MatchingCard: UIView {
   }
 }
 
-// MARK: - UI
+// MARK: - Create UI Components
 
 extension MatchingCard {
   private func createBoolComponent(query: String) -> UIView {

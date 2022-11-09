@@ -9,19 +9,18 @@ final class ConfirmPasswordViewController: BaseViewController {
   
   // MARK: - Properties
   
-  let textField2 = RegisterPwTextField(placeholder: "비밀번호를 한번 더 입력해주세요.").then {
+  private let textField2 = RegisterPwTextField(placeholder: "비밀번호를 한번 더 입력해주세요.").then {
     $0.textField.isSecureTextEntry = true
   }
+  private let textField1 = RegisterPwTextField(placeholder: "비밀번호를 입력해주세요.")
   
-  lazy var confirmButton = RegisterBottomButton("").then {
+  private lazy var confirmButton = RegisterBottomButton("").then {
     if type == .signUp {
       $0.configuration?.title = "가입 완료"
     } else {
       $0.configuration?.title = "변경 완료"
     }
   }
-  
-  let textField1 = RegisterPwTextField(placeholder: "비밀번호를 입력해주세요.")
   
   private let infoLabel = RegisterUtilities.infoLabel(text: "비밀번호")
   private let infoLabel2 = RegisterUtilities.infoLabel(text: "비밀번호 확인")

@@ -1,8 +1,9 @@
 import Foundation
+
 import RxSwift
 import RxCocoa
 
-class OnboardingDetailViewModel {
+final class OnboardingDetailViewModel: ViewModel {
   
   struct Input {
     let didTapBackButton = PublishSubject<Void>()
@@ -18,9 +19,9 @@ class OnboardingDetailViewModel {
     
   }
   
-  let input = Input()
-  let output = Output()
-  let disposeBag = DisposeBag()
+  var input = Input()
+  var output = Output()
+  var disposeBag = DisposeBag()
   
   let matchingInfo: MatchingInfo
   
@@ -30,6 +31,7 @@ class OnboardingDetailViewModel {
   }
   
   func bind() {
+    
     // 뒤로가기 -> 이전 화면 돌아가기
     input.didTapBackButton
       .bind(to: output.popVC)
@@ -43,9 +45,14 @@ class OnboardingDetailViewModel {
       })
       .disposed(by: disposeBag)
   }
+}
+
+// MARK: - Network
+
+extension OnboardingDetailViewModel {
   
   func matchingInfoAPI() {
-    OnboardingService.matchingInfoAPI_Post(myinfo: matchingInfo)
+    OnboardingService.shared.matchingInfoAPI_Post(myinfo: matchingInfo)
       .subscribe(onNext: { [weak self] response in
         self?.output.stopAnimation.onNext(Void())
         guard let statusCode = response.response?.statusCode else { fatalError("Status Code is missing") }

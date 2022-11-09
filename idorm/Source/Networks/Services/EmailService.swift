@@ -5,6 +5,9 @@ import Alamofire
 
 final class EmailService {
   
+  static let shared = EmailService()
+  private init() {}
+  
   /// 이메일 인증 코드 전송 API
   static func registerEmailAPI(email: String) -> Observable<AFDataResponse<Data>> {
     let body: Parameters = [

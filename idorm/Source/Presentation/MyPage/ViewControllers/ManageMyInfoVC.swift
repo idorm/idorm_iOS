@@ -70,7 +70,7 @@ final class ManageMyInfoViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     // 멤버 정보 변경되면 UI 업데이트
-    MemberInfomationState.shared.currentMemberInfomation
+    MemberInfoStorage.shared.memberInfo
       .bind(onNext: { [unowned self] memberInfo in
         self.nickNameView.descriptionLabel.text = memberInfo.nickname
       })
@@ -180,10 +180,10 @@ final class ManageMyInfoViewController: BaseViewController {
   // MARK: - Helpers
   
   private func updateUI() {
-    let memberInfo =  MemberInfomationState.shared.currentMemberInfomation.value
+    let memberInfo =  MemberInfoStorage.shared.memberInfo.value
     nickNameView.descriptionLabel.text = memberInfo.nickname ?? "닉네임"
     emailView.descriptionLabel.text = memberInfo.email
-    // TODO: [] 프로필 이미지 설정해주기
+    // TODO: 프로필 이미지 설정해주기
   }
 }
 

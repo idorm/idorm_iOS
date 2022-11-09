@@ -39,7 +39,7 @@ class AuthNumberViewModel {
     // 인증번호 재 요청 버튼 클릭 -> 인증번호 API 요청
     input.requestAgainButtonTapped
       .subscribe(onNext: { [weak self] in
-        switch RegisterInfomation.shared.registerType {
+        switch Logger.shared.registerType {
         case .signUp:
           self?.registerEmailAPI()
         case .findPW:
@@ -65,7 +65,7 @@ class AuthNumberViewModel {
   }
   
   func passwordEmailAPI() {
-    guard let email = RegisterInfomation.shared.email else { return }
+    guard let email = Logger.shared.email else { return }
     EmailService.passwordEmailAPI(email: email)
       .subscribe(onNext: { [weak self] response in
         self?.output.stopAnimation.onNext(Void())
@@ -86,7 +86,7 @@ class AuthNumberViewModel {
   }
   
   func registerEmailAPI() {
-    guard let email = RegisterInfomation.shared.email else { return }
+    guard let email = Logger.shared.email else { return }
     EmailService.registerEmailAPI(email: email)
       .subscribe(onNext: { [weak self] response in
         self?.output.stopAnimation.onNext(Void())
@@ -109,10 +109,10 @@ class AuthNumberViewModel {
   }
   
   func verifyCodeAPI() {
-    guard let email = RegisterInfomation.shared.email else { return }
+    guard let email = Logger.shared.email else { return }
     let code = input.codeString.value
     
-    EmailService.verifyCodeAPI(email: email, code: code, type: RegisterInfomation.shared.registerType)
+    EmailService.verifyCodeAPI(email: email, code: code, type: Logger.shared.registerType)
       .subscribe(onNext: { [weak self] response in
         self?.output.stopAnimation.onNext(Void())
         guard let statusCode = response.response?.statusCode else { return }

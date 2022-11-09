@@ -13,7 +13,7 @@ final class MatchingFilterViewController: BaseViewController {
   private let contentView = UIView()
   private let floatyBottomView = FloatyBottomView(.filter)
   let viewModel = MatchingFilterViewModel()
-  private let matchingFilterShared = MatchingFilterStates.shared
+  private let matchingFilterShared = MatchingFilterStorage.shared
   
   // MARK: - Dorm
   private let dormLabel = MatchingUtilities.titleLabel(text: "기숙사")

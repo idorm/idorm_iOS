@@ -5,32 +5,32 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-class CompleteSignUpViewController: BaseViewController {
+final class CompleteSignUpViewController: BaseViewController {
   
   // MARK: - Properties
   
-  private lazy var signUpLabel = UILabel().then {
+  private let signUpLabel = UILabel().then {
     $0.textColor = .idorm_gray_400
     $0.text = "안녕하세요! 가입을 축하드려요."
     $0.textAlignment = .center
     $0.font = .init(name: MyFonts.bold.rawValue, size: 18.0)
   }
   
-  private lazy var descriptionLabel1 = UILabel().then {
+  private let descriptionLabel1 = UILabel().then {
     $0.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
     $0.textColor = .idorm_gray_300
     $0.textAlignment = .center
     $0.text = "로그인 후 인천대학교 기숙사 룸메이트 매칭을 위한"
   }
   
-  private lazy var descriptionLabel2 = UILabel().then {
+  private let descriptionLabel2 = UILabel().then {
     $0.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
     $0.textColor = .idorm_gray_300
     $0.textAlignment = .center
     $0.text = "기본정보를 알려주세요."
   }
   
-  private lazy var continueButton = UIButton().then {
+  private let continueButton = UIButton().then {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
     container.font = UIFont.init(name: MyFonts.medium.rawValue, size: 16)
@@ -53,21 +53,17 @@ class CompleteSignUpViewController: BaseViewController {
   override func bind() {
     super.bind()
     
-    // --------------------------------
-    // --------------INPUT-------------
-    // --------------------------------
+    // MARK: - Input
     
-    /// 로그인 후 계속하기 버튼 이벤트
+    // 로그인 후 계속하기 버튼 이벤트
     continueButton.rx.tap
       .throttle(.seconds(2), latest: false, scheduler: MainScheduler.instance)
       .bind(to: viewModel.input.continueButtonTapped)
       .disposed(by: disposeBag)
     
-    // --------------------------------
-    // --------------OUTPUT------------
-    // --------------------------------
+    // MARK: - Output
     
-    /// 온보딩 페이지로 이동
+    // 온보딩 페이지로 이동
     viewModel.output.showOnboardingVC
       .bind(onNext: { [unowned self] in
         let onboardingVC = UINavigationController(rootViewController: OnboardingViewController(.firstTime))
@@ -76,19 +72,16 @@ class CompleteSignUpViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    /// 애니메이션 시작
-    viewModel.output.startAnimation
+    // 애니메이션 상태 변경
+    viewModel.output.animationState
       .bind(onNext: { [weak self] in
-        self?.indicator.startAnimating()
-        self?.view.isUserInteractionEnabled = false
-      })
-      .disposed(by: disposeBag)
-    
-    /// 애니메이션 종료
-    viewModel.output.stopAnimation
-      .bind(onNext: { [weak self] in
-        self?.indicator.stopAnimating()
-        self?.view.isUserInteractionEnabled = true
+        if $0 {
+          self?.indicator.startAnimating()
+          self?.view.isUserInteractionEnabled = false
+        } else {
+          self?.indicator.stopAnimating()
+          self?.view.isUserInteractionEnabled = true
+        }
       })
       .disposed(by: disposeBag)
   }

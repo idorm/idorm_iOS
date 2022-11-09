@@ -70,7 +70,7 @@ final class LoginViewModel: ViewModel {
 
 extension LoginViewModel {
   private func requestLoginAPI() {
-    MemberService.LoginAPI(email: self.emailText, password: self.passwordText)
+    MemberService.shared.LoginAPI(email: self.emailText, password: self.passwordText)
       .subscribe(onNext: { [weak self] response in
         guard let statusCode = response.response?.statusCode else { return }
         guard let data = response.data else { return }
@@ -84,7 +84,7 @@ extension LoginViewModel {
             let data: Response
           }
           let token = APIService.decode(LoginResponseModel.self, data: data).data.loginToken
-          TokenManager.saveToken(token: token)
+          TokenStorage.shared.saveToken(token: token)
           self?.output.showTabBarVC.onNext(Void())
         case 400:
           self?.output.showErrorPopupVC.onNext("가입되지 않은 이메일입니다.")

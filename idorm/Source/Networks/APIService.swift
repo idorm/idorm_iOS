@@ -20,7 +20,7 @@ class APIService {
     return Observable.create { observer in
       let header: HTTPHeaders = [
         "Content-Type": "application/json",
-        "X-AUTH-TOKEN": TokenManager.loadToken()
+        "X-AUTH-TOKEN": TokenStorage.shared.loadToken()
       ]
       let request: DataRequest
       if encoding == .json {

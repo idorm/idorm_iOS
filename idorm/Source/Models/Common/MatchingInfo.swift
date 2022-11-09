@@ -1,4 +1,5 @@
-struct MatchingInfo {
+/// 온보딩 모델입니다.
+struct MatchingInfo: Codable {
   var dormNumber: Dormitory
   var period: JoinPeriod
   var gender: Gender
@@ -13,7 +14,7 @@ struct MatchingInfo {
   var showerTime: String
   var mbti: String?
   var wishText: String?
-  var chatLink: String?
+  var chatLink: String
   
   static func initialValue() -> MatchingInfo {
     return MatchingInfo(

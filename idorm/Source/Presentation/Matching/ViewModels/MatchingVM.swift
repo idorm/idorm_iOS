@@ -113,7 +113,7 @@ extension MatchingViewModel {
   
   /// 첫 화면 진입 시 매칭 정보 유무 확인 API
   func requestMatchingInfoAPI() {
-    OnboardingService.matchingInfoAPI_Get()
+    OnboardingService.shared.matchingInfoAPI_Get()
       .subscribe(onNext: { [unowned self] response in
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
@@ -164,7 +164,7 @@ extension MatchingViewModel {
   /// 필터링된 매칭 멤버 조회
   func requestFilteredMemberAPI() {
     self.output.startLoading.onNext(Void())
-    let filter = MatchingFilterStates.shared.matchingFilterObserver.value
+    let filter = MatchingFilterStorage.shared.matchingFilterObserver.value
     MatchingService.filteredMatchingAPI(filter)
       .subscribe(onNext: { [unowned self] response in
         guard let statusCode = response.response?.statusCode else { return }

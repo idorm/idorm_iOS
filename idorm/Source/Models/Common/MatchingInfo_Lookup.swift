@@ -1,7 +1,6 @@
-/// 타인의 매칭 멤버 모델입니다.
-struct MatchingMember: Codable {
-  var memberId: Int
-  var matchingInfoId: Int
+/// 자신의 매칭 멤버를 조회하는 모델입니다.
+struct MatchingInfo_Lookup: Codable {
+  let id: Int
   var dormNum: Dormitory
   var joinPeriod: JoinPeriod
   var gender: Gender
@@ -15,8 +14,8 @@ struct MatchingMember: Codable {
   var cleanUpStatus: String
   var showerTime: String
   var openKakaoLink: String
-  var mbti: String
-  var wishText: String
+  var mbti: String?
+  var wishText: String?
   var isMatchingInfoPublic: Bool
   var memberEmail: String
 }

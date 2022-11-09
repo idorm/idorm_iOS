@@ -1,13 +1,7 @@
-//
-//  TabBarController.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/08.
-//
-
 import UIKit
 
-class TabBarController: UITabBarController {
+final class TabBarController: UITabBarController {
+  
   // MARK: - Properties
   
   let homeVC = UINavigationController(rootViewController: HomeViewController())
@@ -16,7 +10,6 @@ class TabBarController: UITabBarController {
   let calandarVC = UINavigationController(rootViewController: CalendarViewController())
   let mypageVC = UINavigationController(rootViewController: MyPageViewController())
   
-  
   // MARK: - LifeCycle
   
   override func viewDidLoad() {
@@ -24,7 +17,8 @@ class TabBarController: UITabBarController {
     configureUI()
   }
   
-  // MARK: - Helpers
+  // MARK: - Setup
+  
   private func configureUI() {
     tabBar.unselectedItemTintColor = .gray
     tabBar.tintColor = .idorm_blue

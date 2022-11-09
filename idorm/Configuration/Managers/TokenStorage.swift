@@ -1,28 +1,31 @@
-//
-//  TokenManager.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/08/27.
-//
-
 import Foundation
 
-class TokenManager {
+final class TokenStorage {
+  
+  static let shared = TokenStorage()
   private init() {}
   
-  static func saveToken(token: String) {
+  func saveToken(token: String) {
     let userDefaults = UserDefaults.standard
     userDefaults.set(token, forKey: "Token")
   }
   
-  static func loadToken() -> String {
+  func loadToken() -> String {
     let userDefaults = UserDefaults.standard
     guard let token = userDefaults.string(forKey: "Token") else { return "" }
     return token
   }
   
-  static func removeToken() {
+  func removeToken() {
     let userDefaults = UserDefaults.standard
     userDefaults.removeObject(forKey: "Token")
+  }
+  
+  func hasToken() -> Bool {
+    if loadToken() != "" {
+      return true
+    } else {
+      return false
+    }
   }
 }

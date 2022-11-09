@@ -40,14 +40,14 @@ final class ChangeNicknameViewModel: ViewModel {
 extension ChangeNicknameViewModel {
   func requestChangeNicknameAPI(from nickname: String) {
     output.isEnableInteraction.onNext(false)
-    MemberService.changeNicknameAPI(from: nickname)
+    MemberService.shared.changeNicknameAPI(from: nickname)
       .subscribe(onNext: { [unowned self] response in
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
         case 200: // 닉네임 변경 완료
-          var newInfo = MemberInfomationState.shared.currentMemberInfomation.value
+          var newInfo = MemberInfoStorage.shared.memberInfo.value
           newInfo.nickname = nickname
-          MemberInfomationState.shared.currentMemberInfomation.accept(newInfo)
+          MemberInfoStorage.shared.memberInfo.accept(newInfo)
           self.output.popVC.onNext(Void())
         case 400: // 닉네임 입력은 필수입니다.
           break

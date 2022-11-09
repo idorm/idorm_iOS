@@ -390,13 +390,29 @@ class MatchingViewController: BaseViewController {
 
 extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, UIGestureRecognizerDelegate {
   func card(from matchingMember: MatchingMember) -> SwipeCard {
-    let matchingInfo = MatchingInfo(dormNumber: matchingMember.dormNum, period: matchingMember.joinPeriod, gender: matchingMember.gender, age: String(matchingMember.age), snoring: matchingMember.isSnoring, grinding: matchingMember.isGrinding, smoke: matchingMember.isSmoking, allowedFood: matchingMember.isAllowedFood, earphone: matchingMember.isWearEarphones, wakeupTime: matchingMember.wakeUpTime, cleanUpStatus: matchingMember.cleanUpStatus, showerTime: matchingMember.showerTime)
+    let matchingInfo = MatchingInfo(
+      dormNumber: matchingMember.dormNum,
+      period: matchingMember.joinPeriod,
+      gender: matchingMember.gender,
+      age: String(matchingMember.age),
+      snoring: matchingMember.isSnoring,
+      grinding: matchingMember.isGrinding,
+      smoke: matchingMember.isSmoking,
+      allowedFood: matchingMember.isAllowedFood,
+      earphone: matchingMember.isWearEarphones,
+      wakeupTime: matchingMember.wakeUpTime,
+      cleanUpStatus: matchingMember.cleanUpStatus,
+      showerTime: matchingMember.showerTime,
+      chatLink: matchingMember.openKakaoLink
+    )
 
     let card = SwipeCard()
     card.swipeDirections = [.left, .right]
     card.content = MatchingCard(myInfo: matchingInfo)
     card.footerHeight = 0
     card.panGestureRecognizer.addTarget(self, action: #selector(handlePanGesture))
+    
+    print(#function)
     
     return card
   }

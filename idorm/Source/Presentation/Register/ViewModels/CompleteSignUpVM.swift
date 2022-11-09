@@ -14,8 +14,7 @@ final class CompleteSignUpViewModel: ViewModel {
     let showOnboardingVC = PublishSubject<Void>()
     
     // UI
-    let startAnimation = PublishSubject<Void>()
-    let stopAnimation = PublishSubject<Void>()
+    let animationState = PublishSubject<Bool>()
   }
   
   var input = Input()
@@ -34,11 +33,6 @@ final class CompleteSignUpViewModel: ViewModel {
         self?.LoginAPI()
       })
       .disposed(by: disposeBag)
-    
-    // 로그인 버튼 클릭 -> 애니메이션 시작
-    input.continueButtonTapped
-      .bind(to: output.startAnimation)
-      .disposed(by: disposeBag)
   }
 }
 
@@ -46,14 +40,14 @@ final class CompleteSignUpViewModel: ViewModel {
 
 extension CompleteSignUpViewModel {
   func LoginAPI() {
-    guard let email = RegisterInfomation.shared.email else { return }
-    guard let password = RegisterInfomation.shared.password else { return }
+    guard let email = Logger.shared.email else { return }
+    guard let password = Logger.shared.password else { return }
+    output.animationState.onNext(true)
     
-    MemberService.LoginAPI(email: email, password: password)
+    MemberService.shared.LoginAPI(email: email, password: password)
       .subscribe(onNext: { [weak self] response in
         guard let statusCode = response.response?.statusCode else { return }
         guard let data = response.data else { return }
-        self?.output.stopAnimation.onNext(Void())
         switch statusCode {
         case 200:
           struct LoginResponseModel: Codable {
@@ -63,11 +57,12 @@ extension CompleteSignUpViewModel {
             let data: Response
           }
           let token = APIService.decode(LoginResponseModel.self, data: data).data.loginToken
-          TokenManager.saveToken(token: token)
+          TokenStorage.shared.saveToken(token: token)
           self?.output.showOnboardingVC.onNext(Void())
         default:
           fatalError("LoginAPI ERROR!")
         }
+        self?.output.animationState.onNext(false)
       })
       .disposed(by: disposeBag)
   }

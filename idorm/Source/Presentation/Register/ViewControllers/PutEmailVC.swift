@@ -39,7 +39,7 @@ final class PutEmailViewController: BaseViewController {
   init(type: RegisterType) {
     self.registerType = type
     super.init(nibName: nil, bundle: nil)
-    RegisterInfomation.shared.registerType = type
+    Logger.shared.registerType = type
   }
   
   required init?(coder: NSCoder) {

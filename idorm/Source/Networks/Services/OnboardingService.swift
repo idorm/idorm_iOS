@@ -5,8 +5,11 @@ import Alamofire
 
 final class OnboardingService {
   
+  static let shared = OnboardingService()
+  private init() {}
+  
   /// 매칭 정보 최초 저장 API
-  static func matchingInfoAPI_Post(myinfo: MatchingInfo) -> Observable<AFDataResponse<Data>> {
+  func matchingInfoAPI_Post(myinfo: MatchingInfo) -> Observable<AFDataResponse<Data>> {
     let body: Parameters = [
       "age": myinfo.age,
       "cleanUpStatus": myinfo.cleanUpStatus,
@@ -19,7 +22,7 @@ final class OnboardingService {
       "isWearEarphones": myinfo.earphone,
       "joinPeriod": myinfo.period.parsingString,
       "mbti": myinfo.mbti ?? "",
-      "openKakaoLink": myinfo.chatLink ?? "",
+      "openKakaoLink": myinfo.chatLink,
       "showerTime": myinfo.showerTime,
       "wakeupTime": myinfo.wakeupTime,
       "wishText": myinfo.wishText ?? ""
@@ -30,8 +33,17 @@ final class OnboardingService {
   }
   
   /// 매칭 정보 단건 조회
-  static func matchingInfoAPI_Get() -> Observable<AFDataResponse<Data>> {
+  func matchingInfoAPI_Get() -> Observable<AFDataResponse<Data>> {
     let url = OnboardingServerConstants.mathcingInfoURL
     return APIService.load(url, httpMethod: .get, body: nil, encoding: .json)
+  }
+  
+  /// 매칭 공개 여부 수정
+  func matchingInfoAPI_Patch(_ isMatchingInfoPublic: Bool) -> Observable<AFDataResponse<Data>> {
+    let url = OnboardingServerConstants.mathcingInfoURL
+    let body: Parameters = [
+      "isMatchingInfoPublic": isMatchingInfoPublic
+    ]
+    return APIService.load(url, httpMethod: .patch, body: body, encoding: .query)
   }
 }
