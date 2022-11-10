@@ -373,7 +373,7 @@ final class OnboardingViewController: BaseViewController {
     case .mainPage_FirstTime:
       self.floatyBottomView = FloatyBottomView(.reset)
     case .update:
-      self.floatyBottomView = FloatyBottomView(.back)
+      self.floatyBottomView = FloatyBottomView(.reset)
     }
     self.floatyBottomView.confirmButton.isEnabled = false
   }

@@ -7,6 +7,7 @@ final class MyPageViewModel: ViewModel {
     let gearButtonTapped = PublishSubject<Void>()
     let shareButtonTapped = PublishSubject<Bool>()
     let manageButtonTapped = PublishSubject<Void>()
+    let roommateButtonTapped = PublishSubject<MyRoommateVCType>()
     
     // LifeCycle
     let viewWillAppearObserver = PublishSubject<Void>()
@@ -14,7 +15,9 @@ final class MyPageViewModel: ViewModel {
   
   struct Output {
     // Presentation
-    let pushManageMyInfoVC = PublishSubject<Void>()
+    let pushToManageMyInfoVC = PublishSubject<Void>()
+    let pushToMyRoommateVC = PublishSubject<MyRoommateVCType>()
+    let pushToOnboardingVC = PublishSubject<Void>()
   }
   
   var input = Input()
@@ -29,7 +32,7 @@ final class MyPageViewModel: ViewModel {
     
     // 설정 버튼 클릭 -> 내 정보 관리 페이지로 이동
     input.gearButtonTapped
-      .bind(to: output.pushManageMyInfoVC)
+      .bind(to: output.pushToManageMyInfoVC)
       .disposed(by: disposeBag)
     
     // 공유 버튼 클릭 -> 매칭 공개 여부 수정 API 요청
@@ -37,6 +40,16 @@ final class MyPageViewModel: ViewModel {
       .subscribe(onNext: { [weak self] in
         self?.requestUpdateMatchingPublicInfoAPI($0)
       })
+      .disposed(by: disposeBag)
+    
+    // 좋아요한 룸메 & 싫어요한 룸메 버튼 클릭 -> 룸메이트 관리 페이지 이동
+    input.roommateButtonTapped
+      .bind(to: output.pushToMyRoommateVC)
+      .disposed(by: disposeBag)
+    
+    // 마이페이지 버튼 클릭 -> 온보딩 수정 페이지로 이동
+    input.manageButtonTapped
+      .bind(to: output.pushToOnboardingVC)
       .disposed(by: disposeBag)
   }
 }
@@ -50,7 +63,6 @@ extension MyPageViewModel {
     OnboardingService.shared.matchingInfoAPI_Patch(isPublic)
       .subscribe(onNext: { response in
         guard let statusCode = response.response?.statusCode else { return }
-        print(statusCode)
         switch statusCode {
         case 200:
           break

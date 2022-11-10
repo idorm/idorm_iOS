@@ -22,7 +22,7 @@ final class MatchingCardBottomView: UIView {
   }
   
   private lazy var ageLabel = UILabel().then {
-    $0.text = matchingInfo.age + " 세"
+    $0.text = String(matchingInfo.age) + " 세"
     $0.textColor = .idorm_gray_400
     $0.font = .init(name: MyFonts.bold.rawValue, size: 12)
   }
@@ -33,11 +33,11 @@ final class MatchingCardBottomView: UIView {
     $0.font = .init(name: MyFonts.bold.rawValue, size: 12)
   }
   
-  private let matchingInfo: MatchingInfo
+  private let matchingInfo: MatchingMember
   
   // MARK: - LifeCycle
   
-  init(_ matchingInfo: MatchingInfo) {
+  init(_ matchingInfo: MatchingMember) {
     self.matchingInfo = matchingInfo
     super.init(frame: .zero)
     setupStyles()

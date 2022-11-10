@@ -132,7 +132,7 @@ extension MatchingViewModel {
   /// 멤버들의 매칭 정보 불러오기 API
   func requestMatchingAPI() {
     self.output.startLoading.onNext(Void())
-    MatchingService.matchingAPI()
+    MatchingService.shared.matchingAPI()
       .subscribe(onNext: { [unowned self] response in
         guard let statusCode = response.response?.statusCode else { return }
         guard let data = response.data else { return }
@@ -165,7 +165,7 @@ extension MatchingViewModel {
   func requestFilteredMemberAPI() {
     self.output.startLoading.onNext(Void())
     let filter = MatchingFilterStorage.shared.matchingFilterObserver.value
-    MatchingService.filteredMatchingAPI(filter)
+    MatchingService.shared.filteredMatchingAPI(filter)
       .subscribe(onNext: { [unowned self] response in
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
@@ -193,7 +193,7 @@ extension MatchingViewModel {
   
   /// 좋아요 멤버 추가 API
   func requestMatchingLikedMembers_POST(_ memberId: Int) {
-    MatchingService.matchingLikedMembers_Post(memberId)
+    MatchingService.shared.matchingLikedMembers_Post(memberId)
       .subscribe(onNext: { [unowned self] response in
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
@@ -212,7 +212,7 @@ extension MatchingViewModel {
   
   /// 싫어요 멤버 추가 API
   func requestMatchingDislikedMembers_POST(_ memberId: Int) {
-    MatchingService.matchingDislikedMembers_Post(memberId)
+    MatchingService.shared.matchingDislikedMembers_Post(memberId)
       .subscribe(onNext: { [unowned self] response in
         guard let statusCode = response.response?.statusCode else { return }
         print(statusCode)

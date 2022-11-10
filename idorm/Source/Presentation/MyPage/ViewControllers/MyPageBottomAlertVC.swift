@@ -10,12 +10,12 @@ final class MyPageBottomAlertViewController: BaseViewController {
   
   // MARK: - Properties
   
-  private var deleteButton: UIButton!
-  private var reportButton: UIButton!
+  var deleteButton: UIButton!
+  var reportButton: UIButton!
   private var xMarkButton: UIButton!
+  private let indicaotr = UIActivityIndicatorView()
   
   private let myPageBottomAlertVCType: MyPageBottomAlertVCType
-  private let viewModel = MyPageBottomAlertViewModel()
   
   // MARK: - LifeCycle
   
@@ -58,7 +58,7 @@ final class MyPageBottomAlertViewController: BaseViewController {
   override func setupLayouts() {
     super.setupLayouts()
     
-    [xMarkButton, deleteButton, reportButton]
+    [xMarkButton, deleteButton, reportButton, indicaotr]
       .forEach { view.addSubview($0) }
   }
   
@@ -70,13 +70,17 @@ final class MyPageBottomAlertViewController: BaseViewController {
     }
     
     deleteButton.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview().inset(24)
+      make.leading.trailing.equalToSuperview().inset(22)
       make.top.equalTo(xMarkButton.snp.bottom).offset(4)
     }
     
     reportButton.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview().inset(24)
+      make.leading.trailing.equalToSuperview().inset(22)
       make.top.equalTo(deleteButton.snp.bottom).offset(4)
+    }
+    
+    indicaotr.snp.makeConstraints { make in
+      make.center.equalToSuperview()
     }
   }
   
@@ -85,26 +89,15 @@ final class MyPageBottomAlertViewController: BaseViewController {
   override func bind() {
     super.bind()
     
-    // MARK: - Input
-    
-    // 취소 버튼 클릭 이벤트
-    xMarkButton.rx.tap
-      .bind(to: viewModel.input.xmarkButtonTapped)
-      .disposed(by: disposeBag)
-    
-    // 삭제 버튼 클릭 이벤트
-    deleteButton.rx.tap
-      .bind(to: viewModel.input.deleteButtonTapped)
-      .disposed(by: disposeBag)
-    
-    // MARK: - Output
-    
-    // 화면 종료
-    viewModel.output.dismissVC
-      .bind(onNext: { [weak self] in
-        self?.dismiss(animated: true)
-      })
-      .disposed(by: disposeBag)
+    Observable.merge([
+      xMarkButton.rx.tap.asObservable(),
+      deleteButton.rx.tap.asObservable(),
+      reportButton.rx.tap.asObservable()
+    ])
+    .bind(onNext: { [weak self] in
+      self?.dismiss(animated: true)
+    })
+    .disposed(by: disposeBag)
   }
 }
 

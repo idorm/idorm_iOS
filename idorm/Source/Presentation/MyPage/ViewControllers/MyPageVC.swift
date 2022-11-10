@@ -75,7 +75,6 @@ final class MyPageViewController: BaseViewController {
     matchingContainerView.manageMatchingImageButton.rx.tap
       .bind(to: viewModel.input.manageButtonTapped)
       .disposed(by: disposeBag)
-    // TODO: 마이페이지 버튼 클릭 이벤트
 
     // 공유 버튼 토글
     matchingContainerView.shareButton.rx.tap
@@ -87,10 +86,22 @@ final class MyPageViewController: BaseViewController {
       .bind(to: viewModel.input.shareButtonTapped)
       .disposed(by: disposeBag)
     
+    // 좋아요한 멤버 버튼 클릭 이벤트
+    matchingContainerView.likedRoommateButton.rx.tap
+      .map { MyRoommateVCType.like }
+      .bind(to: viewModel.input.roommateButtonTapped)
+      .disposed(by: disposeBag)
+    
+    // 싫어요한 멤버 버튼 클릭 이벤트
+    matchingContainerView.dislikedRoommateButton.rx.tap
+      .map { MyRoommateVCType.dislike }
+      .bind(to: viewModel.input.roommateButtonTapped)
+      .disposed(by: disposeBag)
+    
     // MARK: - Output
     
     // 내 정보 관리 페이지로 이동
-    viewModel.output.pushManageMyInfoVC
+    viewModel.output.pushToManageMyInfoVC
       .bind(onNext: { [unowned self] in
         let manageMyInfoVC = ManageMyInfoViewController()
         manageMyInfoVC.hidesBottomBarWhenPushed = true
@@ -103,6 +114,31 @@ final class MyPageViewController: BaseViewController {
       .bind(onNext: { [unowned self] memberInfo in
         let nickname = memberInfo.nickname
         self.topProfileView.nicknameLabel.text = nickname
+      })
+      .disposed(by: disposeBag)
+    
+    // 룸메이트 관리 페이지로 이동
+    viewModel.output.pushToMyRoommateVC
+      .bind(onNext: { [weak self] in
+        let viewController = MyRoommateViewController($0)
+        viewController.hidesBottomBarWhenPushed = true
+        self?.navigationController?.pushViewController(viewController, animated: true)
+      })
+      .disposed(by: disposeBag)
+    
+    // 온보딩 수정 페이지로 이동
+    viewModel.output.pushToOnboardingVC
+      .bind(onNext: { [weak self] in
+        if MemberInfoStorage.shared.hasMatchingInfo {
+          let myMatchingInfo = MatchingInfo_Lookup.toMatchingMemberModel(MemberInfoStorage.shared.matchingInfo.value!)
+          let viewController = OnboardingDetailViewController(myMatchingInfo, vcType: .update)
+          viewController.hidesBottomBarWhenPushed = true
+          self?.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+          let viewController = OnboardingViewController(.update)
+          viewController.hidesBottomBarWhenPushed = true
+          self?.navigationController?.pushViewController(viewController, animated: true)
+        }
       })
       .disposed(by: disposeBag)
   }
@@ -172,7 +208,7 @@ final class MyPageViewController: BaseViewController {
   // MARK: - Helpers
   
   private func updateUI() {
-    if MemberInfoStorage.shared.hasMatchingInfo {
+    if MemberInfoStorage.shared.isPublicMatchingInfo {
       matchingContainerView.shareButton.isSelected = true
     } else {
       matchingContainerView.shareButton.isSelected = false

@@ -69,6 +69,8 @@ final class LoginViewModel: ViewModel {
 // MARK: - Network
 
 extension LoginViewModel {
+  
+  /// 로그인을 요청합니다.
   private func requestLoginAPI() {
     MemberService.shared.LoginAPI(email: self.emailText, password: self.passwordText)
       .subscribe(onNext: { [weak self] response in
@@ -85,6 +87,8 @@ extension LoginViewModel {
           }
           let token = APIService.decode(LoginResponseModel.self, data: data).data.loginToken
           TokenStorage.shared.saveToken(token: token)
+          self?.requestMemberAPI()
+          self?.requestMatchingInfo()
           self?.output.showTabBarVC.onNext(Void())
         case 400:
           self?.output.showErrorPopupVC.onNext("가입되지 않은 이메일입니다.")
@@ -92,6 +96,46 @@ extension LoginViewModel {
           self?.output.showErrorPopupVC.onNext("올바르지 않은 비밀번호입니다.")
         default:
           self?.output.showErrorPopupVC.onNext("이메일과 비밀번호를 다시 한번 확인해주세요.")
+        }
+      })
+      .disposed(by: disposeBag)
+  }
+  
+  /// 멤버 단건 조회 API 요청
+  func requestMemberAPI() {
+    MemberService.shared.memberAPI()
+      .subscribe(onNext: { response in
+        guard let statusCode = response.response?.statusCode else { return }
+        switch statusCode {
+        case 200: // 멤버 단건 조회 완료
+          guard let data = response.data else { return }
+          struct ResponseModel: Codable {
+            let data: MemberInfo
+          }
+          let memberInformation = APIService.decode(ResponseModel.self, data: data).data
+          MemberInfoStorage.shared.memberInfo.accept(memberInformation)
+        default: break
+        }
+      })
+      .disposed(by: disposeBag)
+  }
+  
+  func requestMatchingInfo() {
+    OnboardingService.shared.matchingInfoAPI_Get()
+      .subscribe(onNext: { response in
+        guard let statusCode = response.response?.statusCode else { return }
+        switch statusCode {
+        case 200:
+          guard let data = response.data else { return }
+          struct ResponseModel: Codable {
+            let data: MatchingInfo_Lookup
+          }
+          let matchingInfo = APIService.decode(ResponseModel.self, data: data).data
+          MemberInfoStorage.shared.matchingInfo.accept(matchingInfo)
+        case 409:
+          break
+        default: // 서버 오류 & 로그인 오류
+          fatalError()
         }
       })
       .disposed(by: disposeBag)

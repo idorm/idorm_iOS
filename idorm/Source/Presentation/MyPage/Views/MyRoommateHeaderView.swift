@@ -30,7 +30,7 @@ final class MyRoommateHeaderView: UIView {
   // MARK: - Setup
   
   private func setupStyles() {
-    backgroundColor = .idorm_gray_100
+    backgroundColor = .clear
   }
   
   private func setupLayout() {
