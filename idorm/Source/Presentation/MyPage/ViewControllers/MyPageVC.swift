@@ -19,6 +19,7 @@ final class MyPageViewController: BaseViewController {
   private let matchingContainerView = MatchingContainerView()
   
   private let viewModel = MyPageViewModel()
+  private let indicator = UIActivityIndicatorView()
   
   // MARK: - LifeCycle
   
@@ -130,14 +131,25 @@ final class MyPageViewController: BaseViewController {
     viewModel.output.pushToOnboardingVC
       .bind(onNext: { [weak self] in
         if MemberInfoStorage.shared.hasMatchingInfo {
-          let myMatchingInfo = MatchingInfo_Lookup.toMatchingMemberModel(MemberInfoStorage.shared.matchingInfo.value!)
-          let viewController = OnboardingDetailViewController(myMatchingInfo, vcType: .update)
+          let matchingMember = MemberInfoStorage.shared.toMatchingMemberModel
+          let viewController = OnboardingDetailViewController(matchingMember, vcType: .update)
           viewController.hidesBottomBarWhenPushed = true
           self?.navigationController?.pushViewController(viewController, animated: true)
         } else {
           let viewController = OnboardingViewController(.update)
           viewController.hidesBottomBarWhenPushed = true
           self?.navigationController?.pushViewController(viewController, animated: true)
+        }
+      })
+      .disposed(by: disposeBag)
+
+    // 화면 인터렉션 제어
+    viewModel.output.indicatorState
+      .bind(onNext: { [weak self] in
+        if $0 {
+          self?.view.isUserInteractionEnabled = false
+        } else {
+          self?.view.isUserInteractionEnabled = true
         }
       })
       .disposed(by: disposeBag)
@@ -170,6 +182,7 @@ final class MyPageViewController: BaseViewController {
     super.setupLayouts()
     
     view.addSubview(scrollView)
+    view.addSubview(indicator)
     scrollView.addSubview(contentView)
     
     [topProfileView, matchingContainerView, lionImageView]
@@ -178,6 +191,10 @@ final class MyPageViewController: BaseViewController {
   
   override func setupConstraints() {
     super.setupConstraints()
+    
+    indicator.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+    }
     
     scrollView.snp.makeConstraints { make in
       make.edges.equalTo(view.safeAreaLayoutGuide)

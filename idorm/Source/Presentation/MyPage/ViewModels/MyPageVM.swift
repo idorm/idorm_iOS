@@ -18,6 +18,9 @@ final class MyPageViewModel: ViewModel {
     let pushToManageMyInfoVC = PublishSubject<Void>()
     let pushToMyRoommateVC = PublishSubject<MyRoommateVCType>()
     let pushToOnboardingVC = PublishSubject<Void>()
+    
+    // UI
+    let indicatorState = PublishSubject<Bool>()
   }
   
   var input = Input()
@@ -60,15 +63,22 @@ extension MyPageViewModel {
   
   /// 매칭 공개 여부 수정 API 요청
   func requestUpdateMatchingPublicInfoAPI(_ isPublic: Bool) {
+    output.indicatorState.onNext(true)
     OnboardingService.shared.matchingInfoAPI_Patch(isPublic)
-      .subscribe(onNext: { response in
+      .subscribe(onNext: { [weak self] response in
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
         case 200:
-          break
+          struct ResponseModel: Codable {
+            let data: MatchingInfo_Lookup
+          }
+          guard let data = response.data else { return }
+          let newInfo = APIService.decode(ResponseModel.self, data: data).data
+          MemberInfoStorage.shared.matchingInfo.accept(newInfo)
         default:
           fatalError()
         }
+        self?.output.indicatorState.onNext(false)
       })
       .disposed(by: disposeBag)
   }

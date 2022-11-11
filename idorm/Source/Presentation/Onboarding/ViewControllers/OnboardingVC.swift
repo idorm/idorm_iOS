@@ -6,6 +6,7 @@ import CHIOTPField
 import RSKGrowingTextView
 import RxSwift
 import RxCocoa
+import RxGesture
 
 final class OnboardingViewController: BaseViewController {
   
@@ -13,7 +14,9 @@ final class OnboardingViewController: BaseViewController {
   
   private let titleLabel = OnboardingUtilities.descriptionLabel("룸메이트 매칭을 위한 기본정보를 알려주세요!")
   private var floatyBottomView: FloatyBottomView!
-  private let viewModel = OnboardingViewModel()
+  private let indicator = UIActivityIndicatorView()
+  
+  private var viewModel: OnboardingViewModel
   private let onboardingVCType: OnboardingVCType
   
   // MARK: - ScrollView
@@ -115,9 +118,11 @@ final class OnboardingViewController: BaseViewController {
     setupFloatyBottomView()
     setupScrollView()
     super.viewDidLoad()
+    setupMatchingInfo()
   }
   
   init(_ onboardingVCType: OnboardingVCType) {
+    self.viewModel = OnboardingViewModel(onboardingVCType)
     self.onboardingVCType = onboardingVCType
     super.init(nibName: nil, bundle: nil)
   }
@@ -133,6 +138,7 @@ final class OnboardingViewController: BaseViewController {
     
     view.addSubview(scrollView)
     view.addSubview(floatyBottomView)
+    view.addSubview(indicator)
     scrollView.addSubview(contentView)
     
     [titleLabel, dormLabel, dormStack, dormLine, genderLabel, genderStack, genderLine, periodLabel, periodStack, periodLine, habitLabel, habitStack1, habitStack2, habitLine, habitDescriptionLabel, ageLabel, ageDescriptionLabel, ageTextField, ageLine, wakeUpInfoLabel, wakeUpTextField, cleanUpInfoLabel, cleanUpTextField, showerInfoLabel, showerTextField, mbtiInfoLabel, mbtiTextField, chatInfoLabel, chatTextField, wishInfoLabel, wishTextView, letterNumLabel]
@@ -154,6 +160,10 @@ final class OnboardingViewController: BaseViewController {
   
   override func setupConstraints() {
     super.setupConstraints()
+    
+    indicator.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+    }
     
     floatyBottomView.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
@@ -380,9 +390,57 @@ final class OnboardingViewController: BaseViewController {
   
   private func setupScrollView() {
     scrollView.keyboardDismissMode = .onDrag
-    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapScrollView))
-    tapGesture.cancelsTouchesInView = false
-    scrollView.addGestureRecognizer(tapGesture)
+  }
+  
+  private func setupMatchingInfo() {
+    if onboardingVCType == .update {
+      let matchingInfo = MemberInfoStorage.shared.toMatchingMemberModel
+      toggleDromButton(matchingInfo.dormNum)
+      toggleGenderButton(matchingInfo.gender)
+      togglePeriodButton(matchingInfo.joinPeriod)
+      snoreButton.isSelected = matchingInfo.isSnoring
+      grindingButton.isSelected = matchingInfo.isGrinding
+      smokingButton.isSelected = matchingInfo.isSmoking
+      allowedFoodButton.isSelected = matchingInfo.isAllowedFood
+      allowedEarphoneButton.isSelected = matchingInfo.isWearEarphones
+      ageTextField.text = String(matchingInfo.age)
+      wakeUpTextField.textField.text = matchingInfo.wakeUpTime
+      cleanUpTextField.textField.text = matchingInfo.cleanUpStatus
+      showerTextField.textField.text = matchingInfo.showerTime
+      chatTextField.textField.text = matchingInfo.openKakaoLink
+      mbtiTextField.textField.text = matchingInfo.mbti
+      wishTextView.text = matchingInfo.wishText
+      
+      viewModel.input.isSelectedDormButton.onNext(matchingInfo.dormNum)
+      viewModel.input.isSelectedPeriodButton.onNext(matchingInfo.joinPeriod)
+      viewModel.input.isSelectedGenderButton.onNext(matchingInfo.gender)
+      
+      if snoreButton.isSelected {
+        viewModel.input.isSelectedHabitButton.onNext(.snoring)
+      }
+      if grindingButton.isSelected {
+        viewModel.input.isSelectedHabitButton.onNext(.grinding)
+      }
+      if smokingButton.isSelected {
+        viewModel.input.isSelectedHabitButton.onNext(.smoking)
+      }
+      if allowedFoodButton.isSelected {
+        viewModel.input.isSelectedHabitButton.onNext(.allowedFood)
+      }
+      if allowedEarphoneButton.isSelected {
+        viewModel.input.isSelectedHabitButton.onNext(.allowedEarphone)
+      }
+      
+      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.age, String(matchingInfo.age)))
+      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.wakeUp, matchingInfo.wakeUpTime))
+      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.cleanUp, matchingInfo.cleanUpStatus))
+      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.shower, matchingInfo.showerTime))
+      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.mbti, matchingInfo.mbti))
+      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.chatLink, matchingInfo.openKakaoLink))
+      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.wishText, matchingInfo.wishText))
+      
+      // TODO: 온보딩 이벤트 전격 수정
+    }
   }
   
   // MARK: - Bind
@@ -391,6 +449,15 @@ final class OnboardingViewController: BaseViewController {
     super.bind()
     
     // MARK: - Input
+    
+    // 스크롤 뷰 빈공간 터치 시 Editing 종료
+    scrollView.rx.tapGesture(configuration: { gesture, delegate in
+      delegate.simultaneousRecognitionPolicy = .never
+    })
+    .bind(onNext: { [weak self] _ in
+      self?.view.endEditing(true)
+    })
+    .disposed(by: disposeBag)
     
     // 텍스트뷰 글자수 제한
     wishTextView.rx.text
@@ -413,7 +480,6 @@ final class OnboardingViewController: BaseViewController {
         let attributedString = NSMutableAttributedString(string: "\(text.count)/100pt")
         attributedString.addAttribute(.foregroundColor, value: UIColor.idorm_blue, range: ("\(text.count)/100pt" as NSString).range(of: "\(text.count)"))
         self.letterNumLabel.attributedText = attributedString
-        //        self.onChangedTextSubject.onNext((text, self.type))
       })
       .disposed(by: disposeBag)
     
@@ -537,9 +603,11 @@ final class OnboardingViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     // 나이 텍스트 반응 전달
-    ageTextField.rx.text
-      .orEmpty
-      .map { (OnboardingQueryList.age, $0) }
+    Observable<Int>
+      .interval(.microseconds(100000), scheduler: MainScheduler.instance)
+      .map { [weak self] _ in
+        (OnboardingQueryList.age, self?.ageTextField.text ?? "")
+      }
       .bind(to: viewModel.input.onChangedQueryText)
       .disposed(by: disposeBag)
     
@@ -613,6 +681,26 @@ final class OnboardingViewController: BaseViewController {
         self?.present(tabBarVC, animated: true)
       })
       .disposed(by: disposeBag)
+    
+    // 인디케이터 애니메이션
+    viewModel.output.indicatorState
+      .bind(onNext: { [weak self] in
+        if $0 {
+          self?.indicator.startAnimating()
+          self?.view.isUserInteractionEnabled = false
+        } else {
+          self?.indicator.stopAnimating()
+          self?.view.isUserInteractionEnabled = true
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    // RootVC로 돌아가기
+    viewModel.output.pushToRootVC
+      .bind(onNext: { [weak self] in
+        self?.navigationController?.popToRootViewController(animated: true)
+      })
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers
@@ -636,10 +724,6 @@ final class OnboardingViewController: BaseViewController {
     }
     wishTextView.text = ""
     floatyBottomView.confirmButton.isEnabled = false
-  }
-  
-  @objc private func didTapScrollView() {
-    self.view.endEditing(true)
   }
 }
 

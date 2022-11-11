@@ -46,4 +46,27 @@ final class OnboardingService {
     ]
     return APIService.load(url, httpMethod: .patch, body: body, encoding: .query)
   }
+  
+  /// 매칭 정보 수정
+  func matchingInfoAPI_Put(_ from: MatchingInfo) -> Observable<AFDataResponse<Data>> {
+    let url = OnboardingServerConstants.mathcingInfoURL
+    let body: Parameters = [
+      "age": from.age,
+      "cleanUpStatus": from.cleanUpStatus,
+      "dormNum": from.dormNumber.parsingString,
+      "gender": from.gender.parsingString,
+      "isAllowedFood": from.allowedFood,
+      "isGrinding": from.grinding,
+      "isSmoking": from.smoke,
+      "isSnoring": from.snoring,
+      "isWearEarphones": from.earphone,
+      "joinPeriod": from.period.parsingString,
+      "mbti": from.mbti ?? "",
+      "openKakaoLink": from.chatLink,
+      "showerTime": from.showerTime,
+      "wakeupTime": from.wakeupTime,
+      "wishText": from.wishText ?? ""
+    ]
+    return APIService.load(url, httpMethod: .put, body: body, encoding: .json)
+  }
 }

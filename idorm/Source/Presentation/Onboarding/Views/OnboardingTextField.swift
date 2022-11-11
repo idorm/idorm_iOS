@@ -15,7 +15,7 @@ class OnboardingTextField: UIView {
       NSAttributedString.Key.font: UIFont.init(name: MyFonts.medium.rawValue, size: 14.0) ?? 0
     ])
     $0.textColor = .black
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
+    $0.font = .init(name: MyFonts.regular.rawValue, size: 14.0)
     $0.addLeftPadding(16)
     $0.backgroundColor = .white
     $0.keyboardType = .default
@@ -99,7 +99,7 @@ class OnboardingTextField: UIView {
       .disposed(by: disposeBag)
     
     // 입력 반응 -> X버튼 활성화
-    textField.rx.controlEvent(.editingChanged)
+    textField.rx.controlEvent(.editingDidBegin)
       .asDriver()
       .drive(onNext: { [weak self] in
         self?.xmarkButton.isHidden = false
@@ -132,8 +132,9 @@ class OnboardingTextField: UIView {
     
     // X버튼 클릭 -> 텍스트 모두 지우기
     xmarkButton.rx.tap
-      .bind(onNext: { [unowned self] in
-        self.textField.text = ""
+      .bind(onNext: { [weak self] in
+        self?.textField.text = ""
+        self?.textField.sendActions(for: .valueChanged)
       })
       .disposed(by: disposeBag)
   }

@@ -21,10 +21,12 @@ final class OnboardingViewModel: ViewModel {
     // UI
     let isEnableConfirmButton = PublishSubject<Bool>()
     let showOnboardingDetailVC = PublishSubject<MatchingInfo>()
+    let indicatorState = PublishSubject<Bool>()
     let resetData = PublishSubject<Void>()
     
     // Presentation
     let showTabBarVC = PublishSubject<Void>()
+    let pushToRootVC = PublishSubject<Void>()
   }
   
   struct State {
@@ -36,10 +38,13 @@ final class OnboardingViewModel: ViewModel {
   var output = Output()
   var disposeBag = DisposeBag()
   
+  private let vcType: OnboardingVCType
+  
   var currentMatchingInfo: MatchingInfo { return output.matchingInfo.value }
   var currentConfirmVerifier: OnboardingConfirmVerifier { return state.confirmVerifierObserver.value }
   
-  init() {
+  init(_ vcType: OnboardingVCType) {
+    self.vcType = vcType
     mutate()
     bind()
   }
@@ -51,7 +56,7 @@ final class OnboardingViewModel: ViewModel {
     // 완료 버튼 활성&비활성화 -> Bool Stream 전달
     state.confirmVerifierObserver
       .map {
-        if $0.dorm && $0.period && $0.age && $0.cleanup && $0.gender && $0.showerTime && $0.wakeup {
+        if $0.dorm && $0.period && $0.age && $0.cleanup && $0.gender && $0.showerTime && $0.wakeup && $0.chatLink {
           return true
         } else {
           return false
@@ -148,6 +153,11 @@ final class OnboardingViewModel: ViewModel {
           }
         case .chatLink:
           newInfo.chatLink = contents
+          if contents == "" {
+            newVerifier.chatLink = false
+          } else {
+            newVerifier.chatLink = true
+          }
         case .mbti:
           newInfo.mbti = contents
         case .shower:
@@ -165,12 +175,6 @@ final class OnboardingViewModel: ViewModel {
       })
       .disposed(by: disposeBag)
     
-    // 완료 버튼 클릭 -> 온보딩 디테일 VC 보여주기
-    input.didTapConfirmButton
-      .map { [unowned self] in self.currentMatchingInfo }
-      .bind(to: output.showOnboardingDetailVC)
-      .disposed(by: disposeBag)
-    
     // 스킵 버튼 클릭 -> 여러 이벤트 방출
     input.didTapSkipButton
       .bind(onNext: { [weak self] skipType in
@@ -185,6 +189,24 @@ final class OnboardingViewModel: ViewModel {
         }
       })
       .disposed(by: disposeBag)
+    
+    switch vcType {
+    case .update:
+      
+      // 완료 버튼 클릭 -> 온보딩 현재 정보 수정하기
+      input.didTapConfirmButton
+        .bind(onNext: { [unowned self] in
+          self.requestModifyMatchingInfo(self.currentMatchingInfo)
+        })
+        .disposed(by: disposeBag)
+    case .firstTime, .mainPage_FirstTime:
+      
+      // 완료 버튼 클릭 -> 온보딩 디테일 VC 보여주기
+      input.didTapConfirmButton
+        .map { [unowned self] in self.currentMatchingInfo }
+        .bind(to: output.showOnboardingDetailVC)
+        .disposed(by: disposeBag)
+    }
   }
   
   // MARK: - Helpers
@@ -192,5 +214,33 @@ final class OnboardingViewModel: ViewModel {
   private func resetData() {
     output.matchingInfo.accept(MatchingInfo.initialValue())
     state.confirmVerifierObserver.accept(OnboardingConfirmVerifier.initialValue())
+  }
+}
+
+// MARK: - Network
+
+extension OnboardingViewModel {
+  
+  /// 현재 매칭 정보를 수정하는 API입니다.
+  func requestModifyMatchingInfo(_ from: MatchingInfo) {
+    output.indicatorState.onNext(true)
+    OnboardingService.shared.matchingInfoAPI_Put(from)
+      .subscribe(onNext: { [weak self] response in
+        struct ResponseModel: Codable {
+          let data: MatchingInfo_Lookup
+        }
+        guard let statusCode = response.response?.statusCode else { return }
+        switch statusCode {
+        case 200:
+          guard let data = response.data else { return }
+          let newInfo = APIService.decode(ResponseModel.self, data: data).data
+          MemberInfoStorage.shared.matchingInfo.accept(newInfo)
+          self?.output.pushToRootVC.onNext(Void())
+        default:
+          fatalError()
+        }
+        self?.output.indicatorState.onNext(false)
+      })
+      .disposed(by: disposeBag)
   }
 }

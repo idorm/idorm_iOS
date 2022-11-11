@@ -21,6 +21,8 @@
 		E508437728813CE80047A2EC /* FontManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508437628813CE80047A2EC /* FontManager.swift */; };
 		E508437B28814CAB0047A2EC /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E508437A28814CAB0047A2EC /* AuthViewController.swift */; };
 		E509438A28F8291D004D3A58 /* Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E509438928F8291D004D3A58 /* Preview.swift */; };
+		E51063C4291E250400FA0EAC /* MatchingNoSharePopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51063C3291E250400FA0EAC /* MatchingNoSharePopUpVC.swift */; };
+		E51063C6291E262800FA0EAC /* UIFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51063C5291E262800FA0EAC /* UIFactory.swift */; };
 		E510D3C928AC88A000A28B90 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E510D3C828AC88A000A28B90 /* Alamofire */; };
 		E510D3CB28AC9F6E00A28B90 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CA28AC9F6E00A28B90 /* AuthViewModel.swift */; };
 		E510D3CD28ACB87D00A28B90 /* PutEmailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CC28ACB87D00A28B90 /* PutEmailVM.swift */; };
@@ -196,6 +198,8 @@
 		E508437628813CE80047A2EC /* FontManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontManager.swift; sourceTree = "<group>"; };
 		E508437A28814CAB0047A2EC /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		E509438928F8291D004D3A58 /* Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preview.swift; sourceTree = "<group>"; };
+		E51063C3291E250400FA0EAC /* MatchingNoSharePopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingNoSharePopUpVC.swift; sourceTree = "<group>"; };
+		E51063C5291E262800FA0EAC /* UIFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFactory.swift; sourceTree = "<group>"; };
 		E510D3CA28AC9F6E00A28B90 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		E510D3CC28ACB87D00A28B90 /* PutEmailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailVM.swift; sourceTree = "<group>"; };
 		E510D3CE28ACC5F300A28B90 /* MemberService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberService.swift; sourceTree = "<group>"; };
@@ -792,6 +796,7 @@
 				E5D4900A288BFA0200311493 /* MatchingVC.swift */,
 				E5AB97C32895671800C0CEDF /* MatchingFilterVC.swift */,
 				E5FD982328EAF1AE005A29E2 /* MatchingPopupVC.swift */,
+				E51063C3291E250400FA0EAC /* MatchingNoSharePopUpVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -915,6 +920,7 @@
 		E5C2614C2919D2C500623C0E /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				E51063C5291E262800FA0EAC /* UIFactory.swift */,
 				E5C2614D2919D3AA00623C0E /* BottomAlertUtilities.swift */,
 				E517F242291B2ED400350947 /* RegisterUtilities.swift */,
 				E5370AFD28A1001C00A68D92 /* MyPageUtilities.swift */,
@@ -1302,6 +1308,7 @@
 				E591B77C28C6E99400B8B581 /* ServerConstants.swift in Sources */,
 				E58131A8288E6AC6000DB8C9 /* FloatyBottomView.swift in Sources */,
 				E508436C288133AD0047A2EC /* LoginUtilities.swift in Sources */,
+				E51063C4291E250400FA0EAC /* MatchingNoSharePopUpVC.swift in Sources */,
 				E56342232878353100E93D17 /* TabBarController.swift in Sources */,
 				E5226D5E2911F7110065C809 /* OnboardingVC.swift in Sources */,
 				E55DDAE929179DD900E62ECB /* AppearanceManager.swift in Sources */,
@@ -1328,6 +1335,7 @@
 				E5F5EC78288402840026DE21 /* MyPageVC.swift in Sources */,
 				E5BF4C5F28840EBF00B4F0B8 /* PostingViewController.swift in Sources */,
 				E5D4900E288BFB9100311493 /* MatchingInfo.swift in Sources */,
+				E51063C6291E262800FA0EAC /* UIFactory.swift in Sources */,
 				E563421828780BDE00E93D17 /* OnboardingVM.swift in Sources */,
 				E584B4BC289FCA6C007AD83A /* MatchingVM.swift in Sources */,
 				E5AB97C42895671800C0CEDF /* MatchingFilterVC.swift in Sources */,

@@ -85,8 +85,10 @@ final class MyRoommateViewController: BaseViewController {
       .bind(onNext: { [weak self] in
         if $0 {
           self?.indicator.startAnimating()
+          self?.view.isUserInteractionEnabled = false
         } else {
           self?.indicator.stopAnimating()
+          self?.view.isUserInteractionEnabled = true
         }
       })
       .disposed(by: disposeBag)
@@ -153,6 +155,13 @@ extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
     viewController.deleteButton.rx.tap
       .map { [unowned self] in (self.myRoommateVCType, matchingMember) }
       .bind(to: viewModel.input.deleteButtonTapped)
+      .disposed(by: disposeBag)
+    
+    // AlertVC 끄기
+    viewModel.output.dismissAlertVC
+      .bind(onNext: {
+        viewController.dismiss(animated: true)
+      })
       .disposed(by: disposeBag)
   }
 }

@@ -5,22 +5,23 @@ import RxCocoa
 
 final class MatchingViewModel: ViewModel {
   struct Input {
-    // UI
+    // Interaction
     let cancelButtonObserver = PublishSubject<Void>()
     let backButtonObserver = PublishSubject<Void>()
     let messageButtonObserver = PublishSubject<Void>()
     let heartButtonObserver = PublishSubject<Void>()
     let filterButtonObserver = PublishSubject<Void>()
         
-    // LifeCycle
-    let viewDidAppearObserver = PublishSubject<Void>()
-    
     // Card
     let swipeObserver = PublishSubject<MatchingType>()
     let didEndSwipeObserver = PublishSubject<MatchingSwipeType>()
     
     let likeMemberObserver = PublishSubject<Int>()
     let dislikeMemberObserver = PublishSubject<Int>()
+    
+    // Observing
+    let isPublicMatchingInfo = PublishSubject<Bool>()
+    let hasMatchingInfo = PublishSubject<Bool>()
   }
   
   struct Output {
@@ -33,6 +34,7 @@ final class MatchingViewModel: ViewModel {
     // Presentation
     let showFliterVC = PublishSubject<Void>()
     let showFirstPopupVC = PublishSubject<Void>()
+    let showNoSharePopupVC = PublishSubject<Void>()
     
     // Loading
     let startLoading = PublishSubject<Void>()
@@ -55,11 +57,29 @@ final class MatchingViewModel: ViewModel {
   
   func bind() {
     
-    // 화면 처음 진입 -> 매칭 정보 유무 체크
-    input.viewDidAppearObserver
-      .take(1)
-      .bind(onNext: {
-        self.requestMatchingInfoAPI()
+    input.hasMatchingInfo
+      .subscribe(onNext: { [weak self] in
+        if $0 {
+          
+        } else {
+          self?.output.informationImageViewStatus.onNext(.noMatchingInformation)
+          self?.output.showFirstPopupVC.onNext(Void())
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    // 매칭 정보 공유 정보 변경 -> 이미지 변경 & 팝업 창 띄우기
+    input.isPublicMatchingInfo
+      .subscribe(onNext: { [weak self] in
+        if $0 {
+          self?.output.informationImageViewStatus.onNext(.noMatchingCardInformation)
+          self?.requestMatchingAPI()
+        } else {
+          self?.output.informationImageViewStatus.onNext(.noShareState)
+          self?.output.showNoSharePopupVC.onNext(Void())
+          self?.output.matchingMembers.accept([])
+          self?.output.reloadCardStack.onNext(Void())
+        }
       })
       .disposed(by: disposeBag)
     
@@ -110,24 +130,6 @@ final class MatchingViewModel: ViewModel {
 // MARK: - Network
 
 extension MatchingViewModel {
-  
-  /// 첫 화면 진입 시 매칭 정보 유무 확인 API
-  func requestMatchingInfoAPI() {
-    OnboardingService.shared.matchingInfoAPI_Get()
-      .subscribe(onNext: { [unowned self] response in
-        guard let statusCode = response.response?.statusCode else { return }
-        switch statusCode {
-        case 200:
-          // 매칭 정보가 있으면 매칭멤버 조회하기
-          self.requestMatchingAPI()
-        default:
-          // 매칭 정보가 없을 시에 팝업 창 띄우기
-          self.output.showFirstPopupVC.onNext(Void())
-          self.output.informationImageViewStatus.onNext(.noMatchingInformation)
-        }
-      })
-      .disposed(by: disposeBag)
-  }
   
   /// 멤버들의 매칭 정보 불러오기 API
   func requestMatchingAPI() {
@@ -194,17 +196,13 @@ extension MatchingViewModel {
   /// 좋아요 멤버 추가 API
   func requestMatchingLikedMembers_POST(_ memberId: Int) {
     MatchingService.shared.matchingLikedMembers_Post(memberId)
-      .subscribe(onNext: { [unowned self] response in
+      .subscribe(onNext: { response in
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
         case 200: // 좋아요 멤버 추가 완료
           break
-        case 401: // 로그인이 필요합니다.
-          break
-        case 409: // 매칭 정보가 존재하지 않습니다. 혹은 관리자 혹은 본인을 싫어요한 멤버로 설정할 수 있습니다.
-          break
         default: // 서버 에러 발생
-          break
+          fatalError()
         }
       })
       .disposed(by: disposeBag)
@@ -213,18 +211,14 @@ extension MatchingViewModel {
   /// 싫어요 멤버 추가 API
   func requestMatchingDislikedMembers_POST(_ memberId: Int) {
     MatchingService.shared.matchingDislikedMembers_Post(memberId)
-      .subscribe(onNext: { [unowned self] response in
+      .subscribe(onNext: { response in
         guard let statusCode = response.response?.statusCode else { return }
         print(statusCode)
         switch statusCode {
         case 200: // 싫어요 멤버 추가 완료
           break
-        case 401: // 로그인이 필요합니다.
-          break
-        case 409: // 매칭 정보가 존재하지 않습니다. 혹은 관리자 혹은 본인을 싫어요한 멤버로 설정할 수 있습니다.
-          break
         default: // 서버 에러 발생
-          break
+          fatalError()
         }
       })
       .disposed(by: disposeBag)

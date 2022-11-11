@@ -85,20 +85,6 @@ final class MyPageBottomAlertViewController: BaseViewController {
   }
   
   // MARK: - Bind
-  
-  override func bind() {
-    super.bind()
-    
-    Observable.merge([
-      xMarkButton.rx.tap.asObservable(),
-      deleteButton.rx.tap.asObservable(),
-      reportButton.rx.tap.asObservable()
-    ])
-    .bind(onNext: { [weak self] in
-      self?.dismiss(animated: true)
-    })
-    .disposed(by: disposeBag)
-  }
 }
 
 // MARK: - PanModal Setup

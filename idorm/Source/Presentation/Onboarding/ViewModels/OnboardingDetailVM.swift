@@ -6,40 +6,61 @@ import RxCocoa
 final class OnboardingDetailViewModel: ViewModel {
   
   struct Input {
-    let didTapBackButton = PublishSubject<Void>()
-    let didTapConfirmButton = PublishSubject<Void>()
+    // Interaction
+    let backButtonTapped = PublishSubject<Void>()
+    let correctionButtonTapped = PublishSubject<Void>()
+    let confirmButtonTapped = PublishSubject<Void>()
   }
   
   struct Output {
+    // Presentation
     let popVC = PublishSubject<Void>()
     let showPopupVC = PublishSubject<String>()
     let showTabBarVC = PublishSubject<Void>()
-    let startAnimation = PublishSubject<Void>()
-    let stopAnimation = PublishSubject<Void>()
+    let showOnboardingVC = PublishSubject<Void>()
+    
+    // UI
+    let indicatorState = PublishSubject<Bool>()
   }
   
   var input = Input()
   var output = Output()
   var disposeBag = DisposeBag()
+  private let vcType: OnboardingDetailVCType
   
-  init() {
+  init(_ vcType: OnboardingDetailVCType) {
+    self.vcType = vcType
     bind()
   }
   
   func bind() {
     
     // 뒤로가기 -> 이전 화면 돌아가기
-    input.didTapBackButton
+    input.backButtonTapped
       .bind(to: output.popVC)
       .disposed(by: disposeBag)
     
-    // 완료 버튼 이벤트 -> 온보딩 최초 저장
-    input.didTapConfirmButton
-      .bind(onNext: { [weak self] in
-        self?.output.startAnimation.onNext(Void())
-        self?.matchingInfoAPI()
-      })
+    // 정보 수정 버튼 클릭 -> 온보딩 페이지 이동
+    input.correctionButtonTapped
+      .bind(to: output.showOnboardingVC)
       .disposed(by: disposeBag)
+    
+    switch vcType {
+    case .initilize:
+      
+      // 완료 버튼 이벤트 -> 온보딩 최초 저장
+      input.confirmButtonTapped
+        .bind(onNext: { [weak self] in
+          self?.matchingInfoAPI()
+        })
+        .disposed(by: disposeBag)
+    case .update:
+      
+      // 완료 버튼 이벤트 -> 뒤로가기
+      input.confirmButtonTapped
+        .bind(to: output.popVC)
+        .disposed(by: disposeBag)
+    }
   }
 }
 

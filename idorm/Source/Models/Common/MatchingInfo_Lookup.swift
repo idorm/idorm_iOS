@@ -1,6 +1,6 @@
 /// 자신의 매칭 멤버를 조회하는 모델입니다.
 struct MatchingInfo_Lookup: Codable {
-  let id: Int
+  let id: Int?
   var dormNum: Dormitory
   var joinPeriod: JoinPeriod
   var gender: Gender
@@ -21,7 +21,7 @@ struct MatchingInfo_Lookup: Codable {
   
   static func toMatchingMemberModel(_ from: MatchingInfo_Lookup) -> MatchingMember {
     return MatchingMember(
-      memberId: from.id,
+      memberId: from.id ?? 0,
       matchingInfoId: 0,
       dormNum: from.dormNum,
       joinPeriod: from.joinPeriod,

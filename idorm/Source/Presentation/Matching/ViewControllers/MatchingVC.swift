@@ -50,16 +50,14 @@ class MatchingViewController: BaseViewController {
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-
-    // 화면 접속 이벤트
-    viewModel.input.viewDidAppearObserver.onNext(Void())
+    checkStorage()
   }
   
   // MARK: - Bind
   
   override func bind() {
     super.bind()
-    
+
     // MARK: - Input
     
     // 필터버튼 클릭
@@ -198,24 +196,29 @@ class MatchingViewController: BaseViewController {
         self.loadingIndicator.startAnimating()
       })
       .disposed(by: disposeBag)
-
+    
     // 로딩 종료
     viewModel.output.stopLoading
       .bind(onNext: { [unowned self] in
         self.loadingIndicator.stopAnimating()
       })
       .disposed(by: disposeBag)
-    
+
     // 매칭 이미지 뷰 변경
     viewModel.output.informationImageViewStatus
       .bind(onNext: { [unowned self] type in
         let imageName = type.imageName
-        switch type {
-        case .noMatchingCardInformation:
-          self.informationImageView.image = UIImage(named: imageName)
-        case .noMatchingInformation:
-          self.informationImageView.image = UIImage(named: imageName)
-        }
+        print(imageName)
+        self.informationImageView.image = UIImage(named: imageName)
+      })
+      .disposed(by: disposeBag)
+    
+    // 매칭 공개 여부 팝업 띄우기
+    viewModel.output.showNoSharePopupVC
+      .bind(onNext: { [weak self] in
+        let popupVC = MatchingNoSharePopUpViewController()
+        popupVC.modalPresentationStyle = .overFullScreen
+        self?.present(popupVC, animated: false)
       })
       .disposed(by: disposeBag)
   }
@@ -384,6 +387,25 @@ class MatchingViewController: BaseViewController {
       }
     }
   }
+  
+  // MARK: - Helpers
+  
+  private func checkStorage() {
+    let storage = MemberInfoStorage.shared
+    
+    if storage.hasMatchingInfo {
+      viewModel.input.hasMatchingInfo.onNext(true)
+      
+      if storage.isPublicMatchingInfo {
+        viewModel.input.isPublicMatchingInfo.onNext(true)
+      } else {
+        viewModel.input.isPublicMatchingInfo.onNext(false)
+      }
+      
+    } else {
+      viewModel.input.hasMatchingInfo.onNext(false)
+    }
+  }
 }
 
 // MARK: - Card Swipe
@@ -395,8 +417,6 @@ extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelega
     card.content = MatchingCard(myInfo: matchingMember)
     card.footerHeight = 0
     card.panGestureRecognizer.addTarget(self, action: #selector(handlePanGesture))
-    
-    print(#function)
     
     return card
   }

@@ -15,6 +15,9 @@ final class MyRoommateViewModel: ViewModel {
     // State
     let matchingMembers = BehaviorRelay<[MatchingMember]>(value: [])
     
+    // Presentation
+    let dismissAlertVC = PublishSubject<Void>()
+    
     // UI
     let reloadData = PublishSubject<Void>()
     let indicatorState = PublishSubject<Bool>()
@@ -35,8 +38,8 @@ final class MyRoommateViewModel: ViewModel {
     // 화면 최초 접속 -> 멤버 조회 요청
     input.loadViewObserver
       .subscribe(onNext: { [weak self] in
-        self?.requestLookupMatchingMembers($0)
         self?.output.indicatorState.onNext(true)
+        self?.requestLookupMatchingMembers($0)
       })
       .disposed(by: disposeBag)
     
@@ -75,6 +78,7 @@ extension MyRoommateViewModel {
             fatalError()
           }
           self?.output.indicatorState.onNext(false)
+          self?.output.dismissAlertVC.onNext(Void())
         })
         .disposed(by: disposeBag)
     case .dislike:
@@ -94,6 +98,7 @@ extension MyRoommateViewModel {
             fatalError()
           }
           self?.output.indicatorState.onNext(false)
+          self?.output.dismissAlertVC.onNext(Void())
         })
         .disposed(by: disposeBag)
     }
@@ -113,7 +118,6 @@ extension MyRoommateViewModel {
           default:
             fatalError()
           }
-          self?.output.indicatorState.onNext(false)
         })
         .disposed(by: disposeBag)
     case .dislike:
@@ -126,9 +130,9 @@ extension MyRoommateViewModel {
           default:
             fatalError()
           }
-          self?.output.indicatorState.onNext(false)
         })
         .disposed(by: disposeBag)
     }
   }
 }
+

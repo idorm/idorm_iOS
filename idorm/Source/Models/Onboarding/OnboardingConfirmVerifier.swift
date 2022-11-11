@@ -6,6 +6,7 @@ struct OnboardingConfirmVerifier {
   var wakeup: Bool
   var cleanup: Bool
   var showerTime: Bool
+  var chatLink: Bool
   
   static func initialValue() -> OnboardingConfirmVerifier {
     return OnboardingConfirmVerifier(
@@ -15,7 +16,8 @@ struct OnboardingConfirmVerifier {
       age: false,
       wakeup: false,
       cleanup: false,
-      showerTime: false
+      showerTime: false,
+      chatLink: false
     )
   }
 }
