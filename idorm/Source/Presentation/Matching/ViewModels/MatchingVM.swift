@@ -162,7 +162,7 @@ final class MatchingViewModel: ViewModel {
         if MemberInfoStorage.shared.isPublicMatchingInfo {
           self?.requestMatchingAPI()
         } else {
-          self?.output.showFilterVC.onNext(Void())
+          self?.output.showNoSharePopupVC.onNext(Void())
         }
       })
       .disposed(by: disposeBag)
@@ -173,7 +173,7 @@ final class MatchingViewModel: ViewModel {
         if MemberInfoStorage.shared.isPublicMatchingInfo {
           self?.requestFilteredMemberAPI()
         } else {
-          self?.output.showFilterVC.onNext(Void())
+          self?.output.showNoSharePopupVC.onNext(Void())
         }
       })
       .disposed(by: disposeBag)

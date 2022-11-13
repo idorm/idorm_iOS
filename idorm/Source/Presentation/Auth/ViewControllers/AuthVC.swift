@@ -6,22 +6,21 @@ import WebKit
 import RxSwift
 import RxCocoa
 
-class AuthViewController: BaseViewController {
+final class AuthViewController: BaseViewController {
   
   // MARK: - Properties
   
-  lazy var mailImageView = UIImageView(image: UIImage(named: "mail"))
-  lazy var authInfoImageView = UIImageView(image: UIImage(named: "AuthInfoLabel"))
-  lazy var confirmButton = RegisterBottomButton("인증번호 입력")
+  private let envelopeImageView = UIImageView(image: #imageLiteral(resourceName: "envelope"))
+  private let confirmButton = RegisterBottomButton("인증번호 입력")
   
-  lazy var backButton = UIButton().then {
+  private let backButton = UIButton().then {
     var config = UIButton.Configuration.plain()
     config.image = UIImage(named: "Xmark_Black")
     config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
     $0.configuration = config
   }
   
-  lazy var portalButton = RegisterBottomButton("메일함 바로가기").then {
+  private let portalButton = RegisterBottomButton("메일함 바로가기").then {
     $0.configuration?.baseForegroundColor = .idorm_gray_400
     $0.configuration?.baseBackgroundColor = .white
     $0.configuration?.background.strokeWidth = 1
@@ -30,16 +29,17 @@ class AuthViewController: BaseViewController {
   
   var pushCompletion: (() -> Void)?
   
-  let viewModel = AuthViewModel()
+  private let viewModel = AuthViewModel()
+  private let mailTimer = MailTimerChecker()
   
+  // MARK: - LifeCycle
+    
   // MARK: - Bind
   
   override func bind() {
     super.bind()
     
-    // --------------------------------
-    // --------------INPUT-------------
-    // --------------------------------
+    // MARK: - Input
     
     // 뒤로가기 버튼 이벤트
     backButton.rx.tap
@@ -55,17 +55,8 @@ class AuthViewController: BaseViewController {
     confirmButton.rx.tap
       .bind(to: viewModel.input.confirmButtonTapped)
       .disposed(by: disposeBag)
-    
-    // 메일 타이머 시작
-    rx.viewDidLoad
-      .bind(onNext: {
-        MailTimerChecker.shared.start()
-      })
-      .disposed(by: disposeBag)
-    
-    // --------------------------------
-    // -------------OUTPUT-------------
-    // --------------------------------
+        
+    // MARK: - Output
     
     // 화면 종료
     viewModel.output.dismissVC
@@ -77,24 +68,21 @@ class AuthViewController: BaseViewController {
     
     // 웹메일 페이지 보여주기
     viewModel.output.showPortalWeb
-      .asDriver(onErrorJustReturn: Void())
-      .drive(onNext: { [weak self] in
-        guard let url = URL(string: "https://webmail.inu.ac.kr/member/login?host_domain=inu.ac.kr&t=1658031681") else { return }
-        let webMailVC = WebMailViewController(urlRequest: URLRequest(url: url))
-        webMailVC.modalPresentationStyle = .fullScreen
-        self?.navigationController?.pushViewController(webMailVC, animated: true)
+      .bind(onNext: {
+        guard let url = URL(string: "https://webmail.inu.ac.kr/member/login?host_domain=inu.ac.kr") else { return }
+        UIApplication.shared.open(url)
       })
       .disposed(by: disposeBag)
     
     // 인증번호 입력 페이지로 넘어가기
     viewModel.output.showAuthNumberVC
       .asDriver(onErrorJustReturn: Void())
-      .drive(onNext: { [weak self] in
-        let authNumberVC = AuthNumberViewController()
-        self?.navigationController?.pushViewController(authNumberVC, animated: true)
+      .drive(onNext: { [unowned self] in
+        let authNumberVC = AuthNumberViewController(timer: self.mailTimer)
+        self.navigationController?.pushViewController(authNumberVC, animated: true)
         
         authNumberVC.popCompletion = {
-          self?.pushCompletion?()
+          self.pushCompletion?()
         }
       })
       .disposed(by: disposeBag)
@@ -104,7 +92,6 @@ class AuthViewController: BaseViewController {
   
   override func setupStyles() {
     super.setupStyles()
-    
     view.backgroundColor = .white
     navigationController?.navigationBar.tintColor = .black
     navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
@@ -112,22 +99,15 @@ class AuthViewController: BaseViewController {
   
   override func setupLayouts() {
     super.setupLayouts()
-    
-    [mailImageView, authInfoImageView, portalButton, confirmButton]
+    [envelopeImageView, portalButton, confirmButton]
       .forEach { view.addSubview($0) }
   }
   
   override func setupConstraints() {
     super.setupConstraints()
-    
-    mailImageView.snp.makeConstraints { make in
-      make.top.equalTo(view.safeAreaLayoutGuide).inset(114)
+    envelopeImageView.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-    }
-    
-    authInfoImageView.snp.makeConstraints { make in
-      make.top.equalTo(mailImageView.snp.bottom).offset(20)
-      make.centerX.equalToSuperview()
+      make.top.equalToSuperview().inset(150)
     }
     
     confirmButton.snp.makeConstraints { make in
@@ -153,4 +133,5 @@ struct AuthVC_PreView: PreviewProvider {
     AuthViewController().toPreview()
   }
 }
-#endif 
+#endif
+

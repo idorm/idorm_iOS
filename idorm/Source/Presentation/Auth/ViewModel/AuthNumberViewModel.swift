@@ -1,15 +1,9 @@
-//
-//  AuthNumberViewModel.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/08/17.
-//
-
 import Foundation
+
 import RxSwift
 import RxCocoa
 
-class AuthNumberViewModel {
+final class AuthNumberViewModel: ViewModel {
   struct Input {
     let requestAgainButtonTapped = PublishSubject<Void>()
     let confirmButtonTapped = PublishSubject<Void>()
@@ -26,9 +20,9 @@ class AuthNumberViewModel {
     let stopAnimation = PublishSubject<Void>()
   }
   
-  let input = Input()
-  let output = Output()
-  let disposeBag = DisposeBag()
+  var input = Input()
+  var output = Output()
+  var disposeBag = DisposeBag()
   
   init() {
     bind()
@@ -63,17 +57,20 @@ class AuthNumberViewModel {
       })
       .disposed(by: disposeBag)
   }
-  
+}
+
+// MARK: - Network
+
+extension AuthNumberViewModel {
   func passwordEmailAPI() {
     guard let email = Logger.instance.email else { return }
     EmailService.passwordEmailAPI(email: email)
       .subscribe(onNext: { [weak self] response in
         self?.output.stopAnimation.onNext(Void())
-        self?.output.resetTimer.onNext(Void())
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
         case 200:
-          break
+          self?.output.resetTimer.onNext(Void())
         case 401:
           self?.output.showPopupVC.onNext("이메일을 찾을 수 없습니다.")
         case 409:
@@ -90,11 +87,10 @@ class AuthNumberViewModel {
     EmailService.registerEmailAPI(email: email)
       .subscribe(onNext: { [weak self] response in
         self?.output.stopAnimation.onNext(Void())
-        self?.output.resetTimer.onNext(Void())
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
         case 200:
-          break
+          self?.output.resetTimer.onNext(Void())
         case 400:
           self?.output.showPopupVC.onNext("이메일을 입력해 주세요.")
         case 401:

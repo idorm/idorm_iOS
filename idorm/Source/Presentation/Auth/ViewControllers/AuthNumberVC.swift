@@ -1,10 +1,3 @@
-//
-//  AuthNumberViewController.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/10.
-//
-
 import UIKit
 
 import SnapKit
@@ -41,21 +34,20 @@ class AuthNumberViewController: BaseViewController {
   let confirmButton = RegisterBottomButton("인증 완료")
   let textField = RegisterTextField("인증번호를 입력해주세요.")
 
-  let viewModel = AuthNumberViewModel()
-  let timerChecker = MailTimerChecker.shared
+  private let viewModel = AuthNumberViewModel()
+  private let mailTimer: MailTimerChecker
   
   var popCompletion: (() -> Void)?
-
+  
   // MARK: - LifeCycle
   
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    
-    MailTimerChecker.shared.start()
+  init(timer: MailTimerChecker) {
+    self.mailTimer = timer
+    super.init(nibName: nil, bundle: nil)
   }
   
-  deinit {
-    timerChecker.pause()
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
   
   // MARK: - Bind
@@ -63,9 +55,7 @@ class AuthNumberViewController: BaseViewController {
   override func bind() {
     super.bind()
     
-    // --------------------------------
-    // --------------INPUT-------------
-    // --------------------------------
+    // MARK: - Input
     
     // 인증번호 재요청 버튼 이벤트
     requestAgainButton.rx.tap
@@ -89,23 +79,26 @@ class AuthNumberViewController: BaseViewController {
       .bind(to: viewModel.input.viewWillAppear)
       .disposed(by: disposeBag)
     
-    // --------------------------------
-    // -------------OUTPUT-------------
-    // --------------------------------
+    // MARK: - Output
     
-    // 타이머 남은 시간 반응 -> 레이블 텍스트 변경
-    timerChecker.timerStringSubject
-      .bind(onNext: { [unowned self] leftTimeString in
-        self.timerLabel.text = leftTimeString
+    // 남은 인증 시간 텍스트 변화 감지
+    mailTimer.leftTime
+      .filter { $0 <= 300 }
+      .bind(onNext: { [weak self] elapseTime in
+        let minutes = elapseTime / 60
+        let seconds = elapseTime % 60
+        let minutesString = String(format: "%02d", minutes)
+        let secondsString = String(format: "%02d", seconds)
+        self?.timerLabel.text = "\(minutes):\(seconds)"
       })
       .disposed(by: disposeBag)
     
-    // 타이머 시간 종료 -> 텍스트 필드 백그라운드 변경 및 안내 문구 출력
-    timerChecker.timerFinishedSubject
-      .bind(onNext: { [weak self] state in
-        if state {
+    // 남은 시간 경과 시 작업 수행
+    mailTimer.isPassed
+      .distinctUntilChanged()
+      .bind(onNext: { [weak self] in
+        if $0 {
           self?.textField.backgroundColor = .idorm_gray_200
-          
           let popupView = PopupViewController(contents: "인증번호가 만료되었습니다.")
           popupView.modalPresentationStyle = .overFullScreen
           self?.present(popupView, animated: false)
@@ -118,8 +111,7 @@ class AuthNumberViewController: BaseViewController {
     // 인증번호 재 요청 버튼 클릭 시 타이머 재 설정 및 안내 문구 출력
     viewModel.output.resetTimer
       .bind(onNext: { [weak self] _ in
-        MailTimerChecker.shared.reset()
-        
+        self?.mailTimer.restart()
         let popupView = PopupViewController(contents: "인증번호가 재전송 되었습니다.")
         popupView.modalPresentationStyle = .overFullScreen
         self?.present(popupView, animated: false)

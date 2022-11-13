@@ -1,3 +1,4 @@
+import Foundation
 import DeviceKit
 
 public enum DeviceGroup {
@@ -37,6 +38,7 @@ public enum DeviceGroup {
 
 class DeviceManager {
   static let shared: DeviceManager = DeviceManager()
+  var startDate = Date()
   
   private init() {}
   

@@ -62,7 +62,7 @@ class MatchingViewController: BaseViewController {
       .compactMap { $0 }
       .bind(to: viewModel.input.isUpdatedPublicState)
       .disposed(by: disposeBag)
-    
+
     // 화면 최초 접근
     Observable.just(Void())
       .delay(.microseconds(10000), scheduler: MainScheduler.instance)
@@ -131,6 +131,7 @@ class MatchingViewController: BaseViewController {
     
     // FilterVC 보여주기
     viewModel.output.showFilterVC
+      .debug()
       .bind(onNext: { [weak self] in
         guard let self = self else { return }
         let viewController = MatchingFilterViewController()
@@ -139,10 +140,9 @@ class MatchingViewController: BaseViewController {
         
         // 선택 초기화 -> POP 필터VC -> 카드 다시 요청
         viewController.viewModel.output.requestCards
-          .take(1)
           .bind(to: self.viewModel.input.resetFilterButtonTapped)
           .disposed(by: self.disposeBag)
-        
+
         // 필터링 완료 -> POP 필터VC -> 필터링 카드 요청
         viewController.viewModel.output.requestFilteredCards
           .bind(to: self.viewModel.input.confirmFilteringButtonTapped)

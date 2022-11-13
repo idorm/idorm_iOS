@@ -36,6 +36,7 @@ final class MatchingFilterViewModel: ViewModel {
     
   /// 현재 필터링 완료 버튼 활성화 정도
   var currentFilterConfirmVerifier: FilteringConfirmVerifier { return state.confirmVerifierObserver.value }
+  
   /// 현재 매칭 필터 정보
   var currentMatchingFilter: MatchingFilter {
     if matchingFilterStorage.hasFilter {
@@ -85,10 +86,10 @@ final class MatchingFilterViewModel: ViewModel {
     // 선택 초기화 버튼 -> 뒤로 가기 & 매칭 필터 정보 초기화
     input.skipButtonTapped
       .bind(onNext: { [unowned self] in
-        self.output.requestCards.onNext(Void())
         self.output.popVC.onNext(Void())
         self.matchingFilterStorage.matchingFilterObserver.accept(nil)
         self.matchingFilterStorage.hasFilter = false
+        self.output.requestCards.onNext(Void())
       })
       .disposed(by: disposeBag)
     
@@ -96,8 +97,8 @@ final class MatchingFilterViewModel: ViewModel {
     input.confirmButtonTapped
       .bind(onNext: { [unowned self] in
         self.output.popVC.onNext(Void())
-        self.output.requestFilteredCards.onNext(Void())
         self.matchingFilterStorage.hasFilter = true
+        self.output.requestFilteredCards.onNext(Void())
       })
       .disposed(by: disposeBag)
 

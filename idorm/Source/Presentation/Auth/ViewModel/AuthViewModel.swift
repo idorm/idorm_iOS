@@ -1,31 +1,24 @@
-//
-//  AuthViewModel.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/08/17.
-//
-
-import Foundation
 import RxSwift
 import RxCocoa
 
-class AuthViewModel {
+final class AuthViewModel: ViewModel {
   struct Input {
+    // Interaction
     let backButtonTapped = PublishSubject<Void>()
     let portalButtonTapped = PublishSubject<Void>()
     let confirmButtonTapped = PublishSubject<Void>()
   }
   
   struct Output {
+    // Presentation
     let dismissVC = PublishSubject<Void>()
     let showPortalWeb = PublishSubject<Void>()
     let showAuthNumberVC = PublishSubject<Void>()
-    
   }
   
-  let input = Input()
-  let output = Output()
-  let disposeBag = DisposeBag()
+  var input = Input()
+  var output = Output()
+  var disposeBag = DisposeBag()
   
   init() {
     bind()
