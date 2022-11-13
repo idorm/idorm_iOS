@@ -26,7 +26,6 @@ final class MyPageViewController: BaseViewController {
   override func viewDidLoad() {
     setupScrollView()
     super.viewDidLoad()
-    updateUI()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -45,6 +44,8 @@ final class MyPageViewController: BaseViewController {
     
     // 화면 접근시 이벤트 방출
     viewModel.input.viewWillAppearObserver.onNext(Void())
+    
+    updateUI()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -230,6 +231,8 @@ final class MyPageViewController: BaseViewController {
     } else {
       matchingContainerView.shareButton.isSelected = false
     }
+    let nickName = MemberInfoStorage.shared.memberInfo.value.nickname
+    topProfileView.nicknameLabel.text = nickName
   }
 }
 

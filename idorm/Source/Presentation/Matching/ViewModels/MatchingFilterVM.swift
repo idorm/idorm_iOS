@@ -28,7 +28,7 @@ final class MatchingFilterViewModel: ViewModel {
     let confirmVerifierObserver = BehaviorRelay<FilteringConfirmVerifier>(value: FilteringConfirmVerifier.initialValue())
   }
   
-  let matchingFilterShared = MatchingFilterStorage.shared
+  let matchingFilterStorage = MatchingFilterStorage.shared
   var input = Input()
   var output = Output()
   var state = State()
@@ -37,7 +37,13 @@ final class MatchingFilterViewModel: ViewModel {
   /// 현재 필터링 완료 버튼 활성화 정도
   var currentFilterConfirmVerifier: FilteringConfirmVerifier { return state.confirmVerifierObserver.value }
   /// 현재 매칭 필터 정보
-  var currentMatchingFilter: MatchingFilter { return matchingFilterShared.matchingFilterObserver.value }
+  var currentMatchingFilter: MatchingFilter {
+    if matchingFilterStorage.hasFilter {
+      return matchingFilterStorage.matchingFilterObserver.value!
+    } else {
+      return MatchingFilter.initialValue()
+    }
+  }
   
   init() {
     bind()
@@ -66,7 +72,7 @@ final class MatchingFilterViewModel: ViewModel {
   func bind() {
     
     // 현재 필터 정보 있으면 드라이버 활성화
-    Observable.just(matchingFilterShared.isExistedFilter.value)
+    Observable.just(matchingFilterStorage.hasFilter)
       .filter { $0 }
       .subscribe(onNext: { [unowned self] _ in
         var newVerifier = self.currentFilterConfirmVerifier
@@ -79,18 +85,19 @@ final class MatchingFilterViewModel: ViewModel {
     // 선택 초기화 버튼 -> 뒤로 가기 & 매칭 필터 정보 초기화
     input.skipButtonTapped
       .bind(onNext: { [unowned self] in
-        self.matchingFilterShared.isExistedFilter.accept(false)
         self.output.requestCards.onNext(Void())
         self.output.popVC.onNext(Void())
+        self.matchingFilterStorage.matchingFilterObserver.accept(nil)
+        self.matchingFilterStorage.hasFilter = false
       })
       .disposed(by: disposeBag)
     
     // 필터링 완료 버튼 이벤트 -> 뒤로가기 & 필터 매칭 카드 요청
     input.confirmButtonTapped
       .bind(onNext: { [unowned self] in
-        self.matchingFilterShared.isExistedFilter.accept(true)
         self.output.popVC.onNext(Void())
         self.output.requestFilteredCards.onNext(Void())
+        self.matchingFilterStorage.hasFilter = true
       })
       .disposed(by: disposeBag)
 
@@ -108,7 +115,7 @@ final class MatchingFilterViewModel: ViewModel {
         case .no3:
           newFilter.dormNum = .no3
         }
-        self.matchingFilterShared.matchingFilterObserver.accept(newFilter)
+        self.matchingFilterStorage.matchingFilterObserver.accept(newFilter)
         self.state.confirmVerifierObserver.accept(newVerifier)
       })
       .disposed(by: disposeBag)
@@ -125,7 +132,7 @@ final class MatchingFilterViewModel: ViewModel {
         case .period_24:
           newFilter.period = .period_24
         }
-        self.matchingFilterShared.matchingFilterObserver.accept(newFilter)
+        self.matchingFilterStorage.matchingFilterObserver.accept(newFilter)
         self.state.confirmVerifierObserver.accept(newVerifier)
       })
       .disposed(by: disposeBag)
@@ -146,7 +153,7 @@ final class MatchingFilterViewModel: ViewModel {
         case .allowedEarphone:
           newFilter.isWearEarphones.toggle()
         }
-        self.matchingFilterShared.matchingFilterObserver.accept(newFilter)
+        self.matchingFilterStorage.matchingFilterObserver.accept(newFilter)
       })
       .disposed(by: disposeBag)
     
@@ -156,7 +163,7 @@ final class MatchingFilterViewModel: ViewModel {
         var newFilter = self.currentMatchingFilter
         newFilter.minAge = minValue
         newFilter.maxAge = maxValue
-        self.matchingFilterShared.matchingFilterObserver.accept(newFilter)
+        self.matchingFilterStorage.matchingFilterObserver.accept(newFilter)
       })
       .disposed(by: disposeBag)
   }

@@ -79,6 +79,7 @@ final class MatchingContainerView: UIView {
     layer.shadowColor = UIColor.black.cgColor
     layer.shadowOffset = CGSize(width: 0, height: 5)
     layer.shadowOpacity = 0.1
+    layer.cornerRadius = 12
     backgroundColor = .white
   }
   

@@ -13,7 +13,7 @@ final class MatchingNoSharePopUpViewController: BaseViewController {
   private var containerView: UIView!
   private var mainLabel: UILabel!
   private var cancelButton: UILabel!
-  private var confirmButton: UILabel!
+  var confirmButton: UILabel!
   private var xmarkButton: UIButton!
   private let indicator = UIActivityIndicatorView()
   

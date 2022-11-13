@@ -55,8 +55,8 @@ final class MatchingFilterViewController: BaseViewController {
     floatyBottomView.confirmButton.isEnabled = false
     
     // MARK: - 현재 필터 정보 확인 후 UI 업데이트
-    if matchingFilterShared.isExistedFilter.value == true {
-      let filter = matchingFilterShared.matchingFilterObserver.value
+    if matchingFilterShared.hasFilter {
+      guard let filter = matchingFilterShared.matchingFilterObserver.value else { fatalError() }
       updateFilteredUI(filter)
     }
   }
