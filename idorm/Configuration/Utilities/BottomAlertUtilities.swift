@@ -21,13 +21,13 @@ final class BottomAlertUtilities {
   }
   
   /// 일반 버튼을 반환합니다.
-  static func getBasicButton(title: String, imageName: String) -> UIButton {
+  static func getBasicButton(title: String, image: UIImage?) -> UIButton {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
     container.font = UIFont.init(name: MyFonts.medium.rawValue, size: 20)
     container.foregroundColor = UIColor.black
     config.attributedTitle = AttributedString(title, attributes: container)
-    config.image = UIImage(named: imageName)
+    config.image = image
     config.imagePlacement = .leading
     config.imagePadding = 8
     config.baseBackgroundColor = .white

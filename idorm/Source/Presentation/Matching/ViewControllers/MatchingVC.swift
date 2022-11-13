@@ -1,5 +1,6 @@
 import UIKit
 
+import PanModal
 import SnapKit
 import RxSwift
 import RxCocoa
@@ -48,17 +49,25 @@ class MatchingViewController: BaseViewController {
     tabBarController?.tabBar.isHidden = false
   }
   
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    checkStorage()
-  }
-  
   // MARK: - Bind
   
   override func bind() {
     super.bind()
     
     // MARK: - Input
+    
+    // 자신의 공유 상태 업데이트
+    MemberInfoStorage.shared.isPublicMatchingInfoObserver
+      .distinctUntilChanged()
+      .compactMap { $0 }
+      .bind(to: viewModel.input.isUpdatedPublicState)
+      .disposed(by: disposeBag)
+    
+    // 화면 최초 접근
+    Observable.just(Void())
+      .delay(.microseconds(10000), scheduler: MainScheduler.instance)
+      .bind(to: viewModel.input.viewDidLoad)
+      .disposed(by: disposeBag)
     
     // 필터버튼 클릭
     filterButton.rx.tap
@@ -91,7 +100,7 @@ class MatchingViewController: BaseViewController {
       }
       .bind(to: viewModel.input.backButtonObserver)
       .disposed(by: disposeBag)
-    
+        
     // MARK: - Output
     
     // 백그라운드 컬러 기본 컬러로 다시 바꾸기
@@ -121,7 +130,7 @@ class MatchingViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     // FilterVC 보여주기
-    viewModel.output.showFliterVC
+    viewModel.output.showFilterVC
       .bind(onNext: { [weak self] in
         guard let self = self else { return }
         let viewController = MatchingFilterViewController()
@@ -131,16 +140,12 @@ class MatchingViewController: BaseViewController {
         // 선택 초기화 -> POP 필터VC -> 카드 다시 요청
         viewController.viewModel.output.requestCards
           .take(1)
-          .bind(onNext: {
-            self.viewModel.requestMatchingAPI()
-          })
+          .bind(to: self.viewModel.input.resetFilterButtonTapped)
           .disposed(by: self.disposeBag)
         
         // 필터링 완료 -> POP 필터VC -> 필터링 카드 요청
         viewController.viewModel.output.requestFilteredCards
-          .bind(onNext: {
-            self.viewModel.requestFilteredMemberAPI()
-          })
+          .bind(to: self.viewModel.input.confirmFilteringButtonTapped)
           .disposed(by: self.disposeBag)
       })
       .disposed(by: disposeBag)
@@ -279,7 +284,7 @@ class MatchingViewController: BaseViewController {
       cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalToSuperview()
-        make.height.equalTo(420)
+        make.height.equalTo(450)
       }
       
       buttonStack.snp.makeConstraints { make in
@@ -290,7 +295,7 @@ class MatchingViewController: BaseViewController {
       cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(4)
-        make.height.equalTo(420)
+        make.height.equalTo(450)
       }
 
       buttonStack.snp.makeConstraints { make in
@@ -301,7 +306,7 @@ class MatchingViewController: BaseViewController {
       cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(420)
+        make.height.equalTo(450)
       }
       
       buttonStack.snp.makeConstraints { make in
@@ -314,7 +319,7 @@ class MatchingViewController: BaseViewController {
       cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(420)
+        make.height.equalTo(450)
       }
       
       buttonStack.snp.makeConstraints { make in
@@ -327,7 +332,7 @@ class MatchingViewController: BaseViewController {
       cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(420)
+        make.height.equalTo(450)
       }
 
       buttonStack.snp.makeConstraints { make in
@@ -340,7 +345,7 @@ class MatchingViewController: BaseViewController {
       cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(420)
+        make.height.equalTo(450)
       }
 
       buttonStack.snp.makeConstraints { make in
@@ -353,7 +358,7 @@ class MatchingViewController: BaseViewController {
       cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(420)
+        make.height.equalTo(450)
       }
       
       buttonStack.snp.makeConstraints { make in
@@ -366,7 +371,7 @@ class MatchingViewController: BaseViewController {
       cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(32)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(420)
+        make.height.equalTo(450)
       }
       
       buttonStack.snp.makeConstraints { make in
@@ -379,7 +384,7 @@ class MatchingViewController: BaseViewController {
       cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(32)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(420)
+        make.height.equalTo(450)
       }
       
       buttonStack.snp.makeConstraints { make in
@@ -390,32 +395,13 @@ class MatchingViewController: BaseViewController {
       cardStack.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(420)
+        make.height.equalTo(450)
       }
       
       buttonStack.snp.makeConstraints { make in
         make.centerX.equalToSuperview()
         make.bottom.equalTo(view.safeAreaLayoutGuide).inset(50)
       }
-    }
-  }
-  
-  // MARK: - Helpers
-  
-  private func checkStorage() {
-    let storage = MemberInfoStorage.shared
-    
-    if storage.hasMatchingInfo {
-      viewModel.input.hasMatchingInfo.onNext(true)
-      
-      if storage.isPublicMatchingInfo {
-        viewModel.input.isPublicMatchingInfo.onNext(true)
-      } else {
-        viewModel.input.isPublicMatchingInfo.onNext(false)
-      }
-      
-    } else {
-      viewModel.input.hasMatchingInfo.onNext(false)
     }
   }
 }
@@ -427,7 +413,6 @@ extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelega
     let card = SwipeCard()
     card.swipeDirections = [.left, .right]
     card.content = MatchingCard(myInfo: matchingMember)
-    card.footerHeight = 0
     card.panGestureRecognizer.addTarget(self, action: #selector(handlePanGesture))
     
     return card
@@ -449,6 +434,16 @@ extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelega
     case .right: viewModel.input.likeMemberObserver.onNext(memberId)
     default: break
     }
+  }
+  
+  func cardStack(_ cardStack: SwipeCardStack, didSelectCardAt index: Int) {
+    let matchingMember = viewModel.output.matchingMembers.value[index]
+    
+    // TODO: 신고하기 기능 구현
+    // MatchingBottomAlertVC 보여주기
+    let bottomAlertVC = MatchingBottomAlertViewController()
+    bottomAlertVC.modalPresentationStyle = .pageSheet
+    presentPanModal(bottomAlertVC)
   }
   
   @objc private func handlePanGesture(sender: UIPanGestureRecognizer) {

@@ -94,7 +94,7 @@ final class ConfirmPasswordViewModel: ViewModel {
            self.isValidPasswordFinal(pwd: self.passwordText2),
            self.passwordText == self.passwordText2 {
           
-          if Logger.shared.registerType == .signUp {
+          if Logger.instance.authenticationType == .signUp {
             self.registerAPI()
           } else {
             self.changePasswordAPI()
@@ -126,13 +126,13 @@ extension ConfirmPasswordViewModel {
   
   /// 회원가입 요청 API
   func registerAPI() {
-    guard let email = Logger.shared.email else { return }
+    guard let email = Logger.instance.email else { return }
     MemberService.shared.registerAPI(email: email, password: passwordText)
       .subscribe(onNext: { [weak self] response in
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {
         case 200:
-          Logger.shared.password = self?.passwordText
+          Logger.instance.password = self?.passwordText
           self?.output.showCompleteVC.onNext(Void())
         default:
           self?.output.showErrorPopupVC.onNext("등록되지 않은 이메일입니다.")
@@ -143,7 +143,7 @@ extension ConfirmPasswordViewModel {
   
   /// 비밀번호 변경 요청 API
   func changePasswordAPI() {
-    guard let email = Logger.shared.email else { return }
+    guard let email = Logger.instance.email else { return }
     MemberService.shared.changePasswordAPI(email: email, password: passwordText)
       .subscribe(onNext: { [weak self] response in
         guard let statusCode = response.response?.statusCode else { return }

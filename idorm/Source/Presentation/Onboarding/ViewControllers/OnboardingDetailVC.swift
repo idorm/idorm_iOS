@@ -81,6 +81,7 @@ final class OnboardingDetailViewController: BaseViewController {
     matchingCard.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
       make.centerY.equalTo(view.safeAreaLayoutGuide).offset(-50)
+      make.height.equalTo(431)
     }
 
     indicator.snp.makeConstraints { make in

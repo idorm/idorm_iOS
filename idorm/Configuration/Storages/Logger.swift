@@ -1,13 +1,10 @@
 import Foundation
 
 final class Logger {
-  
+  static let instance = Logger()
   private init() {}
-  static let shared = Logger()
   
-  var registerType: RegisterType = .findPW
-  
+  var authenticationType: AuthenticationType = .signUp
   var email: String?
-  
   var password: String?
 }

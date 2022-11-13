@@ -59,13 +59,27 @@ final class ManageMyInfoViewController: BaseViewController {
       .bind(to: viewModel.input.nicknameButtonTapped)
       .disposed(by: disposeBag)
     
+    // 비밀번호 변경 버튼 클릭 이벤트
+    changePasswordView.rx.tapGesture()
+      .map { _ in Void() }
+      .bind(to: viewModel.input.changedPWButtonTapped)
+      .disposed(by: disposeBag)
+    
     // MARK: - Output
     
     // ChangeNickNameVC 보여주기
-    viewModel.output.showChangeNicknameVC
+    viewModel.output.pushToChangeNicknameVC
       .bind(onNext: { [weak self] in
         let changeNicknameVC = ChangeNicknameViewController()
         self?.navigationController?.pushViewController(changeNicknameVC, animated: true)
+      })
+      .disposed(by: disposeBag)
+    
+    // PutEmailVC 이동
+    viewModel.output.pushToPutEmailVC
+      .bind(onNext: { [weak self] in
+        let viewController = PutEmailViewController(.updatePW)
+        self?.navigationController?.pushViewController(viewController, animated: true)
       })
       .disposed(by: disposeBag)
     

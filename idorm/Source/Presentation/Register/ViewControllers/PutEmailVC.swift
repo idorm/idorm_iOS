@@ -9,37 +9,39 @@ final class PutEmailViewController: BaseViewController {
   
   // MARK: - Properties
   
-  private lazy var infoLabel = UILabel().then {
-    $0.textColor = .black
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
-    if registerType == .findPW {
+  private lazy var infoLabel = UIFactory.label(
+    text: "",
+    color: .black,
+    font: .init(name: MyFonts.medium.rawValue, size: 14)
+  ).then {
+    switch vcType {
+    case .findPW:
       $0.text = "가입시 사용한 인천대학교 이메일이 필요해요."
-    } else {
+    case .signUp, .updatePW:
       $0.text = "이메일"
     }
   }
   
-  private let needEmailLabel = UILabel().then {
-    $0.text = "인천대학교 이메일 (@inu.ac.kr)이 필요해요."
-    $0.textColor = .idorm_gray_400
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
-  }
+  private let needEmailLabel = UIFactory.label(
+    text: "인천대학교 이메일 (@inu.ac.kr)이 필요해요.",
+    color: .idorm_gray_400,
+    font: .init(name: MyFonts.medium.rawValue, size: 12)
+  )
   
   private let indicator = UIActivityIndicatorView()
   private let textField = RegisterTextField("이메일을 입력해주세요")
   private let confirmButton = RegisterBottomButton("인증번호 받기")
-  private let inuMark = UIImageView(image: UIImage(named: "INUMark"))
+  private let inuMark = UIImageView(image: #imageLiteral(resourceName: "INUMark"))
   private var inuStack: UIStackView!
   
   private let viewModel = PutEmailViewModel()
-  private let registerType: RegisterType
+  private let vcType: PutEmailVCType
 
   // MARK: - LifeCycle
   
-  init(type: RegisterType) {
-    self.registerType = type
+  init(_ vcType: PutEmailVCType) {
+    self.vcType = vcType
     super.init(nibName: nil, bundle: nil)
-    Logger.shared.registerType = type
   }
   
   required init?(coder: NSCoder) {
@@ -64,6 +66,19 @@ final class PutEmailViewController: BaseViewController {
       .bind(to: viewModel.input.emailText)
       .disposed(by: disposeBag)
     
+    // Logger에 최초 한 번 현재 AuthenticationType 저장
+    Observable.just(Void())
+      .subscribe(onNext: { [weak self] in
+        guard let self = self else { return }
+        switch self.vcType {
+        case .signUp:
+          Logger.instance.authenticationType = .signUp
+        case .findPW, .updatePW:
+          Logger.instance.authenticationType = .password
+        }
+      })
+      .disposed(by: disposeBag)
+    
     // MARK: - Output
     
     // 에러 팝업 창 띄우기
@@ -86,7 +101,8 @@ final class PutEmailViewController: BaseViewController {
         self.present(navVC, animated: true)
         
         authVC.pushCompletion = {
-          let confirmPasswordVC = ConfirmPasswordViewController(type: self.registerType)
+          let authenticationType = Logger.instance.authenticationType
+          let confirmPasswordVC = ConfirmPasswordViewController(authenticationType)
           DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.navigationController?.pushViewController(confirmPasswordVC, animated: true)
           }
@@ -112,7 +128,6 @@ final class PutEmailViewController: BaseViewController {
   
   override func setupLayouts() {
     super.setupLayouts()
-    
     [infoLabel, textField, confirmButton, inuStack, indicator]
       .forEach { view.addSubview($0) }
   }
@@ -126,12 +141,16 @@ final class PutEmailViewController: BaseViewController {
     inustack.spacing = 4.0
     self.inuStack = inustack
     
-    if registerType == .findPW {
-      navigationItem.title = "비밀번호 찾기"
-      inuStack.isHidden = true
-    } else {
+    switch vcType {
+    case .signUp:
       navigationItem.title = "회원가입"
       inuStack.isHidden = false
+    case .findPW:
+      navigationItem.title = "비밀번호 찾기"
+      inuStack.isHidden = true
+    case .updatePW:
+      navigationItem.title = "비밀번호 변경"
+      inustack.isHidden = false
     }
   }
   

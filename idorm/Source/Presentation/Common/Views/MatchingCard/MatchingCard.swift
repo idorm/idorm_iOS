@@ -34,8 +34,6 @@ final class MatchingCard: UIView {
     $0.configuration = config
   }
   
-  private let matchingMember: MatchingMember
-  
   private var snoringView: MatchingCardBoolView!
   private var grindingView: MatchingCardBoolView!
   private var smokingView: MatchingCardBoolView!
@@ -47,18 +45,27 @@ final class MatchingCard: UIView {
   private var showerView: MatchingCardStringView!
   private var mbtiView: MatchingCardStringView!
   
-  private var wishTextLabel: UIView!
+  private lazy var wishTextLabel = MatchingCardWishTextView(matchingMember)
   
-  private var bottomView: MatchingCardBottomView!
+  private var bottomContainerView: UIView!
+  
+  // MARK: - BottomView
+  private let humanImageView = UIImageView(image: UIImage(named: "Human"))
+  var optionButton: UIButton!
+  private var genderLabel: UILabel!
+  private var ageLabel: UILabel!
+  private var mbtiLabel: UILabel!
+  
+  private let matchingMember: MatchingMember
   
   // MARK: - LifeCycle
   
   init(myInfo: MatchingMember) {
     self.matchingMember = myInfo
     super.init(frame: .zero)
+    setupBottomView()
     setupBoolView()
     setupStringView()
-    setupComponents()
     setupLayouts()
     setupConstraints()
   }
@@ -68,6 +75,42 @@ final class MatchingCard: UIView {
   }
   
   // MARK: - Setup
+  
+  private func setupBottomView() {
+    let containerView = UIView()
+    containerView.backgroundColor = .white
+    containerView.layer.borderColor = UIColor.idorm_gray_200.cgColor
+    containerView.layer.borderWidth = 1
+    self.bottomContainerView = containerView
+    
+    let optionButton = UIButton().then {
+      var config = UIButton.Configuration.plain()
+      config.image = UIImage(named: "matchingCardOption")
+      $0.configuration = config
+    }
+    self.optionButton = optionButton
+
+    let genderLabel = UILabel().then {
+      $0.text = matchingMember.gender == .male ? "남자," : "여자,"
+      $0.textColor = .idorm_gray_400
+      $0.font = .init(name: MyFonts.bold.rawValue, size: 12)
+    }
+    self.genderLabel = genderLabel
+    
+    let ageLabel = UILabel().then {
+      $0.text = String(matchingMember.age) + " 세"
+      $0.textColor = .idorm_gray_400
+      $0.font = .init(name: MyFonts.bold.rawValue, size: 12)
+    }
+    self.ageLabel = ageLabel
+    
+    let mbtiLabel = UILabel().then {
+      $0.text = matchingMember.mbti
+      $0.textColor = .idorm_gray_300
+      $0.font = .init(name: MyFonts.bold.rawValue, size: 12)
+    }
+    self.mbtiLabel = mbtiLabel
+  }
   
   private func setupBoolView() {
     self.snoringView = MatchingCardBoolView(matchingMember, type: .snoring)
@@ -84,17 +127,12 @@ final class MatchingCard: UIView {
     self.mbtiView = MatchingCardStringView(matchingMember, type: .mbti)
   }
   
-  private func setupComponents() {
-    let wishTextLabel = MatchingCardWishTextView(matchingMember)
-    let bottomView = MatchingCardBottomView(matchingMember)
-    
-    self.wishTextLabel = wishTextLabel
-    self.bottomView = bottomView
-  }
-  
   private func setupLayouts() {
-    [backgroundImageView, bottomView]
+    [backgroundImageView, bottomContainerView]
       .forEach { addSubview($0) }
+    
+    [humanImageView, genderLabel, ageLabel, mbtiLabel, optionButton]
+      .forEach { bottomContainerView.addSubview($0) }
     
     [dormLabel, periodButton, snoringView, grindingView, smokingView, foodView, earphoneView, wakeupView, cleanUpView, showerView, mbtiView, wishTextLabel]
       .forEach { backgroundImageView.addSubview($0) }
@@ -102,13 +140,8 @@ final class MatchingCard: UIView {
   
   private func setupConstraints() {
     backgroundImageView.snp.makeConstraints { make in
-      make.edges.equalToSuperview()
-    }
-    
-    bottomView.snp.makeConstraints { make in
-      make.top.equalTo(backgroundImageView.snp.bottom)
-      make.leading.trailing.equalTo(backgroundImageView)
-      make.height.equalTo(40)
+      make.top.leading.trailing.equalToSuperview()
+      make.height.equalTo(396)
     }
     
     dormLabel.snp.makeConstraints { make in
@@ -179,6 +212,37 @@ final class MatchingCard: UIView {
       make.leading.trailing.equalToSuperview().inset(14)
       make.top.equalTo(mbtiView.snp.bottom).offset(10)
       make.height.equalTo(104)
+    }
+    
+    bottomContainerView.snp.makeConstraints { make in
+      make.leading.trailing.equalTo(backgroundImageView)
+      make.top.equalTo(backgroundImageView.snp.bottom)
+      make.bottom.equalToSuperview()
+    }
+    
+    humanImageView.snp.makeConstraints { make in
+      make.centerY.equalToSuperview()
+      make.leading.equalToSuperview().inset(12)
+    }
+    
+    genderLabel.snp.makeConstraints { make in
+      make.centerY.equalToSuperview()
+      make.leading.equalTo(humanImageView.snp.trailing).offset(8)
+    }
+    
+    ageLabel.snp.makeConstraints { make in
+      make.centerY.equalToSuperview()
+      make.leading.equalTo(genderLabel.snp.trailing).offset(4)
+    }
+    
+    optionButton.snp.makeConstraints { make in
+      make.trailing.equalToSuperview().inset(12)
+      make.centerY.equalToSuperview()
+    }
+    
+    mbtiLabel.snp.makeConstraints { make in
+      make.centerY.equalToSuperview()
+      make.trailing.equalTo(optionButton.snp.leading).offset(-8)
     }
   }
 }

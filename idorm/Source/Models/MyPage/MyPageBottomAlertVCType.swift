@@ -4,8 +4,8 @@ enum MyPageBottomAlertVCType {
   
   var height: Int {
     switch self {
-    case .like: return 171
-    case .dislike: return 171
+    case .like: return 208
+    case .dislike: return 208
     }
   }
 }

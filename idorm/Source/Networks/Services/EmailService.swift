@@ -28,13 +28,13 @@ final class EmailService {
   }
   
   /// 이메일 코드 검증 API
-  static func verifyCodeAPI(email: String, code: String, type: RegisterType) -> Observable<AFDataResponse<Data>> {
+  static func verifyCodeAPI(email: String, code: String, type: AuthenticationType) -> Observable<AFDataResponse<Data>> {
     let path = email.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
     let body: Parameters = [
       "code": code
     ]
     
-    if type == .findPW {
+    if type == .password {
       let url = EmailServerConstants.verifyEmailCode_PasswordURL + "/\(path)"
       return APIService.load(url, httpMethod: .post, body: body, encoding: .json)
     } else {

@@ -15,9 +15,10 @@ final class ConfirmPasswordViewController: BaseViewController {
   private let textField1 = RegisterPwTextField(placeholder: "비밀번호를 입력해주세요.")
   
   private lazy var confirmButton = RegisterBottomButton("").then {
-    if type == .signUp {
+    switch authenticationType {
+    case .signUp:
       $0.configuration?.title = "가입 완료"
-    } else {
+    case .password:
       $0.configuration?.title = "변경 완료"
     }
   }
@@ -27,13 +28,13 @@ final class ConfirmPasswordViewController: BaseViewController {
   private let eightLabel = RegisterUtilities.descriptionLabel(text: "•  8자 이상 입력")
   private let mixingLabel = RegisterUtilities.descriptionLabel(text: "•  영문 소문자/숫자/특수 문자 조합")
   
-  private let type: RegisterType
+  private let authenticationType: AuthenticationType
   private let viewModel = ConfirmPasswordViewModel()
   
   // MARK: - LifeCycle
   
-  init(type: RegisterType) {
-    self.type = type
+  init(_ authenticationType: AuthenticationType) {
+    self.authenticationType = authenticationType
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -215,11 +216,12 @@ final class ConfirmPasswordViewController: BaseViewController {
   
   override func setupStyles() {
     super.setupStyles()
-    
     view.backgroundColor = .white
-    if type == .signUp {
+    
+    switch authenticationType {
+    case .signUp:
       navigationItem.title = "회원가입"
-    } else {
+    case .password:
       navigationItem.title = "비밀번호 변경"
     }
   }
@@ -272,15 +274,3 @@ final class ConfirmPasswordViewController: BaseViewController {
     view.endEditing(true)
   }
 }
-
-// MARK: - Preview
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-struct ConfirmPasswordVC_PreView: PreviewProvider {
-  static var previews: some View {
-    ConfirmPasswordViewController(type: .findPW).toPreview()
-  }
-}
-#endif
-

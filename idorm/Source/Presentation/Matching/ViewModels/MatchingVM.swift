@@ -11,6 +11,8 @@ final class MatchingViewModel: ViewModel {
     let messageButtonObserver = PublishSubject<Void>()
     let heartButtonObserver = PublishSubject<Void>()
     let filterButtonObserver = PublishSubject<Void>()
+    let resetFilterButtonTapped = PublishSubject<Void>()
+    let confirmFilteringButtonTapped = PublishSubject<Void>()
     
     // Popup
     let publicButtonTapped = PublishSubject<Void>()
@@ -23,8 +25,9 @@ final class MatchingViewModel: ViewModel {
     let dislikeMemberObserver = PublishSubject<Int>()
     
     // Observing
-    let isPublicMatchingInfo = PublishSubject<Bool>()
+    let isUpdatedPublicState = PublishSubject<Bool>()
     let hasMatchingInfo = PublishSubject<Bool>()
+    let viewDidLoad = PublishSubject<Void>()
   }
   
   struct Output {
@@ -35,7 +38,7 @@ final class MatchingViewModel: ViewModel {
     let informationImageViewStatus = PublishSubject<MatchingImageViewType>()
     
     // Presentation
-    let showFliterVC = PublishSubject<Void>()
+    let showFilterVC = PublishSubject<Void>()
     let showFirstPopupVC = PublishSubject<Void>()
     let showNoSharePopupVC = PublishSubject<Void>()
     
@@ -61,11 +64,21 @@ final class MatchingViewModel: ViewModel {
   
   func bind() {
     
-    // 자신의 매칭 정보 유무 판별 -> 이미지 & 팝업 창 변경 및 띄우기
-    input.hasMatchingInfo
+    // ViewDidLoad -> 매칭 초기 상태 판단
+    input.viewDidLoad
       .subscribe(onNext: { [weak self] in
-        if $0 {
-          self?.output.informationImageViewStatus.onNext(.noMatchingCardInformation)
+        let storage = MemberInfoStorage.shared
+        
+        if storage.hasMatchingInfo {
+          
+          if storage.isPublicMatchingInfo {
+            self?.output.informationImageViewStatus.onNext(.noMatchingCardInformation)
+            self?.requestMatchingAPI()
+          } else {
+            self?.output.informationImageViewStatus.onNext(.noShareState)
+            self?.output.showNoSharePopupVC.onNext(Void())
+          }
+          
         } else {
           self?.output.informationImageViewStatus.onNext(.noMatchingInformation)
           self?.output.showFirstPopupVC.onNext(Void())
@@ -73,12 +86,13 @@ final class MatchingViewModel: ViewModel {
       })
       .disposed(by: disposeBag)
     
-    // 매칭 정보 공유 정보 확인 -> 이미지 변경 & 팝업 창 띄우기
-    input.isPublicMatchingInfo
+    // 자신의 공유 상태 업데이트 반응 -> 매칭 화면 상태 업데이트
+    input.isUpdatedPublicState
       .subscribe(onNext: { [weak self] in
+        let filterStorage = MatchingFilterStorage.shared
         if $0 {
-
-          if MatchingFilterStorage.shared.hasFilter {
+          
+          if filterStorage.hasFilter {
             self?.requestFilteredMemberAPI()
           } else {
             self?.requestMatchingAPI()
@@ -86,10 +100,9 @@ final class MatchingViewModel: ViewModel {
           self?.output.informationImageViewStatus.onNext(.noMatchingCardInformation)
           
         } else {
-          self?.output.informationImageViewStatus.onNext(.noShareState)
-          self?.output.showNoSharePopupVC.onNext(Void())
           self?.output.matchingMembers.accept([])
           self?.output.reloadCardStack.onNext(Void())
+          self?.output.informationImageViewStatus.onNext(.noShareState)
         }
       })
       .disposed(by: disposeBag)
@@ -119,7 +132,7 @@ final class MatchingViewModel: ViewModel {
     
     // 필터 버튼 클릭 -> 매칭 필터 VC 전환
     input.filterButtonObserver
-      .bind(to: output.showFliterVC)
+      .bind(to: output.showFilterVC)
       .disposed(by: disposeBag)
     
     // 싫어요 멤버 스와이프, 버튼 이벤트 -> 싫어요 멤버 추가 API 호출
@@ -140,6 +153,28 @@ final class MatchingViewModel: ViewModel {
     input.publicButtonTapped
       .subscribe(onNext: { [weak self] in
         self?.requestUpdateMatchingPublicInfoAPI(true)
+      })
+      .disposed(by: disposeBag)
+    
+    // 필터 선택 초기화 버튼 클릭 -> 매칭 멤버 초기화
+    input.resetFilterButtonTapped
+      .subscribe(onNext: { [weak self] in
+        if MemberInfoStorage.shared.isPublicMatchingInfo {
+          self?.requestMatchingAPI()
+        } else {
+          self?.output.showFilterVC.onNext(Void())
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    // 필터링 완료 버튼 클릭 -> 필터된 매칭 멤버 조회
+    input.confirmFilteringButtonTapped
+      .subscribe(onNext: { [weak self] in
+        if MemberInfoStorage.shared.isPublicMatchingInfo {
+          self?.requestFilteredMemberAPI()
+        } else {
+          self?.output.showFilterVC.onNext(Void())
+        }
       })
       .disposed(by: disposeBag)
   }

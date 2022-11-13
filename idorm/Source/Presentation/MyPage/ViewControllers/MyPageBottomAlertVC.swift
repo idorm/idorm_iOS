@@ -12,8 +12,9 @@ final class MyPageBottomAlertViewController: BaseViewController {
   
   var deleteButton: UIButton!
   var reportButton: UIButton!
+  var chatButton: UIButton!
   private var xMarkButton: UIButton!
-  private let indicaotr = UIActivityIndicatorView()
+  private let indicator = UIActivityIndicatorView()
   
   private let myPageBottomAlertVCType: MyPageBottomAlertVCType
   
@@ -39,11 +40,12 @@ final class MyPageBottomAlertViewController: BaseViewController {
     let deleteButton: UIButton
     switch myPageBottomAlertVCType {
     case .dislike:
-      deleteButton = BottomAlertUtilities.getBasicButton(title: "싫어요한 룸메에서 삭제", imageName: "trash")
+      deleteButton = BottomAlertUtilities.getBasicButton(title: "싫어요한 룸메에서 삭제", image: UIImage(named: "trash"))
     case .like:
-      deleteButton = BottomAlertUtilities.getBasicButton(title: "좋아요한 룸메에서 삭제", imageName: "trash")
+      deleteButton = BottomAlertUtilities.getBasicButton(title: "좋아요한 룸메에서 삭제", image: UIImage(named: "trash"))
     }
     self.deleteButton = deleteButton
+    self.chatButton = BottomAlertUtilities.getBasicButton(title: "룸메이트와 채팅하기", image: UIImage(named: "speechBubble"))
     self.reportButton = BottomAlertUtilities.getReportButton()
     
     let xmarkButton = UIButton()
@@ -58,7 +60,7 @@ final class MyPageBottomAlertViewController: BaseViewController {
   override func setupLayouts() {
     super.setupLayouts()
     
-    [xMarkButton, deleteButton, reportButton, indicaotr]
+    [xMarkButton, deleteButton, reportButton, chatButton, indicator]
       .forEach { view.addSubview($0) }
   }
   
@@ -69,9 +71,14 @@ final class MyPageBottomAlertViewController: BaseViewController {
       make.top.trailing.equalToSuperview().inset(16)
     }
     
+    chatButton.snp.makeConstraints { make in
+      make.top.equalTo(xMarkButton.snp.bottom).offset(4)
+      make.leading.trailing.equalToSuperview().inset(22)
+    }
+    
     deleteButton.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(22)
-      make.top.equalTo(xMarkButton.snp.bottom).offset(4)
+      make.top.equalTo(chatButton.snp.bottom).offset(4)
     }
     
     reportButton.snp.makeConstraints { make in
@@ -79,7 +86,7 @@ final class MyPageBottomAlertViewController: BaseViewController {
       make.top.equalTo(deleteButton.snp.bottom).offset(4)
     }
     
-    indicaotr.snp.makeConstraints { make in
+    indicator.snp.makeConstraints { make in
       make.center.equalToSuperview()
     }
   }

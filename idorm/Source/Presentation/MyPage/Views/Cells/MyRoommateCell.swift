@@ -32,9 +32,9 @@ final class MyRoommateCell: UITableViewCell {
   private func setupConstraints() {
     matchingCard.snp.makeConstraints { make in
       make.top.equalToSuperview().inset(24)
+      make.leading.trailing.equalToSuperview().inset(24)
       make.centerX.equalToSuperview()
-      make.height.equalTo(420)
-      make.width.equalTo(327)
+      make.height.equalTo(431)
     }
   }
 }

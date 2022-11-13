@@ -40,8 +40,8 @@ final class CompleteSignUpViewModel: ViewModel {
 
 extension CompleteSignUpViewModel {
   func LoginAPI() {
-    guard let email = Logger.shared.email else { return }
-    guard let password = Logger.shared.password else { return }
+    guard let email = Logger.instance.email else { return }
+    guard let password = Logger.instance.password else { return }
     output.animationState.onNext(true)
     
     MemberService.shared.LoginAPI(email: email, password: password)

@@ -133,10 +133,10 @@ final class LoginViewController: BaseViewController {
     // --------------OUTPUT-------------
     // ---------------------------------
     
-    // Register로 화면 이동
+    // PutEmailVC로 이동
     viewModel.output.showPutEmailVC
-      .bind(onNext: { [weak self] type in
-        let putEmailVC = PutEmailViewController(type: type)
+      .bind(onNext: { [weak self] vcType in
+        let putEmailVC = PutEmailViewController(vcType)
         self?.navigationController?.pushViewController(putEmailVC, animated: true)
       })
       .disposed(by: disposeBag)

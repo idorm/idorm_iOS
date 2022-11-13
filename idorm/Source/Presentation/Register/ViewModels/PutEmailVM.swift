@@ -32,10 +32,10 @@ final class PutEmailViewModel: ViewModel {
     // 완료 버튼 클릭 -> 오류 및 이동
     input.confirmButtonTapped
       .bind(onNext: { [unowned self] in
-        Logger.shared.email = self.email
+        Logger.instance.email = self.email
         
-        switch Logger.shared.registerType {
-        case .findPW:
+        switch Logger.instance.authenticationType {
+        case .password:
           self.passwordEmailAPI()
         case .signUp:
           self.registerEmailAPI()

@@ -13,7 +13,7 @@ final class LoginViewModel: ViewModel {
   
   struct Output {
     // Presentation
-    let showPutEmailVC = PublishSubject<RegisterType>()
+    let showPutEmailVC = PublishSubject<PutEmailVCType>()
     let showErrorPopupVC = PublishSubject<String>()
     let showTabBarVC = PublishSubject<Void>()
     
