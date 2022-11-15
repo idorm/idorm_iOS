@@ -270,12 +270,3 @@ final class LoginViewController: BaseViewController {
     view.endEditing(true)
   }
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-struct LoginVC_PreView: PreviewProvider {
-  static var previews: some View {
-    LoginViewController().toPreview()
-  }
-}
-#endif

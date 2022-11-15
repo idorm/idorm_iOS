@@ -3,6 +3,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 import Alamofire
+import Moya
 
 final class MemberService {
   
@@ -54,5 +55,58 @@ final class MemberService {
   func memberAPI() -> Observable<AFDataResponse<Data>> {
     let url = MemberServerConstants.memberURL
     return APIService.load(url, httpMethod: .get, body: nil, encoding: .json)
+    
+  }
+}
+
+enum MemberAPI {
+  case login(id: String, pw: String)
+  case register(id: String, pw: String)
+  case changePassword(id: String, pw: String)
+  case changeNickname(nickname: String)
+  case retrieveMember
+}
+
+extension MemberAPI: TargetType {
+  var baseURL: URL { return URL(string: APIService.baseURL)! }
+  
+  var path: String {
+    switch self {
+    case .login: return "/login"
+    case .register: return "/register"
+    case .changePassword: return "/changepassword"
+    case .changeNickname: return "/member/nickname"
+    case .retrieveMember: return "/member"
+    }
+  }
+  
+  var method: Moya.Method {
+    switch self {
+    case .login: return .post
+    case .register: return .post
+    case .changePassword: return .patch
+    case .changeNickname: return .patch
+    case .retrieveMember: return .get
+    }
+  }
+  
+  var task: Task {
+    switch self {
+    case let .login(id, pw), let .register(id, pw), let .changePassword(id, pw):
+      let params = ["email": id,
+                    "password": pw]
+      return .requestParameters(parameters: params, encoding: JSONEncoding.default)
+      
+    case .changeNickname(let nickname):
+      let params = ["nickname": nickname]
+      return .requestParameters(parameters: params, encoding: JSONEncoding.default)
+      
+    case .retrieveMember:
+      return .requestPlain
+    }
+  }
+  
+  var headers: [String : String]? {
+    return APIService.basicHeader()
   }
 }

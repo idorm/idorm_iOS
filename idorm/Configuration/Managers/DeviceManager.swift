@@ -38,7 +38,7 @@ public enum DeviceGroup {
 
 class DeviceManager {
   static let shared: DeviceManager = DeviceManager()
-  var startDate = Date()
+  var startDate: Date?
   
   private init() {}
   

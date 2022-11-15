@@ -4,6 +4,7 @@ import SnapKit
 import Then
 import RxSwift
 import RxCocoa
+import Moya
 
 final class HomeViewController: BaseViewController {
   
@@ -46,7 +47,7 @@ final class HomeViewController: BaseViewController {
     $0.configuration = config
   }
   
-  private let lionImageView = UIImageView(image: UIImage(named: "lion_Home"))
+  private let lionImageView = UIImageView(image: #imageLiteral(resourceName: "Lion"))
   
   private var scrollView: UIScrollView!
   private var contentView: UIView!
@@ -150,3 +151,4 @@ struct HomeVC_PreView: PreviewProvider {
   }
 }
 #endif
+

@@ -10,15 +10,6 @@
       }
     },
     {
-      "identity" : "cardslider",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Ramotion/cardslider.git",
-      "state" : {
-        "revision" : "016e2996d9f9fc20ac108ad82fd9fce007546be1",
-        "version" : "0.1.0"
-      }
-    },
-    {
       "identity" : "chiotpfield",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChiliLabs/CHIOTPField.git",
@@ -37,21 +28,12 @@
       }
     },
     {
-      "identity" : "fmphotopicker",
+      "identity" : "moya",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/congnd/FMPhotoPicker.git",
+      "location" : "https://github.com/Moya/Moya.git",
       "state" : {
-        "revision" : "fccd843f042b12570bf0daa549b917792362784d",
-        "version" : "1.3.0"
-      }
-    },
-    {
-      "identity" : "nvactivityindicatorview",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ninjaprox/NVActivityIndicatorView.git",
-      "state" : {
-        "revision" : "bcb52371f2259254bac6690f92bb474a61768c47",
-        "version" : "5.1.1"
+        "revision" : "c263811c1f3dbf002be9bd83107f7cdc38992b26",
+        "version" : "15.0.3"
       }
     },
     {
@@ -59,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/uias/Pageboy",
       "state" : {
-        "revision" : "b4da5db84e9d516ce37fb51899f862e2c0375640",
-        "version" : "4.0.1"
+        "revision" : "5522aa6ae88633f6c23cf504e9cd684e963822f1",
+        "version" : "4.0.2"
       }
     },
     {
@@ -70,6 +52,15 @@
       "state" : {
         "revision" : "b012aecb6b67a8e46369227f893c12544846613f",
         "version" : "1.2.7"
+      }
+    },
+    {
+      "identity" : "reactiveswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ReactiveCocoa/ReactiveSwift.git",
+      "state" : {
+        "revision" : "c43bae3dac73fdd3cb906bd5a1914686ca71ed3c",
+        "version" : "6.7.0"
       }
     },
     {
@@ -100,15 +91,6 @@
       }
     },
     {
-      "identity" : "rxdatasources",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/RxSwiftCommunity/RxDataSources.git",
-      "state" : {
-        "revision" : "90c29b48b628479097fe775ed1966d75ac374518",
-        "version" : "5.0.2"
-      }
-    },
-    {
       "identity" : "rxgesture",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/RxSwiftCommunity/RxGesture.git",
@@ -118,12 +100,12 @@
       }
     },
     {
-      "identity" : "rxkeyboard",
+      "identity" : "rxoptional",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/RxSwiftCommunity/RxKeyboard.git",
+      "location" : "https://github.com/RxSwiftCommunity/RxOptional.git",
       "state" : {
-        "revision" : "085fd99d7bb4f98e671904fcfe7ff561e66574ad",
-        "version" : "2.0.0"
+        "revision" : "10820dd92601e8cf7b71c763fc7a1cf4d1bb14f5",
+        "version" : "5.0.5"
       }
     },
     {
@@ -149,8 +131,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/uias/Tabman.git",
       "state" : {
-        "revision" : "8037efbf32684b2213e8c56462ba0f2b481b90e6",
-        "version" : "3.0.0"
+        "revision" : "6a87a2825939f5da06cf52a6582d67a646488cff",
+        "version" : "3.0.1"
       }
     },
     {

@@ -10,6 +10,7 @@ final class MailTimerChecker {
   
   let leftTime = BehaviorRelay<Int>(value: 300)
   let isPassed = PublishSubject<Bool>()
+  private var currentValue = 0
   
   private var disposeBag = DisposeBag()
   
@@ -20,22 +21,21 @@ final class MailTimerChecker {
   // MARK: - Bind
   
   func bind() {
+    let startTime = Date()
     
     // 1초마다 시간 재기
     Observable<Int>
       .interval(.seconds(1),
                 scheduler: MainScheduler.instance)
       .withUnretained(self)
-      .do(onNext: { weakself, _ in
-        let startDate = DeviceManager.shared.startDate
-        let elapseSeconds = Date().timeIntervalSince(startDate)
-        weakself.leftTime.accept(300 - Int(elapseSeconds))
+      .do(onNext: { weakself, countValue in
+        let elapseSeconds = Int(Date().timeIntervalSince(startTime))
+        weakself.leftTime.accept(300 - elapseSeconds)
       })
       .subscribe()
         .disposed(by: disposeBag)
         
         leftTime
-        .debug()
         .subscribe(onNext: { [weak self] in
           if $0 < 0 {
             self?.isPassed.onNext(true)

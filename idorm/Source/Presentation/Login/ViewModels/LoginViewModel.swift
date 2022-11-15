@@ -1,5 +1,6 @@
 import RxSwift
 import RxCocoa
+import RxMoya
 
 final class LoginViewModel: ViewModel {
   struct Input {
@@ -54,14 +55,19 @@ final class LoginViewModel: ViewModel {
     
     // 로그인 버튼 클릭 -> 로그인 시도 서버로 요청
     input.loginButtonTapped
-      .bind(onNext: { [weak self] in
-        self?.requestLoginAPI()
+      .do(onNext: { [unowned self] in
+        self.output.startAnimation.onNext(Void())
       })
-      .disposed(by: disposeBag)
-    
-    // 로그인 버튼 클릭 -> Animation 시작
-    input.loginButtonTapped
-      .bind(to: output.startAnimation)
+      .flatMap {
+        return APIService.memberProvider.rx.request(.retrieveMember)
+      }
+      .do(onNext: { [unowned self] _ in
+        self.output.stopAnimation.onNext(Void())
+      })
+      .retry()
+      .subscribe(onNext: { response in
+        print(response)
+      })
       .disposed(by: disposeBag)
   }
 }

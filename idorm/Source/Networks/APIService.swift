@@ -3,19 +3,17 @@ import Foundation
 import RxSwift
 import RxCocoa
 import Alamofire
-
-enum ServerError: Error {
-  case unAuthorized
-  case forbidden
-  case errorMessage
-}
+import Moya
 
 enum Encoding {
   case json
   case query
 }
 
-class APIService {
+final class APIService {
+  static let baseURL = "https://idorm.inuappcenter.kr"
+  static let memberProvider = MoyaProvider<MemberAPI>()
+  
   static func load(_ url: URLConvertible, httpMethod: HTTPMethod, body: Parameters?, encoding: Encoding) -> Observable<AFDataResponse<Data>> {
     return Observable.create { observer in
       let header: HTTPHeaders = [
@@ -47,5 +45,12 @@ class APIService {
     let decoder = JSONDecoder()
     guard let json = try? decoder.decode(T.self, from: data) else { fatalError("Decoding Error!") }
     return json
+  }
+  
+  static func basicHeader() -> [String: String] {
+    return [
+      "Content-Type": "application/json",
+      "X-AUTH-TOKEN": TokenStorage.shared.loadToken()
+    ]
   }
 }

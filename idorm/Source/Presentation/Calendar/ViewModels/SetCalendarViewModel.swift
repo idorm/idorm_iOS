@@ -1,10 +1,3 @@
-//
-//  SetCalendarViewModel.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/08/04.
-//
-
 import RxSwift
 import RxCocoa
 import Foundation

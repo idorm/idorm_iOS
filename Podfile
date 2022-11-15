@@ -5,9 +5,9 @@ target 'idorm' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
+  # Pods for idorm
+
 pod 'Shuffle-iOS'
 pod 'RangeSeekSlider'
-
-  # Pods for idorm
 
 end

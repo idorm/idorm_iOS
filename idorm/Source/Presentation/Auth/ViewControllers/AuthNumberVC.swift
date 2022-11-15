@@ -5,7 +5,7 @@ import RxSwift
 import RxCocoa
 import Then
 
-class AuthNumberViewController: BaseViewController {
+final class AuthNumberViewController: BaseViewController {
   // MARK: - Properties
   
   let infoLabel = UILabel().then {
@@ -83,13 +83,14 @@ class AuthNumberViewController: BaseViewController {
     
     // 남은 인증 시간 텍스트 변화 감지
     mailTimer.leftTime
-      .filter { $0 <= 300 }
+      .debug()
+      .filter { $0 >= 0 }
       .bind(onNext: { [weak self] elapseTime in
         let minutes = elapseTime / 60
         let seconds = elapseTime % 60
         let minutesString = String(format: "%02d", minutes)
         let secondsString = String(format: "%02d", seconds)
-        self?.timerLabel.text = "\(minutes):\(seconds)"
+        self?.timerLabel.text = "\(minutesString):\(secondsString)"
       })
       .disposed(by: disposeBag)
     

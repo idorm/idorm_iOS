@@ -61,4 +61,3 @@ public enum SwipeDirection: Int, CustomStringConvertible {
     }
   }
 }
-

@@ -63,6 +63,7 @@ extension AppDelegate {
       .disposed(by: disposeBag)
   }
   
+  /// 멤버 최초 온보딩 매칭 유무 조회
   func requestMatchingInfo() {
     OnboardingService.shared.matchingInfoAPI_Get()
       .subscribe(onNext: { response in
