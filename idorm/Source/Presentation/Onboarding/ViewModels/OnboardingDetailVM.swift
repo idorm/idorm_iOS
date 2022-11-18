@@ -26,9 +26,9 @@ final class OnboardingDetailViewModel: ViewModel {
   var input = Input()
   var output = Output()
   var disposeBag = DisposeBag()
-  private let vcType: OnboardingDetailVCType
+  private let vcType: OnboardingVCTypes.OnboardingDetailVCType
   
-  init(_ vcType: OnboardingDetailVCType) {
+  init(_ vcType: OnboardingVCTypes.OnboardingDetailVCType) {
     self.vcType = vcType
     bind()
   }

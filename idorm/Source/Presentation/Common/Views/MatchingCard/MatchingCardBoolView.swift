@@ -11,13 +11,13 @@ final class MatchingCardBoolView: UIView {
   private var validLabel: UILabel!
   private var stackView: UIStackView!
   
-  private let matchingMember: MatchingMember
+  private let member: MatchingModel.Member
   private let type: MatchingCardBoolList
   
   // MARK: - LifeCycle
   
-  init(_ matchingMember: MatchingMember, type: MatchingCardBoolList) {
-    self.matchingMember = matchingMember
+  init(_ from: MatchingModel.Member, type: MatchingCardBoolList) {
+    self.member = from
     self.type = type
     super.init(frame: .zero)
     setupQueryLabel()
@@ -46,20 +46,20 @@ final class MatchingCardBoolView: UIView {
     let label = UILabel()
     switch type {
     case .snoring:
-      label.textColor = matchingMember.isSnoring ? UIColor.red : UIColor.idorm_blue
-      label.text = matchingMember.isSnoring ? "있음" : "없음"
+      label.textColor = member.isSnoring ? UIColor.red : UIColor.idorm_blue
+      label.text = member.isSnoring ? "있음" : "없음"
     case .grinding:
-      label.textColor = matchingMember.isGrinding ? UIColor.red : UIColor.idorm_blue
-      label.text = matchingMember.isGrinding ? "있음" : "없음"
+      label.textColor = member.isGrinding ? UIColor.red : UIColor.idorm_blue
+      label.text = member.isGrinding ? "있음" : "없음"
     case .smoking:
-      label.textColor = matchingMember.isSmoking ? UIColor.red : UIColor.idorm_blue
-      label.text = matchingMember.isSmoking ? "함" : "안함"
+      label.textColor = member.isSmoking ? UIColor.red : UIColor.idorm_blue
+      label.text = member.isSmoking ? "함" : "안함"
     case .food:
-      label.textColor = matchingMember.isAllowedFood ? UIColor.idorm_blue : UIColor.red
-      label.text = matchingMember.isAllowedFood ? "가능" : "불가능"
+      label.textColor = member.isAllowedFood ? UIColor.idorm_blue : UIColor.red
+      label.text = member.isAllowedFood ? "가능" : "불가능"
     case .earphone:
-      label.textColor = matchingMember.isWearEarphones ? UIColor.idorm_blue : UIColor.red
-      label.text = matchingMember.isWearEarphones ? "가능" : "불가능"
+      label.textColor = member.isWearEarphones ? UIColor.idorm_blue : UIColor.red
+      label.text = member.isWearEarphones ? "가능" : "불가능"
     }
     label.font = .init(name: MyFonts.bold.rawValue, size: 14)
     self.validLabel = label

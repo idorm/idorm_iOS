@@ -9,37 +9,31 @@ final class ConfirmPasswordViewModel: ViewModel {
     let confirmButtonTapped = PublishSubject<Void>()
     let passwordText = BehaviorRelay<String>(value: "")
     let passwordText_2 = BehaviorRelay<String>(value: "")
-    
-    let passwordTextFieldDidEnd = PublishSubject<Void>()
-    let passwordTextFieldDidEnd_2 = PublishSubject<Void>()
-    let passwordTextFieldDidBegin = PublishSubject<Void>()
-    let passwordTextFieldDidBegin_2 = PublishSubject<Void>()
   }
   
   struct Output {
     // UI
-    let countState = BehaviorRelay<Bool>(value: false)
-    let combineState = BehaviorRelay<Bool>(value: false)
-    
-    let didBeginState = PublishSubject<Void>()
-    let didBeginState_2 = PublishSubject<Void>()
-    let didEndState = PublishSubject<Void>()
-    let didEndState_2 = PublishSubject<Void>()
+    let isEnableConfirmButton = PublishSubject<Bool>()
+    let verificationCount = BehaviorRelay<Bool>(value: false)
+    let verificationCombine = BehaviorRelay<Bool>(value: false)
+    let verificationEquality = BehaviorRelay<Bool>(value: false)
     
     // Presentation
     let showErrorPopupVC = PublishSubject<String>()
-    let showCompleteVC = PublishSubject<Void>()
     let showLoginVC = PublishSubject<Void>()
+    let pushToConfirmNicknameVC = PublishSubject<Void>()
   }
   
   var input = Input()
   var output = Output()
   var disposeBag = DisposeBag()
+  private let vcType: RegisterVCTypes.ConfirmPasswordVCType
   
   var passwordText: String { return input.passwordText.value }
   var passwordText2: String { return input.passwordText_2.value }
   
-  init() {
+  init(_ vcType: RegisterVCTypes.ConfirmPasswordVCType) {
+    self.vcType = vcType
     bind()
   }
   
@@ -47,104 +41,73 @@ final class ConfirmPasswordViewModel: ViewModel {
   
   func bind() {
     
-    // 텍스트 입력 -> 글자수 제한
+    // 텍스트 입력 -> 로직 검증
     input.passwordText
       .bind(onNext: { [weak self] password in
         if password.count >= 8 {
-          self?.output.countState.accept(true)
+          self?.output.verificationCount.accept(true)
         } else {
-          self?.output.countState.accept(false)
+          self?.output.verificationCount.accept(false)
+        }
+        
+        if LoginUtilities.isValidPassword(pwd: password) {
+          self?.output.verificationCombine.accept(true)
+        } else {
+          self?.output.verificationCombine.accept(false)
         }
       })
       .disposed(by: disposeBag)
     
-    // 텍스트 입력 -> 유효 텍스트 검사
-    input.passwordText
-      .bind(onNext: { [weak self] password in
-        guard let self = self else { return }
-        if self.isValidPassword(pwd: password) {
-          self.output.combineState.accept(true)
-        } else {
-          self.output.combineState.accept(false)
+    // 검증 작업 -> 확인 버튼 활성화/비활성화
+    Observable.combineLatest(
+      output.verificationCount,
+      output.verificationCombine,
+      output.verificationEquality
+    )
+    .map {
+      $0.0 && $0.1 && $0.2 ? true : false
+    }
+    .bind(to: output.isEnableConfirmButton)
+    .disposed(by: disposeBag)
+    
+    // 텍스트 입력 -> 비밀번호1, 2 동등성 확인
+    Observable.combineLatest(
+      input.passwordText,
+      input.passwordText_2
+    )
+    .map {
+      $0 == $1 ? true : false
+    }
+    .bind(to: output.verificationEquality)
+    .disposed(by: disposeBag)
+    
+    switch vcType {
+    case .signUp:
+      // 회원가입 Flow일 때, 확인 버튼 클릭 -> ConfirmNicknameVC로 이동
+      input.confirmButtonTapped
+        .map { [weak self] in
+          Logger.instance.password = self?.passwordText ?? ""
         }
-      })
-      .disposed(by: disposeBag)
-    
-    input.passwordTextFieldDidBegin
-      .bind(to: output.didBeginState)
-      .disposed(by: disposeBag)
-    
-    input.passwordTextFieldDidEnd
-      .bind(to: output.didEndState)
-      .disposed(by: disposeBag)
-    
-    input.passwordTextFieldDidBegin_2
-      .bind(to: output.didBeginState_2)
-      .disposed(by: disposeBag)
-    
-    input.passwordTextFieldDidEnd_2
-      .bind(to: output.didEndState_2)
-      .disposed(by: disposeBag)
-    
-    // 완료 버튼 클릭 -> 비밀번호 변경 & 회원가입 API 요청
-    input.confirmButtonTapped
-      .bind(onNext: { [weak self] in
-        guard let self = self else { return }
-        if self.isValidPasswordFinal(pwd: self.passwordText),
-           self.isValidPasswordFinal(pwd: self.passwordText2),
-           self.passwordText == self.passwordText2 {
-          
-          if Logger.instance.authenticationType == .signUp {
-            self.registerAPI()
-          } else {
-            self.changePasswordAPI()
-          }
-        } else {
-          self.output.showErrorPopupVC.onNext("조건을 다시 확인해 주세요.")
-        }
-      })
-      .disposed(by: disposeBag)
-  }
-  
-  // MARK: - Helpers
-  
-  func isValidPasswordFinal(pwd: String) -> Bool {
-    let passwordRegEx = "^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{8,20}"
-    let passwordTest = NSPredicate(format: "SELF MATCHES %@", passwordRegEx)
-    return passwordTest.evaluate(with: pwd)
-  }
-  func isValidPassword(pwd: String) -> Bool {
-      let passwordRegEx = "^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{0,}"
-      let passwordTest = NSPredicate(format: "SELF MATCHES %@", passwordRegEx)
-      return passwordTest.evaluate(with: pwd)
+        .bind(to: output.pushToConfirmNicknameVC)
+        .disposed(by: disposeBag)
+      
+    case .findPW:
+      break
+      
+    case .updatePW:
+      break
+    }
   }
 }
 
 // MARK: - Network
 
 extension ConfirmPasswordViewModel {
-  
-  /// 회원가입 요청 API
-  func registerAPI() {
-    guard let email = Logger.instance.email else { return }
-    MemberService.shared.registerAPI(email: email, password: passwordText)
-      .subscribe(onNext: { [weak self] response in
-        guard let statusCode = response.response?.statusCode else { return }
-        switch statusCode {
-        case 200:
-          Logger.instance.password = self?.passwordText
-          self?.output.showCompleteVC.onNext(Void())
-        default:
-          self?.output.showErrorPopupVC.onNext("등록되지 않은 이메일입니다.")
-        }
-      })
-      .disposed(by: disposeBag)
-  }
-  
+
   /// 비밀번호 변경 요청 API
   func changePasswordAPI() {
     guard let email = Logger.instance.email else { return }
-    MemberService.shared.changePasswordAPI(email: email, password: passwordText)
+    MemberService.instance.changePasswordAPI(email: email, password: passwordText)
       .subscribe(onNext: { [weak self] response in
         guard let statusCode = response.response?.statusCode else { return }
         switch statusCode {

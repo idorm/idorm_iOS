@@ -2,7 +2,7 @@ import Foundation
 
 final class TokenStorage {
   
-  static let shared = TokenStorage()
+  static let instance = TokenStorage()
   private init() {}
   
   func saveToken(token: String) {

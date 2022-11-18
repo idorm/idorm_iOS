@@ -57,7 +57,7 @@ class MatchingViewController: BaseViewController {
     // MARK: - Input
     
     // 자신의 공유 상태 업데이트
-    MemberInfoStorage.shared.isPublicMatchingInfoObserver
+    MemberInfoStorage.instance.isPublicMatchingInfoObserver
       .distinctUntilChanged()
       .compactMap { $0 }
       .bind(to: viewModel.input.isUpdatedPublicState)

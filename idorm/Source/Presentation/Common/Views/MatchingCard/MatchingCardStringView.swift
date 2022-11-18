@@ -10,13 +10,13 @@ final class MatchingCardStringView: UIView {
   private var queryLabel: UILabel!
   private var contentsLabel: UILabel!
   
-  private let matchingMember: MatchingMember
+  private let member: MatchingModel.Member
   private let type: MatchingCardStringList
   
   // MARK: - LifeCycle
   
-  init(_ matchingMember: MatchingMember, type: MatchingCardStringList) {
-    self.matchingMember = matchingMember
+  init(_ from: MatchingModel.Member, type: MatchingCardStringList) {
+    self.member = from
     self.type = type
     super.init(frame: .zero)
     setupQueryLabel()
@@ -48,13 +48,13 @@ final class MatchingCardStringView: UIView {
     contentsLabel.textColor = .idorm_gray_400
     switch type {
     case .wakeUp:
-      contentsLabel.text = matchingMember.wakeUpTime
+      contentsLabel.text = member.wakeUpTime
     case .cleanUp:
-      contentsLabel.text = matchingMember.cleanUpStatus
+      contentsLabel.text = member.cleanUpStatus
     case .showerTime:
-      contentsLabel.text = matchingMember.showerTime
+      contentsLabel.text = member.showerTime
     case .mbti:
-      contentsLabel.text = matchingMember.mbti
+      contentsLabel.text = member.mbti
     }
     self.contentsLabel = contentsLabel
   }

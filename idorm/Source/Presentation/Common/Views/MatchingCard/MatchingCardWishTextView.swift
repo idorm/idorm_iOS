@@ -9,12 +9,12 @@ final class MatchingCardWishTextView: UIView {
   
   private var contentsLabel: UILabel!
   
-  private let matchingMember: MatchingMember
+  private let member: MatchingModel.Member
   
   // MARK: - LifeCycle
   
-  init(_ matchingMember: MatchingMember) {
-    self.matchingMember = matchingMember
+  init(_ from: MatchingModel.Member) {
+    self.member = from
     super.init(frame: .zero)
     setupContentsLabel()
     setupStyles()
@@ -31,7 +31,7 @@ final class MatchingCardWishTextView: UIView {
   private func setupContentsLabel() {
     let contentsLabel = UILabel()
     contentsLabel.font = .init(name: MyFonts.medium.rawValue, size: 14)
-    contentsLabel.text = matchingMember.wishText
+    contentsLabel.text = member.wishText
     contentsLabel.textColor = .idorm_gray_400
     contentsLabel.numberOfLines = 0
     contentsLabel.textAlignment = .left

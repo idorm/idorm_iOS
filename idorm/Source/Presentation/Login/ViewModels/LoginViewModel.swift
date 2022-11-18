@@ -4,23 +4,20 @@ import RxMoya
 
 final class LoginViewModel: ViewModel {
   struct Input {
-    // UI
-    let loginButtonTapped = PublishSubject<Void>()
+    // Interaction
+    let loginButtonTapped = PublishSubject<(id: String, pw: String)>()
     let forgotButtonTapped = PublishSubject<Void>()
     let signUpButtonTapped = PublishSubject<Void>()
-    let emailText = BehaviorRelay<String>(value: "")
-    let passwordText = BehaviorRelay<String>(value: "")
   }
   
   struct Output {
     // Presentation
-    let showPutEmailVC = PublishSubject<PutEmailVCType>()
+    let showPutEmailVC = PublishSubject<RegisterVCTypes.PutEmailVCType>()
     let showErrorPopupVC = PublishSubject<String>()
     let showTabBarVC = PublishSubject<Void>()
     
     // UI
-    let startAnimation = PublishSubject<Void>()
-    let stopAnimation = PublishSubject<Void>()
+    let isLoading = PublishSubject<Bool>()
   }
   
   init() {
@@ -30,14 +27,6 @@ final class LoginViewModel: ViewModel {
   var input = Input()
   var output = Output()
   var disposeBag = DisposeBag()
-  
-  var emailText: String {
-    return input.emailText.value
-  }
-  
-  var passwordText: String {
-    return input.passwordText.value
-  }
   
   func bind() {
     
@@ -55,95 +44,33 @@ final class LoginViewModel: ViewModel {
     
     // 로그인 버튼 클릭 -> 로그인 시도 서버로 요청
     input.loginButtonTapped
-      .do(onNext: { [unowned self] in
-        self.output.startAnimation.onNext(Void())
+      .do(onNext: { [weak self] _ in
+        self?.output.isLoading.onNext(true)
       })
-      .flatMap {
-        return APIService.memberProvider.rx.request(.retrieveMember)
+        .flatMap {
+          return APIService.memberProvider.rx.request(.login(id: $0.id, pw: $0.pw))
       }
-      .do(onNext: { [unowned self] _ in
-        self.output.stopAnimation.onNext(Void())
+      .do(onNext: { [weak self] _ in
+        self?.output.isLoading.onNext(false)
       })
-      .retry()
-      .subscribe(onNext: { response in
-        print(response)
-      })
-      .disposed(by: disposeBag)
-  }
-}
-
-// MARK: - Network
-
-extension LoginViewModel {
-  
-  /// 로그인을 요청합니다.
-  private func requestLoginAPI() {
-    MemberService.shared.LoginAPI(email: self.emailText, password: self.passwordText)
       .subscribe(onNext: { [weak self] response in
-        guard let statusCode = response.response?.statusCode else { return }
-        guard let data = response.data else { return }
-        self?.output.stopAnimation.onNext(Void())
-        switch statusCode {
-        case 200:
-          struct LoginResponseModel: Codable {
-            struct Response: Codable {
-              let loginToken: String
-            }
-            let data: Response
-          }
-          let token = APIService.decode(LoginResponseModel.self, data: data).data.loginToken
-          TokenStorage.shared.saveToken(token: token)
-          self?.requestMemberAPI()
-          self?.requestMatchingInfo()
+        switch response.statusCode {
+        case 200: // 로그인 성공
+          let data = response.data
+          let responseModel = APIService.decode(MemberModel.LoginResponseModel.self, data: data).data
+          TokenStorage.instance.saveToken(token: responseModel.loginToken)
+          MemberInfoStorage.instance.myInformation.accept(responseModel)
+          SharedAPI.instance.retrieveMyOnboarding()
           self?.output.showTabBarVC.onNext(Void())
         case 400:
-          self?.output.showErrorPopupVC.onNext("가입되지 않은 이메일입니다.")
-        case 401:
+          self?.output.showErrorPopupVC.onNext("이메일 입력은 필수입니다.")
+        case 404:
+          self?.output.showErrorPopupVC.onNext("등록 혹은 가입되지 않은 이메일입니다.")
+        case 409:
           self?.output.showErrorPopupVC.onNext("올바르지 않은 비밀번호입니다.")
-        default:
-          self?.output.showErrorPopupVC.onNext("이메일과 비밀번호를 다시 한번 확인해주세요.")
-        }
-      })
-      .disposed(by: disposeBag)
-  }
-  
-  /// 멤버 단건 조회 API 요청
-  func requestMemberAPI() {
-    MemberService.shared.memberAPI()
-      .subscribe(onNext: { response in
-        guard let statusCode = response.response?.statusCode else { return }
-        switch statusCode {
-        case 200: // 멤버 단건 조회 완료
-          guard let data = response.data else { return }
-          struct ResponseModel: Codable {
-            let data: MemberInfo
-          }
-          let memberInformation = APIService.decode(ResponseModel.self, data: data).data
-          MemberInfoStorage.shared.memberInfo.accept(memberInformation)
         default: break
         }
       })
       .disposed(by: disposeBag)
-  }
-  
-  func requestMatchingInfo() {
-    OnboardingService.shared.matchingInfoAPI_Get()
-      .subscribe(onNext: { response in
-        guard let statusCode = response.response?.statusCode else { return }
-        switch statusCode {
-        case 200:
-          guard let data = response.data else { return }
-          struct ResponseModel: Codable {
-            let data: MatchingInfo_Lookup
-          }
-          let matchingInfo = APIService.decode(ResponseModel.self, data: data).data
-          MemberInfoStorage.shared.matchingInfo.accept(matchingInfo)
-        case 409:
-          break
-        default: // 서버 오류 & 로그인 오류
-          fatalError()
-        }
-      })
-      .disposed(by: disposeBag)
-  }
+    }
 }

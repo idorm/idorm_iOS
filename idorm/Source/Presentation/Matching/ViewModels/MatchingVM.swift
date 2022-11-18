@@ -67,7 +67,7 @@ final class MatchingViewModel: ViewModel {
     // ViewDidLoad -> 매칭 초기 상태 판단
     input.viewDidLoad
       .subscribe(onNext: { [weak self] in
-        let storage = MemberInfoStorage.shared
+        let storage = MemberInfoStorage.instance
         
         if storage.hasMatchingInfo {
           
@@ -159,7 +159,7 @@ final class MatchingViewModel: ViewModel {
     // 필터 선택 초기화 버튼 클릭 -> 매칭 멤버 초기화
     input.resetFilterButtonTapped
       .subscribe(onNext: { [weak self] in
-        if MemberInfoStorage.shared.isPublicMatchingInfo {
+        if MemberInfoStorage.instance.isPublicMatchingInfo {
           self?.requestMatchingAPI()
         } else {
           self?.output.showNoSharePopupVC.onNext(Void())
@@ -170,7 +170,7 @@ final class MatchingViewModel: ViewModel {
     // 필터링 완료 버튼 클릭 -> 필터된 매칭 멤버 조회
     input.confirmFilteringButtonTapped
       .subscribe(onNext: { [weak self] in
-        if MemberInfoStorage.shared.isPublicMatchingInfo {
+        if MemberInfoStorage.instance.isPublicMatchingInfo {
           self?.requestFilteredMemberAPI()
         } else {
           self?.output.showNoSharePopupVC.onNext(Void())
@@ -196,7 +196,7 @@ extension MatchingViewModel {
           }
           guard let data = response.data else { return }
           let newInfo = APIService.decode(ResponseModel.self, data: data).data
-          MemberInfoStorage.shared.matchingInfo.accept(newInfo)
+          MemberInfoStorage.instance.myOnboarding.accept(newInfo)
           self?.requestMatchingAPI()
         default:
           fatalError()

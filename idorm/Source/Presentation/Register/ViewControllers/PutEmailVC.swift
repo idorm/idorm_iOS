@@ -35,11 +35,11 @@ final class PutEmailViewController: BaseViewController {
   private var inuStack: UIStackView!
   
   private let viewModel = PutEmailViewModel()
-  private let vcType: PutEmailVCType
+  private let vcType: RegisterVCTypes.PutEmailVCType
 
   // MARK: - LifeCycle
   
-  init(_ vcType: PutEmailVCType) {
+  init(_ vcType: RegisterVCTypes.PutEmailVCType) {
     self.vcType = vcType
     super.init(nibName: nil, bundle: nil)
   }
@@ -55,30 +55,19 @@ final class PutEmailViewController: BaseViewController {
     
     // MARK: - Input
     
+    // 화면 최초 접속
+    Observable.just(vcType)
+      .bind(to: viewModel.input.viewDidLoad)
+      .disposed(by: disposeBag)
+
     // 인증번호 받기 버튼 클릭
     confirmButton.rx.tap
+      .map { [unowned self] in
+        return self.textField.text ?? ""
+      }
       .bind(to: viewModel.input.confirmButtonTapped)
       .disposed(by: disposeBag)
-    
-    // 텍스트필드 텍스트 반응
-    textField.rx.text
-      .orEmpty
-      .bind(to: viewModel.input.emailText)
-      .disposed(by: disposeBag)
-    
-    // Logger에 최초 한 번 현재 AuthenticationType 저장
-    Observable.just(Void())
-      .subscribe(onNext: { [weak self] in
-        guard let self = self else { return }
-        switch self.vcType {
-        case .signUp:
-          Logger.instance.authenticationType = .signUp
-        case .findPW, .updatePW:
-          Logger.instance.authenticationType = .password
-        }
-      })
-      .disposed(by: disposeBag)
-    
+
     // MARK: - Output
     
     // 에러 팝업 창 띄우기
@@ -92,8 +81,7 @@ final class PutEmailViewController: BaseViewController {
     
     // 인증번호 페이지로 이동
     viewModel.output.showAuthVC
-      .asDriver(onErrorJustReturn: Void())
-      .drive(onNext: { [weak self] in
+      .bind(onNext: { [weak self] in
         guard let self = self else { return }
         let authVC = AuthViewController()
         let navVC = UINavigationController(rootViewController: authVC)
@@ -101,10 +89,17 @@ final class PutEmailViewController: BaseViewController {
         self.present(navVC, animated: true)
         
         authVC.pushCompletion = {
-          let authenticationType = Logger.instance.authenticationType
-          let confirmPasswordVC = ConfirmPasswordViewController(authenticationType)
+          let viewController: ConfirmPasswordViewController
+          switch self.vcType {
+          case .findPW:
+            viewController = ConfirmPasswordViewController(.findPW)
+          case .signUp:
+            viewController = ConfirmPasswordViewController(.signUp)
+          case .updatePW:
+            viewController = ConfirmPasswordViewController(.updatePW)
+          }
           DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.navigationController?.pushViewController(confirmPasswordVC, animated: true)
+            self.navigationController?.pushViewController(viewController, animated: true)
           }
         }
       })

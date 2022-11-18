@@ -12,13 +12,16 @@ enum Encoding {
 
 final class APIService {
   static let baseURL = "https://idorm.inuappcenter.kr"
+  
   static let memberProvider = MoyaProvider<MemberAPI>()
+  static let onboardingProvider = MoyaProvider<OnboardingAPI>()
+  static let emailProvider = MoyaProvider<EmailAPI>()
   
   static func load(_ url: URLConvertible, httpMethod: HTTPMethod, body: Parameters?, encoding: Encoding) -> Observable<AFDataResponse<Data>> {
     return Observable.create { observer in
       let header: HTTPHeaders = [
         "Content-Type": "application/json",
-        "X-AUTH-TOKEN": TokenStorage.shared.loadToken()
+        "X-AUTH-TOKEN": TokenStorage.instance.loadToken()
       ]
       let request: DataRequest
       if encoding == .json {
@@ -50,7 +53,7 @@ final class APIService {
   static func basicHeader() -> [String: String] {
     return [
       "Content-Type": "application/json",
-      "X-AUTH-TOKEN": TokenStorage.shared.loadToken()
+      "X-AUTH-TOKEN": TokenStorage.instance.loadToken()
     ]
   }
 }

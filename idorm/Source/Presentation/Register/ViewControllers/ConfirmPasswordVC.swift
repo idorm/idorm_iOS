@@ -15,10 +15,10 @@ final class ConfirmPasswordViewController: BaseViewController {
   private let textField1 = RegisterPwTextField(placeholder: "비밀번호를 입력해주세요.")
   
   private lazy var confirmButton = RegisterBottomButton("").then {
-    switch authenticationType {
+    switch vcType {
     case .signUp:
-      $0.configuration?.title = "가입 완료"
-    case .password:
+      $0.configuration?.title = "계속하기"
+    case .updatePW, .findPW:
       $0.configuration?.title = "변경 완료"
     }
   }
@@ -28,13 +28,14 @@ final class ConfirmPasswordViewController: BaseViewController {
   private let eightLabel = RegisterUtilities.descriptionLabel(text: "•  8자 이상 입력")
   private let mixingLabel = RegisterUtilities.descriptionLabel(text: "•  영문 소문자/숫자/특수 문자 조합")
   
-  private let authenticationType: AuthenticationType
-  private let viewModel = ConfirmPasswordViewModel()
+  private let vcType: RegisterVCTypes.ConfirmPasswordVCType
+  private let viewModel: ConfirmPasswordViewModel
   
   // MARK: - LifeCycle
   
-  init(_ authenticationType: AuthenticationType) {
-    self.authenticationType = authenticationType
+  init(_ vcType: RegisterVCTypes.ConfirmPasswordVCType) {
+    self.vcType = vcType
+    self.viewModel = ConfirmPasswordViewModel(vcType)
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -44,74 +45,23 @@ final class ConfirmPasswordViewController: BaseViewController {
   
   // MARK: - Bind
   
-  override func bind() {
-    super.bind()
+  private func bindTextField() {
     
-    // MARK: - Input
-    
-    // 텍스트필드 이벤트 모음
-    textField1.textField.rx.text
-      .orEmpty
-      .distinctUntilChanged()
-      .bind(to: viewModel.input.passwordText)
-      .disposed(by: disposeBag)
-    
-    textField1.textField.rx.controlEvent(.editingDidEnd)
-      .bind(to: viewModel.input.passwordTextFieldDidEnd)
-      .disposed(by: disposeBag)
-    
+    // 비밀번호 텍스트필드 포커싱 -> UI변경
     textField1.textField.rx.controlEvent(.editingDidBegin)
-      .bind(to: viewModel.input.passwordTextFieldDidBegin)
-      .disposed(by: disposeBag)
-    
-    textField2.textField.rx.controlEvent(.editingDidBegin)
-      .bind(to: viewModel.input.passwordTextFieldDidBegin_2)
-      .disposed(by: disposeBag)
-    
-    textField2.textField.rx.controlEvent(.editingDidEnd)
-      .bind(to: viewModel.input.passwordTextFieldDidEnd_2)
-      .disposed(by: disposeBag)
-    
-    textField2.textField.rx.text
-      .orEmpty
-      .distinctUntilChanged()
-      .bind(to: viewModel.input.passwordText_2)
-      .disposed(by: disposeBag)
-    
-    // 확인 버튼 이벤트
-    confirmButton.rx.tap
-      .bind(to: viewModel.input.confirmButtonTapped)
-      .disposed(by: disposeBag)
-    
-    // MARK: - Output
-    
-    // 비밀번호 텍스트필드 포커싱
-    viewModel.output.didBeginState
-      .asDriver(onErrorJustReturn: Void())
-      .drive(onNext: { [weak self] in
+      .bind(onNext: { [weak self] in
         self?.infoLabel.textColor = .black
         self?.eightLabel.textColor = .idorm_gray_400
         self?.mixingLabel.textColor = .idorm_gray_400
-        self?.textField1.layer.borderColor = UIColor.idorm_gray_400.cgColor
-      })
-      .disposed(by: disposeBag)
-
-    // 비밀번호 확인 텍스트필드 포커싱
-    viewModel.output.didBeginState_2
-      .asDriver(onErrorJustReturn: Void())
-      .drive(onNext: { [weak self] in
-        self?.textField2.layer.borderColor = UIColor.idorm_blue.cgColor
-        self?.infoLabel2.textColor = .idorm_gray_400
       })
       .disposed(by: disposeBag)
     
-    // 비밀번호 텍스트필드 포커스가 해제되었을 때
-    viewModel.output.didEndState
-      .asDriver(onErrorJustReturn: Void())
-      .drive(onNext: { [weak self] in
+    // 비밀번호 텍스트필드 포커싱 해제 -> UI변경
+    textField1.textField.rx.controlEvent(.editingDidEnd)
+      .bind(onNext: { [weak self] in
         guard let self = self else { return }
-        let countBool = self.viewModel.output.countState.value
-        let combineBool = self.viewModel.output.combineState.value
+        let countBool = self.viewModel.output.verificationCount.value
+        let combineBool = self.viewModel.output.verificationCombine.value
         
         if countBool {
           self.eightLabel.textColor = .idorm_blue
@@ -132,30 +82,63 @@ final class ConfirmPasswordViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    // 비밀번호 확인 텍스트 포커싱 해제되었을 때
-    viewModel.output.didEndState_2
-      .asDriver(onErrorJustReturn: Void())
-      .drive(onNext: { [weak self] in
+    // 비밀번호 확인 텍스트필드 포커싱 -> UI변경
+    textField2.textField.rx.controlEvent(.editingDidBegin)
+      .bind(onNext: { [weak self] in
+        self?.textField2.layer.borderColor = UIColor.idorm_blue.cgColor
+        self?.infoLabel2.textColor = .idorm_gray_400
+      })
+      .disposed(by: disposeBag)
+    
+    // 비밀번호 확인 텍스트필드 포커싱 해제 -> UI변경
+    textField2.textField.rx.controlEvent(.editingDidEnd)
+      .bind(onNext: { [weak self] in
         guard let self = self else { return }
-        let password = self.viewModel.passwordText
-        let password2 = self.viewModel.passwordText2
+        let equality = self.viewModel.output.verificationEquality.value
         
-        if password != password2 {
-          self.infoLabel2.text = "비밀번호가 일치하지 않습니다. 다시확인해주세요."
-          self.infoLabel2.textColor = .idorm_red
-          self.textField2.layer.borderColor = UIColor.idorm_red.cgColor
-        } else {
+        if equality {
           self.infoLabel2.text = "비밀번호 확인"
-          self.infoLabel2.textColor = .black
-          self.textField2.layer.borderColor = UIColor.idorm_gray_400.cgColor
+          self.infoLabel2.textColor = .idorm_gray_400
+          self.textField2.textField.layer.borderColor = UIColor.idorm_blue.cgColor
+        } else {
+          self.infoLabel2.text = "두 비밀번호가 일치하지 않습니다. 다시 확인해주세요."
+          self.infoLabel2.textColor = .idorm_red
+          self.textField2.textField.layer.borderColor = UIColor.idorm_red.cgColor
         }
       })
       .disposed(by: disposeBag)
+  }
+  
+  override func bind() {
+    super.bind()
+    bindTextField()
+    
+    // MARK: - Input
+    
+    // 비밀번호 텍스트필드 이벤트
+    textField1.textField.rx.text
+      .orEmpty
+      .distinctUntilChanged()
+      .bind(to: viewModel.input.passwordText)
+      .disposed(by: disposeBag)
 
+    // 비밀번호확인 텍스트필드 이벤트
+    textField2.textField.rx.text
+      .orEmpty
+      .distinctUntilChanged()
+      .bind(to: viewModel.input.passwordText_2)
+      .disposed(by: disposeBag)
+    
+    // 확인 버튼 이벤트
+    confirmButton.rx.tap
+      .bind(to: viewModel.input.confirmButtonTapped)
+      .disposed(by: disposeBag)
+    
+    // MARK: - Output
+    
     // '8자 이상 입력' 라벨 색상 바꾸기
-    viewModel.output.countState
-      .asDriver(onErrorJustReturn: false)
-      .drive(onNext: { [weak self] isValid in
+    viewModel.output.verificationCount
+      .bind(onNext: { [weak self] isValid in
         if isValid {
           self?.eightLabel.textColor = .idorm_blue
         } else {
@@ -165,9 +148,8 @@ final class ConfirmPasswordViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     // 영문 소문자/숫자/특수 문자 조합 색상 바꾸기
-    viewModel.output.combineState
-      .asDriver(onErrorJustReturn: false)
-      .drive(onNext: { [weak self] isValid in
+    viewModel.output.verificationCombine
+      .bind(onNext: { [weak self] isValid in
         if isValid {
           self?.mixingLabel.textColor = .idorm_blue
         } else {
@@ -176,31 +158,30 @@ final class ConfirmPasswordViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    // 완료버튼 누를 때 에러 팝업 띄우기
+    // 에러 팝업 띄우기
     viewModel.output.showErrorPopupVC
-      .asDriver(onErrorJustReturn: "")
-      .drive(onNext: { [weak self] mention in
+      .bind(onNext: { [weak self] mention in
         let popupVC = PopupViewController(contents: mention)
         popupVC.modalPresentationStyle = .overFullScreen
         self?.present(popupVC, animated: false)
       })
       .disposed(by: disposeBag)
     
-    // 회원가입 완료 페이지로 넘어가기
-    viewModel.output.showCompleteVC
-      .asDriver(onErrorJustReturn: Void())
-      .drive(onNext: { [weak self] in
-        let completeVC = CompleteSignUpViewController()
-        completeVC.modalPresentationStyle = .fullScreen
-        self?.present(completeVC, animated: true)
+    // 비밀번호 변경 완료 시 로그인 페이지로 넘어가기
+    viewModel.output.showLoginVC
+      .bind(onNext: { [weak self] in
+        self?.navigationController?.popToRootViewController(animated: true)
       })
       .disposed(by: disposeBag)
     
-    // 비밀번호 변경 완료 시 로그인 페이지로 넘어가기
-    viewModel.output.showLoginVC
-      .asDriver(onErrorJustReturn: Void())
-      .drive(onNext: { [weak self] in
-        self?.navigationController?.popToRootViewController(animated: true)
+    // 확인 버튼 활성/비활성
+    viewModel.output.isEnableConfirmButton
+      .bind(onNext: { [weak self] in
+        if $0 {
+          self?.confirmButton.isEnabled = true
+        } else {
+          self?.confirmButton.isEnabled = false
+        }
       })
       .disposed(by: disposeBag)
   }
@@ -209,7 +190,6 @@ final class ConfirmPasswordViewController: BaseViewController {
   
   override func setupLayouts() {
     super.setupLayouts()
-    
     [infoLabel, infoLabel2, textField1, textField2, confirmButton, eightLabel, mixingLabel]
       .forEach { view.addSubview($0) }
   }
@@ -217,18 +197,18 @@ final class ConfirmPasswordViewController: BaseViewController {
   override func setupStyles() {
     super.setupStyles()
     view.backgroundColor = .white
+    confirmButton.isEnabled = false
     
-    switch authenticationType {
+    switch vcType {
     case .signUp:
       navigationItem.title = "회원가입"
-    case .password:
+    case .findPW, .updatePW:
       navigationItem.title = "비밀번호 변경"
     }
   }
   
   override func setupConstraints() {
     super.setupConstraints()
-    
     infoLabel.snp.makeConstraints { make in
       make.leading.equalTo(view.safeAreaLayoutGuide).inset(24)
       make.top.equalTo(view.safeAreaLayoutGuide).inset(52)

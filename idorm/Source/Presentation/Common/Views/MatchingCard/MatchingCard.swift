@@ -18,7 +18,7 @@ final class MatchingCard: UIView {
   
   private lazy var dormLabel = UILabel().then {
     $0.font = .init(name: MyFonts.bold.rawValue, size: 20)
-    $0.text = matchingMember.dormNum.cardString
+    $0.text = member.dormNum.cardString
     $0.textColor = .white
   }
   
@@ -27,7 +27,7 @@ final class MatchingCard: UIView {
     var container = AttributeContainer()
     container.font = UIFont.init(name: MyFonts.bold.rawValue, size: 12)
     container.foregroundColor = UIColor.white
-    config.attributedTitle = AttributedString(matchingMember.joinPeriod.cardString, attributes: container)
+    config.attributedTitle = AttributedString(member.joinPeriod.cardString, attributes: container)
     config.image = UIImage(named: "Building")
     config.imagePlacement = .leading
     config.imagePadding = 8
@@ -45,7 +45,7 @@ final class MatchingCard: UIView {
   private var showerView: MatchingCardStringView!
   private var mbtiView: MatchingCardStringView!
   
-  private lazy var wishTextLabel = MatchingCardWishTextView(matchingMember)
+  private lazy var wishTextLabel = MatchingCardWishTextView(member)
   
   private var bottomContainerView: UIView!
   
@@ -56,12 +56,12 @@ final class MatchingCard: UIView {
   private var ageLabel: UILabel!
   private var mbtiLabel: UILabel!
   
-  private let matchingMember: MatchingMember
+  private let member: MatchingModel.Member
   
   // MARK: - LifeCycle
   
-  init(myInfo: MatchingMember) {
-    self.matchingMember = myInfo
+  init(_ from: MatchingModel.Member) {
+    self.member = from
     super.init(frame: .zero)
     setupBottomView()
     setupBoolView()
@@ -91,21 +91,21 @@ final class MatchingCard: UIView {
     self.optionButton = optionButton
 
     let genderLabel = UILabel().then {
-      $0.text = matchingMember.gender == .male ? "남자," : "여자,"
+      $0.text = member.gender == .male ? "남자," : "여자,"
       $0.textColor = .idorm_gray_400
       $0.font = .init(name: MyFonts.bold.rawValue, size: 12)
     }
     self.genderLabel = genderLabel
     
     let ageLabel = UILabel().then {
-      $0.text = String(matchingMember.age) + " 세"
+      $0.text = String(member.age) + " 세"
       $0.textColor = .idorm_gray_400
       $0.font = .init(name: MyFonts.bold.rawValue, size: 12)
     }
     self.ageLabel = ageLabel
     
     let mbtiLabel = UILabel().then {
-      $0.text = matchingMember.mbti
+      $0.text = member.mbti
       $0.textColor = .idorm_gray_300
       $0.font = .init(name: MyFonts.bold.rawValue, size: 12)
     }
@@ -113,18 +113,18 @@ final class MatchingCard: UIView {
   }
   
   private func setupBoolView() {
-    self.snoringView = MatchingCardBoolView(matchingMember, type: .snoring)
-    self.grindingView = MatchingCardBoolView(matchingMember, type: .grinding)
-    self.smokingView = MatchingCardBoolView(matchingMember, type: .smoking)
-    self.foodView = MatchingCardBoolView(matchingMember, type: .food)
-    self.earphoneView = MatchingCardBoolView(matchingMember, type: .earphone)
+    self.snoringView = MatchingCardBoolView(member, type: .snoring)
+    self.grindingView = MatchingCardBoolView(member, type: .grinding)
+    self.smokingView = MatchingCardBoolView(member, type: .smoking)
+    self.foodView = MatchingCardBoolView(member, type: .food)
+    self.earphoneView = MatchingCardBoolView(member, type: .earphone)
   }
   
   private func setupStringView() {
-    self.wakeupView = MatchingCardStringView(matchingMember, type: .wakeUp)
-    self.cleanUpView = MatchingCardStringView(matchingMember, type: .cleanUp)
-    self.showerView = MatchingCardStringView(matchingMember, type: .showerTime)
-    self.mbtiView = MatchingCardStringView(matchingMember, type: .mbti)
+    self.wakeupView = MatchingCardStringView(member, type: .wakeUp)
+    self.cleanUpView = MatchingCardStringView(member, type: .cleanUp)
+    self.showerView = MatchingCardStringView(member, type: .showerTime)
+    self.mbtiView = MatchingCardStringView(member, type: .mbti)
   }
   
   private func setupLayouts() {

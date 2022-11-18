@@ -123,14 +123,3 @@ final class AuthViewController: BaseViewController {
     }
   }
 }
-
-// MARK: - Preview
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-struct AuthVC_PreView: PreviewProvider {
-  static var previews: some View {
-    AuthViewController().toPreview()
-  }
-}
-#endif

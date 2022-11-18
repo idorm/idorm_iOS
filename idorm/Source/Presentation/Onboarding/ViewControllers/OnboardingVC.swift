@@ -17,7 +17,7 @@ final class OnboardingViewController: BaseViewController {
   private let indicator = UIActivityIndicatorView()
   
   private var viewModel: OnboardingViewModel
-  private let onboardingVCType: OnboardingVCType
+  private let vcType: OnboardingVCTypes.OnboardingVCType
   
   // MARK: - ScrollView
   private let scrollView = UIScrollView()
@@ -121,9 +121,9 @@ final class OnboardingViewController: BaseViewController {
     setupMatchingInfo()
   }
   
-  init(_ onboardingVCType: OnboardingVCType) {
+  init(_ onboardingVCType: OnboardingVCTypes.OnboardingVCType) {
     self.viewModel = OnboardingViewModel(onboardingVCType)
-    self.onboardingVCType = onboardingVCType
+    self.vcType = onboardingVCType
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -135,7 +135,6 @@ final class OnboardingViewController: BaseViewController {
   
   override func setupLayouts() {
     super.setupLayouts()
-    
     view.addSubview(scrollView)
     view.addSubview(floatyBottomView)
     view.addSubview(indicator)
@@ -150,7 +149,7 @@ final class OnboardingViewController: BaseViewController {
     contentView.backgroundColor = .white
     view.backgroundColor = .white
     
-    switch onboardingVCType {
+    switch vcType {
     case .mainPage_FirstTime, .update:
       navigationItem.title = "매칭 이미지 관리"
     case .firstTime:
@@ -377,7 +376,7 @@ final class OnboardingViewController: BaseViewController {
   }
   
   private func setupFloatyBottomView() {
-    switch onboardingVCType {
+    switch vcType {
     case .firstTime:
       self.floatyBottomView = FloatyBottomView(.jump)
     case .mainPage_FirstTime:
@@ -393,8 +392,8 @@ final class OnboardingViewController: BaseViewController {
   }
   
   private func setupMatchingInfo() {
-    if onboardingVCType == .update {
-      let matchingInfo = MemberInfoStorage.shared.toMatchingMemberModel
+    if vcType == .update {
+      guard let matchingInfo = MemberInfoStorage.instance.myOnboarding.value else { return }
       toggleDromButton(matchingInfo.dormNum)
       toggleGenderButton(matchingInfo.gender)
       togglePeriodButton(matchingInfo.joinPeriod)
@@ -435,11 +434,9 @@ final class OnboardingViewController: BaseViewController {
       viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.wakeUp, matchingInfo.wakeUpTime))
       viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.cleanUp, matchingInfo.cleanUpStatus))
       viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.shower, matchingInfo.showerTime))
-      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.mbti, matchingInfo.mbti))
+      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.mbti, matchingInfo.mbti ?? ""))
       viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.chatLink, matchingInfo.openKakaoLink))
-      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.wishText, matchingInfo.wishText))
-      
-      // TODO: 온보딩 이벤트 전격 수정
+      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.wishText, matchingInfo.wishText ?? ""))
     }
   }
   
@@ -485,7 +482,6 @@ final class OnboardingViewController: BaseViewController {
     
     // 스킵 버튼 이벤트
     floatyBottomView.skipButton.rx.tap
-      .map { [unowned self] in self.floatyBottomView.floatyBottomViewType }
       .bind(to: viewModel.input.didTapSkipButton)
       .disposed(by: disposeBag)
     

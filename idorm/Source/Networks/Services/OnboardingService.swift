@@ -1,12 +1,15 @@
 import UIKit
 
+import Moya
 import RxSwift
 import Alamofire
 
 final class OnboardingService {
   
-  static let shared = OnboardingService()
+  static let instance = OnboardingService()
   private init() {}
+  
+  private let provider = MoyaProvider<OnboardingAPI>()
   
   /// 매칭 정보 최초 저장 API
   func matchingInfoAPI_Post(myinfo: MatchingInfo) -> Observable<AFDataResponse<Data>> {

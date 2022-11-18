@@ -1,12 +1,15 @@
 import Foundation
 
+import Moya
 import RxSwift
 import Alamofire
 
 final class EmailService {
   
-  static let shared = EmailService()
+  static let instance = EmailService()
   private init() {}
+  
+  let provider = MoyaProvider<EmailAPI>()
   
   /// 이메일 인증 코드 전송 API
   static func registerEmailAPI(email: String) -> Observable<AFDataResponse<Data>> {

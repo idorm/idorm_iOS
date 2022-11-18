@@ -10,21 +10,21 @@ final class OnboardingViewModel: ViewModel {
     let isSelectedPeriodButton = PublishSubject<JoinPeriod>()
     let isSelectedHabitButton = PublishSubject<Habit>()
     let onChangedQueryText = PublishSubject<(OnboardingQueryList, String)>()
-    let didTapSkipButton = PublishSubject<FloatyBottomViewType>()
+    let didTapSkipButton = PublishSubject<Void>()
     let didTapConfirmButton = PublishSubject<Void>()
   }
   
   struct Output {
     // State
-    let matchingInfo = BehaviorRelay<MatchingInfo>(value: MatchingInfo.initialValue())
+    let myOnboarding = BehaviorRelay<OnboardingModel.RequestModel>(value: .initialValue())
     
     // UI
     let isEnableConfirmButton = PublishSubject<Bool>()
-    let showOnboardingDetailVC = PublishSubject<MatchingInfo>()
     let indicatorState = PublishSubject<Bool>()
     let resetData = PublishSubject<Void>()
     
     // Presentation
+    let pushToOnboardingDetailVC = PublishSubject<MatchingModel.Member>()
     let showTabBarVC = PublishSubject<Void>()
     let pushToRootVC = PublishSubject<Void>()
   }
@@ -38,12 +38,12 @@ final class OnboardingViewModel: ViewModel {
   var output = Output()
   var disposeBag = DisposeBag()
   
-  private let vcType: OnboardingVCType
+  private let vcType: OnboardingVCTypes.OnboardingVCType
   
-  var currentMatchingInfo: MatchingInfo { return output.matchingInfo.value }
+  var currentOnboarding: OnboardingModel.RequestModel { return output.myOnboarding.value }
   var currentConfirmVerifier: OnboardingConfirmVerifier { return state.confirmVerifierObserver.value }
   
-  init(_ vcType: OnboardingVCType) {
+  init(_ vcType: OnboardingVCTypes.OnboardingVCType) {
     self.vcType = vcType
     mutate()
     bind()
@@ -56,11 +56,7 @@ final class OnboardingViewModel: ViewModel {
     // 완료 버튼 활성&비활성화 -> Bool Stream 전달
     state.confirmVerifierObserver
       .map {
-        if $0.dorm && $0.period && $0.age && $0.cleanup && $0.gender && $0.showerTime && $0.wakeup && $0.chatLink {
-          return true
-        } else {
-          return false
-        }
+        $0.dorm && $0.period && $0.age && $0.cleanup && $0.gender && $0.showerTime && $0.wakeup && $0.chatLink ? true : false
       }
       .bind(to: output.isEnableConfirmButton)
       .disposed(by: disposeBag)
@@ -71,10 +67,10 @@ final class OnboardingViewModel: ViewModel {
     // 기숙사 버튼 반응 -> (완료 버튼 활성/비활성 & 매칭 정보 전달)
     input.isSelectedDormButton
       .bind(onNext: { [unowned self] dorm in
-        var newInfo = self.currentMatchingInfo
+        var newValue = self.output.myOnboarding.value
         var newVerifier = self.currentConfirmVerifier
-        newInfo.dormNumber = dorm
-        self.output.matchingInfo.accept(newInfo)
+        newValue.dormNumber = dorm
+        self.output.myOnboarding.accept(newValue)
         newVerifier.dorm = true
         self.state.confirmVerifierObserver.accept(newVerifier)
       })
@@ -83,10 +79,10 @@ final class OnboardingViewModel: ViewModel {
     // 성별 버튼 반응 -> (완료 버튼 활성/비활성 & 매칭 정보 전달)
     input.isSelectedGenderButton
       .bind(onNext: { [unowned self] gender in
-        var newInfo = self.currentMatchingInfo
+        var newValue = self.currentOnboarding
         var newVerifier = self.currentConfirmVerifier
-        newInfo.gender = gender
-        self.output.matchingInfo.accept(newInfo)
+        newValue.gender = gender
+        self.output.myOnboarding.accept(newValue)
         newVerifier.gender = true
         self.state.confirmVerifierObserver.accept(newVerifier)
       })
@@ -95,10 +91,10 @@ final class OnboardingViewModel: ViewModel {
     // 기간 버튼 반응 -> (완료 버튼 활성/비활성 & 매칭 정보 전달)
     input.isSelectedPeriodButton
       .bind(onNext: { [unowned self] period in
-        var newInfo = self.currentMatchingInfo
+        var newValue = self.currentOnboarding
         var newVerifier = self.currentConfirmVerifier
-        newInfo.period = period
-        self.output.matchingInfo.accept(newInfo)
+        newValue.period = period
+        self.output.myOnboarding.accept(newValue)
         newVerifier.period = true
         self.state.confirmVerifierObserver.accept(newVerifier)
       })
@@ -107,104 +103,123 @@ final class OnboardingViewModel: ViewModel {
     // 습관 버튼 클릭 -> 매칭 정보 전달
     input.isSelectedHabitButton
       .bind(onNext: { [unowned self] habit in
-        var newInfo = self.currentMatchingInfo
+        var newValue = self.currentOnboarding
         switch habit {
         case .snoring:
-          newInfo.snoring.toggle()
+          newValue.snoring.toggle()
         case .grinding:
-          newInfo.grinding.toggle()
+          newValue.grinding.toggle()
         case .smoking:
-          newInfo.smoke.toggle()
+          newValue.smoke.toggle()
         case .allowedFood:
-          newInfo.allowedFood.toggle()
+          newValue.allowedFood.toggle()
         case .allowedEarphone:
-          newInfo.earphone.toggle()
+          newValue.earphone.toggle()
         }
-        self.output.matchingInfo.accept(newInfo)
+        self.output.myOnboarding.accept(newValue)
       })
       .disposed(by: disposeBag)
     
     // 질의 응답 반응 -> (완료 버튼 활성/비활성 & 매칭 정보 전달)
     input.onChangedQueryText
       .bind(onNext: { [unowned self] (queryList, contents) in
-        var newInfo = self.currentMatchingInfo
+        var newValue = self.currentOnboarding
         var newVerifier = self.currentConfirmVerifier
         switch queryList {
         case .age:
-          newInfo.age = contents
+          newValue.age = contents
           if contents == "" {
             newVerifier.age = false
           } else {
             newVerifier.age = true
           }
         case .wakeUp:
-          newInfo.wakeupTime = contents
+          newValue.wakeupTime = contents
           if contents == "" {
             newVerifier.wakeup = false
           } else {
             newVerifier.wakeup = true
           }
         case .cleanUp:
-          newInfo.cleanUpStatus = contents
+          newValue.cleanUpStatus = contents
           if contents == "" {
             newVerifier.cleanup = false
           } else {
             newVerifier.cleanup = true
           }
         case .chatLink:
-          newInfo.chatLink = contents
+          newValue.chatLink = contents
           if contents == "" {
             newVerifier.chatLink = false
           } else {
             newVerifier.chatLink = true
           }
         case .mbti:
-          newInfo.mbti = contents
+          newValue.mbti = contents
         case .shower:
-          newInfo.showerTime = contents
+          newValue.showerTime = contents
           if contents == "" {
             newVerifier.showerTime = false
           } else {
             newVerifier.showerTime = true
           }
         case .wishText:
-          newInfo.wishText = contents
+          newValue.wishText = contents
         }
         self.state.confirmVerifierObserver.accept(newVerifier)
-        self.output.matchingInfo.accept(newInfo)
+        self.output.myOnboarding.accept(newValue)
       })
       .disposed(by: disposeBag)
     
-    // 스킵 버튼 클릭 -> 여러 이벤트 방출
-    input.didTapSkipButton
-      .bind(onNext: { [weak self] skipType in
-        switch skipType {
-        case .reset:
-          self?.resetData()
-          self?.output.resetData.onNext(Void())
-        case .jump:
-          self?.output.showTabBarVC.onNext(Void())
-        case .back, .filter, .correction:
-          break
-        }
-      })
-      .disposed(by: disposeBag)
-    
+    // OnboardingVCType 별 이벤트 분기처리
     switch vcType {
     case .update:
-      
       // 완료 버튼 클릭 -> 온보딩 현재 정보 수정하기
       input.didTapConfirmButton
         .bind(onNext: { [unowned self] in
-          self.requestModifyMatchingInfo(self.currentMatchingInfo)
+//          self.requestModifyMatchingInfo(self.currentMatchingInfo)
         })
         .disposed(by: disposeBag)
-    case .firstTime, .mainPage_FirstTime:
       
+      // 입력 초기화 버튼 -> 데이터 초기화
+      input.didTapSkipButton
+        .subscribe(onNext: { [weak self] in
+          self?.resetData()
+          self?.output.resetData.onNext(Void())
+        })
+        .disposed(by: disposeBag)
+      
+    case .mainPage_FirstTime:
       // 완료 버튼 클릭 -> 온보딩 디테일 VC 보여주기
       input.didTapConfirmButton
-        .map { [unowned self] in self.currentMatchingInfo }
-        .bind(to: output.showOnboardingDetailVC)
+        .map { [weak self] in
+          guard let self = self else { return }
+          return OnboardingModel.RequestModel.toMemberModel(from: self.currentOnboarding)
+        }
+        .bind(to: output.pushToOnboardingDetailVC)
+        .disposed(by: disposeBag)
+      
+      // 입력 초기화 버튼 -> 데이터 초기화
+      input.didTapSkipButton
+        .subscribe(onNext: { [weak self] in
+          self?.resetData()
+          self?.output.resetData.onNext(Void())
+        })
+        .disposed(by: disposeBag)
+      
+    case .firstTime:
+      // 완료 버튼 클릭 -> 온보딩 디테일 VC 보여주기
+      input.didTapConfirmButton
+        .map { [weak self] in
+          guard let self = self else { return }
+          return OnboardingModel.RequestModel.toMemberModel(from: self.currentOnboarding)
+        }
+        .bind(to: output.pushToOnboardingDetailVC)
+        .disposed(by: disposeBag)
+      
+      // 정보 입력 건너 뛰기 버튼 -> 메인 페이지로 이동
+      input.didTapSkipButton
+        .bind(to: output.showTabBarVC)
         .disposed(by: disposeBag)
     }
   }
@@ -212,35 +227,35 @@ final class OnboardingViewModel: ViewModel {
   // MARK: - Helpers
   
   private func resetData() {
-    output.matchingInfo.accept(MatchingInfo.initialValue())
-    state.confirmVerifierObserver.accept(OnboardingConfirmVerifier.initialValue())
+    output.myOnboarding.accept(.initialValue())
+    state.confirmVerifierObserver.accept(.initialValue())
   }
 }
 
 // MARK: - Network
 
 extension OnboardingViewModel {
-  
-  /// 현재 매칭 정보를 수정하는 API입니다.
-  func requestModifyMatchingInfo(_ from: MatchingInfo) {
-    output.indicatorState.onNext(true)
-    OnboardingService.shared.matchingInfoAPI_Put(from)
-      .subscribe(onNext: { [weak self] response in
-        struct ResponseModel: Codable {
-          let data: MatchingInfo_Lookup
-        }
-        guard let statusCode = response.response?.statusCode else { return }
-        switch statusCode {
-        case 200:
-          guard let data = response.data else { return }
-          let newInfo = APIService.decode(ResponseModel.self, data: data).data
-          MemberInfoStorage.shared.matchingInfo.accept(newInfo)
-          self?.output.pushToRootVC.onNext(Void())
-        default:
-          fatalError()
-        }
-        self?.output.indicatorState.onNext(false)
-      })
-      .disposed(by: disposeBag)
-  }
+//
+//  /// 현재 매칭 정보를 수정하는 API입니다.
+//  func requestModifyMatchingInfo(_ from: MatchingInfo) {
+//    output.indicatorState.onNext(true)
+//    OnboardingService.shared.matchingInfoAPI_Put(from)
+//      .subscribe(onNext: { [weak self] response in
+//        struct ResponseModel: Codable {
+//          let data: MatchingInfo_Lookup
+//        }
+//        guard let statusCode = response.response?.statusCode else { return }
+//        switch statusCode {
+//        case 200:
+//          guard let data = response.data else { return }
+//          let newInfo = APIService.decode(ResponseModel.self, data: data).data
+//          MemberInfoStorage.instance.myOnboarding.accept(newInfo)
+//          self?.output.pushToRootVC.onNext(Void())
+//        default:
+//          fatalError()
+//        }
+//        self?.output.indicatorState.onNext(false)
+//      })
+//      .disposed(by: disposeBag)
+//  }
 }

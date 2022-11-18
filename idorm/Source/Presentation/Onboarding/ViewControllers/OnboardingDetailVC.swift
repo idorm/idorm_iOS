@@ -23,14 +23,14 @@ final class OnboardingDetailViewController: BaseViewController {
 
   private let viewModel: OnboardingDetailViewModel
   
-  private let matchingMember: MatchingMember
-  private let vcType: OnboardingDetailVCType
-
+  private let member: MatchingModel.Member
+  private let vcType: OnboardingVCTypes.OnboardingDetailVCType
+  
   // MARK: - Init
-
-  init(_ matchingMember: MatchingMember, vcType: OnboardingDetailVCType) {
+  
+  init(_ member: MatchingModel.Member, vcType: OnboardingVCTypes.OnboardingDetailVCType) {
     self.viewModel = OnboardingDetailViewModel(vcType)
-    self.matchingMember = matchingMember
+    self.member = member
     self.vcType = vcType
     super.init(nibName: nil, bundle: nil)
   }
@@ -50,7 +50,7 @@ final class OnboardingDetailViewController: BaseViewController {
   // MARK: - Setup
   
   private func setupMatchingCard() {
-    let matchingCard = MatchingCard(myInfo: matchingMember)
+    let matchingCard = MatchingCard(member)
     self.matchingCard = matchingCard
   }
   

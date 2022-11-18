@@ -85,7 +85,7 @@ final class LoginViewController: BaseViewController {
     self.navigationController?.isNavigationBarHidden = true
     
     // 토큰 초기화
-    TokenStorage.shared.removeToken()
+    TokenStorage.instance.removeToken()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -98,12 +98,13 @@ final class LoginViewController: BaseViewController {
   override func bind() {
     super.bind()
     
-    // ---------------------------------
-    // ---------------INPUT-------------
-    // ---------------------------------
+    // MARK: - Input
     
     // 로그인 버튼 클릭
     loginButton.rx.tap
+      .map { [unowned self] in
+        return (self.idTextField.text ?? "", self.pwTextField.text ?? "")
+      }
       .bind(to: viewModel.input.loginButtonTapped)
       .disposed(by: disposeBag)
     
@@ -117,21 +118,7 @@ final class LoginViewController: BaseViewController {
       .bind(to: viewModel.input.signUpButtonTapped)
       .disposed(by: disposeBag)
     
-    // 이메일 텍스트 필드 이벤트
-    idTextField.rx.text
-      .orEmpty
-      .bind(to: viewModel.input.emailText)
-      .disposed(by: disposeBag)
-    
-    // 비밀번호 텍스트 필드 이벤트
-    pwTextField.rx.text
-      .orEmpty
-      .bind(to: viewModel.input.passwordText)
-      .disposed(by: disposeBag)
-    
-    // ---------------------------------
-    // --------------OUTPUT-------------
-    // ---------------------------------
+    // MARK: - Output
     
     // PutEmailVC로 이동
     viewModel.output.showPutEmailVC
@@ -160,19 +147,16 @@ final class LoginViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    // 애니메이션 시작
-    viewModel.output.startAnimation
+    // 인디케이터 로딩 제어
+    viewModel.output.isLoading
       .bind(onNext: { [weak self] in
-        self?.indicator.startAnimating()
-        self?.view.isUserInteractionEnabled = false
-      })
-      .disposed(by: disposeBag)
-    
-    // 애니메이션 종료
-    viewModel.output.stopAnimation
-      .bind(onNext: { [weak self] in
-        self?.indicator.stopAnimating()
-        self?.view.isUserInteractionEnabled = true
+        if $0 {
+          self?.indicator.startAnimating()
+          self?.view.isUserInteractionEnabled = false
+        } else {
+          self?.indicator.stopAnimating()
+          self?.view.isUserInteractionEnabled = true
+        }
       })
       .disposed(by: disposeBag)
   }

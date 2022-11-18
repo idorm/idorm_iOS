@@ -24,11 +24,11 @@
 		E50E21E629235A350022CA9C /* (null) in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E51063C4291E250400FA0EAC /* MatchingNoSharePopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51063C3291E250400FA0EAC /* MatchingNoSharePopUpVC.swift */; };
 		E51063C6291E262800FA0EAC /* UIFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51063C5291E262800FA0EAC /* UIFactory.swift */; };
-		E510D3CB28AC9F6E00A28B90 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CA28AC9F6E00A28B90 /* AuthViewModel.swift */; };
+		E510D3CB28AC9F6E00A28B90 /* AuthVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CA28AC9F6E00A28B90 /* AuthVM.swift */; };
 		E510D3CD28ACB87D00A28B90 /* PutEmailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CC28ACB87D00A28B90 /* PutEmailVM.swift */; };
 		E510D3CF28ACC5F300A28B90 /* MemberService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CE28ACC5F300A28B90 /* MemberService.swift */; };
 		E510D3D128ACC84300A28B90 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3D028ACC84300A28B90 /* Logger.swift */; };
-		E510D3D328ACCA1C00A28B90 /* AuthNumberViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3D228ACCA1C00A28B90 /* AuthNumberViewModel.swift */; };
+		E510D3D328ACCA1C00A28B90 /* AuthNumberVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3D228ACCA1C00A28B90 /* AuthNumberVM.swift */; };
 		E517F243291B2ED400350947 /* RegisterUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E517F242291B2ED400350947 /* RegisterUtilities.swift */; };
 		E5226D582911F3610065C809 /* Dormitory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D572911F3610065C809 /* Dormitory.swift */; };
 		E5226D5A2911F36B0065C809 /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D592911F36B0065C809 /* Gender.swift */; };
@@ -39,6 +39,9 @@
 		E5226D65291246750065C809 /* OnboardingConfirmVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D64291246750065C809 /* OnboardingConfirmVerifier.swift */; };
 		E525C1CD28944E2800F934B3 /* CalendarPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */; };
 		E52791C6291B852C009C0ADA /* MatchingInfo_Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52791C5291B852C009C0ADA /* MatchingInfo_Lookup.swift */; };
+		E52821422925C6BB006A4531 /* RegisterVCTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52821412925C6BB006A4531 /* RegisterVCTypes.swift */; };
+		E528214429262778006A4531 /* ConfirmNicknameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E528214329262778006A4531 /* ConfirmNicknameVC.swift */; };
+		E528214629263183006A4531 /* ConfirmNicknameVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E528214529263183006A4531 /* ConfirmNicknameVM.swift */; };
 		E5290EFD2887BBA40004B8E6 /* CommunityPopularCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */; };
 		E5290EFF2887BBB00004B8E6 /* PostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFE2887BBB00004B8E6 /* PostCollectionViewCell.swift */; };
 		E5290F06288818E70004B8E6 /* CommunityDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290F05288818E70004B8E6 /* CommunityDetailViewController.swift */; };
@@ -46,6 +49,7 @@
 		E5290F0E288867E50004B8E6 /* CommunityDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290F0D288867E50004B8E6 /* CommunityDetailTableViewCell.swift */; };
 		E5290F10288869700004B8E6 /* CommunityDetailHeaderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290F0F288869700004B8E6 /* CommunityDetailHeaderCollectionViewCell.swift */; };
 		E5290F1228886D7A0004B8E6 /* CommunityUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290F1128886D7A0004B8E6 /* CommunityUtilities.swift */; };
+		E5294FEA2926FF01004D408C /* OnboardingVCTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5294FE92926FF01004D408C /* OnboardingVCTypes.swift */; };
 		E52C45E229230ED500638B68 /* Moya+NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52C45E129230ED500638B68 /* Moya+NetworkError.swift */; };
 		E52CD85628BE371F00A262ED /* ManageMyInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52CD85528BE371F00A262ED /* ManageMyInfoView.swift */; };
 		E52E96B22915FAB6009E1773 /* MatchingContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52E96B12915FAB6009E1773 /* MatchingContainerView.swift */; };
@@ -62,7 +66,6 @@
 		E547E3E8291CF61B000D3A47 /* MatchingCardStringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E547E3E7291CF61B000D3A47 /* MatchingCardStringView.swift */; };
 		E547E3EA291CF669000D3A47 /* MatchingCardStringList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E547E3E9291CF669000D3A47 /* MatchingCardStringList.swift */; };
 		E547E3EC291CFBBC000D3A47 /* MatchingCardWishTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E547E3EB291CFBBC000D3A47 /* MatchingCardWishTextView.swift */; };
-		E547E3EE291D1363000D3A47 /* OnboardingDetailVCType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E547E3ED291D1363000D3A47 /* OnboardingDetailVCType.swift */; };
 		E54FF4332913D142001826F1 /* MatchingSwipeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54FF4322913D142001826F1 /* MatchingSwipeType.swift */; };
 		E54FF4352913D2F8001826F1 /* MatchingType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54FF4342913D2F8001826F1 /* MatchingType.swift */; };
 		E54FF4372913D4AD001826F1 /* MatchingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54FF4362913D4AD001826F1 /* MatchingService.swift */; };
@@ -112,17 +115,20 @@
 		E591B77728C6E6AC00B8B581 /* MemberServerConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591B77628C6E6AC00B8B581 /* MemberServerConstants.swift */; };
 		E591B77C28C6E99400B8B581 /* ServerConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591B77B28C6E99400B8B581 /* ServerConstants.swift */; };
 		E591B77E28C6EB0600B8B581 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591B77D28C6EB0600B8B581 /* APIService.swift */; };
-		E59F0D4C29209B1500D3B737 /* PutEmailVCType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59F0D4B29209B1500D3B737 /* PutEmailVCType.swift */; };
 		E59F0D4E29209E4400D3B737 /* AuthenticationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59F0D4D29209E4400D3B737 /* AuthenticationType.swift */; };
 		E59F0D502920A47E00D3B737 /* MatchingBottomAlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59F0D4F2920A47E00D3B737 /* MatchingBottomAlertVC.swift */; };
+		E5A15D4A2923A569001CE750 /* MemberAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A15D492923A569001CE750 /* MemberAPI.swift */; };
+		E5A15D4C2923A5EA001CE750 /* OnboardingAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A15D4B2923A5EA001CE750 /* OnboardingAPI.swift */; };
 		E5A164B128ADC80C00554655 /* ConfirmPasswordVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A164B028ADC80C00554655 /* ConfirmPasswordVM.swift */; };
+		E5A47F062924F25000908E20 /* MailAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A47F052924F25000908E20 /* MailAPI.swift */; };
+		E5A47F08292508F300908E20 /* SharedAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A47F07292508F300908E20 /* SharedAPI.swift */; };
 		E5A60C7C289BE72A004B77E8 /* SetCalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A60C7B289BE72A004B77E8 /* SetCalendarViewModel.swift */; };
 		E5AB97C42895671800C0CEDF /* MatchingFilterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AB97C32895671800C0CEDF /* MatchingFilterVC.swift */; };
 		E5AC2A4828BB548E0069ABB9 /* MyPageVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2A4728BB548E0069ABB9 /* MyPageVM.swift */; };
 		E5AC2A4D28BB5B250069ABB9 /* ManageMyInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2A4C28BB5B250069ABB9 /* ManageMyInfoVC.swift */; };
 		E5AC2DCB2882F24000B82AD8 /* OnboardingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2DCA2882F24000B82AD8 /* OnboardingTextField.swift */; };
 		E5AC2DCF288303A300B82AD8 /* RegisterPwTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AC2DCE288303A300B82AD8 /* RegisterPwTextField.swift */; };
-		E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7390287A863800BA2C5E /* LoginViewController.swift */; };
+		E5AD7391287A863800BA2C5E /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7390287A863800BA2C5E /* LoginVC.swift */; };
 		E5AD7396287A8C2F00BA2C5E /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7395287A8C2F00BA2C5E /* UIColor+Extensions.swift */; };
 		E5AD7398287A8D8800BA2C5E /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7397287A8D8800BA2C5E /* UITextField+Extensions.swift */; };
 		E5AD739D287AE08F00BA2C5E /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD739C287AE08F00BA2C5E /* PopupViewController.swift */; };
@@ -130,7 +136,6 @@
 		E5AD73A1287AFC5300BA2C5E /* AuthNumberVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD73A0287AFC5300BA2C5E /* AuthNumberVC.swift */; };
 		E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordVC.swift */; };
 		E5AEA5C729129AC50062F6A5 /* MatchingUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AEA5C629129AC50062F6A5 /* MatchingUtilities.swift */; };
-		E5AEA5CB2912A30B0062F6A5 /* OnboardingVCType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AEA5CA2912A30B0062F6A5 /* OnboardingVCType.swift */; };
 		E5AEA5CE2912A4D60062F6A5 /* MatchingFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AEA5CD2912A4D60062F6A5 /* MatchingFilter.swift */; };
 		E5AEA5D02912A5D50062F6A5 /* MatchingFilterVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AEA5CF2912A5D50062F6A5 /* MatchingFilterVM.swift */; };
 		E5AEA5D22912ABD30062F6A5 /* FilteringConfirmDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AEA5D12912ABD30062F6A5 /* FilteringConfirmDriver.swift */; };
@@ -218,11 +223,11 @@
 		E509438928F8291D004D3A58 /* Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preview.swift; sourceTree = "<group>"; };
 		E51063C3291E250400FA0EAC /* MatchingNoSharePopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingNoSharePopUpVC.swift; sourceTree = "<group>"; };
 		E51063C5291E262800FA0EAC /* UIFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFactory.swift; sourceTree = "<group>"; };
-		E510D3CA28AC9F6E00A28B90 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		E510D3CA28AC9F6E00A28B90 /* AuthVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthVM.swift; sourceTree = "<group>"; };
 		E510D3CC28ACB87D00A28B90 /* PutEmailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailVM.swift; sourceTree = "<group>"; };
 		E510D3CE28ACC5F300A28B90 /* MemberService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberService.swift; sourceTree = "<group>"; };
 		E510D3D028ACC84300A28B90 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
-		E510D3D228ACCA1C00A28B90 /* AuthNumberViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberViewModel.swift; sourceTree = "<group>"; };
+		E510D3D228ACCA1C00A28B90 /* AuthNumberVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberVM.swift; sourceTree = "<group>"; };
 		E517F242291B2ED400350947 /* RegisterUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUtilities.swift; sourceTree = "<group>"; };
 		E5226D572911F3610065C809 /* Dormitory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dormitory.swift; sourceTree = "<group>"; };
 		E5226D592911F36B0065C809 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
@@ -233,6 +238,9 @@
 		E5226D64291246750065C809 /* OnboardingConfirmVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingConfirmVerifier.swift; sourceTree = "<group>"; };
 		E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPostViewController.swift; sourceTree = "<group>"; };
 		E52791C5291B852C009C0ADA /* MatchingInfo_Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingInfo_Lookup.swift; sourceTree = "<group>"; };
+		E52821412925C6BB006A4531 /* RegisterVCTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterVCTypes.swift; sourceTree = "<group>"; };
+		E528214329262778006A4531 /* ConfirmNicknameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmNicknameVC.swift; sourceTree = "<group>"; };
+		E528214529263183006A4531 /* ConfirmNicknameVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmNicknameVM.swift; sourceTree = "<group>"; };
 		E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPopularCollectionVIewCell.swift; sourceTree = "<group>"; };
 		E5290EFE2887BBB00004B8E6 /* PostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCollectionViewCell.swift; sourceTree = "<group>"; };
 		E5290F05288818E70004B8E6 /* CommunityDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityDetailViewController.swift; sourceTree = "<group>"; };
@@ -240,6 +248,7 @@
 		E5290F0D288867E50004B8E6 /* CommunityDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityDetailTableViewCell.swift; sourceTree = "<group>"; };
 		E5290F0F288869700004B8E6 /* CommunityDetailHeaderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityDetailHeaderCollectionViewCell.swift; sourceTree = "<group>"; };
 		E5290F1128886D7A0004B8E6 /* CommunityUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityUtilities.swift; sourceTree = "<group>"; };
+		E5294FE92926FF01004D408C /* OnboardingVCTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVCTypes.swift; sourceTree = "<group>"; };
 		E52C45E129230ED500638B68 /* Moya+NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Moya+NetworkError.swift"; sourceTree = "<group>"; };
 		E52CD85528BE371F00A262ED /* ManageMyInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMyInfoView.swift; sourceTree = "<group>"; };
 		E52E96B12915FAB6009E1773 /* MatchingContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingContainerView.swift; sourceTree = "<group>"; };
@@ -255,7 +264,6 @@
 		E547E3E7291CF61B000D3A47 /* MatchingCardStringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCardStringView.swift; sourceTree = "<group>"; };
 		E547E3E9291CF669000D3A47 /* MatchingCardStringList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCardStringList.swift; sourceTree = "<group>"; };
 		E547E3EB291CFBBC000D3A47 /* MatchingCardWishTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCardWishTextView.swift; sourceTree = "<group>"; };
-		E547E3ED291D1363000D3A47 /* OnboardingDetailVCType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDetailVCType.swift; sourceTree = "<group>"; };
 		E54FF4322913D142001826F1 /* MatchingSwipeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingSwipeType.swift; sourceTree = "<group>"; };
 		E54FF4342913D2F8001826F1 /* MatchingType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingType.swift; sourceTree = "<group>"; };
 		E54FF4362913D4AD001826F1 /* MatchingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingService.swift; sourceTree = "<group>"; };
@@ -289,17 +297,20 @@
 		E591B77628C6E6AC00B8B581 /* MemberServerConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberServerConstants.swift; sourceTree = "<group>"; };
 		E591B77B28C6E99400B8B581 /* ServerConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConstants.swift; sourceTree = "<group>"; };
 		E591B77D28C6EB0600B8B581 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
-		E59F0D4B29209B1500D3B737 /* PutEmailVCType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailVCType.swift; sourceTree = "<group>"; };
 		E59F0D4D29209E4400D3B737 /* AuthenticationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationType.swift; sourceTree = "<group>"; };
 		E59F0D4F2920A47E00D3B737 /* MatchingBottomAlertVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingBottomAlertVC.swift; sourceTree = "<group>"; };
+		E5A15D492923A569001CE750 /* MemberAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberAPI.swift; sourceTree = "<group>"; };
+		E5A15D4B2923A5EA001CE750 /* OnboardingAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAPI.swift; sourceTree = "<group>"; };
 		E5A164B028ADC80C00554655 /* ConfirmPasswordVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordVM.swift; sourceTree = "<group>"; };
+		E5A47F052924F25000908E20 /* MailAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailAPI.swift; sourceTree = "<group>"; };
+		E5A47F07292508F300908E20 /* SharedAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedAPI.swift; sourceTree = "<group>"; };
 		E5A60C7B289BE72A004B77E8 /* SetCalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCalendarViewModel.swift; sourceTree = "<group>"; };
 		E5AB97C32895671800C0CEDF /* MatchingFilterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilterVC.swift; sourceTree = "<group>"; };
 		E5AC2A4728BB548E0069ABB9 /* MyPageVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageVM.swift; sourceTree = "<group>"; };
 		E5AC2A4C28BB5B250069ABB9 /* ManageMyInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMyInfoVC.swift; sourceTree = "<group>"; };
 		E5AC2DCA2882F24000B82AD8 /* OnboardingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTextField.swift; sourceTree = "<group>"; };
 		E5AC2DCE288303A300B82AD8 /* RegisterPwTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterPwTextField.swift; sourceTree = "<group>"; };
-		E5AD7390287A863800BA2C5E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		E5AD7390287A863800BA2C5E /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		E5AD7395287A8C2F00BA2C5E /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		E5AD7397287A8D8800BA2C5E /* UITextField+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
 		E5AD739C287AE08F00BA2C5E /* PopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
@@ -307,7 +318,6 @@
 		E5AD73A0287AFC5300BA2C5E /* AuthNumberVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberVC.swift; sourceTree = "<group>"; };
 		E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordVC.swift; sourceTree = "<group>"; };
 		E5AEA5C629129AC50062F6A5 /* MatchingUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingUtilities.swift; sourceTree = "<group>"; };
-		E5AEA5CA2912A30B0062F6A5 /* OnboardingVCType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVCType.swift; sourceTree = "<group>"; };
 		E5AEA5CD2912A4D60062F6A5 /* MatchingFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilter.swift; sourceTree = "<group>"; };
 		E5AEA5CF2912A5D50062F6A5 /* MatchingFilterVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilterVM.swift; sourceTree = "<group>"; };
 		E5AEA5D12912ABD30062F6A5 /* FilteringConfirmDriver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteringConfirmDriver.swift; sourceTree = "<group>"; };
@@ -464,7 +474,6 @@
 			isa = PBXGroup;
 			children = (
 				E59F0D4D29209E4400D3B737 /* AuthenticationType.swift */,
-				E59F0D4B29209B1500D3B737 /* PutEmailVCType.swift */,
 			);
 			path = Regitser;
 			sourceTree = "<group>";
@@ -472,11 +481,22 @@
 		E52791C4291B7CD2009C0ADA /* Storages */ = {
 			isa = PBXGroup;
 			children = (
+				E504B61A28B9DCE3009B45F8 /* TokenStorage.swift */,
 				E510D3D028ACC84300A28B90 /* Logger.swift */,
 				E58F652F29134C2B00E58862 /* MatchingFilterStorage.swift */,
 				E5ED81AE2918C76B00CB32EB /* MemberInfoStorage.swift */,
 			);
 			path = Storages;
+			sourceTree = "<group>";
+		};
+		E5294FEB2926FF44004D408C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E5294FE92926FF01004D408C /* OnboardingVCTypes.swift */,
+				E5226D6229122AD20065C809 /* OnboardingQueryList.swift */,
+				E5226D64291246750065C809 /* OnboardingConfirmVerifier.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		E53EF842291538C200EC419D /* Common */ = {
@@ -492,17 +512,6 @@
 				E5226D5F291207AA0065C809 /* Habit.swift */,
 			);
 			path = Common;
-			sourceTree = "<group>";
-		};
-		E53EF844291538FA00EC419D /* Onboarding */ = {
-			isa = PBXGroup;
-			children = (
-				E5AEA5CA2912A30B0062F6A5 /* OnboardingVCType.swift */,
-				E547E3ED291D1363000D3A47 /* OnboardingDetailVCType.swift */,
-				E5226D6229122AD20065C809 /* OnboardingQueryList.swift */,
-				E5226D64291246750065C809 /* OnboardingConfirmVerifier.swift */,
-			);
-			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		E53EF8452915391600EC419D /* Matching */ = {
@@ -553,7 +562,6 @@
 			isa = PBXGroup;
 			children = (
 				E58A6296289D6BEF0074F646 /* DeviceManager.swift */,
-				E504B61A28B9DCE3009B45F8 /* TokenStorage.swift */,
 				E55DDAE829179DD900E62ECB /* AppearanceManager.swift */,
 			);
 			path = Managers;
@@ -562,14 +570,13 @@
 		E54B3E2228C6E1A30062EF7E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				E5B0D4F529224574007A1791 /* MatchingModel.swift */,
-				E5B0D4F3292240E7007A1791 /* OnboardingModel.swift */,
 				E5B0D4F929224609007A1791 /* MemberModel.swift */,
+				E5B0D4F3292240E7007A1791 /* OnboardingModel.swift */,
+				E5B0D4F529224574007A1791 /* MatchingModel.swift */,
 				E53EF842291538C200EC419D /* Common */,
 				E517F23F291B2BB300350947 /* Regitser */,
 				E5F5656C2918FEEB0043FCB4 /* MyPage */,
 				E53EF8452915391600EC419D /* Matching */,
-				E53EF844291538FA00EC419D /* Onboarding */,
 				E547E3E4291CF10F000D3A47 /* MatchingCard */,
 			);
 			path = Models;
@@ -580,8 +587,8 @@
 			children = (
 				E56DF4CC2894063100E85B10 /* Common */,
 				E56DF4BD2894041D00E85B10 /* Login */,
-				E5E77ECC28D8293400031010 /* Auth */,
 				E5E77EC928D8261E00031010 /* Register */,
+				E5E77ECC28D8293400031010 /* Auth */,
 				E56DF4B6289403A400E85B10 /* Onboarding */,
 				E56DF4C2289405C000E85B10 /* Home */,
 				E56DF4C3289405CD00E85B10 /* Matching */,
@@ -711,8 +718,9 @@
 		E56DF4B6289403A400E85B10 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				E56DF4BC289403CD00E85B10 /* ViewModels */,
+				E5294FEB2926FF44004D408C /* Models */,
 				E56DF4B8289403B600E85B10 /* ViewControllers */,
+				E56DF4BC289403CD00E85B10 /* ViewModels */,
 				E56DF4B7289403AC00E85B10 /* Views */,
 			);
 			path = Onboarding;
@@ -747,8 +755,8 @@
 		E56DF4BD2894041D00E85B10 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				E56DF4C12894043D00E85B10 /* ViewModels */,
 				E56DF4BF2894042D00E85B10 /* ViewControllers */,
+				E56DF4C12894043D00E85B10 /* ViewModels */,
 				E56DF4BE2894042500E85B10 /* Views */,
 			);
 			path = Login;
@@ -765,7 +773,7 @@
 		E56DF4BF2894042D00E85B10 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				E5AD7390287A863800BA2C5E /* LoginViewController.swift */,
+				E5AD7390287A863800BA2C5E /* LoginVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -875,7 +883,6 @@
 		E575304428D92BEF00F0B57C /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				E54B3E2228C6E1A30062EF7E /* Models */,
 				E591B77228C6E5E300B8B581 /* Networks */,
 				E54B3E2428C6E25C0062EF7E /* Presentation */,
 			);
@@ -895,17 +902,29 @@
 			isa = PBXGroup;
 			children = (
 				E591B77D28C6EB0600B8B581 /* APIService.swift */,
+				E5A47F07292508F300908E20 /* SharedAPI.swift */,
+				E54B3E2228C6E1A30062EF7E /* Models */,
+				E5A15D482923A55D001CE750 /* APIs */,
 				E5B7E84B28ABC9B00099B631 /* Services */,
-				E5F96C8E292211AE00BB6019 /* URLs */,
 			);
 			path = Networks;
+			sourceTree = "<group>";
+		};
+		E5A15D482923A55D001CE750 /* APIs */ = {
+			isa = PBXGroup;
+			children = (
+				E5A15D492923A569001CE750 /* MemberAPI.swift */,
+				E5A15D4B2923A5EA001CE750 /* OnboardingAPI.swift */,
+				E5A47F052924F25000908E20 /* MailAPI.swift */,
+			);
+			path = APIs;
 			sourceTree = "<group>";
 		};
 		E5A25D9928D8709B00887E9A /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				E510D3CA28AC9F6E00A28B90 /* AuthViewModel.swift */,
-				E510D3D228ACCA1C00A28B90 /* AuthNumberViewModel.swift */,
+				E510D3CA28AC9F6E00A28B90 /* AuthVM.swift */,
+				E510D3D228ACCA1C00A28B90 /* AuthNumberVM.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -932,8 +951,8 @@
 			isa = PBXGroup;
 			children = (
 				E510D3CE28ACC5F300A28B90 /* MemberService.swift */,
-				E572172428C8711E00DA1E90 /* EmailService.swift */,
 				E5CF7DC628C8BDDD00125144 /* OnboardingService.swift */,
+				E572172428C8711E00DA1E90 /* EmailService.swift */,
 				E54FF4362913D4AD001826F1 /* MatchingService.swift */,
 			);
 			path = Services;
@@ -957,6 +976,7 @@
 		E5E77EC928D8261E00031010 /* Register */ = {
 			isa = PBXGroup;
 			children = (
+				E52821412925C6BB006A4531 /* RegisterVCTypes.swift */,
 				E5E77ECB28D828E800031010 /* ViewControllers */,
 				E5E77ECD28D8295E00031010 /* ViewModels */,
 				E5E77ECA28D8262D00031010 /* Views */,
@@ -979,6 +999,7 @@
 			children = (
 				E5AD739E287AEF2D00BA2C5E /* PutEmailVC.swift */,
 				E5AD73A2287B2B5200BA2C5E /* ConfirmPasswordVC.swift */,
+				E528214329262778006A4531 /* ConfirmNicknameVC.swift */,
 				E53C60AF287B37CB00977909 /* CompleteSignUpVC.swift */,
 			);
 			path = ViewControllers;
@@ -999,6 +1020,7 @@
 			children = (
 				E510D3CC28ACB87D00A28B90 /* PutEmailVM.swift */,
 				E5A164B028ADC80C00554655 /* ConfirmPasswordVM.swift */,
+				E528214529263183006A4531 /* ConfirmNicknameVM.swift */,
 				E504B61828B9C6E4009B45F8 /* CompleteSignUpVM.swift */,
 			);
 			path = ViewModels;
@@ -1072,13 +1094,6 @@
 				E559F54E291630AF004FF225 /* ManageMyInfoViewType.swift */,
 			);
 			path = MyPage;
-			sourceTree = "<group>";
-		};
-		E5F96C8E292211AE00BB6019 /* URLs */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = URLs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1241,7 +1256,6 @@
 				E5226D60291207AA0065C809 /* Habit.swift in Sources */,
 				E5EB5F302891558D00EC0425 /* CalendarDormCell.swift in Sources */,
 				E5FC8F1B29113A25002812FA /* ViewModel.swift in Sources */,
-				E547E3EE291D1363000D3A47 /* OnboardingDetailVCType.swift in Sources */,
 				E525C1CD28944E2800F934B3 /* CalendarPostViewController.swift in Sources */,
 				E547E3EC291CFBBC000D3A47 /* MatchingCardWishTextView.swift in Sources */,
 				E504B61928B9C6E4009B45F8 /* CompleteSignUpVM.swift in Sources */,
@@ -1255,18 +1269,20 @@
 				E5AD739D287AE08F00BA2C5E /* PopupViewController.swift in Sources */,
 				E53C60B0287B37CB00977909 /* CompleteSignUpVC.swift in Sources */,
 				E557E2272892593F00F9C74D /* CalendarPersonalCell.swift in Sources */,
+				E5A47F08292508F300908E20 /* SharedAPI.swift in Sources */,
 				E5CF7DC728C8BDDD00125144 /* OnboardingService.swift in Sources */,
 				E5226D6329122AD20065C809 /* OnboardingQueryList.swift in Sources */,
 				E5CF7DC928C8BE1C00125144 /* OnboardingServerConstants.swift in Sources */,
 				E5290F0928881C6E0004B8E6 /* CommunityDetailCollectionHeaderView.swift in Sources */,
+				E528214429262778006A4531 /* ConfirmNicknameVC.swift in Sources */,
 				E50300F728773A5D00611C62 /* AppDelegate.swift in Sources */,
-				E5AEA5CB2912A30B0062F6A5 /* OnboardingVCType.swift in Sources */,
 				E59F0D4E29209E4400D3B737 /* AuthenticationType.swift in Sources */,
 				E55794EE287C36F5002DB2B0 /* UIView+Extensions.swift in Sources */,
 				E5EB5F2C2891534300EC0425 /* CalendarPersonalCollectionHeaderView.swift in Sources */,
 				E5AD7398287A8D8800BA2C5E /* UITextField+Extensions.swift in Sources */,
 				E508437728813CE80047A2EC /* FontManager.swift in Sources */,
 				E53086E42879287100A5D0A0 /* HomeVM.swift in Sources */,
+				E5A15D4C2923A5EA001CE750 /* OnboardingAPI.swift in Sources */,
 				E5F5EC742884025E0026DE21 /* CommunityViewController.swift in Sources */,
 				E559F54F291630AF004FF225 /* ManageMyInfoViewType.swift in Sources */,
 				E591B77E28C6EB0600B8B581 /* APIService.swift in Sources */,
@@ -1274,7 +1290,7 @@
 				E5290F10288869700004B8E6 /* CommunityDetailHeaderCollectionViewCell.swift in Sources */,
 				E58A6297289D6BEF0074F646 /* DeviceManager.swift in Sources */,
 				E52E96B22915FAB6009E1773 /* MatchingContainerView.swift in Sources */,
-				E510D3CB28AC9F6E00A28B90 /* AuthViewModel.swift in Sources */,
+				E510D3CB28AC9F6E00A28B90 /* AuthVM.swift in Sources */,
 				E547E3E3291CEF21000D3A47 /* MatchingCardBoolView.swift in Sources */,
 				E5C2614E2919D3AA00623C0E /* BottomAlertUtilities.swift in Sources */,
 				E5226D65291246750065C809 /* OnboardingConfirmVerifier.swift in Sources */,
@@ -1304,7 +1320,9 @@
 				E573B86C28CCBAD100E0DAB3 /* OnboardingDetailVM.swift in Sources */,
 				E56DF4B52894036D00E85B10 /* CalendarViewModel.swift in Sources */,
 				E53BBC0628BC3D2B001C86FC /* ManageMyInfoVM.swift in Sources */,
+				E5A47F062924F25000908E20 /* MailAPI.swift in Sources */,
 				E510D3CD28ACB87D00A28B90 /* PutEmailVM.swift in Sources */,
+				E528214629263183006A4531 /* ConfirmNicknameVM.swift in Sources */,
 				E5C88908288972E000CBD04E /* CommunityAlertViewController.swift in Sources */,
 				E54FF4352913D2F8001826F1 /* MatchingType.swift in Sources */,
 				E5AC2A4D28BB5B250069ABB9 /* ManageMyInfoVC.swift in Sources */,
@@ -1312,11 +1330,11 @@
 				E52C45E229230ED500638B68 /* Moya+NetworkError.swift in Sources */,
 				E5290EFF2887BBB00004B8E6 /* PostCollectionViewCell.swift in Sources */,
 				E5D98F9128C486CB00D493FF /* ChangeNicknameVM.swift in Sources */,
+				E5A15D4A2923A569001CE750 /* MemberAPI.swift in Sources */,
 				E5EB5F272891398200EC0425 /* CalendarView.swift in Sources */,
 				E5226D5C2911F3760065C809 /* JoinPeriod.swift in Sources */,
 				E5290F06288818E70004B8E6 /* CommunityDetailViewController.swift in Sources */,
 				E5D98F8F28C4863900D493FF /* ChangeNickNameVC.swift in Sources */,
-				E59F0D4C29209B1500D3B737 /* PutEmailVCType.swift in Sources */,
 				E58F96FD28857A4100CC3C75 /* PostingPictureCollectionViewCell.swift in Sources */,
 				E58F96FB2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift in Sources */,
 				E5226D5A2911F36B0065C809 /* Gender.swift in Sources */,
@@ -1343,12 +1361,13 @@
 				E572172528C8711E00DA1E90 /* EmailService.swift in Sources */,
 				E54FF4392913D53E001826F1 /* MatchingConstants.swift in Sources */,
 				E5F5EC762884027D0026DE21 /* CalendarViewController.swift in Sources */,
-				E510D3D328ACCA1C00A28B90 /* AuthNumberViewModel.swift in Sources */,
+				E510D3D328ACCA1C00A28B90 /* AuthNumberVM.swift in Sources */,
 				E591B77728C6E6AC00B8B581 /* MemberServerConstants.swift in Sources */,
 				E58ACB8728846E050031BD86 /* ImagePickerViewController.swift in Sources */,
 				E56DF4A2289354AF00E85B10 /* CalendarRoundedBackgroundView.swift in Sources */,
 				E547E3E8291CF61B000D3A47 /* MatchingCardStringView.swift in Sources */,
 				E508437B28814CAB0047A2EC /* AuthVC.swift in Sources */,
+				E5294FEA2926FF01004D408C /* OnboardingVCTypes.swift in Sources */,
 				E510D3D128ACC84300A28B90 /* Logger.swift in Sources */,
 				E517F243291B2ED400350947 /* RegisterUtilities.swift in Sources */,
 				E5EB5F2A289143A100EC0425 /* CalendarChipCell.swift in Sources */,
@@ -1360,12 +1379,13 @@
 				E51063C6291E262800FA0EAC /* UIFactory.swift in Sources */,
 				E563421828780BDE00E93D17 /* OnboardingVM.swift in Sources */,
 				E584B4BC289FCA6C007AD83A /* MatchingVM.swift in Sources */,
+				E52821422925C6BB006A4531 /* RegisterVCTypes.swift in Sources */,
 				E5AB97C42895671800C0CEDF /* MatchingFilterVC.swift in Sources */,
 				E5D49008288B7F0400311493 /* CommunityPopupViewController.swift in Sources */,
 				E5AD7396287A8C2F00BA2C5E /* UIColor+Extensions.swift in Sources */,
 				E5D49012288C003800311493 /* MatchingCard.swift in Sources */,
 				E5AC2A4828BB548E0069ABB9 /* MyPageVM.swift in Sources */,
-				E5AD7391287A863800BA2C5E /* LoginViewController.swift in Sources */,
+				E5AD7391287A863800BA2C5E /* LoginVC.swift in Sources */,
 				E5AD739F287AEF2D00BA2C5E /* PutEmailVC.swift in Sources */,
 				E54FF4332913D142001826F1 /* MatchingSwipeType.swift in Sources */,
 				E54FF43B2913E1DE001826F1 /* MatchingMember.swift in Sources */,

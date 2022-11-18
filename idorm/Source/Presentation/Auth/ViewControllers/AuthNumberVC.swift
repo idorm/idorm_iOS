@@ -6,15 +6,16 @@ import RxCocoa
 import Then
 
 final class AuthNumberViewController: BaseViewController {
+  
   // MARK: - Properties
   
-  let infoLabel = UILabel().then {
+  private let infoLabel = UILabel().then {
     $0.text = "지금 이메일로 인증번호를 보내드렸어요!"
     $0.textColor = .darkGray
     $0.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
   }
   
-  let requestAgainButton = UIButton().then {
+  private let authButton = UIButton().then {
     var config = UIButton.Configuration.plain()
     var container = AttributeContainer()
     container.font = .init(name: MyFonts.medium.rawValue, size: 12)
@@ -22,17 +23,18 @@ final class AuthNumberViewController: BaseViewController {
     config.attributedTitle = AttributedString("인증번호 재요청", attributes: container)
     
     $0.configuration = config
+    $0.isEnabled = false
   }
   
-  let timerLabel = UILabel().then {
+  private let timerLabel = UILabel().then {
     $0.text = "05:00"
     $0.textColor = .idorm_blue
     $0.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
   }
   
-  let indicator = UIActivityIndicatorView()
-  let confirmButton = RegisterBottomButton("인증 완료")
-  let textField = RegisterTextField("인증번호를 입력해주세요.")
+  private let indicator = UIActivityIndicatorView()
+  private let confirmButton = RegisterBottomButton("인증 완료")
+  private let textField = RegisterTextField("인증번호를 입력해주세요.")
 
   private let viewModel = AuthNumberViewModel()
   private let mailTimer: MailTimerChecker
@@ -58,32 +60,20 @@ final class AuthNumberViewController: BaseViewController {
     // MARK: - Input
     
     // 인증번호 재요청 버튼 이벤트
-    requestAgainButton.rx.tap
-      .throttle(.seconds(20), latest: false, scheduler: MainScheduler.instance)
-      .bind(to: viewModel.input.requestAgainButtonTapped)
+    authButton.rx.tap
+      .bind(to: viewModel.input.authButtonDidTap)
       .disposed(by: disposeBag)
     
     // 인증번호 입력 버튼 이벤트
     confirmButton.rx.tap
-      .bind(to: viewModel.input.confirmButtonTapped)
+      .map { [weak self] in self?.textField.text ?? "" }
+      .bind(to: viewModel.input.confirmButtonDidTap)
       .disposed(by: disposeBag)
-    
-    // 텍스트필드 이벤트
-    textField.rx.text
-      .orEmpty
-      .bind(to: viewModel.input.codeString)
-      .disposed(by: disposeBag)
-    
-    rx.viewWillAppear
-      .map { _ in }
-      .bind(to: viewModel.input.viewWillAppear)
-      .disposed(by: disposeBag)
-    
+        
     // MARK: - Output
     
     // 남은 인증 시간 텍스트 변화 감지
     mailTimer.leftTime
-      .debug()
       .filter { $0 >= 0 }
       .bind(onNext: { [weak self] elapseTime in
         let minutes = elapseTime / 60
@@ -100,11 +90,14 @@ final class AuthNumberViewController: BaseViewController {
       .bind(onNext: { [weak self] in
         if $0 {
           self?.textField.backgroundColor = .idorm_gray_200
+          self?.textField.isEnabled = false
+          self?.authButton.isEnabled = true
           let popupView = PopupViewController(contents: "인증번호가 만료되었습니다.")
           popupView.modalPresentationStyle = .overFullScreen
           self?.present(popupView, animated: false)
         } else {
           self?.textField.backgroundColor = .white
+          self?.textField.isEnabled = true
         }
       })
       .disposed(by: disposeBag)
@@ -136,19 +129,23 @@ final class AuthNumberViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    // 애니메이션 효과 시작
-    viewModel.output.startAnimation
+    // 인디케이터 조정
+    viewModel.output.indicatorState
       .bind(onNext: { [weak self] in
-        self?.indicator.startAnimating()
-        self?.view.isUserInteractionEnabled = false
+        if $0 {
+          self?.indicator.startAnimating()
+          self?.view.isUserInteractionEnabled = false
+        } else {
+          self?.indicator.stopAnimating()
+          self?.view.isUserInteractionEnabled = true
+        }
       })
       .disposed(by: disposeBag)
     
-    // 애니메이션 효과 종료
-    viewModel.output.stopAnimation
+    // 인증번호 재요청 버튼 활성/비활성화
+    viewModel.output.isEnableAuthButton
       .bind(onNext: { [weak self] in
-        self?.indicator.stopAnimating()
-        self?.view.isUserInteractionEnabled = true
+        self?.authButton.isEnabled = $0
       })
       .disposed(by: disposeBag)
   }
@@ -165,7 +162,7 @@ final class AuthNumberViewController: BaseViewController {
   override func setupLayouts() {
     super.setupLayouts()
       
-    [infoLabel, requestAgainButton, textField, confirmButton, timerLabel, indicator]
+    [infoLabel, authButton, textField, confirmButton, timerLabel, indicator]
       .forEach { view.addSubview($0) }
   }
   
@@ -177,7 +174,7 @@ final class AuthNumberViewController: BaseViewController {
       make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
     }
     
-    requestAgainButton.snp.makeConstraints { make in
+    authButton.snp.makeConstraints { make in
       make.trailing.equalToSuperview().inset(24)
       make.centerY.equalTo(infoLabel)
     }

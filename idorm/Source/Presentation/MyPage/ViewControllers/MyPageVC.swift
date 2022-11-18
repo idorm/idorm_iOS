@@ -112,7 +112,7 @@ final class MyPageViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     // 내 멤버 조회 완료 후 UI 업데이트
-    MemberInfoStorage.shared.memberInfo
+    MemberInfoStorage.instance.myInformation
       .bind(onNext: { [unowned self] memberInfo in
         let nickname = memberInfo.nickname
         self.topProfileView.nicknameLabel.text = nickname
@@ -131,8 +131,8 @@ final class MyPageViewController: BaseViewController {
     // 온보딩 수정 페이지로 이동
     viewModel.output.pushToOnboardingVC
       .bind(onNext: { [weak self] in
-        if MemberInfoStorage.shared.hasMatchingInfo {
-          let matchingMember = MemberInfoStorage.shared.toMatchingMemberModel
+        if MemberInfoStorage.instance.hasMatchingInfo {
+          let matchingMember = MemberInfoStorage.instance.toMatchingMemberModel
           let viewController = OnboardingDetailViewController(matchingMember, vcType: .update)
           viewController.hidesBottomBarWhenPushed = true
           self?.navigationController?.pushViewController(viewController, animated: true)
@@ -226,12 +226,12 @@ final class MyPageViewController: BaseViewController {
   // MARK: - Helpers
   
   private func updateUI() {
-    if MemberInfoStorage.shared.isPublicMatchingInfo {
+    if MemberInfoStorage.instance.isPublicMatchingInfo {
       matchingContainerView.shareButton.isSelected = true
     } else {
       matchingContainerView.shareButton.isSelected = false
     }
-    let nickName = MemberInfoStorage.shared.memberInfo.value.nickname
+    let nickName = MemberInfoStorage.instance.myInformation.value.nickname
     topProfileView.nicknameLabel.text = nickName
   }
 }

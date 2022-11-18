@@ -57,7 +57,6 @@ final class CompleteSignUpViewController: BaseViewController {
     
     // 로그인 후 계속하기 버튼 이벤트
     continueButton.rx.tap
-      .throttle(.seconds(2), latest: false, scheduler: MainScheduler.instance)
       .bind(to: viewModel.input.continueButtonTapped)
       .disposed(by: disposeBag)
     
@@ -73,7 +72,7 @@ final class CompleteSignUpViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     // 애니메이션 상태 변경
-    viewModel.output.animationState
+    viewModel.output.indicatorState
       .bind(onNext: { [weak self] in
         if $0 {
           self?.indicator.startAnimating()
@@ -90,20 +89,17 @@ final class CompleteSignUpViewController: BaseViewController {
   
   override func setupStyles() {
     super.setupStyles()
-    
     view.backgroundColor = .white
   }
   
   override func setupLayouts() {
     super.setupLayouts()
-    
     [image, signUpLabel, descriptionLabel1, descriptionLabel2, continueButton, indicator]
       .forEach { view.addSubview($0) }
   }
   
   override func setupConstraints() {
     super.setupConstraints()
-    
     image.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
       make.centerY.equalToSuperview().offset(-100)

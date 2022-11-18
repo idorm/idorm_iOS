@@ -74,7 +74,7 @@ extension MyPageViewModel {
           }
           guard let data = response.data else { return }
           let newInfo = APIService.decode(ResponseModel.self, data: data).data
-          MemberInfoStorage.shared.matchingInfo.accept(newInfo)
+          MemberInfoStorage.instance.myOnboarding.accept(newInfo)
         default:
           fatalError()
         }

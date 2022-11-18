@@ -2,6 +2,7 @@ import Foundation
 
 import RxSwift
 import RxCocoa
+import Network
 
 /// 인증번호 만료 시간을 계산하는 객체입니다.
 final class MailTimerChecker {
@@ -48,5 +49,10 @@ final class MailTimerChecker {
   
   func restart() {
     leftTime.accept(300)
+    
+    let monitor = NWPathMonitor()
+    monitor.pathUpdateHandler = { path in
+      
+    }
   }
 }

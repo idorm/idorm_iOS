@@ -1,5 +1,5 @@
 struct MatchingModel: Codable {
-  struct Someone: Codable {
+  struct Member: Codable {
     var memberId: Int
     var matchingInfoId: Int
     var dormNum: Dormitory
