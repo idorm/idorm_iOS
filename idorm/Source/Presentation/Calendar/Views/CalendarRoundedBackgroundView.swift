@@ -1,14 +1,9 @@
-//
-//  CalendarRoundedBackgroundView.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/29.
-//
-
 import UIKit
+
 import SnapKit
 
-class CalendarRoundedBackgroundView: UICollectionReusableView {
+final class CalendarRoundedBackgroundView: UICollectionReusableView {
+  
   // MARK: - Properties
   lazy var containerView: UIView = {
     let view = UIView()

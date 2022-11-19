@@ -1,15 +1,11 @@
-//
-//  CommunityPopupViewController.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/23.
-//
-
 import UIKit
+
 import SnapKit
 
-class CommunityPopupViewController: UIViewController {
+final class CommunityPopupViewController: UIViewController {
+  
   // MARK: - Properties
+  
   let contents: String
   
   lazy var infoView: UIView = {

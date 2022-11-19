@@ -55,3 +55,12 @@ extension MemberInfoStorage {
     return false
   }
 }
+
+// MARK: - Transformation
+
+extension MemberInfoStorage {
+  func onboardingToMatchingMember() -> MatchingModel.Member {
+    guard let myOnboarding = myOnboarding.value else { fatalError() }
+    return MatchingModel.Member(memberId: 0, matchingInfoId: 0, dormNum: myOnboarding.dormNum, joinPeriod: myOnboarding.joinPeriod, gender: myOnboarding.gender, age: myOnboarding.age, isSnoring: myOnboarding.isSnoring, isGrinding: myOnboarding.isGrinding, isSmoking: myOnboarding.isSmoking, isAllowedFood: myOnboarding.isAllowedFood, isWearEarphones: myOnboarding.isWearEarphones, wakeUpTime: myOnboarding.wakeUpTime, cleanUpStatus: myOnboarding.cleanUpStatus, showerTime: myOnboarding.showerTime, openKakaoLink: myOnboarding.openKakaoLink, mbti: myOnboarding.mbti ?? "", wishText: myOnboarding.wishText ?? "", isMatchingInfoPublic: myOnboarding.isMatchingInfoPublic, memberEmail: myOnboarding.memberEmail)
+  }
+}

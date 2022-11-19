@@ -38,7 +38,7 @@ final class CompleteSignUpViewModel: ViewModel {
       .map(MemberModel.LoginResponseModel.self)
       .subscribe(onNext: { [weak self] response in
         let token = response.data.loginToken
-        TokenStorage.instance.saveToken(token: token)
+        TokenStorage.instance.saveToken(token: token ?? "")
         SharedAPI.instance.retrieveMyInformation()
         SharedAPI.instance.retrieveMyOnboarding()
         self?.output.indicatorState.onNext(false)

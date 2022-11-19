@@ -10,7 +10,7 @@ final class MyRoommateViewController: BaseViewController {
   
   // MARK: - Properties
   
-  private let myRoommateVCType: MyRoommateVCType
+  private let vcType: MyPageVCTypes.MyRoommateVCType
   private let viewModel = MyRoommateViewModel()
   private let indicator = UIActivityIndicatorView()
   
@@ -22,8 +22,8 @@ final class MyRoommateViewController: BaseViewController {
   
   // MARK: - LifeCycle
   
-  init(_ myRoommateVCType: MyRoommateVCType) {
-    self.myRoommateVCType = myRoommateVCType
+  init(_ vcType: MyPageVCTypes.MyRoommateVCType) {
+    self.vcType = vcType
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -35,7 +35,7 @@ final class MyRoommateViewController: BaseViewController {
     super.loadView()
     
     // 화면 최초 접속 이벤트
-    viewModel.input.loadViewObserver.onNext(myRoommateVCType)
+    viewModel.input.loadViewObserver.onNext(vcType)
   }
   
   // MARK: - Setup
@@ -44,7 +44,7 @@ final class MyRoommateViewController: BaseViewController {
     super.setupStyles()
 
     view.backgroundColor = .idorm_gray_100
-    switch myRoommateVCType {
+    switch vcType {
     case .like:
       navigationItem.title = "좋아요한 룸메"
     case .dislike:
@@ -113,14 +113,14 @@ extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
     ) as? MyRoommateCell else {
       return UITableViewCell()
     }
-    cell.setupMatchingInfomation(from: viewModel.matchingMembers[indexPath.row])
+    cell.setupMatchingInfomation(from: viewModel.members[indexPath.row])
     cell.selectionStyle = .none
     return cell
   }
   
   // Number Of Cells
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return viewModel.matchingMembers.count
+    return viewModel.members.count
   }
   
   // Cell Height
@@ -140,8 +140,8 @@ extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let bottomAlertType: MyPageBottomAlertVCType
-    if myRoommateVCType == .like {
+    let bottomAlertType: MyPageVCTypes.MyPageBottomAlertVCType
+    if vcType == .like {
       bottomAlertType = .like
     } else {
       bottomAlertType = .dislike
@@ -149,11 +149,11 @@ extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
     let viewController = MyPageBottomAlertViewController(bottomAlertType)
     presentPanModal(viewController)
     
-    let matchingMember = viewModel.matchingMembers[indexPath.row]
+    let matchingMember = viewModel.members[indexPath.row]
     
     // 멤버 삭제 버튼 클릭 이벤트
     viewController.deleteButton.rx.tap
-      .map { [unowned self] in (self.myRoommateVCType, matchingMember) }
+      .map { [unowned self] in (self.vcType, matchingMember) }
       .bind(to: viewModel.input.deleteButtonTapped)
       .disposed(by: disposeBag)
     

@@ -32,8 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     UITabBar.appearance().standardAppearance = tabBarAppearance
     
     if TokenStorage.instance.hasToken() {
-      MemberService.instance.retrieveMyInformation()
-      OnboardingService.instance.retrieveMyOnboarding()
+      SharedAPI.instance.retrieveMyInformation()
+      SharedAPI.instance.retrieveMyOnboarding()
     }
     
     return true

@@ -105,23 +105,22 @@ final class OnboardingDetailViewController: BaseViewController {
     
     switch vcType {
     case .initilize:
-      
       // 뒤로 가기 버튼 이벤트
       floatyBottomView.skipButton.rx.tap
-        .bind(to: viewModel.input.backButtonTapped)
+        .bind(to: viewModel.input.backButtonDidTap)
         .disposed(by: disposeBag)
       
     case .update:
-      
       // 정보 수정 버튼 이벤트
       floatyBottomView.skipButton.rx.tap
-        .bind(to: viewModel.input.correctionButtonTapped)
+        .bind(to: viewModel.input.correctionButtonDidTap)
         .disposed(by: disposeBag)
     }
 
     // 완료 버튼 이벤트
     floatyBottomView.confirmButton.rx.tap
-      .bind(to: viewModel.input.confirmButtonTapped)
+      .map { [unowned self] in return self.member }
+      .bind(to: viewModel.input.confirmButtonDidTap)
       .disposed(by: disposeBag)
 
     // MARK: - Output
@@ -142,22 +141,19 @@ final class OnboardingDetailViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-//    // 애니메이션 시작
-//    viewModel.output.startAnimation
-//      .bind(onNext: { [weak self] in
-//        self?.indicator.startAnimating()
-//        self?.view.isUserInteractionEnabled = false
-//      })
-//      .disposed(by: disposeBag)
-//
-//    // 애니메이션 종료
-//    viewModel.output.stopAnimation
-//      .bind(onNext: { [weak self] in
-//        self?.indicator.stopAnimating()
-//        self?.view.isUserInteractionEnabled = true
-//      })
-//      .disposed(by: disposeBag)
-
+    // 인디케이터 제어
+    viewModel.output.indicatorState
+      .bind(onNext: { [weak self] in
+        if $0 {
+          self?.indicator.startAnimating()
+          self?.view.isUserInteractionEnabled = false
+        } else {
+          self?.indicator.stopAnimating()
+          self?.view.isUserInteractionEnabled = true
+        }
+      })
+      .disposed(by: disposeBag)
+    
     // 최초 저장 완료 후 메인 홈으로 이동
     viewModel.output.showTabBarVC
       .bind(onNext: { [weak self] in

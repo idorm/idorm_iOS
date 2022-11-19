@@ -71,7 +71,7 @@ class MatchingViewController: BaseViewController {
     
     // 필터버튼 클릭
     filterButton.rx.tap
-      .bind(to: viewModel.input.filterButtonObserver)
+      .bind(to: viewModel.input.filterButtonDidTap)
       .disposed(by: disposeBag)
     
     // 취소버튼 클릭
@@ -80,7 +80,7 @@ class MatchingViewController: BaseViewController {
       .map { [unowned self] in
         cardStack.swipe(.left, animated: true)
       }
-      .bind(to: viewModel.input.cancelButtonObserver)
+      .bind(to: viewModel.input.cancelButtonDidTap)
       .disposed(by: disposeBag)
     
     // 하트버튼 클릭
@@ -89,7 +89,7 @@ class MatchingViewController: BaseViewController {
       .map { [unowned self] in
         cardStack.swipe(.right, animated: true)
       }
-      .bind(to: viewModel.input.heartButtonObserver)
+      .bind(to: viewModel.input.heartButtonDidTap)
       .disposed(by: disposeBag)
     
     // 백버튼 클릭
@@ -98,7 +98,7 @@ class MatchingViewController: BaseViewController {
       .map { [unowned self] in
         cardStack.undoLastSwipe(animated: true)
       }
-      .bind(to: viewModel.input.backButtonObserver)
+      .bind(to: viewModel.input.backButtonDidTap)
       .disposed(by: disposeBag)
         
     // MARK: - Output
@@ -130,7 +130,7 @@ class MatchingViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     // FilterVC 보여주기
-    viewModel.output.showFilterVC
+    viewModel.output.pushToFilterVC
       .debug()
       .bind(onNext: { [weak self] in
         guard let self = self else { return }
@@ -140,12 +140,12 @@ class MatchingViewController: BaseViewController {
         
         // 선택 초기화 -> POP 필터VC -> 카드 다시 요청
         viewController.viewModel.output.requestCards
-          .bind(to: self.viewModel.input.resetFilterButtonTapped)
+          .bind(to: self.viewModel.input.resetFilterButtonDidTap)
           .disposed(by: self.disposeBag)
 
         // 필터링 완료 -> POP 필터VC -> 필터링 카드 요청
         viewController.viewModel.output.requestFilteredCards
-          .bind(to: self.viewModel.input.confirmFilteringButtonTapped)
+          .bind(to: self.viewModel.input.confirmFilterButtonDidTap)
           .disposed(by: self.disposeBag)
       })
       .disposed(by: disposeBag)
@@ -227,7 +227,7 @@ class MatchingViewController: BaseViewController {
         popupVC.confirmButton.rx.tapGesture()
           .skip(1)
           .map { _ in Void() }
-          .bind(to: self.viewModel.input.publicButtonTapped)
+          .bind(to: self.viewModel.input.publicButtonDidTap)
           .disposed(by: disposeBag)
         
         // 팝업창 닫기
@@ -409,10 +409,10 @@ class MatchingViewController: BaseViewController {
 // MARK: - Card Swipe
 
 extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, UIGestureRecognizerDelegate {
-  func card(from matchingMember: MatchingMember) -> SwipeCard {
+  func card(from member: MatchingModel.Member) -> SwipeCard {
     let card = SwipeCard()
     card.swipeDirections = [.left, .right]
-    card.content = MatchingCard(myInfo: matchingMember)
+    card.content = MatchingCard(member)
     card.panGestureRecognizer.addTarget(self, action: #selector(handlePanGesture))
     
     return card
@@ -462,7 +462,7 @@ extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelega
     
     if sender.state == .ended {
       // 스와이프 종료 이벤트
-      viewModel.input.didEndSwipeObserver.onNext(.none)
+      viewModel.input.siwpeDidEnd.onNext(.none)
     }
   }
 }

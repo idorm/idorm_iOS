@@ -1,10 +1,3 @@
-//
-//  UnderlinedTextView.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/08/03.
-//
-
 import UIKit
 
 class UnderlinedBackGroundView: UIView {

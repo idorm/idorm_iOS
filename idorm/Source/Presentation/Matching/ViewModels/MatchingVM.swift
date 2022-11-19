@@ -6,20 +6,20 @@ import RxCocoa
 final class MatchingViewModel: ViewModel {
   struct Input {
     // Interaction
-    let cancelButtonObserver = PublishSubject<Void>()
-    let backButtonObserver = PublishSubject<Void>()
-    let messageButtonObserver = PublishSubject<Void>()
-    let heartButtonObserver = PublishSubject<Void>()
-    let filterButtonObserver = PublishSubject<Void>()
-    let resetFilterButtonTapped = PublishSubject<Void>()
-    let confirmFilteringButtonTapped = PublishSubject<Void>()
+    let cancelButtonDidTap = PublishSubject<Void>()
+    let backButtonDidTap = PublishSubject<Void>()
+    let messageButtonDidTap = PublishSubject<Void>()
+    let heartButtonDidTap = PublishSubject<Void>()
+    let filterButtonDidTap = PublishSubject<Void>()
+    let resetFilterButtonDidTap = PublishSubject<Void>()
+    let confirmFilterButtonDidTap = PublishSubject<Void>()
     
     // Popup
-    let publicButtonTapped = PublishSubject<Void>()
+    let publicButtonDidTap = PublishSubject<Void>()
         
     // Card
     let swipeObserver = PublishSubject<MatchingType>()
-    let didEndSwipeObserver = PublishSubject<MatchingSwipeType>()
+    let siwpeDidEnd = PublishSubject<MatchingSwipeType>()
     
     let likeMemberObserver = PublishSubject<Int>()
     let dislikeMemberObserver = PublishSubject<Int>()
@@ -38,7 +38,7 @@ final class MatchingViewModel: ViewModel {
     let informationImageViewStatus = PublishSubject<MatchingImageViewType>()
     
     // Presentation
-    let showFilterVC = PublishSubject<Void>()
+    let pushToFilterVC = PublishSubject<Void>()
     let showFirstPopupVC = PublishSubject<Void>()
     let showNoSharePopupVC = PublishSubject<Void>()
     
@@ -49,7 +49,7 @@ final class MatchingViewModel: ViewModel {
     
     // Card
     let reloadCardStack = PublishSubject<Void>()
-    let matchingMembers = BehaviorRelay<[MatchingMember]>(value: [])
+    let matchingMembers = BehaviorRelay<[MatchingModel.Member]>(value: [])
   }
   
   var input = Input()
@@ -67,21 +67,23 @@ final class MatchingViewModel: ViewModel {
     // ViewDidLoad -> 매칭 초기 상태 판단
     input.viewDidLoad
       .subscribe(onNext: { [weak self] in
+        guard let self = self else { return }
         let storage = MemberInfoStorage.instance
         
         if storage.hasMatchingInfo {
           
           if storage.isPublicMatchingInfo {
-            self?.output.informationImageViewStatus.onNext(.noMatchingCardInformation)
-            self?.requestMatchingAPI()
+            self.output.informationImageViewStatus.onNext(.noMatchingCardInformation)
+            self.retrieveMemberAPI()
+            
           } else {
-            self?.output.informationImageViewStatus.onNext(.noShareState)
-            self?.output.showNoSharePopupVC.onNext(Void())
+            self.output.informationImageViewStatus.onNext(.noShareState)
+            self.output.showNoSharePopupVC.onNext(Void())
           }
           
         } else {
-          self?.output.informationImageViewStatus.onNext(.noMatchingInformation)
-          self?.output.showFirstPopupVC.onNext(Void())
+          self.output.informationImageViewStatus.onNext(.noMatchingInformation)
+          self.output.showFirstPopupVC.onNext(Void())
         }
       })
       .disposed(by: disposeBag)
@@ -95,7 +97,7 @@ final class MatchingViewModel: ViewModel {
           if filterStorage.hasFilter {
             self?.requestFilteredMemberAPI()
           } else {
-            self?.requestMatchingAPI()
+            self?.retrieveMemberAPI()
           }
           self?.output.informationImageViewStatus.onNext(.noMatchingCardInformation)
           
@@ -113,54 +115,45 @@ final class MatchingViewModel: ViewModel {
       .disposed(by: disposeBag)
     
     // 스와이프 액션 끝내기 -> 배경화면 컬러 되돌리기
-    input.didEndSwipeObserver
+    input.siwpeDidEnd
       .map { _ in Void() }
       .bind(to: output.drawBackTopBackgroundColor)
       .disposed(by: disposeBag)
     
     // 취소 버튼 클릭 -> 배경화면 컬러 변경
-    input.cancelButtonObserver
+    input.cancelButtonDidTap
       .map { MatchingType.cancel }
       .bind(to: output.onChangedTopBackgroundColor_WithTouch)
       .disposed(by: disposeBag)
     
     // 좋아요 버튼 클릭 -> 배경화면 컬러 변경
-    input.heartButtonObserver
+    input.heartButtonDidTap
       .map { MatchingType.heart }
       .bind(to: output.onChangedTopBackgroundColor_WithTouch)
       .disposed(by: disposeBag)
     
     // 필터 버튼 클릭 -> 매칭 필터 VC 전환
-    input.filterButtonObserver
-      .bind(to: output.showFilterVC)
+    input.filterButtonDidTap
+      .bind(to: output.pushToFilterVC)
       .disposed(by: disposeBag)
-    
-    // 싫어요 멤버 스와이프, 버튼 이벤트 -> 싫어요 멤버 추가 API 호출
-    input.dislikeMemberObserver
-      .bind(onNext: { [unowned self] memberId in
-        self.requestMatchingDislikedMembers_POST(memberId)
-      })
-      .disposed(by: disposeBag)
-    
-    // 좋아요 멤버 스와이프, 버튼 이벤트 -> 좋아요 멤버 추가 API 호출
-    input.likeMemberObserver
-      .bind(onNext: { [unowned self] memberId in
-        self.requestMatchingLikedMembers_POST(memberId)
-      })
-      .disposed(by: disposeBag)
-    
+
     // 공개 허용 버튼 클릭 -> 공개 요청 API 요청 후, 카드 불러오기
-    input.publicButtonTapped
-      .subscribe(onNext: { [weak self] in
-        self?.requestUpdateMatchingPublicInfoAPI(true)
+    input.publicButtonDidTap
+      .do(onNext: { [weak self] in self?.output.indicatorState.onNext(true) })
+      .flatMap { return APIService.onboardingProvider.rx.request(.modifyPublic(true)) }
+      .map(OnboardingModel.LookupOnboardingResponseModel.self)
+      .subscribe(onNext: { [weak self] response in
+        let newValue = response.data
+        MemberInfoStorage.instance.myOnboarding.accept(newValue)
+        self?.retrieveMemberAPI()
       })
       .disposed(by: disposeBag)
     
     // 필터 선택 초기화 버튼 클릭 -> 매칭 멤버 초기화
-    input.resetFilterButtonTapped
+    input.resetFilterButtonDidTap
       .subscribe(onNext: { [weak self] in
         if MemberInfoStorage.instance.isPublicMatchingInfo {
-          self?.requestMatchingAPI()
+          self?.retrieveMemberAPI()
         } else {
           self?.output.showNoSharePopupVC.onNext(Void())
         }
@@ -168,12 +161,47 @@ final class MatchingViewModel: ViewModel {
       .disposed(by: disposeBag)
     
     // 필터링 완료 버튼 클릭 -> 필터된 매칭 멤버 조회
-    input.confirmFilteringButtonTapped
+    input.confirmFilterButtonDidTap
       .subscribe(onNext: { [weak self] in
         if MemberInfoStorage.instance.isPublicMatchingInfo {
           self?.requestFilteredMemberAPI()
         } else {
           self?.output.showNoSharePopupVC.onNext(Void())
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    // MARK: - Network
+    
+    input.dislikeMemberObserver
+      .do(onNext: { [weak self] _ in self?.output.indicatorState.onNext(true) })
+      .flatMap { return APIService.matchingProvider.rx.request(.addDisliked($0)) }
+      .subscribe(onNext: { [weak self] response in
+        self?.output.indicatorState.onNext(false)
+        switch response.statusCode {
+        case 200:
+          break
+        default:
+          fatalError("멤버를 추가할 수 없습니다.")
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    // 좋아요 멤버 스와이프, 버튼 이벤트 -> 좋아요 멤버 추가 API 호출
+    input.likeMemberObserver
+      .do(onNext: { [weak self] _ in
+        self?.output.indicatorState.onNext(true)
+      })
+      .flatMap {
+        return APIService.matchingProvider.rx.request(.addLiked($0))
+      }
+      .subscribe(onNext: { [weak self] response in
+        self?.output.indicatorState.onNext(false)
+        switch response.statusCode {
+        case 200:
+          break
+        default:
+          fatalError("멤버를 추가할 수 없습니다.")
         }
       })
       .disposed(by: disposeBag)
@@ -183,41 +211,15 @@ final class MatchingViewModel: ViewModel {
 // MARK: - Network
 
 extension MatchingViewModel {
-  
-  /// 매칭 공개 여부 수정 API 요청
-  func requestUpdateMatchingPublicInfoAPI(_ isPublic: Bool) {
-    OnboardingService.shared.matchingInfoAPI_Patch(isPublic)
+  /// 매칭 멤버 조회 요청
+  func retrieveMemberAPI() {
+    APIService.matchingProvider.rx.request(.retrieve)
+      .asObservable()
       .subscribe(onNext: { [weak self] response in
-        guard let statusCode = response.response?.statusCode else { return }
-        switch statusCode {
-        case 200:
-          struct ResponseModel: Codable {
-            let data: MatchingInfo_Lookup
-          }
-          guard let data = response.data else { return }
-          let newInfo = APIService.decode(ResponseModel.self, data: data).data
-          MemberInfoStorage.instance.myOnboarding.accept(newInfo)
-          self?.requestMatchingAPI()
-        default:
-          fatalError()
-        }
-      })
-      .disposed(by: disposeBag)
-  }
-
-  /// 멤버들의 매칭 정보 불러오기 API
-  func requestMatchingAPI() {
-    output.indicatorState.onNext(true)
-    MatchingService.shared.matchingAPI()
-      .subscribe(onNext: { [unowned self] response in
-        guard let statusCode = response.response?.statusCode else { return }
-        switch statusCode {
+        guard let self = self else { return }
+        switch response.statusCode {
         case 200: // 매칭멤버 조회 완료
-          guard let data = response.data else { return }
-          struct ResponseModel: Codable {
-            let data: [MatchingMember]
-          }
-          let newMembers = APIService.decode(ResponseModel.self, data: data).data
+          let newMembers = APIService.decode(MatchingModel.MatchingResponseModel.self, data: response.data).data
           self.output.matchingMembers.accept(newMembers)
         case 204: // 매칭되는 멤버가 없습니다.
           self.output.matchingMembers.accept([])
@@ -234,61 +236,24 @@ extension MatchingViewModel {
   
   /// 필터링된 매칭 멤버 조회
   func requestFilteredMemberAPI() {
-    output.indicatorState.onNext(true)
     guard let filter = MatchingFilterStorage.shared.matchingFilterObserver.value else { return }
-    MatchingService.shared.filteredMatchingAPI(filter)
-      .subscribe(onNext: { [unowned self] response in
-        guard let statusCode = response.response?.statusCode else { return }
-        switch statusCode {
-        case 200: // 매칭 멤버 조회 완료
-          guard let data = response.data else { fatalError() }
-          struct ResponseModel: Codable {
-            let data: [MatchingMember]
-          }
-          let newMembers = APIService.decode(ResponseModel.self, data: data).data
-          self.output.matchingMembers.accept(newMembers)
-        case 204: // 매칭되는 멤버가 없습니다.
-          self.output.matchingMembers.accept([])
-        case 401: // 로그인한 멤버가 존재하지 않습니다.
-          break
-        case 409: // 매칭정보가 존재하지 않습니다.
-          break
-        default: // 서버오류
-          break
-        }
-        self.output.reloadCardStack.onNext(Void())
-        self.output.indicatorState.onNext(false)
+    
+    APIService.matchingProvider.rx.request(.retrieveFiltered(filter: filter)).asObservable()
+      .do(onNext: { [weak self] _ in
+        self?.output.indicatorState.onNext(true)
       })
-      .disposed(by: disposeBag)
-  }
-  
-  /// 좋아요 멤버 추가 API
-  func requestMatchingLikedMembers_POST(_ memberId: Int) {
-    MatchingService.shared.matchingLikedMembers_Post(memberId)
-      .subscribe(onNext: { response in
-        guard let statusCode = response.response?.statusCode else { return }
-        switch statusCode {
-        case 200: // 좋아요 멤버 추가 완료
-          break
-        default: // 서버 에러 발생
-          fatalError()
+      .subscribe(onNext: { [weak self] response in
+        switch response.statusCode {
+        case 200:
+          let members = APIService.decode(MatchingModel.MatchingResponseModel.self, data: response.data).data
+          self?.output.matchingMembers.accept(members)
+        case 204:
+          self?.output.matchingMembers.accept([])
+        default:
+          fatalError("필터링을 실패했습니다,,,")
         }
-      })
-      .disposed(by: disposeBag)
-  }
-  
-  /// 싫어요 멤버 추가 API
-  func requestMatchingDislikedMembers_POST(_ memberId: Int) {
-    MatchingService.shared.matchingDislikedMembers_Post(memberId)
-      .subscribe(onNext: { response in
-        guard let statusCode = response.response?.statusCode else { return }
-        print(statusCode)
-        switch statusCode {
-        case 200: // 싫어요 멤버 추가 완료
-          break
-        default: // 서버 에러 발생
-          fatalError()
-        }
+        self?.output.reloadCardStack.onNext(Void())
+        self?.output.indicatorState.onNext(false)
       })
       .disposed(by: disposeBag)
   }

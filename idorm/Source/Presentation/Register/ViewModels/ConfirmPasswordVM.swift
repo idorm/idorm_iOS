@@ -91,42 +91,27 @@ final class ConfirmPasswordViewModel: ViewModel {
         .bind(to: output.pushToConfirmNicknameVC)
         .disposed(by: disposeBag)
       
-    case .findPW:
-      break
-      
-    case .updatePW:
-      break
+    case .findPW, .updatePW:
+      // 비밀번호 변경 Flow일 때, -> LoginVC로 이동
+      input.confirmButtonTapped
+        .map { [weak self] in
+          let email = Logger.instance.email ?? ""
+          let password = self?.passwordText ?? ""
+          return (email, password)
+        }
+        .flatMap { APIService.memberProvider.rx.request(.changePassword(id: $0.0, pw: $0.1)) }
+        .subscribe(onNext: { [weak self] response in
+          switch response.statusCode {
+          case 200:
+            self?.output.showErrorPopupVC.onNext("비밀번호가 변경 되었습니다.")
+            self?.output.showLoginVC.onNext(Void())
+          case 400:
+            self?.output.showErrorPopupVC.onNext("입력은 필수입니다.")
+          default:
+            fatalError("비밀번호 변경 실패했습니다,,,")
+          }
+        })
+        .disposed(by: disposeBag)
     }
   }
-}
-
-// MARK: - Network
-
-extension ConfirmPasswordViewModel {
-
-  /// 비밀번호 변경 요청 API
-  func changePasswordAPI() {
-    guard let email = Logger.instance.email else { return }
-    MemberService.instance.changePasswordAPI(email: email, password: passwordText)
-      .subscribe(onNext: { [weak self] response in
-        guard let statusCode = response.response?.statusCode else { return }
-        switch statusCode {
-        case 200:
-          self?.output.showErrorPopupVC.onNext("비밀번호가 변경 되었습니다.")
-          self?.output.showLoginVC.onNext(Void())
-        case 400:
-          self?.output.showErrorPopupVC.onNext("입력은 필수입니다.")
-        case 401:
-          self?.output.showErrorPopupVC.onNext("등록되지 않은 이메일입니다.")
-        case 404:
-          self?.output.showErrorPopupVC.onNext("비밀번호를 변경할 멤버를 찾을 수 없습니다.")
-        case 500:
-          self?.output.showErrorPopupVC.onNext("Member 비밀번호 변경 중 서버 에러 발생")
-        default:
-          fatalError()
-        }
-      })
-      .disposed(by: disposeBag)
-  }
-  
 }

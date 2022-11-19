@@ -4,16 +4,22 @@ import RxCocoa
 final class MyRoommateViewModel: ViewModel {
   struct Input {
     // LifeCycle
-    let loadViewObserver = PublishSubject<MyRoommateVCType>()
+    let loadViewObserver = PublishSubject<MyPageVCTypes.MyRoommateVCType>()
+    
+    // Request
+    let requestRetrieveLikeAPI = PublishSubject<Void>()
+    let requestRetrieveDislikeAPI = PublishSubject<Void>()
+    let requestDeleteLikeAPI = PublishSubject<MatchingModel.Member>()
+    let requestDeleteDislikeAPI = PublishSubject<MatchingModel.Member>()
     
     // Interaction
-    let deleteButtonTapped = PublishSubject<(MyRoommateVCType, MatchingMember)>()
+    let deleteButtonTapped = PublishSubject<(MyPageVCTypes.MyRoommateVCType, MatchingModel.Member)>()
     let reportButtonTapped = PublishSubject<Void>()
   }
   
   struct Output {
     // State
-    let matchingMembers = BehaviorRelay<[MatchingMember]>(value: [])
+    let matchingMembers = BehaviorRelay<[MatchingModel.Member]>(value: [])
     
     // Presentation
     let dismissAlertVC = PublishSubject<Void>()
@@ -27,7 +33,7 @@ final class MyRoommateViewModel: ViewModel {
   var output = Output()
   var disposeBag = DisposeBag()
   
-  var matchingMembers: [MatchingMember] { return output.matchingMembers.value }
+  var members: [MatchingModel.Member] { return output.matchingMembers.value }
   
   init() {
     bind()
@@ -38,101 +44,105 @@ final class MyRoommateViewModel: ViewModel {
     // 화면 최초 접속 -> 멤버 조회 요청
     input.loadViewObserver
       .subscribe(onNext: { [weak self] in
+        switch $0 {
+        case .dislike:
+          self?.input.requestRetrieveDislikeAPI.onNext(Void())
+        case .like:
+          self?.input.requestRetrieveLikeAPI.onNext(Void())
+        }
+      })
+      .disposed(by: disposeBag)
+        
+    // 삭제 버튼 클릭 -> 특정 멤버 삭제 API
+    input.deleteButtonTapped
+      .subscribe(onNext: { [weak self] in
+        switch $0.0 {
+        case .like:
+          self?.input.requestDeleteLikeAPI.onNext($0.1)
+        case .dislike:
+          self?.input.requestDeleteDislikeAPI.onNext($0.1)
+        }
+      })
+      .disposed(by: disposeBag)
+        
+    // 좋아요 한 멤버 요청
+    input.requestRetrieveLikeAPI
+      .do(onNext: { [weak self] in
         self?.output.indicatorState.onNext(true)
-        self?.requestLookupMatchingMembers($0)
+      })
+      .flatMap { APIService.matchingProvider.rx.request(.retrieveLiked) }
+      .subscribe(onNext: { [weak self] response in
+        switch response.statusCode {
+        case 200:
+          let members = APIService.decode(MatchingModel.MatchingResponseModel.self, data: response.data).data
+          self?.output.matchingMembers.accept(members)
+          self?.output.reloadData.onNext(Void())
+        case 204:
+          self?.output.matchingMembers.accept([])
+          self?.output.reloadData.onNext(Void())
+        default:
+          fatalError("좋아요한 멤버를 조회하지 못했습니다,,,")
+        }
+        self?.output.indicatorState.onNext(false)
+        self?.output.dismissAlertVC.onNext(Void())
       })
       .disposed(by: disposeBag)
     
-    input.deleteButtonTapped
-      .subscribe(onNext: { [weak self] in
-        self?.requestRemoveMatchingMember(type: $0.0, matchingMember: $0.1)
+    // 싫어요 한 멤버 요청
+    input.requestRetrieveDislikeAPI
+      .do(onNext: { [weak self] in
+        self?.output.indicatorState.onNext(true)
+      })
+      .flatMap { APIService.matchingProvider.rx.request(.retrieveDisliked) }
+      .subscribe(onNext: { [weak self] response in
+        switch response.statusCode {
+        case 200:
+          let members = APIService.decode(MatchingModel.MatchingResponseModel.self, data: response.data).data
+          self?.output.matchingMembers.accept(members)
+          self?.output.reloadData.onNext(Void())
+        case 204:
+          self?.output.matchingMembers.accept([])
+          self?.output.reloadData.onNext(Void())
+        default:
+          fatalError("좋아요한 멤버를 조회하지 못했습니다,,,")
+        }
+        self?.output.indicatorState.onNext(false)
+        self?.output.dismissAlertVC.onNext(Void())
+      })
+      .disposed(by: disposeBag)
+    
+    // 좋아요한 멤버 삭제 요청
+    input.requestDeleteLikeAPI
+      .do(onNext: { [weak self] _ in
+        self?.output.indicatorState.onNext(true)
+      })
+      .flatMap { APIService.matchingProvider.rx.request(.deleteLiked($0.memberId)) }
+      .subscribe(onNext: { [weak self] response in
+        switch response.statusCode {
+        case 200:
+          self?.input.requestRetrieveLikeAPI.onNext(Void())
+        default:
+          fatalError("멤버를 삭제하지 못했습니다...")
+        }
+        self?.output.indicatorState.onNext(false)
+      })
+      .disposed(by: disposeBag)
+    
+    // 좋아요한 멤버 삭제 요청
+    input.requestDeleteDislikeAPI
+      .do(onNext: { [weak self] _ in
+        self?.output.indicatorState.onNext(true)
+      })
+      .flatMap { APIService.matchingProvider.rx.request(.deleteDisliked($0.memberId)) }
+      .subscribe(onNext: { [weak self] response in
+        switch response.statusCode {
+        case 200:
+          self?.input.requestRetrieveDislikeAPI.onNext(Void())
+        default:
+          fatalError("멤버를 삭제하지 못했습니다...")
+        }
+        self?.output.indicatorState.onNext(false)
       })
       .disposed(by: disposeBag)
   }
 }
-
-// MARK: - Network
-
-extension MyRoommateViewModel {
-  
-  /// 좋아요 & 싫어요 한 멤버를 조회합니다.
-  func requestLookupMatchingMembers(_ type: MyRoommateVCType) {
-    struct ResponseModel: Codable {
-      let data: [MatchingMember]
-    }
-    switch type {
-    case .like:
-      MatchingService.shared.matchingLikedMembers_GET()
-        .subscribe(onNext: { [weak self] response in
-          guard let statusCode = response.response?.statusCode else { return }
-          switch statusCode {
-          case 200:
-            guard let data = response.data else { return }
-            let result = APIService.decode(ResponseModel.self, data: data).data
-            self?.output.matchingMembers.accept(result)
-            self?.output.reloadData.onNext(Void())
-          case 204:
-            self?.output.matchingMembers.accept([])
-            self?.output.reloadData.onNext(Void())
-          default:
-            fatalError()
-          }
-          self?.output.indicatorState.onNext(false)
-          self?.output.dismissAlertVC.onNext(Void())
-        })
-        .disposed(by: disposeBag)
-    case .dislike:
-      MatchingService.shared.matchingDislikedMembers_GET()
-        .subscribe(onNext: { [weak self] response in
-          guard let statusCode = response.response?.statusCode else { return }
-          switch statusCode {
-          case 200:
-            guard let data = response.data else { return }
-            let result = APIService.decode(ResponseModel.self, data: data).data
-            self?.output.matchingMembers.accept(result)
-            self?.output.reloadData.onNext(Void())
-          case 204:
-            self?.output.matchingMembers.accept([])
-            self?.output.reloadData.onNext(Void())
-          default:
-            fatalError()
-          }
-          self?.output.indicatorState.onNext(false)
-          self?.output.dismissAlertVC.onNext(Void())
-        })
-        .disposed(by: disposeBag)
-    }
-  }
-  
-  /// 좋아요 & 싫어요 한 멤버를 삭제합니다.
-  func requestRemoveMatchingMember(type: MyRoommateVCType, matchingMember: MatchingMember) {
-    output.indicatorState.onNext(true)
-    switch type {
-    case .like:
-      MatchingService.shared.matchingLikedMembers_Delete(matchingMember.memberId)
-        .subscribe(onNext: { [weak self] response in
-          guard let statusCode = response.response?.statusCode else { return }
-          switch statusCode {
-          case 200:
-            self?.requestLookupMatchingMembers(.like)
-          default:
-            fatalError()
-          }
-        })
-        .disposed(by: disposeBag)
-    case .dislike:
-      MatchingService.shared.matchingDislikedMembers_Delete(matchingMember.memberId)
-        .subscribe(onNext: { [weak self] response in
-          guard let statusCode = response.response?.statusCode else { return }
-          switch statusCode {
-          case 200:
-            self?.requestLookupMatchingMembers(.dislike)
-          default:
-            fatalError()
-          }
-        })
-        .disposed(by: disposeBag)
-    }
-  }
-}
-

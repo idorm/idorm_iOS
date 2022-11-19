@@ -70,34 +70,30 @@ final class MyPageViewController: BaseViewController {
     
     // 설정 버튼 클릭 이벤트
     gearButton.rx.tap
-      .bind(to: viewModel.input.gearButtonTapped)
+      .bind(to: viewModel.input.gearButtonDidTap)
       .disposed(by: disposeBag)
     
     // 마이페이지 버튼 클릭 이벤트
     matchingContainerView.manageMatchingImageButton.rx.tap
-      .bind(to: viewModel.input.manageButtonTapped)
+      .bind(to: viewModel.input.manageButtonDidTap)
       .disposed(by: disposeBag)
 
     // 공유 버튼 토글
     matchingContainerView.shareButton.rx.tap
-      .throttle(.seconds(1), scheduler: MainScheduler.instance)
-      .map { [unowned self] in
-        self.matchingContainerView.shareButton.isSelected.toggle()
-        return self.matchingContainerView.shareButton.isSelected
-      }
-      .bind(to: viewModel.input.shareButtonTapped)
+      .map { [unowned self] in return !self.matchingContainerView.shareButton.isSelected }
+      .bind(to: viewModel.input.shareButtonDidTap)
       .disposed(by: disposeBag)
     
     // 좋아요한 멤버 버튼 클릭 이벤트
     matchingContainerView.likedRoommateButton.rx.tap
-      .map { MyRoommateVCType.like }
-      .bind(to: viewModel.input.roommateButtonTapped)
+      .map { MyPageVCTypes.MyRoommateVCType.like }
+      .bind(to: viewModel.input.roommateButtonDidTap)
       .disposed(by: disposeBag)
     
     // 싫어요한 멤버 버튼 클릭 이벤트
     matchingContainerView.dislikedRoommateButton.rx.tap
-      .map { MyRoommateVCType.dislike }
-      .bind(to: viewModel.input.roommateButtonTapped)
+      .map { MyPageVCTypes.MyRoommateVCType.dislike }
+      .bind(to: viewModel.input.roommateButtonDidTap)
       .disposed(by: disposeBag)
     
     // MARK: - Output
@@ -113,8 +109,8 @@ final class MyPageViewController: BaseViewController {
     
     // 내 멤버 조회 완료 후 UI 업데이트
     MemberInfoStorage.instance.myInformation
-      .bind(onNext: { [unowned self] memberInfo in
-        let nickname = memberInfo.nickname
+      .bind(onNext: { [unowned self] information in
+        let nickname = information?.nickname
         self.topProfileView.nicknameLabel.text = nickname
       })
       .disposed(by: disposeBag)
@@ -132,7 +128,7 @@ final class MyPageViewController: BaseViewController {
     viewModel.output.pushToOnboardingVC
       .bind(onNext: { [weak self] in
         if MemberInfoStorage.instance.hasMatchingInfo {
-          let matchingMember = MemberInfoStorage.instance.toMatchingMemberModel
+          let matchingMember = MemberInfoStorage.instance.onboardingToMatchingMember()
           let viewController = OnboardingDetailViewController(matchingMember, vcType: .update)
           viewController.hidesBottomBarWhenPushed = true
           self?.navigationController?.pushViewController(viewController, animated: true)
@@ -141,6 +137,13 @@ final class MyPageViewController: BaseViewController {
           viewController.hidesBottomBarWhenPushed = true
           self?.navigationController?.pushViewController(viewController, animated: true)
         }
+      })
+      .disposed(by: disposeBag)
+    
+    // 공유 버튼 토클
+    viewModel.output.toggleShareButton
+      .bind(onNext: { [weak self] in
+        self?.matchingContainerView.shareButton.isSelected.toggle()
       })
       .disposed(by: disposeBag)
 
@@ -231,8 +234,8 @@ final class MyPageViewController: BaseViewController {
     } else {
       matchingContainerView.shareButton.isSelected = false
     }
-    let nickName = MemberInfoStorage.instance.myInformation.value.nickname
-    topProfileView.nicknameLabel.text = nickName
+    guard let myInformation = MemberInfoStorage.instance.myInformation.value else { return }
+    topProfileView.nicknameLabel.text = myInformation.nickname
   }
 }
 

@@ -13,8 +13,8 @@ final class MyRoommateCell: UITableViewCell {
   
   // MARK: - Setup
   
-  func setupMatchingInfomation(from info: MatchingMember) {
-    let matchingCard = MatchingCard(myInfo: info)
+  func setupMatchingInfomation(from member: MatchingModel.Member) {
+    let matchingCard = MatchingCard(member)
     self.matchingCard = matchingCard
     setupStyles()
     setupLayout()

@@ -24,7 +24,7 @@ final class ChangeNicknameViewController: BaseViewController {
   }
   
   private let maxLengthLabel = UILabel().then {
-    $0.text = "/ 9 pt"
+    $0.text = "/ 8 pt"
     $0.textColor = .idorm_gray_300
     $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
   }
@@ -35,6 +35,7 @@ final class ChangeNicknameViewController: BaseViewController {
     $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
   }
   
+  private let indicator = UIActivityIndicatorView()
   private let viewModel = ChangeNicknameViewModel()
   
   // MARK: - Setup
@@ -50,7 +51,7 @@ final class ChangeNicknameViewController: BaseViewController {
   override func setupLayouts() {
     super.setupLayouts()
     
-    [backgroundView, mainLabel, maxLengthLabel, textField, confirmButton, currentLenghtLabel]
+    [backgroundView, mainLabel, maxLengthLabel, textField, confirmButton, currentLenghtLabel, indicator]
       .forEach { view.addSubview($0) }
   }
   
@@ -89,6 +90,10 @@ final class ChangeNicknameViewController: BaseViewController {
       make.centerY.equalTo(maxLengthLabel)
       make.trailing.equalTo(maxLengthLabel.snp.leading).offset(-4)
     }
+    
+    indicator.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+    }
   }
   
   // MARK: - Bind
@@ -103,7 +108,7 @@ final class ChangeNicknameViewController: BaseViewController {
       .orEmpty
       .scan("") { [unowned self] previous, new -> String in
         let length: String
-        if new.count > 9 {
+        if new.count > 8 {
           length = previous
         } else if new.count < 2 {
           self.confirmButton.isEnabled = false
@@ -134,9 +139,15 @@ final class ChangeNicknameViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     // 완료 버튼 활성 & 비활성
-    viewModel.output.isEnableInteraction
-      .bind(onNext: { [unowned self] in
-        self.confirmButton.isEnabled = $0
+    viewModel.output.indicatorState
+      .bind(onNext: { [weak self] in
+        if $0 {
+          self?.indicator.startAnimating()
+          self?.view.isUserInteractionEnabled = false
+        } else {
+          self?.indicator.stopAnimating()
+          self?.view.isUserInteractionEnabled = true
+        }
       })
       .disposed(by: disposeBag)
   }

@@ -1,4 +1,4 @@
-struct MatchingFilter {
+struct MatchingFilter: Codable {
   var dormNum: Dormitory
   var period: JoinPeriod
   var isAllowedFood: Bool

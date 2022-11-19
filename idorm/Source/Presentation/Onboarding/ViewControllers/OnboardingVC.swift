@@ -697,6 +697,14 @@ final class OnboardingViewController: BaseViewController {
         self?.navigationController?.popToRootViewController(animated: true)
       })
       .disposed(by: disposeBag)
+    
+    // OnboardingDetailVC로 이동
+    viewModel.output.pushToOnboardingDetailVC
+      .bind(onNext: { [weak self] in
+        let viewController = OnboardingDetailViewController($0, vcType: .initilize)
+        self?.navigationController?.pushViewController(viewController, animated: true)
+      })
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers

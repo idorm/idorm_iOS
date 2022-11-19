@@ -16,12 +16,12 @@ final class MyPageBottomAlertViewController: BaseViewController {
   private var xMarkButton: UIButton!
   private let indicator = UIActivityIndicatorView()
   
-  private let myPageBottomAlertVCType: MyPageBottomAlertVCType
+  private let vcType: MyPageVCTypes.MyPageBottomAlertVCType
   
   // MARK: - LifeCycle
   
-  init(_ myPageBottomAlertVCType: MyPageBottomAlertVCType) {
-    self.myPageBottomAlertVCType = myPageBottomAlertVCType
+  init(_ vcType: MyPageVCTypes.MyPageBottomAlertVCType) {
+    self.vcType = vcType
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -38,7 +38,7 @@ final class MyPageBottomAlertViewController: BaseViewController {
   
   private func setupButtons() {
     let deleteButton: UIButton
-    switch myPageBottomAlertVCType {
+    switch vcType {
     case .dislike:
       deleteButton = BottomAlertUtilities.getBasicButton(title: "싫어요한 룸메에서 삭제", image: UIImage(named: "trash"))
     case .like:
@@ -100,11 +100,11 @@ extension MyPageBottomAlertViewController: PanModalPresentable {
   var panScrollable: UIScrollView? { return nil }
   
   var shortFormHeight: PanModalHeight {
-    return PanModalHeight.contentHeight(CGFloat(myPageBottomAlertVCType.height))
+    return PanModalHeight.contentHeight(CGFloat(vcType.height))
   }
   
   var longFormHeight: PanModalHeight {
-    return PanModalHeight.contentHeight(CGFloat(myPageBottomAlertVCType.height))
+    return PanModalHeight.contentHeight(CGFloat(vcType.height))
   }
 }
 

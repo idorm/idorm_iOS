@@ -7,9 +7,9 @@ final class OnboardingDetailViewModel: ViewModel {
   
   struct Input {
     // Interaction
-    let backButtonTapped = PublishSubject<Void>()
-    let correctionButtonTapped = PublishSubject<Void>()
-    let confirmButtonTapped = PublishSubject<Void>()
+    let backButtonDidTap = PublishSubject<Void>()
+    let correctionButtonDidTap = PublishSubject<Void>()
+    let confirmButtonDidTap = PublishSubject<MatchingModel.Member>()
   }
   
   struct Output {
@@ -33,61 +33,45 @@ final class OnboardingDetailViewModel: ViewModel {
     bind()
   }
   
+  // MARK: - Bind
+  
   func bind() {
     
     // 뒤로가기 -> 이전 화면 돌아가기
-    input.backButtonTapped
+    input.backButtonDidTap
       .bind(to: output.popVC)
       .disposed(by: disposeBag)
     
     // 정보 수정 버튼 클릭 -> 온보딩 페이지 이동
-    input.correctionButtonTapped
+    input.correctionButtonDidTap
       .bind(to: output.showOnboardingVC)
       .disposed(by: disposeBag)
     
     switch vcType {
     case .initilize:
-      
-      // 완료 버튼 이벤트 -> 온보딩 최초 저장
-      input.confirmButtonTapped
-        .bind(onNext: { [weak self] in
-          self?.matchingInfoAPI()
+      // 완료 버튼 이벤트 -> 온보딩 최초 저장API 호출
+      input.confirmButtonDidTap
+        .do(onNext: { [weak self] _ in
+          self?.output.indicatorState.onNext(true)
+        })
+        .map { ModelTransformer.instance.toOnboardingRequestModel(from: $0) }
+        .flatMap {
+          return APIService.onboardingProvider.rx.request(.save($0))
+        }
+        .map(OnboardingModel.LookupOnboardingResponseModel.self)
+        .subscribe(onNext: { [weak self] response in
+          self?.output.indicatorState.onNext(false)
+          MemberInfoStorage.instance.myOnboarding.accept(response.data)
+          self?.output.showTabBarVC.onNext(Void())
         })
         .disposed(by: disposeBag)
-    case .update:
       
+    case .update:
       // 완료 버튼 이벤트 -> 뒤로가기
-      input.confirmButtonTapped
+      input.confirmButtonDidTap
+        .map { _ in Void() }
         .bind(to: output.popVC)
         .disposed(by: disposeBag)
     }
-  }
-}
-
-// MARK: - Network
-
-extension OnboardingDetailViewModel {
-  
-  func matchingInfoAPI() {
-//    OnboardingService.shared.matchingInfoAPI_Post(myinfo: matchingInfo)
-//      .subscribe(onNext: { [weak self] response in
-//        self?.output.stopAnimation.onNext(Void())
-//        guard let statusCode = response.response?.statusCode else { fatalError("Status Code is missing") }
-//        switch statusCode {
-//        case 200:
-//          self?.output.showTabBarVC.onNext(Void())
-//        case 401:
-//          self?.output.showPopupVC.onNext("로그인한 멤버가 존재하지 않습니다.")
-//        case 404:
-//          self?.output.showPopupVC.onNext("멤버를 찾을 수 없습니다.")
-//        case 409:
-//          self?.output.showPopupVC.onNext("이미 등록된 매칭 정보가 있습니다.")
-//        case 500:
-//          self?.output.showPopupVC.onNext("Matching save 중 서버 에러 발생")
-//        default:
-//          break
-//        }
-//      })
-//      .disposed(by: disposeBag)
   }
 }

@@ -8,7 +8,7 @@ struct MemberModel: Codable {
     var profilePhotoFileName: String?
     var profilePhotoUrl: String?
     let matchingInfoId: Int
-    let loginToken: String
+    let loginToken: String?
   }
 }
 
@@ -18,6 +18,11 @@ extension MemberModel {
   
   /// 로그인 API의 Response Model 입니다.
   struct LoginResponseModel: Codable {
+    let data: MyInformation
+  }
+  
+  /// 멤버 단건 조회 API의 Response Model입니다.
+  struct RetrieveMemberResponseModel: Codable {
     let data: MyInformation
   }
 }

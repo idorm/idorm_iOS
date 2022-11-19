@@ -1,12 +1,6 @@
-//
-//  WritingViewController.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/17.
-//
+import UIKit
 
 import SnapKit
-import UIKit
 import RSKPlaceholderTextView
 import Photos
 import RxSwift

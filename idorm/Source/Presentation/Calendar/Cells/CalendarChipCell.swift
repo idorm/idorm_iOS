@@ -1,17 +1,13 @@
-//
-//  CalendarChipCollectionViewCell.swift
-//  idorm
-//
-//  Created by 김응철 on 2022/07/27.
-//
+import UIKit
 
 import SnapKit
-import UIKit
 import RxCocoa
 import RxSwift
 
-class CalendarChipCell: UICollectionViewCell {
+final class CalendarChipCell: UICollectionViewCell {
+  
   // MARK: - Properties
+  
   lazy var containerView: UIView = {
     let view = UIView()
     view.layer.cornerRadius = 15

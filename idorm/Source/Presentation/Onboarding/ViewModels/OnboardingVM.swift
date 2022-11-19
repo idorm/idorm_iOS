@@ -1,3 +1,5 @@
+import Moya
+import RxMoya
 import RxSwift
 import RxCocoa
 
@@ -174,10 +176,20 @@ final class OnboardingViewModel: ViewModel {
     // OnboardingVCType 별 이벤트 분기처리
     switch vcType {
     case .update:
-      // 완료 버튼 클릭 -> 온보딩 현재 정보 수정하기
+      // 완료 버튼 클릭 -> 온보딩 수정 API 요청
       input.didTapConfirmButton
-        .bind(onNext: { [unowned self] in
-//          self.requestModifyMatchingInfo(self.currentMatchingInfo)
+        .map { [unowned self] in
+          return self.currentOnboarding
+        }
+        .flatMap { [weak self] in
+          self?.output.indicatorState.onNext(true)
+          return APIService.onboardingProvider.rx.request(.modify($0))
+        }
+        .map(OnboardingModel.LookupOnboardingResponseModel.self)
+        .subscribe(onNext: { [weak self] response in
+          self?.output.indicatorState.onNext(false)
+          MemberInfoStorage.instance.myOnboarding.accept(response.data)
+          self?.output.pushToRootVC.onNext(Void())
         })
         .disposed(by: disposeBag)
       
@@ -192,10 +204,8 @@ final class OnboardingViewModel: ViewModel {
     case .mainPage_FirstTime:
       // 완료 버튼 클릭 -> 온보딩 디테일 VC 보여주기
       input.didTapConfirmButton
-        .map { [weak self] in
-          guard let self = self else { return }
-          return OnboardingModel.RequestModel.toMemberModel(from: self.currentOnboarding)
-        }
+        .map { [unowned self] in self.currentOnboarding }
+        .map { ModelTransformer.instance.toMemberModel(from: $0) }
         .bind(to: output.pushToOnboardingDetailVC)
         .disposed(by: disposeBag)
       
@@ -210,10 +220,8 @@ final class OnboardingViewModel: ViewModel {
     case .firstTime:
       // 완료 버튼 클릭 -> 온보딩 디테일 VC 보여주기
       input.didTapConfirmButton
-        .map { [weak self] in
-          guard let self = self else { return }
-          return OnboardingModel.RequestModel.toMemberModel(from: self.currentOnboarding)
-        }
+        .map { [unowned self] in self.currentOnboarding }
+        .map { ModelTransformer.instance.toMemberModel(from: $0) }
         .bind(to: output.pushToOnboardingDetailVC)
         .disposed(by: disposeBag)
       
@@ -230,32 +238,4 @@ final class OnboardingViewModel: ViewModel {
     output.myOnboarding.accept(.initialValue())
     state.confirmVerifierObserver.accept(.initialValue())
   }
-}
-
-// MARK: - Network
-
-extension OnboardingViewModel {
-//
-//  /// 현재 매칭 정보를 수정하는 API입니다.
-//  func requestModifyMatchingInfo(_ from: MatchingInfo) {
-//    output.indicatorState.onNext(true)
-//    OnboardingService.shared.matchingInfoAPI_Put(from)
-//      .subscribe(onNext: { [weak self] response in
-//        struct ResponseModel: Codable {
-//          let data: MatchingInfo_Lookup
-//        }
-//        guard let statusCode = response.response?.statusCode else { return }
-//        switch statusCode {
-//        case 200:
-//          guard let data = response.data else { return }
-//          let newInfo = APIService.decode(ResponseModel.self, data: data).data
-//          MemberInfoStorage.instance.myOnboarding.accept(newInfo)
-//          self?.output.pushToRootVC.onNext(Void())
-//        default:
-//          fatalError()
-//        }
-//        self?.output.indicatorState.onNext(false)
-//      })
-//      .disposed(by: disposeBag)
-//  }
 }

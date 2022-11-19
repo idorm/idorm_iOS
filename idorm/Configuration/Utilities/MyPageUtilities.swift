@@ -79,3 +79,15 @@ extension MyPageUtilities {
     return line
   }
 }
+
+// MARK: - ChangeNicknameVC
+
+extension MyPageUtilities {
+  static func descriptionLabel(text: String) -> UILabel {
+    return UIFactory.label(
+      text: text,
+      color: .idorm_gray_400,
+      font: .init(name: MyFonts.medium.rawValue, size: 12)
+    )
+  }
+}

@@ -21,3 +21,11 @@ struct MatchingModel: Codable {
     var memberEmail: String
   }
 }
+
+// MARK: - ResponseModel
+
+extension MatchingModel {
+  struct MatchingResponseModel: Codable {
+    let data: [Member]
+  }
+}

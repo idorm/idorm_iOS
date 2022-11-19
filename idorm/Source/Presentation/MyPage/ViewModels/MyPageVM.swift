@@ -4,10 +4,10 @@ import RxCocoa
 final class MyPageViewModel: ViewModel {
   struct Input {
     // UI
-    let gearButtonTapped = PublishSubject<Void>()
-    let shareButtonTapped = PublishSubject<Bool>()
-    let manageButtonTapped = PublishSubject<Void>()
-    let roommateButtonTapped = PublishSubject<MyRoommateVCType>()
+    let gearButtonDidTap = PublishSubject<Void>()
+    let shareButtonDidTap = PublishSubject<Bool>()
+    let manageButtonDidTap = PublishSubject<Void>()
+    let roommateButtonDidTap = PublishSubject<MyPageVCTypes.MyRoommateVCType>()
     
     // LifeCycle
     let viewWillAppearObserver = PublishSubject<Void>()
@@ -16,11 +16,12 @@ final class MyPageViewModel: ViewModel {
   struct Output {
     // Presentation
     let pushToManageMyInfoVC = PublishSubject<Void>()
-    let pushToMyRoommateVC = PublishSubject<MyRoommateVCType>()
+    let pushToMyRoommateVC = PublishSubject<MyPageVCTypes.MyRoommateVCType>()
     let pushToOnboardingVC = PublishSubject<Void>()
     
     // UI
     let indicatorState = PublishSubject<Bool>()
+    let toggleShareButton = PublishSubject<Void>()
   }
   
   var input = Input()
@@ -32,54 +33,32 @@ final class MyPageViewModel: ViewModel {
   }
   
   func bind() {
-    
+
     // 설정 버튼 클릭 -> 내 정보 관리 페이지로 이동
-    input.gearButtonTapped
+    input.gearButtonDidTap
       .bind(to: output.pushToManageMyInfoVC)
       .disposed(by: disposeBag)
     
     // 공유 버튼 클릭 -> 매칭 공개 여부 수정 API 요청
-    input.shareButtonTapped
-      .subscribe(onNext: { [weak self] in
-        self?.requestUpdateMatchingPublicInfoAPI($0)
+    input.shareButtonDidTap
+      .do(onNext: { [weak self] _ in self?.output.indicatorState.onNext(true) })
+      .flatMap { return APIService.onboardingProvider.rx.request(.modifyPublic($0)) }
+      .map(OnboardingModel.LookupOnboardingResponseModel.self)
+      .subscribe(onNext: { [weak self] response in
+        MemberInfoStorage.instance.myOnboarding.accept(response.data)
+        self?.output.toggleShareButton.onNext(Void())
+        self?.output.indicatorState.onNext(false)
       })
       .disposed(by: disposeBag)
     
     // 좋아요한 룸메 & 싫어요한 룸메 버튼 클릭 -> 룸메이트 관리 페이지 이동
-    input.roommateButtonTapped
+    input.roommateButtonDidTap
       .bind(to: output.pushToMyRoommateVC)
       .disposed(by: disposeBag)
     
     // 마이페이지 버튼 클릭 -> 온보딩 수정 페이지로 이동
-    input.manageButtonTapped
+    input.manageButtonDidTap
       .bind(to: output.pushToOnboardingVC)
-      .disposed(by: disposeBag)
-  }
-}
-
-// MARK: - Network
-
-extension MyPageViewModel {
-  
-  /// 매칭 공개 여부 수정 API 요청
-  func requestUpdateMatchingPublicInfoAPI(_ isPublic: Bool) {
-    output.indicatorState.onNext(true)
-    OnboardingService.shared.matchingInfoAPI_Patch(isPublic)
-      .subscribe(onNext: { [weak self] response in
-        guard let statusCode = response.response?.statusCode else { return }
-        switch statusCode {
-        case 200:
-          struct ResponseModel: Codable {
-            let data: MatchingInfo_Lookup
-          }
-          guard let data = response.data else { return }
-          let newInfo = APIService.decode(ResponseModel.self, data: data).data
-          MemberInfoStorage.instance.myOnboarding.accept(newInfo)
-        default:
-          fatalError()
-        }
-        self?.output.indicatorState.onNext(false)
-      })
       .disposed(by: disposeBag)
   }
 }
