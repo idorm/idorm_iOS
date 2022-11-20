@@ -213,6 +213,7 @@ final class MatchingViewModel: ViewModel {
 extension MatchingViewModel {
   /// 매칭 멤버 조회 요청
   func retrieveMemberAPI() {
+    output.indicatorState.onNext(true)
     APIService.matchingProvider.rx.request(.retrieve)
       .asObservable()
       .subscribe(onNext: { [weak self] response in

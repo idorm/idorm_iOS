@@ -2,7 +2,7 @@ struct OnboardingModel: Codable {
   
   /// 나의 온보딩 정보입니다.
   struct MyOnboarding: Codable {
-    let id: Int
+    let id: Int?
     var dormNum: Dormitory
     var joinPeriod: JoinPeriod
     var gender: Gender
@@ -24,24 +24,24 @@ struct OnboardingModel: Codable {
   
   /// 온보딩을 저장할 RequestModel입니다.
   struct RequestModel: Codable {
-    var dormNumber: Dormitory
-    var period: JoinPeriod
+    var dormNum: Dormitory
+    var joinPeriod: JoinPeriod
     var gender: Gender
     var age: String
-    var snoring: Bool
-    var grinding: Bool
-    var smoke: Bool
-    var allowedFood: Bool
-    var earphone: Bool
+    var isSnoring: Bool
+    var isGrinding: Bool
+    var isSmoking: Bool
+    var isAllowedFood: Bool
+    var isWearEarphones: Bool
     var wakeupTime: String
     var cleanUpStatus: String
     var showerTime: String
     var mbti: String?
     var wishText: String?
-    var chatLink: String
+    var openKakaoLink: String
     
     static func initialValue() -> RequestModel {
-      return RequestModel(dormNumber: .no1, period: .period_16, gender: .female, age: "10", snoring: false, grinding: false, smoke: false, allowedFood: false, earphone: false, wakeupTime: "", cleanUpStatus: "", showerTime: "", chatLink: "")
+      return RequestModel(dormNum: .no1, joinPeriod: .period_16, gender: .female, age: "10", isSnoring: false, isGrinding: false, isSmoking: false, isAllowedFood: false, isWearEarphones: false, wakeupTime: "", cleanUpStatus: "", showerTime: "", openKakaoLink: "")
     }
   }
 }

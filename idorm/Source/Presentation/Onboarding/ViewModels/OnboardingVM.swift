@@ -71,7 +71,7 @@ final class OnboardingViewModel: ViewModel {
       .bind(onNext: { [unowned self] dorm in
         var newValue = self.output.myOnboarding.value
         var newVerifier = self.currentConfirmVerifier
-        newValue.dormNumber = dorm
+        newValue.dormNum = dorm
         self.output.myOnboarding.accept(newValue)
         newVerifier.dorm = true
         self.state.confirmVerifierObserver.accept(newVerifier)
@@ -95,7 +95,7 @@ final class OnboardingViewModel: ViewModel {
       .bind(onNext: { [unowned self] period in
         var newValue = self.currentOnboarding
         var newVerifier = self.currentConfirmVerifier
-        newValue.period = period
+        newValue.joinPeriod = period
         self.output.myOnboarding.accept(newValue)
         newVerifier.period = true
         self.state.confirmVerifierObserver.accept(newVerifier)
@@ -108,15 +108,15 @@ final class OnboardingViewModel: ViewModel {
         var newValue = self.currentOnboarding
         switch habit {
         case .snoring:
-          newValue.snoring.toggle()
+          newValue.isSnoring.toggle()
         case .grinding:
-          newValue.grinding.toggle()
+          newValue.isGrinding.toggle()
         case .smoking:
-          newValue.smoke.toggle()
+          newValue.isSmoking.toggle()
         case .allowedFood:
-          newValue.allowedFood.toggle()
+          newValue.isAllowedFood.toggle()
         case .allowedEarphone:
-          newValue.earphone.toggle()
+          newValue.isWearEarphones.toggle()
         }
         self.output.myOnboarding.accept(newValue)
       })
@@ -150,7 +150,7 @@ final class OnboardingViewModel: ViewModel {
             newVerifier.cleanup = true
           }
         case .chatLink:
-          newValue.chatLink = contents
+          newValue.openKakaoLink = contents
           if contents == "" {
             newVerifier.chatLink = false
           } else {
@@ -181,8 +181,10 @@ final class OnboardingViewModel: ViewModel {
         .map { [unowned self] in
           return self.currentOnboarding
         }
-        .flatMap { [weak self] in
+        .do(onNext: { [weak self] _ in
           self?.output.indicatorState.onNext(true)
+        })
+        .flatMap {
           return APIService.onboardingProvider.rx.request(.modify($0))
         }
         .map(OnboardingModel.LookupOnboardingResponseModel.self)

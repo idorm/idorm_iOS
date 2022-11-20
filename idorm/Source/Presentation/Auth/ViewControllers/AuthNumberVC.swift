@@ -98,17 +98,15 @@ final class AuthNumberViewController: BaseViewController {
         } else {
           self?.textField.backgroundColor = .white
           self?.textField.isEnabled = true
+          self?.authButton.isEnabled = false
         }
       })
       .disposed(by: disposeBag)
     
-    // 인증번호 재 요청 버튼 클릭 시 타이머 재 설정 및 안내 문구 출력
+    // 타이머 재 설정
     viewModel.output.resetTimer
       .bind(onNext: { [weak self] _ in
         self?.mailTimer.restart()
-        let popupView = PopupViewController(contents: "인증번호가 재전송 되었습니다.")
-        popupView.modalPresentationStyle = .overFullScreen
-        self?.present(popupView, animated: false)
       })
       .disposed(by: disposeBag)
     
@@ -175,7 +173,7 @@ final class AuthNumberViewController: BaseViewController {
     }
     
     authButton.snp.makeConstraints { make in
-      make.trailing.equalToSuperview().inset(24)
+      make.trailing.equalToSuperview().inset(24).offset(8)
       make.centerY.equalTo(infoLabel)
     }
     

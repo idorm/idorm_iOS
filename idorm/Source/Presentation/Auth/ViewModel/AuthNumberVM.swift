@@ -109,6 +109,7 @@ extension AuthNumberViewModel {
         .asObservable()
         .subscribe(onNext: { [weak self] response in
           if response.statusCode == 200 {
+            self?.output.showPopupVC.onNext("인증번호가 재전송 되었습니다.")
             self?.output.isEnableAuthButton.onNext(false)
             self?.output.resetTimer.onNext(Void())
           } else {
@@ -122,6 +123,7 @@ extension AuthNumberViewModel {
         .asObservable()
         .subscribe(onNext: { [weak self] response in
           if response.statusCode == 200 {
+            self?.output.showPopupVC.onNext("인증번호가 재전송 되었습니다.")
             self?.output.isEnableAuthButton.onNext(false)
             self?.output.resetTimer.onNext(Void())
           } else {
