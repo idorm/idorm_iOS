@@ -15,10 +15,14 @@ final class MyRoommateViewController: BaseViewController {
   private let indicator = UIActivityIndicatorView()
   
   private lazy var tableView = UITableView(frame: .zero, style: .grouped).then {
+    $0.backgroundColor = .idorm_gray_100
     $0.register(MyRoommateCell.self, forCellReuseIdentifier: MyRoommateCell.identifier)
+    $0.bounces = false
     $0.dataSource = self
     $0.delegate = self
   }
+  
+  private var header: MyRoommateHeaderView!
   
   // MARK: - LifeCycle
   
@@ -42,7 +46,7 @@ final class MyRoommateViewController: BaseViewController {
   
   override func setupStyles() {
     super.setupStyles()
-
+    
     view.backgroundColor = .idorm_gray_100
     switch vcType {
     case .like:
@@ -72,6 +76,27 @@ final class MyRoommateViewController: BaseViewController {
   }
   
   // MARK: - Bind
+  
+  private func bindHeader() {
+    
+    // 최신순 버튼 클릭
+    header.lastestButton.rx.tap
+      .map { [weak self] in
+        self?.header.lastestButton.isSelected = true
+        self?.header.pastButton.isSelected = false
+      }
+      .bind(to: viewModel.input.lastestButtonDidTap)
+      .disposed(by: disposeBag)
+    
+    // 과거순 버튼 클릭
+    header.pastButton.rx.tap
+      .map { [weak self] in
+        self?.header.lastestButton.isSelected = false
+        self?.header.pastButton.isSelected = true
+      }
+      .bind(to: viewModel.input.pastButtonDidTap)
+      .disposed(by: disposeBag)
+  }
   
   override func bind() {
     super.bind()
@@ -131,6 +156,10 @@ extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
   // Initialize Header
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let header = MyRoommateHeaderView()
+    
+    self.header = header
+    bindHeader()
+    
     return header
   }
   
@@ -139,6 +168,7 @@ extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
     return 50
   }
   
+  // didSelectCell
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let bottomAlertType: MyPageVCTypes.MyPageBottomAlertVCType
     if vcType == .like {
@@ -165,14 +195,3 @@ extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
       .disposed(by: disposeBag)
   }
 }
-
-// MARK: - Preview
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-struct MyRoommateVC_PreView: PreviewProvider {
-  static var previews: some View {
-    MyRoommateViewController(.dislike).toPreview()
-  }
-}
-#endif

@@ -16,7 +16,7 @@ final class MatchingViewModel: ViewModel {
     
     // Popup
     let publicButtonDidTap = PublishSubject<Void>()
-        
+    
     // Card
     let swipeObserver = PublishSubject<MatchingType>()
     let siwpeDidEnd = PublishSubject<MatchingSwipeType>()
@@ -136,7 +136,7 @@ final class MatchingViewModel: ViewModel {
     input.filterButtonDidTap
       .bind(to: output.pushToFilterVC)
       .disposed(by: disposeBag)
-
+    
     // 공개 허용 버튼 클릭 -> 공개 요청 API 요청 후, 카드 불러오기
     input.publicButtonDidTap
       .do(onNext: { [weak self] in self?.output.indicatorState.onNext(true) })

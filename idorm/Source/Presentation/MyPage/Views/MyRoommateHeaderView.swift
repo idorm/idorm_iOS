@@ -30,14 +30,15 @@ final class MyRoommateHeaderView: UIView {
   // MARK: - Setup
   
   private func setupStyles() {
-    backgroundColor = .clear
+    backgroundColor = .idorm_gray_100
+    lastestButton.isSelected = true
   }
   
   private func setupLayout() {
     [lastestLabel, lastestButton, pastLabel, pastButton]
       .forEach { addSubview($0) }
   }
-  
+    
   private func setupConstraints() {
     lastestLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(24)
@@ -46,16 +47,16 @@ final class MyRoommateHeaderView: UIView {
     
     lastestButton.snp.makeConstraints { make in
       make.centerY.equalToSuperview()
-      make.leading.equalTo(lastestLabel.snp.trailing).offset(4)
+      make.leading.equalTo(lastestLabel.snp.trailing).offset(8)
     }
     
     pastLabel.snp.makeConstraints { make in
-      make.leading.equalTo(lastestButton.snp.trailing).offset(12)
+      make.leading.equalTo(lastestButton.snp.trailing).offset(16)
       make.centerY.equalToSuperview()
     }
     
     pastButton.snp.makeConstraints { make in
-      make.leading.equalTo(pastLabel.snp.trailing).offset(4)
+      make.leading.equalTo(pastLabel.snp.trailing).offset(8)
       make.centerY.equalToSuperview()
     }
   }
@@ -75,18 +76,8 @@ extension MyRoommateHeaderView {
   
   private func button() -> UIButton {
     let button = UIButton()
-    var config = UIButton.Configuration.plain()
-    config.image = #imageLiteral(resourceName: "myPostButton")
-    
-    button.configurationUpdateHandler = { button in
-      switch button.state {
-      case .selected:
-        config.image = #imageLiteral(resourceName: "myPostButton_Hover")
-      default:
-        config.image = #imageLiteral(resourceName: "myPostButton")
-      }
-    }
-    button.configuration = config
+    button.setImage(#imageLiteral(resourceName: "myPostButton"), for: .normal)
+    button.setImage(#imageLiteral(resourceName: "myPostButton_Hover"), for: .selected)
     
     return button
   }
