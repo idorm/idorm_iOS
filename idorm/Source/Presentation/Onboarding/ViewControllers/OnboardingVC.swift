@@ -87,7 +87,7 @@ final class OnboardingViewController: BaseViewController {
   private let mbtiTextField = OnboardingTextField(placeholder: "입력")
   
   // MARK: - OpenChat
-  private let chatInfoLabel = OnboardingUtilities.infoLabel("룸메와 연락을 위한 개인 오픈채팅 링크를 알려주세요.", isEssential: true)
+  private let chatInfoLabel = OnboardingUtilities.infoLabel("연락을 위한 개인 오픈채팅 링크를 알려주세요.", isEssential: true)
   private let chatTextField = OnboardingTextField(placeholder: "입력")
   
   // MARK: - WishText

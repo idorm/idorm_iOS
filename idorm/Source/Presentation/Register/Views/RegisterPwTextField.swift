@@ -23,19 +23,20 @@ final class RegisterPwTextField: UIView {
     $0.isSecureTextEntry = true
   }
   
-  private let openEyesButton = UIButton().then {
+  let openEyesButton = UIButton().then {
     $0.setImage(UIImage(named: "OpenEyes"), for: .normal)
     $0.isHidden = true
   }
   
-  private let closeEyesButton = UIButton().then {
+  let closeEyesButton = UIButton().then {
     $0.setImage(UIImage(named: "CloseEyes"), for: .normal)
     $0.isHidden = true
   }
   
-  private let checkmarkButton = UIButton().then {
+  let checkmarkButton = UIButton().then {
     $0.setImage(UIImage(named: "Checkmark"), for: .normal)
     $0.isHidden = true
+    $0.isUserInteractionEnabled = false
   }
   
   private let placeholder: String
@@ -77,30 +78,6 @@ final class RegisterPwTextField: UIView {
         self?.textField.isSecureTextEntry = true
         self?.openEyesButton.isHidden = false
         self?.closeEyesButton.isHidden = true
-      })
-      .disposed(by: disposeBag)
-    
-    // 텍스트필드 이벤트 시작 -> 반응형 UI 변경
-    textField.rx.controlEvent(.editingDidBegin)
-      .bind(onNext: { [weak self] in
-        self?.layer.borderColor = UIColor.idorm_blue.cgColor
-        self?.openEyesButton.isHidden = false
-        self?.checkmarkButton.isHidden = true
-      })
-      .disposed(by: disposeBag)
-    
-    // 텍스트필드 이벤트 종료 -> 반응형 UI 변경
-    textField.rx.controlEvent(.editingDidEnd)
-      .bind(onNext: { [weak self] in
-        self?.openEyesButton.isHidden = true
-        self?.closeEyesButton.isHidden = true
-        let text = self?.textField.text ?? ""
-        if LoginUtilities.isValidPasswordFinal(pwd: text) {
-          self?.checkmarkButton.isHidden = false
-          self?.layer.borderColor = UIColor.idorm_gray_400.cgColor
-        } else {
-          self?.checkmarkButton.isHidden = true
-        }
       })
       .disposed(by: disposeBag)
   }

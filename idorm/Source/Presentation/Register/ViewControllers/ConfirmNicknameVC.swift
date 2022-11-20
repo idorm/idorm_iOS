@@ -34,7 +34,7 @@ final class ConfirmNicknameViewController: BaseViewController {
   private lazy var descriptionStack = UIStackView().then { stack in
     [minimumLengthLabel, noSpacingLabel, noSpecialSymbolLabel]
       .forEach { stack.addArrangedSubview($0) }
-    stack.axis = .horizontal
+    stack.axis = .vertical
   }
   
   private let indicator = UIActivityIndicatorView()
@@ -50,18 +50,21 @@ final class ConfirmNicknameViewController: BaseViewController {
   
   override func setupStyles() {
     super.setupStyles()
+    
     view.backgroundColor = .idorm_gray_100
   }
   
   override func setupLayouts() {
     super.setupLayouts()
+    
     view.addSubview(containerView)
-    [mainLabel, maxLengthLabel, currentLenghtLabel, confirmButton, textField, minimumLengthLabel, noSpacingLabel, noSpacingLabel]
+    [mainLabel, maxLengthLabel, currentLenghtLabel, confirmButton, textField, descriptionStack]
       .forEach { containerView.addSubview($0) }
   }
   
   override func setupConstraints() {
     super.setupConstraints()
+    
     containerView.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
       make.top.equalTo(view.safeAreaLayoutGuide).inset(24)
@@ -79,7 +82,7 @@ final class ConfirmNicknameViewController: BaseViewController {
     
     currentLenghtLabel.snp.makeConstraints { make in
       make.centerY.equalTo(maxLengthLabel)
-      make.trailing.equalTo(maxLengthLabel.snp.leading).offset(2)
+      make.trailing.equalTo(maxLengthLabel.snp.leading).offset(-4)
     }
     
     textField.snp.makeConstraints { make in
@@ -152,5 +155,17 @@ final class ConfirmNicknameViewController: BaseViewController {
         }
       })
       .disposed(by: disposeBag)
+    
+    // 회원가입 완료 페이지로 넘어가기
+    viewModel.output.pushToCompleteSignUpVC
+      .bind(onNext: { [weak self] in
+        let viewController = CompleteSignUpViewController()
+        self?.navigationController?.pushViewController(viewController, animated: true)
+      })
+      .disposed(by: disposeBag)
+  }
+  
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    view.endEditing(true)
   }
 }

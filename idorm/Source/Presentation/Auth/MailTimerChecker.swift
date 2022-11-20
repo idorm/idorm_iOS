@@ -26,7 +26,6 @@ final class MailTimerChecker {
     Observable<Int>
       .interval(.seconds(1),
                 scheduler: MainScheduler.instance)
-      .debug()
       .withUnretained(self)
       .do(onNext: { weakself, countValue in
         let elapseSeconds = Int(Date().timeIntervalSince(weakself.startTime))

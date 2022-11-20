@@ -13,10 +13,10 @@ final class ConfirmPasswordViewModel: ViewModel {
   
   struct Output {
     // UI
-    let isEnableConfirmButton = PublishSubject<Bool>()
     let verificationCount = BehaviorRelay<Bool>(value: false)
     let verificationCombine = BehaviorRelay<Bool>(value: false)
     let verificationEquality = BehaviorRelay<Bool>(value: false)
+    let verificationFinals = BehaviorRelay<Bool>(value: false)
     
     // Presentation
     let showErrorPopupVC = PublishSubject<String>()
@@ -67,7 +67,7 @@ final class ConfirmPasswordViewModel: ViewModel {
     .map {
       $0.0 && $0.1 && $0.2 ? true : false
     }
-    .bind(to: output.isEnableConfirmButton)
+    .bind(to: output.verificationFinals)
     .disposed(by: disposeBag)
     
     // 텍스트 입력 -> 비밀번호1, 2 동등성 확인
@@ -81,19 +81,28 @@ final class ConfirmPasswordViewModel: ViewModel {
     .bind(to: output.verificationEquality)
     .disposed(by: disposeBag)
     
+    // 완료 버튼 클릭 -> 조건 확인 오류 팝업
+    input.confirmButtonTapped
+      .filter { [unowned self] in self.output.verificationFinals.value == false }
+      .map { "조건을 다시 확인해주세요." }
+      .bind(to: output.showErrorPopupVC)
+      .disposed(by: disposeBag)
+    
     switch vcType {
     case .signUp:
-      // 회원가입 Flow일 때, 확인 버튼 클릭 -> ConfirmNicknameVC로 이동
+      // 회원가입 Flow일 때, 확인 버튼 클릭 -> ConfirmNicknameVC로 이동 & 오류 팝업
       input.confirmButtonTapped
-        .map { [weak self] in
+        .filter { [unowned self] in self.output.verificationFinals.value }
+        .subscribe(onNext: { [weak self] in
           Logger.instance.password = self?.passwordText ?? ""
-        }
-        .bind(to: output.pushToConfirmNicknameVC)
+          self?.output.pushToConfirmNicknameVC.onNext(Void())
+        })
         .disposed(by: disposeBag)
       
     case .findPW, .updatePW:
       // 비밀번호 변경 Flow일 때, -> LoginVC로 이동
       input.confirmButtonTapped
+        .filter { [unowned self] in self.output.verificationFinals.value }
         .map { [weak self] in
           let email = Logger.instance.email ?? ""
           let password = self?.passwordText ?? ""

@@ -14,14 +14,7 @@ final class ConfirmPasswordViewController: BaseViewController {
   }
   private let textField1 = RegisterPwTextField(placeholder: "비밀번호를 입력해주세요.")
   
-  private lazy var confirmButton = RegisterBottomButton("").then {
-    switch vcType {
-    case .signUp:
-      $0.configuration?.title = "계속하기"
-    case .updatePW, .findPW:
-      $0.configuration?.title = "변경 완료"
-    }
-  }
+  private var confirmButton: RegisterBottomButton!
   
   private let infoLabel = RegisterUtilities.infoLabel(text: "비밀번호")
   private let infoLabel2 = RegisterUtilities.infoLabel(text: "비밀번호 확인")
@@ -50,6 +43,10 @@ final class ConfirmPasswordViewController: BaseViewController {
     // 비밀번호 텍스트필드 포커싱 -> UI변경
     textField1.textField.rx.controlEvent(.editingDidBegin)
       .bind(onNext: { [weak self] in
+        self?.textField1.layer.borderColor = UIColor.idorm_blue.cgColor
+        self?.textField1.openEyesButton.isHidden = false
+        self?.textField1.closeEyesButton.isHidden = true
+        self?.textField1.checkmarkButton.isHidden = true
         self?.infoLabel.textColor = .black
         self?.eightLabel.textColor = .idorm_gray_400
         self?.mixingLabel.textColor = .idorm_gray_400
@@ -60,24 +57,31 @@ final class ConfirmPasswordViewController: BaseViewController {
     textField1.textField.rx.controlEvent(.editingDidEnd)
       .bind(onNext: { [weak self] in
         guard let self = self else { return }
-        let countBool = self.viewModel.output.verificationCount.value
-        let combineBool = self.viewModel.output.verificationCombine.value
+        let verificationCount = self.viewModel.output.verificationCount.value
+        let verificationCombine = self.viewModel.output.verificationCombine.value
         
-        if countBool {
+        self.textField1.openEyesButton.isHidden = true
+        self.textField1.closeEyesButton.isHidden = true
+        
+        if verificationCount {
           self.eightLabel.textColor = .idorm_blue
         } else {
           self.eightLabel.textColor = .idorm_red
         }
         
-        if combineBool {
+        if verificationCombine {
           self.mixingLabel.textColor = .idorm_blue
         } else {
           self.mixingLabel.textColor = .idorm_red
         }
         
-        if countBool == false || combineBool == false {
+        if verificationCount == false || verificationCombine == false {
           self.textField1.layer.borderColor = UIColor.idorm_red.cgColor
           self.infoLabel.textColor = .idorm_red
+          self.textField1.checkmarkButton.isHidden = true
+        } else {
+          self.textField1.checkmarkButton.isHidden = false
+          self.textField1.layer.borderColor = UIColor.idorm_gray_400.cgColor
         }
       })
       .disposed(by: disposeBag)
@@ -86,6 +90,8 @@ final class ConfirmPasswordViewController: BaseViewController {
     textField2.textField.rx.controlEvent(.editingDidBegin)
       .bind(onNext: { [weak self] in
         self?.textField2.layer.borderColor = UIColor.idorm_blue.cgColor
+        self?.textField2.openEyesButton.isHidden = false
+        self?.textField2.closeEyesButton.isHidden = true
         self?.infoLabel2.textColor = .idorm_gray_400
       })
       .disposed(by: disposeBag)
@@ -96,14 +102,17 @@ final class ConfirmPasswordViewController: BaseViewController {
         guard let self = self else { return }
         let equality = self.viewModel.output.verificationEquality.value
         
+        self.textField2.openEyesButton.isHidden = true
+        self.textField2.closeEyesButton.isHidden = true
+        
         if equality {
           self.infoLabel2.text = "비밀번호 확인"
           self.infoLabel2.textColor = .idorm_gray_400
-          self.textField2.textField.layer.borderColor = UIColor.idorm_blue.cgColor
+          self.textField2.layer.borderColor = UIColor.idorm_gray_400.cgColor
         } else {
           self.infoLabel2.text = "두 비밀번호가 일치하지 않습니다. 다시 확인해주세요."
           self.infoLabel2.textColor = .idorm_red
-          self.textField2.textField.layer.borderColor = UIColor.idorm_red.cgColor
+          self.textField2.layer.borderColor = UIColor.idorm_red.cgColor
         }
       })
       .disposed(by: disposeBag)
@@ -174,14 +183,11 @@ final class ConfirmPasswordViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    // 확인 버튼 활성/비활성
-    viewModel.output.isEnableConfirmButton
+    // 닉네임 변경 페이지로 이동
+    viewModel.output.pushToConfirmNicknameVC
       .bind(onNext: { [weak self] in
-        if $0 {
-          self?.confirmButton.isEnabled = true
-        } else {
-          self?.confirmButton.isEnabled = false
-        }
+        let viewController = ConfirmNicknameViewController()
+        self?.navigationController?.pushViewController(viewController, animated: true)
       })
       .disposed(by: disposeBag)
   }
@@ -197,13 +203,14 @@ final class ConfirmPasswordViewController: BaseViewController {
   override func setupStyles() {
     super.setupStyles()
     view.backgroundColor = .white
-    confirmButton.isEnabled = false
     
     switch vcType {
     case .signUp:
       navigationItem.title = "회원가입"
+      self.confirmButton = RegisterBottomButton("계속하기")
     case .findPW, .updatePW:
       navigationItem.title = "비밀번호 변경"
+      self.confirmButton = RegisterBottomButton("변경 완료")
     }
   }
   
@@ -211,7 +218,7 @@ final class ConfirmPasswordViewController: BaseViewController {
     super.setupConstraints()
     infoLabel.snp.makeConstraints { make in
       make.leading.equalTo(view.safeAreaLayoutGuide).inset(24)
-      make.top.equalTo(view.safeAreaLayoutGuide).inset(52)
+      make.top.equalTo(view.safeAreaLayoutGuide).inset(24)
     }
     
     textField1.snp.makeConstraints { make in

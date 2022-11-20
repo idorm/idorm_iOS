@@ -133,7 +133,7 @@ final class MyPageViewController: BaseViewController {
           viewController.hidesBottomBarWhenPushed = true
           self?.navigationController?.pushViewController(viewController, animated: true)
         } else {
-          let viewController = OnboardingViewController(.update)
+          let viewController = OnboardingViewController(.mainPage_FirstTime)
           viewController.hidesBottomBarWhenPushed = true
           self?.navigationController?.pushViewController(viewController, animated: true)
         }

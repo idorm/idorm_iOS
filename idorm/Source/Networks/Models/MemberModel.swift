@@ -7,7 +7,7 @@ struct MemberModel: Codable {
     var nickname: String
     var profilePhotoFileName: String?
     var profilePhotoUrl: String?
-    let matchingInfoId: Int
+    let matchingInfoId: Int?
     let loginToken: String?
   }
 }

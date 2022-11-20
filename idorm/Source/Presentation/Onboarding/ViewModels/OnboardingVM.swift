@@ -62,9 +62,6 @@ final class OnboardingViewModel: ViewModel {
       }
       .bind(to: output.isEnableConfirmButton)
       .disposed(by: disposeBag)
-  }
-  
-  func bind() {
     
     // 기숙사 버튼 반응 -> (완료 버튼 활성/비활성 & 매칭 정보 전달)
     input.isSelectedDormButton
@@ -172,6 +169,9 @@ final class OnboardingViewModel: ViewModel {
         self.output.myOnboarding.accept(newValue)
       })
       .disposed(by: disposeBag)
+  }
+  
+  func bind() {
     
     // OnboardingVCType 별 이벤트 분기처리
     switch vcType {

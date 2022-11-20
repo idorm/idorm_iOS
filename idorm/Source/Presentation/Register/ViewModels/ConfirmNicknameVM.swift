@@ -37,20 +37,17 @@ final class ConfirmNicknameViewModel: ViewModel {
     
     // 가입완료 버튼 클릭 -> 회원가입API 요청
     input.confirmButtonDidTap
-      .flatMap { [weak self] in
+      .map { [weak self] in
         self?.output.indicatorState.onNext(true)
         let email = Logger.instance.email!
         let password = Logger.instance.password!
-        return APIService.memberProvider.rx.request(.register(id: email, pw: password, nickname: $0))
+        return (email, password, $0)
       }
-      .subscribe(onNext: { [weak self] response in
+      .flatMap { APIService.memberProvider.rx.request(.register(id: $0.0, pw: $0.1, nickname: $0.2)) }
+      .filterSuccessfulStatusCodes()
+      .subscribe(onNext: { [weak self] _ in
         self?.output.indicatorState.onNext(false)
-        switch response.statusCode {
-        case 200:
-          self?.output.pushToCompleteSignUpVC.onNext(Void())
-        default:
-          fatalError("회원가입에 실패했습니다,,,")
-        }
+        self?.output.pushToCompleteSignUpVC.onNext(Void())
       })
       .disposed(by: disposeBag)
   }

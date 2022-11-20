@@ -103,7 +103,7 @@ final class AuthNumberViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    // 타이머 재 설정
+    // 타이머 재설정
     viewModel.output.resetTimer
       .bind(onNext: { [weak self] _ in
         self?.mailTimer.restart()
@@ -173,7 +173,7 @@ final class AuthNumberViewController: BaseViewController {
     }
     
     authButton.snp.makeConstraints { make in
-      make.trailing.equalToSuperview().inset(24).offset(8)
+      make.trailing.equalToSuperview().inset(20)
       make.centerY.equalTo(infoLabel)
     }
     
