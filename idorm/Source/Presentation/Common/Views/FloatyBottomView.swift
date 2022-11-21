@@ -14,6 +14,8 @@ enum FloatyBottomViewType {
   case filter
   /// [정보수정], [완료]
   case correction
+  /// [다시생각해볼게요], [탈퇴]
+  case withdrawal
 }
 
 /// 하단에 붙어있는 두 개의 버튼이 있는 View입니다.
@@ -53,6 +55,8 @@ final class FloatyBottomView: UIView {
       config.imagePadding = 12
     case .correction:
       config.attributedTitle = AttributedString("정보 수정", attributes: container)
+    case .withdrawal:
+      config.attributedTitle = AttributedString("다시 생각해볼래요❤️", attributes: container)
     }
     $0.configuration = config
   }
@@ -64,13 +68,15 @@ final class FloatyBottomView: UIView {
     var config = UIButton.Configuration.filled()
     config.contentInsets = NSDirectionalEdgeInsets(top: 14, leading: 26, bottom: 14, trailing: 26)
     config.attributedTitle = AttributedString("완료", attributes: container)
+    config.baseBackgroundColor = .idorm_blue
     
     switch floatyBottomViewType {
-    case .jump, .back, .reset, .correction:
-      config.baseBackgroundColor = .idorm_blue
     case .filter:
       config.attributedTitle = AttributedString("필터링 완료", attributes: container)
-      config.baseBackgroundColor = .idorm_blue
+    case .withdrawal:
+      config.attributedTitle = AttributedString("탈퇴", attributes: container)
+    default:
+      break
     }
     $0.configuration = config
   }

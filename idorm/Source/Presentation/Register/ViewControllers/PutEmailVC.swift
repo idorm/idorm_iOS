@@ -67,7 +67,7 @@ final class PutEmailViewController: BaseViewController {
       }
       .bind(to: viewModel.input.confirmButtonTapped)
       .disposed(by: disposeBag)
-
+    
     // MARK: - Output
     
     // 에러 팝업 창 띄우기
