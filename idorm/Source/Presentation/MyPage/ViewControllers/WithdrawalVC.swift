@@ -2,15 +2,12 @@ import UIKit
 
 import SnapKit
 import Then
+import RxSwift
+import RxCocoa
 
 final class WithdrawalViewController: BaseViewController {
   
   // MARK: - Properties
-  
-  private let scrollView = UIScrollView()
-  private let contentView = UIView()
-  private let sadDomiImageView = UIImageView(image: #imageLiteral(resourceName: "sadDomi"))
-  private let floatyBottomView = FloatyBottomView(.withdrawal)
   
   private let mainLabel = UILabel().then {
     $0.text = """
@@ -65,8 +62,13 @@ final class WithdrawalViewController: BaseViewController {
   private let descriptionBackgroundView = UIView().then {
     $0.backgroundColor = .idorm_gray_100
   }
-    
-  // MARK: - LifeCycle
+  
+  private let scrollView = UIScrollView()
+  private let contentView = UIView()
+  private let sadDomiImageView = UIImageView(image: #imageLiteral(resourceName: "sadDomi"))
+  private let floatyBottomView = FloatyBottomView(.withdrawal)
+  
+  private let viewModel = WithdrawalViewModel()
   
   // MARK: - Setup
   
@@ -74,6 +76,7 @@ final class WithdrawalViewController: BaseViewController {
     super.setupStyles()
     
     navigationItem.title = "회원탈퇴"
+    view.backgroundColor = .white
   }
   
   override func setupLayouts() {
@@ -129,8 +132,44 @@ final class WithdrawalViewController: BaseViewController {
       make.top.equalTo(mainLabel2.snp.bottom).offset(12)
       make.leading.trailing.equalToSuperview()
       make.height.equalTo(192)
-      make.bottom.equalToSuperview()
+      make.bottom.equalToSuperview().offset(-32)
     }
+  }
+  
+  // MARK: - Bind
+  
+  override func bind() {
+    super.bind()
+    
+    // MARK: - Input
+    
+    // 다시 생각해볼래요 버튼 클릭
+    floatyBottomView.skipButton.rx.tap
+      .bind(to: viewModel.input.skipButtonDidTap)
+      .disposed(by: disposeBag)
+    
+    // 탈퇴 버튼 클릭
+    floatyBottomView.confirmButton.rx.tap
+      .bind(to: viewModel.input.withdrawalButtonDidTap)
+      .disposed(by: disposeBag)
+    
+    // MARK: - Output
+    
+    // 뒤로가기
+    viewModel.output.popVC
+      .bind(onNext: { [weak self] in
+        self?.navigationController?.popViewController(animated: true)
+      })
+      .disposed(by: disposeBag)
+    
+    // 회원 탈퇴 완료 후 로그인 페이지로 넘어가기
+    viewModel.output.presentLoginVC
+      .bind(onNext: { [weak self] in
+        let viewController = LoginViewController()
+        viewController.modalPresentationStyle = .fullScreen
+        self?.present(viewController, animated: true)
+      })
+      .disposed(by: disposeBag)
   }
 }
 
@@ -144,4 +183,3 @@ struct WithdrawalVC_PreView: PreviewProvider {
   }
 }
 #endif
-

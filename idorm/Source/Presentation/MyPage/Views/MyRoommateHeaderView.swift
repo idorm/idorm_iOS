@@ -3,12 +3,13 @@ import UIKit
 import SnapKit
 import Then
 
-final class MyRoommateHeaderView: UIView {
+final class MyRoommateHeaderView: UITableViewHeaderFooterView {
   
   // MARK: - Properties
   
-  private lazy var lastestLabel = label("최신순")
+  static let identifier = "MyRoommateHeaderView"
   
+  private lazy var lastestLabel = label("최신순")
   private lazy var pastLabel = label("과거순")
   
   lazy var lastestButton = button()
@@ -16,8 +17,8 @@ final class MyRoommateHeaderView: UIView {
   
   // MARK: - LifeCycle
   
-  override init(frame: CGRect) {
-    super.init(frame: .zero)
+  override init(reuseIdentifier: String?) {
+    super.init(reuseIdentifier: reuseIdentifier)
     setupStyles()
     setupLayout()
     setupConstraints()

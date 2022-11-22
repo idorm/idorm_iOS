@@ -9,7 +9,4 @@ protocol ViewModel {
   var input: Input { get }
   var output: Output { get set }
   var disposeBag: DisposeBag { get }
-  
-  /// Stream을 관리하는 메서드입니다.
-  func bind()
 }

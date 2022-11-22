@@ -65,7 +65,23 @@ final class ManageMyInfoViewController: BaseViewController {
       .bind(to: viewModel.input.changedPWButtonTapped)
       .disposed(by: disposeBag)
     
+    // 회원 탈퇴 버튼 이벤트
+    withDrawLabel.rx.tapGesture()
+      .map { _ in Void() }
+      .bind(to: viewModel.input.withdrawalButtonDidTap)
+      .disposed(by: disposeBag)
+    
     // MARK: - Output
+    
+    // MARK: - Presentation
+    
+    // 회원탈퇴 페이지로 이동
+    viewModel.output.pushToWithdrawalVC
+      .bind(onNext: { [weak self] in
+        let viewController = WithdrawalViewController()
+        self?.navigationController?.pushViewController(viewController, animated: true)
+      })
+      .disposed(by: disposeBag)
     
     // ChangeNickNameVC 보여주기
     viewModel.output.pushToChangeNicknameVC
@@ -82,6 +98,8 @@ final class ManageMyInfoViewController: BaseViewController {
         self?.navigationController?.pushViewController(viewController, animated: true)
       })
       .disposed(by: disposeBag)
+    
+    // MARK: - UI
     
     // 멤버 정보 변경되면 UI 업데이트
     MemberInfoStorage.instance.myInformation

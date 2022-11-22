@@ -95,7 +95,7 @@ final class MyPageViewController: BaseViewController {
       .map { MyPageVCTypes.MyRoommateVCType.dislike }
       .bind(to: viewModel.input.roommateButtonDidTap)
       .disposed(by: disposeBag)
-    
+        
     // MARK: - Output
     
     // 내 정보 관리 페이지로 이동

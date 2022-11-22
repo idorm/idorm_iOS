@@ -17,8 +17,7 @@ struct MatchingModel: Codable {
     var openKakaoLink: String
     var mbti: String
     var wishText: String
-    var isMatchingInfoPublic: Bool
-    var memberEmail: String
+    var addedAt: String?
   }
 }
 

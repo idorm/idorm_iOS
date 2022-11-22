@@ -34,11 +34,6 @@ final class MemberInfoStorage {
 // MARK: - Stored Properties
 
 extension MemberInfoStorage {
-  /// 매칭 카드를 생성할 수 있는 프로퍼티입니다.
-//  var toMatchingMemberModel: MatchingMember {
-//    return MatchingInfo_Lookup.toMatchingMemberModel(myOnboarding.value!)
-//  }
-    
   /// 현재 자신의 매칭 공개 여부를 조회합니다.
   var isPublicMatchingInfo: Bool {
     guard let matchingInfo = myOnboarding.value else { return false }
@@ -61,6 +56,6 @@ extension MemberInfoStorage {
 extension MemberInfoStorage {
   func onboardingToMatchingMember() -> MatchingModel.Member {
     guard let myOnboarding = myOnboarding.value else { fatalError() }
-    return MatchingModel.Member(memberId: 0, matchingInfoId: 0, dormNum: myOnboarding.dormNum, joinPeriod: myOnboarding.joinPeriod, gender: myOnboarding.gender, age: myOnboarding.age, isSnoring: myOnboarding.isSnoring, isGrinding: myOnboarding.isGrinding, isSmoking: myOnboarding.isSmoking, isAllowedFood: myOnboarding.isAllowedFood, isWearEarphones: myOnboarding.isWearEarphones, wakeUpTime: myOnboarding.wakeUpTime, cleanUpStatus: myOnboarding.cleanUpStatus, showerTime: myOnboarding.showerTime, openKakaoLink: myOnboarding.openKakaoLink, mbti: myOnboarding.mbti ?? "", wishText: myOnboarding.wishText ?? "", isMatchingInfoPublic: myOnboarding.isMatchingInfoPublic, memberEmail: myOnboarding.memberEmail)
+    return MatchingModel.Member(memberId: 0, matchingInfoId: 0, dormNum: myOnboarding.dormNum, joinPeriod: myOnboarding.joinPeriod, gender: myOnboarding.gender, age: myOnboarding.age, isSnoring: myOnboarding.isSnoring, isGrinding: myOnboarding.isGrinding, isSmoking: myOnboarding.isSmoking, isAllowedFood: myOnboarding.isAllowedFood, isWearEarphones: myOnboarding.isWearEarphones, wakeUpTime: myOnboarding.wakeUpTime, cleanUpStatus: myOnboarding.cleanUpStatus, showerTime: myOnboarding.showerTime, openKakaoLink: myOnboarding.openKakaoLink, mbti: myOnboarding.mbti ?? "", wishText: myOnboarding.wishText ?? "", addedAt: nil)
   }
 }

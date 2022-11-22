@@ -2,6 +2,9 @@ import RxSwift
 import RxCocoa
 
 final class MyPageViewModel: ViewModel {
+  
+  // MARK: - Properties
+  
   struct Input {
     // UI
     let gearButtonDidTap = PublishSubject<Void>()
@@ -28,12 +31,10 @@ final class MyPageViewModel: ViewModel {
   var output = Output()
   var disposeBag = DisposeBag()
   
-  init() {
-    bind()
-  }
+  // MARK: - Bind
   
-  func bind() {
-
+  init() {
+    
     // 설정 버튼 클릭 -> 내 정보 관리 페이지로 이동
     input.gearButtonDidTap
       .bind(to: output.pushToManageMyInfoVC)

@@ -5,7 +5,7 @@ final class ModelTransformer {
 
 extension ModelTransformer {
   func toMemberModel(from myOnboarding: OnboardingModel.RequestModel) -> MatchingModel.Member {
-    return MatchingModel.Member(memberId: 0, matchingInfoId: 0, dormNum: myOnboarding.dormNum, joinPeriod: myOnboarding.joinPeriod, gender: myOnboarding.gender, age: Int(myOnboarding.age) ?? 10, isSnoring: myOnboarding.isSnoring, isGrinding: myOnboarding.isGrinding, isSmoking: myOnboarding.isSmoking, isAllowedFood: myOnboarding.isAllowedFood, isWearEarphones: myOnboarding.isWearEarphones, wakeUpTime: myOnboarding.wakeupTime, cleanUpStatus: myOnboarding.cleanUpStatus, showerTime: myOnboarding.showerTime, openKakaoLink: myOnboarding.openKakaoLink, mbti: myOnboarding.mbti ?? "", wishText: myOnboarding.wishText ?? "", isMatchingInfoPublic: false, memberEmail: "")
+    return MatchingModel.Member(memberId: 0, matchingInfoId: 0, dormNum: myOnboarding.dormNum, joinPeriod: myOnboarding.joinPeriod, gender: myOnboarding.gender, age: Int(myOnboarding.age) ?? 10, isSnoring: myOnboarding.isSnoring, isGrinding: myOnboarding.isGrinding, isSmoking: myOnboarding.isSmoking, isAllowedFood: myOnboarding.isAllowedFood, isWearEarphones: myOnboarding.isWearEarphones, wakeUpTime: myOnboarding.wakeupTime, cleanUpStatus: myOnboarding.cleanUpStatus, showerTime: myOnboarding.showerTime, openKakaoLink: myOnboarding.openKakaoLink, mbti: myOnboarding.mbti ?? "", wishText: myOnboarding.wishText ?? "")
 
   }
   

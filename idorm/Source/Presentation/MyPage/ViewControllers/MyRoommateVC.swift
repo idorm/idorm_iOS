@@ -15,8 +15,9 @@ final class MyRoommateViewController: BaseViewController {
   private let indicator = UIActivityIndicatorView()
   
   private lazy var tableView = UITableView(frame: .zero, style: .grouped).then {
-    $0.backgroundColor = .idorm_gray_100
+    $0.register(MyRoommateHeaderView.self, forHeaderFooterViewReuseIdentifier: MyRoommateHeaderView.identifier)
     $0.register(MyRoommateCell.self, forCellReuseIdentifier: MyRoommateCell.identifier)
+    $0.backgroundColor = .idorm_gray_100
     $0.bounces = false
     $0.dataSource = self
     $0.delegate = self
@@ -26,20 +27,13 @@ final class MyRoommateViewController: BaseViewController {
   
   // MARK: - LifeCycle
   
-  init(_ vcType: MyPageVCTypes.MyRoommateVCType) {
+   init(_ vcType: MyPageVCTypes.MyRoommateVCType) {
     self.vcType = vcType
     super.init(nibName: nil, bundle: nil)
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-  
-  override func loadView() {
-    super.loadView()
-    
-    // 화면 최초 접속 이벤트
-    viewModel.input.loadViewObserver.onNext(vcType)
   }
   
   // MARK: - Setup
@@ -59,8 +53,8 @@ final class MyRoommateViewController: BaseViewController {
   override func setupLayouts() {
     super.setupLayouts()
     
-    view.addSubview(tableView)
-    view.addSubview(indicator)
+    [tableView, indicator]
+      .forEach { view.addSubview($0) }
   }
   
   override func setupConstraints() {
@@ -81,6 +75,7 @@ final class MyRoommateViewController: BaseViewController {
     
     // 최신순 버튼 클릭
     header.lastestButton.rx.tap
+      .debug()
       .map { [weak self] in
         self?.header.lastestButton.isSelected = true
         self?.header.pastButton.isSelected = false
@@ -103,10 +98,16 @@ final class MyRoommateViewController: BaseViewController {
     
     // MARK: - Input
     
+    // 화면 최초 접속 이벤트
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+      self.viewModel.input.loadViewObserver.onNext(self.vcType)
+    }
+    
     // MARK: - Output
     
     // 인디케이터 애니메이션 반응
     viewModel.output.indicatorState
+      .debug()
       .bind(onNext: { [weak self] in
         if $0 {
           self?.indicator.startAnimating()
@@ -155,14 +156,20 @@ extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
   
   // Initialize Header
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let header = MyRoommateHeaderView()
-    
-    self.header = header
-    bindHeader()
-    
+    guard let header = tableView.dequeueReusableHeaderFooterView(
+      withIdentifier: MyRoommateHeaderView.identifier
+    ) as? MyRoommateHeaderView else {
+      return UIView()
+    }
+
+    if self.header == nil {
+      self.header = header
+      bindHeader()
+    }
+
     return header
   }
-  
+
   // Header Height
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return 50

@@ -10,6 +10,7 @@ enum MemberAPI {
   case changePassword(id: String, pw: String)
   case changeNickname(nickname: String)
   case retrieveMember
+  case withdrawal
 }
 
 extension MemberAPI: TargetType {
@@ -22,6 +23,7 @@ extension MemberAPI: TargetType {
     case .changePassword: return "/changepassword"
     case .changeNickname: return "/member/nickname"
     case .retrieveMember: return "/member"
+    case .withdrawal: return "/member"
     }
   }
   
@@ -32,6 +34,7 @@ extension MemberAPI: TargetType {
     case .changePassword: return .patch
     case .changeNickname: return .patch
     case .retrieveMember: return .get
+    case .withdrawal: return .delete
     }
   }
   
@@ -55,7 +58,7 @@ extension MemberAPI: TargetType {
         "nickname": nickname
       ], encoding: JSONEncoding.default)
       
-    case .retrieveMember:
+    case .retrieveMember, .withdrawal:
       return .requestPlain
     }
   }
