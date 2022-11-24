@@ -103,7 +103,7 @@ final class HomeViewController: BaseViewController {
     
     startMatchingButton.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
-      make.bottom.equalTo(lionImageView.snp.bottom).offset(-11)
+      make.bottom.equalTo(lionImageView.snp.bottom).offset(-15)
       make.height.equalTo(52)
       make.bottom.equalToSuperview()
     }
@@ -140,15 +140,3 @@ final class HomeViewController: BaseViewController {
       .disposed(by: disposeBag)
   }
 }
-
-// MARK: - Preview
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-struct HomeVC_PreView: PreviewProvider {
-  static var previews: some View {
-    HomeViewController().toPreview()
-  }
-}
-#endif
-

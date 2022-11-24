@@ -47,9 +47,7 @@ final class LoginViewModel: ViewModel {
       .do(onNext: { [weak self] _ in
         self?.output.isLoading.onNext(true)
       })
-        .flatMap {
-          return APIService.memberProvider.rx.request(.login(id: $0.id, pw: $0.pw))
-      }
+      .flatMap { APIService.memberProvider.rx.request(.login(id: $0.id, pw: $0.pw)) }
       .do(onNext: { [weak self] _ in
         self?.output.isLoading.onNext(false)
       })

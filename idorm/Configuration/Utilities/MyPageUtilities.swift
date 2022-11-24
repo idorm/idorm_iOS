@@ -14,7 +14,7 @@ class MyPageUtilities {
     container.foregroundColor = UIColor.black
     config.attributedTitle = AttributedString(title, attributes: container)
     config.titleAlignment = .center
-    config.contentInsets = NSDirectionalEdgeInsets(top: 18, leading: 18, bottom: 18, trailing: 18)
+    config.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 4, bottom: 12, trailing: 4)
     config.baseBackgroundColor = .idorm_gray_100
     let button = UIButton(configuration: config)
     button.layer.cornerRadius = 12
@@ -27,6 +27,9 @@ class MyPageUtilities {
       }
     }
     button.configurationUpdateHandler = handler
+    button.layer.shadowOffset = CGSize(width: 0, height: 2)
+    button.layer.shadowColor = UIColor.black.cgColor
+    button.layer.shadowOpacity = 0.1
     
     return button
   }
@@ -84,10 +87,11 @@ extension MyPageUtilities {
 
 extension MyPageUtilities {
   static func descriptionLabel(text: String) -> UILabel {
-    return UIFactory.label(
-      text: text,
-      color: .idorm_gray_400,
-      font: .init(name: MyFonts.medium.rawValue, size: 12)
-    )
+    let label = UILabel()
+    label.text = text
+    label.textColor = .idorm_gray_400
+    label.font = .init(name: MyFonts.medium.rawValue, size: 12)
+    
+    return label
   }
 }

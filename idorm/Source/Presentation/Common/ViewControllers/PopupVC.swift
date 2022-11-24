@@ -11,7 +11,9 @@ import RxSwift
 import RxCocoa
 
 class PopupViewController: BaseViewController {
+  
   // MARK: - Properties
+  
   let contents: String
   
   lazy var infoView: UIView = {
@@ -74,7 +76,7 @@ class PopupViewController: BaseViewController {
     
     infoView.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(32)
-      make.centerY.equalToSuperview().offset(-50)
+      make.centerY.equalToSuperview()
       make.height.equalTo(130)
     }
     

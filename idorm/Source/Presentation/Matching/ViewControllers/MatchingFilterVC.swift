@@ -226,7 +226,7 @@ final class MatchingFilterViewController: BaseViewController {
     }
     
     floatyBottomView.snp.makeConstraints { make in
-      make.leading.trailing.bottom.equalToSuperview()
+      make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
       make.height.equalTo(84)
     }
     

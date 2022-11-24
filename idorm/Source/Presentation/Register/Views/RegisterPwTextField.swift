@@ -42,8 +42,6 @@ final class RegisterPwTextField: UIView {
   private let placeholder: String
   private let disposeBag = DisposeBag()
   
-  let verificationPassword = PublishSubject<Bool>()
-  
   // MARK: - LifeCycle
   
   init(placeholder: String) {

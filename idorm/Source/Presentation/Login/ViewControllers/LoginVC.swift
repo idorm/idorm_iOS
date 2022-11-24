@@ -12,6 +12,7 @@ final class LoginViewController: BaseViewController {
   private let loginTitleLabel = UILabel().then {
     $0.font = .init(name: MyFonts.bold.rawValue, size: 24)
     $0.text = "로그인"
+    $0.textColor = .black
   }
   
   private let loginLabel = UILabel().then {
@@ -68,7 +69,9 @@ final class LoginViewController: BaseViewController {
     $0.configuration = config
   }
   
-  private let indicator = UIActivityIndicatorView()
+  private let indicator = UIActivityIndicatorView().then {
+    $0.color = .darkGray
+  }
   
   private let idormMarkImage = UIImageView(image: UIImage(named: "i dorm Mark"))
   private let inuMarkImage = UIImageView(image: UIImage(named: "INUMark"))
@@ -91,6 +94,92 @@ final class LoginViewController: BaseViewController {
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     self.navigationController?.isNavigationBarHidden = false
+  }
+  
+  // MARK: - Setup
+  
+  override func setupLayouts() {
+    super.setupLayouts()
+    
+    [idormMarkImage, loginTitleLabel, loginTextFieldStack, loginStack, loginButton, forgotPwButton, signUpStack, indicator]
+      .forEach { view.addSubview($0) }
+  }
+  
+  override func setupStyles() {
+    super.setupStyles()
+    
+    view.backgroundColor = .white
+    navigationController?.isNavigationBarHidden = true
+    navigationController?.navigationBar.tintColor = .black
+    navigationItem.title = "로그인"
+    
+    let loginStack = UIStackView(arrangedSubviews: [ inuMarkImage, loginLabel ])
+    loginStack.axis = .horizontal
+    loginStack.spacing = 8.0
+    
+    let loginTextFieldStack = UIStackView(arrangedSubviews: [ idTextField, pwTextField ])
+    loginTextFieldStack.axis = .vertical
+    loginTextFieldStack.distribution = .fillEqually
+    loginTextFieldStack.spacing = 10.0
+    
+    let signUpStack = UIStackView(arrangedSubviews: [ signUpLabel, signUpButton ])
+    signUpStack.axis = .horizontal
+    signUpStack.spacing = 8.0
+    
+    self.loginStack = loginStack
+    self.loginTextFieldStack = loginTextFieldStack
+    self.signUpStack = signUpStack
+  }
+  
+  override func setupConstraints() {
+    super.setupConstraints()
+    
+    idTextField.snp.makeConstraints { make in
+      make.height.equalTo(54)
+    }
+    
+    pwTextField.snp.makeConstraints { make in
+      make.height.equalTo(54)
+    }
+    
+    idormMarkImage.snp.makeConstraints { make in
+      make.top.leading.equalTo(view.safeAreaLayoutGuide).inset(36)
+    }
+    
+    loginTitleLabel.snp.makeConstraints { make in
+      make.bottom.equalTo(loginStack.snp.top).offset(-10)
+      make.leading.equalToSuperview().inset(36)
+    }
+    
+    loginStack.snp.makeConstraints { make in
+      make.leading.equalToSuperview().inset(36)
+      make.bottom.equalTo(loginTextFieldStack.snp.top).offset(-54)
+    }
+    
+    loginTextFieldStack.snp.makeConstraints { make in
+      make.centerY.equalToSuperview().offset(-26)
+      make.leading.trailing.equalToSuperview().inset(36)
+    }
+    
+    loginButton.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview().inset(36)
+      make.top.equalTo(loginTextFieldStack.snp.bottom).offset(32)
+      make.height.equalTo(40)
+    }
+    
+    forgotPwButton.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+      make.top.equalTo(loginButton.snp.bottom).offset(8)
+    }
+    
+    signUpStack.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+      make.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+    }
+    
+    indicator.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+    }
   }
   
   // MARK: - Bind
@@ -161,92 +250,6 @@ final class LoginViewController: BaseViewController {
       .disposed(by: disposeBag)
   }
   
-  // MARK: - Setup
-  
-  override func setupLayouts() {
-    super.setupLayouts()
-    
-    [idormMarkImage, loginTitleLabel, loginTextFieldStack, loginStack, loginButton, forgotPwButton, signUpStack, indicator]
-      .forEach { view.addSubview($0) }
-  }
-  
-  override func setupStyles() {
-    super.setupStyles()
-    
-    view.backgroundColor = .white
-    navigationController?.isNavigationBarHidden = true
-    navigationController?.navigationBar.tintColor = .black
-    navigationItem.title = "로그인"
-    
-    let loginStack = UIStackView(arrangedSubviews: [ inuMarkImage, loginLabel ])
-    loginStack.axis = .horizontal
-    loginStack.spacing = 8.0
-    
-    let loginTextFieldStack = UIStackView(arrangedSubviews: [ idTextField, pwTextField ])
-    loginTextFieldStack.axis = .vertical
-    loginTextFieldStack.distribution = .fillEqually
-    loginTextFieldStack.spacing = 10.0
-    
-    let signUpStack = UIStackView(arrangedSubviews: [ signUpLabel, signUpButton ])
-    signUpStack.axis = .horizontal
-    signUpStack.spacing = 8.0
-    
-    self.loginStack = loginStack
-    self.loginTextFieldStack = loginTextFieldStack
-    self.signUpStack = signUpStack
-  }
-  
-  override func setupConstraints() {
-    super.setupConstraints()
-    
-    idTextField.snp.makeConstraints { make in
-      make.height.equalTo(54)
-    }
-    
-    pwTextField.snp.makeConstraints { make in
-      make.height.equalTo(54)
-    }
-    
-    idormMarkImage.snp.makeConstraints { make in
-      make.top.leading.equalTo(view.safeAreaLayoutGuide).inset(36)
-    }
-    
-    loginTitleLabel.snp.makeConstraints { make in
-      make.bottom.equalTo(loginStack.snp.top).offset(-8)
-      make.leading.equalToSuperview().inset(36)
-    }
-    
-    loginStack.snp.makeConstraints { make in
-      make.leading.equalToSuperview().inset(36)
-      make.bottom.equalTo(loginTextFieldStack.snp.top).offset(-54)
-    }
-    
-    loginTextFieldStack.snp.makeConstraints { make in
-      make.centerY.equalToSuperview().offset(-26)
-      make.leading.trailing.equalToSuperview().inset(36)
-    }
-    
-    loginButton.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview().inset(36)
-      make.top.equalTo(loginTextFieldStack.snp.bottom).offset(32)
-      make.height.equalTo(40)
-    }
-    
-    forgotPwButton.snp.makeConstraints { make in
-      make.centerX.equalToSuperview()
-      make.top.equalTo(loginButton.snp.bottom).offset(8)
-    }
-    
-    signUpStack.snp.makeConstraints { make in
-      make.centerX.equalToSuperview()
-      make.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
-    }
-    
-    indicator.snp.makeConstraints { make in
-      make.center.equalToSuperview()
-      make.width.height.equalTo(20)
-    }
-  }
   
   // MARK: - Helpers
   
@@ -254,3 +257,4 @@ final class LoginViewController: BaseViewController {
     view.endEditing(true)
   }
 }
+

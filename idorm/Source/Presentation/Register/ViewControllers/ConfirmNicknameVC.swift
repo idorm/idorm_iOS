@@ -39,7 +39,7 @@ final class ConfirmNicknameViewController: BaseViewController {
   
   private let indicator = UIActivityIndicatorView()
   private let confirmButton = RegisterBottomButton("가입완료")
-  private let textField = RegisterTextField("사용하실 닉네임을 입력해주세요.")
+  private let textField = idormTextField("사용하실 닉네임을 입력해주세요.")
   private let minimumLengthLabel = RegisterUtilities.descriptionLabel(text: "•  최소 2글자에서 8글자를 입력해주세요.")
   private let noSpacingLabel = RegisterUtilities.descriptionLabel(text: "•  공백없이 입력해주세요.")
   private let noSpecialSymbolLabel = RegisterUtilities.descriptionLabel(text: "•  영문, 한글, 숫자만 입력할 수 있어요.")

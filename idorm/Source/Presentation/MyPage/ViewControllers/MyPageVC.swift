@@ -10,6 +10,10 @@ final class MyPageViewController: BaseViewController {
   
   // MARK: - Properties
   
+  private let indicator = UIActivityIndicatorView().then {
+    $0.color = .gray
+  }
+  
   private var scrollView: UIScrollView!
   private var contentView: UIView!
   private var gearButton: UIButton!
@@ -19,7 +23,6 @@ final class MyPageViewController: BaseViewController {
   private let matchingContainerView = MatchingContainerView()
   
   private let viewModel = MyPageViewModel()
-  private let indicator = UIActivityIndicatorView()
   
   // MARK: - LifeCycle
   
@@ -151,8 +154,10 @@ final class MyPageViewController: BaseViewController {
     viewModel.output.indicatorState
       .bind(onNext: { [weak self] in
         if $0 {
+          self?.indicator.startAnimating()
           self?.view.isUserInteractionEnabled = false
         } else {
+          self?.indicator.stopAnimating()
           self?.view.isUserInteractionEnabled = true
         }
       })

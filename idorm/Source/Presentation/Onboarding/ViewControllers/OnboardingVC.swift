@@ -773,12 +773,3 @@ extension OnboardingViewController {
     }
   }
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-struct OnboardingViewController_PreView: PreviewProvider {
-  static var previews: some View {
-    OnboardingViewController(.mainPage_FirstTime).toPreview()
-  }
-}
-#endif

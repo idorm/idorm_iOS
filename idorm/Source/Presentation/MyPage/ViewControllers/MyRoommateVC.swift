@@ -12,7 +12,10 @@ final class MyRoommateViewController: BaseViewController {
   
   private let vcType: MyPageVCTypes.MyRoommateVCType
   private let viewModel = MyRoommateViewModel()
-  private let indicator = UIActivityIndicatorView()
+  
+  private let indicator = UIActivityIndicatorView().then {
+    $0.color = .gray
+  }
   
   private lazy var tableView = UITableView(frame: .zero, style: .grouped).then {
     $0.register(MyRoommateHeaderView.self, forHeaderFooterViewReuseIdentifier: MyRoommateHeaderView.identifier)

@@ -9,11 +9,9 @@ final class PutEmailViewController: BaseViewController {
   
   // MARK: - Properties
   
-  private lazy var infoLabel = UIFactory.label(
-    text: "",
-    color: .black,
-    font: .init(name: MyFonts.medium.rawValue, size: 14)
-  ).then {
+  private lazy var infoLabel = UILabel().then {
+    $0.textColor = .black
+    $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
     switch vcType {
     case .findPW:
       $0.text = "가입시 사용한 인천대학교 이메일이 필요해요."
@@ -22,14 +20,14 @@ final class PutEmailViewController: BaseViewController {
     }
   }
   
-  private let needEmailLabel = UIFactory.label(
-    text: "인천대학교 이메일 (@inu.ac.kr)이 필요해요.",
-    color: .idorm_gray_400,
-    font: .init(name: MyFonts.medium.rawValue, size: 12)
-  )
+  private let needEmailLabel = UILabel().then {
+    $0.text = "인천대학교 이메일 (@inu.ac.kr)이 필요해요."
+    $0.textColor = .idorm_gray_400
+    $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
+  }
   
   private let indicator = UIActivityIndicatorView()
-  private let textField = RegisterTextField("이메일을 입력해주세요")
+  private let textField = idormTextField("이메일을 입력해주세요")
   private let confirmButton = RegisterBottomButton("인증번호 받기")
   private let inuMark = UIImageView(image: #imageLiteral(resourceName: "INUMark"))
   private var inuStack: UIStackView!

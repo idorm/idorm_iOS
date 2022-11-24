@@ -34,7 +34,7 @@ final class AuthNumberViewController: BaseViewController {
   
   private let indicator = UIActivityIndicatorView()
   private let confirmButton = RegisterBottomButton("인증 완료")
-  private let textField = RegisterTextField("인증번호를 입력해주세요.")
+  private let textField = idormTextField("인증번호를 입력해주세요.")
 
   private let viewModel = AuthNumberViewModel()
   private let mailTimer: MailTimerChecker

@@ -69,13 +69,18 @@ final class MyRoommateViewModel: ViewModel {
     // 상태값 변경 감지 -> 셀 리로드
     sortTypeDidChange
       .distinctUntilChanged()
+      .do(onNext: {[weak self] _ in
+        self?.output.indicatorState.onNext(true)
+      })
+      .delay(.microseconds(100000), scheduler: MainScheduler.instance)
       .subscribe(onNext: { [weak self] _ in
         guard let self = self else { return }
         self.output.matchingMembers.accept(self.members.reversed())
         self.output.reloadData.onNext(Void())
+        self.output.indicatorState.onNext(false)
       })
       .disposed(by: disposeBag)
-    
+        
     // 화면 최초 접속 -> 멤버 조회 요청
     input.loadViewObserver
       .subscribe(onNext: { [weak self] in

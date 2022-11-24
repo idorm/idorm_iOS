@@ -24,6 +24,10 @@ class MatchingViewController: BaseViewController {
     $0.tintColor = .idorm_blue
   }
   
+  private let loadingIndicator = UIActivityIndicatorView().then {
+    $0.color = .gray
+  }
+  
   private let informationImageView = UIImageView()
   private let cancelButton = MatchingUtilities.matchingButton(imageName: "cancel")
   private let messageButton = MatchingUtilities.matchingButton(imageName: "message")
@@ -33,7 +37,6 @@ class MatchingViewController: BaseViewController {
   
   private let cardStack = SwipeCardStack()
   private let viewModel = MatchingViewModel()
-  private let loadingIndicator = UIActivityIndicatorView()
   
   // MARK: - LifeCycle
   
@@ -60,7 +63,7 @@ class MatchingViewController: BaseViewController {
     MemberInfoStorage.instance.isPublicMatchingInfoObserver
       .distinctUntilChanged()
       .compactMap { $0 }
-      .bind(to: viewModel.input.isUpdatedPublicState)
+      .bind(to: viewModel.input.updatePublicState)
       .disposed(by: disposeBag)
 
     // 화면 최초 접근
@@ -83,11 +86,20 @@ class MatchingViewController: BaseViewController {
       .bind(to: viewModel.input.cancelButtonDidTap)
       .disposed(by: disposeBag)
     
+    // 메세지버튼 클릭
+    messageButton.rx.tap
+//      .filter { [weak self] in
+//        guard let self = self else { return }
+//        return self.cardStack.topCardIndex != nil
+//      }
+      .bind(to: viewModel.input.messageButtonDidTap)
+      .disposed(by: disposeBag)
+    
     // 하트버튼 클릭
     heartButton.rx.tap
       .throttle(.seconds(1), scheduler: MainScheduler.instance)
-      .map { [unowned self] in
-        cardStack.swipe(.right, animated: true)
+      .map { [weak self] in
+        self?.cardStack.swipe(.right, animated: true)
       }
       .bind(to: viewModel.input.heartButtonDidTap)
       .disposed(by: disposeBag)
@@ -100,7 +112,7 @@ class MatchingViewController: BaseViewController {
       }
       .bind(to: viewModel.input.backButtonDidTap)
       .disposed(by: disposeBag)
-        
+    
     // MARK: - Output
     
     // 백그라운드 컬러 기본 컬러로 다시 바꾸기
@@ -131,7 +143,6 @@ class MatchingViewController: BaseViewController {
     
     // FilterVC 보여주기
     viewModel.output.pushToFilterVC
-      .debug()
       .bind(onNext: { [weak self] in
         guard let self = self else { return }
         let viewController = MatchingFilterViewController()
@@ -155,7 +166,7 @@ class MatchingViewController: BaseViewController {
       .bind(onNext: { [weak self] type in
         switch type {
         case .heart:
-          UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+          UIView.animate(withDuration: 0.2, animations: {
             self?.topRoundedBackgroundView.tintColor = .idorm_green
           }) { isFinished in
             if isFinished {
@@ -179,7 +190,7 @@ class MatchingViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     // 프로필 이미지 만들기 팝업 창 띄우기
-    viewModel.output.showFirstPopupVC
+    viewModel.output.presentFirstPopupVC
       .bind(onNext: { [weak self] in
         self?.informationImageView.image = UIImage(named: "noMatchingInfomation")
         let matchingPopupVC = MatchingPopupViewController()
@@ -190,8 +201,8 @@ class MatchingViewController: BaseViewController {
     
     // 카드 스택 뷰 리로드
     viewModel.output.reloadCardStack
-      .bind(onNext: { [unowned self] in
-        self.cardStack.reloadData()
+      .bind(onNext: { [weak self] in
+        self?.cardStack.reloadData()
       })
       .disposed(by: disposeBag)
     
@@ -217,25 +228,60 @@ class MatchingViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     // 매칭 공개 여부 팝업 띄우기
-    viewModel.output.showNoSharePopupVC
-      .bind(onNext: { [unowned self] in
+    viewModel.output.presentNoSharePopupVC
+      .bind(onNext: { [weak self] in
+        guard let self = self else { return }
+        
         let popupVC = MatchingNoSharePopUpViewController()
         popupVC.modalPresentationStyle = .overFullScreen
         self.present(popupVC, animated: false)
         
         // 공개 허용 버튼 클릭
-        popupVC.confirmButton.rx.tapGesture()
+        popupVC.confirmLabel.rx.tapGesture()
           .skip(1)
           .map { _ in Void() }
           .bind(to: self.viewModel.input.publicButtonDidTap)
-          .disposed(by: disposeBag)
+          .disposed(by: self.disposeBag)
         
         // 팝업창 닫기
         self.viewModel.output.dismissNoSharePopupVC
           .bind(onNext: {
             popupVC.dismiss(animated: false)
           })
-          .disposed(by: disposeBag)
+          .disposed(by: self.disposeBag)
+      })
+      .disposed(by: disposeBag)
+    
+    // 카카오 링크 페이지 띄우기
+    viewModel.output.presentKakaoPopupVC
+      .bind(onNext: { [weak self] in
+        guard let self = self else { return }
+        let viewController = KakaoLinkViewController()
+        viewController.modalPresentationStyle = .overFullScreen
+        self.present(viewController, animated: false)
+        
+        // 오픈채팅 링크 바로 가기 버튼 클릭
+        viewController.kakaoButton.rx.tap
+          .bind(to: self.viewModel.input.kakaoLinkButtonDidTap)
+          .disposed(by: self.disposeBag)
+        
+        // KakaoLinkVC 닫기
+        self.viewModel.output.dismissKakaoLinkVC
+          .bind(onNext: {
+            viewController.dismiss(animated: false)
+          })
+          .disposed(by: self.disposeBag)
+      })
+      .disposed(by: disposeBag)
+    
+    // 카카오 링크 사파리로 열기
+    viewModel.output.presentSafari
+      .bind(onNext: { [weak self] in
+        guard let self = self else { return }
+        if let index = self.cardStack.topCardIndex {
+          let url = self.viewModel.state.matchingMembers.value[index].openKakaoLink
+          UIApplication.shared.open(URL(string: url)!)
+        }
       })
       .disposed(by: disposeBag)
   }
@@ -419,27 +465,27 @@ extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelega
   }
   
   func cardStack(_ cardStack: Shuffle_iOS.SwipeCardStack, cardForIndexAt index: Int) -> Shuffle_iOS.SwipeCard {
-    return card(from: viewModel.output.matchingMembers.value[index])
+    return card(from: viewModel.state.matchingMembers.value[index])
   }
   
   func numberOfCards(in cardStack: Shuffle_iOS.SwipeCardStack) -> Int {
-    return viewModel.output.matchingMembers.value.count
+    return viewModel.state.matchingMembers.value.count
   }
   
   func cardStack(_ cardStack: SwipeCardStack, didSwipeCardAt index: Int, with direction: SwipeDirection) {
-    let card = viewModel.output.matchingMembers.value[index]
+    let card = viewModel.state.matchingMembers.value[index]
     let memberId = card.memberId
     switch direction {
-    case .left: viewModel.input.dislikeMemberObserver.onNext(memberId)
-    case .right: viewModel.input.likeMemberObserver.onNext(memberId)
+    case .left: viewModel.state.addDislikeAPI.onNext(memberId)
+    case .right: viewModel.state.addlikeAPI.onNext(memberId)
     default: break
     }
   }
   
   func cardStack(_ cardStack: SwipeCardStack, didSelectCardAt index: Int) {
-    let matchingMember = viewModel.output.matchingMembers.value[index]
     
     // TODO: 신고하기 기능 구현
+    
     // MatchingBottomAlertVC 보여주기
     let bottomAlertVC = MatchingBottomAlertViewController()
     bottomAlertVC.modalPresentationStyle = .pageSheet
@@ -453,27 +499,16 @@ extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelega
     if abs(velocity.x) > abs(velocity.y) {
       if velocity.x < 0 {
         // 취소 스와이프 감지
-        viewModel.input.swipeObserver.onNext(.cancel)
+        viewModel.input.swipingCard.onNext(.cancel)
       } else {
         // 좋아요 스와이프 감지
-        viewModel.input.swipeObserver.onNext(.heart)
+        viewModel.input.swipingCard.onNext(.heart)
       }
     }
     
     if sender.state == .ended {
       // 스와이프 종료 이벤트
-      viewModel.input.siwpeDidEnd.onNext(.none)
+      viewModel.input.swipeDidEnd.onNext(.none)
     }
   }
 }
-
-// MARK: - Preview
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-struct MatchingVCPreView: PreviewProvider {
-  static var previews: some View {
-    MatchingViewController().toPreview()
-  }
-}
-#endif

@@ -19,7 +19,10 @@ final class OnboardingDetailViewController: BaseViewController {
 
   private var floatyBottomView: FloatyBottomView!
   private var matchingCard: MatchingCard!
-  private let indicator = UIActivityIndicatorView()
+  
+  private let indicator = UIActivityIndicatorView().then {
+    $0.color = .idorm_blue
+  }
 
   private let viewModel: OnboardingDetailViewModel
   
