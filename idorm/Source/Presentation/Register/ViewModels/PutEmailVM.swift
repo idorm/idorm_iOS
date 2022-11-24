@@ -3,97 +3,102 @@ import RxCocoa
 
 final class PutEmailViewModel: ViewModel {
   struct Input {
-    // Interaction
-    let confirmButtonTapped = PublishSubject<String>()
-    
-    // LifeCycle
-    let viewDidLoad = PublishSubject<RegisterVCTypes.PutEmailVCType>()
+    let confirmButtonDidTap = PublishSubject<Void>()
+    let textFieldDidChange = PublishSubject<String>()
   }
   
   struct Output {
-    // Presentation
-    let showAuthVC = PublishSubject<Void>()
-    let showErrorPopupVC = PublishSubject<String>()
-    
-    // UI
-    let animationState = PublishSubject<Bool>()
+    let presentAuthVC = PublishSubject<Void>()
+    let presentPopupVC = PublishSubject<String>()
+    let isLoading = PublishSubject<Bool>()
   }
+  
+  // MARK: - Properties
   
   var input = Input()
   var output = Output()
   var disposeBag = DisposeBag()
+  private let vcType: RegisterVCTypes.PutEmailVCType
   
-  init() {
-    bind()
-  }
+  let currentEmail = BehaviorRelay<String>(value: "")
   
-  func bind() {
+  init(_ vcType: RegisterVCTypes.PutEmailVCType) {
+    self.vcType = vcType
+    mutate()
     
-    // 완료 버튼 클릭 -> API 호출
-    input.confirmButtonTapped
-      .subscribe(onNext: { [weak self] in
-        self?.output.animationState.onNext(true)
-        self?.requestAuthenticationAPI($0)
-      })
-      .disposed(by: disposeBag)
-    
-    // 화면 최초 접속 -> Logger의 AuthenticationType 저장
-    input.viewDidLoad
-      .subscribe(onNext: {
-        switch $0 {
-        case .signUp:
-          Logger.instance.authenticationType = .signUp
-        case .findPW, .updatePW:
-          Logger.instance.authenticationType = .password
-        }
-      })
-      .disposed(by: disposeBag)
-  }
-}
-
-// MARK: - Network
-
-extension PutEmailViewModel {
-  
-  func requestAuthenticationAPI(_ email: String) {
-    Logger.instance.email = email
-    let provider = APIService.emailProvider
-    switch Logger.instance.authenticationType {
+    switch vcType {
     case .signUp:
-      provider.rx.request(.emailAuthentication(email: email))
-        .asObservable()
+      // 인증번호 받기 -> 회원가입 인증 API호출
+      input.confirmButtonDidTap
+        .map { [weak self] in self?.currentEmail.value ?? "" }
+        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(true) })
+        .flatMap { APIService.emailProvider.rx.request(.emailAuthentication(email: $0)) }
+        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(false) })
         .subscribe(onNext: { [weak self] response in
           switch response.statusCode {
           case 200:
-            self?.output.showAuthVC.onNext(Void())
+            self?.output.presentAuthVC.onNext(Void())
           case 400:
-            self?.output.showErrorPopupVC.onNext("이메일을 입력해주세요.")
+            self?.output.presentPopupVC.onNext("이메일을 입력해주세요.")
           case 401:
-            self?.output.showErrorPopupVC.onNext("올바른 이메일 형식이 아닙니다.")
+            self?.output.presentPopupVC.onNext("올바른 이메일 형식이 아닙니다.")
           case 409:
-            self?.output.showErrorPopupVC.onNext("이미 가입된 이메일입니다.")
+            self?.output.presentPopupVC.onNext("이미 가입된 이메일입니다.")
           default:
-            self?.output.showErrorPopupVC.onNext("이메일을 다시 한번 확인해주세요.")
+            self?.output.presentPopupVC.onNext("이메일을 다시 한번 확인해주세요.")
           }
-          self?.output.animationState.onNext(false)
         })
         .disposed(by: disposeBag)
-    case .password:
-      provider.rx.request(.pwAuthentication(email: email))
-        .asObservable()
+      
+    case .findPW, .updatePW:
+      // 인증번호 받기 -> 비밀번호 인증 API호출
+      input.confirmButtonDidTap
+        .map { [weak self] in self?.currentEmail.value ?? "" }
+        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(true) })
+        .flatMap { APIService.emailProvider.rx.request(.pwAuthentication(email: $0)) }
+        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(false) })
         .subscribe(onNext: { [weak self] response in
           switch response.statusCode {
           case 200:
-            self?.output.showAuthVC.onNext(Void())
+            self?.output.presentAuthVC.onNext(Void())
+          case 400:
+            self?.output.presentPopupVC.onNext("이메일을 입력해주세요.")
           case 401:
-            self?.output.showErrorPopupVC.onNext("이메일을 찾을 수 없습니다.")
+            self?.output.presentPopupVC.onNext("올바른 이메일 형식이 아닙니다.")
           case 409:
-            self?.output.showErrorPopupVC.onNext("가입되지 않은 이메일입니다.")
+            self?.output.presentPopupVC.onNext("이미 가입된 이메일입니다.")
           default:
-            self?.output.showErrorPopupVC.onNext("이메일을 다시 한번 확인해주세요.")
+            self?.output.presentPopupVC.onNext("이메일을 다시 한번 확인해주세요.")
           }
-          self?.output.animationState.onNext(false)
         })
+        .disposed(by: disposeBag)
+    }
+  }
+
+  private func mutate() {
+    
+    // 텍스트 필드 변경 -> 프로퍼티로 저장
+    input.textFieldDidChange
+      .bind(to: currentEmail)
+      .disposed(by: disposeBag)
+    
+    // 현재 작성된 이메일 -> Logger에 저장
+    currentEmail
+      .bind(to: Logger.instance.currentEmail)
+      .disposed(by: disposeBag)
+    
+    // 최초 접속 시 Logger에 인증 방식 저장
+    switch vcType {
+    case .signUp:
+      Observable.empty()
+        .map { AuthenticationType.signUp }
+        .bind(to: Logger.instance.authenticationType)
+        .disposed(by: disposeBag)
+      
+    case .findPW, .updatePW:
+      Observable.empty()
+        .map { AuthenticationType.password }
+        .bind(to: Logger.instance.authenticationType)
         .disposed(by: disposeBag)
     }
   }

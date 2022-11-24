@@ -3,42 +3,40 @@ import RxCocoa
 
 final class AuthViewModel: ViewModel {
   struct Input {
-    // Interaction
-    let backButtonTapped = PublishSubject<Void>()
-    let portalButtonTapped = PublishSubject<Void>()
-    let confirmButtonTapped = PublishSubject<Void>()
+    let backButtonDidTap = PublishSubject<Void>()
+    let portalButtonDidTap = PublishSubject<Void>()
+    let confirmButtonDidTap = PublishSubject<Void>()
   }
   
   struct Output {
-    // Presentation
     let dismissVC = PublishSubject<Void>()
-    let showPortalWeb = PublishSubject<Void>()
-    let showAuthNumberVC = PublishSubject<Void>()
+    let presentPortalWeb = PublishSubject<Void>()
+    let pushToAuthNumberVC = PublishSubject<Void>()
   }
+  
+  // MARK: - Properties
   
   var input = Input()
   var output = Output()
   var disposeBag = DisposeBag()
   
-  init() {
-    bind()
-  }
+  // MARK: - Bind
   
-  func bind() {
+  init() {
     
     // 뒤로가기 버튼 클릭 -> 화면 닫기
-    input.backButtonTapped
+    input.backButtonDidTap
       .bind(to: output.dismissVC)
       .disposed(by: disposeBag)
     
     // 메일함 바로가기 버튼 -> 웹메일 사이트 보여주기
-    input.portalButtonTapped
-      .bind(to: output.showPortalWeb)
+    input.portalButtonDidTap
+      .bind(to: output.presentPortalWeb)
       .disposed(by: disposeBag)
     
     // 인증번호 입력 버튼 -> AuthNumberVC 이동
-    input.confirmButtonTapped
-      .bind(to: output.showAuthNumberVC)
+    input.confirmButtonDidTap
+      .bind(to: output.pushToAuthNumberVC)
       .disposed(by: disposeBag)
   }
 }

@@ -189,36 +189,45 @@ final class LoginViewController: BaseViewController {
     
     // MARK: - Input
     
+    // 이메일 텍스트 반응 감지
+    idTextField.rx.text
+      .orEmpty
+      .bind(to: viewModel.input.emailTextFieldDidChange)
+      .disposed(by: disposeBag)
+    
+    // 비밀번호 텍스트 반응 감지
+    pwTextField.rx.text
+      .orEmpty
+      .bind(to: viewModel.input.passwordTextFieldDidChange)
+      .disposed(by: disposeBag)
+    
     // 로그인 버튼 클릭
     loginButton.rx.tap
-      .map { [unowned self] in
-        return (self.idTextField.text ?? "", self.pwTextField.text ?? "")
-      }
-      .bind(to: viewModel.input.loginButtonTapped)
+      .bind(to: viewModel.input.loginButtonDidTap)
       .disposed(by: disposeBag)
     
     // 비밀번호 찾기 버튼 클릭
     forgotPwButton.rx.tap
-      .bind(to: viewModel.input.forgotButtonTapped)
+      .bind(to: viewModel.input.forgotButtonDidTap)
       .disposed(by: disposeBag)
     
     // 회원가입 버튼 클릭
     signUpButton.rx.tap
-      .bind(to: viewModel.input.signUpButtonTapped)
+      .bind(to: viewModel.input.signUpButtonDidTap)
       .disposed(by: disposeBag)
     
     // MARK: - Output
     
-    // PutEmailVC로 이동
-    viewModel.output.showPutEmailVC
+    // PutEmailVC
+    viewModel.output.pushToPutEmailVC
       .bind(onNext: { [weak self] vcType in
         let putEmailVC = PutEmailViewController(vcType)
         self?.navigationController?.pushViewController(putEmailVC, animated: true)
       })
       .disposed(by: disposeBag)
     
-    // 에러 팝업 띄우기
-    viewModel.output.showErrorPopupVC
+    // 에러 팝업
+    viewModel.output.presentPopupVC
       .bind(onNext: { [weak self] mention in
         let popupVC = PopupViewController(contents: mention)
         popupVC.modalPresentationStyle = .overFullScreen
@@ -226,8 +235,8 @@ final class LoginViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    // 로그인 완료 시 토큰 받고 메인화면으로 이동
-    viewModel.output.showTabBarVC
+    // 메인화면으로 이동
+    viewModel.output.presentTabBarVC
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [weak self] in
         let tabBarVC = TabBarController()
@@ -236,7 +245,7 @@ final class LoginViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    // 인디케이터 로딩 제어
+    // 로딩 중
     viewModel.output.isLoading
       .bind(onNext: { [weak self] in
         if $0 {

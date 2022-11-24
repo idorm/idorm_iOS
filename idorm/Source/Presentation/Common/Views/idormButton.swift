@@ -7,8 +7,9 @@
 
 import UIKit
 
-final class RegisterBottomButton: UIButton {
-  // MARK: - Init
+final class idormButton: UIButton {
+  
+  // MARK: - LifeCycle
   
   init(_ title: String) {
     super.init(frame: .zero)

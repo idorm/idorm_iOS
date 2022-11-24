@@ -3,7 +3,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class ChangeNicknameViewModel: ViewModel {
+final class NicknameViewModel: ViewModel {
   struct Input {
     let textDidChange = BehaviorRelay<String>(value: "")
     let confirmButtonDidTap = PublishSubject<Void>()
@@ -20,6 +20,7 @@ final class ChangeNicknameViewModel: ViewModel {
     let textFieldBorderColor = PublishSubject<CGColor>()
     let isHiddenCheckmark = PublishSubject<Bool>()
     let presentPopupVC = PublishSubject<String>()
+    let presentCompleteSignUpVC = PublishSubject<Void>()
     let isLoading = PublishSubject<Bool>()
     let popVC = PublishSubject<Void>()
   }
@@ -30,6 +31,7 @@ final class ChangeNicknameViewModel: ViewModel {
   let isValidSpacingCondition = BehaviorRelay<Bool>(value: false)
   let isValidTextCondition = BehaviorRelay<Bool>(value: false)
   let isValidCondition = BehaviorRelay<Bool>(value: false)
+  var currentText: String { output.currentText.value }
   
   var input = Input()
   var output = Output()
@@ -37,7 +39,7 @@ final class ChangeNicknameViewModel: ViewModel {
   
   // MARK: - Bind
   
-  init() {
+  init(_ vcType: RegisterVCTypes.NicknameVCType) {
     mutate()
     
     // 텍스트 변화 -> 8글자 초과 입력X
@@ -112,27 +114,54 @@ final class ChangeNicknameViewModel: ViewModel {
       .map { $0 ? UIColor.idorm_blue : UIColor.idorm_gray_400 }
       .bind(to: output.spacingConditionLabelTextColor)
       .disposed(by: disposeBag)
-        
-    // 완료버튼 -> API요청
-    input.confirmButtonDidTap
-      .map { [unowned self] in self.isValidCondition.value }
-      .filter { $0 }
-      .map { [weak self] _ in self?.output.currentText.value ?? "" }
-      .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(true) })
-      .flatMap { APIService.memberProvider.rx.request(.changeNickname(nickname: $0)) }
-      .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(false) })
-      .subscribe(onNext: { [weak self] response in
-        switch response.statusCode {
-        case 200:
-          let newValue = APIService.decode(MemberModel.LoginResponseModel.self, data: response.data).data
-          MemberInfoStorage.instance.myInformation.accept(newValue)
-          self?.output.popVC.onNext(Void())
-        case 409:
-          self?.output.presentPopupVC.onNext("이미 존재하는 닉네임입니다.")
-        default: fatalError("닉네임을 변경하지 못했습니다! ")
-        }
-      })
-      .disposed(by: disposeBag)
+    
+    let email = Logger.instance.currentEmail.value
+    let password = Logger.instance.currentPassword.value
+    let nickName = currentText
+    
+    switch vcType {
+    case .signUp:
+      // 완료버튼 -> 회원가입 API
+      input.confirmButtonDidTap
+        .map { [weak self] in self?.isValidCondition.value ?? false }
+        .filter { $0 }
+        .map { _ in (email, password, nickName) }
+        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(true) })
+        .flatMap { APIService.memberProvider.rx.request(.register(id: $0.0, pw: $0.1, nickname: $0.2)) }
+        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(false) })
+        .subscribe(onNext: { [weak self] response in
+          switch response.statusCode {
+          case 200:
+            self?.output.presentCompleteSignUpVC.onNext(Void())
+          case 409:
+            self?.output.presentPopupVC.onNext("이미 존재하는 닉네임입니다.")
+          default: fatalError()
+          }
+        })
+        .disposed(by: disposeBag)
+      
+    case .update:
+      // 완료버튼 -> 비밀번호 변경 API
+      input.confirmButtonDidTap
+        .map { [weak self] in self?.isValidCondition.value ?? false }
+        .filter { $0 }
+        .map { _ in nickName }
+        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(true) })
+        .flatMap { APIService.memberProvider.rx.request(.changeNickname(nickname: $0)) }
+        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(false) })
+        .subscribe(onNext: { [weak self] response in
+          switch response.statusCode {
+          case 200:
+            let newValue = APIService.decode(MemberModel.LoginResponseModel.self, data: response.data).data
+            MemberInfoStorage.instance.myInformation.accept(newValue)
+            self?.output.popVC.onNext(Void())
+          case 409:
+            self?.output.presentPopupVC.onNext("이미 존재하는 닉네임입니다.")
+          default: fatalError("닉네임을 변경하지 못했습니다! ")
+          }
+        })
+        .disposed(by: disposeBag)
+    }
   }
   
   private func mutate() {

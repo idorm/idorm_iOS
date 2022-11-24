@@ -1,126 +1,226 @@
-import Foundation
+import UIKit
 
 import RxSwift
 import RxCocoa
 
 final class ConfirmPasswordViewModel: ViewModel {
+  
   struct Input {
-    // Interaction
-    let confirmButtonTapped = PublishSubject<Void>()
-    let passwordText = BehaviorRelay<String>(value: "")
-    let passwordText_2 = BehaviorRelay<String>(value: "")
+    let confirmButtonDidTap = PublishSubject<Void>()
+    let passwordTf1DidChange = PublishSubject<String>()
+    let passwordTf2DidChange = PublishSubject<String>()
+    let passwordTf1DidBegin = PublishSubject<Void>()
+    let passwordTf1DidEnd = PublishSubject<Void>()
+    let passwordTf2DidEnd = PublishSubject<Void>()
   }
   
   struct Output {
-    // UI
-    let verificationCount = BehaviorRelay<Bool>(value: false)
-    let verificationCombine = BehaviorRelay<Bool>(value: false)
-    let verificationEquality = BehaviorRelay<Bool>(value: false)
-    let verificationFinals = BehaviorRelay<Bool>(value: false)
-    
-    // Presentation
-    let showErrorPopupVC = PublishSubject<String>()
-    let showLoginVC = PublishSubject<Void>()
+    let presentPopupVC = PublishSubject<String>()
+    let presentLoginVC = PublishSubject<Void>()
     let pushToConfirmNicknameVC = PublishSubject<Void>()
+    let isLoading = PublishSubject<Bool>()
+    let isHiddenCheckmark = PublishSubject<Bool>()
+    let textCountConditionLabelTextColor = PublishSubject<UIColor>()
+    let compoundConditionLabelTextColor = PublishSubject<UIColor>()
+    let infoLabelTextColor = PublishSubject<UIColor>()
+    let infoLabel2Text = PublishSubject<String>()
+    let infoLabel2TextColor = PublishSubject<UIColor>()
+    let passwordTf1BorderColor = PublishSubject<CGColor>()
+    let passwordTf2BorderColor = PublishSubject<CGColor>()
   }
+  
+  // MARK: - Properties
   
   var input = Input()
   var output = Output()
   var disposeBag = DisposeBag()
-  private let vcType: RegisterVCTypes.ConfirmPasswordVCType
   
-  var passwordText: String { return input.passwordText.value }
-  var passwordText2: String { return input.passwordText_2.value }
-  
-  init(_ vcType: RegisterVCTypes.ConfirmPasswordVCType) {
-    self.vcType = vcType
-    bind()
-  }
+  let currentPassword1 = BehaviorRelay<String>(value: "")
+  let currentPassword2 = BehaviorRelay<String>(value: "")
+  let isValidTextCountCondition = BehaviorRelay<Bool>(value: false)
+  let isValidCompoundCondition = BehaviorRelay<Bool>(value: false)
+  let isValidEqualityCondition = BehaviorRelay<Bool>(value: false)
+  let isValidWholeCondition = BehaviorRelay<Bool>(value: false)
   
   // MARK: - Bind
   
-  func bind() {
-    
-    // 텍스트 입력 -> 로직 검증
-    input.passwordText
-      .bind(onNext: { [weak self] password in
-        if password.count >= 8 {
-          self?.output.verificationCount.accept(true)
-        } else {
-          self?.output.verificationCount.accept(false)
-        }
-        
-        if LoginUtilities.isValidPassword(pwd: password) {
-          self?.output.verificationCombine.accept(true)
-        } else {
-          self?.output.verificationCombine.accept(false)
-        }
-      })
-      .disposed(by: disposeBag)
-    
-    // 검증 작업 -> 확인 버튼 활성화/비활성화
-    Observable.combineLatest(
-      output.verificationCount,
-      output.verificationCombine,
-      output.verificationEquality
-    )
-    .map {
-      $0.0 && $0.1 && $0.2 ? true : false
-    }
-    .bind(to: output.verificationFinals)
-    .disposed(by: disposeBag)
-    
-    // 텍스트 입력 -> 비밀번호1, 2 동등성 확인
-    Observable.combineLatest(
-      input.passwordText,
-      input.passwordText_2
-    )
-    .map {
-      $0 == $1 ? true : false
-    }
-    .bind(to: output.verificationEquality)
-    .disposed(by: disposeBag)
+  init(_ vcType: RegisterVCTypes.ConfirmPasswordVCType) {
+    mutate()
     
     // 완료 버튼 클릭 -> 조건 확인 오류 팝업
-    input.confirmButtonTapped
-      .filter { [unowned self] in self.output.verificationFinals.value == false }
+    input.confirmButtonDidTap
+      .filter { [weak self] in (self?.isValidWholeCondition.value ?? false) == false }
       .map { "조건을 다시 확인해주세요." }
-      .bind(to: output.showErrorPopupVC)
+      .bind(to: output.presentPopupVC)
       .disposed(by: disposeBag)
     
+    // 글자수 조건 -> 글자수 텍스트 컬러
+    isValidTextCountCondition
+      .map { $0 ? UIColor.idorm_blue : UIColor.idorm_gray_400 }
+      .bind(to: output.textCountConditionLabelTextColor)
+      .disposed(by: disposeBag)
+    
+    // 글자 조합 조건 -> 조합 텍스트 컬러
+    isValidCompoundCondition
+      .map { $0 ? UIColor.idorm_blue : UIColor.idorm_gray_400 }
+      .bind(to: output.compoundConditionLabelTextColor)
+      .disposed(by: disposeBag)
+    
+    // 텍스트필드1 포커싱 시작 -> 체크마크 숨김
+    input.passwordTf1DidBegin
+      .map { true }
+      .bind(to: output.isHiddenCheckmark)
+      .disposed(by: disposeBag)
+    
+    // 텍스트필드1 포커싱 해제 -> 체크마크 표시/숨김
+    input.passwordTf1DidEnd
+      .map { [weak self] in
+        (self?.isValidTextCountCondition.value ?? false) && (self?.isValidCompoundCondition.value ?? false)
+      }
+      .map { !$0 }
+      .bind(to: output.isHiddenCheckmark)
+      .disposed(by: disposeBag)
+    
+    // 텍스트필드1 포커싱 해제 -> 텍스트필드1 모서리 컬러
+    input.passwordTf1DidEnd
+      .map { [weak self] in
+        (self?.isValidTextCountCondition.value ?? false) && (self?.isValidCompoundCondition.value ?? false)
+      }
+      .map { $0 ? UIColor.idorm_gray_400.cgColor : UIColor.idorm_red.cgColor }
+      .bind(to: output.passwordTf1BorderColor)
+      .disposed(by: disposeBag)
+    
+    // 텍스트필드1 포커싱 해제 -> 글자수 레이블 컬러
+    input.passwordTf1DidEnd
+      .map { [weak self] in self?.isValidTextCountCondition.value ?? false }
+      .map { $0 ? UIColor.idorm_blue : UIColor.idorm_red }
+      .bind(to: output.textCountConditionLabelTextColor)
+      .disposed(by: disposeBag)
+    
+    // 텍스트필드1 포커싱 해제 -> 글자수 조합 레이블 컬러
+    input.passwordTf1DidEnd
+      .map { [weak self] in self?.isValidCompoundCondition.value ?? false }
+      .map { $0 ? UIColor.idorm_blue : UIColor.idorm_red }
+      .bind(to: output.compoundConditionLabelTextColor)
+      .disposed(by: disposeBag)
+    
+    // 텍스트필드1 포커싱 해제 -> 비밀번호 레이블 컬러
+    input.passwordTf1DidEnd
+      .map { [weak self] in
+        (self?.isValidTextCountCondition.value ?? false) && (self?.isValidCompoundCondition.value ?? false)
+      }
+      .map { $0 ? UIColor.black : UIColor.idorm_red }
+      .bind(to: output.infoLabelTextColor)
+      .disposed(by: disposeBag)
+    
+    // 텍스트필드2 포커싱 해제 -> infoLabel2 텍스트 변경
+    input.passwordTf2DidEnd
+      .map { [weak self] in self?.isValidEqualityCondition.value ?? false }
+      .map { $0 ? "비밀번호 확인" : "두 비밀번호가 일치하지 않습니다. 다시 확인해주세요." }
+      .bind(to: output.infoLabel2Text)
+      .disposed(by: disposeBag)
+    
+    // 텍스트필드2 포커싱 해제 -> infoLabel2 텍스트 컬러 변경
+    input.passwordTf2DidEnd
+      .map { [weak self] in self?.isValidEqualityCondition.value ?? false }
+      .map { $0 ? UIColor.black : UIColor.idorm_red }
+      .bind(to: output.infoLabel2TextColor)
+      .disposed(by: disposeBag)
+
+    // 텍스트필드2 포커싱 해제 -> password2TextField 모서리 컬러 변경
+    input.passwordTf2DidEnd
+      .map { [weak self] in self?.isValidEqualityCondition.value ?? false }
+      .map { $0 ? UIColor.idorm_gray_400.cgColor : UIColor.idorm_red.cgColor }
+      .bind(to: output.passwordTf2BorderColor)
+      .disposed(by: disposeBag)
+    
+    // 확인 버튼 클릭 -> 팝업VC
+    input.confirmButtonDidTap
+      .filter { [weak self] in (self?.isValidWholeCondition.value ?? false) == false }
+      .map { _ in "조건을 다시 확인해주세요." }
+      .bind(to: output.presentPopupVC)
+      .disposed(by: disposeBag)
+    
+    let currentEmail = Logger.instance.currentEmail.value
+    let currentPassword = Logger.instance.currentPassword.value
+
     switch vcType {
     case .signUp:
-      // 회원가입 Flow일 때, 확인 버튼 클릭 -> ConfirmNicknameVC로 이동 & 오류 팝업
-      input.confirmButtonTapped
-        .filter { [unowned self] in self.output.verificationFinals.value }
-        .subscribe(onNext: { [weak self] in
-          Logger.instance.password = self?.passwordText ?? ""
-          self?.output.pushToConfirmNicknameVC.onNext(Void())
-        })
-        .disposed(by: disposeBag)
       
+      // 확인 버튼 -> ConfirmNicknameVC
+      input.confirmButtonDidTap
+        .filter { [weak self] in self?.isValidWholeCondition.value ?? false }
+        .bind(to: output.pushToConfirmNicknameVC)
+        .disposed(by: disposeBag)
+
     case .findPW, .updatePW:
-      // 비밀번호 변경 Flow일 때, -> LoginVC로 이동
-      input.confirmButtonTapped
-        .filter { [unowned self] in self.output.verificationFinals.value }
-        .map { [weak self] in
-          let email = Logger.instance.email ?? ""
-          let password = self?.passwordText ?? ""
-          return (email, password)
-        }
+      
+      // 확인 버튼 -> LoginVC로 이동
+      input.confirmButtonDidTap
+        .filter { [weak self] in self?.isValidWholeCondition.value ?? false }
+        .map { _ in (currentEmail, currentPassword) }
         .flatMap { APIService.memberProvider.rx.request(.changePassword(id: $0.0, pw: $0.1)) }
         .subscribe(onNext: { [weak self] response in
           switch response.statusCode {
           case 200:
-            self?.output.showErrorPopupVC.onNext("비밀번호가 변경 되었습니다.")
-            self?.output.showLoginVC.onNext(Void())
+            self?.output.presentPopupVC.onNext("비밀번호가 변경 되었습니다.")
+            self?.output.presentLoginVC.onNext(Void())
           case 400:
-            self?.output.showErrorPopupVC.onNext("입력은 필수입니다.")
+            self?.output.presentPopupVC.onNext("입력은 필수입니다.")
           default:
             fatalError("비밀번호 변경 실패했습니다,,,")
           }
         })
         .disposed(by: disposeBag)
     }
+  }
+  
+  private func mutate() {
+    
+    // 텍스트필드1 반응 -> 변수 저장
+    input.passwordTf1DidChange
+      .bind(to: currentPassword1)
+      .disposed(by: disposeBag)
+    
+    // 텍스트필드2 반응 -> 변수 저장
+    input.passwordTf2DidChange
+      .bind(to: currentPassword2)
+      .disposed(by: disposeBag)
+    
+    // 비밀번호 반응 -> 글자수 유효성 검사
+    currentPassword1
+      .map { $0.count > 8 }
+      .bind(to: isValidTextCountCondition)
+      .disposed(by: disposeBag)
+    
+    // 비밀번호 반응 -> 문자 조합 유효성 검사
+    currentPassword1
+      .map { $0.isValidPasswordCondition }
+      .bind(to: isValidCompoundCondition)
+      .disposed(by: disposeBag)
+    
+    // 비밀번호 반응 -> 비밀번호 동일 유효성 검사
+    Observable.combineLatest(
+      currentPassword1,
+      currentPassword2
+    )
+    .map { $0.0 == $0.1 }
+    .bind(to: isValidEqualityCondition)
+    .disposed(by: disposeBag)
+    
+    // 각각 유효성 검사 반응 -> 전체 유효성 검사
+    Observable.combineLatest(
+      isValidEqualityCondition,
+      isValidCompoundCondition,
+      isValidTextCountCondition
+    )
+    .map { $0.0 && $0.1 && $0.2 }
+    .bind(to: isValidWholeCondition)
+    .disposed(by: disposeBag)
+    
+    // Logger에 저장
+    currentPassword1
+      .bind(to: Logger.instance.currentPassword)
+      .disposed(by: disposeBag)
   }
 }

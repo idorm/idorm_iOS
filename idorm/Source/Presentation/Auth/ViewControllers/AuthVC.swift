@@ -11,16 +11,16 @@ final class AuthViewController: BaseViewController {
   // MARK: - Properties
   
   private let envelopeImageView = UIImageView(image: #imageLiteral(resourceName: "envelope"))
-  private let confirmButton = RegisterBottomButton("인증번호 입력")
+  private let confirmButton = idormButton("인증번호 입력")
   
   private let backButton = UIButton().then {
     var config = UIButton.Configuration.plain()
-    config.image = UIImage(named: "Xmark_Black")
+    config.image = #imageLiteral(resourceName: "Xmark_Black")
     config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
     $0.configuration = config
   }
   
-  private let portalButton = RegisterBottomButton("메일함 바로가기").then {
+  private let portalButton = idormButton("메일함 바로가기").then {
     $0.configuration?.baseForegroundColor = .idorm_gray_400
     $0.configuration?.baseBackgroundColor = .white
     $0.configuration?.background.strokeWidth = 1
@@ -31,8 +31,6 @@ final class AuthViewController: BaseViewController {
   
   private let viewModel = AuthViewModel()
   private let mailTimer = MailTimerChecker()
-  
-  // MARK: - LifeCycle
     
   // MARK: - Bind
   
@@ -43,17 +41,17 @@ final class AuthViewController: BaseViewController {
     
     // 뒤로가기 버튼 이벤트
     backButton.rx.tap
-      .bind(to: viewModel.input.backButtonTapped)
+      .bind(to: viewModel.input.backButtonDidTap)
       .disposed(by: disposeBag)
     
     // 웹메일 바로 가기 버튼 이벤트
     portalButton.rx.tap
-      .bind(to: viewModel.input.portalButtonTapped)
+      .bind(to: viewModel.input.portalButtonDidTap)
       .disposed(by: disposeBag)
     
     // 인증번호 입력 버튼 이벤트
     confirmButton.rx.tap
-      .bind(to: viewModel.input.confirmButtonTapped)
+      .bind(to: viewModel.input.confirmButtonDidTap)
       .disposed(by: disposeBag)
         
     // MARK: - Output
@@ -67,7 +65,7 @@ final class AuthViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     // 웹메일 페이지 보여주기
-    viewModel.output.showPortalWeb
+    viewModel.output.presentPortalWeb
       .bind(onNext: {
         guard let url = URL(string: "https://webmail.inu.ac.kr/member/login?host_domain=inu.ac.kr") else { return }
         UIApplication.shared.open(url)
@@ -75,7 +73,7 @@ final class AuthViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     // 인증번호 입력 페이지로 넘어가기
-    viewModel.output.showAuthNumberVC
+    viewModel.output.pushToAuthNumberVC
       .asDriver(onErrorJustReturn: Void())
       .drive(onNext: { [unowned self] in
         let authNumberVC = AuthNumberViewController(timer: self.mailTimer)

@@ -26,19 +26,36 @@ final class PutEmailViewController: BaseViewController {
     $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
   }
   
-  private let indicator = UIActivityIndicatorView()
-  private let textField = idormTextField("이메일을 입력해주세요")
-  private let confirmButton = RegisterBottomButton("인증번호 받기")
-  private let inuMark = UIImageView(image: #imageLiteral(resourceName: "INUMark"))
-  private var inuStack: UIStackView!
+  private let indicator = UIActivityIndicatorView().then {
+    $0.color = .gray
+  }
   
-  private let viewModel = PutEmailViewModel()
+  private lazy var inuStack = UIStackView().then { stack in
+    [inuMark, needEmailLabel]
+      .forEach { stack.addArrangedSubview($0) }
+    stack.axis = .horizontal
+    stack.spacing = 4
+    
+    switch vcType {
+    case .signUp, .updatePW:
+      stack.isHidden = false
+    case .findPW:
+      stack.isHidden = true
+    }
+  }
+  
+  private let textField = idormTextField("이메일을 입력해주세요")
+  private let confirmButton = idormButton("인증번호 받기")
+  private let inuMark = UIImageView(image: #imageLiteral(resourceName: "INUMark"))
+  
+  private let viewModel: PutEmailViewModel
   private let vcType: RegisterVCTypes.PutEmailVCType
 
   // MARK: - LifeCycle
   
   init(_ vcType: RegisterVCTypes.PutEmailVCType) {
     self.vcType = vcType
+    self.viewModel = PutEmailViewModel(vcType)
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -53,23 +70,21 @@ final class PutEmailViewController: BaseViewController {
     
     // MARK: - Input
     
-    // 화면 최초 접속
-    Observable.just(vcType)
-      .bind(to: viewModel.input.viewDidLoad)
+    // 텍스트 변화 감지
+    textField.rx.text
+      .orEmpty
+      .bind(to: viewModel.input.textFieldDidChange)
       .disposed(by: disposeBag)
 
     // 인증번호 받기 버튼 클릭
     confirmButton.rx.tap
-      .map { [unowned self] in
-        return self.textField.text ?? ""
-      }
-      .bind(to: viewModel.input.confirmButtonTapped)
+      .bind(to: viewModel.input.confirmButtonDidTap)
       .disposed(by: disposeBag)
     
     // MARK: - Output
     
     // 에러 팝업 창 띄우기
-    viewModel.output.showErrorPopupVC
+    viewModel.output.presentPopupVC
       .bind(onNext: { [weak self] mention in
         let popupVC = PopupViewController(contents: mention)
         popupVC.modalPresentationStyle = .overFullScreen
@@ -78,7 +93,7 @@ final class PutEmailViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     // 인증번호 페이지로 이동
-    viewModel.output.showAuthVC
+    viewModel.output.presentAuthVC
       .bind(onNext: { [weak self] in
         guard let self = self else { return }
         let authVC = AuthViewController()
@@ -103,17 +118,15 @@ final class PutEmailViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    // 애니메이션 상태 변경
-    viewModel.output.animationState
-      .bind(onNext: { [weak self] in
-        if $0 {
-          self?.indicator.startAnimating()
-          self?.view.isUserInteractionEnabled = false
-        } else {
-          self?.indicator.stopAnimating()
-          self?.view.isUserInteractionEnabled = true
-        }
-      })
+    // 로딩 애니메이션 제어
+    viewModel.output.isLoading
+      .bind(to: indicator.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
+    // 화면 인터렉션 제어
+    viewModel.output.isLoading
+      .map { !$0 }
+      .bind(to: view.rx.isUserInteractionEnabled)
       .disposed(by: disposeBag)
   }
   
@@ -129,21 +142,13 @@ final class PutEmailViewController: BaseViewController {
     super.setupStyles()
     view.backgroundColor = .white
     
-    let inustack = UIStackView(arrangedSubviews: [ inuMark, needEmailLabel ])
-    inustack.axis = .horizontal
-    inustack.spacing = 4.0
-    self.inuStack = inustack
-    
     switch vcType {
     case .signUp:
       navigationItem.title = "회원가입"
-      inuStack.isHidden = false
     case .findPW:
       navigationItem.title = "비밀번호 찾기"
-      inuStack.isHidden = true
     case .updatePW:
       navigationItem.title = "비밀번호 변경"
-      inustack.isHidden = false
     }
   }
   

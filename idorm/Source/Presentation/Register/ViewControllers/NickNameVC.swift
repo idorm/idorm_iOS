@@ -5,7 +5,7 @@ import Then
 import RxSwift
 import RxCocoa
 
-final class ChangeNicknameViewController: BaseViewController {
+final class NicknameViewController: BaseViewController {
   
   // MARK: - Properties
   
@@ -17,7 +17,7 @@ final class ChangeNicknameViewController: BaseViewController {
   
   private let textField = idormTextField("변경할 닉네임을 입력해주세요.")
   
-  private let confirmButton = RegisterBottomButton("완료")
+  private let confirmButton = idormButton("완료")
   
   private let backgroundView = UIView().then {
     $0.backgroundColor = .white
@@ -28,7 +28,7 @@ final class ChangeNicknameViewController: BaseViewController {
     $0.textColor = .idorm_gray_300
     $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
   }
-    
+  
   private let currentLenghtLabel = UILabel().then {
     $0.text = "0"
     $0.textColor = .idorm_blue
@@ -39,17 +39,44 @@ final class ChangeNicknameViewController: BaseViewController {
     $0.color = .gray
   }
   
-  private let countConditionLabel = MyPageUtilities.descriptionLabel(text: "•  최소 2글자에서 8글자를 입력해주세요.")
-  private let spacingConditionLabel = MyPageUtilities.descriptionLabel(text: "•  공백없이 입력해주세요.")
-  private let textConditionLabel = MyPageUtilities.descriptionLabel(text: "•  영문, 한글, 숫자만 입력할 수 있어요.")
+  private let countConditionLabel = UILabel().then {
+    $0.text = "•  최소 2글자에서 8글자를 입력해주세요."
+    $0.textColor = .idorm_gray_400
+    $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
+  }
   
-  private lazy var descriptionStackView = UIStackView().then { stack in
-    [countConditionLabel, spacingConditionLabel, textConditionLabel]
+  private let spacingConditionLabel = UILabel().then {
+    $0.text = "•  공백없이 입력해주세요."
+    $0.textColor = .idorm_gray_400
+    $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
+  }
+
+  private let compoundConditionLabel = UILabel().then {
+    $0.text = "•  영문, 한글, 숫자만 입력할 수 있어요."
+    $0.textColor = .idorm_gray_400
+    $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
+  }
+  
+  private lazy var ConditionStackView = UIStackView().then { stack in
+    [countConditionLabel, spacingConditionLabel, compoundConditionLabel]
       .forEach { stack.addArrangedSubview($0) }
     stack.axis = .vertical
   }
   
-  private let viewModel = ChangeNicknameViewModel()
+  private let viewModel: NicknameViewModel
+  private let vcType: RegisterVCTypes.NicknameVCType
+  
+  // MARK: - LifeCycle
+  
+  init(_ vcType: RegisterVCTypes.NicknameVCType) {
+    self.vcType = vcType
+    self.viewModel = NicknameViewModel(vcType)
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
   // MARK: - Setup
   
@@ -64,7 +91,7 @@ final class ChangeNicknameViewController: BaseViewController {
     super.setupLayouts()
     
     view.addSubview(backgroundView)
-    [mainLabel, maxLengthLabel, textField, confirmButton, currentLenghtLabel, descriptionStackView, indicator]
+    [mainLabel, maxLengthLabel, textField, confirmButton, currentLenghtLabel, ConditionStackView, indicator]
       .forEach { backgroundView.addSubview($0) }
   }
   
@@ -103,7 +130,7 @@ final class ChangeNicknameViewController: BaseViewController {
       make.trailing.equalTo(maxLengthLabel.snp.leading).offset(-4)
     }
     
-    descriptionStackView.snp.makeConstraints { make in
+    ConditionStackView.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(24)
       make.top.equalTo(textField.snp.bottom).offset(8)
     }
@@ -166,7 +193,7 @@ final class ChangeNicknameViewController: BaseViewController {
 
     // 특수문자 레이블 컬러
     viewModel.output.textConditionLabelTextColor
-      .bind(to: textConditionLabel.rx.textColor)
+      .bind(to: compoundConditionLabel.rx.textColor)
       .disposed(by: disposeBag)
     
     // 오류 팝업
@@ -185,9 +212,24 @@ final class ChangeNicknameViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
+    // CompleteSignUpVC
+    viewModel.output.presentCompleteSignUpVC
+      .bind(onNext: { [weak self] in
+        let viewController = CompleteSignUpViewController()
+        viewController.modalPresentationStyle = .fullScreen
+        self?.present(viewController, animated: true)
+      })
+      .disposed(by: disposeBag)
+    
     // 로딩 중
     viewModel.output.isLoading
       .bind(to: indicator.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
+    // 화면 터치 제어
+    viewModel.output.isLoading
+      .map { !$0 }
+      .bind(to: view.rx.isUserInteractionEnabled)
       .disposed(by: disposeBag)
     
     // 체크마크 숨김처리

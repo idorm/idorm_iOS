@@ -86,7 +86,7 @@ final class ManageMyInfoViewController: BaseViewController {
     // ChangeNickNameVC 보여주기
     viewModel.output.pushToChangeNicknameVC
       .bind(onNext: { [weak self] in
-        let changeNicknameVC = ChangeNicknameViewController()
+        let changeNicknameVC = NicknameViewController(.update)
         self?.navigationController?.pushViewController(changeNicknameVC, animated: true)
       })
       .disposed(by: disposeBag)

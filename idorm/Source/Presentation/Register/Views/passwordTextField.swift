@@ -5,7 +5,7 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-final class RegisterPwTextField: UIView {
+final class passwordTextField: UIView {
   
   // MARK: - Properties
   
@@ -77,6 +77,16 @@ final class RegisterPwTextField: UIView {
         self?.openEyesButton.isHidden = false
         self?.closeEyesButton.isHidden = true
       })
+      .disposed(by: disposeBag)
+    
+    textField.rx.controlEvent(.editingDidBegin)
+      .map { UIColor.idorm_blue.cgColor }
+      .bind(to: layer.rx.borderColor)
+      .disposed(by: disposeBag)
+    
+    textField.rx.controlEvent(.editingDidEnd)
+      .map { UIColor.idorm_gray_400.cgColor }
+      .bind(to: layer.rx.borderColor)
       .disposed(by: disposeBag)
   }
   

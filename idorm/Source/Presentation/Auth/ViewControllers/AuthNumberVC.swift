@@ -15,13 +15,23 @@ final class AuthNumberViewController: BaseViewController {
     $0.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
   }
   
-  private let authButton = UIButton().then {
+  private let authOnemoreButton = UIButton().then {
     var config = UIButton.Configuration.plain()
+    config.baseForegroundColor = .idorm_blue
     var container = AttributeContainer()
     container.font = .init(name: MyFonts.medium.rawValue, size: 12)
-    container.foregroundColor = UIColor.idorm_gray_300
     config.attributedTitle = AttributedString("인증번호 재요청", attributes: container)
     
+    let handler: UIButton.ConfigurationUpdateHandler = { button in
+      switch button.state {
+      case .disabled:
+        button.configuration?.baseForegroundColor = .idorm_gray_300
+      default:
+        button.configuration?.baseForegroundColor = .idorm_blue
+      }
+    }
+    
+    $0.configurationUpdateHandler = handler
     $0.configuration = config
     $0.isEnabled = false
   }
@@ -32,8 +42,11 @@ final class AuthNumberViewController: BaseViewController {
     $0.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
   }
   
-  private let indicator = UIActivityIndicatorView()
-  private let confirmButton = RegisterBottomButton("인증 완료")
+  private let indicator = UIActivityIndicatorView().then {
+    $0.color = .gray
+  }
+  
+  private let confirmButton = idormButton("인증 완료")
   private let textField = idormTextField("인증번호를 입력해주세요.")
 
   private let viewModel = AuthNumberViewModel()
@@ -59,14 +72,19 @@ final class AuthNumberViewController: BaseViewController {
     
     // MARK: - Input
     
+    // 텍스트 변화 감지
+    textField.rx.text
+      .orEmpty
+      .bind(to: viewModel.input.textFieldDidChange)
+      .disposed(by: disposeBag)
+    
     // 인증번호 재요청 버튼 이벤트
-    authButton.rx.tap
-      .bind(to: viewModel.input.authButtonDidTap)
+    authOnemoreButton.rx.tap
+      .bind(to: viewModel.input.authOnemoreButtonDidTap)
       .disposed(by: disposeBag)
     
     // 인증번호 입력 버튼 이벤트
     confirmButton.rx.tap
-      .map { [weak self] in self?.textField.text ?? "" }
       .bind(to: viewModel.input.confirmButtonDidTap)
       .disposed(by: disposeBag)
         
@@ -91,14 +109,14 @@ final class AuthNumberViewController: BaseViewController {
         if $0 {
           self?.textField.backgroundColor = .idorm_gray_200
           self?.textField.isEnabled = false
-          self?.authButton.isEnabled = true
+          self?.authOnemoreButton.isEnabled = true
           let popupView = PopupViewController(contents: "인증번호가 만료되었습니다.")
           popupView.modalPresentationStyle = .overFullScreen
           self?.present(popupView, animated: false)
         } else {
           self?.textField.backgroundColor = .white
           self?.textField.isEnabled = true
-          self?.authButton.isEnabled = false
+          self?.authOnemoreButton.isEnabled = false
         }
       })
       .disposed(by: disposeBag)
@@ -119,7 +137,7 @@ final class AuthNumberViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     // 오류 문구 출력
-    viewModel.output.showPopupVC
+    viewModel.output.presentPopupVC
       .bind(onNext: { [weak self] mention in
         let popupVC = PopupViewController(contents: mention)
         popupVC.modalPresentationStyle = .overFullScreen
@@ -127,23 +145,20 @@ final class AuthNumberViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
-    // 인디케이터 조정
-    viewModel.output.indicatorState
-      .bind(onNext: { [weak self] in
-        if $0 {
-          self?.indicator.startAnimating()
-          self?.view.isUserInteractionEnabled = false
-        } else {
-          self?.indicator.stopAnimating()
-          self?.view.isUserInteractionEnabled = true
-        }
-      })
+    // 로딩 중
+    viewModel.output.isLoading
+      .bind(to: indicator.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
+    viewModel.output.isLoading
+      .map { !$0 }
+      .bind(to: view.rx.isUserInteractionEnabled)
       .disposed(by: disposeBag)
     
     // 인증번호 재요청 버튼 활성/비활성화
     viewModel.output.isEnableAuthButton
       .bind(onNext: { [weak self] in
-        self?.authButton.isEnabled = $0
+        self?.authOnemoreButton.isEnabled = $0
       })
       .disposed(by: disposeBag)
   }
@@ -160,7 +175,7 @@ final class AuthNumberViewController: BaseViewController {
   override func setupLayouts() {
     super.setupLayouts()
       
-    [infoLabel, authButton, textField, confirmButton, timerLabel, indicator]
+    [infoLabel, authOnemoreButton, textField, confirmButton, timerLabel, indicator]
       .forEach { view.addSubview($0) }
   }
   
@@ -172,7 +187,7 @@ final class AuthNumberViewController: BaseViewController {
       make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
     }
     
-    authButton.snp.makeConstraints { make in
+    authOnemoreButton.snp.makeConstraints { make in
       make.trailing.equalToSuperview().inset(20)
       make.centerY.equalTo(infoLabel)
     }

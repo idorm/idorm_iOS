@@ -5,133 +5,114 @@ import RxCocoa
 
 final class AuthNumberViewModel: ViewModel {
   struct Input {
-    // Interaction
-    let authButtonDidTap = PublishSubject<Void>()
-    let confirmButtonDidTap = PublishSubject<String>()
+    let authOnemoreButtonDidTap = PublishSubject<Void>()
+    let confirmButtonDidTap = PublishSubject<Void>()
+    let textFieldDidChange = PublishSubject<String>()
   }
   
   struct Output {
-    // Presentation
     let dismissVC = PublishSubject<Void>()
-    let showPopupVC = PublishSubject<String>()
-    
-    // UI
-    let indicatorState = PublishSubject<Bool>()
+    let presentPopupVC = PublishSubject<String>()
+    let isLoading = PublishSubject<Bool>()
     let resetTimer = PublishSubject<Void>()
     let isEnableAuthButton = PublishSubject<Bool>()
   }
+  
+  // MARK: - Properties
   
   var input = Input()
   var output = Output()
   var disposeBag = DisposeBag()
   
+  let currentCode = BehaviorRelay<String>(value: "")
+  
+  // MARK: - Bind
+  
   init() {
-    bind()
-  }
-  
-  func bind() {
+    mutate()
+    let authenticationType = Logger.instance.authenticationType.value
+    let email = Logger.instance.currentEmail.value
     
-    // 인증번호 재 요청 버튼 클릭 -> 인증번호 API 요청
-    input.authButtonDidTap
-      .subscribe(onNext: { [weak self] in
-        self?.output.indicatorState.onNext(true)
-        self?.requestAuthenticationAPI()
-      })
-      .disposed(by: disposeBag)
-    
-    // 완료 버튼 클릭 -> 이메일 검증API 요청
-    input.confirmButtonDidTap
-      .bind(onNext: { [weak self] in
-        self?.output.indicatorState.onNext(true)
-        self?.requestVerificationAPI($0)
-      })
-      .disposed(by: disposeBag)
-  }
-}
-
-// MARK: - Network
-
-extension AuthNumberViewModel {
-  
-  func requestVerificationAPI(_ code: String) {
-    let logger = Logger.instance
-    let emailProvider = APIService.emailProvider
-    guard let email = logger.email else {
-      fatalError("Email was not saved!")
-    }
-    switch logger.authenticationType {
+    switch authenticationType {
     case .signUp:
-      emailProvider.rx.request(.emailVerification(email: email, code: code))
-        .asObservable()
+      // 인증번호 재 요청 버튼 클릭 -> 회원가입 인증번호 API 요청
+      input.authOnemoreButtonDidTap
+        .do(onNext: { [weak self] in self?.output.isLoading.onNext(true) })
+        .flatMap { APIService.emailProvider.rx.request(.emailAuthentication(email: email)) }
+        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(false) })
+        .subscribe(onNext: { [weak self] response in
+          switch response.statusCode {
+          case 200:
+            self?.output.presentPopupVC.onNext("인증번호가 재전송 되었습니다.")
+            self?.output.isEnableAuthButton.onNext(false)
+            self?.output.resetTimer.onNext(Void())
+          default:
+            fatalError("email is missing")
+          }
+        })
+        .disposed(by: disposeBag)
+      
+      // 완료 버튼 클릭 -> 회원가입 이메일 검증API 요청
+      input.confirmButtonDidTap
+        .map { [weak self] in (email, self?.currentCode.value ?? "") }
+        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(true) })
+        .flatMap { APIService.emailProvider.rx.request(.emailVerification(email: $0.0, code: $0.1)) }
+        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(false) })
         .subscribe(onNext: { [weak self] response in
           switch response.statusCode {
           case 200:
             self?.output.dismissVC.onNext(Void())
           case 400:
-            self?.output.showPopupVC.onNext("잘못된 인증번호입니다.")
-          case 401:
-            self?.output.showPopupVC.onNext("등록되지 않은 이메일입니다.")
+            self?.output.presentPopupVC.onNext("잘못된 인증번호입니다.")
           default:
-            self?.output.showPopupVC.onNext("인증번호를 다시 한번 확인해주세요.")
+            self?.output.presentPopupVC.onNext("인증번호를 다시 한번 확인해주세요.")
           }
-          self?.output.indicatorState.onNext(false)
         })
         .disposed(by: disposeBag)
+      
     case .password:
-      emailProvider.rx.request(.pwVerification(email: email, code: code))
-        .asObservable()
+      // 인증번호 재 요청 버튼 클릭 -> 비밀번호 인증번호 API 요청
+      input.authOnemoreButtonDidTap
+        .filter { authenticationType == .password }
+        .do(onNext: { [weak self] in self?.output.isLoading.onNext(true) })
+        .flatMap { APIService.emailProvider.rx.request(.pwAuthentication(email: email)) }
+        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(false) })
+        .subscribe(onNext: { [weak self] response in
+          switch response.statusCode {
+          case 200:
+            self?.output.presentPopupVC.onNext("인증번호가 재전송 되었습니다.")
+            self?.output.isEnableAuthButton.onNext(false)
+            self?.output.resetTimer.onNext(Void())
+          default:
+            fatalError("email is missing")
+          }
+        })
+        .disposed(by: disposeBag)
+      
+      // 완료 버튼 클릭 -> 비밀번호 이메일 검증API 요청
+      input.confirmButtonDidTap
+        .map { [weak self] in (email, self?.currentCode.value ?? "") }
+        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(true) })
+        .flatMap { APIService.emailProvider.rx.request(.pwVerification(email: $0.0, code: $0.1)) }
+        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(false) })
         .subscribe(onNext: { [weak self] response in
           switch response.statusCode {
           case 200:
             self?.output.dismissVC.onNext(Void())
           case 400:
-            self?.output.showPopupVC.onNext("잘못된 인증번호입니다.")
-          case 401:
-            self?.output.showPopupVC.onNext("등록되지 않은 이메일입니다.")
+            self?.output.presentPopupVC.onNext("잘못된 인증번호입니다.")
           default:
-            self?.output.showPopupVC.onNext("인증번호를 다시 한번 확인해주세요.")
+            self?.output.presentPopupVC.onNext("인증번호를 다시 한번 확인해주세요.")
           }
-          self?.output.indicatorState.onNext(false)
         })
         .disposed(by: disposeBag)
     }
   }
   
-  func requestAuthenticationAPI() {
-    let logger = Logger.instance
-    let mailProvider = APIService.emailProvider
-    guard let email = logger.email else {
-      fatalError("Email was not saved!")
-    }
-    switch logger.authenticationType {
-    case .password:
-      mailProvider.rx.request(.pwAuthentication(email: email))
-        .asObservable()
-        .subscribe(onNext: { [weak self] response in
-          if response.statusCode == 200 {
-            self?.output.showPopupVC.onNext("인증번호가 재전송 되었습니다.")
-            self?.output.isEnableAuthButton.onNext(false)
-            self?.output.resetTimer.onNext(Void())
-          } else {
-            fatalError("email is missing")
-          }
-          self?.output.indicatorState.onNext(false)
-        })
-        .disposed(by: disposeBag)
-    case .signUp:
-      mailProvider.rx.request(.emailAuthentication(email: email))
-        .asObservable()
-        .subscribe(onNext: { [weak self] response in
-          if response.statusCode == 200 {
-            self?.output.showPopupVC.onNext("인증번호가 재전송 되었습니다.")
-            self?.output.isEnableAuthButton.onNext(false)
-            self?.output.resetTimer.onNext(Void())
-          } else {
-            fatalError("email is missing")
-          }
-          self?.output.indicatorState.onNext(false)
-        })
-        .disposed(by: disposeBag)
-    }
+  private func mutate() {
+    
+    input.textFieldDidChange
+      .bind(to: currentCode)
+      .disposed(by: disposeBag)
   }
 }

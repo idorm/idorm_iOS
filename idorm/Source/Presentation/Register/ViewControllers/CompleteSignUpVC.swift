@@ -43,8 +43,11 @@ final class CompleteSignUpViewController: BaseViewController {
     $0.configuration = config
   }
   
-  private let indicator = UIActivityIndicatorView()
-  private let image = UIImageView(image: UIImage(named: "Lion"))
+  private let indicator = UIActivityIndicatorView().then {
+    $0.color = .gray
+  }
+  
+  private let image = UIImageView(image: #imageLiteral(resourceName: "Lion"))
   
   private let viewModel = CompleteSignUpViewModel()
   
@@ -57,31 +60,29 @@ final class CompleteSignUpViewController: BaseViewController {
     
     // 로그인 후 계속하기 버튼 이벤트
     continueButton.rx.tap
-      .bind(to: viewModel.input.continueButtonTapped)
+      .bind(to: viewModel.input.continueButtonDidTap)
       .disposed(by: disposeBag)
     
     // MARK: - Output
     
     // 온보딩 페이지로 이동
-    viewModel.output.showOnboardingVC
-      .bind(onNext: { [unowned self] in
+    viewModel.output.presentOnboardingVC
+      .bind(onNext: { [weak self] in
         let onboardingVC = UINavigationController(rootViewController: OnboardingViewController(.firstTime))
         onboardingVC.modalPresentationStyle = .fullScreen
-        self.present(onboardingVC, animated: true)
+        self?.present(onboardingVC, animated: true)
       })
       .disposed(by: disposeBag)
     
-    // 애니메이션 상태 변경
-    viewModel.output.indicatorState
-      .bind(onNext: { [weak self] in
-        if $0 {
-          self?.indicator.startAnimating()
-          self?.view.isUserInteractionEnabled = false
-        } else {
-          self?.indicator.stopAnimating()
-          self?.view.isUserInteractionEnabled = true
-        }
-      })
+    // 로딩 인디케이터
+    viewModel.output.isLoading
+      .bind(to: indicator.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
+    // 화면 터치 제어
+    viewModel.output.isLoading
+      .map { !$0 }
+      .bind(to: view.rx.isUserInteractionEnabled)
       .disposed(by: disposeBag)
   }
   

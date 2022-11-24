@@ -11,4 +11,9 @@ struct RegisterVCTypes {
     case findPW
     case updatePW
   }
+  
+  enum NicknameVCType {
+    case signUp
+    case update
+  }
 }

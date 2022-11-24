@@ -5,46 +5,38 @@ import RxCocoa
 
 final class CompleteSignUpViewModel: ViewModel {
   struct Input {
-    // Interaction
-    let continueButtonTapped = PublishSubject<Void>()
+    let continueButtonDidTap = PublishSubject<Void>()
   }
   
   struct Output {
-    // Presentation
-    let showOnboardingVC = PublishSubject<Void>()
-    
-    // UI
-    let indicatorState = PublishSubject<Bool>()
+    let presentOnboardingVC = PublishSubject<Void>()
+    let isLoading = PublishSubject<Bool>()
   }
+  
+  // MARK: - Properties
   
   var input = Input()
   var output = Output()
   var disposeBag = DisposeBag()
   
   init() {
-    bind()
-  }
-  
-  func bind() {
+    
+    let email = Logger.instance.currentEmail.value
+    let password = Logger.instance.currentPassword.value
     
     // 로그인 버튼 클릭 -> 회원가입API 요청
-    input.continueButtonTapped
-      .flatMap { [weak self] in
-        self?.output.indicatorState.onNext(true)
-        let id = Logger.instance.email!
-        let password = Logger.instance.password!
-        return APIService.memberProvider.rx.request(.login(id: id, pw: password))
-      }
+    input.continueButtonDidTap
+      .do(onNext: { [weak self] in self?.output.isLoading.onNext(true) })
+      .flatMap { APIService.memberProvider.rx.request(.login(id: email, pw: password)) }
       .map(MemberModel.LoginResponseModel.self)
+      .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(false) })
       .subscribe(onNext: { [weak self] response in
         let token = response.data.loginToken
         TokenStorage.instance.saveToken(token: token ?? "")
         SharedAPI.instance.retrieveMyInformation()
         SharedAPI.instance.retrieveMyOnboarding()
-        self?.output.indicatorState.onNext(false)
-        self?.output.showOnboardingVC.onNext(Void())
+        self?.output.presentOnboardingVC.onNext(Void())
       })
       .disposed(by: disposeBag)
   }
 }
-

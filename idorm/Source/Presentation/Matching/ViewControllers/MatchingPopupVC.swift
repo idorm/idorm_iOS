@@ -42,7 +42,7 @@ final class MatchingPopupViewController: BaseViewController {
     $0.setImage(UIImage(named: "Xmark_Black"), for: .normal)
   }
   
-  let confirmButton = RegisterBottomButton("프로필 이미지 만들기")
+  let confirmButton = idormButton("프로필 이미지 만들기")
   
   // MARK: - Setup
   
