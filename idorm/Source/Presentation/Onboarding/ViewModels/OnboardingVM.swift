@@ -20,9 +20,9 @@ final class OnboardingViewModel: ViewModel {
     let kakaoLinkTextFieldDidChange = PublishSubject<String>()
     let mbtiTextFieldDidChange = PublishSubject<String>()
     let wishTextViewDidChange = PublishSubject<String>()
-    
-    let resetButtonDidTap = PublishSubject<Void>()
-    let didTapConfirmButton = PublishSubject<Void>()
+    let scrollViewDidTap = PublishSubject<Void>()
+    let leftButtonDidTap = PublishSubject<Void>()
+    let rightButtonDidTap = PublishSubject<Void>()
   }
   
   struct Output {
@@ -36,11 +36,11 @@ final class OnboardingViewModel: ViewModel {
     let toggleIsAllowedEarphoneButton = PublishSubject<Bool>()
     let isEnabledConfirmButton = PublishSubject<Bool>()
     let currentTextViewLength = PublishSubject<Int>()
+    let endEditing = PublishSubject<Void>()
     let isLoading = PublishSubject<Bool>()
     let reset = PublishSubject<Void>()
-    
     let pushToOnboardingDetailVC = PublishSubject<MatchingModel.Member>()
-    let showTabBarVC = PublishSubject<Void>()
+    let presentMainVC = PublishSubject<Void>()
     let pushToRootVC = PublishSubject<Void>()
   }
   
@@ -112,69 +112,72 @@ final class OnboardingViewModel: ViewModel {
       .disposed(by: disposeBag)
     
     // 입력 초기화 버튼 -> 리셋
-    input.resetButtonDidTap
+    input.leftButtonDidTap
       .bind(to: output.reset)
       .disposed(by: disposeBag)
     
-//    // OnboardingVCType 별 이벤트 분기처리
-//    switch vcType {
-//    case .update:
-//      // 완료 버튼 클릭 -> 온보딩 수정 API 요청
-//      input.didTapConfirmButton
-//        .map { [unowned self] in
-//          return self.currentOnboarding
-//        }
-//        .do(onNext: { [weak self] _ in
-//          self?.output.indicatorState.onNext(true)
-//        })
-//        .flatMap {
-//          return APIService.onboardingProvider.rx.request(.modify($0))
-//        }
-//        .map(OnboardingModel.LookupOnboardingResponseModel.self)
-//        .subscribe(onNext: { [weak self] response in
-//          self?.output.indicatorState.onNext(false)
-//          MemberInfoStorage.instance.myOnboarding.accept(response.data)
-//          self?.output.pushToRootVC.onNext(Void())
-//        })
-//        .disposed(by: disposeBag)
-//
-//      // 입력 초기화 버튼 -> 데이터 초기화
-//      input.didTapSkipButton
-//        .subscribe(onNext: { [weak self] in
-//          self?.resetData()
-//          self?.output.resetData.onNext(Void())
-//        })
-//        .disposed(by: disposeBag)
-//
-//    case .mainPage_FirstTime:
-//      // 완료 버튼 클릭 -> 온보딩 디테일 VC 보여주기
-//      input.didTapConfirmButton
-//        .map { [unowned self] in self.currentOnboarding }
-//        .map { ModelTransformer.instance.toMemberModel(from: $0) }
-//        .bind(to: output.pushToOnboardingDetailVC)
-//        .disposed(by: disposeBag)
-//
-//      // 입력 초기화 버튼 -> 데이터 초기화
-//      input.didTapSkipButton
-//        .subscribe(onNext: { [weak self] in
-//          self?.resetData()
-//          self?.output.resetData.onNext(Void())
-//        })
-//        .disposed(by: disposeBag)
-//
-//    case .firstTime:
-//      // 완료 버튼 클릭 -> 온보딩 디테일 VC 보여주기
-//      input.didTapConfirmButton
-//        .map { [unowned self] in self.currentOnboarding }
-//        .map { ModelTransformer.instance.toMemberModel(from: $0) }
-//        .bind(to: output.pushToOnboardingDetailVC)
-//        .disposed(by: disposeBag)
-//
-//      // 정보 입력 건너 뛰기 버튼 -> 메인 페이지로 이동
-//      input.didTapSkipButton
-//        .bind(to: output.showTabBarVC)
-//        .disposed(by: disposeBag)
+    // 스크롤 뷰 터치 -> 에디팅 강제 종료
+    input.scrollViewDidTap
+      .bind(to: output.endEditing)
+      .disposed(by: disposeBag)
+    
+    switch vcType {
+    case .initial:
+      
+      // 정보 입력 건너 뛰기 버튼 -> 메인페이지
+      input.leftButtonDidTap
+        .bind(to: output.presentMainVC)
+        .disposed(by: disposeBag)
+      
+      // 완료 버튼 -> OnboardingDetailVC
+      input.rightButtonDidTap
+        .withUnretained(self)
+        .map { $0.0 }
+        .map { ModelTransformer.instance.toMemberModel(from: $0.currentOnboarding.value) }
+        .bind(to: output.pushToOnboardingDetailVC)
+        .disposed(by: disposeBag)
+      
+    case .initial2:
+      
+      // 입력 초기화 버튼 -> 초기화
+      input.leftButtonDidTap
+        .bind(to: output.reset)
+        .disposed(by: disposeBag)
+      
+      // 완료 버튼 -> OnboardingDetailVC
+      input.rightButtonDidTap
+        .withUnretained(self)
+        .map { $0.0 }
+        .map { ModelTransformer.instance.toMemberModel(from: $0.currentOnboarding.value) }
+        .bind(to: output.pushToOnboardingDetailVC)
+        .disposed(by: disposeBag)
+      
+    case .update:
+      
+      // 입력 초기화 버튼 -> 초기화
+      input.leftButtonDidTap
+        .bind(to: output.reset)
+        .disposed(by: disposeBag)
+      
+      // 완료 버튼 -> 매칭 정보 수정 API 요청
+      input.rightButtonDidTap
+        .withUnretained(self)
+        .map { $0.0 }
+        .do(onNext: { $0.output.isLoading.onNext(true) })
+        .map { $0.currentOnboarding.value }
+        .flatMap { APIService.onboardingProvider.rx.request(.modify($0)) }
+        .map(OnboardingModel.LookupOnboardingResponseModel.self)
+        .withUnretained(self)
+        .subscribe(onNext: { owner, response in
+          MemberInfoStorage.instance.myOnboarding.accept(response.data)
+          owner.output.isLoading.onNext(false)
+          owner.output.pushToRootVC.onNext(Void())
+        })
+        .disposed(by: disposeBag)
+    }
   }
+  
+  // MARK: - Mutate
   
   private func mutate() {
     
@@ -392,7 +395,7 @@ final class OnboardingViewModel: ViewModel {
       .disposed(by: disposeBag)
     
     // 입력 초기화 버튼 -> 온보딩 초기화
-    input.resetButtonDidTap
+    input.leftButtonDidTap
       .map { OnboardingModel.RequestModel.initialValue() }
       .bind(to: currentOnboarding)
       .disposed(by: disposeBag)

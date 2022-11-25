@@ -29,7 +29,7 @@ final class CommunityPopupViewController: UIViewController {
       button.setTitle("확인", for: .normal)
       button.setTitleColor(UIColor.idorm_gray_300, for: .normal)
       button.titleLabel?.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
-      button.addTarget(self, action: #selector(didTapConfirmButton), for: .touchUpInside)
+//      button.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
       
       return button
   }()

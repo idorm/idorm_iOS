@@ -68,7 +68,7 @@ final class CompleteSignUpViewController: BaseViewController {
     // 온보딩 페이지로 이동
     viewModel.output.presentOnboardingVC
       .bind(onNext: { [weak self] in
-        let onboardingVC = UINavigationController(rootViewController: OnboardingViewController(.firstTime))
+        let onboardingVC = UINavigationController(rootViewController: OnboardingViewController(.initial))
         onboardingVC.modalPresentationStyle = .fullScreen
         self?.present(onboardingVC, animated: true)
       })

@@ -18,7 +18,7 @@ final class OnboardingViewController: BaseViewController {
   private let indicator = UIActivityIndicatorView().then {
     $0.color = .gray
   }
-    
+  
   private let scrollView = UIScrollView().then {
     $0.keyboardDismissMode = .onDrag
   }
@@ -52,7 +52,7 @@ final class OnboardingViewController: BaseViewController {
   private let period16Button = OnboardingUtilities.basicButton(title: "16 주")
   private let period24Button = OnboardingUtilities.basicButton(title: "24 주")
   private let periodLine = OnboardingUtilities.separatorLine()
-
+  
   private lazy var periodStack = UIStackView().then { stack in
     [period16Button, period24Button]
       .forEach { stack.addArrangedSubview($0) }
@@ -130,13 +130,13 @@ final class OnboardingViewController: BaseViewController {
     $0.textColor = .idorm_gray_300
     $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
   }
-
+  
   private let currentLengthLabel = UILabel().then {
     $0.text = "0"
     $0.textColor = .idorm_blue
     $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
   }
-
+  
   // MARK: - LifeCycle
   
   override func viewDidLoad() {
@@ -175,9 +175,9 @@ final class OnboardingViewController: BaseViewController {
     view.backgroundColor = .white
     
     switch vcType {
-    case .mainPage_FirstTime, .update:
+    case .initial2, .update:
       navigationItem.title = "매칭 이미지 관리"
-    case .firstTime:
+    case .initial:
       navigationItem.title = "내 정보 입력"
     }
   }
@@ -386,9 +386,9 @@ final class OnboardingViewController: BaseViewController {
   
   private func setupFloatyBottomView() {
     switch vcType {
-    case .firstTime:
+    case .initial:
       self.floatyBottomView = FloatyBottomView(.jump)
-    case .mainPage_FirstTime:
+    case .initial2:
       self.floatyBottomView = FloatyBottomView(.reset)
     case .update:
       self.floatyBottomView = FloatyBottomView(.reset)
@@ -397,52 +397,52 @@ final class OnboardingViewController: BaseViewController {
   }
   
   private func setupMatchingInfo() {
-//    if vcType == .update {
-//      guard let matchingInfo = MemberInfoStorage.instance.myOnboarding.value else { return }
-//      toggleDromButton(matchingInfo.dormNum)
-//      toggleGenderButton(matchingInfo.gender)
-//      togglePeriodButton(matchingInfo.joinPeriod)
-//      snoreButton.isSelected = matchingInfo.isSnoring
-//      grindingButton.isSelected = matchingInfo.isGrinding
-//      smokingButton.isSelected = matchingInfo.isSmoking
-//      allowedFoodButton.isSelected = matchingInfo.isAllowedFood
-//      allowedEarphoneButton.isSelected = matchingInfo.isWearEarphones
-//      ageTextField.text = String(matchingInfo.age)
-//      wakeUpTextField.textField.text = matchingInfo.wakeUpTime
-//      cleanUpTextField.textField.text = matchingInfo.cleanUpStatus
-//      showerTextField.textField.text = matchingInfo.showerTime
-//      chatTextField.textField.text = matchingInfo.openKakaoLink
-//      mbtiTextField.textField.text = matchingInfo.mbti
-//      wishTextView.text = matchingInfo.wishText
-//
-//      viewModel.input.dormButtonDidTap.onNext(matchingInfo.dormNum)
-//      viewModel.input.isSelectedPeriodButton.onNext(matchingInfo.joinPeriod)
-//      viewModel.input.isSelectedGenderButton.onNext(matchingInfo.gender)
-//
-//      if snoreButton.isSelected {
-//        viewModel.input.isSelectedHabitButton.onNext(.snoring)
-//      }
-//      if grindingButton.isSelected {
-//        viewModel.input.isSelectedHabitButton.onNext(.grinding)
-//      }
-//      if smokingButton.isSelected {
-//        viewModel.input.isSelectedHabitButton.onNext(.smoking)
-//      }
-//      if allowedFoodButton.isSelected {
-//        viewModel.input.isSelectedHabitButton.onNext(.allowedFood)
-//      }
-//      if allowedEarphoneButton.isSelected {
-//        viewModel.input.isSelectedHabitButton.onNext(.allowedEarphone)
-//      }
-//
-//      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.age, String(matchingInfo.age)))
-//      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.wakeUp, matchingInfo.wakeUpTime))
-//      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.cleanUp, matchingInfo.cleanUpStatus))
-//      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.shower, matchingInfo.showerTime))
-//      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.mbti, matchingInfo.mbti ?? ""))
-//      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.chatLink, matchingInfo.openKakaoLink))
-//      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.wishText, matchingInfo.wishText ?? ""))
-//    }
+    //    if vcType == .update {
+    //      guard let matchingInfo = MemberInfoStorage.instance.myOnboarding.value else { return }
+    //      toggleDromButton(matchingInfo.dormNum)
+    //      toggleGenderButton(matchingInfo.gender)
+    //      togglePeriodButton(matchingInfo.joinPeriod)
+    //      snoreButton.isSelected = matchingInfo.isSnoring
+    //      grindingButton.isSelected = matchingInfo.isGrinding
+    //      smokingButton.isSelected = matchingInfo.isSmoking
+    //      allowedFoodButton.isSelected = matchingInfo.isAllowedFood
+    //      allowedEarphoneButton.isSelected = matchingInfo.isWearEarphones
+    //      ageTextField.text = String(matchingInfo.age)
+    //      wakeUpTextField.textField.text = matchingInfo.wakeUpTime
+    //      cleanUpTextField.textField.text = matchingInfo.cleanUpStatus
+    //      showerTextField.textField.text = matchingInfo.showerTime
+    //      chatTextField.textField.text = matchingInfo.openKakaoLink
+    //      mbtiTextField.textField.text = matchingInfo.mbti
+    //      wishTextView.text = matchingInfo.wishText
+    //
+    //      viewModel.input.dormButtonDidTap.onNext(matchingInfo.dormNum)
+    //      viewModel.input.isSelectedPeriodButton.onNext(matchingInfo.joinPeriod)
+    //      viewModel.input.isSelectedGenderButton.onNext(matchingInfo.gender)
+    //
+    //      if snoreButton.isSelected {
+    //        viewModel.input.isSelectedHabitButton.onNext(.snoring)
+    //      }
+    //      if grindingButton.isSelected {
+    //        viewModel.input.isSelectedHabitButton.onNext(.grinding)
+    //      }
+    //      if smokingButton.isSelected {
+    //        viewModel.input.isSelectedHabitButton.onNext(.smoking)
+    //      }
+    //      if allowedFoodButton.isSelected {
+    //        viewModel.input.isSelectedHabitButton.onNext(.allowedFood)
+    //      }
+    //      if allowedEarphoneButton.isSelected {
+    //        viewModel.input.isSelectedHabitButton.onNext(.allowedEarphone)
+    //      }
+    //
+    //      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.age, String(matchingInfo.age)))
+    //      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.wakeUp, matchingInfo.wakeUpTime))
+    //      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.cleanUp, matchingInfo.cleanUpStatus))
+    //      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.shower, matchingInfo.showerTime))
+    //      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.mbti, matchingInfo.mbti ?? ""))
+    //      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.chatLink, matchingInfo.openKakaoLink))
+    //      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.wishText, matchingInfo.wishText ?? ""))
+    //    }
   }
   
   // MARK: - Bind
@@ -524,7 +524,7 @@ final class OnboardingViewController: BaseViewController {
       .map { !($0.smokingButton.isSelected) }
       .bind(to: viewModel.input.isSmokingButtonDidTap)
       .disposed(by: disposeBag)
-
+    
     // 음식 버튼 클릭
     allowedFoodButton.rx.tap
       .withUnretained(self)
@@ -532,7 +532,7 @@ final class OnboardingViewController: BaseViewController {
       .map { !($0.allowedFoodButton.isSelected) }
       .bind(to: viewModel.input.isAllowedFoodButtonDidTap)
       .disposed(by: disposeBag)
-
+    
     // 이어폰 버튼 클릭
     allowedEarphoneButton.rx.tap
       .withUnretained(self)
@@ -586,27 +586,23 @@ final class OnboardingViewController: BaseViewController {
       .bind(to: viewModel.input.wishTextViewDidChange)
       .disposed(by: disposeBag)
     
-    switch vcType {
-    case.firstTime, .mainPage_FirstTime:
-      // 입력 초기화 버튼 클릭
-      floatyBottomView.leftButton.rx.tap
-        .bind(to: viewModel.input.resetButtonDidTap)
-        .disposed(by: disposeBag)
-
-    case .update:
-      break
-    }
-    
-    
-    // FIXME: 이 Stream 수정
-    // 스크롤 뷰 빈공간 터치 시 Editing 종료
-    scrollView.rx.tapGesture(configuration: { gesture, delegate in
+    // 스크롤 뷰 터치
+    scrollView.rx.tapGesture(configuration: { _, delegate in
       delegate.simultaneousRecognitionPolicy = .never
     })
-    .bind(onNext: { [weak self] _ in
-      self?.view.endEditing(true)
-    })
+    .map { _ in Void() }
+    .bind(to: viewModel.input.scrollViewDidTap)
     .disposed(by: disposeBag)
+    
+    // 하단 뷰 왼쪽 버튼 클릭
+    floatyBottomView.leftButton.rx.tap
+      .bind(to: viewModel.input.leftButtonDidTap)
+      .disposed(by: disposeBag)
+    
+    // 하단 뷰 오른쪽 버튼 클릭
+    floatyBottomView.rightButton.rx.tap
+      .bind(to: viewModel.input.rightButtonDidTap)
+      .disposed(by: disposeBag)
     
     // MARK: - Output
     
@@ -744,30 +740,42 @@ final class OnboardingViewController: BaseViewController {
         owner.floatyBottomView.rightButton.isEnabled = false
       })
       .disposed(by: disposeBag)
+    
+    // 에디팅 강제 종료
+    viewModel.output.endEditing
+      .withUnretained(self)
+      .map { $0.0 }
+      .bind(onNext: {
+        $0.view.endEditing(true)
+      })
+      .disposed(by: disposeBag)
   
-//    // 메인페이지로 넘어가기
-//    viewModel.output.showTabBarVC
-//      .bind(onNext: { [weak self] in
-//        let tabBarVC = TabBarController()
-//        tabBarVC.modalPresentationStyle = .fullScreen
-//        self?.present(tabBarVC, animated: true)
-//      })
-//      .disposed(by: disposeBag)
-//
-//    // RootVC로 돌아가기
-//    viewModel.output.pushToRootVC
-//      .bind(onNext: { [weak self] in
-//        self?.navigationController?.popToRootViewController(animated: true)
-//      })
-//      .disposed(by: disposeBag)
-//
-//    // OnboardingDetailVC로 이동
-//    viewModel.output.pushToOnboardingDetailVC
-//      .bind(onNext: { [weak self] in
-//        let viewController = OnboardingDetailViewController($0, vcType: .initilize)
-//        self?.navigationController?.pushViewController(viewController, animated: true)
-//      })
-//      .disposed(by: disposeBag)
+    // 메인페이지
+    viewModel.output.presentMainVC
+      .withUnretained(self)
+      .bind(onNext: { owner, _ in
+        let viewController = TabBarController()
+        viewController.modalPresentationStyle = .fullScreen
+        owner.present(viewController, animated: true)
+      })
+      .disposed(by: disposeBag)
+
+    // RootVC
+    viewModel.output.pushToRootVC
+      .withUnretained(self)
+      .bind(onNext: { owner, _ in
+        owner.navigationController?.popToRootViewController(animated: true)
+      })
+      .disposed(by: disposeBag)
+    
+    // OnboardingDetailVC
+    viewModel.output.pushToOnboardingDetailVC
+      .withUnretained(self)
+      .bind(onNext: { owner, matchingMember in
+        let viewController = OnboardingDetailViewController(matchingMember, vcType: .initilize)
+        owner.navigationController?.pushViewController(viewController, animated: true)
+      })
+      .disposed(by: disposeBag)
   }
 }
 
@@ -778,7 +786,7 @@ final class OnboardingViewController: BaseViewController {
 import SwiftUI
 struct OnboardingVC_PreView: PreviewProvider {
   static var previews: some View {
-    OnboardingViewController(.firstTime).toPreview()
+    OnboardingViewController(.initial).toPreview()
   }
 }
 #endif
