@@ -12,4 +12,8 @@ extension ModelTransformer {
   func toOnboardingRequestModel(from member: MatchingModel.Member) -> OnboardingModel.RequestModel {
     return OnboardingModel.RequestModel(dormNum: member.dormNum, joinPeriod: member.joinPeriod, gender: member.gender, age: String(member.age), isSnoring: member.isSnoring, isGrinding: member.isGrinding, isSmoking: member.isSmoking, isAllowedFood: member.isAllowedFood, isWearEarphones: member.isWearEarphones, wakeupTime: member.wakeUpTime, cleanUpStatus: member.cleanUpStatus, showerTime: member.showerTime, openKakaoLink: member.openKakaoLink)
   }
+  
+  func toOnboardingRequestModel(from onboarding: OnboardingModel.MyOnboarding) -> OnboardingModel.RequestModel {
+    return OnboardingModel.RequestModel(dormNum: onboarding.dormNum, joinPeriod: onboarding.joinPeriod, gender: onboarding.gender, age: String(onboarding.age), isSnoring: onboarding.isSnoring, isGrinding: onboarding.isGrinding, isSmoking: onboarding.isSmoking, isAllowedFood: onboarding.isAllowedFood, isWearEarphones: onboarding.isWearEarphones, wakeupTime: onboarding.wakeUpTime, cleanUpStatus: onboarding.cleanUpStatus, showerTime: onboarding.showerTime, openKakaoLink: onboarding.openKakaoLink)
+  }
 }

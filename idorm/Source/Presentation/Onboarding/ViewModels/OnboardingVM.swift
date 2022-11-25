@@ -1,10 +1,11 @@
-import RxMoya
 import RxSwift
 import RxCocoa
+import RxOptional
 
 final class OnboardingViewModel: ViewModel {
   
   struct Input {
+    let viewDidLoad = PublishSubject<Void>()
     let dormButtonDidTap = PublishSubject<Dormitory>()
     let genderButtonDidTap = PublishSubject<Gender>()
     let joinPeriodButtonDidTap = PublishSubject<JoinPeriod>()
@@ -38,6 +39,7 @@ final class OnboardingViewModel: ViewModel {
     let currentTextViewLength = PublishSubject<Int>()
     let endEditing = PublishSubject<Void>()
     let isLoading = PublishSubject<Bool>()
+    let setupUI = PublishSubject<OnboardingModel.MyOnboarding>()
     let reset = PublishSubject<Void>()
     let pushToOnboardingDetailVC = PublishSubject<MatchingModel.Member>()
     let presentMainVC = PublishSubject<Void>()
@@ -173,6 +175,13 @@ final class OnboardingViewModel: ViewModel {
           owner.output.isLoading.onNext(false)
           owner.output.pushToRootVC.onNext(Void())
         })
+        .disposed(by: disposeBag)
+      
+      // 화면 최초 접속 -> 저장되어있는 온보딩 정보 셋업
+      input.viewDidLoad
+        .map { MemberInfoStorage.instance.myOnboarding.value }
+        .filterNil()
+        .bind(to: output.setupUI)
         .disposed(by: disposeBag)
     }
   }
@@ -399,5 +408,24 @@ final class OnboardingViewModel: ViewModel {
       .map { OnboardingModel.RequestModel.initialValue() }
       .bind(to: currentOnboarding)
       .disposed(by: disposeBag)
+    
+    if vcType == .update {
+      
+      // 화면 최초 접속 -> 온보딩 주입
+      input.viewDidLoad
+        .map { MemberInfoStorage.instance.myOnboarding.value }
+        .filterNil()
+        .map { ModelTransformer.instance.toOnboardingRequestModel(from: $0) }
+        .bind(to: currentOnboarding)
+        .disposed(by: disposeBag)
+      
+      // 화면 최초 접속 -> Driver 주입
+      input.viewDidLoad
+        .withUnretained(self)
+        .subscribe(onNext: { owner, _ in
+          owner.driver.convertConditionToAll()
+        })
+        .disposed(by: disposeBag)
+    }
   }
 }

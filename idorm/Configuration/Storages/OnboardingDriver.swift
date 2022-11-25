@@ -31,4 +31,17 @@ final class OnboardingDriver {
     .bind(to: isEnabled)
     .disposed(by: disposeBag)
   }
+  
+  func convertConditionToAll() {
+    [
+      dormConditon,
+      genderCondition,
+      joinPeriodCondition,
+      ageCondition,
+      wakeUpCondition,
+      cleanupCondition,
+      showerTimeCondition,
+      chatLinkCondition
+    ].forEach { $0.accept(true) }
+  }
 }

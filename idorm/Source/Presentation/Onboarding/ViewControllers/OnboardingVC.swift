@@ -7,6 +7,7 @@ import RSKGrowingTextView
 import RxSwift
 import RxCocoa
 import RxGesture
+import RxAppState
 
 final class OnboardingViewController: BaseViewController {
   
@@ -142,7 +143,6 @@ final class OnboardingViewController: BaseViewController {
   override func viewDidLoad() {
     setupFloatyBottomView()
     super.viewDidLoad()
-    setupMatchingInfo()
   }
   
   init(_ onboardingVCType: OnboardingVCTypes.OnboardingVCType) {
@@ -396,55 +396,6 @@ final class OnboardingViewController: BaseViewController {
     self.floatyBottomView.rightButton.isEnabled = false
   }
   
-  private func setupMatchingInfo() {
-    //    if vcType == .update {
-    //      guard let matchingInfo = MemberInfoStorage.instance.myOnboarding.value else { return }
-    //      toggleDromButton(matchingInfo.dormNum)
-    //      toggleGenderButton(matchingInfo.gender)
-    //      togglePeriodButton(matchingInfo.joinPeriod)
-    //      snoreButton.isSelected = matchingInfo.isSnoring
-    //      grindingButton.isSelected = matchingInfo.isGrinding
-    //      smokingButton.isSelected = matchingInfo.isSmoking
-    //      allowedFoodButton.isSelected = matchingInfo.isAllowedFood
-    //      allowedEarphoneButton.isSelected = matchingInfo.isWearEarphones
-    //      ageTextField.text = String(matchingInfo.age)
-    //      wakeUpTextField.textField.text = matchingInfo.wakeUpTime
-    //      cleanUpTextField.textField.text = matchingInfo.cleanUpStatus
-    //      showerTextField.textField.text = matchingInfo.showerTime
-    //      chatTextField.textField.text = matchingInfo.openKakaoLink
-    //      mbtiTextField.textField.text = matchingInfo.mbti
-    //      wishTextView.text = matchingInfo.wishText
-    //
-    //      viewModel.input.dormButtonDidTap.onNext(matchingInfo.dormNum)
-    //      viewModel.input.isSelectedPeriodButton.onNext(matchingInfo.joinPeriod)
-    //      viewModel.input.isSelectedGenderButton.onNext(matchingInfo.gender)
-    //
-    //      if snoreButton.isSelected {
-    //        viewModel.input.isSelectedHabitButton.onNext(.snoring)
-    //      }
-    //      if grindingButton.isSelected {
-    //        viewModel.input.isSelectedHabitButton.onNext(.grinding)
-    //      }
-    //      if smokingButton.isSelected {
-    //        viewModel.input.isSelectedHabitButton.onNext(.smoking)
-    //      }
-    //      if allowedFoodButton.isSelected {
-    //        viewModel.input.isSelectedHabitButton.onNext(.allowedFood)
-    //      }
-    //      if allowedEarphoneButton.isSelected {
-    //        viewModel.input.isSelectedHabitButton.onNext(.allowedEarphone)
-    //      }
-    //
-    //      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.age, String(matchingInfo.age)))
-    //      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.wakeUp, matchingInfo.wakeUpTime))
-    //      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.cleanUp, matchingInfo.cleanUpStatus))
-    //      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.shower, matchingInfo.showerTime))
-    //      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.mbti, matchingInfo.mbti ?? ""))
-    //      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.chatLink, matchingInfo.openKakaoLink))
-    //      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.wishText, matchingInfo.wishText ?? ""))
-    //    }
-  }
-  
   // MARK: - Bind
   
   override func bind() {
@@ -458,6 +409,13 @@ final class OnboardingViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     // MARK: - Input
+    
+    // 매칭 정보 최초 설정
+    rx.viewWillAppear
+      .take(1)
+      .map { _ in Void() }
+      .bind(to: viewModel.input.viewDidLoad)
+      .disposed(by: disposeBag)
     
     // 1기숙사 버튼 클릭
     dorm1Button.rx.tap
@@ -706,6 +664,7 @@ final class OnboardingViewController: BaseViewController {
     
     // 입력 초기화
     viewModel.output.reset
+      .debug()
       .withUnretained(self)
       .bind(onNext: { owner, _ in
         [
@@ -738,6 +697,53 @@ final class OnboardingViewController: BaseViewController {
         owner.ageTextField.labels.forEach { $0.text = "" }
         owner.wishTextView.text = ""
         owner.floatyBottomView.rightButton.isEnabled = false
+      })
+      .disposed(by: disposeBag)
+    
+    // 저장되어 있는 온보딩 셋업
+    viewModel.output.setupUI
+      .withUnretained(self)
+      .bind(onNext: { owner, info in
+        switch info.dormNum {
+        case .no1: owner.dorm1Button.isSelected = true
+        case .no2: owner.dorm2Button.isSelected = true
+        case .no3: owner.dorm3Button.isSelected = true
+        }
+        
+        switch info.gender {
+        case .male: owner.maleButton.isSelected = true
+        case .female: owner.femaleButton.isSelected = true
+        }
+        
+        switch info.joinPeriod {
+        case .period_16: owner.period16Button.isSelected = true
+        case .period_24: owner.period24Button.isSelected = true
+        }
+        
+        owner.snoreButton.isSelected = info.isSnoring
+        owner.grindingButton.isSelected = info.isGrinding
+        owner.smokingButton.isSelected = info.isSmoking
+        owner.allowedFoodButton.isSelected = info.isAllowedFood
+        owner.allowedEarphoneButton.isSelected = info.isWearEarphones
+        owner.ageTextField.text = String(info.age)
+        owner.wakeUpTextField.textField.rx.text.onNext(info.wakeUpTime)
+        owner.cleanUpTextField.textField.text = info.cleanUpStatus
+        owner.showerTextField.textField.text = info.showerTime
+        owner.mbtiTextField.textField.text = info.mbti
+        owner.chatTextField.textField.text = info.openKakaoLink
+        owner.wishTextView.text = info.wishText
+        
+        [
+          owner.wakeUpTextField.checkmarkButton,
+          owner.cleanUpTextField.checkmarkButton,
+          owner.showerTextField.checkmarkButton,
+          owner.chatTextField.checkmarkButton,
+          owner.mbtiTextField.checkmarkButton
+        ].forEach { $0.isHidden = false }
+        
+        if info.mbti == nil || info.mbti == "" {
+          owner.mbtiTextField.checkmarkButton.isHidden = true
+        }
       })
       .disposed(by: disposeBag)
     
