@@ -132,6 +132,7 @@ final class OnboardingViewController: BaseViewController {
   }
 
   private let currentLengthLabel = UILabel().then {
+    $0.text = "0"
     $0.textColor = .idorm_blue
     $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
   }
@@ -163,8 +164,9 @@ final class OnboardingViewController: BaseViewController {
     view.addSubview(indicator)
     scrollView.addSubview(contentView)
     
-    [titleLabel, dormLabel, dormStack, dormLine, genderLabel, genderStack, genderLine, periodLabel, periodStack, periodLine, habitLabel, habitStack1, habitStack2, habitLine, habitDescriptionLabel, ageLabel, ageDescriptionLabel, ageTextField, ageLine, wakeUpInfoLabel, wakeUpTextField, cleanUpInfoLabel, cleanUpTextField, showerInfoLabel, showerTextField, mbtiInfoLabel, mbtiTextField, chatInfoLabel, chatTextField, wishInfoLabel, wishTextView, currentLengthLabel, maxLengthLabel]
-      .forEach { contentView.addSubview($0) }
+    [
+      titleLabel, dormLabel, dormStack, dormLine, genderLabel, genderStack, genderLine, periodLabel, periodStack, periodLine, habitLabel, habitStack1, habitStack2, habitLine, habitDescriptionLabel, ageLabel, ageDescriptionLabel, ageTextField, ageLine, wakeUpInfoLabel, wakeUpTextField, cleanUpInfoLabel, cleanUpTextField, showerInfoLabel, showerTextField, mbtiInfoLabel, mbtiTextField, chatInfoLabel, chatTextField, wishInfoLabel, wishTextView, currentLengthLabel, maxLengthLabel
+    ].forEach { contentView.addSubview($0) }
   }
   
   override func setupStyles() {
@@ -378,7 +380,7 @@ final class OnboardingViewController: BaseViewController {
     
     currentLengthLabel.snp.makeConstraints { make in
       make.centerY.equalTo(wishInfoLabel)
-      make.trailing.equalTo(maxLengthLabel.snp.leading).offset(4)
+      make.trailing.equalTo(maxLengthLabel.snp.leading).offset(-4)
     }
   }
   
@@ -769,15 +771,15 @@ final class OnboardingViewController: BaseViewController {
   }
 }
 
-//
-//// MARK: - Preview
-//
-//#if canImport(SwiftUI) && DEBUG
-//import SwiftUI
-//struct OnboardingVC_PreView: PreviewProvider {
-//  static var previews: some View {
-//    OnboardingViewController(.firstTime).toPreview()
-//  }
-//}
-//#endif
-//
+
+// MARK: - Preview
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+struct OnboardingVC_PreView: PreviewProvider {
+  static var previews: some View {
+    OnboardingViewController(.firstTime).toPreview()
+  }
+}
+#endif
+

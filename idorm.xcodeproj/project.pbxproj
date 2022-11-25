@@ -562,8 +562,6 @@
 				E56DF4C2289405C000E85B10 /* Home */,
 				E56DF4C3289405CD00E85B10 /* Matching */,
 				E56DF4CA2894061000E85B10 /* MyPage */,
-				E56DF4B02893CE4F00E85B10 /* Community */,
-				E56DF4A82893C73600E85B10 /* Calendar */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -841,6 +839,7 @@
 		E575304328D92BE900F0B57C /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
+				E5D070882930CE7800D5DF6E /* Trash */,
 				E575304528D92C1200F0B57C /* Base */,
 				E5084367288133570047A2EC /* Extensions */,
 				E54B3E1728C6D9680062EF7E /* Managers */,
@@ -928,6 +927,15 @@
 				E5AEA5C629129AC50062F6A5 /* MatchingUtilities.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		E5D070882930CE7800D5DF6E /* Trash */ = {
+			isa = PBXGroup;
+			children = (
+				E56DF4B02893CE4F00E85B10 /* Community */,
+				E56DF4A82893C73600E85B10 /* Calendar */,
+			);
+			path = Trash;
 			sourceTree = "<group>";
 		};
 		E5E77EC928D8261E00031010 /* Register */ = {
