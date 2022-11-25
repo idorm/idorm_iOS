@@ -52,7 +52,7 @@ final class MatchingFilterViewController: BaseViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     navigationController?.isNavigationBarHidden = false
-    floatyBottomView.confirmButton.isEnabled = false
+    floatyBottomView.rightButton.isEnabled = false
     
     // MARK: - 현재 필터 정보 확인 후 UI 업데이트
     if matchingFilterShared.hasFilter {
@@ -73,12 +73,12 @@ final class MatchingFilterViewController: BaseViewController {
     // MARK: - Input
     
     // 선택 초기화 버튼 클릭
-    floatyBottomView.skipButton.rx.tap
+    floatyBottomView.leftButton.rx.tap
       .bind(to: viewModel.input.skipButtonTapped)
       .disposed(by: disposeBag)
     
     // 필터링 완료 버튼 클릭
-    floatyBottomView.confirmButton.rx.tap
+    floatyBottomView.rightButton.rx.tap
       .bind(to: viewModel.input.confirmButtonTapped)
       .disposed(by: disposeBag)
     
@@ -178,9 +178,9 @@ final class MatchingFilterViewController: BaseViewController {
     viewModel.output.isEnableConfirmButton
       .bind(onNext: { [unowned self] isEnable in
         if isEnable {
-          self.floatyBottomView.confirmButton.isEnabled = true
+          self.floatyBottomView.rightButton.isEnabled = true
         } else {
-          self.floatyBottomView.confirmButton.isEnabled = false
+          self.floatyBottomView.rightButton.isEnabled = false
         }
       })
       .disposed(by: disposeBag)
@@ -339,7 +339,7 @@ final class MatchingFilterViewController: BaseViewController {
     allowedEarphoneButton.isSelected = filter.isWearEarphones
     slider.selectedMinValue = CGFloat(filter.minAge)
     slider.selectedMaxValue = CGFloat(filter.maxAge)
-    floatyBottomView.confirmButton.isEnabled = true
+    floatyBottomView.rightButton.isEnabled = true
   }
 }
 

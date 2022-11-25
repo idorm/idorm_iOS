@@ -250,3 +250,14 @@ final class NicknameViewController: BaseViewController {
   }
 }
 
+// MARK: - Preview
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+struct NicknameVC_PreView: PreviewProvider {
+  static var previews: some View {
+    NicknameViewController(.signUp).toPreview()
+  }
+}
+#endif
+

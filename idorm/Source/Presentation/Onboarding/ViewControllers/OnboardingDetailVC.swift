@@ -109,19 +109,19 @@ final class OnboardingDetailViewController: BaseViewController {
     switch vcType {
     case .initilize:
       // 뒤로 가기 버튼 이벤트
-      floatyBottomView.skipButton.rx.tap
+      floatyBottomView.leftButton.rx.tap
         .bind(to: viewModel.input.backButtonDidTap)
         .disposed(by: disposeBag)
       
     case .update:
       // 정보 수정 버튼 이벤트
-      floatyBottomView.skipButton.rx.tap
+      floatyBottomView.leftButton.rx.tap
         .bind(to: viewModel.input.correctionButtonDidTap)
         .disposed(by: disposeBag)
     }
 
     // 완료 버튼 이벤트
-    floatyBottomView.confirmButton.rx.tap
+    floatyBottomView.rightButton.rx.tap
       .map { [unowned self] in return self.member }
       .bind(to: viewModel.input.confirmButtonDidTap)
       .disposed(by: disposeBag)

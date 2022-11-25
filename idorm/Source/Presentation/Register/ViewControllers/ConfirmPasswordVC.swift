@@ -34,11 +34,7 @@ final class ConfirmPasswordViewController: BaseViewController {
   }
   
   private let textField1 = passwordTextField(placeholder: "비밀번호를 입력해주세요.")
-  
-  private let textField2 = passwordTextField(placeholder: "비밀번호를 한번 더 입력해주세요.").then {
-    $0.textField.isSecureTextEntry = true
-  }
-  
+  private let textField2 = passwordTextField(placeholder: "비밀번호를 한번 더 입력해주세요.")
   private var confirmButton: idormButton!
   
   private let viewModel: ConfirmPasswordViewModel
@@ -82,7 +78,7 @@ final class ConfirmPasswordViewController: BaseViewController {
     super.setupConstraints()
     
     infoLabel.snp.makeConstraints { make in
-      make.top.leading.equalToSuperview().inset(24)
+      make.top.leading.equalTo(view.safeAreaLayoutGuide).inset(24)
     }
     
     textField1.snp.makeConstraints { make in
@@ -137,7 +133,7 @@ final class ConfirmPasswordViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     textField1.textField.rx.controlEvent(.editingDidEnd)
-      .bind(to: viewModel.input.passwordTf1DidBegin)
+      .bind(to: viewModel.input.passwordTf1DidEnd)
       .disposed(by: disposeBag)
     
     // 텍스트필드2 반응
@@ -228,3 +224,13 @@ final class ConfirmPasswordViewController: BaseViewController {
     view.endEditing(true)
   }
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+struct ConfirmPasswordVC_PreView: PreviewProvider {
+  static var previews: some View {
+    ConfirmPasswordViewController(.signUp).toPreview()
+  }
+}
+#endif
+

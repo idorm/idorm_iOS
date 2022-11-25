@@ -14,38 +14,51 @@ final class OnboardingViewController: BaseViewController {
   
   private let titleLabel = OnboardingUtilities.descriptionLabel("룸메이트 매칭을 위한 기본정보를 알려주세요!")
   private var floatyBottomView: FloatyBottomView!
-  private let indicator = UIActivityIndicatorView()
   
-  private var viewModel: OnboardingViewModel
-  private let vcType: OnboardingVCTypes.OnboardingVCType
+  private let indicator = UIActivityIndicatorView().then {
+    $0.color = .gray
+  }
+    
+  private let scrollView = UIScrollView().then {
+    $0.keyboardDismissMode = .onDrag
+  }
   
-  // MARK: - ScrollView
-  private let scrollView = UIScrollView()
   private let contentView = UIView()
   
-  // MARK: - Dorm
   private let dormLabel = OnboardingUtilities.titleLabel(text: "기숙사")
   private let dorm1Button = OnboardingUtilities.basicButton(title: "1 기숙사")
   private let dorm2Button = OnboardingUtilities.basicButton(title: "2 기숙사")
   private let dorm3Button = OnboardingUtilities.basicButton(title: "3 기숙사")
   private let dormLine = OnboardingUtilities.separatorLine()
-  private var dormStack: UIStackView!
   
-  // MARK: - Gender
+  private lazy var dormStack = UIStackView().then { stack in
+    [dorm1Button, dorm2Button, dorm3Button]
+      .forEach { stack.addArrangedSubview($0) }
+    stack.spacing = 12
+  }
+  
   private let genderLabel = OnboardingUtilities.titleLabel(text: "성별")
   private let maleButton = OnboardingUtilities.basicButton(title: "남성")
   private let femaleButton = OnboardingUtilities.basicButton(title: "여성")
   private let genderLine = OnboardingUtilities.separatorLine()
-  private var genderStack: UIStackView!
   
-  // MARK: - Period
+  private lazy var genderStack = UIStackView().then { stack in
+    [maleButton, femaleButton]
+      .forEach { stack.addArrangedSubview($0) }
+    stack.spacing = 12
+  }
+  
   private let periodLabel = OnboardingUtilities.titleLabel(text: "입사 기간")
   private let period16Button = OnboardingUtilities.basicButton(title: "16 주")
   private let period24Button = OnboardingUtilities.basicButton(title: "24 주")
   private let periodLine = OnboardingUtilities.separatorLine()
-  private var periodStack: UIStackView!
+
+  private lazy var periodStack = UIStackView().then { stack in
+    [period16Button, period24Button]
+      .forEach { stack.addArrangedSubview($0) }
+    stack.spacing = 12
+  }
   
-  // MARK: - Habit
   private let habitDescriptionLabel = OnboardingUtilities.descriptionLabel("불호요소가 있는 내 습관을 미리 알려주세요.")
   private let habitLabel = OnboardingUtilities.titleLabel(text: "내 습관")
   private let snoreButton = OnboardingUtilities.basicButton(title: "코골이")
@@ -54,10 +67,19 @@ final class OnboardingViewController: BaseViewController {
   private let allowedFoodButton = OnboardingUtilities.basicButton(title: "실내 음식 섭취 함")
   private let allowedEarphoneButton = OnboardingUtilities.basicButton(title: "이어폰 착용 안함")
   private let habitLine = OnboardingUtilities.separatorLine()
-  private var habitStack1: UIStackView!
-  private var habitStack2: UIStackView!
   
-  // MARK: - Age
+  private lazy var habitStack1 = UIStackView().then { stack in
+    [snoreButton, grindingButton, smokingButton]
+      .forEach { stack.addArrangedSubview($0) }
+    stack.spacing = 12
+  }
+  
+  private lazy var habitStack2 = UIStackView().then { stack in
+    [allowedFoodButton, allowedEarphoneButton]
+      .forEach { stack.addArrangedSubview($0) }
+    stack.spacing = 12
+  }
+  
   private let ageTextField = CHIOTPFieldTwo().then {
     $0.numberOfDigits = 2
     $0.borderColor = .idorm_gray_200
@@ -70,27 +92,24 @@ final class OnboardingViewController: BaseViewController {
   private let ageLabel = OnboardingUtilities.titleLabel(text: "나이")
   private let ageLine = OnboardingUtilities.separatorLine()
   
-  // MARK: - WakeUp
+  private var viewModel: OnboardingViewModel
+  private let vcType: OnboardingVCTypes.OnboardingVCType
+  
   private let wakeUpInfoLabel = OnboardingUtilities.infoLabel("기상시간을 알려주세요.", isEssential: true)
   private let wakeUpTextField = OnboardingTextField(placeholder: "입력")
   
-  // MARK: - CleanUp
   private let cleanUpInfoLabel = OnboardingUtilities.infoLabel("정리정돈은 얼마나 하시나요?", isEssential: true)
   private let cleanUpTextField = OnboardingTextField(placeholder: "입력")
   
-  // MARK: - Shower
   private let showerInfoLabel = OnboardingUtilities.infoLabel("샤워는 주로 언제/몇 분 동안 하시나요?", isEssential: true)
   private let showerTextField = OnboardingTextField(placeholder: "입력")
   
-  // MARK: - MBTI
   private let mbtiInfoLabel = OnboardingUtilities.infoLabel("MBTI를 알려주세요.", isEssential: false)
   private let mbtiTextField = OnboardingTextField(placeholder: "입력")
   
-  // MARK: - OpenChat
   private let chatInfoLabel = OnboardingUtilities.infoLabel("연락을 위한 개인 오픈채팅 링크를 알려주세요.", isEssential: true)
   private let chatTextField = OnboardingTextField(placeholder: "입력")
   
-  // MARK: - WishText
   private let wishInfoLabel = OnboardingUtilities.infoLabel("미래의 룸메에게 하고 싶은 말은?", isEssential: false)
   private let wishTextView = RSKGrowingTextView().then {
     $0.attributedPlaceholder = NSAttributedString(string: "입력", attributes: [NSAttributedString.Key.font: UIFont.init(name: MyFonts.regular.rawValue, size: 14) ?? 0, NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_300])
@@ -105,18 +124,22 @@ final class OnboardingViewController: BaseViewController {
     $0.backgroundColor = .clear
     $0.textContainerInset = UIEdgeInsets(top: 15, left: 9, bottom: 15, right: 9)
   }
-
-  private let letterNumLabel = UILabel().then {
+  
+  private let maxLengthLabel = UILabel().then {
+    $0.text = "/ 100 pt"
     $0.textColor = .idorm_gray_300
+    $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
+  }
+
+  private let currentLengthLabel = UILabel().then {
+    $0.textColor = .idorm_blue
     $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
   }
 
   // MARK: - LifeCycle
   
   override func viewDidLoad() {
-    setupStackView()
     setupFloatyBottomView()
-    setupScrollView()
     super.viewDidLoad()
     setupMatchingInfo()
   }
@@ -140,7 +163,7 @@ final class OnboardingViewController: BaseViewController {
     view.addSubview(indicator)
     scrollView.addSubview(contentView)
     
-    [titleLabel, dormLabel, dormStack, dormLine, genderLabel, genderStack, genderLine, periodLabel, periodStack, periodLine, habitLabel, habitStack1, habitStack2, habitLine, habitDescriptionLabel, ageLabel, ageDescriptionLabel, ageTextField, ageLine, wakeUpInfoLabel, wakeUpTextField, cleanUpInfoLabel, cleanUpTextField, showerInfoLabel, showerTextField, mbtiInfoLabel, mbtiTextField, chatInfoLabel, chatTextField, wishInfoLabel, wishTextView, letterNumLabel]
+    [titleLabel, dormLabel, dormStack, dormLine, genderLabel, genderStack, genderLine, periodLabel, periodStack, periodLine, habitLabel, habitStack1, habitStack2, habitLine, habitDescriptionLabel, ageLabel, ageDescriptionLabel, ageTextField, ageLine, wakeUpInfoLabel, wakeUpTextField, cleanUpInfoLabel, cleanUpTextField, showerInfoLabel, showerTextField, mbtiInfoLabel, mbtiTextField, chatInfoLabel, chatTextField, wishInfoLabel, wishTextView, currentLengthLabel, maxLengthLabel]
       .forEach { contentView.addSubview($0) }
   }
   
@@ -348,31 +371,15 @@ final class OnboardingViewController: BaseViewController {
       make.bottom.equalToSuperview().inset(90)
     }
     
-    letterNumLabel.snp.makeConstraints { make in
+    maxLengthLabel.snp.makeConstraints { make in
       make.centerY.equalTo(wishInfoLabel)
       make.trailing.equalToSuperview().inset(25)
     }
-  }
-  
-  private func setupStackView() {
-    let dormStack = UIStackView(arrangedSubviews: [ dorm1Button, dorm2Button, dorm3Button ])
-    dormStack.spacing = 12
-    self.dormStack = dormStack
     
-    let genderStack = UIStackView(arrangedSubviews: [ maleButton, femaleButton ])
-    genderStack.spacing = 12
-    self.genderStack = genderStack
-    
-    let periodStack = UIStackView(arrangedSubviews: [ period16Button, period24Button ])
-    periodStack.spacing = 12
-    self.periodStack = periodStack
-    
-    let habitStack1 = UIStackView(arrangedSubviews: [ snoreButton, grindingButton, smokingButton ])
-    let habitStack2 = UIStackView(arrangedSubviews: [ allowedFoodButton, allowedEarphoneButton ])
-    habitStack1.spacing = 12
-    habitStack2.spacing = 12
-    self.habitStack1 = habitStack1
-    self.habitStack2 = habitStack2
+    currentLengthLabel.snp.makeConstraints { make in
+      make.centerY.equalTo(wishInfoLabel)
+      make.trailing.equalTo(maxLengthLabel.snp.leading).offset(4)
+    }
   }
   
   private func setupFloatyBottomView() {
@@ -384,60 +391,56 @@ final class OnboardingViewController: BaseViewController {
     case .update:
       self.floatyBottomView = FloatyBottomView(.reset)
     }
-    self.floatyBottomView.confirmButton.isEnabled = false
-  }
-  
-  private func setupScrollView() {
-    scrollView.keyboardDismissMode = .onDrag
+    self.floatyBottomView.rightButton.isEnabled = false
   }
   
   private func setupMatchingInfo() {
-    if vcType == .update {
-      guard let matchingInfo = MemberInfoStorage.instance.myOnboarding.value else { return }
-      toggleDromButton(matchingInfo.dormNum)
-      toggleGenderButton(matchingInfo.gender)
-      togglePeriodButton(matchingInfo.joinPeriod)
-      snoreButton.isSelected = matchingInfo.isSnoring
-      grindingButton.isSelected = matchingInfo.isGrinding
-      smokingButton.isSelected = matchingInfo.isSmoking
-      allowedFoodButton.isSelected = matchingInfo.isAllowedFood
-      allowedEarphoneButton.isSelected = matchingInfo.isWearEarphones
-      ageTextField.text = String(matchingInfo.age)
-      wakeUpTextField.textField.text = matchingInfo.wakeUpTime
-      cleanUpTextField.textField.text = matchingInfo.cleanUpStatus
-      showerTextField.textField.text = matchingInfo.showerTime
-      chatTextField.textField.text = matchingInfo.openKakaoLink
-      mbtiTextField.textField.text = matchingInfo.mbti
-      wishTextView.text = matchingInfo.wishText
-      
-      viewModel.input.isSelectedDormButton.onNext(matchingInfo.dormNum)
-      viewModel.input.isSelectedPeriodButton.onNext(matchingInfo.joinPeriod)
-      viewModel.input.isSelectedGenderButton.onNext(matchingInfo.gender)
-      
-      if snoreButton.isSelected {
-        viewModel.input.isSelectedHabitButton.onNext(.snoring)
-      }
-      if grindingButton.isSelected {
-        viewModel.input.isSelectedHabitButton.onNext(.grinding)
-      }
-      if smokingButton.isSelected {
-        viewModel.input.isSelectedHabitButton.onNext(.smoking)
-      }
-      if allowedFoodButton.isSelected {
-        viewModel.input.isSelectedHabitButton.onNext(.allowedFood)
-      }
-      if allowedEarphoneButton.isSelected {
-        viewModel.input.isSelectedHabitButton.onNext(.allowedEarphone)
-      }
-      
-      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.age, String(matchingInfo.age)))
-      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.wakeUp, matchingInfo.wakeUpTime))
-      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.cleanUp, matchingInfo.cleanUpStatus))
-      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.shower, matchingInfo.showerTime))
-      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.mbti, matchingInfo.mbti ?? ""))
-      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.chatLink, matchingInfo.openKakaoLink))
-      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.wishText, matchingInfo.wishText ?? ""))
-    }
+//    if vcType == .update {
+//      guard let matchingInfo = MemberInfoStorage.instance.myOnboarding.value else { return }
+//      toggleDromButton(matchingInfo.dormNum)
+//      toggleGenderButton(matchingInfo.gender)
+//      togglePeriodButton(matchingInfo.joinPeriod)
+//      snoreButton.isSelected = matchingInfo.isSnoring
+//      grindingButton.isSelected = matchingInfo.isGrinding
+//      smokingButton.isSelected = matchingInfo.isSmoking
+//      allowedFoodButton.isSelected = matchingInfo.isAllowedFood
+//      allowedEarphoneButton.isSelected = matchingInfo.isWearEarphones
+//      ageTextField.text = String(matchingInfo.age)
+//      wakeUpTextField.textField.text = matchingInfo.wakeUpTime
+//      cleanUpTextField.textField.text = matchingInfo.cleanUpStatus
+//      showerTextField.textField.text = matchingInfo.showerTime
+//      chatTextField.textField.text = matchingInfo.openKakaoLink
+//      mbtiTextField.textField.text = matchingInfo.mbti
+//      wishTextView.text = matchingInfo.wishText
+//
+//      viewModel.input.dormButtonDidTap.onNext(matchingInfo.dormNum)
+//      viewModel.input.isSelectedPeriodButton.onNext(matchingInfo.joinPeriod)
+//      viewModel.input.isSelectedGenderButton.onNext(matchingInfo.gender)
+//
+//      if snoreButton.isSelected {
+//        viewModel.input.isSelectedHabitButton.onNext(.snoring)
+//      }
+//      if grindingButton.isSelected {
+//        viewModel.input.isSelectedHabitButton.onNext(.grinding)
+//      }
+//      if smokingButton.isSelected {
+//        viewModel.input.isSelectedHabitButton.onNext(.smoking)
+//      }
+//      if allowedFoodButton.isSelected {
+//        viewModel.input.isSelectedHabitButton.onNext(.allowedFood)
+//      }
+//      if allowedEarphoneButton.isSelected {
+//        viewModel.input.isSelectedHabitButton.onNext(.allowedEarphone)
+//      }
+//
+//      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.age, String(matchingInfo.age)))
+//      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.wakeUp, matchingInfo.wakeUpTime))
+//      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.cleanUp, matchingInfo.cleanUpStatus))
+//      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.shower, matchingInfo.showerTime))
+//      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.mbti, matchingInfo.mbti ?? ""))
+//      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.chatLink, matchingInfo.openKakaoLink))
+//      viewModel.input.onChangedQueryText.onNext((OnboardingQueryList.wishText, matchingInfo.wishText ?? ""))
+//    }
   }
   
   // MARK: - Bind
@@ -445,8 +448,155 @@ final class OnboardingViewController: BaseViewController {
   override func bind() {
     super.bind()
     
+    // 텍스트뷰 글자수 제한
+    wishTextView.rx.text
+      .orEmpty
+      .scan("") { $1.count > 100 ? $0 : $1 }
+      .bind(to: wishTextView.rx.text)
+      .disposed(by: disposeBag)
+    
     // MARK: - Input
     
+    // 1기숙사 버튼 클릭
+    dorm1Button.rx.tap
+      .map { Dormitory.no1 }
+      .bind(to: viewModel.input.dormButtonDidTap)
+      .disposed(by: disposeBag)
+    
+    // 2기숙사 버튼 클릭
+    dorm2Button.rx.tap
+      .map { Dormitory.no2 }
+      .bind(to: viewModel.input.dormButtonDidTap)
+      .disposed(by: disposeBag)
+    
+    // 3기숙사 버튼 클릭
+    dorm3Button.rx.tap
+      .map { Dormitory.no3 }
+      .bind(to: viewModel.input.dormButtonDidTap)
+      .disposed(by: disposeBag)
+    
+    // 남자 버튼 클릭
+    maleButton.rx.tap
+      .map { Gender.male }
+      .bind(to: viewModel.input.genderButtonDidTap)
+      .disposed(by: disposeBag)
+    
+    // 여자 버튼 클릭
+    femaleButton.rx.tap
+      .map { Gender.female }
+      .bind(to: viewModel.input.genderButtonDidTap)
+      .disposed(by: disposeBag)
+    
+    // 16주 버튼 클릭
+    period16Button.rx.tap
+      .map { JoinPeriod.period_16 }
+      .bind(to: viewModel.input.joinPeriodButtonDidTap)
+      .disposed(by: disposeBag)
+    
+    // 24주 버튼 클릭
+    period24Button.rx.tap
+      .map { JoinPeriod.period_24 }
+      .bind(to: viewModel.input.joinPeriodButtonDidTap)
+      .disposed(by: disposeBag)
+    
+    // 코골이 버튼 클릭
+    snoreButton.rx.tap
+      .withUnretained(self)
+      .map { $0.0 }
+      .map { !($0.snoreButton.isSelected) }
+      .bind(to: viewModel.input.isSnoringButtonDidTap)
+      .disposed(by: disposeBag)
+    
+    // 이갈이 버튼 클릭
+    grindingButton.rx.tap
+      .withUnretained(self)
+      .map { $0.0 }
+      .map { !($0.grindingButton.isSelected) }
+      .bind(to: viewModel.input.isGrindingButtonDidTap)
+      .disposed(by: disposeBag)
+    
+    // 흡연 버튼 클릭
+    smokingButton.rx.tap
+      .withUnretained(self)
+      .map { $0.0 }
+      .map { !($0.smokingButton.isSelected) }
+      .bind(to: viewModel.input.isSmokingButtonDidTap)
+      .disposed(by: disposeBag)
+
+    // 음식 버튼 클릭
+    allowedFoodButton.rx.tap
+      .withUnretained(self)
+      .map { $0.0 }
+      .map { !($0.allowedFoodButton.isSelected) }
+      .bind(to: viewModel.input.isAllowedFoodButtonDidTap)
+      .disposed(by: disposeBag)
+
+    // 이어폰 버튼 클릭
+    allowedEarphoneButton.rx.tap
+      .withUnretained(self)
+      .map { $0.0 }
+      .map { !($0.allowedEarphoneButton.isSelected) }
+      .bind(to: viewModel.input.isAllowedEarphoneButtonDidTap)
+      .disposed(by: disposeBag)
+    
+    // 나이 텍스트 반응
+    Observable<Int>
+      .interval(.microseconds(100000), scheduler: MainScheduler.instance)
+      .withUnretained(self)
+      .map { $0.0 }
+      .map { $0.ageTextField.text ?? "" }
+      .bind(to: viewModel.input.ageTextFieldDidChange)
+      .disposed(by: disposeBag)
+    
+    // 기상시간 텍스트필드 반응
+    wakeUpTextField.textField.rx.text
+      .orEmpty
+      .bind(to: viewModel.input.wakeUpTextFieldDidChange)
+      .disposed(by: disposeBag)
+    
+    // 정리정돈 텍스트필드 반응
+    cleanUpTextField.textField.rx.text
+      .orEmpty
+      .bind(to: viewModel.input.cleanUpTextFieldDidChange)
+      .disposed(by: disposeBag)
+    
+    // 샤워시간 텍스트필드 반응
+    showerTextField.textField.rx.text
+      .orEmpty
+      .bind(to: viewModel.input.showerTimeTextFieldDidChange)
+      .disposed(by: disposeBag)
+    
+    // 오픈채팅 텍스트필드 반응
+    chatTextField.textField.rx.text
+      .orEmpty
+      .bind(to: viewModel.input.kakaoLinkTextFieldDidChange)
+      .disposed(by: disposeBag)
+    
+    // mbti 텍스트필드 반응
+    mbtiTextField.textField.rx.text
+      .orEmpty
+      .bind(to: viewModel.input.mbtiTextFieldDidChange)
+      .disposed(by: disposeBag)
+    
+    // 하고싶은 말 텍스트뷰 반응
+    wishTextView.rx.text
+      .orEmpty
+      .bind(to: viewModel.input.wishTextViewDidChange)
+      .disposed(by: disposeBag)
+    
+    switch vcType {
+    case.firstTime, .mainPage_FirstTime:
+      // 입력 초기화 버튼 클릭
+      floatyBottomView.leftButton.rx.tap
+        .bind(to: viewModel.input.resetButtonDidTap)
+        .disposed(by: disposeBag)
+
+    case .update:
+      break
+    }
+    
+    
+    // FIXME: 이 Stream 수정
     // 스크롤 뷰 빈공간 터치 시 Editing 종료
     scrollView.rx.tapGesture(configuration: { gesture, delegate in
       delegate.simultaneousRecognitionPolicy = .never
@@ -456,320 +606,178 @@ final class OnboardingViewController: BaseViewController {
     })
     .disposed(by: disposeBag)
     
-    // 텍스트뷰 글자수 제한
-    wishTextView.rx.text
-      .orEmpty
-      .scan("") { previous, new in
-        if new.count > 100 {
-          return previous
-        } else {
-          return new
-        }
-      }
-      .bind(to: wishTextView.rx.text)
-      .disposed(by: disposeBag)
-    
-    // 텍스트뷰 반응 -> 글자수 레이블 반응
-    wishTextView.rx.text
-      .orEmpty
-      .bind(onNext: { [unowned self] text in
-        self.letterNumLabel.text = "\(text.count)/100pt"
-        let attributedString = NSMutableAttributedString(string: "\(text.count)/100pt")
-        attributedString.addAttribute(.foregroundColor, value: UIColor.idorm_blue, range: ("\(text.count)/100pt" as NSString).range(of: "\(text.count)"))
-        self.letterNumLabel.attributedText = attributedString
-      })
-      .disposed(by: disposeBag)
-    
-    // 스킵 버튼 이벤트
-    floatyBottomView.skipButton.rx.tap
-      .bind(to: viewModel.input.didTapSkipButton)
-      .disposed(by: disposeBag)
-    
-    // 완료 버튼 이벤트
-    floatyBottomView.confirmButton.rx.tap
-      .bind(to: viewModel.input.didTapConfirmButton)
-      .disposed(by: disposeBag)
-    
-    // 1기숙사 버튼 클릭
-    dorm1Button.rx.tap
-      .map { [weak self] _ -> Dormitory in
-        self?.toggleDromButton(.no1)
-        return Dormitory.no1
-      }
-      .bind(to: viewModel.input.isSelectedDormButton)
-      .disposed(by: disposeBag)
-    
-    // 2기숙사 버튼 클릭
-    dorm2Button.rx.tap
-      .map { [weak self] _ -> Dormitory in
-        self?.toggleDromButton(.no2)
-        return Dormitory.no2
-      }
-      .bind(to: viewModel.input.isSelectedDormButton)
-      .disposed(by: disposeBag)
-    
-    // 3기숙사 버튼 클릭
-    dorm3Button.rx.tap
-      .map { [weak self] _ -> Dormitory in
-        self?.toggleDromButton(.no3)
-        return Dormitory.no3
-      }
-      .bind(to: viewModel.input.isSelectedDormButton)
-      .disposed(by: disposeBag)
-    
-    // 남성 버튼 클릭
-    maleButton.rx.tap
-      .map { [weak self] _ -> Gender in
-        self?.toggleGenderButton(.male)
-        return Gender.male
-      }
-      .bind(to: viewModel.input.isSelectedGenderButton)
-      .disposed(by: disposeBag)
-    
-    // 여성 버튼 클릭
-    femaleButton.rx.tap
-      .map { [weak self] _ -> Gender in
-        self?.toggleGenderButton(.female)
-        return Gender.female
-      }
-      .bind(to: viewModel.input.isSelectedGenderButton)
-      .disposed(by: disposeBag)
-    
-    // 16주 버튼 클릭
-    period16Button.rx.tap
-      .map { [weak self] _ -> JoinPeriod in
-        self?.togglePeriodButton(.period_16)
-        return JoinPeriod.period_16
-      }
-      .bind(to: viewModel.input.isSelectedPeriodButton)
-      .disposed(by: disposeBag)
-    
-    // 24주 버튼 클릭
-    period24Button.rx.tap
-      .map { [weak self] _ -> JoinPeriod in
-        self?.togglePeriodButton(.period_24)
-        return JoinPeriod.period_24
-      }
-      .bind(to: viewModel.input.isSelectedPeriodButton)
-      .disposed(by: disposeBag)
-    
-    // 코골이 버튼 클릭
-    snoreButton.rx.tap
-      .map { [weak self] _ -> Habit in
-        self?.snoreButton.isSelected.toggle()
-        return Habit.snoring
-      }
-      .bind(to: viewModel.input.isSelectedHabitButton)
-      .disposed(by: disposeBag)
-    
-    // 이갈이 버튼 클릭
-    grindingButton.rx.tap
-      .map { [weak self] _ -> Habit in
-        self?.grindingButton.isSelected.toggle()
-        return Habit.grinding
-      }
-      .bind(to: viewModel.input.isSelectedHabitButton)
-      .disposed(by: disposeBag)
-    
-    // 흡연 버튼 클릭
-    smokingButton.rx.tap
-      .map { [weak self] _ -> Habit in
-        self?.smokingButton.isSelected.toggle()
-        return Habit.smoking
-      }
-      .bind(to: viewModel.input.isSelectedHabitButton)
-      .disposed(by: disposeBag)
-    
-    // 실내음식섭취 버튼 클릭
-    allowedFoodButton.rx.tap
-      .map { [weak self] _ -> Habit in
-        self?.allowedFoodButton.isSelected.toggle()
-        return Habit.allowedFood
-      }
-      .bind(to: viewModel.input.isSelectedHabitButton)
-      .disposed(by: disposeBag)
-    
-    // 이어폰착용안함 버튼 클릭
-    allowedEarphoneButton.rx.tap
-      .map { [weak self] _ -> Habit in
-        self?.allowedEarphoneButton.isSelected.toggle()
-        return Habit.allowedEarphone
-      }
-      .bind(to: viewModel.input.isSelectedHabitButton)
-      .disposed(by: disposeBag)
-    
-    // 나이 텍스트 반응 전달
-    Observable<Int>
-      .interval(.microseconds(100000), scheduler: MainScheduler.instance)
-      .map { [weak self] _ in
-        (OnboardingQueryList.age, self?.ageTextField.text ?? "")
-      }
-      .bind(to: viewModel.input.onChangedQueryText)
-      .disposed(by: disposeBag)
-    
-    // 기상 시간 텍스트 반응
-    wakeUpTextField.textField.rx.text
-      .orEmpty
-      .map { (OnboardingQueryList.wakeUp, $0) }
-      .bind(to: viewModel.input.onChangedQueryText)
-      .disposed(by: disposeBag)
-    
-    // 정리 정돈 텍스트 반응
-    cleanUpTextField.textField.rx.text
-      .orEmpty
-      .map { (OnboardingQueryList.cleanUp, $0) }
-      .bind(to: viewModel.input.onChangedQueryText)
-      .disposed(by: disposeBag)
-    
-    // 샤워 텍스트 반응
-    showerTextField.textField.rx.text
-      .orEmpty
-      .map { (OnboardingQueryList.shower, $0) }
-      .bind(to: viewModel.input.onChangedQueryText)
-      .disposed(by: disposeBag)
-    
-    // mbti 텍스트 반응
-    mbtiTextField.textField.rx.text
-      .orEmpty
-      .map { (OnboardingQueryList.mbti, $0) }
-      .bind(to: viewModel.input.onChangedQueryText)
-      .disposed(by: disposeBag)
-    
-    // 오픈채팅 텍스트 반응
-    chatTextField.textField.rx.text
-      .orEmpty
-      .map { (OnboardingQueryList.chatLink, $0) }
-      .bind(to: viewModel.input.onChangedQueryText)
-      .disposed(by: disposeBag)
-    
-    // 하고 싶은 말 텍스트 반응
-    wishTextView.rx.text
-      .orEmpty
-      .map { (OnboardingQueryList.wishText, $0) }
-      .bind(to: viewModel.input.onChangedQueryText)
-      .disposed(by: disposeBag)
-    
     // MARK: - Output
     
-    // 완료 버튼 활성&비활성
-    viewModel.output.isEnableConfirmButton
-      .bind(onNext: { [unowned self] isEnable in
-        if isEnable {
-          self.floatyBottomView.confirmButton.isEnabled = true
-        } else {
-          self.floatyBottomView.confirmButton.isEnabled = false
+    // 기숙사 버튼 토글
+    viewModel.output.toggleDormButton
+      .withUnretained(self)
+      .bind(onNext: { owner, dorm in
+        switch dorm {
+        case .no1:
+          owner.dorm1Button.isSelected = true
+          owner.dorm2Button.isSelected = false
+          owner.dorm3Button.isSelected = false
+        case .no2:
+          owner.dorm1Button.isSelected = false
+          owner.dorm2Button.isSelected = true
+          owner.dorm3Button.isSelected = false
+        case .no3:
+          owner.dorm1Button.isSelected = false
+          owner.dorm2Button.isSelected = false
+          owner.dorm3Button.isSelected = true
         }
       })
+      .disposed(by: disposeBag)
+    
+    // 성별 버튼 토글
+    viewModel.output.toggleGenderButton
+      .withUnretained(self)
+      .bind(onNext: { owner, gender in
+        switch gender {
+        case .male:
+          owner.maleButton.isSelected = true
+          owner.femaleButton.isSelected = false
+        case .female:
+          owner.maleButton.isSelected = false
+          owner.femaleButton.isSelected = true
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    // 입사 기간 버튼 토글
+    viewModel.output.toggleJoinPeriodButton
+      .withUnretained(self)
+      .bind(onNext: { owner, joinPeriod in
+        switch joinPeriod {
+        case .period_16:
+          owner.period16Button.isSelected = true
+          owner.period24Button.isSelected = false
+        case .period_24:
+          owner.period16Button.isSelected = false
+          owner.period24Button.isSelected = true
+        }
+      })
+      .disposed(by: disposeBag)
+    
+    // 코골이 버튼 토글
+    viewModel.output.toggleIsSnoringButton
+      .bind(to: snoreButton.rx.isSelected)
+      .disposed(by: disposeBag)
+    
+    // 이갈이 버튼 토글
+    viewModel.output.toggleIsGrindingButton
+      .bind(to: grindingButton.rx.isSelected)
+      .disposed(by: disposeBag)
+    
+    // 흡연 버튼 토글
+    viewModel.output.toggleIsSmokingButton
+      .bind(to: smokingButton.rx.isSelected)
+      .disposed(by: disposeBag)
+    
+    // 음식 버튼 토글
+    viewModel.output.toggleIsAllowedFoodButton
+      .bind(to: allowedFoodButton.rx.isSelected)
+      .disposed(by: disposeBag)
+    
+    // 이어폰 버튼 토글
+    viewModel.output.toggleIsAllowedEarphoneButton
+      .bind(to: allowedEarphoneButton.rx.isSelected)
+      .disposed(by: disposeBag)
+    
+    // 현재 텍스트뷰 글자 수
+    viewModel.output.currentTextViewLength
+      .map { String($0) }
+      .bind(to: currentLengthLabel.rx.text)
+      .disposed(by: disposeBag)
+    
+    // 완료 버튼 활성화
+    viewModel.output.isEnabledConfirmButton
+      .bind(to: floatyBottomView.rightButton.rx.isEnabled)
+      .disposed(by: disposeBag)
+    
+    // 로딩 인디케이터 제어
+    viewModel.output.isLoading
+      .bind(to: indicator.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
+    // 화면 인터렉션 제어
+    viewModel.output.isLoading
+      .map { !$0 }
+      .bind(to: view.rx.isUserInteractionEnabled)
       .disposed(by: disposeBag)
     
     // 입력 초기화
-    viewModel.output.resetData
-      .bind(onNext: { [weak self] in
-        self?.resetData()
-      })
-      .disposed(by: disposeBag)
-    
-    // 메인페이지로 넘어가기
-    viewModel.output.showTabBarVC
-      .bind(onNext: { [weak self] in
-        let tabBarVC = TabBarController()
-        tabBarVC.modalPresentationStyle = .fullScreen
-        self?.present(tabBarVC, animated: true)
-      })
-      .disposed(by: disposeBag)
-    
-    // 인디케이터 애니메이션
-    viewModel.output.indicatorState
-      .bind(onNext: { [weak self] in
-        if $0 {
-          self?.indicator.startAnimating()
-          self?.view.isUserInteractionEnabled = false
-        } else {
-          self?.indicator.stopAnimating()
-          self?.view.isUserInteractionEnabled = true
+    viewModel.output.reset
+      .withUnretained(self)
+      .bind(onNext: { owner, _ in
+        [
+          owner.dorm1Button,
+          owner.dorm2Button,
+          owner.dorm3Button,
+          owner.maleButton,
+          owner.femaleButton,
+          owner.period16Button,
+          owner.period24Button,
+          owner.snoreButton,
+          owner.grindingButton,
+          owner.smokingButton,
+          owner.allowedFoodButton,
+          owner.allowedEarphoneButton
+        ].forEach { $0.isSelected = false }
+        
+        [
+          owner.wakeUpTextField,
+          owner.cleanUpTextField,
+          owner.showerTextField,
+          owner.mbtiTextField,
+          owner.chatTextField
+        ].forEach {
+          $0.textField.text = ""
+          $0.checkmarkButton.isHidden = true
         }
+        
+        owner.ageTextField.text = ""
+        owner.ageTextField.labels.forEach { $0.text = "" }
+        owner.wishTextView.text = ""
+        owner.floatyBottomView.rightButton.isEnabled = false
       })
       .disposed(by: disposeBag)
-    
-    // RootVC로 돌아가기
-    viewModel.output.pushToRootVC
-      .bind(onNext: { [weak self] in
-        self?.navigationController?.popToRootViewController(animated: true)
-      })
-      .disposed(by: disposeBag)
-    
-    // OnboardingDetailVC로 이동
-    viewModel.output.pushToOnboardingDetailVC
-      .bind(onNext: { [weak self] in
-        let viewController = OnboardingDetailViewController($0, vcType: .initilize)
-        self?.navigationController?.pushViewController(viewController, animated: true)
-      })
-      .disposed(by: disposeBag)
-  }
   
-  // MARK: - Helpers
-  
-  private func resetData() {
-    [dorm1Button, dorm2Button, dorm3Button,
-     maleButton, femaleButton,
-     period16Button, period24Button,
-     snoreButton, grindingButton, smokingButton, allowedFoodButton, allowedEarphoneButton]
-      .forEach { $0.isSelected = false }
-    
-    [wakeUpTextField, cleanUpTextField, showerTextField, mbtiTextField, chatTextField]
-      .forEach {
-        $0.textField.text = ""
-        $0.checkmarkButton.isHidden = true
-      }
-    
-    ageTextField.text = ""
-    ageTextField.labels.forEach {
-      $0.text = ""
-    }
-    wishTextView.text = ""
-    floatyBottomView.confirmButton.isEnabled = false
+//    // 메인페이지로 넘어가기
+//    viewModel.output.showTabBarVC
+//      .bind(onNext: { [weak self] in
+//        let tabBarVC = TabBarController()
+//        tabBarVC.modalPresentationStyle = .fullScreen
+//        self?.present(tabBarVC, animated: true)
+//      })
+//      .disposed(by: disposeBag)
+//
+//    // RootVC로 돌아가기
+//    viewModel.output.pushToRootVC
+//      .bind(onNext: { [weak self] in
+//        self?.navigationController?.popToRootViewController(animated: true)
+//      })
+//      .disposed(by: disposeBag)
+//
+//    // OnboardingDetailVC로 이동
+//    viewModel.output.pushToOnboardingDetailVC
+//      .bind(onNext: { [weak self] in
+//        let viewController = OnboardingDetailViewController($0, vcType: .initilize)
+//        self?.navigationController?.pushViewController(viewController, animated: true)
+//      })
+//      .disposed(by: disposeBag)
   }
 }
 
-// MARK: - Button Toggle
-
-extension OnboardingViewController {
-  private func toggleDromButton(_ dorm: Dormitory) {
-    switch dorm {
-    case .no1:
-      dorm1Button.isSelected = true
-      dorm2Button.isSelected = false
-      dorm3Button.isSelected = false
-    case .no2:
-      dorm1Button.isSelected = false
-      dorm2Button.isSelected = true
-      dorm3Button.isSelected = false
-    case .no3:
-      dorm1Button.isSelected = false
-      dorm2Button.isSelected = false
-      dorm3Button.isSelected = true
-    }
-  }
-  
-  private func toggleGenderButton(_ gender: Gender) {
-    switch gender {
-    case .female:
-      femaleButton.isSelected = true
-      maleButton.isSelected = false
-    case .male:
-      femaleButton.isSelected = false
-      maleButton.isSelected = true
-    }
-  }
-  
-  private func togglePeriodButton(_ period: JoinPeriod) {
-    switch period {
-    case .period_16:
-      period16Button.isSelected = true
-      period24Button.isSelected = false
-    case .period_24:
-      period16Button.isSelected = false
-      period24Button.isSelected = true
-    }
-  }
-}
+//
+//// MARK: - Preview
+//
+//#if canImport(SwiftUI) && DEBUG
+//import SwiftUI
+//struct OnboardingVC_PreView: PreviewProvider {
+//  static var previews: some View {
+//    OnboardingViewController(.firstTime).toPreview()
+//  }
+//}
+//#endif
+//

@@ -32,7 +32,7 @@
 		E5226D5E2911F7110065C809 /* OnboardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D5D2911F7110065C809 /* OnboardingVC.swift */; };
 		E5226D60291207AA0065C809 /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D5F291207AA0065C809 /* Habit.swift */; };
 		E5226D6329122AD20065C809 /* OnboardingQueryList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D6229122AD20065C809 /* OnboardingQueryList.swift */; };
-		E5226D65291246750065C809 /* OnboardingConfirmVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D64291246750065C809 /* OnboardingConfirmVerifier.swift */; };
+		E5226D65291246750065C809 /* OnboardingDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D64291246750065C809 /* OnboardingDriver.swift */; };
 		E525C1CD28944E2800F934B3 /* CalendarPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */; };
 		E52821422925C6BB006A4531 /* RegisterVCTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52821412925C6BB006A4531 /* RegisterVCTypes.swift */; };
 		E5290EFD2887BBA40004B8E6 /* CommunityPopularCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */; };
@@ -219,7 +219,7 @@
 		E5226D5D2911F7110065C809 /* OnboardingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingVC.swift; sourceTree = "<group>"; };
 		E5226D5F291207AA0065C809 /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
 		E5226D6229122AD20065C809 /* OnboardingQueryList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingQueryList.swift; sourceTree = "<group>"; };
-		E5226D64291246750065C809 /* OnboardingConfirmVerifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingConfirmVerifier.swift; sourceTree = "<group>"; };
+		E5226D64291246750065C809 /* OnboardingDriver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDriver.swift; sourceTree = "<group>"; };
 		E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPostViewController.swift; sourceTree = "<group>"; };
 		E52821412925C6BB006A4531 /* RegisterVCTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterVCTypes.swift; sourceTree = "<group>"; };
 		E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPopularCollectionVIewCell.swift; sourceTree = "<group>"; };
@@ -455,6 +455,7 @@
 				E510D3D028ACC84300A28B90 /* Logger.swift */,
 				E58F652F29134C2B00E58862 /* MatchingFilterStorage.swift */,
 				E5ED81AE2918C76B00CB32EB /* MemberInfoStorage.swift */,
+				E5226D64291246750065C809 /* OnboardingDriver.swift */,
 			);
 			path = Storages;
 			sourceTree = "<group>";
@@ -462,9 +463,8 @@
 		E5294FEB2926FF44004D408C /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				E5294FE92926FF01004D408C /* OnboardingVCTypes.swift */,
 				E5226D6229122AD20065C809 /* OnboardingQueryList.swift */,
-				E5226D64291246750065C809 /* OnboardingConfirmVerifier.swift */,
+				E5294FE92926FF01004D408C /* OnboardingVCTypes.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -922,10 +922,10 @@
 			isa = PBXGroup;
 			children = (
 				E5C2614D2919D3AA00623C0E /* BottomAlertUtilities.swift */,
+				E5D49013288C3DDA00311493 /* OnboardingUtilities.swift */,
 				E5370AFD28A1001C00A68D92 /* MyPageUtilities.swift */,
 				E5290F1128886D7A0004B8E6 /* CommunityUtilities.swift */,
 				E5AEA5C629129AC50062F6A5 /* MatchingUtilities.swift */,
-				E5D49013288C3DDA00311493 /* OnboardingUtilities.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1242,7 +1242,7 @@
 				E510D3CB28AC9F6E00A28B90 /* AuthVM.swift in Sources */,
 				E547E3E3291CEF21000D3A47 /* MatchingCardBoolView.swift in Sources */,
 				E5C2614E2919D3AA00623C0E /* BottomAlertUtilities.swift in Sources */,
-				E5226D65291246750065C809 /* OnboardingConfirmVerifier.swift in Sources */,
+				E5226D65291246750065C809 /* OnboardingDriver.swift in Sources */,
 				E5B0D4F4292240E7007A1791 /* OnboardingModel.swift in Sources */,
 				E5E77EC628D822FB00031010 /* idormButton.swift in Sources */,
 				E5294FF52927807A004D408C /* Encodable+Extensions.swift in Sources */,

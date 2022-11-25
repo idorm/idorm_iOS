@@ -30,7 +30,7 @@ final class FloatyBottomView: UIView {
     $0.layer.shadowOpacity = 0.14
   }
   
-  lazy var skipButton = UIButton().then {
+  lazy var leftButton = UIButton().then {
     var container = AttributeContainer()
     container.font = .init(name: MyFonts.medium.rawValue, size: 16)
     container.foregroundColor = .idorm_gray_400
@@ -61,7 +61,7 @@ final class FloatyBottomView: UIView {
     $0.configuration = config
   }
   
-  lazy var confirmButton = UIButton().then {
+  lazy var rightButton = UIButton().then {
     var container = AttributeContainer()
     container.font = .init(name: MyFonts.medium.rawValue, size: 16)
     container.foregroundColor = UIColor.white
@@ -100,7 +100,7 @@ final class FloatyBottomView: UIView {
   
   private func setupLayout() {
     addSubview(containerView)
-    [ skipButton, confirmButton ]
+    [ leftButton, rightButton ]
       .forEach { containerView.addSubview($0) }
   }
   
@@ -109,12 +109,12 @@ final class FloatyBottomView: UIView {
       make.edges.equalToSuperview()
     }
     
-    skipButton.snp.makeConstraints { make in
+    leftButton.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(24)
       make.centerY.equalToSuperview()
     }
     
-    confirmButton.snp.makeConstraints { make in
+    rightButton.snp.makeConstraints { make in
       make.trailing.equalToSuperview().inset(24)
       make.centerY.equalToSuperview()
     }

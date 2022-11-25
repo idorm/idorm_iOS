@@ -117,7 +117,6 @@ final class NicknameViewModel: ViewModel {
     
     let email = Logger.instance.currentEmail.value
     let password = Logger.instance.currentPassword.value
-    let nickName = currentText
     
     switch vcType {
     case .signUp:
@@ -125,17 +124,17 @@ final class NicknameViewModel: ViewModel {
       input.confirmButtonDidTap
         .map { [weak self] in self?.isValidCondition.value ?? false }
         .filter { $0 }
-        .map { _ in (email, password, nickName) }
+        .map { [unowned self] _ in (email, password, self.currentText) }
         .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(true) })
         .flatMap { APIService.memberProvider.rx.request(.register(id: $0.0, pw: $0.1, nickname: $0.2)) }
         .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(false) })
         .subscribe(onNext: { [weak self] response in
           switch response.statusCode {
-          case 200:
+          case (200..<300):
             self?.output.presentCompleteSignUpVC.onNext(Void())
           case 409:
             self?.output.presentPopupVC.onNext("이미 존재하는 닉네임입니다.")
-          default: fatalError()
+          default: fatalError(response.description)
           }
         })
         .disposed(by: disposeBag)
@@ -145,13 +144,13 @@ final class NicknameViewModel: ViewModel {
       input.confirmButtonDidTap
         .map { [weak self] in self?.isValidCondition.value ?? false }
         .filter { $0 }
-        .map { _ in nickName }
+        .map { [unowned self] _ in self.currentText }
         .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(true) })
         .flatMap { APIService.memberProvider.rx.request(.changeNickname(nickname: $0)) }
         .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(false) })
         .subscribe(onNext: { [weak self] response in
           switch response.statusCode {
-          case 200:
+          case (200..<300):
             let newValue = APIService.decode(MemberModel.LoginResponseModel.self, data: response.data).data
             MemberInfoStorage.instance.myInformation.accept(newValue)
             self?.output.popVC.onNext(Void())

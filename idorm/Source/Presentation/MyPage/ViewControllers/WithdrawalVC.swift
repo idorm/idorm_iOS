@@ -144,12 +144,12 @@ final class WithdrawalViewController: BaseViewController {
     // MARK: - Input
     
     // 다시 생각해볼래요 버튼 클릭
-    floatyBottomView.skipButton.rx.tap
+    floatyBottomView.leftButton.rx.tap
       .bind(to: viewModel.input.skipButtonDidTap)
       .disposed(by: disposeBag)
     
     // 탈퇴 버튼 클릭
-    floatyBottomView.confirmButton.rx.tap
+    floatyBottomView.rightButton.rx.tap
       .bind(to: viewModel.input.withdrawalButtonDidTap)
       .disposed(by: disposeBag)
     

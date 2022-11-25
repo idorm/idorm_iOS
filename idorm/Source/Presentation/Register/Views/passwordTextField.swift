@@ -79,6 +79,21 @@ final class passwordTextField: UIView {
       })
       .disposed(by: disposeBag)
     
+    textField.rx.controlEvent(.editingDidEnd)
+      .map { true }
+      .bind(to: openEyesButton.rx.isHidden)
+      .disposed(by: disposeBag)
+    
+    textField.rx.controlEvent(.editingDidEnd)
+      .map { true }
+      .bind(to: closeEyesButton.rx.isHidden)
+      .disposed(by: disposeBag)
+    
+    textField.rx.controlEvent(.editingDidBegin)
+      .map { false }
+      .bind(to: openEyesButton.rx.isHidden)
+      .disposed(by: disposeBag)
+    
     textField.rx.controlEvent(.editingDidBegin)
       .map { UIColor.idorm_blue.cgColor }
       .bind(to: layer.rx.borderColor)
