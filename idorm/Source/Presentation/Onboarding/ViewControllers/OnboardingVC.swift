@@ -664,7 +664,6 @@ final class OnboardingViewController: BaseViewController {
     
     // 입력 초기화
     viewModel.output.reset
-      .debug()
       .withUnretained(self)
       .bind(onNext: { owner, _ in
         [
@@ -767,7 +766,7 @@ final class OnboardingViewController: BaseViewController {
       .disposed(by: disposeBag)
 
     // RootVC
-    viewModel.output.pushToRootVC
+    viewModel.output.popToRootVC
       .withUnretained(self)
       .bind(onNext: { owner, _ in
         owner.navigationController?.popToRootViewController(animated: true)

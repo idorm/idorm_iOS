@@ -19,14 +19,14 @@ final class MemberInfoStorage {
   let myOnboarding = BehaviorRelay<OnboardingModel.MyOnboarding?>(value: nil)
   
   /// 현재의 매칭 공개 여부를 조회할 수 있는 Relay입니다.
-  let isPublicMatchingInfoObserver = BehaviorRelay<Bool?>(value: nil)
+  let publicStateDidChange = BehaviorRelay<Bool?>(value: nil)
   
   // MARK: - Bind
   
   func bind() {
     myOnboarding
       .map { $0?.isMatchingInfoPublic }
-      .bind(to: isPublicMatchingInfoObserver)
+      .bind(to: publicStateDidChange)
       .disposed(by: disposeBag)
   }
 }

@@ -43,7 +43,7 @@ final class OnboardingViewModel: ViewModel {
     let reset = PublishSubject<Void>()
     let pushToOnboardingDetailVC = PublishSubject<MatchingModel.Member>()
     let presentMainVC = PublishSubject<Void>()
-    let pushToRootVC = PublishSubject<Void>()
+    let popToRootVC = PublishSubject<Void>()
   }
   
   // MARK: - Properties
@@ -173,7 +173,7 @@ final class OnboardingViewModel: ViewModel {
         .subscribe(onNext: { owner, response in
           MemberInfoStorage.instance.myOnboarding.accept(response.data)
           owner.output.isLoading.onNext(false)
-          owner.output.pushToRootVC.onNext(Void())
+          owner.output.popToRootVC.onNext(Void())
         })
         .disposed(by: disposeBag)
       

@@ -3,12 +3,10 @@ import RxCocoa
 
 final class HomeViewModel: ViewModel {
   struct Input {
-    // UI
     let startMatchingButtonTapped = PublishSubject<Void>()
   }
   
   struct Output {
-    // UI
     let showMatchingPage = PublishSubject<Void>()
   }
   
@@ -17,10 +15,6 @@ final class HomeViewModel: ViewModel {
   var disposeBag = DisposeBag()
   
   init() {
-    bind()
-  }
-  
-  func bind() {
     
     // 매칭 시작 버튼 클릭 -> 매칭 페이지 전환
     input.startMatchingButtonTapped

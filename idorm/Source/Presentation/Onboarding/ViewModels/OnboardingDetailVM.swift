@@ -6,69 +6,60 @@ import RxCocoa
 final class OnboardingDetailViewModel: ViewModel {
   
   struct Input {
-    // Interaction
-    let backButtonDidTap = PublishSubject<Void>()
-    let correctionButtonDidTap = PublishSubject<Void>()
-    let confirmButtonDidTap = PublishSubject<MatchingModel.Member>()
+    let leftButtonDidTap = PublishSubject<Void>()
+    let rightButtonDidTap = PublishSubject<MatchingModel.Member>()
   }
   
   struct Output {
-    // Presentation
     let popVC = PublishSubject<Void>()
-    let showPopupVC = PublishSubject<String>()
-    let showTabBarVC = PublishSubject<Void>()
-    let showOnboardingVC = PublishSubject<Void>()
-    
-    // UI
-    let indicatorState = PublishSubject<Bool>()
+    let presentPopupVC = PublishSubject<String>()
+    let presentMainVC = PublishSubject<Void>()
+    let pushToOnboardingVC = PublishSubject<Void>()
+    let isLoading = PublishSubject<Bool>()
   }
+  
+  // MARK: - Properties
   
   var input = Input()
   var output = Output()
   var disposeBag = DisposeBag()
-  private let vcType: OnboardingVCTypes.OnboardingDetailVCType
-  
-  init(_ vcType: OnboardingVCTypes.OnboardingDetailVCType) {
-    self.vcType = vcType
-    bind()
-  }
   
   // MARK: - Bind
   
-  func bind() {
-    
-    // 뒤로가기 -> 이전 화면 돌아가기
-    input.backButtonDidTap
-      .bind(to: output.popVC)
-      .disposed(by: disposeBag)
-    
-    // 정보 수정 버튼 클릭 -> 온보딩 페이지 이동
-    input.correctionButtonDidTap
-      .bind(to: output.showOnboardingVC)
-      .disposed(by: disposeBag)
+  init(_ vcType: OnboardingVCTypes.OnboardingDetailVCType) {
     
     switch vcType {
     case .initilize:
+      
+      // 뒤로가기 -> 이전 화면 돌아가기
+      input.leftButtonDidTap
+        .bind(to: output.popVC)
+        .disposed(by: disposeBag)
+      
       // 완료 버튼 이벤트 -> 온보딩 최초 저장API 호출
-      input.confirmButtonDidTap
-        .do(onNext: { [weak self] _ in
-          self?.output.indicatorState.onNext(true)
-        })
+      input.rightButtonDidTap
         .map { ModelTransformer.instance.toOnboardingRequestModel(from: $0) }
-        .flatMap {
-          return APIService.onboardingProvider.rx.request(.save($0))
-        }
+        .withUnretained(self)
+        .do(onNext: { owner, _ in owner.output.isLoading.onNext(true) })
+        .flatMap { APIService.onboardingProvider.rx.request(.save($0.1)) }
         .map(OnboardingModel.LookupOnboardingResponseModel.self)
-        .subscribe(onNext: { [weak self] response in
-          self?.output.indicatorState.onNext(false)
+        .withUnretained(self)
+        .subscribe(onNext: { owner, response in
           MemberInfoStorage.instance.myOnboarding.accept(response.data)
-          self?.output.showTabBarVC.onNext(Void())
+          owner.output.presentMainVC.onNext(Void())
+          owner.output.isLoading.onNext(false)
         })
         .disposed(by: disposeBag)
       
     case .update:
+      
+      // 정보 수정 버튼 클릭 -> 온보딩 페이지 이동
+      input.leftButtonDidTap
+        .bind(to: output.pushToOnboardingVC)
+        .disposed(by: disposeBag)
+
       // 완료 버튼 이벤트 -> 뒤로가기
-      input.confirmButtonDidTap
+      input.rightButtonDidTap
         .map { _ in Void() }
         .bind(to: output.popVC)
         .disposed(by: disposeBag)

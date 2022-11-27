@@ -6,10 +6,7 @@ final class MyRoommateViewModel: ViewModel {
   // MARK: - Properties
   
   struct Input {
-    // LifeCycle
     let loadViewObserver = PublishSubject<MyPageVCTypes.MyRoommateVCType>()
-    
-    // Interaction
     let deleteButtonTapped = PublishSubject<(MyPageVCTypes.MyRoommateVCType, MatchingModel.Member)>()
     let reportButtonTapped = PublishSubject<Void>()
     let lastestButtonDidTap = PublishSubject<Void>()
@@ -17,29 +14,19 @@ final class MyRoommateViewModel: ViewModel {
   }
   
   struct Output {
-    // State
     let matchingMembers = BehaviorRelay<[MatchingModel.Member]>(value: [])
-    
-    // Presentation
     let dismissAlertVC = PublishSubject<Void>()
-    
-    // UI
     let reloadData = PublishSubject<Void>()
     let indicatorState = PublishSubject<Bool>()
   }
-  
-  enum SortType {
-    case lastest
-    case past
-  }
-  
+    
   var input = Input()
   var output = Output()
   var disposeBag = DisposeBag()
   
   // MARK: - State
   
-  let sortTypeDidChange = BehaviorRelay<SortType>(value: .lastest)
+  let sortTypeDidChange = BehaviorRelay<MyRoommateSortType>(value: .lastest)
   var members: [MatchingModel.Member] { return output.matchingMembers.value }
   
   // MARK: - Request
@@ -56,13 +43,13 @@ final class MyRoommateViewModel: ViewModel {
     // 최신순 버튼 클릭 -> 현재 SortType 상태값 변경
     input.lastestButtonDidTap
       .debug()
-      .map { SortType.lastest }
+      .map { MyRoommateSortType.lastest }
       .bind(to: sortTypeDidChange)
       .disposed(by: disposeBag)
     
     // 과거순 버튼 클릭 -> 현재 SortType 상태 값 변경
     input.pastButtonDidTap
-      .map { SortType.past }
+      .map { MyRoommateSortType.past }
       .bind(to: sortTypeDidChange)
       .disposed(by: disposeBag)
     

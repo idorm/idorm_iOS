@@ -1,14 +1,15 @@
 import UIKit
 
+import DeviceKit
 import PanModal
 import SnapKit
-import RxSwift
-import RxCocoa
-import DeviceKit
 import Then
 import Shuffle_iOS
+import RxSwift
+import RxCocoa
+import RxOptional
 
-class MatchingViewController: BaseViewController {
+final class MatchingViewController: BaseViewController {
   
   // MARK: - Properties
   
@@ -60,15 +61,16 @@ class MatchingViewController: BaseViewController {
     // MARK: - Input
     
     // 자신의 공유 상태 업데이트
-    MemberInfoStorage.instance.isPublicMatchingInfoObserver
+    MemberInfoStorage.instance.publicStateDidChange
       .distinctUntilChanged()
-      .compactMap { $0 }
-      .bind(to: viewModel.input.updatePublicState)
+      .filterNil()
+      .bind(to: viewModel.input.publicStateDidChange)
       .disposed(by: disposeBag)
 
     // 화면 최초 접근
-    Observable.just(Void())
-      .delay(.microseconds(10000), scheduler: MainScheduler.instance)
+    rx.viewWillAppear
+      .map { _ in Void() }
+      .take(1)
       .bind(to: viewModel.input.viewDidLoad)
       .disposed(by: disposeBag)
     
@@ -80,36 +82,36 @@ class MatchingViewController: BaseViewController {
     // 취소버튼 클릭
     cancelButton.rx.tap
       .throttle(.seconds(1), scheduler: MainScheduler.instance)
-      .map { [unowned self] in
-        cardStack.swipe(.left, animated: true)
-      }
+      .withUnretained(self)
+      .map { $0.0 }
+      .map { $0.cardStack.swipe(.left, animated: true) }
       .bind(to: viewModel.input.cancelButtonDidTap)
       .disposed(by: disposeBag)
     
     // 메세지버튼 클릭
     messageButton.rx.tap
-//      .filter { [weak self] in
-//        guard let self = self else { return }
-//        return self.cardStack.topCardIndex != nil
-//      }
+      .withUnretained(self)
+      .map { $0.0 }
+      .map { $0.cardStack.topCardIndex }
+      .filterNil()
       .bind(to: viewModel.input.messageButtonDidTap)
       .disposed(by: disposeBag)
     
     // 하트버튼 클릭
     heartButton.rx.tap
       .throttle(.seconds(1), scheduler: MainScheduler.instance)
-      .map { [weak self] in
-        self?.cardStack.swipe(.right, animated: true)
-      }
+      .withUnretained(self)
+      .map { $0.0 }
+      .map { $0.cardStack.swipe(.right, animated: true) }
       .bind(to: viewModel.input.heartButtonDidTap)
       .disposed(by: disposeBag)
     
     // 백버튼 클릭
     backButton.rx.tap
       .throttle(.seconds(1), scheduler: MainScheduler.instance)
-      .map { [unowned self] in
-        cardStack.undoLastSwipe(animated: true)
-      }
+      .withUnretained(self)
+      .map { $0.0 }
+      .map { $0.cardStack.undoLastSwipe(animated: true) }
       .bind(to: viewModel.input.backButtonDidTap)
       .disposed(by: disposeBag)
     
@@ -117,25 +119,26 @@ class MatchingViewController: BaseViewController {
     
     // 백그라운드 컬러 기본 컬러로 다시 바꾸기
     viewModel.output.drawBackTopBackgroundColor
-      .bind(onNext: { [weak self] in
+      .withUnretained(self)
+      .bind(onNext: { owner, _ in
         UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-          self?.topRoundedBackgroundView.tintColor = .idorm_blue
+          owner.topRoundedBackgroundView.tintColor = .idorm_blue
         }
       })
       .disposed(by: disposeBag)
     
     // 백그라운드 컬러 변경 감지
     viewModel.output.onChangedTopBackgroundColor
-      .bind(onNext: { [weak self] direction in
-        guard let self = self else { return }
+      .withUnretained(self)
+      .bind(onNext: { owner, direction in
         switch direction {
         case .cancel:
           UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
-            self.topRoundedBackgroundView.tintColor = .idorm_red
+            owner.topRoundedBackgroundView.tintColor = .idorm_red
           })
         case .heart:
           UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
-            self.topRoundedBackgroundView.tintColor = .idorm_green
+            owner.topRoundedBackgroundView.tintColor = .idorm_green
           })
         }
       })
@@ -143,45 +146,47 @@ class MatchingViewController: BaseViewController {
     
     // FilterVC 보여주기
     viewModel.output.pushToFilterVC
-      .bind(onNext: { [weak self] in
-        guard let self = self else { return }
+      .withUnretained(self)
+      .map { $0.0 }
+      .bind(onNext: {
         let viewController = MatchingFilterViewController()
         viewController.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(viewController, animated: true)
+        $0.navigationController?.pushViewController(viewController, animated: true)
         
         // 선택 초기화 -> POP 필터VC -> 카드 다시 요청
         viewController.viewModel.output.requestCards
-          .bind(to: self.viewModel.input.resetFilterButtonDidTap)
-          .disposed(by: self.disposeBag)
+          .bind(to: $0.viewModel.input.resetFilterButtonDidTap)
+          .disposed(by: $0.disposeBag)
 
         // 필터링 완료 -> POP 필터VC -> 필터링 카드 요청
         viewController.viewModel.output.requestFilteredCards
-          .bind(to: self.viewModel.input.confirmFilterButtonDidTap)
-          .disposed(by: self.disposeBag)
+          .bind(to: $0.viewModel.input.confirmFilterButtonDidTap)
+          .disposed(by: $0.disposeBag)
       })
       .disposed(by: disposeBag)
     
     // 백그라운드 컬러 감지 (터치할 때)
     viewModel.output.onChangedTopBackgroundColor_WithTouch
-      .bind(onNext: { [weak self] type in
+      .withUnretained(self)
+      .bind(onNext: { owner, type in
         switch type {
         case .heart:
           UIView.animate(withDuration: 0.2, animations: {
-            self?.topRoundedBackgroundView.tintColor = .idorm_green
+            owner.topRoundedBackgroundView.tintColor = .idorm_green
           }) { isFinished in
             if isFinished {
               UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-                self?.topRoundedBackgroundView.tintColor = .idorm_blue
+                owner.topRoundedBackgroundView.tintColor = .idorm_blue
               }
             }
           }
         case .cancel:
           UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
-            self?.topRoundedBackgroundView.tintColor = .idorm_red
+            owner.topRoundedBackgroundView.tintColor = .idorm_red
           }) { isFinished in
             if isFinished {
               UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-                self?.topRoundedBackgroundView.tintColor = .idorm_blue
+                owner.topRoundedBackgroundView.tintColor = .idorm_blue
               }
             }
           }
@@ -191,101 +196,90 @@ class MatchingViewController: BaseViewController {
     
     // 프로필 이미지 만들기 팝업 창 띄우기
     viewModel.output.presentFirstPopupVC
-      .bind(onNext: { [weak self] in
-        self?.informationImageView.image = UIImage(named: "noMatchingInfomation")
+      .withUnretained(self)
+      .map { $0.0 }
+      .bind(onNext: {
+        $0.informationImageView.image = UIImage(named: "noMatchingInfomation")
         let matchingPopupVC = MatchingPopupViewController()
         matchingPopupVC.modalPresentationStyle = .overFullScreen
-        self?.present(matchingPopupVC, animated: false)
+        $0.present(matchingPopupVC, animated: false)
       })
       .disposed(by: disposeBag)
     
     // 카드 스택 뷰 리로드
     viewModel.output.reloadCardStack
-      .bind(onNext: { [weak self] in
-        self?.cardStack.reloadData()
-      })
+      .withUnretained(self)
+      .map { $0.0 }
+      .bind(onNext: { $0.cardStack.reloadData() })
       .disposed(by: disposeBag)
     
     // 인디케이터 제어
-    viewModel.output.indicatorState
-      .bind(onNext: { [weak self] in
-        if $0 {
-          self?.loadingIndicator.startAnimating()
-          self?.view.isUserInteractionEnabled = false
-        } else {
-          self?.loadingIndicator.stopAnimating()
-          self?.view.isUserInteractionEnabled = true
-        }
-      })
+    viewModel.output.isLoading
+      .bind(to: loadingIndicator.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
+    // 화면 인터렉션 제어
+    viewModel.output.isLoading
+      .map { !$0 }
+      .bind(to: view.rx.isUserInteractionEnabled)
       .disposed(by: disposeBag)
 
     // 매칭 이미지 뷰 변경
     viewModel.output.informationImageViewStatus
-      .bind(onNext: { [unowned self] type in
-        let imageName = type.imageName
-        self.informationImageView.image = UIImage(named: imageName)
-      })
+      .map { UIImage(named: $0.imageName) }
+      .bind(to: informationImageView.rx.image)
       .disposed(by: disposeBag)
     
     // 매칭 공개 여부 팝업 띄우기
     viewModel.output.presentNoSharePopupVC
-      .bind(onNext: { [weak self] in
-        guard let self = self else { return }
-        
+      .withUnretained(self)
+      .bind(onNext: { owner, _ in
         let popupVC = MatchingNoSharePopUpViewController()
         popupVC.modalPresentationStyle = .overFullScreen
-        self.present(popupVC, animated: false)
+        owner.present(popupVC, animated: false)
         
         // 공개 허용 버튼 클릭
         popupVC.confirmLabel.rx.tapGesture()
           .skip(1)
           .map { _ in Void() }
-          .bind(to: self.viewModel.input.publicButtonDidTap)
-          .disposed(by: self.disposeBag)
+          .bind(to: owner.viewModel.input.publicButtonDidTap)
+          .disposed(by: owner.disposeBag)
         
         // 팝업창 닫기
-        self.viewModel.output.dismissNoSharePopupVC
-          .bind(onNext: {
-            popupVC.dismiss(animated: false)
-          })
+        owner.viewModel.output.dismissNoSharePopupVC
+          .bind(onNext: { popupVC.dismiss(animated: false) })
           .disposed(by: self.disposeBag)
       })
       .disposed(by: disposeBag)
     
     // 카카오 링크 페이지 띄우기
     viewModel.output.presentKakaoPopupVC
-      .bind(onNext: { [weak self] in
-        guard let self = self else { return }
+      .withUnretained(self)
+      .bind(onNext: { owner, index in
         let viewController = KakaoLinkViewController()
         viewController.modalPresentationStyle = .overFullScreen
-        self.present(viewController, animated: false)
+        owner.present(viewController, animated: false)
         
         // 오픈채팅 링크 바로 가기 버튼 클릭
         viewController.kakaoButton.rx.tap
-          .bind(to: self.viewModel.input.kakaoLinkButtonDidTap)
-          .disposed(by: self.disposeBag)
+          .map { index }
+          .bind(to: owner.viewModel.input.kakaoLinkButtonDidTap)
+          .disposed(by: owner.disposeBag)
         
         // KakaoLinkVC 닫기
-        self.viewModel.output.dismissKakaoLinkVC
-          .bind(onNext: {
-            viewController.dismiss(animated: false)
-          })
+        owner.viewModel.output.dismissKakaoLinkVC
+          .bind(onNext: { viewController.dismiss(animated: false) })
           .disposed(by: self.disposeBag)
       })
       .disposed(by: disposeBag)
     
-    // 카카오 링크 사파리로 열기
+   // 카카오 링크 사파리로 열기
     viewModel.output.presentSafari
-      .bind(onNext: { [weak self] in
-        guard let self = self else { return }
-        if let index = self.cardStack.topCardIndex {
-          let url = self.viewModel.state.matchingMembers.value[index].openKakaoLink
-          UIApplication.shared.open(URL(string: url)!)
-        }
-      })
+      .withUnretained(self)
+      .bind(onNext: { owner, link in UIApplication.shared.open(URL(string: link)!) })
       .disposed(by: disposeBag)
   }
-  
+
   // MARK: - Setup
   
   override func setupLayouts() {
@@ -465,19 +459,19 @@ extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelega
   }
   
   func cardStack(_ cardStack: Shuffle_iOS.SwipeCardStack, cardForIndexAt index: Int) -> Shuffle_iOS.SwipeCard {
-    return card(from: viewModel.state.matchingMembers.value[index])
+    return card(from: viewModel.matchingMembers.value[index])
   }
   
   func numberOfCards(in cardStack: Shuffle_iOS.SwipeCardStack) -> Int {
-    return viewModel.state.matchingMembers.value.count
+    return viewModel.matchingMembers.value.count
   }
   
   func cardStack(_ cardStack: SwipeCardStack, didSwipeCardAt index: Int, with direction: SwipeDirection) {
-    let card = viewModel.state.matchingMembers.value[index]
+    let card = viewModel.matchingMembers.value[index]
     let memberId = card.memberId
     switch direction {
-    case .left: viewModel.state.addDislikeAPI.onNext(memberId)
-    case .right: viewModel.state.addlikeAPI.onNext(memberId)
+    case .left: viewModel.input.leftSwipeDidEnd.onNext(memberId)
+    case .right: viewModel.input.rightSwipeDidEnd.onNext(memberId)
     default: break
     }
   }

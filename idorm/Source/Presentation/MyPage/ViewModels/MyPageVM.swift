@@ -1,30 +1,27 @@
 import RxSwift
 import RxCocoa
+import RxOptional
 
 final class MyPageViewModel: ViewModel {
   
   // MARK: - Properties
   
   struct Input {
-    // UI
     let gearButtonDidTap = PublishSubject<Void>()
     let shareButtonDidTap = PublishSubject<Bool>()
     let manageButtonDidTap = PublishSubject<Void>()
     let roommateButtonDidTap = PublishSubject<MyPageVCTypes.MyRoommateVCType>()
-    
-    // LifeCycle
-    let viewWillAppearObserver = PublishSubject<Void>()
+    let viewWillAppear = PublishSubject<Void>()
   }
   
   struct Output {
-    // Presentation
     let pushToManageMyInfoVC = PublishSubject<Void>()
     let pushToMyRoommateVC = PublishSubject<MyPageVCTypes.MyRoommateVCType>()
-    let pushToOnboardingVC = PublishSubject<Void>()
-    
-    // UI
-    let indicatorState = PublishSubject<Bool>()
-    let toggleShareButton = PublishSubject<Void>()
+    let pushToOnboardingVC = PublishSubject<Bool>()
+    let isLoading = PublishSubject<Bool>()
+    let toggleShareButton = PublishSubject<Bool>()
+    let updateShareButton = PublishSubject<Bool>()
+    let updateNickname = PublishSubject<String>()
   }
   
   var input = Input()
@@ -42,13 +39,15 @@ final class MyPageViewModel: ViewModel {
     
     // 공유 버튼 클릭 -> 매칭 공개 여부 수정 API 요청
     input.shareButtonDidTap
-      .do(onNext: { [weak self] _ in self?.output.indicatorState.onNext(true) })
-      .flatMap { return APIService.onboardingProvider.rx.request(.modifyPublic($0)) }
+      .withUnretained(self)
+      .do(onNext: { owner, _ in owner.output.isLoading.onNext(true) })
+      .flatMap { APIService.onboardingProvider.rx.request(.modifyPublic($0.1)) }
       .map(OnboardingModel.LookupOnboardingResponseModel.self)
-      .subscribe(onNext: { [weak self] response in
+      .withUnretained(self)
+      .subscribe(onNext: { owner, response in
         MemberInfoStorage.instance.myOnboarding.accept(response.data)
-        self?.output.toggleShareButton.onNext(Void())
-        self?.output.indicatorState.onNext(false)
+        owner.output.toggleShareButton.onNext(response.data.isMatchingInfoPublic)
+        owner.output.isLoading.onNext(false)
       })
       .disposed(by: disposeBag)
     
@@ -59,7 +58,21 @@ final class MyPageViewModel: ViewModel {
     
     // 마이페이지 버튼 클릭 -> 온보딩 수정 페이지로 이동
     input.manageButtonDidTap
+      .map { MemberInfoStorage.instance.hasMatchingInfo }
       .bind(to: output.pushToOnboardingVC)
+      .disposed(by: disposeBag)
+    
+    // ViewWillAppear -> 공유 버튼 업데이트
+    input.viewWillAppear
+      .map { MemberInfoStorage.instance.isPublicMatchingInfo }
+      .bind(to: output.updateShareButton)
+      .disposed(by: disposeBag)
+    
+    // 화면 접근 -> 닉네임 업데이트
+    input.viewWillAppear
+      .map { MemberInfoStorage.instance.myInformation.value?.nickname }
+      .filterNil()
+      .bind(to: output.updateNickname)
       .disposed(by: disposeBag)
   }
 }

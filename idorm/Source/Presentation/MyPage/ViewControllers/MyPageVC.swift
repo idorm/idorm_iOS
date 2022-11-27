@@ -5,6 +5,8 @@ import Then
 import RxSwift
 import RxCocoa
 import RxGesture
+import RxAppState
+import RxOptional
 
 final class MyPageViewController: BaseViewController {
   
@@ -14,10 +16,18 @@ final class MyPageViewController: BaseViewController {
     $0.color = .gray
   }
   
-  private var scrollView: UIScrollView!
-  private var contentView: UIView!
-  private var gearButton: UIButton!
-    
+  private let scrollView = UIScrollView().then {
+    $0.bounces = false
+  }
+  
+  private let contentView = UIView().then {
+    $0.backgroundColor = .idorm_gray_100
+  }
+  
+  private let gearButton = UIButton().then {
+    $0.setImage(#imageLiteral(resourceName: "gear"), for: .normal)
+  }
+  
   private let lionImageView = UIImageView(image: #imageLiteral(resourceName: "BottonLion(MyPage)"))
   private let topProfileView = TopProfileView()
   private let matchingContainerView = MatchingContainerView()
@@ -25,11 +35,6 @@ final class MyPageViewController: BaseViewController {
   private let viewModel = MyPageViewModel()
   
   // MARK: - LifeCycle
-  
-  override func viewDidLoad() {
-    setupScrollView()
-    super.viewDidLoad()
-  }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -44,11 +49,6 @@ final class MyPageViewController: BaseViewController {
     let tabBarAppearance = AppearanceManager.tabbarAppearance(from: .idorm_gray_100)
     tabBarController?.tabBar.standardAppearance = tabBarAppearance
     tabBarController?.tabBar.scrollEdgeAppearance = tabBarAppearance
-    
-    // 화면 접근시 이벤트 방출
-    viewModel.input.viewWillAppearObserver.onNext(Void())
-    
-    updateUI()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -80,10 +80,12 @@ final class MyPageViewController: BaseViewController {
     matchingContainerView.manageMatchingImageButton.rx.tap
       .bind(to: viewModel.input.manageButtonDidTap)
       .disposed(by: disposeBag)
-
-    // 공유 버튼 토글
+    
+    // 공유 버튼 터치
     matchingContainerView.shareButton.rx.tap
-      .map { [unowned self] in return !self.matchingContainerView.shareButton.isSelected }
+      .withUnretained(self)
+      .map { $0.0 }
+      .map { !$0.matchingContainerView.shareButton.isSelected }
       .bind(to: viewModel.input.shareButtonDidTap)
       .disposed(by: disposeBag)
     
@@ -98,92 +100,85 @@ final class MyPageViewController: BaseViewController {
       .map { MyPageVCTypes.MyRoommateVCType.dislike }
       .bind(to: viewModel.input.roommateButtonDidTap)
       .disposed(by: disposeBag)
-        
+    
+    // 화면 최초 접속 이벤트
+    rx.viewWillAppear
+      .map { _ in Void() }
+      .bind(to: viewModel.input.viewWillAppear)
+      .disposed(by: disposeBag)
+    
     // MARK: - Output
     
     // 내 정보 관리 페이지로 이동
     viewModel.output.pushToManageMyInfoVC
-      .bind(onNext: { [unowned self] in
+      .withUnretained(self)
+      .map { $0.0 }
+      .bind(onNext: {
         let manageMyInfoVC = ManageMyInfoViewController()
         manageMyInfoVC.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(manageMyInfoVC, animated: true)
-      })
-      .disposed(by: disposeBag)
-    
-    // 내 멤버 조회 완료 후 UI 업데이트
-    MemberInfoStorage.instance.myInformation
-      .bind(onNext: { [unowned self] information in
-        let nickname = information?.nickname
-        self.topProfileView.nicknameLabel.text = nickname
+        $0.navigationController?.pushViewController(manageMyInfoVC, animated: true)
       })
       .disposed(by: disposeBag)
     
     // 룸메이트 관리 페이지로 이동
     viewModel.output.pushToMyRoommateVC
-      .bind(onNext: { [weak self] in
-        let viewController = MyRoommateViewController($0)
+      .withUnretained(self)
+      .bind(onNext: { owner, type in
+        let viewController = MyRoommateViewController(type)
         viewController.hidesBottomBarWhenPushed = true
-        self?.navigationController?.pushViewController(viewController, animated: true)
+        owner.navigationController?.pushViewController(viewController, animated: true)
       })
       .disposed(by: disposeBag)
     
     // 온보딩 수정 페이지로 이동
     viewModel.output.pushToOnboardingVC
-      .bind(onNext: { [weak self] in
-        if MemberInfoStorage.instance.hasMatchingInfo {
+      .withUnretained(self)
+      .bind(onNext: { owner, state in
+        if state {
           let matchingMember = MemberInfoStorage.instance.onboardingToMatchingMember()
           let viewController = OnboardingDetailViewController(matchingMember, vcType: .update)
           viewController.hidesBottomBarWhenPushed = true
-          self?.navigationController?.pushViewController(viewController, animated: true)
+          owner.navigationController?.pushViewController(viewController, animated: true)
         } else {
           let viewController = OnboardingViewController(.initial2)
           viewController.hidesBottomBarWhenPushed = true
-          self?.navigationController?.pushViewController(viewController, animated: true)
+          owner.navigationController?.pushViewController(viewController, animated: true)
         }
       })
       .disposed(by: disposeBag)
     
     // 공유 버튼 토클
     viewModel.output.toggleShareButton
-      .bind(onNext: { [weak self] in
-        self?.matchingContainerView.shareButton.isSelected.toggle()
-      })
+      .bind(to: matchingContainerView.shareButton.rx.isSelected)
       .disposed(by: disposeBag)
-
+    
+    // 인디케이터 애니메이션 제어
+    viewModel.output.isLoading
+      .bind(to: indicator.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
     // 화면 인터렉션 제어
-    viewModel.output.indicatorState
-      .bind(onNext: { [weak self] in
-        if $0 {
-          self?.indicator.startAnimating()
-          self?.view.isUserInteractionEnabled = false
-        } else {
-          self?.indicator.stopAnimating()
-          self?.view.isUserInteractionEnabled = true
-        }
-      })
+    viewModel.output.isLoading
+      .map { !$0 }
+      .bind(to: view.rx.isUserInteractionEnabled)
+      .disposed(by: disposeBag)
+    
+    // 공유 버튼 업데이트
+    viewModel.output.updateShareButton
+      .bind(to: matchingContainerView.shareButton.rx.isSelected)
+      .disposed(by: disposeBag)
+    
+    // 닉네임 업데이트
+    viewModel.output.updateNickname
+      .bind(to: topProfileView.nicknameLabel.rx.text)
       .disposed(by: disposeBag)
   }
   
   // MARK: - Setup
   
-  private func setupScrollView() {
-    let scrollView = UIScrollView()
-    scrollView.bounces = false
-    self.scrollView = scrollView
-    
-    let contentView = UIView()
-    contentView.backgroundColor = .idorm_gray_100
-    self.contentView = contentView
-  }
-  
   override func setupStyles() {
     super.setupStyles()
-    
     view.backgroundColor = .white
-    let gearButton = UIButton()
-    gearButton.setImage(UIImage(named: "gear"), for: .normal)
-    self.gearButton = gearButton
-    
     navigationItem.rightBarButtonItem = UIBarButtonItem(customView: gearButton)
   }
   
@@ -229,18 +224,6 @@ final class MyPageViewController: BaseViewController {
       make.centerX.equalToSuperview()
       make.bottom.equalToSuperview()
     }
-  }
-  
-  // MARK: - Helpers
-  
-  private func updateUI() {
-    if MemberInfoStorage.instance.isPublicMatchingInfo {
-      matchingContainerView.shareButton.isSelected = true
-    } else {
-      matchingContainerView.shareButton.isSelected = false
-    }
-    guard let myInformation = MemberInfoStorage.instance.myInformation.value else { return }
-    topProfileView.nicknameLabel.text = myInformation.nickname
   }
 }
 

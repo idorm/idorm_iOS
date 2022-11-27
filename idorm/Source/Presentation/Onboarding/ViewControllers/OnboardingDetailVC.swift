@@ -9,19 +9,11 @@ final class OnboardingDetailViewController: BaseViewController {
 
   // MARK: - Properties
 
-  private let backButton: UIButton = {
-    let button = UIButton()
-    button.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
-    button.tintColor = .black
-
-    return button
-  }()
-
   private var floatyBottomView: FloatyBottomView!
   private var matchingCard: MatchingCard!
   
   private let indicator = UIActivityIndicatorView().then {
-    $0.color = .idorm_blue
+    $0.color = .gray
   }
 
   private let viewModel: OnboardingDetailViewModel
@@ -29,7 +21,7 @@ final class OnboardingDetailViewController: BaseViewController {
   private let member: MatchingModel.Member
   private let vcType: OnboardingVCTypes.OnboardingDetailVCType
   
-  // MARK: - Init
+  // MARK: - LifeCycle
   
   init(_ member: MatchingModel.Member, vcType: OnboardingVCTypes.OnboardingDetailVCType) {
     self.viewModel = OnboardingDetailViewModel(vcType)
@@ -106,72 +98,67 @@ final class OnboardingDetailViewController: BaseViewController {
 
     // MARK: - Input
     
-    switch vcType {
-    case .initilize:
-      // 뒤로 가기 버튼 이벤트
-      floatyBottomView.leftButton.rx.tap
-        .bind(to: viewModel.input.backButtonDidTap)
-        .disposed(by: disposeBag)
-      
-    case .update:
-      // 정보 수정 버튼 이벤트
-      floatyBottomView.leftButton.rx.tap
-        .bind(to: viewModel.input.correctionButtonDidTap)
-        .disposed(by: disposeBag)
-    }
-
-    // 완료 버튼 이벤트
+    // 왼쪽 버튼 클릭
+    floatyBottomView.leftButton.rx.tap
+      .bind(to: viewModel.input.leftButtonDidTap)
+      .disposed(by: disposeBag)
+    
+    // 오른쪽 버튼 클릭
     floatyBottomView.rightButton.rx.tap
-      .map { [unowned self] in return self.member }
-      .bind(to: viewModel.input.confirmButtonDidTap)
+      .withUnretained(self)
+      .map { $0.0 }
+      .map { $0.member }
+      .bind(to: viewModel.input.rightButtonDidTap)
       .disposed(by: disposeBag)
 
     // MARK: - Output
 
     // 뒤로가기
     viewModel.output.popVC
-      .asDriver(onErrorJustReturn: Void())
-      .drive(onNext: { [weak self] in
-        self?.navigationController?.popViewController(animated: true)
-      })
+      .withUnretained(self)
+      .map { $0.0 }
+      .bind(onNext: { $0.navigationController?.popViewController(animated: true) })
       .disposed(by: disposeBag)
     
     // 온보딩 페이지로 넘어가기
-    viewModel.output.showOnboardingVC
-      .bind(onNext: { [weak self] in
+    viewModel.output.pushToOnboardingVC
+      .withUnretained(self)
+      .map { $0.0 }
+      .bind(onNext: {
         let viewController = OnboardingViewController(.update)
-        self?.navigationController?.pushViewController(viewController, animated: true)
+        $0.navigationController?.pushViewController(viewController, animated: true)
       })
       .disposed(by: disposeBag)
     
     // 인디케이터 제어
-    viewModel.output.indicatorState
-      .bind(onNext: { [weak self] in
-        if $0 {
-          self?.indicator.startAnimating()
-          self?.view.isUserInteractionEnabled = false
-        } else {
-          self?.indicator.stopAnimating()
-          self?.view.isUserInteractionEnabled = true
-        }
-      })
+    viewModel.output.isLoading
+      .bind(to: indicator.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
+    // 화면 인터렉션 제어
+    viewModel.output.isLoading
+      .map { !$0 }
+      .bind(to: view.rx.isUserInteractionEnabled)
       .disposed(by: disposeBag)
     
     // 최초 저장 완료 후 메인 홈으로 이동
-    viewModel.output.showTabBarVC
-      .bind(onNext: { [weak self] in
+    viewModel.output.presentMainVC
+      .withUnretained(self)
+      .map { $0.0 }
+      .bind(onNext: {
         let tabBarVC = TabBarController()
         tabBarVC.modalPresentationStyle = .fullScreen
-        self?.present(tabBarVC, animated: true)
+        $0.present(tabBarVC, animated: true)
       })
       .disposed(by: disposeBag)
 
     // 오류 팝업 메세지 띄우기
-    viewModel.output.showPopupVC
-      .bind(onNext: { [weak self] mention in
+    viewModel.output.presentPopupVC
+      .withUnretained(self)
+      .bind(onNext: { owner, mention in
         let popupVC = PopupViewController(contents: mention)
         popupVC.modalPresentationStyle = .overFullScreen
-        self?.present(popupVC, animated: false)
+        owner.present(popupVC, animated: false)
       })
       .disposed(by: disposeBag)
   }
