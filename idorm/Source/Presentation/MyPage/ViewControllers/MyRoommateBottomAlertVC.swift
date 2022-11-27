@@ -6,7 +6,7 @@ import PanModal
 import SnapKit
 import Then
 
-final class MyPageBottomAlertViewController: BaseViewController {
+final class MyRoommateBottomAlertViewController: BaseViewController {
   
   // MARK: - Properties
   
@@ -96,7 +96,7 @@ final class MyPageBottomAlertViewController: BaseViewController {
 
 // MARK: - PanModal Setup
 
-extension MyPageBottomAlertViewController: PanModalPresentable {
+extension MyRoommateBottomAlertViewController: PanModalPresentable {
   var panScrollable: UIScrollView? { return nil }
   
   var shortFormHeight: PanModalHeight {
@@ -114,7 +114,7 @@ extension MyPageBottomAlertViewController: PanModalPresentable {
 import SwiftUI
 struct MyPageBottomAlertVC_PreView: PreviewProvider {
   static var previews: some View {
-    MyPageBottomAlertViewController(.dislike).toPreview()
+    MyRoommateBottomAlertViewController(.dislike).toPreview()
   }
 }
 #endif

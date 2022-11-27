@@ -1,10 +1,11 @@
 import UIKit
 
-import RxSwift
-import RxCocoa
 import SnapKit
 import PanModal
 import Then
+import RxSwift
+import RxCocoa
+import RxAppState
 
 final class MyRoommateViewController: BaseViewController {
   
@@ -78,20 +79,13 @@ final class MyRoommateViewController: BaseViewController {
     
     // 최신순 버튼 클릭
     header.lastestButton.rx.tap
-      .debug()
-      .map { [weak self] in
-        self?.header.lastestButton.isSelected = true
-        self?.header.pastButton.isSelected = false
-      }
+      .map { MyRoommateSortType.lastest }
       .bind(to: viewModel.input.lastestButtonDidTap)
       .disposed(by: disposeBag)
     
     // 과거순 버튼 클릭
     header.pastButton.rx.tap
-      .map { [weak self] in
-        self?.header.lastestButton.isSelected = false
-        self?.header.pastButton.isSelected = true
-      }
+      .map { MyRoommateSortType.past }
       .bind(to: viewModel.input.pastButtonDidTap)
       .disposed(by: disposeBag)
   }
@@ -102,31 +96,46 @@ final class MyRoommateViewController: BaseViewController {
     // MARK: - Input
     
     // 화면 최초 접속 이벤트
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-      self.viewModel.input.loadViewObserver.onNext(self.vcType)
-    }
+    rx.viewWillAppear
+      .take(1)
+      .withUnretained(self)
+      .map { $0.0.vcType }
+      .bind(to: viewModel.input.viewWillAppear)
+      .disposed(by: disposeBag)
     
     // MARK: - Output
     
-    // 인디케이터 애니메이션 반응
-    viewModel.output.indicatorState
-      .debug()
-      .bind(onNext: { [weak self] in
-        if $0 {
-          self?.indicator.startAnimating()
-          self?.view.isUserInteractionEnabled = false
-        } else {
-          self?.indicator.stopAnimating()
-          self?.view.isUserInteractionEnabled = true
+    // 버튼 토글
+    viewModel.output.toggleSortButton
+      .withUnretained(self)
+      .bind(onNext: { owner, type in
+        switch type {
+        case .lastest:
+          owner.header.lastestButton.isSelected = true
+          owner.header.pastButton.isSelected = false
+        case .past:
+          owner.header.lastestButton.isSelected = false
+          owner.header.pastButton.isSelected = true
         }
       })
       .disposed(by: disposeBag)
     
+    // 인디케이터 애니메이션
+    viewModel.output.isLoading
+      .bind(to: indicator.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
+    // 화면 인터렉션 제어
+    viewModel.output.isLoading
+      .map { !$0 }
+      .bind(to: view.rx.isUserInteractionEnabled)
+      .disposed(by: disposeBag)
+    
     // 테이블뷰 정보 불러오기
     viewModel.output.reloadData
-      .bind(onNext: { [weak self] in
-        self?.tableView.reloadData()
-      })
+      .withUnretained(self)
+      .map { $0.0 }
+      .bind(onNext: { $0.tableView.reloadData() })
       .disposed(by: disposeBag)
   }
 }
@@ -142,14 +151,14 @@ extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
     ) as? MyRoommateCell else {
       return UITableViewCell()
     }
-    cell.setupMatchingInfomation(from: viewModel.members[indexPath.row])
+    cell.setupMatchingInfomation(from: viewModel.currentMembers.value[indexPath.row])
     cell.selectionStyle = .none
     return cell
   }
   
   // Number Of Cells
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return viewModel.members.count
+    return viewModel.currentMembers.value.count
   }
   
   // Cell Height
@@ -186,15 +195,15 @@ extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
     } else {
       bottomAlertType = .dislike
     }
-    let viewController = MyPageBottomAlertViewController(bottomAlertType)
+    let viewController = MyRoommateBottomAlertViewController(bottomAlertType)
     presentPanModal(viewController)
     
-    let matchingMember = viewModel.members[indexPath.row]
+    let matchingMember = viewModel.currentMembers.value[indexPath.row]
     
     // 멤버 삭제 버튼 클릭 이벤트
     viewController.deleteButton.rx.tap
       .map { [unowned self] in (self.vcType, matchingMember) }
-      .bind(to: viewModel.input.deleteButtonTapped)
+      .bind(to: viewModel.input.deleteButtonDidTap)
       .disposed(by: disposeBag)
     
     // AlertVC 끄기

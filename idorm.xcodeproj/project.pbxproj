@@ -136,7 +136,7 @@
 		E5B15F6F287FE355004D4164 /* OnboardingDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B15F6E287FE355004D4164 /* OnboardingDetailVC.swift */; };
 		E5B7E84F28ABCA670099B631 /* LoginVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B7E84E28ABCA670099B631 /* LoginVM.swift */; };
 		E5BF4C5F28840EBF00B4F0B8 /* PostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF4C5E28840EBF00B4F0B8 /* PostingViewController.swift */; };
-		E5C261492919D15E00623C0E /* MyPageBottomAlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C261482919D15E00623C0E /* MyPageBottomAlertVC.swift */; };
+		E5C261492919D15E00623C0E /* MyRoommateBottomAlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C261482919D15E00623C0E /* MyRoommateBottomAlertVC.swift */; };
 		E5C2614E2919D3AA00623C0E /* BottomAlertUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C2614D2919D3AA00623C0E /* BottomAlertUtilities.swift */; };
 		E5C88908288972E000CBD04E /* CommunityAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C88907288972E000CBD04E /* CommunityAlertViewController.swift */; };
 		E5C89E4928A9ED9B0035D9C6 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C89E4828A9ED9B0035D9C6 /* URL+Extensions.swift */; };
@@ -306,7 +306,7 @@
 		E5B15F6E287FE355004D4164 /* OnboardingDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDetailVC.swift; sourceTree = "<group>"; };
 		E5B7E84E28ABCA670099B631 /* LoginVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVM.swift; sourceTree = "<group>"; };
 		E5BF4C5E28840EBF00B4F0B8 /* PostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingViewController.swift; sourceTree = "<group>"; };
-		E5C261482919D15E00623C0E /* MyPageBottomAlertVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageBottomAlertVC.swift; sourceTree = "<group>"; };
+		E5C261482919D15E00623C0E /* MyRoommateBottomAlertVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoommateBottomAlertVC.swift; sourceTree = "<group>"; };
 		E5C2614D2919D3AA00623C0E /* BottomAlertUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomAlertUtilities.swift; sourceTree = "<group>"; };
 		E5C88907288972E000CBD04E /* CommunityAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityAlertViewController.swift; sourceTree = "<group>"; };
 		E5C89E4828A9ED9B0035D9C6 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
@@ -817,7 +817,7 @@
 				E5F5EC77288402840026DE21 /* MyPageVC.swift */,
 				E5AC2A4C28BB5B250069ABB9 /* ManageMyInfoVC.swift */,
 				E5F5656F2918FF5A0043FCB4 /* MyRoommateVC.swift */,
-				E5C261482919D15E00623C0E /* MyPageBottomAlertVC.swift */,
+				E5C261482919D15E00623C0E /* MyRoommateBottomAlertVC.swift */,
 				E5D7AECD292B287D00038349 /* WithdrawalVC.swift */,
 			);
 			path = ViewControllers;
@@ -1221,7 +1221,7 @@
 				E5B7E84F28ABCA670099B631 /* LoginVM.swift in Sources */,
 				E5294FEE2927787B004D408C /* MyPageVCTypes.swift in Sources */,
 				E5E77EC128D81AD400031010 /* LoginTextField.swift in Sources */,
-				E5C261492919D15E00623C0E /* MyPageBottomAlertVC.swift in Sources */,
+				E5C261492919D15E00623C0E /* MyRoommateBottomAlertVC.swift in Sources */,
 				E5DDA26F292D9CC8003B46BA /* KakaoLinkPopupVC.swift in Sources */,
 				E55DE2F92896DDC6004F1401 /* CalendarUtilities.swift in Sources */,
 				E509438A28F8291D004D3A58 /* Preview.swift in Sources */,

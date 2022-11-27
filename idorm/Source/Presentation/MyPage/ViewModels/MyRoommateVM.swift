@@ -1,35 +1,33 @@
 import RxSwift
 import RxCocoa
+import RxMoya
 
 final class MyRoommateViewModel: ViewModel {
   
   // MARK: - Properties
   
   struct Input {
-    let loadViewObserver = PublishSubject<MyPageVCTypes.MyRoommateVCType>()
-    let deleteButtonTapped = PublishSubject<(MyPageVCTypes.MyRoommateVCType, MatchingModel.Member)>()
-    let reportButtonTapped = PublishSubject<Void>()
-    let lastestButtonDidTap = PublishSubject<Void>()
-    let pastButtonDidTap = PublishSubject<Void>()
+    let viewWillAppear = PublishSubject<MyPageVCTypes.MyRoommateVCType>()
+    let deleteButtonDidTap = PublishSubject<(MyPageVCTypes.MyRoommateVCType, MatchingModel.Member)>()
+    let reportButtonDidTap = PublishSubject<Void>()
+    let lastestButtonDidTap = PublishSubject<MyRoommateSortType>()
+    let pastButtonDidTap = PublishSubject<MyRoommateSortType>()
   }
   
   struct Output {
-    let matchingMembers = BehaviorRelay<[MatchingModel.Member]>(value: [])
     let dismissAlertVC = PublishSubject<Void>()
     let reloadData = PublishSubject<Void>()
-    let indicatorState = PublishSubject<Bool>()
+    let isLoading = PublishSubject<Bool>()
+    let toggleSortButton = PublishSubject<MyRoommateSortType>()
   }
+  
+  // MARK: - Properties
     
   var input = Input()
   var output = Output()
   var disposeBag = DisposeBag()
   
-  // MARK: - State
-  
-  let sortTypeDidChange = BehaviorRelay<MyRoommateSortType>(value: .lastest)
-  var members: [MatchingModel.Member] { return output.matchingMembers.value }
-  
-  // MARK: - Request
+  var currentMembers = BehaviorRelay<[MatchingModel.Member]>(value: [])
   
   let requestRetrieveLikeAPI = PublishSubject<Void>()
   let requestRetrieveDislikeAPI = PublishSubject<Void>()
@@ -39,128 +37,126 @@ final class MyRoommateViewModel: ViewModel {
   // MARK: - Bind
   
   init() {
+    mutate()
     
-    // 최신순 버튼 클릭 -> 현재 SortType 상태값 변경
+    // 최신순 버튼 클릭 -> 버튼 토글
     input.lastestButtonDidTap
-      .debug()
-      .map { MyRoommateSortType.lastest }
-      .bind(to: sortTypeDidChange)
+      .bind(to: output.toggleSortButton)
       .disposed(by: disposeBag)
     
-    // 과거순 버튼 클릭 -> 현재 SortType 상태 값 변경
+    // 과거순 버튼 클릭 -> 버튼 토글
     input.pastButtonDidTap
-      .map { MyRoommateSortType.past }
-      .bind(to: sortTypeDidChange)
+      .bind(to: output.toggleSortButton)
       .disposed(by: disposeBag)
     
-    // 상태값 변경 감지 -> 셀 리로드
-    sortTypeDidChange
-      .distinctUntilChanged()
-      .do(onNext: {[weak self] _ in
-        self?.output.indicatorState.onNext(true)
-      })
-      .delay(.microseconds(100000), scheduler: MainScheduler.instance)
-      .subscribe(onNext: { [weak self] _ in
-        guard let self = self else { return }
-        self.output.matchingMembers.accept(self.members.reversed())
-        self.output.reloadData.onNext(Void())
-        self.output.indicatorState.onNext(false)
-      })
+    // 현재 참조하고 있는 멤버 반응 -> 테이블뷰 리로드
+    currentMembers
+      .withUnretained(self)
+      .map { _ in Void() }
+      .bind(to: output.reloadData)
       .disposed(by: disposeBag)
         
     // 화면 최초 접속 -> 멤버 조회 요청
-    input.loadViewObserver
-      .subscribe(onNext: { [weak self] in
-        self?.output.indicatorState.onNext(true)
-        switch $0 {
-        case .dislike:
-          self?.requestRetrieveDislikeAPI.onNext(Void())
-        case .like:
-          self?.requestRetrieveLikeAPI.onNext(Void())
+    input.viewWillAppear
+      .withUnretained(self)
+      .subscribe(onNext: { owner, type in
+        switch type {
+        case .dislike: owner.requestRetrieveDislikeAPI.onNext(Void())
+        case .like: owner.requestRetrieveLikeAPI.onNext(Void())
         }
       })
       .disposed(by: disposeBag)
         
     // 삭제 버튼 클릭 -> 특정 멤버 삭제 API
-    input.deleteButtonTapped
-      .subscribe(onNext: { [weak self] in
-        self?.output.indicatorState.onNext(true)
-        switch $0.0 {
-        case .like:
-          self?.requestDeleteLikeAPI.onNext($0.1)
-        case .dislike:
-          self?.requestDeleteDislikeAPI.onNext($0.1)
+    input.deleteButtonDidTap
+      .withUnretained(self)
+      .subscribe(onNext: { owner, data in
+        switch data.0 {
+        case .like: owner.requestDeleteLikeAPI.onNext(data.1)
+        case .dislike: owner.requestDeleteDislikeAPI.onNext(data.1)
         }
       })
       .disposed(by: disposeBag)
+  }
+  
+  private func mutate() {
+    
+    // 정렬 타입 변경 감지 -> 정렬 바꾸기 요청
+    Observable.merge(
+      input.pastButtonDidTap.asObservable(),
+      input.lastestButtonDidTap.asObservable()
+    )
+    .distinctUntilChanged()
+    .withUnretained(self)
+    .do(onNext: { $0.0.output.isLoading.onNext(true) })
+    .map { $0.0.currentMembers.value.reversed() }
+    .bind(to: currentMembers)
+    .disposed(by: disposeBag)
     
     // 좋아요 한 멤버 요청
     requestRetrieveLikeAPI
-      .flatMap { APIService.matchingProvider.rx.request(.retrieveLiked) }
-      .subscribe(onNext: { [weak self] response in
+      .withUnretained(self)
+      .do(onNext: { $0.0.output.isLoading.onNext(true) })
+      .flatMap { _ in APIService.matchingProvider.rx.request(.retrieveLiked) }
+      .withUnretained(self)
+      .do(onNext: { $0.0.output.isLoading.onNext(false) })
+      .subscribe(onNext: { owner, response in
         switch response.statusCode {
         case 200:
           let members = APIService.decode(MatchingModel.MatchingResponseModel.self, data: response.data).data
-          self?.output.matchingMembers.accept(members.reversed())
-          self?.output.reloadData.onNext(Void())
+          owner.currentMembers.accept(members.reversed())
         case 204:
-          self?.output.matchingMembers.accept([])
-          self?.output.reloadData.onNext(Void())
+          owner.currentMembers.accept([])
         default:
           fatalError("좋아요한 멤버를 조회하지 못했습니다,,,")
         }
-        self?.output.indicatorState.onNext(false)
-        self?.output.dismissAlertVC.onNext(Void())
+        owner.output.dismissAlertVC.onNext(Void())
       })
       .disposed(by: disposeBag)
-    
+        
     // 싫어요 한 멤버 요청
     requestRetrieveDislikeAPI
-      .flatMap { APIService.matchingProvider.rx.request(.retrieveDisliked) }
-      .subscribe(onNext: { [weak self] response in
+      .withUnretained(self)
+      .do(onNext: { $0.0.output.isLoading.onNext(true) })
+      .flatMap { _ in APIService.matchingProvider.rx.request(.retrieveDisliked) }
+      .withUnretained(self)
+      .do(onNext: { $0.0.output.isLoading.onNext(false) })
+      .subscribe(onNext: { owner, response in
         switch response.statusCode {
         case 200:
           let members = APIService.decode(MatchingModel.MatchingResponseModel.self, data: response.data).data
-          self?.output.matchingMembers.accept(members.reversed())
-          self?.output.reloadData.onNext(Void())
+          owner.currentMembers.accept(members.reversed())
         case 204:
-          self?.output.matchingMembers.accept([])
-          self?.output.reloadData.onNext(Void())
+          owner.currentMembers.accept([])
         default:
-          fatalError("좋아요한 멤버를 조회하지 못했습니다,,,")
+          fatalError("싫어요한 멤버를 조회하지 못했습니다,,,")
         }
-        self?.output.indicatorState.onNext(false)
-        self?.output.dismissAlertVC.onNext(Void())
+        owner.output.dismissAlertVC.onNext(Void())
       })
       .disposed(by: disposeBag)
     
     // 좋아요한 멤버 삭제 요청
     requestDeleteLikeAPI
-      .flatMap { APIService.matchingProvider.rx.request(.deleteLiked($0.memberId)) }
-      .subscribe(onNext: { [weak self] response in
-        switch response.statusCode {
-        case 200:
-          self?.requestRetrieveLikeAPI.onNext(Void())
-        default:
-          fatalError("멤버를 삭제하지 못했습니다...")
-        }
-        self?.output.indicatorState.onNext(false)
-      })
+      .withUnretained(self)
+      .do(onNext: { $0.0.output.isLoading.onNext(true) })
+      .flatMap { APIService.matchingProvider.rx.request(.deleteLiked($1.memberId)) }
+      .filterSuccessfulStatusCodes()
+      .withUnretained(self)
+      .do(onNext: { $0.0.output.isLoading.onNext(false) })
+      .map { _ in Void() }
+      .bind(to: requestRetrieveLikeAPI)
       .disposed(by: disposeBag)
-    
     
     // 좋아요한 멤버 삭제 요청
     requestDeleteDislikeAPI
-      .flatMap { APIService.matchingProvider.rx.request(.deleteDisliked($0.memberId)) }
-      .subscribe(onNext: { [weak self] response in
-        switch response.statusCode {
-        case 200:
-          self?.requestRetrieveDislikeAPI.onNext(Void())
-        default:
-          fatalError("멤버를 삭제하지 못했습니다...")
-        }
-        self?.output.indicatorState.onNext(false)
-      })
+      .withUnretained(self)
+      .do(onNext: { $0.0.output.isLoading.onNext(true) })
+      .flatMap { APIService.matchingProvider.rx.request(.deleteDisliked($1.memberId)) }
+      .filterSuccessfulStatusCodes()
+      .withUnretained(self)
+      .do(onNext: { $0.0.output.isLoading.onNext(false) })
+      .map { _ in Void() }
+      .bind(to: requestRetrieveDislikeAPI)
       .disposed(by: disposeBag)
   }
 }

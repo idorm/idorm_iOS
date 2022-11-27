@@ -110,7 +110,7 @@ final class ManageMyInfoViewController: BaseViewController {
     viewModel.output.pushToPutEmailVC
       .withUnretained(self)
       .map { $0.0 }
-      .bind(onNext: { [weak self] in
+      .bind(onNext: {
         let viewController = PutEmailViewController(.updatePW)
         $0.navigationController?.pushViewController(viewController, animated: true)
       })
