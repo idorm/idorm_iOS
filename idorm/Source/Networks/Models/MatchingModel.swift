@@ -20,11 +20,3 @@ struct MatchingModel: Codable {
     var addedAt: String?
   }
 }
-
-// MARK: - ResponseModel
-
-extension MatchingModel {
-  struct MatchingResponseModel: Codable {
-    let data: [Member]
-  }
-}

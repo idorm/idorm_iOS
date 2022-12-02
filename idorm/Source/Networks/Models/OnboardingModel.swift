@@ -45,13 +45,3 @@ struct OnboardingModel: Codable {
     }
   }
 }
-
-// MARK: - ResponseModel
-
-extension OnboardingModel {
-  
-  /// MyOnboarding 단건 조회 ResponseModel입니다.
-  struct LookupOnboardingResponseModel: Codable {
-    let data: MyOnboarding
-  }
-}

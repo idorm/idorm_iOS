@@ -160,7 +160,7 @@ final class MatchingViewModel: ViewModel {
       .do(onNext: { $0.0.output.isLoading.onNext(true) })
       .map { _ in true }
       .flatMap { APIService.onboardingProvider.rx.request(.modifyPublic($0)) }
-      .map(OnboardingModel.LookupOnboardingResponseModel.self)
+      .map(ResponseModel<OnboardingModel.MyOnboarding>.self)
       .withUnretained(self)
       .subscribe(onNext: { owner, response in
         let newValue = response.data
@@ -220,7 +220,7 @@ extension MatchingViewModel {
         guard let self = self else { return }
         switch response.statusCode {
         case 200: // 매칭멤버 조회 완료
-          let newMembers = APIService.decode(MatchingModel.MatchingResponseModel.self, data: response.data).data
+          let newMembers = APIService.decode(ResponseModel<[MatchingModel.Member]>.self, data: response.data).data
           self.matchingMembers.accept(newMembers)
         case 204: // 매칭되는 멤버가 없습니다.
           self.matchingMembers.accept([])
@@ -246,7 +246,7 @@ extension MatchingViewModel {
       .subscribe(onNext: { [weak self] response in
         switch response.statusCode {
         case 200:
-          let members = APIService.decode(MatchingModel.MatchingResponseModel.self, data: response.data).data
+          let members = APIService.decode(ResponseModel<[MatchingModel.Member]>.self, data: response.data).data
           self?.matchingMembers.accept(members)
         case 204:
           self?.matchingMembers.accept([])

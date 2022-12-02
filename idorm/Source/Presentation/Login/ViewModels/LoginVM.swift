@@ -54,9 +54,9 @@ final class LoginViewModel: ViewModel {
         switch response.statusCode {
         case 200: // 로그인 성공
           let data = response.data
-          let responseModel = APIService.decode(MemberModel.LoginResponseModel.self, data: data).data
+          let responseModel = APIService.decode(ResponseModel<MemberModel.MyInformation>.self, data: data).data
           TokenStorage.instance.saveToken(token: responseModel.loginToken ?? "")
-          MemberInfoStorage.instance.myInformation.accept(responseModel)
+          MemberInfoStorage.instance.saveMyInformation(from: responseModel)
           SharedAPI.instance.retrieveMyOnboarding()
           self?.output.presentTabBarVC.onNext(Void())
         case 400:

@@ -151,7 +151,7 @@ final class NicknameViewModel: ViewModel {
         .subscribe(onNext: { [weak self] response in
           switch response.statusCode {
           case (200..<300):
-            let newValue = APIService.decode(MemberModel.LoginResponseModel.self, data: response.data).data
+            let newValue = APIService.decode(ResponseModel<MemberModel.MyInformation>.self, data: response.data).data
             MemberInfoStorage.instance.myInformation.accept(newValue)
             self?.output.popVC.onNext(Void())
           case 409:

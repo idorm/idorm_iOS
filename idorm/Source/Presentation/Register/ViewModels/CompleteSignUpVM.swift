@@ -28,7 +28,7 @@ final class CompleteSignUpViewModel: ViewModel {
     input.continueButtonDidTap
       .do(onNext: { [weak self] in self?.output.isLoading.onNext(true) })
       .flatMap { APIService.memberProvider.rx.request(.login(id: email, pw: password)) }
-      .map(MemberModel.LoginResponseModel.self)
+      .map(ResponseModel<MemberModel.MyInformation>.self)
       .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(false) })
       .subscribe(onNext: { [weak self] response in
         let token = response.data.loginToken

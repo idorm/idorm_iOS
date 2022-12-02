@@ -103,7 +103,7 @@ final class MyRoommateViewModel: ViewModel {
       .subscribe(onNext: { owner, response in
         switch response.statusCode {
         case 200:
-          let members = APIService.decode(MatchingModel.MatchingResponseModel.self, data: response.data).data
+          let members = APIService.decode(ResponseModel<[MatchingModel.Member]>.self, data: response.data).data
           owner.currentMembers.accept(members.reversed())
         case 204:
           owner.currentMembers.accept([])
@@ -124,7 +124,7 @@ final class MyRoommateViewModel: ViewModel {
       .subscribe(onNext: { owner, response in
         switch response.statusCode {
         case 200:
-          let members = APIService.decode(MatchingModel.MatchingResponseModel.self, data: response.data).data
+          let members = APIService.decode(ResponseModel<[MatchingModel.Member]>.self, data: response.data).data
           owner.currentMembers.accept(members.reversed())
         case 204:
           owner.currentMembers.accept([])

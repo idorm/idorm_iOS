@@ -450,6 +450,17 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		E513B1172939916B00236717 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				E5226D572911F3610065C809 /* Dormitory.swift */,
+				E5226D592911F36B0065C809 /* Gender.swift */,
+				E5226D5B2911F3760065C809 /* JoinPeriod.swift */,
+				E5226D5F291207AA0065C809 /* Habit.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		E52791C4291B7CD2009C0ADA /* Storages */ = {
 			isa = PBXGroup;
 			children = (
@@ -542,13 +553,10 @@
 		E54B3E2228C6E1A30062EF7E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E513B1172939916B00236717 /* Onboarding */,
 				E5B0D4F929224609007A1791 /* MemberModel.swift */,
 				E5B0D4F3292240E7007A1791 /* OnboardingModel.swift */,
 				E5B0D4F529224574007A1791 /* MatchingModel.swift */,
-				E5226D572911F3610065C809 /* Dormitory.swift */,
-				E5226D592911F36B0065C809 /* Gender.swift */,
-				E5226D5B2911F3760065C809 /* JoinPeriod.swift */,
-				E5226D5F291207AA0065C809 /* Habit.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";

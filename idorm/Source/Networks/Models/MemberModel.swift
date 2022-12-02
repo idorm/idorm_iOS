@@ -11,18 +11,3 @@ struct MemberModel: Codable {
     let loginToken: String?
   }
 }
-
-// MARK: - ResponseModel
-
-extension MemberModel {
-  
-  /// 로그인 API의 Response Model 입니다.
-  struct LoginResponseModel: Codable {
-    let data: MyInformation
-  }
-  
-  /// 멤버 단건 조회 API의 Response Model입니다.
-  struct RetrieveMemberResponseModel: Codable {
-    let data: MyInformation
-  }
-}

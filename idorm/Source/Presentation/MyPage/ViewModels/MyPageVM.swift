@@ -41,10 +41,10 @@ final class MyPageViewModel: ViewModel {
       .withUnretained(self)
       .do(onNext: { owner, _ in owner.output.isLoading.onNext(true) })
       .flatMap { APIService.onboardingProvider.rx.request(.modifyPublic($0.1)) }
-      .map(OnboardingModel.LookupOnboardingResponseModel.self)
+      .map(ResponseModel<OnboardingModel.MyOnboarding>.self)
       .withUnretained(self)
       .subscribe(onNext: { owner, response in
-        MemberInfoStorage.instance.myOnboarding.accept(response.data)
+        MemberInfoStorage.instance.saveMyOnboarding(from: response.data)
         owner.output.toggleShareButton.onNext(response.data.isMatchingInfoPublic)
         owner.output.isLoading.onNext(false)
       })

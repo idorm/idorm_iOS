@@ -26,3 +26,7 @@ final class APIService {
     ]
   }
 }
+
+struct ResponseModel<Model: Codable>: Codable {
+  let data: Model
+}

@@ -168,10 +168,10 @@ final class OnboardingViewModel: ViewModel {
         .do(onNext: { $0.output.isLoading.onNext(true) })
         .map { $0.currentOnboarding.value }
         .flatMap { APIService.onboardingProvider.rx.request(.modify($0)) }
-        .map(OnboardingModel.LookupOnboardingResponseModel.self)
+        .map(ResponseModel<OnboardingModel.MyOnboarding>.self)
         .withUnretained(self)
         .subscribe(onNext: { owner, response in
-          MemberInfoStorage.instance.myOnboarding.accept(response.data)
+          MemberInfoStorage.instance.saveMyOnboarding(from: response.data)
           owner.output.isLoading.onNext(false)
           owner.output.popToRootVC.onNext(Void())
         })
