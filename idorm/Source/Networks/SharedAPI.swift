@@ -18,7 +18,7 @@ extension SharedAPI {
         switch response.statusCode {
         case 200:
           let myInformation = APIService.decode(MemberModel.LoginResponseModel.self, data: response.data).data
-          MemberInfoStorage.instance.myInformation.accept(myInformation)
+          MemberInfoStorage.instance.saveMyInformation(from: myInformation)
         default:
           fatalError("token is missing")
         }
@@ -39,7 +39,7 @@ extension SharedAPI {
         switch response.statusCode {
         case 200:
           let responseModel = APIService.decode(OnboardingModel.LookupOnboardingResponseModel.self, data: response.data).data
-          MemberInfoStorage.instance.myOnboarding.accept(responseModel)
+          MemberInfoStorage.instance.saveMyOnboarding(from: responseModel)
         case 409:
           break
         default:

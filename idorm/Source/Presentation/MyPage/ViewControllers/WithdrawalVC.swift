@@ -137,7 +137,7 @@ final class WithdrawalViewController: BaseViewController {
   }
   
   // MARK: - Bind
-  
+   
   override func bind() {
     super.bind()
     
@@ -157,29 +157,18 @@ final class WithdrawalViewController: BaseViewController {
     
     // 뒤로가기
     viewModel.output.popVC
-      .bind(onNext: { [weak self] in
-        self?.navigationController?.popViewController(animated: true)
-      })
+      .withUnretained(self)
+      .bind(onNext: { $0.0.navigationController?.popViewController(animated: true) })
       .disposed(by: disposeBag)
     
     // 회원 탈퇴 완료 후 로그인 페이지로 넘어가기
     viewModel.output.presentLoginVC
-      .bind(onNext: { [weak self] in
+      .withUnretained(self)
+      .bind(onNext: {
         let viewController = LoginViewController()
         viewController.modalPresentationStyle = .fullScreen
-        self?.present(viewController, animated: true)
+        $0.0.present(viewController, animated: true)
       })
       .disposed(by: disposeBag)
   }
 }
-
-// MARK: - Preview
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-struct WithdrawalVC_PreView: PreviewProvider {
-  static var previews: some View {
-    WithdrawalViewController().toPreview()
-  }
-}
-#endif

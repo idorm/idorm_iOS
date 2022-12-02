@@ -29,6 +29,16 @@ final class MemberInfoStorage {
       .bind(to: publicStateDidChange)
       .disposed(by: disposeBag)
   }
+  
+  // MARK: - Helpers
+  
+  func saveMyInformation(from information: MemberModel.MyInformation) {
+    self.myInformation.accept(information)
+  }
+  
+  func saveMyOnboarding(from onboarding: OnboardingModel.MyOnboarding) {
+    self.myOnboarding.accept(onboarding)
+  }
 }
 
 // MARK: - Stored Properties

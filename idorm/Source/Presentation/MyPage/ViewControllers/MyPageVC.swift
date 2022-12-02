@@ -113,11 +113,11 @@ final class MyPageViewController: BaseViewController {
     viewModel.output.pushToManageMyInfoVC
       .withUnretained(self)
       .map { $0.0 }
-      .bind(onNext: {
+      .bind {
         let manageMyInfoVC = ManageMyInfoViewController()
         manageMyInfoVC.hidesBottomBarWhenPushed = true
         $0.navigationController?.pushViewController(manageMyInfoVC, animated: true)
-      })
+      }
       .disposed(by: disposeBag)
     
     // 룸메이트 관리 페이지로 이동
@@ -171,6 +171,27 @@ final class MyPageViewController: BaseViewController {
     // 닉네임 업데이트
     viewModel.output.updateNickname
       .bind(to: topProfileView.nicknameLabel.rx.text)
+      .disposed(by: disposeBag)
+    
+    // 프로필 이미지 만들기 팝업
+    viewModel.output.presentNoMatchingInfoPopupVC
+      .withUnretained(self)
+      .map { $0.0 }
+      .bind {
+        let viewController = NoMatchingInfoPopupViewController()
+        viewController.modalPresentationStyle = .overFullScreen
+        $0.present(viewController, animated: false)
+        
+        // 프로필 이미지 만들기 버튼 클릭
+        viewController.makeButton.rx.tap
+          .bind(to: $0.viewModel.input.makeProfileImageButtonDidTap)
+          .disposed(by: $0.disposeBag)
+        
+        // 팝업창 닫기
+        $0.viewModel.output.dismissPopupVC
+          .bind { viewController.dismiss(animated: false) }
+          .disposed(by: $0.disposeBag)
+      }
       .disposed(by: disposeBag)
   }
   

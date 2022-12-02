@@ -7,16 +7,16 @@ final class WithdrawalViewModel: ViewModel {
   // MARK: -  Properties
   
   struct Input {
-    // Interaction
     let skipButtonDidTap = PublishSubject<Void>()
     let withdrawalButtonDidTap = PublishSubject<Void>()
   }
   
   struct Output {
-    // Presentation
     let popVC = PublishSubject<Void>()
     let presentLoginVC = PublishSubject<Void>()
   }
+  
+  // MARK: - Properties
   
   var input = Input()
   var output = Output()

@@ -202,15 +202,14 @@ extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
     
     // 멤버 삭제 버튼 클릭 이벤트
     viewController.deleteButton.rx.tap
-      .map { [unowned self] in (self.vcType, matchingMember) }
+      .withUnretained(self)
+      .map { ($0.0.vcType, matchingMember) }
       .bind(to: viewModel.input.deleteButtonDidTap)
       .disposed(by: disposeBag)
     
     // AlertVC 끄기
     viewModel.output.dismissAlertVC
-      .bind(onNext: {
-        viewController.dismiss(animated: true)
-      })
+      .bind(onNext: { viewController.dismiss(animated: true) })
       .disposed(by: disposeBag)
   }
 }
