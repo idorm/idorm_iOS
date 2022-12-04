@@ -20,6 +20,18 @@ final class MatchingViewController: BaseViewController {
     $0.configuration = config
   }
   
+  private let refreshButton = UIButton().then {
+    var config = UIButton.Configuration.filled()
+    var container = AttributeContainer()
+    container.font = .init(name: MyFonts.bold.rawValue, size: 12)
+    container.foregroundColor = .idorm_blue
+    config.baseBackgroundColor = .white
+    config.cornerStyle = .capsule
+    config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 10, bottom: 4, trailing: 10)
+    config.attributedTitle = AttributedString("새로고침", attributes: container)
+    $0.configuration = config
+  }
+  
   private let topRoundedBackgroundView = UIImageView().then {
     $0.image = UIImage(named: "topRoundedBackground(Matching)")?.withRenderingMode(.alwaysTemplate)
     $0.tintColor = .idorm_blue
@@ -53,6 +65,176 @@ final class MatchingViewController: BaseViewController {
     tabBarController?.tabBar.isHidden = false
   }
   
+  // MARK: - Setup
+  
+  override func setupLayouts() {
+    super.setupLayouts()
+    [topRoundedBackgroundView, buttonStack, filterButton, informationImageView, cardStack, loadingIndicator, refreshButton]
+      .forEach { view.addSubview($0) }
+  }
+  
+  override func setupStyles() {
+    super.setupStyles()
+    view.backgroundColor = .white
+    
+    let buttonStack = UIStackView(arrangedSubviews: [cancelButton, backButton, messageButton, heartButton])
+    buttonStack.spacing = 4
+    self.buttonStack = buttonStack
+  }
+  
+  override func setupConstraints() {
+    super.setupConstraints()
+    
+    loadingIndicator.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+    }
+    
+    topRoundedBackgroundView.snp.makeConstraints { make in
+      make.top.leading.trailing.equalToSuperview()
+    }
+    
+    filterButton.snp.makeConstraints { make in
+      make.top.equalTo(view.safeAreaLayoutGuide).inset(16)
+      make.trailing.equalToSuperview().inset(24)
+    }
+    
+    informationImageView.snp.makeConstraints { make in
+      make.centerY.equalTo(cardStack).offset(50)
+      make.centerX.equalToSuperview()
+    }
+    
+    refreshButton.snp.makeConstraints { make in
+      make.centerY.equalTo(filterButton)
+      make.trailing.equalTo(filterButton.snp.leading).offset(-16)
+    }
+    
+    let deviceManager = DeviceManager.shared
+    
+    if deviceManager.isResoultion568() {
+      cardStack.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalToSuperview()
+        make.height.equalTo(450)
+      }
+      
+      buttonStack.snp.makeConstraints { make in
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(4)
+        make.centerX.equalToSuperview()
+      }
+    } else if deviceManager.isResolution667() {
+      cardStack.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(filterButton.snp.bottom).offset(4)
+        make.height.equalTo(450)
+      }
+      
+      buttonStack.snp.makeConstraints { make in
+        make.centerX.equalToSuperview()
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(8)
+      }
+    } else if deviceManager.isResolution736() {
+      cardStack.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.height.equalTo(450)
+      }
+      
+      buttonStack.snp.makeConstraints { make in
+        make.centerX.equalToSuperview()
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(32)
+      }
+    } else if deviceManager.isResolution812() {
+      buttonStack.spacing = 8
+      
+      cardStack.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.height.equalTo(450)
+      }
+      
+      buttonStack.snp.makeConstraints { make in
+        make.centerX.equalToSuperview()
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(40)
+      }
+    } else if deviceManager.isResolution844() {
+      buttonStack.spacing = 8
+      
+      cardStack.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.height.equalTo(450)
+      }
+      
+      buttonStack.snp.makeConstraints { make in
+        make.centerX.equalToSuperview()
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(62)
+      }
+    } else if deviceManager.isResolution852() {
+      buttonStack.spacing = 8
+      
+      cardStack.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.height.equalTo(450)
+      }
+      
+      buttonStack.snp.makeConstraints { make in
+        make.centerX.equalToSuperview()
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(62)
+      }
+    } else if deviceManager.isResolution896(){
+      buttonStack.spacing = 8
+      
+      cardStack.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.height.equalTo(450)
+      }
+      
+      buttonStack.snp.makeConstraints { make in
+        make.centerX.equalToSuperview()
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(80)
+      }
+    } else if deviceManager.isResolution926() {
+      buttonStack.spacing = 8
+      
+      cardStack.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(32)
+        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.height.equalTo(450)
+      }
+      
+      buttonStack.snp.makeConstraints { make in
+        make.centerX.equalToSuperview()
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(100)
+      }
+    } else if deviceManager.isResolution932() {
+      buttonStack.spacing = 8
+      
+      cardStack.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(32)
+        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.height.equalTo(450)
+      }
+      
+      buttonStack.snp.makeConstraints { make in
+        make.centerX.equalToSuperview()
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(100)
+      }
+    } else {
+      cardStack.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.height.equalTo(450)
+      }
+      
+      buttonStack.snp.makeConstraints { make in
+        make.centerX.equalToSuperview()
+        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(50)
+      }
+    }
+  }
+  
   // MARK: - Bind
   
   override func bind() {
@@ -77,6 +259,14 @@ final class MatchingViewController: BaseViewController {
     // 필터버튼 클릭
     filterButton.rx.tap
       .bind(to: viewModel.input.filterButtonDidTap)
+      .disposed(by: disposeBag)
+    
+    // 새로고침 버튼 클릭
+    refreshButton.rx.tap
+      .withUnretained(self)
+      .filter { $0.0.viewModel.output.isLoading.value == false }
+      .map { _ in Void() }
+      .bind(to: viewModel.input.refreshButtonDidTap)
       .disposed(by: disposeBag)
     
     // 취소버튼 클릭
@@ -195,11 +385,10 @@ final class MatchingViewController: BaseViewController {
       .disposed(by: disposeBag)
     
     // 프로필 이미지 만들기 팝업 창 띄우기
-    viewModel.output.presentFirstPopupVC
+    viewModel.output.presentMatchingPopupVC
       .withUnretained(self)
       .map { $0.0 }
       .bind(onNext: {
-        $0.informationImageView.image = UIImage(named: "noMatchingInfomation")
         let matchingPopupVC = MatchingPopupViewController()
         matchingPopupVC.modalPresentationStyle = .overFullScreen
         $0.present(matchingPopupVC, animated: false)
@@ -280,170 +469,6 @@ final class MatchingViewController: BaseViewController {
       .disposed(by: disposeBag)
   }
 
-  // MARK: - Setup
-  
-  override func setupLayouts() {
-    super.setupLayouts()
-    [topRoundedBackgroundView, buttonStack, filterButton, informationImageView, cardStack, loadingIndicator]
-      .forEach { view.addSubview($0) }
-  }
-  
-  override func setupStyles() {
-    super.setupStyles()
-    view.backgroundColor = .white
-    
-    let buttonStack = UIStackView(arrangedSubviews: [cancelButton, backButton, messageButton, heartButton])
-    buttonStack.spacing = 4
-    self.buttonStack = buttonStack
-  }
-  
-  override func setupConstraints() {
-    super.setupConstraints()
-    
-    loadingIndicator.snp.makeConstraints { make in
-      make.center.equalToSuperview()
-    }
-    
-    topRoundedBackgroundView.snp.makeConstraints { make in
-      make.top.leading.trailing.equalToSuperview()
-    }
-    
-    filterButton.snp.makeConstraints { make in
-      make.top.equalTo(view.safeAreaLayoutGuide).inset(16)
-      make.trailing.equalToSuperview().inset(24)
-    }
-    
-    informationImageView.snp.makeConstraints { make in
-      make.centerY.equalTo(cardStack).offset(50)
-      make.centerX.equalToSuperview()
-    }
-    
-    let deviceManager = DeviceManager.shared
-    
-    if deviceManager.isResoultion568() {
-      cardStack.snp.makeConstraints { make in
-        make.leading.trailing.equalToSuperview().inset(24)
-        make.top.equalToSuperview()
-        make.height.equalTo(450)
-      }
-      
-      buttonStack.snp.makeConstraints { make in
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(4)
-        make.centerX.equalToSuperview()
-      }
-    } else if deviceManager.isResolution667() {
-      cardStack.snp.makeConstraints { make in
-        make.leading.trailing.equalToSuperview().inset(24)
-        make.top.equalTo(filterButton.snp.bottom).offset(4)
-        make.height.equalTo(450)
-      }
-
-      buttonStack.snp.makeConstraints { make in
-        make.centerX.equalToSuperview()
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(8)
-      }
-    } else if deviceManager.isResolution736() {
-      cardStack.snp.makeConstraints { make in
-        make.leading.trailing.equalToSuperview().inset(24)
-        make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(450)
-      }
-      
-      buttonStack.snp.makeConstraints { make in
-        make.centerX.equalToSuperview()
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(32)
-      }
-    } else if deviceManager.isResolution812() {
-      buttonStack.spacing = 8
-      
-      cardStack.snp.makeConstraints { make in
-        make.leading.trailing.equalToSuperview().inset(24)
-        make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(450)
-      }
-      
-      buttonStack.snp.makeConstraints { make in
-        make.centerX.equalToSuperview()
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(40)
-      }
-    } else if deviceManager.isResolution844() {
-      buttonStack.spacing = 8
-      
-      cardStack.snp.makeConstraints { make in
-        make.leading.trailing.equalToSuperview().inset(24)
-        make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(450)
-      }
-
-      buttonStack.snp.makeConstraints { make in
-        make.centerX.equalToSuperview()
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(62)
-      }
-    } else if deviceManager.isResolution852() {
-      buttonStack.spacing = 8
-      
-      cardStack.snp.makeConstraints { make in
-        make.leading.trailing.equalToSuperview().inset(24)
-        make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(450)
-      }
-
-      buttonStack.snp.makeConstraints { make in
-        make.centerX.equalToSuperview()
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(62)
-      }
-    } else if deviceManager.isResolution896(){
-      buttonStack.spacing = 8
-      
-      cardStack.snp.makeConstraints { make in
-        make.leading.trailing.equalToSuperview().inset(24)
-        make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(450)
-      }
-      
-      buttonStack.snp.makeConstraints { make in
-        make.centerX.equalToSuperview()
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(80)
-      }
-    } else if deviceManager.isResolution926() {
-      buttonStack.spacing = 8
-      
-      cardStack.snp.makeConstraints { make in
-        make.leading.trailing.equalToSuperview().inset(32)
-        make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(450)
-      }
-      
-      buttonStack.snp.makeConstraints { make in
-        make.centerX.equalToSuperview()
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(100)
-      }
-    } else if deviceManager.isResolution932() {
-      buttonStack.spacing = 8
-      
-      cardStack.snp.makeConstraints { make in
-        make.leading.trailing.equalToSuperview().inset(32)
-        make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(450)
-      }
-      
-      buttonStack.snp.makeConstraints { make in
-        make.centerX.equalToSuperview()
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(100)
-      }
-    } else {
-      cardStack.snp.makeConstraints { make in
-        make.leading.trailing.equalToSuperview().inset(24)
-        make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(450)
-      }
-      
-      buttonStack.snp.makeConstraints { make in
-        make.centerX.equalToSuperview()
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(50)
-      }
-    }
-  }
 }
 
 // MARK: - Card Swipe

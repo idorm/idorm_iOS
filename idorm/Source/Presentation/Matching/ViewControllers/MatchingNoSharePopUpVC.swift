@@ -18,7 +18,7 @@ final class MatchingNoSharePopUpViewController: BaseViewController {
   
   let confirmLabel = UILabel().then {
     $0.text = "공개 허용"
-    $0.textColor = .idorm_gray_300
+    $0.textColor = .idorm_blue
     $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
   }
   

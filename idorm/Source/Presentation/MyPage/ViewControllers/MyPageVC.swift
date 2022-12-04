@@ -247,14 +247,3 @@ final class MyPageViewController: BaseViewController {
     }
   }
 }
-
-// MARK: - Preview
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-struct MyPageVC_PreView: PreviewProvider {
-  static var previews: some View {
-    MyPageViewController().toPreview()
-  }
-}
-#endif

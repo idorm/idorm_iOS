@@ -36,6 +36,86 @@ final class ManageMyInfoViewController: BaseViewController {
   
   private let viewModel = ManageMyInfoViewModel()
   
+  // MARK: - Setup
+  
+  override func setupStyles() {
+    super.setupStyles()
+    
+    navigationItem.title = "내 정보 관리"
+    view.backgroundColor = .white
+  }
+  
+  override func setupLayouts() {
+    super.setupLayouts()
+    
+    view.addSubview(scrollView)
+    scrollView.addSubview(contentView)
+    
+    [profileImage, nickNameView, changePWView, emailView, separatorLine1, versionView, separatorLine2, withDrawLabel]
+      .forEach { contentView.addSubview($0) }
+  }
+  
+  override func setupConstraints() {
+    super.setupConstraints()
+    
+    scrollView.snp.makeConstraints { make in
+      make.top.equalTo(view.safeAreaLayoutGuide)
+      make.bottom.leading.trailing.equalToSuperview()
+    }
+    
+    contentView.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
+      make.width.equalTo(view.frame.width)
+    }
+    
+    profileImage.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+      make.top.equalToSuperview().inset(24)
+    }
+    
+    nickNameView.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview()
+      make.top.equalTo(profileImage.snp.bottom).offset(24)
+      make.height.equalTo(45)
+    }
+    
+    changePWView.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview()
+      make.top.equalTo(nickNameView.snp.bottom)
+      make.height.equalTo(45)
+    }
+    
+    emailView.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview()
+      make.top.equalTo(changePWView.snp.bottom)
+      make.height.equalTo(45)
+    }
+    
+    separatorLine1.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview()
+      make.top.equalTo(emailView.snp.bottom).offset(32)
+      make.height.equalTo(6)
+    }
+    
+    versionView.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview()
+      make.top.equalTo(separatorLine1.snp.bottom).offset(24)
+      make.height.equalTo(45)
+    }
+    
+    separatorLine2.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview()
+      make.top.equalTo(versionView.snp.bottom).offset(32)
+      make.height.equalTo(6)
+    }
+    
+    withDrawLabel.snp.makeConstraints { make in
+      make.leading.equalToSuperview().inset(24)
+      make.top.equalTo(separatorLine2.snp.bottom).offset(32)
+      make.bottom.equalToSuperview()
+    }
+  }
+  
   // MARK: - Bind
   
   override func bind() {
@@ -115,86 +195,6 @@ final class ManageMyInfoViewController: BaseViewController {
         $0.navigationController?.pushViewController(viewController, animated: true)
       })
       .disposed(by: disposeBag)
-  }
-  
-  // MARK: - Setup
-  
-  override func setupStyles() {
-    super.setupStyles()
-    
-    navigationItem.title = "내 정보 관리"
-    view.backgroundColor = .white
-  }
-  
-  override func setupLayouts() {
-    super.setupLayouts()
-    
-    view.addSubview(scrollView)
-    scrollView.addSubview(contentView)
-    
-    [profileImage, nickNameView, changePWView, emailView, separatorLine1, versionView, separatorLine2, withDrawLabel]
-      .forEach { contentView.addSubview($0) }
-  }
-  
-  override func setupConstraints() {
-    super.setupConstraints()
-    
-    scrollView.snp.makeConstraints { make in
-      make.top.equalTo(view.safeAreaLayoutGuide)
-      make.bottom.leading.trailing.equalToSuperview()
-    }
-    
-    contentView.snp.makeConstraints { make in
-      make.edges.equalToSuperview()
-      make.width.equalTo(view.frame.width)
-    }
-    
-    profileImage.snp.makeConstraints { make in
-      make.centerX.equalToSuperview()
-      make.top.equalToSuperview().inset(24)
-    }
-    
-    nickNameView.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview()
-      make.top.equalTo(profileImage.snp.bottom).offset(24)
-      make.height.equalTo(45)
-    }
-    
-    changePWView.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview()
-      make.top.equalTo(nickNameView.snp.bottom)
-      make.height.equalTo(45)
-    }
-    
-    emailView.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview()
-      make.top.equalTo(changePWView.snp.bottom)
-      make.height.equalTo(45)
-    }
-    
-    separatorLine1.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview()
-      make.top.equalTo(emailView.snp.bottom).offset(32)
-      make.height.equalTo(6)
-    }
-    
-    versionView.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview()
-      make.top.equalTo(separatorLine1.snp.bottom).offset(24)
-      make.height.equalTo(45)
-    }
-    
-    separatorLine2.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview()
-      make.top.equalTo(versionView.snp.bottom).offset(32)
-      make.height.equalTo(6)
-    }
-    
-    withDrawLabel.snp.makeConstraints { make in
-      make.leading.equalToSuperview().inset(24)
-      make.top.equalTo(separatorLine2.snp.bottom).offset(32)
-      make.bottom.equalToSuperview()
-    }
   }
   
   // MARK: - Helpers
