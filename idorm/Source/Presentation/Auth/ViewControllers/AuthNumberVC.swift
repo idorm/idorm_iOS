@@ -110,7 +110,7 @@ final class AuthNumberViewController: BaseViewController {
           self?.textField.backgroundColor = .idorm_gray_200
           self?.textField.isEnabled = false
           self?.authOnemoreButton.isEnabled = true
-          let popupView = PopupViewController(contents: "인증번호가 만료되었습니다.")
+          let popupView = BasicPopup(contents: "인증번호가 만료되었습니다.")
           popupView.modalPresentationStyle = .overFullScreen
           self?.present(popupView, animated: false)
         } else {
@@ -139,7 +139,7 @@ final class AuthNumberViewController: BaseViewController {
     // 오류 문구 출력
     viewModel.output.presentPopupVC
       .bind(onNext: { [weak self] mention in
-        let popupVC = PopupViewController(contents: mention)
+        let popupVC = BasicPopup(contents: mention)
         popupVC.modalPresentationStyle = .overFullScreen
         self?.present(popupVC, animated: false)
       })

@@ -156,7 +156,7 @@ final class OnboardingDetailViewController: BaseViewController {
     viewModel.output.presentPopupVC
       .withUnretained(self)
       .bind(onNext: { owner, mention in
-        let popupVC = PopupViewController(contents: mention)
+        let popupVC = BasicPopup(contents: mention)
         popupVC.modalPresentationStyle = .overFullScreen
         owner.present(popupVC, animated: false)
       })

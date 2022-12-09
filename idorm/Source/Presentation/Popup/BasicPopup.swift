@@ -10,7 +10,7 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-class PopupViewController: BaseViewController {
+final class BasicPopup: BaseViewController {
   
   // MARK: - Properties
   

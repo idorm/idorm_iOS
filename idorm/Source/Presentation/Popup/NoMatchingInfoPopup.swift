@@ -12,7 +12,7 @@ import Then
 import RxSwift
 import RxCocoa
 
-final class NoMatchingInfoPopupViewController: BaseViewController {
+final class NoMatchingInfoPopup: BaseViewController {
   
   // MARK: - Properties
   

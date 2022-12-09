@@ -12,7 +12,7 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-final class MatchingPopupViewController: BaseViewController {
+final class NoMatchingInfoPopup_Initial: BaseViewController {
   
   // MARK: - Properties
   
@@ -117,7 +117,7 @@ final class MatchingPopupViewController: BaseViewController {
 import SwiftUI
 struct ViewControllerPreView: PreviewProvider {
   static var previews: some View {
-    MatchingPopupViewController().toPreview()
+    NoMatchingInfoPopup_Initial().toPreview()
   }
 }
 #endif

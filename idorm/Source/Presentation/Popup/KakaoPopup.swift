@@ -5,7 +5,7 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-final class KakaoLinkViewController: BaseViewController {
+final class KakaoPopup: BaseViewController {
   
   // MARK: - Properties
   

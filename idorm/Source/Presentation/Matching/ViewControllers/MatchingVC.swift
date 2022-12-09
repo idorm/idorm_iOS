@@ -69,7 +69,7 @@ final class MatchingViewController: BaseViewController {
   
   override func setupLayouts() {
     super.setupLayouts()
-    [topRoundedBackgroundView, buttonStack, filterButton, informationImageView, cardStack, loadingIndicator, refreshButton]
+    [topRoundedBackgroundView, buttonStack, filterButton, refreshButton, informationImageView, cardStack, loadingIndicator]
       .forEach { view.addSubview($0) }
   }
   
@@ -249,11 +249,10 @@ final class MatchingViewController: BaseViewController {
       .bind(to: viewModel.input.publicStateDidChange)
       .disposed(by: disposeBag)
 
-    // 화면 최초 접근
+    // 화면 접근
     rx.viewWillAppear
       .map { _ in Void() }
-      .take(1)
-      .bind(to: viewModel.input.viewDidLoad)
+      .bind(to: viewModel.input.viewWillAppear)
       .disposed(by: disposeBag)
     
     // 필터버튼 클릭
@@ -389,7 +388,7 @@ final class MatchingViewController: BaseViewController {
       .withUnretained(self)
       .map { $0.0 }
       .bind(onNext: {
-        let matchingPopupVC = MatchingPopupViewController()
+        let matchingPopupVC = NoMatchingInfoPopup()
         matchingPopupVC.modalPresentationStyle = .overFullScreen
         $0.present(matchingPopupVC, animated: false)
       })
@@ -423,7 +422,7 @@ final class MatchingViewController: BaseViewController {
     viewModel.output.presentNoSharePopupVC
       .withUnretained(self)
       .bind(onNext: { owner, _ in
-        let popupVC = MatchingNoSharePopUpViewController()
+        let popupVC = NoPublicStatePopUp()
         popupVC.modalPresentationStyle = .overFullScreen
         owner.present(popupVC, animated: false)
         
@@ -445,7 +444,7 @@ final class MatchingViewController: BaseViewController {
     viewModel.output.presentKakaoPopupVC
       .withUnretained(self)
       .bind(onNext: { owner, index in
-        let viewController = KakaoLinkViewController()
+        let viewController = KakaoPopup()
         viewController.modalPresentationStyle = .overFullScreen
         owner.present(viewController, animated: false)
         

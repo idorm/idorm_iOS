@@ -24,7 +24,7 @@ final class MatchingViewModel: ViewModel {
     let swipingCard = PublishSubject<MatchingType>()
     let publicButtonDidTap = PublishSubject<Void>()
     let publicStateDidChange = PublishSubject<Bool>()
-    let viewDidLoad = PublishSubject<Void>()
+    let viewWillAppear = PublishSubject<Void>()
   }
   
   struct Output {
@@ -52,49 +52,27 @@ final class MatchingViewModel: ViewModel {
   let matchingMembers = BehaviorRelay<[MatchingModel.Member]>(value: [])
   
   // MARK: - Bind
-
+  
   init() {
     
-    // ViewDidLoad -> 매칭 초기 상태 판단
-    input.viewDidLoad
+    // 화면 초기 진입 -> UI 셋업
+    input.viewWillAppear
+      .take(1)
       .map { MemberInfoStorage.instance }
       .withUnretained(self)
-      .subscribe(onNext: { owner, storage in
-        if storage.hasMatchingInfo {
-          if storage.isPublicMatchingInfo {
-            owner.output.informationImageViewStatus.onNext(.noMatchingCardInformation)
-            owner.retrieveMembers()
-          } else {
-            owner.output.informationImageViewStatus.onNext(.noShareState)
-            owner.output.presentNoSharePopupVC.onNext(Void())
-          }
-        } else {
-          owner.output.informationImageViewStatus.onNext(.noMatchingInformation)
-          owner.output.presentMatchingPopupVC.onNext(Void())
-        }
-      })
-      .disposed(by: disposeBag)
-
-    // 새로고침 버튼 -> 팝업 창 띄우기
-    input.refreshButtonDidTap
-      .filter { MemberInfoStorage.instance.hasMatchingInfo == false }
-      .bind(to: output.presentMatchingPopupVC)
+      .bind { $0.0.reload() }
       .disposed(by: disposeBag)
     
-    // 새로고침 버튼 -> 공개 허용 요청 창 띄우기
-    input.refreshButtonDidTap
-      .filter { MemberInfoStorage.instance.hasMatchingInfo }
-      .filter { MemberInfoStorage.instance.isPublicMatchingInfo == false }
-      .bind(to: output.presentNoSharePopupVC)
-      .disposed(by: disposeBag)
-    
-    // 새로고침 버튼 -> 멤버 새로 불러오기
-    input.refreshButtonDidTap
-      .filter { MemberInfoStorage.instance.hasMatchingInfo }
-      .filter { MemberInfoStorage.instance.isPublicMatchingInfo }
+    // 화면 진입 -> 이미지 상태 바꾸기
+    input.viewWillAppear
       .withUnretained(self)
-      .map { $0.0 }
-      .bind { MatchingFilterStorage.shared.hasFilter ? $0.retrieveFilteredMembers() : $0.retrieveMembers() }
+      .bind { $0.0.reloadInformationImage() }
+      .disposed(by: disposeBag)
+    
+    // 새로고침 버튼 -> UI 셋업
+    input.refreshButtonDidTap
+      .withUnretained(self)
+      .bind { $0.0.reload() }
       .disposed(by: disposeBag)
     
     // 왼쪽 스와이프, 버튼 -> 싫어요 멤버 추가 API 요청
@@ -167,6 +145,9 @@ final class MatchingViewModel: ViewModel {
     
     // 필터 버튼 클릭 -> 매칭 필터 VC 전환
     input.filterButtonDidTap
+      .withUnretained(self)
+      .filter { $0.0.reload_filter() }
+      .map { _ in Void() }
       .bind(to: output.pushToFilterVC)
       .disposed(by: disposeBag)
     
@@ -220,11 +201,53 @@ final class MatchingViewModel: ViewModel {
   }
 }
 
+// MARK: - Helpers
+
+extension MatchingViewModel {
+  private func reloadInformationImage() {
+    let storage = MemberInfoStorage.instance
+    if storage.hasMatchingInfo {
+      storage.isPublicMatchingInfo ? output.informationImageViewStatus.onNext(.noMatchingCardInformation) : output.informationImageViewStatus.onNext(.noShareState)
+    } else {
+      output.informationImageViewStatus.onNext(.noMatchingInformation)
+    }
+  }
+  
+  private func reload() {
+    reloadInformationImage()
+    let storage = MemberInfoStorage.instance
+    if storage.hasMatchingInfo {
+      if storage.isPublicMatchingInfo {
+        MatchingFilterStorage.shared.hasFilter ? retrieveFilteredMembers() : retrieveMembers()
+      } else {
+        output.presentNoSharePopupVC.onNext(Void())
+      }
+    } else {
+      output.presentMatchingPopupVC.onNext(Void())
+    }
+  }
+  
+  private func reload_filter() -> Bool {
+    let storage = MemberInfoStorage.instance
+    if storage.hasMatchingInfo {
+      if storage.isPublicMatchingInfo {
+        return true
+      } else {
+        output.presentNoSharePopupVC.onNext(Void())
+        return false
+      }
+    } else {
+      output.presentMatchingPopupVC.onNext(Void())
+      return false
+    }
+  }
+}
+
 // MARK: - Network
 
 extension MatchingViewModel {
   /// 매칭 멤버 조회 요청
-  func retrieveMembers() {
+  private func retrieveMembers() {
     output.isLoading.accept(true)
     APIService.matchingProvider.rx.request(.retrieve)
       .asObservable()
@@ -248,7 +271,7 @@ extension MatchingViewModel {
   }
   
   /// 필터링된 매칭 멤버 조회
-  func retrieveFilteredMembers() {
+  private func retrieveFilteredMembers() {
     guard let filter = MatchingFilterStorage.shared.matchingFilterObserver.value else { return }
     
     APIService.matchingProvider.rx.request(.retrieveFiltered(filter: filter)).asObservable()

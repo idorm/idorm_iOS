@@ -178,7 +178,7 @@ final class MyPageViewController: BaseViewController {
       .withUnretained(self)
       .map { $0.0 }
       .bind {
-        let viewController = NoMatchingInfoPopupViewController()
+        let viewController = NoMatchingInfoPopup()
         viewController.modalPresentationStyle = .overFullScreen
         $0.present(viewController, animated: false)
         

@@ -1,5 +1,6 @@
 import RxSwift
 import RxCocoa
+import RxOptional
 
 /// 자신의 조회 속성을 저장하는 싱글톤 객체입니다.
 final class MemberInfoStorage {
@@ -24,8 +25,9 @@ final class MemberInfoStorage {
   // MARK: - Bind
   
   func bind() {
-    myOnboarding
+    myOnboarding    
       .map { $0?.isMatchingInfoPublic }
+      .filterNil()
       .bind(to: publicStateDidChange)
       .disposed(by: disposeBag)
   }

@@ -199,7 +199,7 @@ final class NicknameViewController: BaseViewController {
     // 오류 팝업
     viewModel.output.presentPopupVC
       .bind(onNext: { [weak self] in
-        let viewController = PopupViewController(contents: $0)
+        let viewController = BasicPopup(contents: $0)
         viewController.modalPresentationStyle = .overFullScreen
         self?.present(viewController, animated: false)
       })

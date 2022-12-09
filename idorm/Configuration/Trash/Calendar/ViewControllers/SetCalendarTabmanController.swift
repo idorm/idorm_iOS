@@ -117,7 +117,7 @@ class SetCalendarTabmanController: TabmanViewController {
     // 에러페이지 보여주기
     viewModel.output.showErrorPage
       .bind(onNext: { [weak self] in
-        let popupVC = PopupViewController(contents: "시작 날짜는 종료 날짜 이전이어야 합니다.")
+        let popupVC = BasicPopup(contents: "시작 날짜는 종료 날짜 이전이어야 합니다.")
         self?.present(popupVC, animated: false)
       })
       .disposed(by: disposeBag)

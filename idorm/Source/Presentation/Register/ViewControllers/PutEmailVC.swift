@@ -86,7 +86,7 @@ final class PutEmailViewController: BaseViewController {
     // 에러 팝업 창 띄우기
     viewModel.output.presentPopupVC
       .bind(onNext: { [weak self] mention in
-        let popupVC = PopupViewController(contents: mention)
+        let popupVC = BasicPopup(contents: mention)
         popupVC.modalPresentationStyle = .overFullScreen
         self?.present(popupVC, animated: false)
       })

@@ -6,7 +6,7 @@ import RxSwift
 import RxCocoa
 import RxGesture
 
-final class MatchingNoSharePopUpViewController: BaseViewController {
+final class NoPublicStatePopUp: BaseViewController {
   
   // MARK: - Properties
   
