@@ -34,6 +34,7 @@
 		E5226D65291246750065C809 /* OnboardingDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D64291246750065C809 /* OnboardingDriver.swift */; };
 		E525C1CD28944E2800F934B3 /* CalendarPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */; };
 		E52821422925C6BB006A4531 /* RegisterVCTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52821412925C6BB006A4531 /* RegisterVCTypes.swift */; };
+		E5283D5629489E28004DD34F /* ErrorResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5283D5529489E28004DD34F /* ErrorResponseModel.swift */; };
 		E5290EFD2887BBA40004B8E6 /* CommunityPopularCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */; };
 		E5290EFF2887BBB00004B8E6 /* PostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFE2887BBB00004B8E6 /* PostCollectionViewCell.swift */; };
 		E5290F06288818E70004B8E6 /* CommunityDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290F05288818E70004B8E6 /* CommunityDetailViewController.swift */; };
@@ -222,6 +223,7 @@
 		E5226D64291246750065C809 /* OnboardingDriver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDriver.swift; sourceTree = "<group>"; };
 		E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPostViewController.swift; sourceTree = "<group>"; };
 		E52821412925C6BB006A4531 /* RegisterVCTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterVCTypes.swift; sourceTree = "<group>"; };
+		E5283D5529489E28004DD34F /* ErrorResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponseModel.swift; sourceTree = "<group>"; };
 		E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPopularCollectionVIewCell.swift; sourceTree = "<group>"; };
 		E5290EFE2887BBB00004B8E6 /* PostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCollectionViewCell.swift; sourceTree = "<group>"; };
 		E5290F05288818E70004B8E6 /* CommunityDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityDetailViewController.swift; sourceTree = "<group>"; };
@@ -565,10 +567,11 @@
 		E54B3E2228C6E1A30062EF7E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				E513B1172939916B00236717 /* Onboarding */,
+				E5283D5529489E28004DD34F /* ErrorResponseModel.swift */,
 				E5B0D4F929224609007A1791 /* MemberModel.swift */,
 				E5B0D4F3292240E7007A1791 /* OnboardingModel.swift */,
 				E5B0D4F529224574007A1791 /* MatchingModel.swift */,
+				E513B1172939916B00236717 /* Onboarding */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1240,6 +1243,7 @@
 				E5B7E84F28ABCA670099B631 /* LoginVM.swift in Sources */,
 				E5294FEE2927787B004D408C /* MyPageVCTypes.swift in Sources */,
 				E5E77EC128D81AD400031010 /* LoginTextField.swift in Sources */,
+				E5283D5629489E28004DD34F /* ErrorResponseModel.swift in Sources */,
 				E5C261492919D15E00623C0E /* MyRoommateBottomAlertVC.swift in Sources */,
 				E5DDA26F292D9CC8003B46BA /* KakaoPopup.swift in Sources */,
 				E55DE2F92896DDC6004F1401 /* CalendarUtilities.swift in Sources */,
