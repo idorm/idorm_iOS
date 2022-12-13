@@ -5,6 +5,10 @@ import RxCocoa
 import Alamofire
 import Moya
 
+struct ResponseModel<Model: Codable>: Codable {
+  let data: Model
+}
+
 final class APIService {
   static let baseURL = "https://idorm.inuappcenter.kr"
   
@@ -25,8 +29,4 @@ final class APIService {
       "X-AUTH-TOKEN": TokenStorage.instance.loadToken()
     ]
   }
-}
-
-struct ResponseModel<Model: Codable>: Codable {
-  let data: Model
 }

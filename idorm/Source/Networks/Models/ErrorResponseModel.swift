@@ -117,4 +117,11 @@ enum ErrorCode: String, Codable {
   case CANNOT_UPDATE_NICKNAME
   /// 본인의 글에 공감할 수 없습니다.
   case CANNOT_LIKED_SELF
+  
+  /**
+   500 INTERNAL_SERVER_ERROR : 서버 에러
+   */
+  
+  // 서버 에러
+  case INTERNAL_SERVER_ERROR
 }
