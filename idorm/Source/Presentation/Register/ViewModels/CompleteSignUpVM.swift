@@ -2,6 +2,7 @@ import Foundation
 
 import RxSwift
 import RxCocoa
+import RxMoya
 
 final class CompleteSignUpViewModel: ViewModel {
   struct Input {
@@ -10,6 +11,7 @@ final class CompleteSignUpViewModel: ViewModel {
   
   struct Output {
     let presentOnboardingVC = PublishSubject<Void>()
+    let presentPopupVC = PublishSubject<String>()
     let isLoading = PublishSubject<Bool>()
   }
   
@@ -24,19 +26,39 @@ final class CompleteSignUpViewModel: ViewModel {
     let email = Logger.instance.currentEmail.value
     let password = Logger.instance.currentPassword.value
     
-    // 로그인 버튼 클릭 -> 회원가입API 요청
+    // 로그인 버튼 클릭 -> 로그인 API 요청
     input.continueButtonDidTap
-      .do(onNext: { [weak self] in self?.output.isLoading.onNext(true) })
-      .flatMap { APIService.memberProvider.rx.request(.login(id: email, pw: password)) }
-      .map(ResponseModel<MemberModel.MyInformation>.self)
-      .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(false) })
-      .subscribe(onNext: { [weak self] response in
-        let token = response.data.loginToken
-        TokenStorage.instance.saveToken(token: token ?? "")
-        SharedAPI.instance.retrieveMyInformation()
-        SharedAPI.instance.retrieveMyOnboarding()
-        self?.output.presentOnboardingVC.onNext(Void())
-      })
+      .withUnretained(self)
+      .do { $0.0.output.isLoading.onNext(true) }
+      .flatMap { _ in
+        APIService.memberProvider.rx.request(.login(id: email, pw: password))
+          .asObservable()
+          .materialize()
+      }
+      .withUnretained(self)
+      .subscribe { owner, event in
+        owner.output.isLoading.onNext(false)
+        
+        switch event {
+        case .next(let response):
+          if response.statusCode == 200 {
+            let info = APIService.decode(
+              ResponseModel<MemberModel.MyInformation>.self,
+              data: response.data
+            ).data
+            MemberInfoStorage.instance.saveMyInformation(from: info)
+            TokenStorage.instance.saveToken(token: info.loginToken ?? "")
+            owner.output.presentOnboardingVC.onNext(Void())
+          } else {
+            let error = APIService.decode(ErrorResponseModel.self, data: response.data)
+            owner.output.presentPopupVC.onNext(error.message)
+          }
+        case .error:
+          owner.output.presentPopupVC.onNext("네트워크를 다시 확인해주세요.")
+        case .completed:
+          break
+        }
+      }
       .disposed(by: disposeBag)
   }
 }

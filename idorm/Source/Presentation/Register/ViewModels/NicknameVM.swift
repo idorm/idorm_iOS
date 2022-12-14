@@ -2,6 +2,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxMoya
 
 final class NicknameViewModel: ViewModel {
   struct Input {
@@ -56,42 +57,48 @@ final class NicknameViewModel: ViewModel {
     
     // 텍스트필드 포커싱 해제 -> 체크버튼 유무
     input.textFieldEditingDidEnd
-      .map { [weak self] in self?.isValidCondition.value ?? false }
+      .withUnretained(self)
+      .map { $0.0.isValidCondition.value }
       .map { $0 ? false : true }
       .bind(to: output.isHiddenCheckmark)
       .disposed(by: disposeBag)
     
     // 텍스트 필드 포커싱 해제 -> 글자수 텍스트 컬러 변경
     input.textFieldEditingDidEnd
-      .map { [weak self] in self?.isValidTextCountCondition.value ?? false }
+      .withUnretained(self)
+      .map { $0.0.isValidTextCountCondition.value }
       .map { $0 ? UIColor.idorm_blue : UIColor.idorm_red }
       .bind(to: output.countConditionLabelTextColor)
       .disposed(by: disposeBag)
     
     // 텍스트 필드 포커싱 해제 -> 공백 텍스트 컬러 변경
     input.textFieldEditingDidEnd
-      .map { [weak self] in self?.isValidSpacingCondition.value ?? false }
+      .withUnretained(self)
+      .map { $0.0.isValidSpacingCondition.value }
       .map { $0 ? UIColor.idorm_blue : UIColor.idorm_red }
       .bind(to: output.spacingConditionLabelTextColor)
       .disposed(by: disposeBag)
 
     // 텍스트 필드 포커싱 해제 -> 특수문자 텍스트 컬러 변경
     input.textFieldEditingDidEnd
-      .map { [weak self] in self?.isValidTextCondition.value ?? false }
+      .withUnretained(self)
+      .map { $0.0.isValidTextCondition.value }
       .map { $0 ? UIColor.idorm_blue : UIColor.idorm_red }
       .bind(to: output.textConditionLabelTextColor)
       .disposed(by: disposeBag)
     
     // 텍스트 필드 포커싱 해제 -> 텍스트 필드 모서리 컬러 변경
     input.textFieldEditingDidEnd
-      .map { [weak self] in self?.isValidCondition.value ?? false }
+      .withUnretained(self)
+      .map { $0.0.isValidCondition.value }
       .map { $0 ? UIColor.idorm_gray_300.cgColor : UIColor.idorm_red.cgColor }
       .bind(to: output.textFieldBorderColor)
       .disposed(by: disposeBag)
 
     // 완료 버튼 -> 오류 팝업 창 띄우기
     input.confirmButtonDidTap
-      .map { [weak self] in self?.isValidCondition.value ?? false }
+      .withUnretained(self)
+      .map { $0.0.isValidCondition.value }
       .filter { $0 == false }
       .map { _ in "조건을 다시 확인해주세요." }
       .bind(to: output.presentPopupVC)
@@ -122,43 +129,71 @@ final class NicknameViewModel: ViewModel {
     case .signUp:
       // 완료버튼 -> 회원가입 API
       input.confirmButtonDidTap
-        .map { [weak self] in self?.isValidCondition.value ?? false }
-        .filter { $0 }
-        .map { [unowned self] _ in (email, password, self.currentText) }
-        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(true) })
-        .flatMap { APIService.memberProvider.rx.request(.register(id: $0.0, pw: $0.1, nickname: $0.2)) }
-        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(false) })
-        .subscribe(onNext: { [weak self] response in
-          switch response.statusCode {
-          case (200..<300):
-            self?.output.presentCompleteSignUpVC.onNext(Void())
-          case 409:
-            self?.output.presentPopupVC.onNext("이미 존재하는 닉네임입니다.")
-          default: fatalError(response.description)
+        .withUnretained(self)
+        .filter { $0.0.isValidCondition.value }
+        .do { $0.0.output.isLoading.onNext(true) }
+        .map { (email, password, $0.0.currentText) }
+        .flatMap {
+          APIService.memberProvider.rx.request(.register(id: $0.0, pw: $0.1, nickname: $0.2))
+            .asObservable()
+            .materialize()
+        }
+        .withUnretained(self)
+        .subscribe(onNext: { owner, event in
+          owner.output.isLoading.onNext(false)
+          switch event {
+          case .next(let response):
+            if response.statusCode == 200 {
+              owner.output.presentCompleteSignUpVC.onNext(Void())
+            } else {
+              let error = APIService.decode(ErrorResponseModel.self, data: response.data)
+              owner.output.presentPopupVC.onNext(error.message)
+            }
+          case .error:
+            owner.output.presentPopupVC.onNext("네트워크를 다시 확인해주세요.")
+          case .completed:
+            break
           }
         })
         .disposed(by: disposeBag)
       
     case .update:
-      // 완료버튼 -> 비밀번호 변경 API
+      // 완료버튼 -> 닉네임 변경 API 요청
       input.confirmButtonDidTap
-        .map { [weak self] in self?.isValidCondition.value ?? false }
+        .withUnretained(self)
+        .map { $0.0.isValidCondition.value }
         .filter { $0 }
-        .map { [unowned self] _ in self.currentText }
-        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(true) })
-        .flatMap { APIService.memberProvider.rx.request(.changeNickname(nickname: $0)) }
-        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(false) })
-        .subscribe(onNext: { [weak self] response in
-          switch response.statusCode {
-          case (200..<300):
-            let newValue = APIService.decode(ResponseModel<MemberModel.MyInformation>.self, data: response.data).data
-            MemberInfoStorage.instance.myInformation.accept(newValue)
-            self?.output.popVC.onNext(Void())
-          case 409:
-            self?.output.presentPopupVC.onNext("이미 존재하는 닉네임입니다.")
-          default: fatalError("닉네임을 변경하지 못했습니다! ")
+        .withUnretained(self)
+        .do { $0.0.output.isLoading.onNext(true) }
+        .map { $0.0.currentText }
+        .flatMap {
+          APIService.memberProvider.rx.request(.changeNickname(nickname: $0))
+            .asObservable()
+            .materialize()
+        }
+        .withUnretained(self)
+        .subscribe { owner, event in
+          owner.output.isLoading.onNext(false)
+          
+          switch event {
+          case .next(let response):
+            if response.statusCode == 200 {
+              let info = APIService.decode(
+                ResponseModel<MemberModel.MyInformation>.self,
+                data: response.data
+              ).data
+              MemberInfoStorage.instance.saveMyInformation(from: info)
+              owner.output.popVC.onNext(Void())
+            } else {
+              let error = APIService.decode(ErrorResponseModel.self, data: response.data)
+              owner.output.presentPopupVC.onNext(error.message)
+            }
+          case .error:
+            owner.output.presentPopupVC.onNext("네트워크를 다시 확인해주세요.")
+          case .completed:
+            break
           }
-        })
+        }
         .disposed(by: disposeBag)
     }
   }

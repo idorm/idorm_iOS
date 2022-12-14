@@ -59,7 +59,7 @@ final class LoginViewModel: ViewModel {
       }
       .withUnretained(self)
       .do(onNext: { $0.0.output.isLoading.onNext(false) })
-      .subscribe(onNext: { owner, event in
+      .subscribe { owner, event in
         switch event {
         case .next(let response):
           if response.statusCode == 200 {
@@ -70,6 +70,7 @@ final class LoginViewModel: ViewModel {
             TokenStorage.instance.saveToken(token: info.loginToken ?? "")
             MemberInfoStorage.instance.saveMyInformation(from: info)
             SharedAPI.instance.retrieveMyOnboarding()
+            owner.output.presentTabBarVC.onNext(Void())
           } else {
             let error = APIService.decode(ErrorResponseModel.self, data: response.data)
             owner.output.presentPopupVC.onNext(error.message)
@@ -78,7 +79,7 @@ final class LoginViewModel: ViewModel {
           owner.output.presentPopupVC.onNext("네트워크를 다시 확인해주세요.")
         default: break
         }
-      })
+      }
       .disposed(by: disposeBag)
   }
   

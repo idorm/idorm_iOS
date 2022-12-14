@@ -78,9 +78,8 @@ final class MatchingViewModel: ViewModel {
     // 왼쪽 스와이프, 버튼 -> 싫어요 멤버 추가 API 요청
     input.leftSwipeDidEnd
       .withUnretained(self)
-      .do(onNext: { $0.0.output.isLoading.accept(true) })
+      .do { $0.0.output.isLoading.accept(true) }
       .flatMap { APIService.matchingProvider.rx.request(.addDisliked($0.1)) }
-      .filterSuccessfulStatusCodes()
       .map { _ in false }
       .bind(to: output.isLoading)
       .disposed(by: disposeBag)
@@ -88,9 +87,8 @@ final class MatchingViewModel: ViewModel {
     // 오른쪽 스와이프, 버튼 -> 좋아요 멤버 추가 API 요청
     input.rightSwipeDidEnd
       .withUnretained(self)
-      .do(onNext: { $0.0.output.isLoading.accept(true) })
+      .do { $0.0.output.isLoading.accept(true) }
       .flatMap { APIService.matchingProvider.rx.request(.addLiked($0.1)) }
-      .filterSuccessfulStatusCodes()
       .map { _ in false }
       .bind(to: output.isLoading)
       .disposed(by: disposeBag)
@@ -156,13 +154,20 @@ final class MatchingViewModel: ViewModel {
       .withUnretained(self)
       .do(onNext: { $0.0.output.isLoading.accept(true) })
       .map { _ in true }
-      .flatMap { APIService.onboardingProvider.rx.request(.modifyPublic($0)) }
-      .map(ResponseModel<OnboardingModel.MyOnboarding>.self)
+      .flatMap {
+        APIService.onboardingProvider.rx.request(.modifyPublic($0))
+      }
+      .retry()
       .withUnretained(self)
       .subscribe(onNext: { owner, response in
-        let newValue = response.data
-        MemberInfoStorage.instance.myOnboarding.accept(newValue)
-        owner.retrieveMembers()
+        owner.output.isLoading.accept(false)
+        
+        if response.statusCode == 204 {
+          owner.retrieveMembers()
+          SharedAPI.instance.retrieveMyOnboarding()
+        } else {
+          fatalError() // TODO: 에러 처리하기
+        }
       })
       .disposed(by: disposeBag)
     
@@ -251,46 +256,54 @@ extension MatchingViewModel {
     output.isLoading.accept(true)
     APIService.matchingProvider.rx.request(.retrieve)
       .asObservable()
-      .subscribe(onNext: { [weak self] response in
-        guard let self = self else { return }
+      .withUnretained(self)
+      .subscribe { owner, response in
         switch response.statusCode {
         case 200: // 매칭멤버 조회 완료
-          let newMembers = APIService.decode(ResponseModel<[MatchingModel.Member]>.self, data: response.data).data
-          self.matchingMembers.accept(newMembers)
+          let newMembers = APIService.decode(
+            ResponseModel<[MatchingModel.Member]>.self,
+            data: response.data
+          ).data
+          owner.matchingMembers.accept(newMembers)
         case 204: // 매칭되는 멤버가 없습니다.
-          self.matchingMembers.accept([])
+          owner.matchingMembers.accept([])
         default:
           fatalError()
         }
-        self.output.dismissNoSharePopupVC.onNext(Void())
-        self.output.isLoading.accept(false)
-        self.output.reloadCardStack.onNext(Void())
-        self.output.informationImageViewStatus.onNext(.noMatchingCardInformation)
-      })
+        owner.output.dismissNoSharePopupVC.onNext(Void())
+        owner.output.isLoading.accept(false)
+        owner.output.reloadCardStack.onNext(Void())
+        owner.output.informationImageViewStatus.onNext(.noMatchingCardInformation)
+      }
       .disposed(by: disposeBag)
   }
   
   /// 필터링된 매칭 멤버 조회
   private func retrieveFilteredMembers() {
     guard let filter = MatchingFilterStorage.shared.matchingFilterObserver.value else { return }
+    output.isLoading.accept(true)
     
-    APIService.matchingProvider.rx.request(.retrieveFiltered(filter: filter)).asObservable()
-      .do(onNext: { [weak self] _ in
-        self?.output.isLoading.accept(true)
-      })
-      .subscribe(onNext: { [weak self] response in
+    APIService.matchingProvider.rx.request(.retrieveFiltered(filter: filter))
+      .asObservable()
+      .withUnretained(self)
+      .debug()
+      .subscribe { owner, response in
+        owner.output.isLoading.accept(false)
+        
         switch response.statusCode {
         case 200:
-          let members = APIService.decode(ResponseModel<[MatchingModel.Member]>.self, data: response.data).data
-          self?.matchingMembers.accept(members)
+          let members = APIService.decode(
+            ResponseModel<[MatchingModel.Member]>.self,
+            data: response.data
+          ).data
+          owner.matchingMembers.accept(members)
         case 204:
-          self?.matchingMembers.accept([])
+          owner.matchingMembers.accept([])
         default:
           fatalError("필터링을 실패했습니다,,,")
         }
-        self?.output.reloadCardStack.onNext(Void())
-        self?.output.isLoading.accept(false)
-      })
+        owner.output.reloadCardStack.onNext(Void())
+      }
       .disposed(by: disposeBag)
   }
 }

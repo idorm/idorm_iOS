@@ -26,53 +26,12 @@ final class PutEmailViewModel: ViewModel {
     self.vcType = vcType
     mutate()
     
-    switch vcType {
-    case .signUp:
-      // 인증번호 받기 -> 회원가입 인증 API호출
-      input.confirmButtonDidTap
-        .map { [weak self] in self?.currentEmail.value ?? "" }
-        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(true) })
-        .flatMap { APIService.emailProvider.rx.request(.emailAuthentication(email: $0)) }
-        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(false) })
-        .subscribe(onNext: { [weak self] response in
-          switch response.statusCode {
-          case 200:
-            self?.output.presentAuthVC.onNext(Void())
-          case 400:
-            self?.output.presentPopupVC.onNext("이메일을 입력해주세요.")
-          case 401:
-            self?.output.presentPopupVC.onNext("올바른 이메일 형식이 아닙니다.")
-          case 409:
-            self?.output.presentPopupVC.onNext("이미 가입된 이메일입니다.")
-          default:
-            self?.output.presentPopupVC.onNext("이메일을 다시 한번 확인해주세요.")
-          }
-        })
-        .disposed(by: disposeBag)
-      
-    case .findPW, .updatePW:
-      // 인증번호 받기 -> 비밀번호 인증 API호출
-      input.confirmButtonDidTap
-        .map { [weak self] in self?.currentEmail.value ?? "" }
-        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(true) })
-        .flatMap { APIService.emailProvider.rx.request(.pwAuthentication(email: $0)) }
-        .do(onNext: { [weak self] _ in self?.output.isLoading.onNext(false) })
-        .subscribe(onNext: { [weak self] response in
-          switch response.statusCode {
-          case 200:
-            self?.output.presentAuthVC.onNext(Void())
-          case 400:
-            self?.output.presentPopupVC.onNext("이메일을 입력해주세요.")
-          case 401:
-            self?.output.presentPopupVC.onNext("올바른 이메일 형식이 아닙니다.")
-          case 409:
-            self?.output.presentPopupVC.onNext("이미 가입된 이메일입니다.")
-          default:
-            self?.output.presentPopupVC.onNext("이메일을 다시 한번 확인해주세요.")
-          }
-        })
-        .disposed(by: disposeBag)
-    }
+    // 확인 버튼 -> API 요청
+    input.confirmButtonDidTap
+      .withUnretained(self)
+      .map { ($0.0, $0.0.currentEmail.value) }
+      .subscribe { $0.0.requestAuthenticationMail($0.1) }
+      .disposed(by: disposeBag)
   }
 
   private func mutate() {
@@ -99,6 +58,60 @@ final class PutEmailViewModel: ViewModel {
       Observable.empty()
         .map { AuthenticationType.password }
         .bind(to: Logger.instance.authenticationType)
+        .disposed(by: disposeBag)
+    }
+  }
+}
+
+// MARK: - Network
+
+extension PutEmailViewModel {
+  func requestAuthenticationMail(_ email: String) {
+    output.isLoading.onNext(true)
+    
+    switch vcType {
+    case .signUp:
+      APIService.emailProvider.rx.request(.emailAuthentication(email: email))
+        .asObservable()
+        .materialize()
+        .withUnretained(self)
+        .subscribe { owner, event in
+          owner.output.isLoading.onNext(false)
+          switch event {
+          case .next(let response):
+            if response.statusCode == 200 {
+              owner.output.presentAuthVC.onNext(Void())
+            } else {
+              let error = APIService.decode(ErrorResponseModel.self, data: response.data)
+              owner.output.presentPopupVC.onNext(error.message)
+            }
+          case .error:
+            owner.output.presentPopupVC.onNext("네트워크를 확인해주세요.")
+          default: break
+          }
+        }
+        .disposed(by: disposeBag)
+      
+    case .findPW, .updatePW:
+      APIService.emailProvider.rx.request(.pwAuthentication(email: email))
+        .asObservable()
+        .materialize()
+        .withUnretained(self)
+        .subscribe { owner, event in
+          owner.output.isLoading.onNext(false)
+          switch event {
+          case .next(let response):
+            if response.statusCode == 200 {
+              owner.output.presentAuthVC.onNext(Void())
+            } else {
+              let error = APIService.decode(ErrorResponseModel.self, data: response.data)
+              owner.output.presentPopupVC.onNext(error.message)
+            }
+          case .error:
+            owner.output.presentPopupVC.onNext("네트워크를 확인해주세요.")
+          default: break
+          }
+        }
         .disposed(by: disposeBag)
     }
   }

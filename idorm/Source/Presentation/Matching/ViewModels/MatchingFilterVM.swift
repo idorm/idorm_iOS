@@ -129,9 +129,9 @@ final class MatchingFilterViewModel: ViewModel {
         newVerifier.period = true
         switch period {
         case .period_16:
-          newFilter.period = .period_16
+          newFilter.joinPeriod = .period_16
         case .period_24:
-          newFilter.period = .period_24
+          newFilter.joinPeriod = .period_24
         }
         self.matchingFilterStorage.matchingFilterObserver.accept(newFilter)
         self.state.confirmVerifierObserver.accept(newVerifier)

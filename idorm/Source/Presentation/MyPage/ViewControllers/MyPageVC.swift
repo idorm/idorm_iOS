@@ -149,6 +149,8 @@ final class MyPageViewController: BaseViewController {
     
     // 공유 버튼 토클
     viewModel.output.toggleShareButton
+      .withUnretained(self)
+      .map { !($0.0.matchingContainerView.shareButton.isSelected) }
       .bind(to: matchingContainerView.shareButton.rx.isSelected)
       .disposed(by: disposeBag)
     

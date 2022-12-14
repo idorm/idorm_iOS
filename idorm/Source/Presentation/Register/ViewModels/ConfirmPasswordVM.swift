@@ -2,6 +2,7 @@ import UIKit
 
 import RxSwift
 import RxCocoa
+import RxMoya
 
 final class ConfirmPasswordViewModel: ViewModel {
   
@@ -149,26 +150,42 @@ final class ConfirmPasswordViewModel: ViewModel {
       
       // 확인 버튼 -> ConfirmNicknameVC
       input.confirmButtonDidTap
-        .filter { [weak self] in self?.isValidWholeCondition.value ?? false }
+        .withUnretained(self)
+        .filter { $0.0.isValidWholeCondition.value }
+        .map { _ in Void() }
         .bind(to: output.pushToConfirmNicknameVC)
         .disposed(by: disposeBag)
 
     case .findPW, .updatePW:
       
-      // 확인 버튼 -> LoginVC로 이동
+      // 확인 버튼 -> 비밀번호 변경 API 요청
       input.confirmButtonDidTap
-        .filter { [weak self] in self?.isValidWholeCondition.value ?? false }
+        .withUnretained(self)
+        .filter { $0.0.isValidWholeCondition.value }
+        .do { $0.0.output.isLoading.onNext(true) }
         .map { _ in (currentEmail, currentPassword) }
-        .flatMap { APIService.memberProvider.rx.request(.changePassword(id: $0.0, pw: $0.1)) }
-        .subscribe(onNext: { [weak self] response in
-          switch response.statusCode {
-          case 200:
-            self?.output.presentPopupVC.onNext("비밀번호가 변경 되었습니다.")
-            self?.output.presentLoginVC.onNext(Void())
-          case 400:
-            self?.output.presentPopupVC.onNext("입력은 필수입니다.")
-          default:
-            fatalError("비밀번호 변경 실패했습니다,,,")
+        .flatMap {
+          APIService.memberProvider.rx.request(.changePassword(id: $0.0, pw: $0.1))
+            .asObservable()
+            .materialize()
+        }
+        .withUnretained(self)
+        .subscribe(onNext: { owner, event in
+          owner.output.isLoading.onNext(false)
+          
+          switch event {
+          case .next(let response):
+            if response.statusCode == 200 {
+              owner.output.presentPopupVC.onNext("비밀번호가 변경 되었습니다.")
+              owner.output.presentLoginVC.onNext(Void())
+            } else {
+              let error = APIService.decode(ErrorResponseModel.self, data: response.data)
+              owner.output.presentPopupVC.onNext(error.message)
+            }
+          case .error:
+            owner.output.presentPopupVC.onNext("네트워크를 다시 확인해주세요.")
+          case .completed:
+            break
           }
         })
         .disposed(by: disposeBag)

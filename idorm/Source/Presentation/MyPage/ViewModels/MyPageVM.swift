@@ -1,5 +1,6 @@
 import RxSwift
 import RxCocoa
+import RxMoya
 import RxOptional
 
 final class MyPageViewModel: ViewModel {
@@ -22,7 +23,7 @@ final class MyPageViewModel: ViewModel {
     let presentNoMatchingInfoPopupVC = PublishSubject<Void>()
     let dismissPopupVC = PublishSubject<Void>()
     let isLoading = PublishSubject<Bool>()
-    let toggleShareButton = PublishSubject<Bool>()
+    let toggleShareButton = PublishSubject<Void>()
     let updateShareButton = PublishSubject<Bool>()
     let updateNickname = PublishSubject<String>()
   }
@@ -37,24 +38,31 @@ final class MyPageViewModel: ViewModel {
     
     // 공유 버튼 클릭 -> 매칭 공개 여부 수정 API 요청
     input.shareButtonDidTap
-      .filter { _ in MemberInfoStorage.instance.hasMatchingInfo }
       .withUnretained(self)
-      .do(onNext: { owner, _ in owner.output.isLoading.onNext(true) })
-      .flatMap { APIService.onboardingProvider.rx.request(.modifyPublic($0.1)) }
-      .map(ResponseModel<OnboardingModel.MyOnboarding>.self)
+      .do { $0.0.output.isLoading.onNext(true) }
+      .flatMap {
+        APIService.onboardingProvider.rx.request(.modifyPublic($0.1))
+          .asObservable()
+      }
+      .retry()
       .withUnretained(self)
       .subscribe(onNext: { owner, response in
-        MemberInfoStorage.instance.saveMyOnboarding(from: response.data)
-        owner.output.toggleShareButton.onNext(response.data.isMatchingInfoPublic)
         owner.output.isLoading.onNext(false)
+        
+        if response.statusCode == 204 {
+          SharedAPI.instance.retrieveMyOnboarding()
+          owner.output.toggleShareButton.onNext(Void())
+        } else {
+          let error = APIService.decode(ErrorResponseModel.self, data: response.data)
+          
+          switch error.code {
+          case .MATCHING_INFO_NOT_FOUND:
+            owner.output.presentNoMatchingInfoPopupVC.onNext(Void())
+          default:
+            break
+          }
+        }
       })
-      .disposed(by: disposeBag)
-    
-    // 공유 버튼 클릭 -> 프로필 이미지 만들기 PopupVC
-    input.shareButtonDidTap
-      .filter { _ in MemberInfoStorage.instance.hasMatchingInfo == false }
-      .map { _ in Void() }
-      .bind(to: output.presentNoMatchingInfoPopupVC)
       .disposed(by: disposeBag)
     
     // 설정 버튼 클릭 -> 내 정보 관리 페이지로 이동

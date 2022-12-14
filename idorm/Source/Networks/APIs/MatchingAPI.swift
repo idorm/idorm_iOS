@@ -24,9 +24,13 @@ extension MatchingAPI: TargetType {
     switch self {
     case .retrieve:
       return "/member/matching"
-    case .retrieveLiked, .addLiked, .deleteLiked:
+    case .retrieveLiked:
       return "/member/matching/like"
-    case .retrieveDisliked, .addDisliked, .deleteDisliked:
+    case .addLiked(let id), .deleteLiked(let id):
+      return "/member/matching/like/\(id)"
+    case .addDisliked(let id), .deleteDisliked(let id):
+      return "/member/matching/dislike/\(id)"
+    case .retrieveDisliked:
       return "/member/matching/dislike"
     case .retrieveFiltered:
       return "/member/matching/filter"
@@ -35,9 +39,9 @@ extension MatchingAPI: TargetType {
   
   var method: Moya.Method {
     switch self {
-    case .retrieve, .retrieveLiked, .retrieveDisliked, .retrieveFiltered:
+    case .retrieve, .retrieveLiked, .retrieveDisliked:
       return .get
-    case .addLiked, .addDisliked:
+    case .addLiked, .addDisliked, .retrieveFiltered:
       return .post
     case .deleteLiked, .deleteDisliked:
       return .delete
@@ -46,20 +50,11 @@ extension MatchingAPI: TargetType {
   
   var task: Moya.Task {
     switch self {
-    case .retrieve, .retrieveLiked, .retrieveDisliked:
-      return .requestPlain
-      
     case .retrieveFiltered(let filter):
-      let param = filter.toDictionary!
-      return .requestParameters(
-        parameters: param,
-        encoding: URLEncoding.queryString
-      )
+      return .requestJSONEncodable(filter)
       
-    case .deleteDisliked(let id), .deleteLiked(let id), .addLiked(let id), .addDisliked(let id):
-      return .requestParameters(parameters: [
-        "selectedMemberId": id
-      ], encoding: URLEncoding.queryString)
+    default:
+      return .requestPlain
     }
   }
   

@@ -74,6 +74,16 @@ final class CompleteSignUpViewController: BaseViewController {
       })
       .disposed(by: disposeBag)
     
+    // 팝업 창 띄우기
+    viewModel.output.presentPopupVC
+      .withUnretained(self)
+      .bind { owner, content in
+        let viewController = BasicPopup(contents: content)
+        viewController.modalPresentationStyle = .overFullScreen
+        owner.present(viewController, animated: false)
+      }
+      .disposed(by: disposeBag)
+    
     // 로딩 인디케이터
     viewModel.output.isLoading
       .bind(to: indicator.rx.isAnimating)
