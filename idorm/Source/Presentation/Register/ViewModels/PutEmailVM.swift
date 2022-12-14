@@ -1,5 +1,6 @@
 import RxSwift
 import RxCocoa
+import RxMoya
 
 final class PutEmailViewModel: ViewModel {
   struct Input {
@@ -18,23 +19,21 @@ final class PutEmailViewModel: ViewModel {
   var input = Input()
   var output = Output()
   var disposeBag = DisposeBag()
-  private let vcType: RegisterVCTypes.PutEmailVCType
   
   let currentEmail = BehaviorRelay<String>(value: "")
   
+  let requestAuthenticationMail = PublishSubject<String>()
+  
+  // MARK: - Bind
+  
   init(_ vcType: RegisterVCTypes.PutEmailVCType) {
-    self.vcType = vcType
-    mutate()
     
     // 확인 버튼 -> API 요청
     input.confirmButtonDidTap
       .withUnretained(self)
       .map { ($0.0, $0.0.currentEmail.value) }
-      .subscribe { $0.0.requestAuthenticationMail($0.1) }
+      .subscribe { $0.requestAuthenticationMail.onNext($1) }
       .disposed(by: disposeBag)
-  }
-
-  private func mutate() {
     
     // 텍스트 필드 변경 -> 프로퍼티로 저장
     input.textFieldDidChange
@@ -54,26 +53,15 @@ final class PutEmailViewModel: ViewModel {
         .bind(to: Logger.instance.authenticationType)
         .disposed(by: disposeBag)
       
-    case .findPW, .updatePW:
-      Observable.empty()
-        .map { AuthenticationType.password }
-        .bind(to: Logger.instance.authenticationType)
-        .disposed(by: disposeBag)
-    }
-  }
-}
-
-// MARK: - Network
-
-extension PutEmailViewModel {
-  func requestAuthenticationMail(_ email: String) {
-    output.isLoading.onNext(true)
-    
-    switch vcType {
-    case .signUp:
-      APIService.emailProvider.rx.request(.emailAuthentication(email: email))
-        .asObservable()
-        .materialize()
+      // 메일 인증 요청 API
+      requestAuthenticationMail
+        .withUnretained(self)
+        .do { $0.0.output.isLoading.onNext(true) }
+        .flatMap {
+          APIService.emailProvider.rx.request(.emailAuthentication(email: $1))
+            .asObservable()
+            .materialize()
+        }
         .withUnretained(self)
         .subscribe { owner, event in
           owner.output.isLoading.onNext(false)
@@ -93,9 +81,20 @@ extension PutEmailViewModel {
         .disposed(by: disposeBag)
       
     case .findPW, .updatePW:
-      APIService.emailProvider.rx.request(.pwAuthentication(email: email))
-        .asObservable()
-        .materialize()
+      Observable.empty()
+        .map { AuthenticationType.password }
+        .bind(to: Logger.instance.authenticationType)
+        .disposed(by: disposeBag)
+      
+      // 메일 인증 요청 API
+      requestAuthenticationMail
+        .withUnretained(self)
+        .do { $0.0.output.isLoading.onNext(true) }
+        .flatMap {
+          APIService.emailProvider.rx.request(.pwAuthentication(email: $1))
+            .asObservable()
+            .materialize()
+        }
         .withUnretained(self)
         .subscribe { owner, event in
           owner.output.isLoading.onNext(false)

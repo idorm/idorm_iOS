@@ -2,6 +2,7 @@ import Foundation
 
 import RxSwift
 import RxCocoa
+import RxMoya
 
 final class AuthNumberViewModel: ViewModel {
   struct Input {
@@ -26,10 +27,12 @@ final class AuthNumberViewModel: ViewModel {
   
   let currentCode = BehaviorRelay<String>(value: "")
   
+  let requestVerificationMail = PublishSubject<String>()
+  let requestAuthenticationMail = PublishSubject<Void>()
+  
   // MARK: - Bind
   
   init() {
-    mutate()
     let authenticationType = Logger.instance.authenticationType.value
     let email = Logger.instance.currentEmail.value
     
@@ -37,39 +40,32 @@ final class AuthNumberViewModel: ViewModel {
     input.confirmButtonDidTap
       .withUnretained(self)
       .map { ($0.0, $0.0.currentCode.value) }
-      .subscribe { $0.0.requestVerificationMail($0.1) }
+      .subscribe { $0.requestVerificationMail.onNext($1) }
       .disposed(by: disposeBag)
     
     // 인증번호 재요청 버튼 클릭 -> 인증메일 발송 API 요청
     input.authOnemoreButtonDidTap
       .withUnretained(self)
-      .subscribe { $0.0.requestAuthenticationMail() }
+      .subscribe { $0.0.requestAuthenticationMail.onNext(Void()) }
       .disposed(by: disposeBag)
-  }
-  
-  private func mutate() {
     
     input.textFieldDidChange
       .bind(to: currentCode)
       .disposed(by: disposeBag)
-  }
-}
-
-// MARK: - Network
-
-extension AuthNumberViewModel {
-  private func requestVerificationMail(_ code: String) {
-    let email = Logger.instance.currentEmail.value
-    let authType = Logger.instance.authenticationType.value
     
-    output.isLoading.onNext(true)
-    
-    switch authType {
-      
+    switch authenticationType {
     case .signUp:
-      APIService.emailProvider.rx.request(.emailVerification(email: email, code: code))
-        .asObservable()
-        .materialize()
+      
+      // 이메일 검증 요청 API
+      requestVerificationMail
+        .withUnretained(self)
+        .do { $0.0.output.isLoading.onNext(true) }
+        .map { $0.0.currentCode.value }
+        .flatMap {
+          APIService.emailProvider.rx.request(.emailVerification(email: email, code: $0))
+            .asObservable()
+            .materialize()
+        }
         .withUnretained(self)
         .subscribe { owner, event in
           owner.output.isLoading.onNext(false)
@@ -89,43 +85,15 @@ extension AuthNumberViewModel {
         }
         .disposed(by: disposeBag)
       
-    case .password:
-      APIService.emailProvider.rx.request(.pwVerification(email: email, code: code))
-        .asObservable()
-        .materialize()
+      // 인증 메일 요청 API
+      requestAuthenticationMail
         .withUnretained(self)
-        .subscribe { owner, event in
-          owner.output.isLoading.onNext(false)
-          switch event {
-          case .next(let response):
-            if response.statusCode == 200 {
-              owner.output.dismissVC.onNext(Void())
-            } else {
-              let error = APIService.decode(ErrorResponseModel.self, data: response.data)
-              owner.output.presentPopupVC.onNext(error.message)
-            }
-          case .error:
-            owner.output.presentPopupVC.onNext("네트워크를 다시 확인해주세요.")
-          case .completed:
-            break
-          }
+        .do { $0.0.output.isLoading.onNext(true) }
+        .flatMap { _ in
+          APIService.emailProvider.rx.request(.emailAuthentication(email: email))
+            .asObservable()
+            .materialize()
         }
-        .disposed(by: disposeBag)
-    }
-  }
-  
-  private func requestAuthenticationMail() {
-    let email = Logger.instance.currentEmail.value
-    let authType = Logger.instance.authenticationType.value
-    
-    output.isLoading.onNext(true)
-    
-    switch authType {
-      
-    case .signUp:
-      APIService.emailProvider.rx.request(.emailAuthentication(email: email))
-        .asObservable()
-        .materialize()
         .withUnretained(self)
         .subscribe { owner, event in
           owner.output.isLoading.onNext(false)
@@ -148,9 +116,45 @@ extension AuthNumberViewModel {
         .disposed(by: disposeBag)
       
     case .password:
-      APIService.emailProvider.rx.request(.pwAuthentication(email: email))
-        .asObservable()
-        .materialize()
+      
+      // 이메일 검증 요청 API
+      requestVerificationMail
+        .withUnretained(self)
+        .do { $0.0.output.isLoading.onNext(true) }
+        .map { $0.0.currentCode.value }
+        .flatMap {
+          APIService.emailProvider.rx.request(.pwVerification(email: email, code: $0))
+            .asObservable()
+            .materialize()
+        }
+        .withUnretained(self)
+        .subscribe { owner, event in
+          owner.output.isLoading.onNext(false)
+          switch event {
+          case .next(let response):
+            if response.statusCode == 200 {
+              owner.output.dismissVC.onNext(Void())
+            } else {
+              let error = APIService.decode(ErrorResponseModel.self, data: response.data)
+              owner.output.presentPopupVC.onNext(error.message)
+            }
+          case .error:
+            owner.output.presentPopupVC.onNext("네트워크를 다시 확인해주세요.")
+          case .completed:
+            break
+          }
+        }
+        .disposed(by: disposeBag)
+      
+      // 인증 메일 요청 API
+      requestAuthenticationMail
+        .withUnretained(self)
+        .do { $0.0.output.isLoading.onNext(true) }
+        .flatMap { _ in
+          APIService.emailProvider.rx.request(.pwAuthentication(email: email))
+            .asObservable()
+            .materialize()
+        }
         .withUnretained(self)
         .subscribe { owner, event in
           owner.output.isLoading.onNext(false)

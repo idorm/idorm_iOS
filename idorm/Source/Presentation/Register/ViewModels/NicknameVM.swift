@@ -41,7 +41,6 @@ final class NicknameViewModel: ViewModel {
   // MARK: - Bind
   
   init(_ vcType: RegisterVCTypes.NicknameVCType) {
-    mutate()
     
     // 텍스트 변화 -> 8글자 초과 입력X
     input.textDidChange
@@ -122,6 +121,34 @@ final class NicknameViewModel: ViewModel {
       .bind(to: output.spacingConditionLabelTextColor)
       .disposed(by: disposeBag)
     
+    // 유효성 조건 전체 검사
+    Observable.combineLatest(
+      isValidTextCondition.asObservable(),
+      isValidSpacingCondition.asObservable(),
+      isValidTextCountCondition.asObservable()
+    )
+    .map { $0.0 && $0.1 && $0.2 ? true : false }
+    .bind(to: isValidCondition)
+    .disposed(by: disposeBag)
+    
+    // 텍스트 글자 수 -> 글자 수 유효 조건 검사
+    output.currentTextCount
+      .map { $0 >= 2 && $0 <= 8 ? true : false }
+      .bind(to: isValidTextCountCondition)
+      .disposed(by: disposeBag)
+    
+    // 텍스트 감지 -> 공백 유무 유효 조건 검사
+    output.currentText
+      .map { $0.contains(" ") ? false : true }
+      .bind(to: isValidSpacingCondition)
+      .disposed(by: disposeBag)
+    
+    // 텍스트 감지 -> 특수문자 유효 조건 검사
+    output.currentText
+      .map { $0.isValidNickname }
+      .bind(to: isValidTextCondition)
+      .disposed(by: disposeBag)
+    
     let email = Logger.instance.currentEmail.value
     let password = Logger.instance.currentPassword.value
     
@@ -196,36 +223,5 @@ final class NicknameViewModel: ViewModel {
         }
         .disposed(by: disposeBag)
     }
-  }
-  
-  private func mutate() {
-    
-    // 유효성 조건 전체 검사
-    Observable.combineLatest(
-      isValidTextCondition.asObservable(),
-      isValidSpacingCondition.asObservable(),
-      isValidTextCountCondition.asObservable()
-    )
-    .map { $0.0 && $0.1 && $0.2 ? true : false }
-    .bind(to: isValidCondition)
-    .disposed(by: disposeBag)
-    
-    // 텍스트 글자 수 -> 글자 수 유효 조건 검사
-    output.currentTextCount
-      .map { $0 >= 2 && $0 <= 8 ? true : false }
-      .bind(to: isValidTextCountCondition)
-      .disposed(by: disposeBag)
-    
-    // 텍스트 감지 -> 공백 유무 유효 조건 검사
-    output.currentText
-      .map { $0.contains(" ") ? false : true }
-      .bind(to: isValidSpacingCondition)
-      .disposed(by: disposeBag)
-    
-    // 텍스트 감지 -> 특수문자 유효 조건 검사
-    output.currentText
-      .map { $0.isValidNickname }
-      .bind(to: isValidTextCondition)
-      .disposed(by: disposeBag)
   }
 }
