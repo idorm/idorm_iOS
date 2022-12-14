@@ -464,10 +464,9 @@ final class MatchingViewController: BaseViewController {
    // 카카오 링크 사파리로 열기
     viewModel.output.presentSafari
       .withUnretained(self)
-      .bind(onNext: { owner, link in UIApplication.shared.open(URL(string: link)!) })
+      .bind(onNext: { owner, link in UIApplication.shared.open(URL(string: "https://www.google.co.kr/")!) })
       .disposed(by: disposeBag)
   }
-
 }
 
 // MARK: - Card Swipe

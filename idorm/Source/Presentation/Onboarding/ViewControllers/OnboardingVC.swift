@@ -783,16 +783,3 @@ final class OnboardingViewController: BaseViewController {
       .disposed(by: disposeBag)
   }
 }
-
-
-// MARK: - Preview
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-struct OnboardingVC_PreView: PreviewProvider {
-  static var previews: some View {
-    OnboardingViewController(.initial).toPreview()
-  }
-}
-#endif
-

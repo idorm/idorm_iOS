@@ -40,15 +40,15 @@ final class OnboardingDetailViewModel: ViewModel {
       input.rightButtonDidTap
         .map { ModelTransformer.instance.toOnboardingRequestModel(from: $0) }
         .withUnretained(self)
-        .do(onNext: { owner, _ in owner.output.isLoading.onNext(true) })
+        .do { owner, _ in owner.output.isLoading.onNext(true) }
         .flatMap { APIService.onboardingProvider.rx.request(.save($0.1)) }
         .map(ResponseModel<OnboardingModel.MyOnboarding>.self)
         .withUnretained(self)
-        .subscribe(onNext: { owner, response in
+        .subscribe { owner, response in
           MemberInfoStorage.instance.saveMyOnboarding(from: response.data)
           owner.output.presentMainVC.onNext(Void())
           owner.output.isLoading.onNext(false)
-        })
+        }
         .disposed(by: disposeBag)
       
     case .update:

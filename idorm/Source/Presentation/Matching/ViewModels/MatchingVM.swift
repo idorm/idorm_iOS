@@ -3,6 +3,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxMoya
+import RxOptional
 
 final class MatchingViewModel: ViewModel {
   
@@ -50,6 +51,9 @@ final class MatchingViewModel: ViewModel {
   var disposeBag = DisposeBag()
   
   let matchingMembers = BehaviorRelay<[MatchingModel.Member]>(value: [])
+  
+  let retrieveMatchingMembers = PublishSubject<Void>()
+  let retrieveFilterdMembers = PublishSubject<Void>()
   
   // MARK: - Bind
   
@@ -105,9 +109,9 @@ final class MatchingViewModel: ViewModel {
         let filterStorage = MatchingFilterStorage.shared
         if state {
           if filterStorage.hasFilter {
-            owner.retrieveFilteredMembers()
+            owner.retrieveFilterdMembers.onNext(Void())
           } else {
-            owner.retrieveMembers()
+            owner.retrieveMatchingMembers.onNext(Void())
           }
           owner.output.informationImageViewStatus.onNext(.noMatchingCardInformation)
         } else {
@@ -163,7 +167,7 @@ final class MatchingViewModel: ViewModel {
         owner.output.isLoading.accept(false)
         
         if response.statusCode == 204 {
-          owner.retrieveMembers()
+          owner.retrieveMatchingMembers.onNext(Void())
           SharedAPI.instance.retrieveMyOnboarding()
         } else {
           fatalError() // TODO: 에러 처리하기
@@ -177,7 +181,7 @@ final class MatchingViewModel: ViewModel {
       .map { $0.0 }
       .subscribe(onNext: {
         if MemberInfoStorage.instance.isPublicMatchingInfo {
-          $0.retrieveMembers()
+          $0.retrieveMatchingMembers.onNext(Void())
         } else {
           $0.output.presentNoSharePopupVC.onNext(Void())
         }
@@ -190,7 +194,7 @@ final class MatchingViewModel: ViewModel {
       .map { $0.0 }
       .subscribe(onNext: {
         if MemberInfoStorage.instance.isPublicMatchingInfo {
-          $0.retrieveFilteredMembers()
+          $0.retrieveFilterdMembers.onNext(Void())
         } else {
           $0.output.presentNoSharePopupVC.onNext(Void())
         }
@@ -200,8 +204,73 @@ final class MatchingViewModel: ViewModel {
     // 오픈채팅 링크 바로가기 -> 사파리 열기
     input.kakaoLinkButtonDidTap
       .withUnretained(self)
-      .map { owner, index in owner.matchingMembers.value[index].openKakaoLink }
-      .bind(to: output.presentSafari)
+      .map { owner, index in
+        owner.matchingMembers.value[index].openKakaoLink
+      }
+      .withUnretained(self)
+      .subscribe { owner, link in
+        owner.output.dismissKakaoLinkVC.onNext(Void())
+        owner.output.presentSafari.onNext(link)
+      }
+      .disposed(by: disposeBag)
+    
+    // 매칭 멤버 불러오기 API
+    retrieveMatchingMembers
+      .withUnretained(self)
+      .do { $0.0.output.isLoading.accept(true) }
+      .flatMap { _ in
+        APIService.matchingProvider.rx.request(.retrieve)
+          .asObservable()
+      }
+      .withUnretained(self)
+      .subscribe { owner, response in
+        switch response.statusCode {
+        case 200: // 매칭멤버 조회 완료
+          let newMembers = APIService.decode(
+            ResponseModel<[MatchingModel.Member]>.self,
+            data: response.data
+          ).data
+          owner.matchingMembers.accept(newMembers)
+        case 204: // 매칭되는 멤버가 없습니다.
+          owner.matchingMembers.accept([])
+        default:
+          fatalError()
+        }
+        owner.output.dismissNoSharePopupVC.onNext(Void())
+        owner.output.isLoading.accept(false)
+        owner.output.reloadCardStack.onNext(Void())
+        owner.output.informationImageViewStatus.onNext(.noMatchingCardInformation)
+      }
+      .disposed(by: disposeBag)
+    
+    // 필터링된 매칭 멤버 불러오기 API
+    retrieveFilterdMembers
+      .withUnretained(self)
+      .do { $0.0.output.isLoading.accept(true) }
+      .map { _ in MatchingFilterStorage.shared.matchingFilterObserver.value }
+      .filterNil()
+      .flatMap {
+        APIService.matchingProvider.rx.request(.retrieveFiltered(filter: $0))
+          .asObservable()
+      }
+      .withUnretained(self)
+      .subscribe { owner, response in
+        owner.output.isLoading.accept(false)
+        
+        switch response.statusCode {
+        case 200:
+          let members = APIService.decode(
+            ResponseModel<[MatchingModel.Member]>.self,
+            data: response.data
+          ).data
+          owner.matchingMembers.accept(members)
+        case 204:
+          owner.matchingMembers.accept([])
+        default:
+          fatalError("필터링을 실패했습니다,,,")
+        }
+        owner.output.reloadCardStack.onNext(Void())
+      }
       .disposed(by: disposeBag)
   }
 }
@@ -223,7 +292,8 @@ extension MatchingViewModel {
     let storage = MemberInfoStorage.instance
     if storage.hasMatchingInfo {
       if storage.isPublicMatchingInfo {
-        MatchingFilterStorage.shared.hasFilter ? retrieveFilteredMembers() : retrieveMembers()
+        MatchingFilterStorage.shared.hasFilter ?
+        retrieveFilterdMembers.onNext(Void()) : retrieveMatchingMembers.onNext(Void())
       } else {
         output.presentNoSharePopupVC.onNext(Void())
       }
@@ -245,65 +315,5 @@ extension MatchingViewModel {
       output.presentMatchingPopupVC.onNext(Void())
       return false
     }
-  }
-}
-
-// MARK: - Network
-
-extension MatchingViewModel {
-  /// 매칭 멤버 조회 요청
-  private func retrieveMembers() {
-    output.isLoading.accept(true)
-    APIService.matchingProvider.rx.request(.retrieve)
-      .asObservable()
-      .withUnretained(self)
-      .subscribe { owner, response in
-        switch response.statusCode {
-        case 200: // 매칭멤버 조회 완료
-          let newMembers = APIService.decode(
-            ResponseModel<[MatchingModel.Member]>.self,
-            data: response.data
-          ).data
-          owner.matchingMembers.accept(newMembers)
-        case 204: // 매칭되는 멤버가 없습니다.
-          owner.matchingMembers.accept([])
-        default:
-          fatalError()
-        }
-        owner.output.dismissNoSharePopupVC.onNext(Void())
-        owner.output.isLoading.accept(false)
-        owner.output.reloadCardStack.onNext(Void())
-        owner.output.informationImageViewStatus.onNext(.noMatchingCardInformation)
-      }
-      .disposed(by: disposeBag)
-  }
-  
-  /// 필터링된 매칭 멤버 조회
-  private func retrieveFilteredMembers() {
-    guard let filter = MatchingFilterStorage.shared.matchingFilterObserver.value else { return }
-    output.isLoading.accept(true)
-    
-    APIService.matchingProvider.rx.request(.retrieveFiltered(filter: filter))
-      .asObservable()
-      .withUnretained(self)
-      .debug()
-      .subscribe { owner, response in
-        owner.output.isLoading.accept(false)
-        
-        switch response.statusCode {
-        case 200:
-          let members = APIService.decode(
-            ResponseModel<[MatchingModel.Member]>.self,
-            data: response.data
-          ).data
-          owner.matchingMembers.accept(members)
-        case 204:
-          owner.matchingMembers.accept([])
-        default:
-          fatalError("필터링을 실패했습니다,,,")
-        }
-        owner.output.reloadCardStack.onNext(Void())
-      }
-      .disposed(by: disposeBag)
   }
 }

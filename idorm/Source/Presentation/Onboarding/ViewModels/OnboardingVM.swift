@@ -1,5 +1,6 @@
 import RxSwift
 import RxCocoa
+import RxMoya
 import RxOptional
 
 final class OnboardingViewModel: ViewModel {
@@ -43,6 +44,7 @@ final class OnboardingViewModel: ViewModel {
     let reset = PublishSubject<Void>()
     let pushToOnboardingDetailVC = PublishSubject<MatchingModel.Member>()
     let presentMainVC = PublishSubject<Void>()
+    let presentPopupVC = PublishSubject<String>()
     let popToRootVC = PublishSubject<Void>()
   }
   
@@ -167,13 +169,33 @@ final class OnboardingViewModel: ViewModel {
         .map { $0.0 }
         .do(onNext: { $0.output.isLoading.onNext(true) })
         .map { $0.currentOnboarding.value }
-        .flatMap { APIService.onboardingProvider.rx.request(.modify($0)) }
-        .map(ResponseModel<OnboardingModel.MyOnboarding>.self)
+        .flatMap {
+          APIService.onboardingProvider.rx.request(.modify($0))
+            .asObservable()
+            .materialize()
+        }
         .withUnretained(self)
-        .subscribe(onNext: { owner, response in
-          MemberInfoStorage.instance.saveMyOnboarding(from: response.data)
+        .subscribe(onNext: { owner, event in
           owner.output.isLoading.onNext(false)
-          owner.output.popToRootVC.onNext(Void())
+          switch event {
+          case .next(let response):
+            switch response.statusCode {
+            case 200:
+              let onboarding = APIService.decode(
+                ResponseModel<OnboardingModel.MyOnboarding>.self,
+                data: response.data
+              ).data
+              MemberInfoStorage.instance.saveMyOnboarding(from: onboarding)
+              owner.output.popToRootVC.onNext(Void())
+            default:
+              let error = APIService.decode(ErrorResponseModel.self, data: response.data)
+              owner.output.presentPopupVC.onNext(error.message)
+            }
+          case .error:
+            owner.output.presentPopupVC.onNext("네트워크를 다시 확인해주세요.")
+          case .completed:
+            break
+          }
         })
         .disposed(by: disposeBag)
       

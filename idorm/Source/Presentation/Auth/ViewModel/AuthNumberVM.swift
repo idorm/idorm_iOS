@@ -39,14 +39,15 @@ final class AuthNumberViewModel: ViewModel {
     // 완료 버튼 클릭 -> 이메일 검증 API 요청
     input.confirmButtonDidTap
       .withUnretained(self)
-      .map { ($0.0, $0.0.currentCode.value) }
-      .subscribe { $0.requestVerificationMail.onNext($1) }
+      .map { $0.0.currentCode.value }
+      .bind(to: requestVerificationMail)
       .disposed(by: disposeBag)
     
     // 인증번호 재요청 버튼 클릭 -> 인증메일 발송 API 요청
     input.authOnemoreButtonDidTap
       .withUnretained(self)
-      .subscribe { $0.0.requestAuthenticationMail.onNext(Void()) }
+      .map { _ in Void()}
+      .bind(to: requestAuthenticationMail)
       .disposed(by: disposeBag)
     
     input.textFieldDidChange
