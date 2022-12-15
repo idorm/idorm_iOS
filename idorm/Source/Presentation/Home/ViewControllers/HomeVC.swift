@@ -14,6 +14,7 @@ final class HomeViewController: BaseViewController {
     var config = UIButton.Configuration.plain()
     config.image = UIImage(named: "bell")
     $0.configuration = config
+    $0.isHidden = true
   }
   
   private let mainLabel = UILabel().then {

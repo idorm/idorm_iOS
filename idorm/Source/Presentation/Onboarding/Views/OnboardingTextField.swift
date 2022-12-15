@@ -19,7 +19,7 @@ class OnboardingTextField: UIView {
     $0.addLeftPadding(16)
     $0.backgroundColor = .white
     $0.keyboardType = .default
-    $0.returnKeyType = .done
+    $0.returnKeyType = .continue
   }
   
   let checkmarkButton = UIButton().then {

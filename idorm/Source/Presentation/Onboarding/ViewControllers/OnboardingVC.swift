@@ -145,6 +145,11 @@ final class OnboardingViewController: BaseViewController {
     super.viewDidLoad()
   }
   
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    navigationController?.isNavigationBarHidden = false
+  }
+  
   init(_ onboardingVCType: OnboardingVCTypes.OnboardingVCType) {
     self.viewModel = OnboardingViewModel(onboardingVCType)
     self.vcType = onboardingVCType

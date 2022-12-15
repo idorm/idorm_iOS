@@ -7,7 +7,8 @@ import Moya
 enum MemberAPI {
   case login(id: String, pw: String)
   case register(id: String, pw: String, nickname: String)
-  case changePassword(id: String, pw: String)
+  case changePassword_Login(pw: String)
+  case changePassword_Logout(id: String, pw: String)
   case changeNickname(nickname: String)
   case retrieveMember
   case withdrawal
@@ -20,7 +21,8 @@ extension MemberAPI: TargetType {
     switch self {
     case .login: return "/login"
     case .register: return "/register"
-    case .changePassword: return "/changepassword"
+    case .changePassword_Login: return "/member/password"
+    case .changePassword_Logout: return "/password"
     case .changeNickname: return "/member/nickname"
     case .retrieveMember: return "/member"
     case .withdrawal: return "/member"
@@ -31,7 +33,8 @@ extension MemberAPI: TargetType {
     switch self {
     case .login: return .post
     case .register: return .post
-    case .changePassword: return .patch
+    case .changePassword_Login, .changePassword_Logout:
+      return .patch
     case .changeNickname: return .patch
     case .retrieveMember: return .get
     case .withdrawal: return .delete
@@ -40,9 +43,14 @@ extension MemberAPI: TargetType {
   
   var task: Task {
     switch self {
-    case let .login(id, pw), let .changePassword(id, pw):
+    case let .login(id, pw), let .changePassword_Logout(id, pw):
       return .requestParameters(parameters: [
         "email": id,
+        "password": pw
+      ], encoding: JSONEncoding.default)
+      
+    case .changePassword_Login(let pw):
+      return .requestParameters(parameters: [
         "password": pw
       ], encoding: JSONEncoding.default)
       

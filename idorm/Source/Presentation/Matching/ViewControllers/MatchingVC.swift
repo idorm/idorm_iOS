@@ -387,11 +387,31 @@ final class MatchingViewController: BaseViewController {
     viewModel.output.presentMatchingPopupVC
       .withUnretained(self)
       .map { $0.0 }
-      .bind(onNext: {
+      .bind {
         let matchingPopupVC = NoMatchingInfoPopup()
         matchingPopupVC.modalPresentationStyle = .overFullScreen
         $0.present(matchingPopupVC, animated: false)
-      })
+        
+        // 프로필 이미지 만들기 버튼 클릭
+        matchingPopupVC.makeButton.rx.tap
+          .bind(to: $0.viewModel.input.makeProfileImageButtonDidTap)
+          .disposed(by: $0.disposeBag)
+         
+        // 팝업 창 닫기
+        $0.viewModel.output.dismissNoMatchingPopup
+          .bind { matchingPopupVC.dismiss(animated: false) }
+          .disposed(by: $0.disposeBag)
+      }
+      .disposed(by: disposeBag)
+    
+    // 온보딩 페이지로 이동
+    viewModel.output.pushToOnboardingVC
+      .withUnretained(self)
+      .bind {
+        let viewController = OnboardingViewController(.initial2)
+        viewController.hidesBottomBarWhenPushed = true
+        $0.0.navigationController?.pushViewController(viewController, animated: true)
+      }
       .disposed(by: disposeBag)
     
     // 카드 스택 뷰 리로드

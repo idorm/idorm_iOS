@@ -40,7 +40,8 @@ final class SharedAPI {
           ).data
           MemberInfoStorage.instance.saveMyInformation(from: myInformation)
         default:
-          fatalError("token is missing")
+          let viewController = LoginViewController()
+          viewController.modalPresentationStyle = .fullScreen
         }
       }
       .disposed(by: disposeBag)

@@ -18,6 +18,7 @@ final class MatchingViewModel: ViewModel {
     let refreshButtonDidTap = PublishSubject<Void>()
     let resetFilterButtonDidTap = PublishSubject<Void>()
     let confirmFilterButtonDidTap = PublishSubject<Void>()
+    let makeProfileImageButtonDidTap = PublishSubject<Void>()
     let kakaoLinkButtonDidTap = PublishSubject<Int>()
     let swipeDidEnd = PublishSubject<MatchingSwipeType>()
     let leftSwipeDidEnd = PublishSubject<Int>()
@@ -36,10 +37,12 @@ final class MatchingViewModel: ViewModel {
     let isLoading = BehaviorRelay<Bool>(value: false)
     let reloadCardStack = PublishSubject<Void>()
     let pushToFilterVC = PublishSubject<Void>()
+    let pushToOnboardingVC = PublishSubject<Void>()
     let presentMatchingPopupVC = PublishSubject<Void>()
     let presentNoSharePopupVC = PublishSubject<Void>()
     let presentKakaoPopupVC = PublishSubject<Int>()
     let presentSafari = PublishSubject<String>()
+    let dismissNoMatchingPopup = PublishSubject<Void>()
     let dismissNoSharePopupVC = PublishSubject<Void>()
     let dismissKakaoLinkVC = PublishSubject<Void>()
   }
@@ -212,6 +215,16 @@ final class MatchingViewModel: ViewModel {
         owner.output.dismissKakaoLinkVC.onNext(Void())
         owner.output.presentSafari.onNext(link)
       }
+      .disposed(by: disposeBag)
+    
+    // 프로필 이미지 버튼 클릭 -> 팝업 창 닫기
+    input.makeProfileImageButtonDidTap
+      .bind(to: output.dismissNoMatchingPopup)
+      .disposed(by: disposeBag)
+    
+    // 프로필 이미지 버튼 클릭 -> 온보딩 페이지로 이동
+    input.makeProfileImageButtonDidTap
+      .bind(to: output.pushToOnboardingVC)
       .disposed(by: disposeBag)
     
     // 매칭 멤버 불러오기 API

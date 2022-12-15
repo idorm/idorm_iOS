@@ -188,7 +188,6 @@ final class ConfirmPasswordViewModel: ViewModel {
       .disposed(by: disposeBag)
     
     let currentEmail = Logger.instance.currentEmail.value
-    let currentPassword = Logger.instance.currentPassword.value
     
     switch vcType {
     case .signUp:
@@ -201,16 +200,50 @@ final class ConfirmPasswordViewModel: ViewModel {
         .bind(to: output.pushToConfirmNicknameVC)
         .disposed(by: disposeBag)
       
-    case .findPW, .updatePW:
+    case .findPW:
       
       // 확인 버튼 -> 비밀번호 변경 API 요청
       input.confirmButtonDidTap
         .withUnretained(self)
         .filter { $0.0.isValidWholeCondition.value }
         .do { $0.0.output.isLoading.onNext(true) }
-        .map { _ in (currentEmail, currentPassword) }
+        .map { (currentEmail, $0.0.currentPassword1.value) }
         .flatMap {
-          APIService.memberProvider.rx.request(.changePassword(id: $0.0, pw: $0.1))
+          APIService.memberProvider.rx.request(.changePassword_Logout(id: $0.0, pw: $0.1))
+            .asObservable()
+            .materialize()
+        }
+        .withUnretained(self)
+        .subscribe(onNext: { owner, event in
+          owner.output.isLoading.onNext(false)
+          
+          switch event {
+          case .next(let response):
+            if response.statusCode == 200 {
+              owner.output.presentPopupVC.onNext("비밀번호가 변경 되었습니다.")
+              owner.output.presentLoginVC.onNext(Void())
+            } else {
+              let error = APIService.decode(ErrorResponseModel.self, data: response.data)
+              owner.output.presentPopupVC.onNext(error.message)
+            }
+          case .error:
+            owner.output.presentPopupVC.onNext("네트워크를 다시 확인해주세요.")
+          case .completed:
+            break
+          }
+        })
+        .disposed(by: disposeBag)
+      
+    case .updatePW:
+      
+      // 확인 버튼 -> 비밀번호 변경 API 요청
+      input.confirmButtonDidTap
+        .withUnretained(self)
+        .filter { $0.0.isValidWholeCondition.value }
+        .do { $0.0.output.isLoading.onNext(true) }
+        .map { ($0.0.currentPassword1.value) }
+        .flatMap {
+          APIService.memberProvider.rx.request(.changePassword_Login(pw: $0))
             .asObservable()
             .materialize()
         }
