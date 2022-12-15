@@ -53,6 +53,14 @@ final class MatchingBottomAlertViewController: BaseViewController {
         self?.dismiss(animated: false)
       })
       .disposed(by: disposeBag)
+    
+    // 신고하기 버튼
+    reportButton.rx.tap
+      .withUnretained(self)
+      .bind {
+        $0.0.dismiss(animated: false)
+      }
+      .disposed(by: disposeBag)
   }
 }
 

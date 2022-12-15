@@ -52,6 +52,10 @@ final class LoginViewModel: ViewModel {
       .map { ($0.0.currentEmail.value, $0.0.currentPassword.value) }
       .withUnretained(self)
       .do(onNext: { $0.0.output.isLoading.onNext(true) })
+      .do {
+        UserStorage.saveEmail(from: $0.1.0)
+        UserStorage.savePassword(from: $0.1.1)
+      }
       .flatMap {
         APIService.memberProvider.rx.request(.login(id: $0.1.0, pw: $0.1.1))
           .asObservable()

@@ -143,6 +143,7 @@
 		E5C88908288972E000CBD04E /* CommunityAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C88907288972E000CBD04E /* CommunityAlertViewController.swift */; };
 		E5C89E4928A9ED9B0035D9C6 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C89E4828A9ED9B0035D9C6 /* URL+Extensions.swift */; };
 		E5C89E4B28A9EDA70035D9C6 /* URLRequest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C89E4A28A9EDA70035D9C6 /* URLRequest+Extensions.swift */; };
+		E5D03359294AD8B1006DD107 /* UserStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D03358294AD8B1006DD107 /* UserStorage.swift */; };
 		E5D07087292F098500D5DF6E /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D07086292F098500D5DF6E /* String+Extensions.swift */; };
 		E5D31BEC289A792400510315 /* UnderlinedBackGroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D31BEB289A792400510315 /* UnderlinedBackGroundView.swift */; };
 		E5D31BF1289AAE3D00510315 /* UIScrollView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D31BF0289AAE3D00510315 /* UIScrollView+Extensions.swift */; };
@@ -315,6 +316,7 @@
 		E5C88907288972E000CBD04E /* CommunityAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityAlertViewController.swift; sourceTree = "<group>"; };
 		E5C89E4828A9ED9B0035D9C6 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		E5C89E4A28A9EDA70035D9C6 /* URLRequest+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+Extensions.swift"; sourceTree = "<group>"; };
+		E5D03358294AD8B1006DD107 /* UserStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStorage.swift; sourceTree = "<group>"; };
 		E5D07086292F098500D5DF6E /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		E5D31BEB289A792400510315 /* UnderlinedBackGroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlinedBackGroundView.swift; sourceTree = "<group>"; };
 		E5D31BF0289AAE3D00510315 /* UIScrollView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extensions.swift"; sourceTree = "<group>"; };
@@ -467,6 +469,7 @@
 		E52791C4291B7CD2009C0ADA /* Storages */ = {
 			isa = PBXGroup;
 			children = (
+				E5D03358294AD8B1006DD107 /* UserStorage.swift */,
 				E504B61A28B9DCE3009B45F8 /* TokenStorage.swift */,
 				E510D3D028ACC84300A28B90 /* Logger.swift */,
 				E58F652F29134C2B00E58862 /* MatchingFilterStorage.swift */,
@@ -842,9 +845,6 @@
 		E56DF4CC2894063100E85B10 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				E5FC8F1A29113A25002812FA /* ViewModel.swift */,
-				E50300F628773A5D00611C62 /* AppDelegate.swift */,
-				E50300F828773A5D00611C62 /* SceneDelegate.swift */,
 				E5E8A3E22895215700A48A91 /* ViewControllers */,
 				E5E8A3E12895215100A48A91 /* Views */,
 				E5294FF1292778EC004D408C /* Models */,
@@ -878,6 +878,10 @@
 		E575304528D92C1200F0B57C /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				E50300F628773A5D00611C62 /* AppDelegate.swift */,
+				E50300F828773A5D00611C62 /* SceneDelegate.swift */,
+				E5FC8F1A29113A25002812FA /* ViewModel.swift */,
+				E5909CE528D94B610083075D /* BaseViewController.swift */,
 				E503010128773A5E00611C62 /* LaunchScreen.storyboard */,
 				E50300FF28773A5E00611C62 /* Assets.xcassets */,
 			);
@@ -1061,7 +1065,6 @@
 			isa = PBXGroup;
 			children = (
 				E56342222878353100E93D17 /* TabBarController.swift */,
-				E5909CE528D94B610083075D /* BaseViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -1262,6 +1265,7 @@
 				E58A6297289D6BEF0074F646 /* DeviceManager.swift in Sources */,
 				E52E96B22915FAB6009E1773 /* MatchingContainerView.swift in Sources */,
 				E510D3CB28AC9F6E00A28B90 /* AuthVM.swift in Sources */,
+				E5D03359294AD8B1006DD107 /* UserStorage.swift in Sources */,
 				E547E3E3291CEF21000D3A47 /* MatchingCardBoolView.swift in Sources */,
 				E5C2614E2919D3AA00623C0E /* BottomAlertUtilities.swift in Sources */,
 				E5226D65291246750065C809 /* OnboardingDriver.swift in Sources */,

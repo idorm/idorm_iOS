@@ -30,6 +30,10 @@ final class CompleteSignUpViewModel: ViewModel {
     input.continueButtonDidTap
       .withUnretained(self)
       .do { $0.0.output.isLoading.onNext(true) }
+      .do { _ in
+        UserStorage.saveEmail(from: email)
+        UserStorage.savePassword(from: password)
+      }
       .flatMap { _ in
         APIService.memberProvider.rx.request(.login(id: email, pw: password))
           .asObservable()

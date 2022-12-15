@@ -101,7 +101,7 @@ final class MyPageViewController: BaseViewController {
       .bind(to: viewModel.input.roommateButtonDidTap)
       .disposed(by: disposeBag)
     
-    // 화면 최초 접속 이벤트
+    // 화면 접속 이벤트
     rx.viewWillAppear
       .map { _ in Void() }
       .bind(to: viewModel.input.viewWillAppear)

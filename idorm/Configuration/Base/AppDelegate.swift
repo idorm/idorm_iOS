@@ -29,12 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     tabBarAppearance.shadowColor = .clear
     tabBar.standardAppearance = tabBarAppearance
     UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
-    UITabBar.appearance().standardAppearance = tabBarAppearance
-    
-    if TokenStorage.instance.hasToken() {
-      SharedAPI.instance.retrieveMyInformation()
-      SharedAPI.instance.retrieveMyOnboarding()
-    }
+    UITabBar.appearance().standardAppearance = tabBarAppearance    
     
     return true
   }

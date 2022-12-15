@@ -92,6 +92,16 @@ final class MyRoommateBottomAlertViewController: BaseViewController {
   }
   
   // MARK: - Bind
+  
+  override func bind() {
+    
+    reportButton.rx.tap
+      .withUnretained(self)
+      .bind {
+        $0.0.dismiss(animated: false)
+      }
+      .disposed(by: disposeBag)
+  }
 }
 
 // MARK: - PanModal Setup

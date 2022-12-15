@@ -1,8 +1,13 @@
 import UIKit
 
+import RxMoya
+import RxSwift
+
 final class TabBarController: UITabBarController {
   
   // MARK: - Properties
+  
+  let disposeBag = DisposeBag()
   
   let homeVC = UINavigationController(rootViewController: HomeViewController())
   let matchingVC = UINavigationController(rootViewController: MatchingViewController())
@@ -15,6 +20,33 @@ final class TabBarController: UITabBarController {
   override func viewDidLoad() {
     super.viewDidLoad()
     configureUI()
+    
+    // 탭바 최초 데이터 설정
+    
+    let email = UserStorage.loadEmail()
+    let password = UserStorage.loadPassword()
+    
+    APIService.memberProvider.rx.request(.login(id: email, pw: password))
+      .asObservable()
+      .retry()
+      .withUnretained(self)
+      .subscribe { owner, response in
+        switch response.statusCode {
+        case 200:
+          let info = APIService.decode(
+            ResponseModel<MemberModel.MyInformation>.self,
+            data: response.data
+          ).data
+          TokenStorage.instance.saveToken(token: info.loginToken!)
+          MemberInfoStorage.instance.saveMyInformation(from: info)
+          SharedAPI.instance.retrieveMyOnboarding()
+        default:
+          let viewController = UINavigationController(rootViewController: LoginViewController())
+          viewController.modalPresentationStyle = .fullScreen
+          owner.present(viewController, animated: true)
+        }
+      }
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Setup

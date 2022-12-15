@@ -8,7 +8,6 @@ final class TopProfileView: UIView {
   // MARK: - Properties
   
   let nicknameLabel = UILabel().then {
-    $0.text = "닉네임닉네임닉네임"
     $0.textColor = .idorm_gray_100
     $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
   }
