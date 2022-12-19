@@ -7,9 +7,9 @@
 
 import Foundation
 
-class UserStorage {
+final class UserStorage {
   
-  enum Keys: String {
+  private enum Keys: String {
     case email = "EMAIL"
     case password = "PASSWORD"
   }

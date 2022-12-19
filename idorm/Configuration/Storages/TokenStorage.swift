@@ -1,31 +1,31 @@
+//
+//  TokenStorage.swift
+//  idorm
+//
+//  Created by 김응철 on 2022/12/19.
+//
+
 import Foundation
 
 final class TokenStorage {
   
-  static let instance = TokenStorage()
-  private init() {}
-  
-  func saveToken(token: String) {
+  static func saveToken(token: String) {
     let userDefaults = UserDefaults.standard
     userDefaults.set(token, forKey: "Token")
   }
   
-  func loadToken() -> String {
+  static func loadToken() -> String {
     let userDefaults = UserDefaults.standard
     guard let token = userDefaults.string(forKey: "Token") else { return "" }
     return token
   }
   
-  func removeToken() {
+  static func removeToken() {
     let userDefaults = UserDefaults.standard
     userDefaults.removeObject(forKey: "Token")
   }
   
-  func hasToken() -> Bool {
-    if loadToken() != "" {
-      return true
-    } else {
-      return false
-    }
+  static func hasToken() -> Bool {
+    loadToken() != "" ? true : false
   }
 }

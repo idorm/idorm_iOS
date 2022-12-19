@@ -149,8 +149,8 @@ final class NicknameViewModel: ViewModel {
       .bind(to: isValidTextCondition)
       .disposed(by: disposeBag)
     
-    let email = Logger.instance.currentEmail.value
-    let password = Logger.instance.currentPassword.value
+    let email = Logger.shared.email
+    let password = Logger.shared.password
     
     switch vcType {
     case .signUp:
@@ -170,9 +170,10 @@ final class NicknameViewModel: ViewModel {
           owner.output.isLoading.onNext(false)
           switch event {
           case .next(let response):
-            if response.statusCode == 200 {
+            switch response.statusCode {
+            case 200..<400:
               owner.output.presentCompleteSignUpVC.onNext(Void())
-            } else {
+            default:
               let error = APIService.decode(ErrorResponseModel.self, data: response.data)
               owner.output.presentPopupVC.onNext(error.message)
             }

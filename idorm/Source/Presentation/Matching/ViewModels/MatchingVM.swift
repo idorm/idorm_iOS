@@ -42,6 +42,7 @@ final class MatchingViewModel: ViewModel {
     let presentNoSharePopupVC = PublishSubject<Void>()
     let presentKakaoPopupVC = PublishSubject<Int>()
     let presentSafari = PublishSubject<String>()
+    let presentPopup = PublishSubject<String>()
     let dismissNoMatchingPopup = PublishSubject<Void>()
     let dismissNoSharePopupVC = PublishSubject<Void>()
     let dismissKakaoLinkVC = PublishSubject<Void>()
@@ -207,14 +208,22 @@ final class MatchingViewModel: ViewModel {
     // 오픈채팅 링크 바로가기 -> 사파리 열기
     input.kakaoLinkButtonDidTap
       .withUnretained(self)
-      .map { owner, index in
-        owner.matchingMembers.value[index].openKakaoLink
-      }
+      .map { $0.0.matchingMembers.value[$0.1].openKakaoLink }
+      .filter { $0.isValidKakaoLink }
       .withUnretained(self)
       .subscribe { owner, link in
         owner.output.dismissKakaoLinkVC.onNext(Void())
         owner.output.presentSafari.onNext(link)
       }
+      .disposed(by: disposeBag)
+    
+    // 오픈채팅 링크 바로가기 -> 팝업 오류
+    input.kakaoLinkButtonDidTap
+      .withUnretained(self)
+      .map { $0.0.matchingMembers.value[$0.1].openKakaoLink }
+      .filter { !$0.isValidKakaoLink }
+      .map { _ in "해당 주소가 유효하지 않습니다." }
+      .bind(to: output.presentPopup)
       .disposed(by: disposeBag)
     
     // 프로필 이미지 버튼 클릭 -> 팝업 창 닫기

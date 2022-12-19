@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let windowScene = (scene as? UIWindowScene) else { return }
     window = UIWindow(windowScene: windowScene)
     
-    if !TokenStorage.instance.hasToken() {
+    if !TokenStorage.hasToken() {
       window?.rootViewController = UINavigationController(rootViewController: LoginViewController())
     } else {
       window?.rootViewController = TabBarController()

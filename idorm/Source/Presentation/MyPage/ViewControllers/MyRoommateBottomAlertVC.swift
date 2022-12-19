@@ -97,9 +97,12 @@ final class MyRoommateBottomAlertViewController: BaseViewController {
     
     reportButton.rx.tap
       .withUnretained(self)
-      .bind {
-        $0.0.dismiss(animated: false)
-      }
+      .bind { $0.0.dismiss(animated: true) }
+      .disposed(by: disposeBag)
+    
+    chatButton.rx.tap
+      .withUnretained(self)
+      .bind { $0.0.dismiss(animated: true) }
       .disposed(by: disposeBag)
   }
 }

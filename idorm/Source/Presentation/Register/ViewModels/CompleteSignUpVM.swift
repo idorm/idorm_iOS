@@ -23,8 +23,8 @@ final class CompleteSignUpViewModel: ViewModel {
   
   init() {
     
-    let email = Logger.instance.currentEmail.value
-    let password = Logger.instance.currentPassword.value
+    let email = Logger.shared.email
+    let password = Logger.shared.password
     
     // 로그인 버튼 클릭 -> 로그인 API 요청
     input.continueButtonDidTap
@@ -51,7 +51,7 @@ final class CompleteSignUpViewModel: ViewModel {
               data: response.data
             ).data
             MemberInfoStorage.instance.saveMyInformation(from: info)
-            TokenStorage.instance.saveToken(token: info.loginToken ?? "")
+            TokenStorage.saveToken(token: info.loginToken ?? "")
             owner.output.presentOnboardingVC.onNext(Void())
           } else {
             let error = APIService.decode(ErrorResponseModel.self, data: response.data)

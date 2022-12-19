@@ -184,10 +184,10 @@ final class ConfirmPasswordViewModel: ViewModel {
     
     // Logger에 저장
     currentPassword1
-      .bind(to: Logger.instance.currentPassword)
+      .bind { Logger.shared.savePassword($0) }
       .disposed(by: disposeBag)
     
-    let currentEmail = Logger.instance.currentEmail.value
+    let currentEmail = Logger.shared.email
     
     switch vcType {
     case .signUp:

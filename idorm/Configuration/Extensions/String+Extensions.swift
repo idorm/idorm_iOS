@@ -43,4 +43,9 @@ extension String {
           }
       }
       return true
-  }}
+  }
+  
+  var isValidKakaoLink: Bool {
+    return self.contains("open.kakao.com/")
+  }
+}

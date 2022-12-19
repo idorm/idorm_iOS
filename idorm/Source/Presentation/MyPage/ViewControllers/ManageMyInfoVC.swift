@@ -20,10 +20,11 @@ final class ManageMyInfoViewController: BaseViewController {
   
   private let profileImage = UIImageView(image: UIImage(named: "myProfileImage(MyPage)"))
   
-  private let nickNameView = ManageMyInfoView(type: .both(description: "도미"), title: "닉네임")
+  private let nickNameView = ManageMyInfoView(type: .both(description: ""), title: "닉네임")
   private let changePWView = ManageMyInfoView(type: .onlyArrow, title: "비밀번호 변경")
-  private let emailView = ManageMyInfoView(type: .onlyDescription(description: "@inu.ac.kr"), title: "이메일")
-  private let versionView = ManageMyInfoView(type: .onlyDescription(description: "1.0.0"), title: "버전정보")
+  private let emailView = ManageMyInfoView(type: .onlyDescription(description: ""), title: "이메일")
+  private let versionView = ManageMyInfoView(
+    type: .onlyDescription(description: "\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String).\(Bundle.main.infoDictionary?["CFBundleVersion"] as! String)"), title: "버전정보")
   
   private var separatorLine1 = MyPageUtilities.separatorLine()
   private var separatorLine2 = MyPageUtilities.separatorLine()

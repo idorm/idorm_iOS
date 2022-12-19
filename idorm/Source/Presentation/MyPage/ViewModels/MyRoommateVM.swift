@@ -1,6 +1,9 @@
+import Foundation
+
 import RxSwift
 import RxCocoa
 import RxMoya
+import RxOptional
 
 final class MyRoommateViewModel: ViewModel {
   
@@ -10,12 +13,18 @@ final class MyRoommateViewModel: ViewModel {
     let viewWillAppear = PublishSubject<MyPageVCTypes.MyRoommateVCType>()
     let deleteButtonDidTap = PublishSubject<(MyPageVCTypes.MyRoommateVCType, MatchingModel.Member)>()
     let reportButtonDidTap = PublishSubject<Void>()
+    let chatButtonDidTap = PublishSubject<Int>()
+    let kakaoLinkButtonDidTap = PublishSubject<String>()
     let lastestButtonDidTap = PublishSubject<MyRoommateSortType>()
     let pastButtonDidTap = PublishSubject<MyRoommateSortType>()
   }
   
   struct Output {
     let dismissAlertVC = PublishSubject<Void>()
+    let dismissKakaoPopup = PublishSubject<Void>()
+    let presentPopup = PublishSubject<String>()
+    let presentKakaoPopup = PublishSubject<String>()
+    let presentSafari = PublishSubject<URL>()
     let reloadData = PublishSubject<Void>()
     let isLoading = PublishSubject<Bool>()
     let toggleSortButton = PublishSubject<MyRoommateSortType>()
@@ -37,7 +46,6 @@ final class MyRoommateViewModel: ViewModel {
   // MARK: - Bind
   
   init() {
-    mutate()
     
     // 최신순 버튼 클릭 -> 버튼 토글
     input.lastestButtonDidTap
@@ -55,6 +63,13 @@ final class MyRoommateViewModel: ViewModel {
       .map { _ in Void() }
       .bind(to: output.reloadData)
       .disposed(by: disposeBag)
+    
+    // 룸메이트와 채팅하기 버튼 -> 카카오톡 링크 팝업
+    input.chatButtonDidTap
+      .withUnretained(self)
+      .map { $0.0.currentMembers.value[$0.1].openKakaoLink }
+      .bind(to: output.presentKakaoPopup)
+      .disposed(by: disposeBag)
         
     // 화면 최초 접속 -> 멤버 조회 요청
     input.viewWillAppear
@@ -65,6 +80,29 @@ final class MyRoommateViewModel: ViewModel {
         case .like: owner.requestRetrieveLikeAPI.onNext(Void())
         }
       })
+      .disposed(by: disposeBag)
+    
+    // 카카오톡으로 이동 버튼 클릭 -> 링크 유효성 오류 팝업
+    input.kakaoLinkButtonDidTap
+      .filter { !$0.isValidKakaoLink }
+      .map { _ in "해당 주소가 유효하지 않습니다." }
+      .withUnretained(self)
+      .bind { owner, contents in
+        owner.output.dismissKakaoPopup.onNext(Void())
+        owner.output.presentPopup.onNext(contents)
+      }
+      .disposed(by: disposeBag)
+    
+    // 카카오톡으로 이동 버튼 클릭 -> 외부브라우저로 이동
+    input.kakaoLinkButtonDidTap
+      .filter { $0.isValidKakaoLink }
+      .map { URL(string: $0) }
+      .filterNil()
+      .withUnretained(self)
+      .bind { owner, link in
+        owner.output.dismissKakaoPopup.onNext(Void())
+        owner.output.presentSafari.onNext(link)
+      }
       .disposed(by: disposeBag)
         
     // 삭제 버튼 클릭 -> 특정 멤버 삭제 API
@@ -77,9 +115,6 @@ final class MyRoommateViewModel: ViewModel {
         }
       })
       .disposed(by: disposeBag)
-  }
-  
-  private func mutate() {
     
     // 정렬 타입 변경 감지 -> 정렬 바꾸기 요청
     Observable.merge(
@@ -158,5 +193,6 @@ final class MyRoommateViewModel: ViewModel {
       .map { _ in Void() }
       .bind(to: requestRetrieveDislikeAPI)
       .disposed(by: disposeBag)
+
   }
 }

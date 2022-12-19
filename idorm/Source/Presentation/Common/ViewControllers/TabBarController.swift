@@ -37,7 +37,7 @@ final class TabBarController: UITabBarController {
             ResponseModel<MemberModel.MyInformation>.self,
             data: response.data
           ).data
-          TokenStorage.instance.saveToken(token: info.loginToken!)
+          TokenStorage.saveToken(token: info.loginToken!)
           MemberInfoStorage.instance.saveMyInformation(from: info)
           SharedAPI.instance.retrieveMyOnboarding()
         default:

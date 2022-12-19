@@ -33,8 +33,8 @@ final class AuthNumberViewModel: ViewModel {
   // MARK: - Bind
   
   init() {
-    let authenticationType = Logger.instance.authenticationType.value
-    let email = Logger.instance.currentEmail.value
+    let authenticationType = Logger.shared.authenticationType
+    let email = Logger.shared.email
     
     // 완료 버튼 클릭 -> 이메일 검증 API 요청
     input.confirmButtonDidTap

@@ -204,9 +204,12 @@ final class ConfirmPasswordViewController: BaseViewController {
     
     // 비밀번호 변경 완료 시 로그인 페이지로 넘어가기
     viewModel.output.presentLoginVC
-      .bind(onNext: { [weak self] in
-        self?.navigationController?.popToRootViewController(animated: true)
-      })
+      .withUnretained(self)
+      .bind {
+        let viewController = UINavigationController(rootViewController: LoginViewController())
+        viewController.modalPresentationStyle = .fullScreen
+        $0.0.present(viewController, animated: true)
+      }
       .disposed(by: disposeBag)
     
     // 닉네임 변경 페이지로 이동

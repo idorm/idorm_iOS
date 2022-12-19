@@ -71,7 +71,7 @@ final class LoginViewModel: ViewModel {
               ResponseModel<MemberModel.MyInformation>.self,
               data: response.data
             ).data
-            TokenStorage.instance.saveToken(token: info.loginToken ?? "")
+            TokenStorage.saveToken(token: info.loginToken ?? "")
             MemberInfoStorage.instance.saveMyInformation(from: info)
             SharedAPI.instance.retrieveMyOnboarding()
             owner.output.presentTabBarVC.onNext(Void())

@@ -88,7 +88,7 @@ final class LoginViewController: BaseViewController {
     self.navigationController?.isNavigationBarHidden = true
     
     // 토큰 초기화
-    TokenStorage.instance.removeToken()
+    TokenStorage.removeToken()
   }
   
   override func viewWillDisappear(_ animated: Bool) {

@@ -1,12 +1,17 @@
+//
+//  ViewModel.swift
+//  idorm
+//
+//  Created by 김응철 on 2022/12/19.
+//
+
 import RxSwift
 
 protocol ViewModel {
-  /// 사용자의 인터렉션
   associatedtype Input
-  /// View로 실질적인 값 전달
   associatedtype Output
   
   var input: Input { get }
-  var output: Output { get set }
+  var output: Output { get }
   var disposeBag: DisposeBag { get }
 }

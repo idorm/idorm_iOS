@@ -165,7 +165,7 @@ final class WithdrawalViewController: BaseViewController {
     viewModel.output.presentLoginVC
       .withUnretained(self)
       .bind(onNext: {
-        let viewController = LoginViewController()
+        let viewController = UINavigationController(rootViewController: LoginViewController())
         viewController.modalPresentationStyle = .fullScreen
         $0.0.present(viewController, animated: true)
       })

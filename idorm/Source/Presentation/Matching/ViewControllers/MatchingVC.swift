@@ -414,6 +414,16 @@ final class MatchingViewController: BaseViewController {
       }
       .disposed(by: disposeBag)
     
+    // 팝업 창 띄우기
+    viewModel.output.presentPopup
+      .withUnretained(self)
+      .bind {
+        let popup = BasicPopup(contents: $0.1)
+        popup.modalPresentationStyle = .overFullScreen
+        $0.0.present(popup, animated: false)
+      }
+      .disposed(by: disposeBag)
+    
     // 카드 스택 뷰 리로드
     viewModel.output.reloadCardStack
       .withUnretained(self)
@@ -484,7 +494,7 @@ final class MatchingViewController: BaseViewController {
    // 카카오 링크 사파리로 열기
     viewModel.output.presentSafari
       .withUnretained(self)
-      .bind(onNext: { owner, link in UIApplication.shared.open(URL(string: "https://www.google.co.kr/")!) })
+      .bind(onNext: { owner, link in UIApplication.shared.open(URL(string: link)!) })
       .disposed(by: disposeBag)
   }
 }

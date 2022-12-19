@@ -137,6 +137,43 @@ final class MyRoommateViewController: BaseViewController {
       .map { $0.0 }
       .bind(onNext: { $0.tableView.reloadData() })
       .disposed(by: disposeBag)
+    
+    // 오류 팝업
+    viewModel.output.presentPopup
+      .withUnretained(self)
+      .debug()
+      .bind {
+        let popup = BasicPopup(contents: $0.1)
+        popup.modalPresentationStyle = .overFullScreen
+        $0.0.present(popup, animated: false)
+      }
+      .disposed(by: disposeBag)
+    
+    // 사파리로 이동
+    viewModel.output.presentSafari
+      .bind { UIApplication.shared.open($0) }
+      .disposed(by: disposeBag)
+    
+    // 카카오톡 링크 팝업
+    viewModel.output.presentKakaoPopup
+      .withUnretained(self)
+      .bind { owner, link in
+        let popup = KakaoPopup()
+        popup.modalPresentationStyle = .overFullScreen
+        owner.present(popup, animated: false)
+        
+        // 카카오 링크 바로가기 버튼 클릭
+        popup.kakaoButton.rx.tap
+          .map { link }
+          .bind(to: owner.viewModel.input.kakaoLinkButtonDidTap)
+          .disposed(by: owner.disposeBag)
+        
+        // 팝업창 닫기
+        owner.viewModel.output.dismissKakaoPopup
+          .bind { popup.dismiss(animated: false) }
+          .disposed(by: owner.disposeBag)
+      }
+      .disposed(by: disposeBag)
   }
 }
 
@@ -207,7 +244,13 @@ extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
       .bind(to: viewModel.input.deleteButtonDidTap)
       .disposed(by: disposeBag)
     
-    // AlertVC 끄기
+    // 룸메이트와 채팅하기 버튼 클릭 이벤트
+    viewController.chatButton.rx.tap
+      .map { indexPath.row }
+      .bind(to: viewModel.input.chatButtonDidTap)
+      .disposed(by: disposeBag)
+    
+    // AlertVC 종료
     viewModel.output.dismissAlertVC
       .bind(onNext: { viewController.dismiss(animated: true) })
       .disposed(by: disposeBag)

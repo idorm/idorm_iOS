@@ -50,7 +50,7 @@ final class MatchingBottomAlertViewController: BaseViewController {
     // 창 닫기
     xmarkButton.rx.tap
       .bind(onNext: { [weak self] in
-        self?.dismiss(animated: false)
+        self?.dismiss(animated: true)
       })
       .disposed(by: disposeBag)
     
@@ -58,7 +58,7 @@ final class MatchingBottomAlertViewController: BaseViewController {
     reportButton.rx.tap
       .withUnretained(self)
       .bind {
-        $0.0.dismiss(animated: false)
+        $0.0.dismiss(animated: true)
       }
       .disposed(by: disposeBag)
   }

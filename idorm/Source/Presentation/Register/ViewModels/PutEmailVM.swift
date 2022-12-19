@@ -42,7 +42,7 @@ final class PutEmailViewModel: ViewModel {
     
     // 현재 작성된 이메일 -> Logger에 저장
     currentEmail
-      .bind(to: Logger.instance.currentEmail)
+      .bind { Logger.shared.saveEmail($0) }
       .disposed(by: disposeBag)
     
     // 최초 접속 시 Logger에 인증 방식 저장
@@ -50,7 +50,7 @@ final class PutEmailViewModel: ViewModel {
     case .signUp:
       Observable.empty()
         .map { AuthenticationType.signUp }
-        .bind(to: Logger.instance.authenticationType)
+        .bind { Logger.shared.saveAuthenticationType($0) }
         .disposed(by: disposeBag)
       
       // 메일 인증 요청 API
@@ -83,7 +83,7 @@ final class PutEmailViewModel: ViewModel {
     case .findPW, .updatePW:
       Observable.empty()
         .map { AuthenticationType.password }
-        .bind(to: Logger.instance.authenticationType)
+        .bind { Logger.shared.saveAuthenticationType($0) }
         .disposed(by: disposeBag)
       
       // 메일 인증 요청 API

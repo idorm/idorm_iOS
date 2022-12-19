@@ -26,7 +26,7 @@ final class APIService {
   static func basicHeader() -> [String: String] {
     return [
       "Content-Type": "application/json",
-      "X-AUTH-TOKEN": TokenStorage.instance.loadToken()
+      "X-AUTH-TOKEN": TokenStorage.loadToken()
     ]
   }
 }

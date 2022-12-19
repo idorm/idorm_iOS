@@ -13,7 +13,6 @@
 		E503010028773A5E00611C62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E50300FF28773A5E00611C62 /* Assets.xcassets */; };
 		E503010328773A5E00611C62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E503010128773A5E00611C62 /* LaunchScreen.storyboard */; };
 		E504B61928B9C6E4009B45F8 /* CompleteSignUpVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E504B61828B9C6E4009B45F8 /* CompleteSignUpVM.swift */; };
-		E504B61B28B9DCE3009B45F8 /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E504B61A28B9DCE3009B45F8 /* TokenStorage.swift */; };
 		E508436E28813BF40047A2EC /* NotoSansCJKkr-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E508436D28813BF40047A2EC /* NotoSansCJKkr-Bold.otf */; };
 		E508437028813C030047A2EC /* NotoSansCJKkr-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = E508436F28813C030047A2EC /* NotoSansCJKkr-Medium.otf */; };
 		E508437428813C220047A2EC /* NotoSansCJKkr-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = E508437328813C220047A2EC /* NotoSansCJKkr-Regular.otf */; };
@@ -24,7 +23,6 @@
 		E51063C4291E250400FA0EAC /* NoPublicStatePopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51063C3291E250400FA0EAC /* NoPublicStatePopUp.swift */; };
 		E510D3CB28AC9F6E00A28B90 /* AuthVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CA28AC9F6E00A28B90 /* AuthVM.swift */; };
 		E510D3CD28ACB87D00A28B90 /* PutEmailVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3CC28ACB87D00A28B90 /* PutEmailVM.swift */; };
-		E510D3D128ACC84300A28B90 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3D028ACC84300A28B90 /* Logger.swift */; };
 		E510D3D328ACCA1C00A28B90 /* AuthNumberVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E510D3D228ACCA1C00A28B90 /* AuthNumberVM.swift */; };
 		E5226D582911F3610065C809 /* Dormitory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D572911F3610065C809 /* Dormitory.swift */; };
 		E5226D5A2911F36B0065C809 /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D592911F36B0065C809 /* Gender.swift */; };
@@ -157,6 +155,12 @@
 		E5D98F8F28C4863900D493FF /* NickNameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D98F8E28C4863900D493FF /* NickNameVC.swift */; };
 		E5D98F9128C486CB00D493FF /* NicknameVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D98F9028C486CB00D493FF /* NicknameVM.swift */; };
 		E5DDA26F292D9CC8003B46BA /* KakaoPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DDA26E292D9CC8003B46BA /* KakaoPopup.swift */; };
+		E5E1497C295047DD00A3827C /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E1497B295047DD00A3827C /* ViewModel.swift */; };
+		E5E1497E2950498300A3827C /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E1497D2950498300A3827C /* TokenStorage.swift */; };
+		E5E1498029504ACA00A3827C /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E1497F29504ACA00A3827C /* Logger.swift */; };
+		E5E14982295050EC00A3827C /* FilterStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E14981295050EC00A3827C /* FilterStorage.swift */; };
+		E5E14984295058FB00A3827C /* MatchingInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E14983295058FB00A3827C /* MatchingInfoDTO.swift */; };
+		E5E1498629505B8100A3827C /* MatchingDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E1498529505B8100A3827C /* MatchingDTO.swift */; };
 		E5E77EC128D81AD400031010 /* LoginTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E77EC028D81AD400031010 /* LoginTextField.swift */; };
 		E5E77EC628D822FB00031010 /* idormButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E77EC528D822FB00031010 /* idormButton.swift */; };
 		E5E77EC828D825EB00031010 /* idormTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E77EC728D825EB00031010 /* idormTextField.swift */; };
@@ -174,7 +178,6 @@
 		E5F5EC742884025E0026DE21 /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC732884025E0026DE21 /* CommunityViewController.swift */; };
 		E5F5EC762884027D0026DE21 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC752884027D0026DE21 /* CalendarViewController.swift */; };
 		E5F5EC78288402840026DE21 /* MyPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC77288402840026DE21 /* MyPageVC.swift */; };
-		E5FC8F1B29113A25002812FA /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC8F1A29113A25002812FA /* ViewModel.swift */; };
 		E5FD982428EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD982328EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift */; };
 		E5FD982628EAF8F0005A29E2 /* MailTimerChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD982528EAF8F0005A29E2 /* MailTimerChecker.swift */; };
 /* End PBXBuildFile section */
@@ -204,7 +207,6 @@
 		E50300FF28773A5E00611C62 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E503010228773A5E00611C62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E504B61828B9C6E4009B45F8 /* CompleteSignUpVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpVM.swift; sourceTree = "<group>"; };
-		E504B61A28B9DCE3009B45F8 /* TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
 		E508436D28813BF40047A2EC /* NotoSansCJKkr-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansCJKkr-Bold.otf"; sourceTree = "<group>"; };
 		E508436F28813C030047A2EC /* NotoSansCJKkr-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansCJKkr-Medium.otf"; sourceTree = "<group>"; };
 		E508437328813C220047A2EC /* NotoSansCJKkr-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansCJKkr-Regular.otf"; sourceTree = "<group>"; };
@@ -214,7 +216,6 @@
 		E51063C3291E250400FA0EAC /* NoPublicStatePopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoPublicStatePopUp.swift; sourceTree = "<group>"; };
 		E510D3CA28AC9F6E00A28B90 /* AuthVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthVM.swift; sourceTree = "<group>"; };
 		E510D3CC28ACB87D00A28B90 /* PutEmailVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailVM.swift; sourceTree = "<group>"; };
-		E510D3D028ACC84300A28B90 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		E510D3D228ACCA1C00A28B90 /* AuthNumberVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberVM.swift; sourceTree = "<group>"; };
 		E5226D572911F3610065C809 /* Dormitory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dormitory.swift; sourceTree = "<group>"; };
 		E5226D592911F36B0065C809 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
@@ -330,6 +331,12 @@
 		E5D98F8E28C4863900D493FF /* NickNameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NickNameVC.swift; sourceTree = "<group>"; };
 		E5D98F9028C486CB00D493FF /* NicknameVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameVM.swift; sourceTree = "<group>"; };
 		E5DDA26E292D9CC8003B46BA /* KakaoPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoPopup.swift; sourceTree = "<group>"; };
+		E5E1497B295047DD00A3827C /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		E5E1497D2950498300A3827C /* TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
+		E5E1497F29504ACA00A3827C /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		E5E14981295050EC00A3827C /* FilterStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterStorage.swift; sourceTree = "<group>"; };
+		E5E14983295058FB00A3827C /* MatchingInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingInfoDTO.swift; sourceTree = "<group>"; };
+		E5E1498529505B8100A3827C /* MatchingDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingDTO.swift; sourceTree = "<group>"; };
 		E5E77EC028D81AD400031010 /* LoginTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextField.swift; sourceTree = "<group>"; };
 		E5E77EC528D822FB00031010 /* idormButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = idormButton.swift; sourceTree = "<group>"; };
 		E5E77EC728D825EB00031010 /* idormTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = idormTextField.swift; sourceTree = "<group>"; };
@@ -347,7 +354,6 @@
 		E5F5EC732884025E0026DE21 /* CommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityViewController.swift; sourceTree = "<group>"; };
 		E5F5EC752884027D0026DE21 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		E5F5EC77288402840026DE21 /* MyPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageVC.swift; sourceTree = "<group>"; };
-		E5FC8F1A29113A25002812FA /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		E5FD982328EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMatchingInfoPopup_Initial.swift; sourceTree = "<group>"; };
 		E5FD982528EAF8F0005A29E2 /* MailTimerChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailTimerChecker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -470,8 +476,9 @@
 			isa = PBXGroup;
 			children = (
 				E5D03358294AD8B1006DD107 /* UserStorage.swift */,
-				E504B61A28B9DCE3009B45F8 /* TokenStorage.swift */,
-				E510D3D028ACC84300A28B90 /* Logger.swift */,
+				E5E1497D2950498300A3827C /* TokenStorage.swift */,
+				E5E14981295050EC00A3827C /* FilterStorage.swift */,
+				E5E1497F29504ACA00A3827C /* Logger.swift */,
 				E58F652F29134C2B00E58862 /* MatchingFilterStorage.swift */,
 				E5ED81AE2918C76B00CB32EB /* MemberInfoStorage.swift */,
 				E5226D64291246750065C809 /* OnboardingDriver.swift */,
@@ -512,7 +519,6 @@
 				E54FF4342913D2F8001826F1 /* MatchingType.swift */,
 				E5323935291500DA004312BA /* MatchingImageViewType.swift */,
 				E54FF4322913D142001826F1 /* MatchingSwipeType.swift */,
-				E5AEA5CD2912A4D60062F6A5 /* MatchingFilter.swift */,
 				E5AEA5D12912ABD30062F6A5 /* FilteringConfirmDriver.swift */,
 			);
 			path = Models;
@@ -559,11 +565,14 @@
 		E54B3E2228C6E1A30062EF7E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E5E1498529505B8100A3827C /* MatchingDTO.swift */,
+				E5E14983295058FB00A3827C /* MatchingInfoDTO.swift */,
 				E5283D5529489E28004DD34F /* ErrorResponseModel.swift */,
 				E5B0D4F929224609007A1791 /* MemberModel.swift */,
 				E5B0D4F3292240E7007A1791 /* OnboardingModel.swift */,
 				E5B0D4F529224574007A1791 /* MatchingModel.swift */,
 				E5226D572911F3610065C809 /* Dormitory.swift */,
+				E5AEA5CD2912A4D60062F6A5 /* MatchingFilter.swift */,
 				E5226D592911F36B0065C809 /* Gender.swift */,
 				E5226D5B2911F3760065C809 /* JoinPeriod.swift */,
 				E5226D5F291207AA0065C809 /* Habit.swift */,
@@ -858,8 +867,8 @@
 				E5D070882930CE7800D5DF6E /* Trash */,
 				E575304528D92C1200F0B57C /* Base */,
 				E5084367288133570047A2EC /* Extensions */,
-				E54B3E1728C6D9680062EF7E /* Managers */,
 				E508437528813C270047A2EC /* Fonts */,
+				E54B3E1728C6D9680062EF7E /* Managers */,
 				E52791C4291B7CD2009C0ADA /* Storages */,
 				E5C2614C2919D2C500623C0E /* Utilities */,
 			);
@@ -880,7 +889,7 @@
 			children = (
 				E50300F628773A5D00611C62 /* AppDelegate.swift */,
 				E50300F828773A5D00611C62 /* SceneDelegate.swift */,
-				E5FC8F1A29113A25002812FA /* ViewModel.swift */,
+				E5E1497B295047DD00A3827C /* ViewModel.swift */,
 				E5909CE528D94B610083075D /* BaseViewController.swift */,
 				E503010128773A5E00611C62 /* LaunchScreen.storyboard */,
 				E50300FF28773A5E00611C62 /* Assets.xcassets */,
@@ -1222,13 +1231,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5EB5F2E2891535E00EC0425 /* CalendarDormCollectionHeaderView.swift in Sources */,
+				E5E14982295050EC00A3827C /* FilterStorage.swift in Sources */,
 				E5A60C7C289BE72A004B77E8 /* SetCalendarViewModel.swift in Sources */,
 				E5B0D4FA29224609007A1791 /* MemberModel.swift in Sources */,
 				E547E3DE291CCA5E000D3A47 /* MyRoommateVM.swift in Sources */,
 				E5AD73A3287B2B5200BA2C5E /* ConfirmPasswordVC.swift in Sources */,
 				E5226D60291207AA0065C809 /* Habit.swift in Sources */,
 				E5EB5F302891558D00EC0425 /* CalendarDormCell.swift in Sources */,
-				E5FC8F1B29113A25002812FA /* ViewModel.swift in Sources */,
+				E5E1497E2950498300A3827C /* TokenStorage.swift in Sources */,
 				E525C1CD28944E2800F934B3 /* CalendarPostViewController.swift in Sources */,
 				E547E3EC291CFBBC000D3A47 /* MatchingCardWishTextView.swift in Sources */,
 				E504B61928B9C6E4009B45F8 /* CompleteSignUpVM.swift in Sources */,
@@ -1258,6 +1268,8 @@
 				E53086E42879287100A5D0A0 /* HomeVM.swift in Sources */,
 				E5A15D4C2923A5EA001CE750 /* OnboardingAPI.swift in Sources */,
 				E5F5EC742884025E0026DE21 /* CommunityViewController.swift in Sources */,
+				E5E1498029504ACA00A3827C /* Logger.swift in Sources */,
+				E5E1497C295047DD00A3827C /* ViewModel.swift in Sources */,
 				E559F54F291630AF004FF225 /* ManageMyInfoViewType.swift in Sources */,
 				E591B77E28C6EB0600B8B581 /* APIService.swift in Sources */,
 				E5AC2DCF288303A300B82AD8 /* passwordTextField.swift in Sources */,
@@ -1288,6 +1300,7 @@
 				E5AEA5D02912A5D50062F6A5 /* MatchingFilterVM.swift in Sources */,
 				E5D4900B288BFA0200311493 /* MatchingVC.swift in Sources */,
 				E5FD982428EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift in Sources */,
+				E5E14984295058FB00A3827C /* MatchingInfoDTO.swift in Sources */,
 				E59F0D502920A47E00D3B737 /* MatchingBottomAlertVC.swift in Sources */,
 				E5E77EC828D825EB00031010 /* idormTextField.swift in Sources */,
 				E5323936291500DA004312BA /* MatchingImageViewType.swift in Sources */,
@@ -1337,7 +1350,6 @@
 				E547E3E8291CF61B000D3A47 /* MatchingCardStringView.swift in Sources */,
 				E508437B28814CAB0047A2EC /* AuthVC.swift in Sources */,
 				E5294FEA2926FF01004D408C /* OnboardingVCTypes.swift in Sources */,
-				E510D3D128ACC84300A28B90 /* Logger.swift in Sources */,
 				E5EB5F2A289143A100EC0425 /* CalendarChipCell.swift in Sources */,
 				E52CD85628BE371F00A262ED /* ManageMyInfoView.swift in Sources */,
 				E5D31BEC289A792400510315 /* UnderlinedBackGroundView.swift in Sources */,
@@ -1351,6 +1363,7 @@
 				E5D49008288B7F0400311493 /* CommunityPopupViewController.swift in Sources */,
 				E5AD7396287A8C2F00BA2C5E /* UIColor+Extensions.swift in Sources */,
 				E5D49012288C003800311493 /* MatchingCard.swift in Sources */,
+				E5E1498629505B8100A3827C /* MatchingDTO.swift in Sources */,
 				E5AC2A4828BB548E0069ABB9 /* MyPageVM.swift in Sources */,
 				E5AD7391287A863800BA2C5E /* LoginVC.swift in Sources */,
 				E5AD739F287AEF2D00BA2C5E /* PutEmailVC.swift in Sources */,
@@ -1365,7 +1378,6 @@
 				E5B15F6F287FE355004D4164 /* OnboardingDetailVC.swift in Sources */,
 				E547E3EA291CF669000D3A47 /* MatchingCardStringList.swift in Sources */,
 				E5D49014288C3DDB00311493 /* OnboardingUtilities.swift in Sources */,
-				E504B61B28B9DCE3009B45F8 /* TokenStorage.swift in Sources */,
 				E5D31BF1289AAE3D00510315 /* UIScrollView+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
