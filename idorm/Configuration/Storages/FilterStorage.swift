@@ -12,10 +12,16 @@ final class FilterStorage {
   static let shared = FilterStorage()
   private init() {}
   
-  private(set) var filter: MatchingDTO.Filter?
-  var hasFilter: Bool { filter != nil ? true : false }
+  private(set) var filter = MatchingDTO.Filter()
+  var hasFilter: Bool = false
   
   func saveFilter(_ filter: MatchingDTO.Filter) {
     self.filter = filter
+    self.hasFilter = true
+  }
+  
+  func resetFilter() {
+    self.filter = MatchingDTO.Filter()
+    self.hasFilter = false
   }
 }

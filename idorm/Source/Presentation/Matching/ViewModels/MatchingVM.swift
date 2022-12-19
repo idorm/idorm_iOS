@@ -110,7 +110,7 @@ final class MatchingViewModel: ViewModel {
     input.publicStateDidChange
       .withUnretained(self)
       .subscribe(onNext: { owner, state in
-        let filterStorage = MatchingFilterStorage.shared
+        let filterStorage = FilterStorage.shared
         if state {
           if filterStorage.hasFilter {
             owner.retrieveFilterdMembers.onNext(Void())
@@ -265,35 +265,34 @@ final class MatchingViewModel: ViewModel {
       }
       .disposed(by: disposeBag)
     
-    // 필터링된 매칭 멤버 불러오기 API
-    retrieveFilterdMembers
-      .withUnretained(self)
-      .do { $0.0.output.isLoading.accept(true) }
-      .map { _ in MatchingFilterStorage.shared.matchingFilterObserver.value }
-      .filterNil()
-      .flatMap {
-        APIService.matchingProvider.rx.request(.retrieveFiltered(filter: $0))
-          .asObservable()
-      }
-      .withUnretained(self)
-      .subscribe { owner, response in
-        owner.output.isLoading.accept(false)
-        
-        switch response.statusCode {
-        case 200:
-          let members = APIService.decode(
-            ResponseModel<[MatchingModel.Member]>.self,
-            data: response.data
-          ).data
-          owner.matchingMembers.accept(members)
-        case 204:
-          owner.matchingMembers.accept([])
-        default:
-          fatalError("필터링을 실패했습니다,,,")
-        }
-        owner.output.reloadCardStack.onNext(Void())
-      }
-      .disposed(by: disposeBag)
+//    // 필터링된 매칭 멤버 불러오기 API
+//    retrieveFilterdMembers
+//      .withUnretained(self)
+//      .do { $0.0.output.isLoading.accept(true) }
+//      .map { _ in FilterStorage.shared.filter }
+//      .flatMap {
+//        APIService.matchingProvider.rx.request(.retrieveFiltered(filter: $0))
+//          .asObservable()
+//      }
+//      .withUnretained(self)
+//      .subscribe { owner, response in
+//        owner.output.isLoading.accept(false)
+//
+//        switch response.statusCode {
+//        case 200:
+//          let members = APIService.decode(
+//            ResponseModel<[MatchingModel.Member]>.self,
+//            data: response.data
+//          ).data
+//          owner.matchingMembers.accept(members)
+//        case 204:
+//          owner.matchingMembers.accept([])
+//        default:
+//          fatalError("필터링을 실패했습니다,,,")
+//        }
+//        owner.output.reloadCardStack.onNext(Void())
+//      }
+//      .disposed(by: disposeBag)
   }
 }
 
@@ -314,7 +313,7 @@ extension MatchingViewModel {
     let storage = MemberInfoStorage.instance
     if storage.hasMatchingInfo {
       if storage.isPublicMatchingInfo {
-        MatchingFilterStorage.shared.hasFilter ?
+        FilterStorage.shared.hasFilter ?
         retrieveFilterdMembers.onNext(Void()) : retrieveMatchingMembers.onNext(Void())
       } else {
         output.presentNoSharePopupVC.onNext(Void())

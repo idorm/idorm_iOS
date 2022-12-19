@@ -11,14 +11,14 @@ struct MatchingDTO: Codable {}
 
 extension MatchingDTO {
   struct Filter: Codable {
-    let dormNum: Dormitory
-    let isAllowedFood: Bool
-    let isGrinding: Bool
-    let isSmoking: Bool
-    let isSnoring: Bool
-    let isWearEarphones: Bool
-    let joinPeriod: JoinPeriod
-    let minAge: Int
-    let maxAge: Int
+    var dormNum: Dormitory = .no1
+    var isAllowedFood: Bool = false
+    var isGrinding: Bool = false
+    var isSmoking: Bool = false
+    var isSnoring: Bool = false
+    var isWearEarphones: Bool = false
+    var joinPeriod: JoinPeriod = .period_16
+    var minAge: Int = 20
+    var maxAge: Int = 30
   }
 }

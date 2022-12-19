@@ -1,9 +1,9 @@
-////
-////  Preview.swift
-////  idorm
-////
-////  Created by 김응철 on 2022/10/13.
-////
+//
+//  Preview.swift
+//  idorm
+//
+//  Created by 김응철 on 2022/10/13.
+//
 
 import UIKit
 import SwiftUI

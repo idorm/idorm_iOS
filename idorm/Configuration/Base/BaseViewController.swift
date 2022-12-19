@@ -8,9 +8,10 @@
 import UIKit.UIViewController
 
 import class RxSwift.DisposeBag
+import ReactorKit
 
 class BaseViewController: UIViewController {
-
+  
   /// A dispose bag. 각 ViewController에 종속적이다.
   var disposeBag = DisposeBag()
   

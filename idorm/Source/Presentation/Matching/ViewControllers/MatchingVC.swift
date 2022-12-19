@@ -336,21 +336,21 @@ final class MatchingViewController: BaseViewController {
     // FilterVC 보여주기
     viewModel.output.pushToFilterVC
       .withUnretained(self)
-      .map { $0.0 }
-      .bind(onNext: {
+      .bind(onNext: { owner, _ in
         let viewController = MatchingFilterViewController()
+        viewController.reactor = MatchingFilterViewReactor()
         viewController.hidesBottomBarWhenPushed = true
-        $0.navigationController?.pushViewController(viewController, animated: true)
+        owner.navigationController?.pushViewController(viewController, animated: true)
         
-        // 선택 초기화 -> POP 필터VC -> 카드 다시 요청
-        viewController.viewModel.output.requestCards
-          .bind(to: $0.viewModel.input.resetFilterButtonDidTap)
-          .disposed(by: $0.disposeBag)
-
-        // 필터링 완료 -> POP 필터VC -> 필터링 카드 요청
-        viewController.viewModel.output.requestFilteredCards
-          .bind(to: $0.viewModel.input.confirmFilterButtonDidTap)
-          .disposed(by: $0.disposeBag)
+//        // 선택 초기화 -> POP 필터VC -> 카드 다시 요청
+//        viewController.viewModel.output.requestCards
+//          .bind(to: owner.viewModel.input.resetFilterButtonDidTap)
+//          .disposed(by: owner.disposeBag)
+//
+//        // 필터링 완료 -> POP 필터VC -> 필터링 카드 요청
+//        viewController.viewModel.output.requestFilteredCards
+//          .bind(to: owner.viewModel.input.confirmFilterButtonDidTap)
+//          .disposed(by: owner.disposeBag)
       })
       .disposed(by: disposeBag)
     
