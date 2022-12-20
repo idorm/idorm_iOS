@@ -2,7 +2,6 @@ import RxSwift
 import RxCocoa
 import RxOptional
 
-/// 자신의 조회 속성을 저장하는 싱글톤 객체입니다.
 final class MemberInfoStorage {
   
   // MARK: - Properties

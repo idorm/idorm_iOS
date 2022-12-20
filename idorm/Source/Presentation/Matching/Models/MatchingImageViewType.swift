@@ -8,9 +8,9 @@ enum MatchingImageViewType {
   
   var imageName: String {
     switch self {
-    case .noMatchingInformation: return "noMatchingInfomation"
-    case .noMatchingCardInformation: return "noCardInfomation"
-    case .noShareState: return "noShareStateLabel"
+    case .noMatchingInformation: return "text_noMatchingInfo"
+    case .noMatchingCardInformation: return "text_noMatchingCard"
+    case .noShareState: return "text_noShare"
     }
   }
 }

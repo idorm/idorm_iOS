@@ -51,6 +51,8 @@ final class MatchingFilterViewController: BaseViewController, View {
   private let ageDescriptionLabel = MatchingUtilities.descriptionLabel("선택하신 연령대의 룸메이트만 나와 매칭돼요.")
   private let slider = MatchingUtilities.slider()
   
+  var reactor = MatchingFilterViewReactor()
+  
   // MARK: - LifeCycle
   
   override func viewDidLoad() {
@@ -152,7 +154,7 @@ final class MatchingFilterViewController: BaseViewController, View {
       .map { _ in MatchingFilterViewReactor.Action.didTapHabitButton(.allowedEarphone) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
-
+    
     // MARK: - State
     
     reactor.state
@@ -164,7 +166,6 @@ final class MatchingFilterViewController: BaseViewController, View {
       .disposed(by: disposeBag)
 
     FilterDriver.shared.isAllowed
-      .debug()
       .bind(to: floatyBottomView.rightButton.rx.isEnabled)
       .disposed(by: disposeBag)
   }
@@ -352,7 +353,12 @@ final class MatchingFilterViewController: BaseViewController, View {
 
 extension MatchingFilterViewController: RangeSeekSliderDelegate {
   func rangeSeekSlider(_ slider: RangeSeekSlider, didChange minValue: CGFloat, maxValue: CGFloat) {
-    // 슬라이더 반응 이벤트 전달
-//    viewModel.input.onChangedAgeSlider.onNext((Int(minValue), Int(maxValue)))
+    let minValue = Int(round(minValue))
+    let maxValue = Int(round(maxValue))
+    
+    Observable.just((minValue, maxValue))
+      .map { MatchingFilterViewReactor.Action.didChangeSlider(minValue: $0.0, maxValue: $0.1) }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
   }
 }

@@ -30,6 +30,9 @@
 		E5226D5E2911F7110065C809 /* OnboardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D5D2911F7110065C809 /* OnboardingVC.swift */; };
 		E5226D60291207AA0065C809 /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D5F291207AA0065C809 /* Habit.swift */; };
 		E5226D65291246750065C809 /* OnboardingDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D64291246750065C809 /* OnboardingDriver.swift */; };
+		E523ECAF29516A0A00E79386 /* MatchingViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523ECAE29516A0A00E79386 /* MatchingViewReactor.swift */; };
+		E523ECB1295198B100E79386 /* MemberStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523ECB0295198B100E79386 /* MemberStorage.swift */; };
+		E523ECB329519C6600E79386 /* MemberDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523ECB229519C6600E79386 /* MemberDTO.swift */; };
 		E525C1CD28944E2800F934B3 /* CalendarPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */; };
 		E52821422925C6BB006A4531 /* RegisterVCTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52821412925C6BB006A4531 /* RegisterVCTypes.swift */; };
 		E5283D5629489E28004DD34F /* ErrorResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5283D5529489E28004DD34F /* ErrorResponseModel.swift */; };
@@ -223,6 +226,9 @@
 		E5226D5D2911F7110065C809 /* OnboardingVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingVC.swift; sourceTree = "<group>"; };
 		E5226D5F291207AA0065C809 /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
 		E5226D64291246750065C809 /* OnboardingDriver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDriver.swift; sourceTree = "<group>"; };
+		E523ECAE29516A0A00E79386 /* MatchingViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingViewReactor.swift; sourceTree = "<group>"; };
+		E523ECB0295198B100E79386 /* MemberStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberStorage.swift; sourceTree = "<group>"; };
+		E523ECB229519C6600E79386 /* MemberDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberDTO.swift; sourceTree = "<group>"; };
 		E525C1CC28944E2800F934B3 /* CalendarPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarPostViewController.swift; sourceTree = "<group>"; };
 		E52821412925C6BB006A4531 /* RegisterVCTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterVCTypes.swift; sourceTree = "<group>"; };
 		E5283D5529489E28004DD34F /* ErrorResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponseModel.swift; sourceTree = "<group>"; };
@@ -478,8 +484,9 @@
 				E5D03358294AD8B1006DD107 /* UserStorage.swift */,
 				E5E1497D2950498300A3827C /* TokenStorage.swift */,
 				E5E14981295050EC00A3827C /* FilterStorage.swift */,
-				E5E1497F29504ACA00A3827C /* Logger.swift */,
+				E523ECB0295198B100E79386 /* MemberStorage.swift */,
 				E5ED81AE2918C76B00CB32EB /* MemberInfoStorage.swift */,
+				E5E1497F29504ACA00A3827C /* Logger.swift */,
 			);
 			path = Storages;
 			sourceTree = "<group>";
@@ -564,6 +571,7 @@
 			children = (
 				E5E1498529505B8100A3827C /* MatchingDTO.swift */,
 				E5E14983295058FB00A3827C /* MatchingInfoDTO.swift */,
+				E523ECB229519C6600E79386 /* MemberDTO.swift */,
 				E5283D5529489E28004DD34F /* ErrorResponseModel.swift */,
 				E5B0D4F929224609007A1791 /* MemberModel.swift */,
 				E5B0D4F3292240E7007A1791 /* OnboardingModel.swift */,
@@ -794,7 +802,7 @@
 			children = (
 				E5294FF0292778D5004D408C /* Models */,
 				E56DF4C92894060200E85B10 /* ViewControllers */,
-				E5AB97C22895583C00C0CEDF /* ViewModels */,
+				E5AB97C22895583C00C0CEDF /* Reactors */,
 			);
 			path = Matching;
 			sourceTree = "<group>";
@@ -935,13 +943,14 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
-		E5AB97C22895583C00C0CEDF /* ViewModels */ = {
+		E5AB97C22895583C00C0CEDF /* Reactors */ = {
 			isa = PBXGroup;
 			children = (
+				E523ECAE29516A0A00E79386 /* MatchingViewReactor.swift */,
 				E5E1498C295079F600A3827C /* MatchingFilterViewReactor.swift */,
 				E584B4BB289FCA6C007AD83A /* MatchingVM.swift */,
 			);
-			path = ViewModels;
+			path = Reactors;
 			sourceTree = "<group>";
 		};
 		E5C2614C2919D2C500623C0E /* Utilities */ = {
@@ -1275,6 +1284,7 @@
 				E5AD7398287A8D8800BA2C5E /* UITextField+Extensions.swift in Sources */,
 				E508437728813CE80047A2EC /* FontManager.swift in Sources */,
 				E53086E42879287100A5D0A0 /* HomeVM.swift in Sources */,
+				E523ECB329519C6600E79386 /* MemberDTO.swift in Sources */,
 				E5A15D4C2923A5EA001CE750 /* OnboardingAPI.swift in Sources */,
 				E5F5EC742884025E0026DE21 /* CommunityViewController.swift in Sources */,
 				E5E1498029504ACA00A3827C /* Logger.swift in Sources */,
@@ -1294,6 +1304,7 @@
 				E5E77EC628D822FB00031010 /* idormButton.swift in Sources */,
 				E5294FF52927807A004D408C /* Encodable+Extensions.swift in Sources */,
 				E5ED81AF2918C76B00CB32EB /* MemberInfoStorage.swift in Sources */,
+				E523ECAF29516A0A00E79386 /* MatchingViewReactor.swift in Sources */,
 				E547E3E6291CF120000D3A47 /* MatchingCardBoolList.swift in Sources */,
 				E5FD982628EAF8F0005A29E2 /* MailTimerChecker.swift in Sources */,
 				E5EB5F322891589800EC0425 /* CalendarListUtilities.swift in Sources */,
@@ -1356,6 +1367,7 @@
 				E547E3E8291CF61B000D3A47 /* MatchingCardStringView.swift in Sources */,
 				E508437B28814CAB0047A2EC /* AuthVC.swift in Sources */,
 				E5294FEA2926FF01004D408C /* OnboardingVCTypes.swift in Sources */,
+				E523ECB1295198B100E79386 /* MemberStorage.swift in Sources */,
 				E5EB5F2A289143A100EC0425 /* CalendarChipCell.swift in Sources */,
 				E52CD85628BE371F00A262ED /* ManageMyInfoView.swift in Sources */,
 				E5D31BEC289A792400510315 /* UnderlinedBackGroundView.swift in Sources */,

@@ -8,8 +8,11 @@ import Shuffle_iOS
 import RxSwift
 import RxCocoa
 import RxOptional
+import ReactorKit
 
-final class MatchingViewController: BaseViewController {
+final class MatchingViewController: BaseViewController, View {
+  
+  typealias Reactor = MatchingViewReactor
   
   // MARK: - Properties
   
@@ -50,6 +53,7 @@ final class MatchingViewController: BaseViewController {
   
   private let cardStack = SwipeCardStack()
   private let viewModel = MatchingViewModel()
+  private var reactor = MatchingViewReactor()
   
   // MARK: - LifeCycle
   
@@ -237,6 +241,68 @@ final class MatchingViewController: BaseViewController {
   
   // MARK: - Bind
   
+  func bind(reactor: MatchingViewReactor) {
+    
+    // MARK: - Action
+    
+    Observable.empty()
+      .map { MatchingViewReactor.Action.viewDidLoad }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // MARK: - State
+    
+    // 필터VC 이동
+    reactor.state
+      .map { $0.filterVC }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let viewController = MatchingFilterViewController()
+        viewController.hidesBottomBarWhenPushed = true
+        owner.navigationController?.pushViewController(viewController, animated: true)
+      }
+      .disposed(by: disposeBag)
+    
+    // 매칭공개여부 팝업
+    reactor.state
+      .map { $0.noPublicPopup }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let popup = NoPublicStatePopUp()
+        popup.modalPresentationStyle = .overFullScreen
+        owner.present(popup, animated: false)
+      }
+      .disposed(by: disposeBag)
+    
+    // 매칭정보없음 팝업
+    reactor.state
+      .map { $0.noMatchingInfoPopup }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let popup = NoMatchingInfoPopup()
+        popup.modalPresentationStyle = .overFullScreen
+        owner.present(popup, animated: false)
+      }
+      .disposed(by: disposeBag)
+    
+    // 매칭정보없음_최초 팝업
+    reactor.state
+      .map { $0.noMatchingInfoPopup_Initial }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let popup = NoMatchingInfoPopup_Initial()
+        popup.modalPresentationStyle = .overFullScreen
+        owner.present(popup, animated: false)
+      }
+      .disposed(by: disposeBag)
+    
+    // 텍스트이미지
+  }
+  
   override func bind() {
     super.bind()
     
@@ -248,7 +314,7 @@ final class MatchingViewController: BaseViewController {
       .filterNil()
       .bind(to: viewModel.input.publicStateDidChange)
       .disposed(by: disposeBag)
-
+    
     // 화면 접근
     rx.viewWillAppear
       .map { _ in Void() }
@@ -341,6 +407,14 @@ final class MatchingViewController: BaseViewController {
         viewController.reactor = MatchingFilterViewReactor()
         viewController.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(viewController, animated: true)
+        
+        viewController.reactor?.state
+          .map { $0.requestCard }
+          .filter { $0 }
+          .bind { _ in
+            
+          }
+          .disposed(by: owner.disposeBag)
         
 //        // 선택 초기화 -> POP 필터VC -> 카드 다시 요청
 //        viewController.viewModel.output.requestCards

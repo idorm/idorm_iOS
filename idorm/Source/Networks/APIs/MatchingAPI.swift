@@ -6,7 +6,7 @@ enum MatchingAPI {
   case retrieve
   case retrieveLiked
   case retrieveDisliked
-  case retrieveFiltered(filter: MatchingFilter)
+  case retrieveFiltered(filter: MatchingDTO.Filter)
   
   case addLiked(Int)
   case addDisliked(Int)

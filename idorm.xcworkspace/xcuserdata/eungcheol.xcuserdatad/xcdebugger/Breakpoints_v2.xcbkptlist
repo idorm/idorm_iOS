@@ -46,8 +46,8 @@
             filePath = "idorm/Source/Presentation/Matching/ViewControllers/MatchingVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "396"
-            endingLineNumber = "396"
+            startingLineNumber = "470"
+            endingLineNumber = "470"
             landmarkName = "bind()"
             landmarkType = "7">
          </BreakpointContent>
