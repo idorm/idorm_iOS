@@ -10,12 +10,12 @@ final class MatchingCardStringView: UIView {
   private var queryLabel: UILabel!
   private var contentsLabel: UILabel!
   
-  private let member: MatchingModel.Member
+  private let member: MatchingDTO.Retrieve
   private let type: MatchingCardStringList
   
   // MARK: - LifeCycle
   
-  init(_ from: MatchingModel.Member, type: MatchingCardStringList) {
+  init(_ from: MatchingDTO.Retrieve, type: MatchingCardStringList) {
     self.member = from
     self.type = type
     super.init(frame: .zero)

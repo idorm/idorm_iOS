@@ -40,12 +40,15 @@ final class MatchingFilterViewReactor: Reactor {
     case .didTapResetButton:
       FilterStorage.shared.resetFilter()
       FilterDriver.shared.reset()
-      return Observable.just(.updatePopVC)
+      return .concat([
+        .just(.updateRequestCard),
+        .just(.updatePopVC)
+      ])
       
     case .didTapConfirmButton:
       return Observable.concat([
-        Observable.just(.updatePopVC),
-        Observable.just(.updateRequestCard)
+        Observable.just(.updateRequestCard),
+        Observable.just(.updatePopVC)
       ])
       
     case .didTapDormButton(let dorm):

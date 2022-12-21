@@ -103,13 +103,6 @@ final class NoMatchingInfoPopup_Initial: BaseViewController {
         self?.dismiss(animated: false)
       })
       .disposed(by: disposeBag)
-    
-    // 프로필 이미지 만들기 버튼 클릭 이벤트
-    confirmButton.rx.tap
-      .bind(onNext: {
-        
-      })
-      .disposed(by: disposeBag)
   }
 }
 

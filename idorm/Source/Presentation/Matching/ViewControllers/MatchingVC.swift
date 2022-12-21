@@ -19,7 +19,7 @@ final class MatchingViewController: BaseViewController, View {
   private let filterButton = UIButton().then {
     var config = UIButton.Configuration.plain()
     config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-    config.image = UIImage(named: "filter(Matching)")
+    config.image = #imageLiteral(resourceName: "filter")
     $0.configuration = config
   }
   
@@ -36,7 +36,7 @@ final class MatchingViewController: BaseViewController, View {
   }
   
   private let topRoundedBackgroundView = UIImageView().then {
-    $0.image = UIImage(named: "topRoundedBackground(Matching)")?.withRenderingMode(.alwaysTemplate)
+    $0.image = #imageLiteral(resourceName: "topRoundedBackground(Matching)").withRenderingMode(.alwaysTemplate)
     $0.tintColor = .idorm_blue
   }
   
@@ -250,15 +250,69 @@ final class MatchingViewController: BaseViewController, View {
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
+    rx.viewWillAppear
+      .map { _ in MatchingViewReactor.Action.viewWillAppear }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    cancelButton.rx.tap
+      .withUnretained(self)
+      .bind { $0.0.cardStack.swipe(.left, animated: true) }
+      .disposed(by: disposeBag)
+    
+    heartButton.rx.tap
+      .withUnretained(self)
+      .bind { $0.0.cardStack.swipe(.right, animated: true) }
+      .disposed(by: disposeBag)
+    
+    backButton.rx.tap
+      .withUnretained(self)
+      .bind { owner, _ in owner.cardStack.undoLastSwipe(animated: true) }
+      .disposed(by: disposeBag)
+      
+    messageButton.rx.tap
+      .withUnretained(self)
+      .map { $0.0.cardStack.topCardIndex }
+      .filterNil()
+      .map { MatchingViewReactor.Action.message($0) }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
     // MARK: - State
+    
+    reactor.state
+      .map { $0.matchingMembers }
+      .withUnretained(self)
+      .bind { $0.0.cardStack.reloadData() }
+      .disposed(by: disposeBag)
     
     // 필터VC 이동
     reactor.state
-      .map { $0.filterVC }
+      .map { $0.isOpenedFilterVC }
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
         let viewController = MatchingFilterViewController()
+        viewController.hidesBottomBarWhenPushed = true
+        owner.navigationController?.pushViewController(viewController, animated: true)
+
+        // 필터 변경
+        viewController.reactor.state
+          .map { $0.requestCard }
+          .filter { $0 }
+          .map { _ in MatchingViewReactor.Action.didChangeFilter }
+          .bind(to: owner.reactor.action)
+          .disposed(by: owner.disposeBag)
+      }
+      .disposed(by: disposeBag)
+    
+    // 온보딩VC 이동
+    reactor.state
+      .map { $0.isOpenedOnboardingVC }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let viewController = OnboardingViewController(.initial2)
         viewController.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(viewController, animated: true)
       }
@@ -266,173 +320,151 @@ final class MatchingViewController: BaseViewController, View {
     
     // 매칭공개여부 팝업
     reactor.state
-      .map { $0.noPublicPopup }
+      .map { $0.isOpenedNoPublicPopup }
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
         let popup = NoPublicStatePopUp()
         popup.modalPresentationStyle = .overFullScreen
         owner.present(popup, animated: false)
+        
+        // 공개허용 클릭
+        popup.confirmLabel.rx.tapGesture()
+          .map { _ in MatchingViewReactor.Action.didTapPublicButton }
+          .bind(to: owner.reactor.action)
+          .disposed(by: owner.disposeBag)
+        
+        // 팝업 창 닫기
+        owner.reactor.state
+          .map { $0.isOpenedNoPublicPopup }
+          .filter { $0 == false }
+          .bind { _ in popup.dismiss(animated: false) }
+          .disposed(by: owner.disposeBag)
       }
       .disposed(by: disposeBag)
     
     // 매칭정보없음 팝업
     reactor.state
-      .map { $0.noMatchingInfoPopup }
+      .map { $0.isOpenedNoMatchingInfoPopup }
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
         let popup = NoMatchingInfoPopup()
         popup.modalPresentationStyle = .overFullScreen
         owner.present(popup, animated: false)
+
+        // 프로필 이미지 만들기 버튼
+        popup.makeButton.rx.tap
+          .map { MatchingViewReactor.Action.didTapMakeProfileButton }
+          .bind(to: owner.reactor.action)
+          .disposed(by: owner.disposeBag)
+        
+        // 팝업 창 닫기
+        owner.reactor.state
+          .map { $0.isOpenedNoMatchingInfoPopup }
+          .filter { $0 == false }
+          .bind { _ in popup.dismiss(animated: false) }
+          .disposed(by: owner.disposeBag)
       }
       .disposed(by: disposeBag)
     
     // 매칭정보없음_최초 팝업
     reactor.state
-      .map { $0.noMatchingInfoPopup_Initial }
+      .map { $0.isOpenedNoMatchingInfoPopup_Initial }
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
         let popup = NoMatchingInfoPopup_Initial()
         popup.modalPresentationStyle = .overFullScreen
         owner.present(popup, animated: false)
+        
+        // 프로필 이미지 만들기 버튼
+        popup.confirmButton.rx.tap
+          .map { MatchingViewReactor.Action.didTapMakeProfileButton }
+          .bind(to: owner.reactor.action)
+          .disposed(by: owner.disposeBag)
+        
+        // 팝업 창 닫기
+        owner.reactor.state
+          .map { $0.isOpenedNoMatchingInfoPopup_Initial }
+          .filter { $0 == false }
+          .bind { _ in popup.dismiss(animated: false) }
+          .disposed(by: owner.disposeBag)
       }
       .disposed(by: disposeBag)
     
-    // 텍스트이미지
-  }
-  
-  override func bind() {
-    super.bind()
-    
-    // MARK: - Input
-    
-    // 자신의 공유 상태 업데이트
-    MemberInfoStorage.instance.publicStateDidChange
-      .distinctUntilChanged()
-      .filterNil()
-      .bind(to: viewModel.input.publicStateDidChange)
-      .disposed(by: disposeBag)
-    
-    // 화면 접근
-    rx.viewWillAppear
-      .map { _ in Void() }
-      .bind(to: viewModel.input.viewWillAppear)
-      .disposed(by: disposeBag)
-    
-    // 필터버튼 클릭
-    filterButton.rx.tap
-      .bind(to: viewModel.input.filterButtonDidTap)
-      .disposed(by: disposeBag)
-    
-    // 새로고침 버튼 클릭
-    refreshButton.rx.tap
+    // 카카오 팝업
+    reactor.state
+      .map { $0.isOpenedKakaoPopup }
+      .filter { $0.0 }
       .withUnretained(self)
-      .filter { $0.0.viewModel.output.isLoading.value == false }
-      .map { _ in Void() }
-      .bind(to: viewModel.input.refreshButtonDidTap)
-      .disposed(by: disposeBag)
-    
-    // 취소버튼 클릭
-    cancelButton.rx.tap
-      .throttle(.seconds(1), scheduler: MainScheduler.instance)
-      .withUnretained(self)
-      .map { $0.0 }
-      .map { $0.cardStack.swipe(.left, animated: true) }
-      .bind(to: viewModel.input.cancelButtonDidTap)
-      .disposed(by: disposeBag)
-    
-    // 메세지버튼 클릭
-    messageButton.rx.tap
-      .withUnretained(self)
-      .map { $0.0 }
-      .map { $0.cardStack.topCardIndex }
-      .filterNil()
-      .bind(to: viewModel.input.messageButtonDidTap)
-      .disposed(by: disposeBag)
-    
-    // 하트버튼 클릭
-    heartButton.rx.tap
-      .throttle(.seconds(1), scheduler: MainScheduler.instance)
-      .withUnretained(self)
-      .map { $0.0 }
-      .map { $0.cardStack.swipe(.right, animated: true) }
-      .bind(to: viewModel.input.heartButtonDidTap)
-      .disposed(by: disposeBag)
-    
-    // 백버튼 클릭
-    backButton.rx.tap
-      .throttle(.seconds(1), scheduler: MainScheduler.instance)
-      .withUnretained(self)
-      .map { $0.0 }
-      .map { $0.cardStack.undoLastSwipe(animated: true) }
-      .bind(to: viewModel.input.backButtonDidTap)
-      .disposed(by: disposeBag)
-    
-    // MARK: - Output
-    
-    // 백그라운드 컬러 기본 컬러로 다시 바꾸기
-    viewModel.output.drawBackTopBackgroundColor
-      .withUnretained(self)
-      .bind(onNext: { owner, _ in
-        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-          owner.topRoundedBackgroundView.tintColor = .idorm_blue
-        }
-      })
-      .disposed(by: disposeBag)
-    
-    // 백그라운드 컬러 변경 감지
-    viewModel.output.onChangedTopBackgroundColor
-      .withUnretained(self)
-      .bind(onNext: { owner, direction in
-        switch direction {
-        case .cancel:
-          UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
-            owner.topRoundedBackgroundView.tintColor = .idorm_red
-          })
-        case .heart:
-          UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
-            owner.topRoundedBackgroundView.tintColor = .idorm_green
-          })
-        }
-      })
-      .disposed(by: disposeBag)
-    
-    // FilterVC 보여주기
-    viewModel.output.pushToFilterVC
-      .withUnretained(self)
-      .bind(onNext: { owner, _ in
-        let viewController = MatchingFilterViewController()
-        viewController.reactor = MatchingFilterViewReactor()
-        viewController.hidesBottomBarWhenPushed = true
-        owner.navigationController?.pushViewController(viewController, animated: true)
+      .bind { owner, link in
+        let popup = KakaoPopup()
+        popup.modalPresentationStyle = .overFullScreen
+        owner.present(popup, animated: false)
         
-        viewController.reactor?.state
-          .map { $0.requestCard }
-          .filter { $0 }
-          .bind { _ in
-            
-          }
+        // 링크 바로가기 버튼
+        popup.kakaoButton.rx.tap
+          .map { MatchingViewReactor.Action.didTapKakaoLinkButton(link.1) }
+          .bind(to: owner.reactor.action)
           .disposed(by: owner.disposeBag)
         
-//        // 선택 초기화 -> POP 필터VC -> 카드 다시 요청
-//        viewController.viewModel.output.requestCards
-//          .bind(to: owner.viewModel.input.resetFilterButtonDidTap)
-//          .disposed(by: owner.disposeBag)
-//
-//        // 필터링 완료 -> POP 필터VC -> 필터링 카드 요청
-//        viewController.viewModel.output.requestFilteredCards
-//          .bind(to: owner.viewModel.input.confirmFilterButtonDidTap)
-//          .disposed(by: owner.disposeBag)
-      })
+        // 팝업 창 닫기
+        owner.reactor.state
+          .map { $0.isOpenedKakaoPopup }
+          .filter { $0.0 == false }
+          .bind { _ in popup.dismiss(animated: false) }
+          .disposed(by: owner.disposeBag)
+        
+        // 외부 브라우저 이동
+        owner.reactor.state
+          .map { $0.isOpenedWeb }
+          .filter { $0 }
+          .bind { _ in UIApplication.shared.open(URL(string: link.1)!) }
+          .disposed(by: owner.disposeBag)
+      }
       .disposed(by: disposeBag)
     
-    // 백그라운드 컬러 감지 (터치할 때)
-    viewModel.output.onChangedTopBackgroundColor_WithTouch
+    // 링크 오류 팝업
+    reactor.state
+      .map { $0.isOpenedBasicPopup }
+      .filter { $0 }
       .withUnretained(self)
-      .bind(onNext: { owner, type in
-        switch type {
+      .bind { owner, _ in
+        let popup = BasicPopup(contents: "유효한 주소가 아닙니다.")
+        popup.modalPresentationStyle = .overFullScreen
+        owner.present(popup, animated: false)
+      }
+      .disposed(by: disposeBag)
+    
+    // 텍스트이미지 변경
+    reactor.state
+      .map { $0.currentTextImage }
+      .map { UIImage(named: $0.imageName) }
+      .bind(to: informationImageView.rx.image)
+      .disposed(by: disposeBag)
+    
+    // 로딩 중
+    reactor.state
+      .map { $0.isLoading }
+      .withUnretained(self)
+      .bind { owner, isLoading in
+        if isLoading {
+          owner.loadingIndicator.startAnimating()
+          owner.view.isUserInteractionEnabled = false
+        } else {
+          owner.loadingIndicator.stopAnimating()
+          owner.view.isUserInteractionEnabled = true
+        }
+      }
+      .disposed(by: disposeBag)
+    
+    // 터치시 백그라운드 컬러 변경
+    reactor.state
+      .map { $0.backgroundColor }
+      .withUnretained(self)
+      .bind { owner, swipeType in
+        switch swipeType {
         case .heart:
           UIView.animate(withDuration: 0.2, animations: {
             owner.topRoundedBackgroundView.tintColor = .idorm_green
@@ -453,122 +485,31 @@ final class MatchingViewController: BaseViewController, View {
               }
             }
           }
+        default: break
         }
-      })
-      .disposed(by: disposeBag)
-    
-    // 프로필 이미지 만들기 팝업 창 띄우기
-    viewModel.output.presentMatchingPopupVC
-      .withUnretained(self)
-      .map { $0.0 }
-      .bind {
-        let matchingPopupVC = NoMatchingInfoPopup()
-        matchingPopupVC.modalPresentationStyle = .overFullScreen
-        $0.present(matchingPopupVC, animated: false)
-        
-        // 프로필 이미지 만들기 버튼 클릭
-        matchingPopupVC.makeButton.rx.tap
-          .bind(to: $0.viewModel.input.makeProfileImageButtonDidTap)
-          .disposed(by: $0.disposeBag)
-         
-        // 팝업 창 닫기
-        $0.viewModel.output.dismissNoMatchingPopup
-          .bind { matchingPopupVC.dismiss(animated: false) }
-          .disposed(by: $0.disposeBag)
       }
       .disposed(by: disposeBag)
     
-    // 온보딩 페이지로 이동
-    viewModel.output.pushToOnboardingVC
+    // 스와이프시 백그라운드 컬러 변경
+    reactor.state
+      .map { $0.backgroundColor_withSwipe }
       .withUnretained(self)
-      .bind {
-        let viewController = OnboardingViewController(.initial2)
-        viewController.hidesBottomBarWhenPushed = true
-        $0.0.navigationController?.pushViewController(viewController, animated: true)
+      .bind { owner, swipeType in
+        switch swipeType {
+        case .heart:
+          UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+            owner.topRoundedBackgroundView.tintColor = .idorm_green
+          })
+        case .cancel:
+          UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+            owner.topRoundedBackgroundView.tintColor = .idorm_red
+          })
+        case .none:
+          UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
+            owner.topRoundedBackgroundView.tintColor = .idorm_blue
+          }
+        }
       }
-      .disposed(by: disposeBag)
-    
-    // 팝업 창 띄우기
-    viewModel.output.presentPopup
-      .withUnretained(self)
-      .bind {
-        let popup = BasicPopup(contents: $0.1)
-        popup.modalPresentationStyle = .overFullScreen
-        $0.0.present(popup, animated: false)
-      }
-      .disposed(by: disposeBag)
-    
-    // 카드 스택 뷰 리로드
-    viewModel.output.reloadCardStack
-      .withUnretained(self)
-      .map { $0.0 }
-      .bind(onNext: { $0.cardStack.reloadData() })
-      .disposed(by: disposeBag)
-    
-    // 인디케이터 제어
-    viewModel.output.isLoading
-      .bind(to: loadingIndicator.rx.isAnimating)
-      .disposed(by: disposeBag)
-    
-    // 화면 인터렉션 제어
-    viewModel.output.isLoading
-      .map { !$0 }
-      .bind(to: view.rx.isUserInteractionEnabled)
-      .disposed(by: disposeBag)
-
-    // 매칭 이미지 뷰 변경
-    viewModel.output.informationImageViewStatus
-      .map { UIImage(named: $0.imageName) }
-      .bind(to: informationImageView.rx.image)
-      .disposed(by: disposeBag)
-    
-    // 매칭 공개 여부 팝업 띄우기
-    viewModel.output.presentNoSharePopupVC
-      .withUnretained(self)
-      .bind(onNext: { owner, _ in
-        let popupVC = NoPublicStatePopUp()
-        popupVC.modalPresentationStyle = .overFullScreen
-        owner.present(popupVC, animated: false)
-        
-        // 공개 허용 버튼 클릭
-        popupVC.confirmLabel.rx.tapGesture()
-          .skip(1)
-          .map { _ in Void() }
-          .bind(to: owner.viewModel.input.publicButtonDidTap)
-          .disposed(by: owner.disposeBag)
-        
-        // 팝업창 닫기
-        owner.viewModel.output.dismissNoSharePopupVC
-          .bind(onNext: { popupVC.dismiss(animated: false) })
-          .disposed(by: self.disposeBag)
-      })
-      .disposed(by: disposeBag)
-    
-    // 카카오 링크 페이지 띄우기
-    viewModel.output.presentKakaoPopupVC
-      .withUnretained(self)
-      .bind(onNext: { owner, index in
-        let viewController = KakaoPopup()
-        viewController.modalPresentationStyle = .overFullScreen
-        owner.present(viewController, animated: false)
-        
-        // 오픈채팅 링크 바로 가기 버튼 클릭
-        viewController.kakaoButton.rx.tap
-          .map { index }
-          .bind(to: owner.viewModel.input.kakaoLinkButtonDidTap)
-          .disposed(by: owner.disposeBag)
-        
-        // KakaoLinkVC 닫기
-        owner.viewModel.output.dismissKakaoLinkVC
-          .bind(onNext: { viewController.dismiss(animated: false) })
-          .disposed(by: self.disposeBag)
-      })
-      .disposed(by: disposeBag)
-    
-   // 카카오 링크 사파리로 열기
-    viewModel.output.presentSafari
-      .withUnretained(self)
-      .bind(onNext: { owner, link in UIApplication.shared.open(URL(string: link)!) })
       .disposed(by: disposeBag)
   }
 }
@@ -576,7 +517,7 @@ final class MatchingViewController: BaseViewController, View {
 // MARK: - Card Swipe
 
 extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, UIGestureRecognizerDelegate {
-  func card(from member: MatchingModel.Member) -> SwipeCard {
+  func card(from member: MatchingDTO.Retrieve) -> SwipeCard {
     let card = SwipeCard()
     card.swipeDirections = [.left, .right]
     card.content = MatchingCard(member)
@@ -586,19 +527,26 @@ extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelega
   }
   
   func cardStack(_ cardStack: Shuffle_iOS.SwipeCardStack, cardForIndexAt index: Int) -> Shuffle_iOS.SwipeCard {
-    return card(from: viewModel.matchingMembers.value[index])
+    return card(from: reactor.currentState.matchingMembers[index])
   }
   
   func numberOfCards(in cardStack: Shuffle_iOS.SwipeCardStack) -> Int {
-    return viewModel.matchingMembers.value.count
+    return reactor.currentState.matchingMembers.count
   }
   
   func cardStack(_ cardStack: SwipeCardStack, didSwipeCardAt index: Int, with direction: SwipeDirection) {
-    let card = viewModel.matchingMembers.value[index]
-    let memberId = card.memberId
+    let id = reactor.currentState.matchingMembers[index].memberId
     switch direction {
-    case .left: viewModel.input.leftSwipeDidEnd.onNext(memberId)
-    case .right: viewModel.input.rightSwipeDidEnd.onNext(memberId)
+    case .left:
+      Observable.just(id)
+        .map { MatchingViewReactor.Action.cancel($0) }
+        .bind(to: reactor.action)
+        .disposed(by: disposeBag)
+    case .right:
+      Observable.just(id)
+        .map { MatchingViewReactor.Action.heart($0) }
+        .bind(to: reactor.action)
+        .disposed(by: disposeBag)
     default: break
     }
   }
@@ -620,16 +568,25 @@ extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelega
     if abs(velocity.x) > abs(velocity.y) {
       if velocity.x < 0 {
         // 취소 스와이프 감지
-        viewModel.input.swipingCard.onNext(.cancel)
+        Observable.empty()
+          .map { MatchingViewReactor.Action.didBeginSwipe(.cancel) }
+          .bind(to: reactor.action)
+          .disposed(by: disposeBag)
       } else {
         // 좋아요 스와이프 감지
-        viewModel.input.swipingCard.onNext(.heart)
+        Observable.empty()
+          .map { MatchingViewReactor.Action.didBeginSwipe(.heart) }
+          .bind(to: reactor.action)
+          .disposed(by: disposeBag)
       }
     }
     
     if sender.state == .ended {
       // 스와이프 종료 이벤트
-      viewModel.input.swipeDidEnd.onNext(.none)
+      Observable.empty()
+        .map { MatchingViewReactor.Action.didBeginSwipe(.none) }
+        .bind(to: reactor.action)
+        .disposed(by: disposeBag)
     }
   }
 }

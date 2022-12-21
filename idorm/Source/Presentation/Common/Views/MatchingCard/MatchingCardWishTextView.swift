@@ -9,11 +9,11 @@ final class MatchingCardWishTextView: UIView {
   
   private var contentsLabel: UILabel!
   
-  private let member: MatchingModel.Member
+  private let member: MatchingDTO.Retrieve
   
   // MARK: - LifeCycle
   
-  init(_ from: MatchingModel.Member) {
+  init(_ from: MatchingDTO.Retrieve) {
     self.member = from
     super.init(frame: .zero)
     setupContentsLabel()

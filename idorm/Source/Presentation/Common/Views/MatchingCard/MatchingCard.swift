@@ -56,12 +56,12 @@ final class MatchingCard: UIView {
   private var ageLabel: UILabel!
   private var mbtiLabel: UILabel!
   
-  private let member: MatchingModel.Member
+  private let member: MatchingDTO.Retrieve
   
   // MARK: - LifeCycle
   
-  init(_ from: MatchingModel.Member) {
-    self.member = from
+  init(_ member: MatchingDTO.Retrieve) {
+    self.member = member
     super.init(frame: .zero)
     setupBottomView()
     setupBoolView()

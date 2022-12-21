@@ -11,12 +11,12 @@ final class MatchingCardBoolView: UIView {
   private var validLabel: UILabel!
   private var stackView: UIStackView!
   
-  private let member: MatchingModel.Member
+  private let member: MatchingDTO.Retrieve
   private let type: MatchingCardBoolList
   
   // MARK: - LifeCycle
   
-  init(_ from: MatchingModel.Member, type: MatchingCardBoolList) {
+  init(_ from: MatchingDTO.Retrieve, type: MatchingCardBoolList) {
     self.member = from
     self.type = type
     super.init(frame: .zero)
