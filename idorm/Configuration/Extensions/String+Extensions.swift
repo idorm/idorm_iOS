@@ -26,6 +26,10 @@ extension String {
     return passwordTest.evaluate(with: self)
   }
   
+  static var version: String {
+    return "\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String).\(Bundle.main.infoDictionary?["CFBundleVersion"] as! String)"
+  }
+  
   var isValidNickname: Bool {
       // String -> Array
       let arr = Array(self)

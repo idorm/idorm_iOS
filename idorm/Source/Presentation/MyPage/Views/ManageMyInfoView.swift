@@ -19,13 +19,13 @@ final class ManageMyInfoView: UIView {
     $0.textColor = .idorm_gray_300
   }
   
-  private let arrowImageView = UIImageView(image: UIImage(named: "rightArrow(Mypage)"))
+  private let arrowImageView = UIImageView(image: #imageLiteral(resourceName: "rightArrow(Mypage)"))
   
-  private let type: ManageMyInfoViewType
+  private let type: MyPageEnumerations.ManageMyInfoView
   
   // MARK: - LifeCycle
   
-  init(type: ManageMyInfoViewType, title: String) {
+  init(type: MyPageEnumerations.ManageMyInfoView, title: String) {
     self.type = type
     super.init(frame: .zero)
     titleLabel.text = title

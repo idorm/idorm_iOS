@@ -1,12 +1,14 @@
 import UIKit
 
 import Then
+import SnapKit
 import RxSwift
 import RxCocoa
-import RxGesture
-import SnapKit
+import ReactorKit
 
-final class ManageMyInfoViewController: BaseViewController {
+final class ManageMyInfoViewController: BaseViewController, View {
+  
+  typealias Reactor = ManageMyInfoViewReactor
   
   // MARK: - Properties
   
@@ -18,13 +20,12 @@ final class ManageMyInfoViewController: BaseViewController {
     $0.backgroundColor = .white
   }
   
-  private let profileImage = UIImageView(image: UIImage(named: "myProfileImage(MyPage)"))
+  private let profileImage = UIImageView(image: #imageLiteral(resourceName: "human_large"))
   
   private let nickNameView = ManageMyInfoView(type: .both(description: ""), title: "닉네임")
   private let changePWView = ManageMyInfoView(type: .onlyArrow, title: "비밀번호 변경")
   private let emailView = ManageMyInfoView(type: .onlyDescription(description: ""), title: "이메일")
-  private let versionView = ManageMyInfoView(
-    type: .onlyDescription(description: "\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String).\(Bundle.main.infoDictionary?["CFBundleVersion"] as! String)"), title: "버전정보")
+  private let versionView = ManageMyInfoView(type: .onlyDescription(description: String.version), title: "버전정보")
   
   private var separatorLine1 = MyPageUtilities.separatorLine()
   private var separatorLine2 = MyPageUtilities.separatorLine()
@@ -35,7 +36,20 @@ final class ManageMyInfoViewController: BaseViewController {
     $0.textColor = .idorm_gray_300
   }
   
+  private let reactor = ManageMyInfoViewReactor()
   private let viewModel = ManageMyInfoViewModel()
+  
+  // MARK: - Bind
+  
+  func bind(reactor: ManageMyInfoViewReactor) {
+    
+    // MARK: - Action
+    
+    
+    
+    // MARK: - State
+    
+  }
   
   // MARK: - Setup
   
@@ -206,14 +220,3 @@ final class ManageMyInfoViewController: BaseViewController {
     emailView.descriptionLabel.text = memberInfo.email
   }
 }
-
-// MARK: - Preview
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-struct ManageMyInfoVC_PreView: PreviewProvider {
-  static var previews: some View {
-    ManageMyInfoViewController().toPreview()
-  }
-}
-#endif

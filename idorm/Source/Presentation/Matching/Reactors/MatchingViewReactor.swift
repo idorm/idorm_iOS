@@ -22,7 +22,7 @@ final class MatchingViewReactor: Reactor {
     case didTapPublicButton
     case didTapMakeProfileButton
     case didTapKakaoLinkButton(String)
-    case didBeginSwipe(MatchingSwipeType)
+    case didBeginSwipe(MatchingEnumerations.Swipe)
     case cancel(Int)
     case heart(Int)
     case message(Int)
@@ -31,7 +31,7 @@ final class MatchingViewReactor: Reactor {
   
   enum Mutation {
     case updateLoading(Bool)
-    case updateCurrentTextImage(MatchingImageViewType)
+    case updateCurrentTextImage(MatchingEnumerations.TextImage)
     case updateNoPublicPopup(Bool)
     case updateNoMatchingInfoPopup(Bool)
     case updateNoMatchingInfoPopup_initial(Bool)
@@ -41,8 +41,8 @@ final class MatchingViewReactor: Reactor {
     case updateBasicPopup(Bool)
     case updateIsOpenedWeb(Bool)
     case updateMatchingMembers([MatchingDTO.Retrieve])
-    case updateBackgroundColor(MatchingSwipeType)
-    case updateBackgroundColor_withSwipe(MatchingSwipeType)
+    case updateBackgroundColor(MatchingEnumerations.Swipe)
+    case updateBackgroundColor_withSwipe(MatchingEnumerations.Swipe)
   }
   
   struct State {
@@ -56,9 +56,9 @@ final class MatchingViewReactor: Reactor {
     var isOpenedFilterVC: Bool = false
     var isOpenedOnboardingVC: Bool = false
     var isOpenedWeb: Bool = false
-    var backgroundColor: MatchingSwipeType = .none
-    var backgroundColor_withSwipe: MatchingSwipeType = .none
-    var currentTextImage: MatchingImageViewType = .noMatchingCardInformation
+    var backgroundColor: MatchingEnumerations.Swipe = .none
+    var backgroundColor_withSwipe: MatchingEnumerations.Swipe = .none
+    var currentTextImage: MatchingEnumerations.TextImage = .noMatchingCardInformation
   }
   
   let initialState: State = State()
@@ -88,7 +88,7 @@ final class MatchingViewReactor: Reactor {
       
     case .viewWillAppear:
       if memberStorage.hasMatchingInfo {
-        if memberStorage.isPublicMatchingInfo {          
+        if memberStorage.isPublicMatchingInfo {
           return .just(.updateCurrentTextImage(.noMatchingCardInformation))
         } else {
           return .just(.updateCurrentTextImage(.noShareState))

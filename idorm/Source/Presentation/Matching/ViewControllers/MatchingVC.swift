@@ -52,7 +52,6 @@ final class MatchingViewController: BaseViewController, View {
   private var buttonStack: UIStackView!
   
   private let cardStack = SwipeCardStack()
-  private let viewModel = MatchingViewModel()
   private var reactor = MatchingViewReactor()
   
   // MARK: - LifeCycle

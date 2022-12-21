@@ -1,3 +1,10 @@
+//
+//  MyPageViewController.swift
+//  idorm
+//
+//  Created by 김응철 on 2022/12/21.
+//
+
 import UIKit
 
 import SnapKit
@@ -7,12 +14,15 @@ import RxCocoa
 import RxGesture
 import RxAppState
 import RxOptional
+import ReactorKit
 
-final class MyPageViewController: BaseViewController {
+final class MyPageViewController: BaseViewController, View {
+  
+  typealias Reactor = MyPageViewReactor
   
   // MARK: - Properties
   
-  private let indicator = UIActivityIndicatorView().then {
+  private lazy var indicator = UIActivityIndicatorView().then {
     $0.color = .gray
   }
   
@@ -32,7 +42,7 @@ final class MyPageViewController: BaseViewController {
   private let topProfileView = TopProfileView()
   private let matchingContainerView = MatchingContainerView()
   
-  private let viewModel = MyPageViewModel()
+  private let reactor = MyPageViewReactor()
   
   // MARK: - LifeCycle
   
@@ -66,137 +76,170 @@ final class MyPageViewController: BaseViewController {
   
   // MARK: - Bind
   
-  override func bind() {
-    super.bind()
+  func bind(reactor: MyPageViewReactor) {
     
-    // MARK: - Input
+    // MARK: - Action
     
-    // 설정 버튼 클릭 이벤트
+    // viewWillAppear
+    rx.viewWillAppear
+      .map { _ in MyPageViewReactor.Action.viewWillAppear }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+        
+    // 설정 버튼 클릭
     gearButton.rx.tap
-      .bind(to: viewModel.input.gearButtonDidTap)
+      .map { MyPageViewReactor.Action.didTapGearButton }
+      .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
-    // 마이페이지 버튼 클릭 이벤트
+    // 매칭이미지 버튼 클릭
     matchingContainerView.manageMatchingImageButton.rx.tap
-      .bind(to: viewModel.input.manageButtonDidTap)
+      .map { MyPageViewReactor.Action.didTapMatchingImageButton }
+      .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
-    // 공유 버튼 터치
+    // 좋아요한 룸메이트 버튼 클릭
+    matchingContainerView.likedRoommateButton.rx.tap
+      .map { MyPageViewReactor.Action.didTapRoommateButton(.like) }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // 싫어요한 룸메이트 버튼 클릭
+    matchingContainerView.likedRoommateButton.rx.tap
+      .map { MyPageViewReactor.Action.didTapRoommateButton(.dislike) }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // 공유 버튼 클릭
     matchingContainerView.shareButton.rx.tap
       .withUnretained(self)
-      .map { $0.0 }
-      .map { !$0.matchingContainerView.shareButton.isSelected }
-      .bind(to: viewModel.input.shareButtonDidTap)
+      .map { !$0.0.matchingContainerView.shareButton.isSelected }
+      .map { MyPageViewReactor.Action.didTapShareButton($0) }
+      .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
-    // 좋아요한 멤버 버튼 클릭 이벤트
-    matchingContainerView.likedRoommateButton.rx.tap
-      .map { MyPageVCTypes.MyRoommateVCType.like }
-      .bind(to: viewModel.input.roommateButtonDidTap)
-      .disposed(by: disposeBag)
+    // MARK: - State
     
-    // 싫어요한 멤버 버튼 클릭 이벤트
-    matchingContainerView.dislikedRoommateButton.rx.tap
-      .map { MyPageVCTypes.MyRoommateVCType.dislike }
-      .bind(to: viewModel.input.roommateButtonDidTap)
-      .disposed(by: disposeBag)
-    
-    // 화면 접속 이벤트
-    rx.viewWillAppear
-      .map { _ in Void() }
-      .bind(to: viewModel.input.viewWillAppear)
-      .disposed(by: disposeBag)
-    
-    // MARK: - Output
-    
-    // 내 정보 관리 페이지로 이동
-    viewModel.output.pushToManageMyInfoVC
+    // 마이페이지 관리 페이지 이동
+    reactor.state
+      .map { $0.isOpenedManageMyInfoVC }
+      .distinctUntilChanged()
+      .filter { $0 }
       .withUnretained(self)
-      .map { $0.0 }
-      .bind {
-        let manageMyInfoVC = ManageMyInfoViewController()
-        manageMyInfoVC.hidesBottomBarWhenPushed = true
-        $0.navigationController?.pushViewController(manageMyInfoVC, animated: true)
+      .bind { owner, _ in
+        let viewController = ManageMyInfoViewController()
+        viewController.hidesBottomBarWhenPushed = true
+        owner.navigationController?.pushViewController(viewController, animated: true)
       }
       .disposed(by: disposeBag)
     
-    // 룸메이트 관리 페이지로 이동
-    viewModel.output.pushToMyRoommateVC
+    // 온보딩 페이지 이동
+    reactor.state
+      .map { $0.isOpenedOnboardingVC }
+      .distinctUntilChanged()
+      .filter { $0 }
       .withUnretained(self)
-      .bind(onNext: { owner, type in
-        let viewController = MyRoommateViewController(type)
+      .bind { owner, _ in
+        let viewController = OnboardingViewController(.initial2)
         viewController.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(viewController, animated: true)
-      })
+      }
       .disposed(by: disposeBag)
     
-    // 온보딩 수정 페이지로 이동
-    viewModel.output.pushToOnboardingVC
+    // 온보딩 디테일 페이지 이동
+    reactor.state
+      .map { $0.isOpenedOnboardingDetailVC }
+      .distinctUntilChanged()
+      .filter { $0 }
       .withUnretained(self)
-      .bind(onNext: { owner, state in
-        if state {
-          let matchingMember = MemberInfoStorage.instance.onboardingToMatchingMember()
-          let viewController = OnboardingDetailViewController(matchingMember, vcType: .update)
-          viewController.hidesBottomBarWhenPushed = true
-          owner.navigationController?.pushViewController(viewController, animated: true)
-        } else {
-          let viewController = OnboardingViewController(.initial2)
-          viewController.hidesBottomBarWhenPushed = true
-          owner.navigationController?.pushViewController(viewController, animated: true)
-        }
-      })
+      .bind { owner, _ in
+        
+      }
       .disposed(by: disposeBag)
     
-    // 공유 버튼 토클
-    viewModel.output.toggleShareButton
+    // 매칭정보없음 팝업
+    reactor.state
+      .map { $0.isOpenedNoMatchingInfoPopup }
+      .distinctUntilChanged()
+      .filter { $0 }
       .withUnretained(self)
-      .map { !($0.0.matchingContainerView.shareButton.isSelected) }
+      .bind { owner, _ in
+        let popup = NoMatchingInfoPopup()
+        popup.modalPresentationStyle = .overFullScreen
+        owner.present(popup, animated: false)
+        
+        // 프로필 이미지 만들기 버튼
+        popup.makeButton.rx.tap
+          .map { MyPageViewReactor.Action.didTapMakeProfileButton }
+          .bind(to: reactor.action)
+          .disposed(by: owner.disposeBag)
+        
+        // 팝업 창 닫기
+        reactor.state
+          .map { $0.isOpenedNoMatchingInfoPopup }
+          .filter { $0 == false }
+          .bind { _ in popup.dismiss(animated: false) }
+          .disposed(by: owner.disposeBag)
+      }
+      .disposed(by: disposeBag)
+    
+    // 좋아요 룸메이트 관리 페이지 이동
+    reactor.state
+      .map { $0.isOpenedLikedRoommateVC }
+      .distinctUntilChanged()
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let viewController = MyRoommateViewController(.like)
+        viewController.hidesBottomBarWhenPushed = true
+        owner.navigationController?.pushViewController(viewController, animated: true)
+      }
+      .disposed(by: disposeBag)
+    
+    // 싫어요 룸메이트 관리 페이지 이동
+    reactor.state
+      .map { $0.isOpenedDislikedRoommateVC }
+      .distinctUntilChanged()
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let viewController = MyRoommateViewController(.dislike)
+        viewController.hidesBottomBarWhenPushed = true
+        owner.navigationController?.pushViewController(viewController, animated: true)
+      }
+      .disposed(by: disposeBag)
+    
+    // 공유버튼 토글
+    reactor.state
+      .map { $0.isSelectedShareButton }
+      .distinctUntilChanged()
       .bind(to: matchingContainerView.shareButton.rx.isSelected)
       .disposed(by: disposeBag)
     
-    // 인디케이터 애니메이션 제어
-    viewModel.output.isLoading
-      .bind(to: indicator.rx.isAnimating)
-      .disposed(by: disposeBag)
-    
-    // 화면 인터렉션 제어
-    viewModel.output.isLoading
-      .map { !$0 }
-      .bind(to: view.rx.isUserInteractionEnabled)
-      .disposed(by: disposeBag)
-    
-    // 공유 버튼 업데이트
-    viewModel.output.updateShareButton
-      .bind(to: matchingContainerView.shareButton.rx.isSelected)
-      .disposed(by: disposeBag)
-    
-    // 닉네임 업데이트
-    viewModel.output.updateNickname
+    // 현재 닉네임 변경
+    reactor.state
+      .map { $0.currentNickname }
+      .distinctUntilChanged()
       .bind(to: topProfileView.nicknameLabel.rx.text)
       .disposed(by: disposeBag)
     
-    // 프로필 이미지 만들기 팝업
-    viewModel.output.presentNoMatchingInfoPopupVC
+    // 로딩 중
+    reactor.state
+      .map { $0.isLoading }
+      .distinctUntilChanged()
       .withUnretained(self)
-      .map { $0.0 }
-      .bind {
-        let viewController = NoMatchingInfoPopup()
-        viewController.modalPresentationStyle = .overFullScreen
-        $0.present(viewController, animated: false)
-        
-        // 프로필 이미지 만들기 버튼 클릭
-        viewController.makeButton.rx.tap
-          .bind(to: $0.viewModel.input.makeProfileImageButtonDidTap)
-          .disposed(by: $0.disposeBag)
-        
-        // 팝업창 닫기
-        $0.viewModel.output.dismissPopupVC
-          .bind { viewController.dismiss(animated: false) }
-          .disposed(by: $0.disposeBag)
+      .bind { owner, isLoading in
+        if isLoading {
+          owner.indicator.startAnimating()
+          owner.view.isUserInteractionEnabled = false
+        } else {
+          owner.indicator.stopAnimating()
+          owner.view.isUserInteractionEnabled = true
+        }
       }
       .disposed(by: disposeBag)
   }
-  
+
   // MARK: - Setup
   
   override func setupStyles() {

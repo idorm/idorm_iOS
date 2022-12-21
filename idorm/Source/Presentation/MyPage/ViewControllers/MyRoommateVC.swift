@@ -11,7 +11,7 @@ final class MyRoommateViewController: BaseViewController {
   
   // MARK: - Properties
   
-  private let vcType: MyPageVCTypes.MyRoommateVCType
+  private let vcType: MyPageEnumerations.Roommate
   private let viewModel = MyRoommateViewModel()
   
   private let indicator = UIActivityIndicatorView().then {
@@ -31,7 +31,7 @@ final class MyRoommateViewController: BaseViewController {
   
   // MARK: - LifeCycle
   
-   init(_ vcType: MyPageVCTypes.MyRoommateVCType) {
+  init(_ vcType: MyPageEnumerations.Roommate) {
     self.vcType = vcType
     super.init(nibName: nil, bundle: nil)
   }
