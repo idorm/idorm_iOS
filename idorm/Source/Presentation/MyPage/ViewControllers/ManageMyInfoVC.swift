@@ -20,24 +20,21 @@ final class ManageMyInfoViewController: BaseViewController, View {
     $0.backgroundColor = .white
   }
   
-  private let profileImage = UIImageView(image: #imageLiteral(resourceName: "human_large"))
-  
-  private let nickNameView = ManageMyInfoView(type: .both(description: ""), title: "닉네임")
-  private let changePWView = ManageMyInfoView(type: .onlyArrow, title: "비밀번호 변경")
-  private let emailView = ManageMyInfoView(type: .onlyDescription(description: ""), title: "이메일")
-  private let versionView = ManageMyInfoView(type: .onlyDescription(description: String.version), title: "버전정보")
-  
-  private var separatorLine1 = MyPageUtilities.separatorLine()
-  private var separatorLine2 = MyPageUtilities.separatorLine()
-  
   private let withDrawLabel = UILabel().then {
     $0.text = "회원 탈퇴"
     $0.font = .init(name: MyFonts.regular.rawValue, size: 14)
     $0.textColor = .idorm_gray_300
   }
   
+  private let nickNameView = ManageMyInfoView(type: .both(description: ""), title: "닉네임")
+  private let changePWView = ManageMyInfoView(type: .onlyArrow, title: "비밀번호 변경")
+  private let emailView = ManageMyInfoView(type: .onlyDescription(description: ""), title: "이메일")
+  private let versionView = ManageMyInfoView(type: .onlyDescription(description: String.version), title: "버전정보")
+  private let profileImage = UIImageView(image: #imageLiteral(resourceName: "human_large"))
+  private var separatorLine1 = MyPageUtilities.separatorLine()
+  private var separatorLine2 = MyPageUtilities.separatorLine()
+  
   private let reactor = ManageMyInfoViewReactor()
-  private let viewModel = ManageMyInfoViewModel()
   
   // MARK: - Bind
   
@@ -45,10 +42,80 @@ final class ManageMyInfoViewController: BaseViewController, View {
     
     // MARK: - Action
     
+    rx.viewWillAppear
+      .map { _ in ManageMyInfoViewReactor.Action.viewWillAppear}
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
     
+    // 닉네임 버튼 클릭
+    nickNameView.rx.tapGesture()
+      .map { _ in ManageMyInfoViewReactor.Action.didTapNicknameButton }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // 비밀번호 변경 버튼 클릭
+    changePWView.rx.tapGesture()
+      .map { _ in ManageMyInfoViewReactor.Action.didTapChangePwButton }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // 회원탈퇴 버튼 클릭
+    withDrawLabel.rx.tapGesture()
+      .map { _ in ManageMyInfoViewReactor.Action.didTapWithDrawalButton }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
     
     // MARK: - State
     
+    // 회원탈퇴 페이지로 이동
+    reactor.state
+      .map { $0.isOpenedWithDrawVC }
+      .distinctUntilChanged()
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let viewController = WithdrawalViewController()
+        owner.navigationController?.pushViewController(viewController, animated: true)
+      }
+      .disposed(by: disposeBag)
+    
+    // ChangeNickNameVC 보여주기
+    reactor.state
+      .map { $0.isOpenedNicknameVC }
+      .distinctUntilChanged()
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let changeNicknameVC = NicknameViewController(.update)
+        owner.navigationController?.pushViewController(changeNicknameVC, animated: true)
+      }
+      .disposed(by: disposeBag)
+    
+    // PutEmailVC 이동
+    reactor.state
+      .map { $0.isOpenedConfirmPwVC }
+      .distinctUntilChanged()
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let viewController = PutEmailViewController(.updatePW)
+        owner.navigationController?.pushViewController(viewController, animated: true)
+      }
+      .disposed(by: disposeBag)
+    
+    // 닉네임 변경
+    reactor.state
+      .map { $0.currentNickname }
+      .distinctUntilChanged()
+      .bind(to: nickNameView.descriptionLabel.rx.text)
+      .disposed(by: disposeBag)
+    
+    // 이메일 변경
+    reactor.state
+      .map { $0.currentEmail }
+      .distinctUntilChanged()
+      .bind(to: emailView.descriptionLabel.rx.text)
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Setup
@@ -130,88 +197,7 @@ final class ManageMyInfoViewController: BaseViewController, View {
       make.bottom.equalToSuperview()
     }
   }
-  
-  // MARK: - Bind
-  
-  override func bind() {
-    super.bind()
-    
-    // MARK: - Input
-    
-    // 화면 접속
-    rx.viewWillAppear
-      .map { _ in Void() }
-      .bind(to: viewModel.input.viewWillAppear)
-      .disposed(by: disposeBag)
-    
-    // 화면 접속 시 UI 업데이트
-    Observable.just(Void())
-      .bind(onNext: { [unowned self] in
-        self.updateUI()
-      })
-      .disposed(by: disposeBag)
-    
-    // 닉네임 버튼 클릭 이벤트
-    nickNameView.rx.tapGesture()
-      .map { _ in Void() }
-      .bind(to: viewModel.input.nicknameButtonDidTap)
-      .disposed(by: disposeBag)
-    
-    // 비밀번호 변경 버튼 클릭 이벤트
-    changePWView.rx.tapGesture()
-      .map { _ in Void() }
-      .bind(to: viewModel.input.changePWButtonDidTap)
-      .disposed(by: disposeBag)
-    
-    // 회원 탈퇴 버튼 이벤트
-    withDrawLabel.rx.tapGesture()
-      .map { _ in Void() }
-      .bind(to: viewModel.input.withdrawalButtonDidTap)
-      .disposed(by: disposeBag)
-    
-    // MARK: - Output
-    
-    // 닉네임 변경
-    viewModel.output.updateNickname
-      .bind(to: nickNameView.descriptionLabel.rx.text)
-      .disposed(by: disposeBag)
-    
-    // 이메일 변경
-    viewModel.output.updateEmail
-      .bind(to: emailView.descriptionLabel.rx.text)
-      .disposed(by: disposeBag)
-    
-    // 회원탈퇴 페이지로 이동
-    viewModel.output.pushToWithdrawalVC
-      .withUnretained(self)
-      .map { $0.0 }
-      .bind(onNext: {
-        let viewController = WithdrawalViewController()
-        $0.navigationController?.pushViewController(viewController, animated: true)
-      })
-      .disposed(by: disposeBag)
-    
-    // ChangeNickNameVC 보여주기
-    viewModel.output.pushToChangeNicknameVC
-      .withUnretained(self)
-      .map { $0.0 }
-      .bind(onNext: {
-        let changeNicknameVC = NicknameViewController(.update)
-        $0.navigationController?.pushViewController(changeNicknameVC, animated: true)
-      })
-      .disposed(by: disposeBag)
-    
-    // PutEmailVC 이동
-    viewModel.output.pushToPutEmailVC
-      .withUnretained(self)
-      .map { $0.0 }
-      .bind(onNext: {
-        let viewController = PutEmailViewController(.updatePW)
-        $0.navigationController?.pushViewController(viewController, animated: true)
-      })
-      .disposed(by: disposeBag)
-  }
-  
+
   // MARK: - Helpers
   
   private func updateUI() {

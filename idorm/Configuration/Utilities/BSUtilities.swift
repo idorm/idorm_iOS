@@ -1,8 +1,8 @@
 import UIKit
 
-final class BottomAlertUtilities {
+final class BSUtilities {
   /// 신고하기 버튼을 반환합니다.
-  static func getReportButton() -> UIButton {
+  static func reportButton() -> UIButton {
     var config = UIButton.Configuration.filled()
     var titleContainer = AttributeContainer()
     titleContainer.font = UIFont.init(name: MyFonts.medium.rawValue, size: 20)
@@ -21,7 +21,7 @@ final class BottomAlertUtilities {
   }
   
   /// 일반 버튼을 반환합니다.
-  static func getBasicButton(title: String, image: UIImage?) -> UIButton {
+  static func basicButton(_ title: String, image: UIImage?) -> UIButton {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
     container.font = UIFont.init(name: MyFonts.medium.rawValue, size: 20)
@@ -39,7 +39,7 @@ final class BottomAlertUtilities {
   }
 
   /// 기숙사 별 버튼을 반환합니다.
-  static func getDormNumberButton(title: String) -> UIButton {
+  static func dormNumberButton(title: String) -> UIButton {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
     container.font = UIFont.init(name: MyFonts.bold.rawValue, size: 20)
@@ -48,6 +48,13 @@ final class BottomAlertUtilities {
     let button = UIButton(configuration: config)
     button.contentHorizontalAlignment = .leading
     button.configurationUpdateHandler = CommunityUtilities.getButtonUpdateHandler()
+    return button
+  }
+  
+  static func button(_ image: UIImage) -> UIButton {
+    let button = UIButton()
+    button.setImage(image, for: .normal)
+    
     return button
   }
 }

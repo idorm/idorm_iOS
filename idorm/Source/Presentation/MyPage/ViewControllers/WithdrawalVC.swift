@@ -1,11 +1,21 @@
+//
+//  WithdrawalViewController.swift
+//  idorm
+//
+//  Created by 김응철 on 2022/12/22.
+//
+
 import UIKit
 
 import SnapKit
 import Then
 import RxSwift
 import RxCocoa
+import ReactorKit
 
-final class WithdrawalViewController: BaseViewController {
+final class WithdrawalViewController: BaseViewController, View {
+  
+  typealias Reactor = WithDrawalViewReactor
   
   // MARK: - Properties
   
@@ -67,8 +77,49 @@ final class WithdrawalViewController: BaseViewController {
   private let contentView = UIView()
   private let sadDomiImageView = UIImageView(image: #imageLiteral(resourceName: "sadDomi"))
   private let floatyBottomView = FloatyBottomView(.withdrawal)
+  private let indicator = UIActivityIndicatorView().then { $0.color = .gray }
   
-  private let viewModel = WithdrawalViewModel()
+  private let reactor = WithDrawalViewReactor()
+  
+  // MARK: - Bind
+  
+  func bind(reactor: WithDrawalViewReactor) {
+    
+    // MARK: - Action
+    
+    // 다시 생각해볼래요 버튼 클릭
+    floatyBottomView.leftButton.rx.tap
+      .withUnretained(self)
+      .bind { $0.0.navigationController?.popViewController(animated: true) }
+      .disposed(by: disposeBag)
+    
+    // 탈퇴하기 버튼 클릭
+    floatyBottomView.rightButton.rx.tap
+      .map { WithDrawalViewReactor.Action.didTapWithDrawalButton }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // MARK: - State
+    
+    // 인디케이터 애니메이션
+    reactor.state
+      .map { $0.isLoading }
+      .bind(to: indicator.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
+    // 로그인VC로 이동
+    reactor.state
+      .map { $0.isOpenedLoginVC }
+      .distinctUntilChanged()
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let loginVC = LoginViewController()
+        loginVC.modalPresentationStyle = .fullScreen
+        owner.present(loginVC, animated: true)
+      }
+      .disposed(by: disposeBag)
+  }
   
   // MARK: - Setup
   
@@ -134,41 +185,5 @@ final class WithdrawalViewController: BaseViewController {
       make.height.equalTo(192)
       make.bottom.equalToSuperview().offset(-32)
     }
-  }
-  
-  // MARK: - Bind
-   
-  override func bind() {
-    super.bind()
-    
-    // MARK: - Input
-    
-    // 다시 생각해볼래요 버튼 클릭
-    floatyBottomView.leftButton.rx.tap
-      .bind(to: viewModel.input.skipButtonDidTap)
-      .disposed(by: disposeBag)
-    
-    // 탈퇴 버튼 클릭
-    floatyBottomView.rightButton.rx.tap
-      .bind(to: viewModel.input.withdrawalButtonDidTap)
-      .disposed(by: disposeBag)
-    
-    // MARK: - Output
-    
-    // 뒤로가기
-    viewModel.output.popVC
-      .withUnretained(self)
-      .bind(onNext: { $0.0.navigationController?.popViewController(animated: true) })
-      .disposed(by: disposeBag)
-    
-    // 회원 탈퇴 완료 후 로그인 페이지로 넘어가기
-    viewModel.output.presentLoginVC
-      .withUnretained(self)
-      .bind(onNext: {
-        let viewController = UINavigationController(rootViewController: LoginViewController())
-        viewController.modalPresentationStyle = .fullScreen
-        $0.0.present(viewController, animated: true)
-      })
-      .disposed(by: disposeBag)
   }
 }
