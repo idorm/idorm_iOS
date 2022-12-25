@@ -12,7 +12,7 @@ final class TopProfileView: UIView {
     $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
   }
   
-  let profileImageView = UIImageView(image: UIImage(named: "myProfileImage(MyPage)"))
+  let profileImageView = UIImageView(image: #imageLiteral(resourceName: "sqaure_human"))
   
   // MARK: - LifeCycle
   

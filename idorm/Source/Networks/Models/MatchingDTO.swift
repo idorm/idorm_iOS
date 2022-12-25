@@ -23,23 +23,23 @@ extension MatchingDTO {
   }
   
   struct Retrieve: Codable {
-    var memberId: Int
-    var matchingInfoId: Int
-    var dormNum: Dormitory
-    var joinPeriod: JoinPeriod
-    var gender: Gender
-    var age: Int
-    var isSnoring: Bool
-    var isGrinding: Bool
-    var isSmoking: Bool
-    var isAllowedFood: Bool
-    var isWearEarphones: Bool
-    var wakeUpTime: String
-    var cleanUpStatus: String
-    var showerTime: String
-    var openKakaoLink: String
-    var mbti: String
-    var wishText: String
+    var memberId: Int = 0
+    var matchingInfoId: Int = 0
+    var dormNum: Dormitory = .no1
+    var joinPeriod: JoinPeriod = .period_16
+    var gender: Gender = .female
+    var age: Int = 0
+    var isSnoring: Bool = false
+    var isGrinding: Bool = false
+    var isSmoking: Bool = false
+    var isAllowedFood: Bool = false
+    var isWearEarphones: Bool = false
+    var wakeUpTime: String = ""
+    var cleanUpStatus: String = ""
+    var showerTime: String = ""
+    var openKakaoLink: String = ""
+    var mbti: String?
+    var wishText: String?
     var addedAt: String?
   }
 }

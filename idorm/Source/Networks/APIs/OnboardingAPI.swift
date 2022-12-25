@@ -1,11 +1,18 @@
+//
+//  OnboardingAPI.swift
+//  idorm
+//
+//  Created by 김응철 on 2022/12/25.
+//
+
 import Foundation
 
 import Moya
 
 enum OnboardingAPI {
   case retrieve
-  case modify(OnboardingModel.RequestModel)
-  case save(OnboardingModel.RequestModel)
+  case modify(MatchingInfoDTO.Save)
+  case save(MatchingInfoDTO.Save)
   case modifyPublic(Bool)
 }
 

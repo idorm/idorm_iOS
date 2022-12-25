@@ -1,21 +1,31 @@
+//
+//  PutEmailViewController.swift
+//  idorm
+//
+//  Created by 김응철 on 2022/12/21.
+//
+
 import UIKit
 
 import Then
 import SnapKit
 import RxSwift
 import RxCocoa
+import ReactorKit
 
-final class PutEmailViewController: BaseViewController {
+final class PutEmailViewController: BaseViewController, View {
+  
+  typealias Reactor = PutEmailViewReactor
   
   // MARK: - Properties
   
   private lazy var infoLabel = UILabel().then {
     $0.textColor = .black
     $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
-    switch vcType {
-    case .findPW:
+    switch type {
+    case .findPw:
       $0.text = "가입시 사용한 인천대학교 이메일이 필요해요."
-    case .signUp, .updatePW:
+    case .signUp, .modifyPw:
       $0.text = "이메일"
     }
   }
@@ -36,26 +46,25 @@ final class PutEmailViewController: BaseViewController {
     stack.axis = .horizontal
     stack.spacing = 4
     
-    switch vcType {
-    case .signUp, .updatePW:
+    switch type {
+    case .signUp, .modifyPw:
       stack.isHidden = false
-    case .findPW:
+    case .findPw:
       stack.isHidden = true
     }
   }
   
   private let textField = idormTextField("이메일을 입력해주세요")
   private let confirmButton = idormButton("인증번호 받기")
-  private let inuMark = UIImageView(image: #imageLiteral(resourceName: "INUMark"))
+  private let inuMark = UIImageView(image: #imageLiteral(resourceName: "inu"))
   
-  private let viewModel: PutEmailViewModel
-  private let vcType: RegisterVCTypes.PutEmailVCType
+  private let type: RegisterEnumerations
+  private let reactor = PutEmailViewReactor()
 
   // MARK: - LifeCycle
   
-  init(_ vcType: RegisterVCTypes.PutEmailVCType) {
-    self.vcType = vcType
-    self.viewModel = PutEmailViewModel(vcType)
+  init(_ type: RegisterEnumerations) {
+    self.type = type
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -65,89 +74,69 @@ final class PutEmailViewController: BaseViewController {
     
   // MARK: - Bind
   
-  override func bind() {
-    super.bind()
+  func bind(reactor: PutEmailViewReactor) {
     
-    // MARK: - Input
+    // MARK: - Action
     
-    // 텍스트 변화 감지
-    textField.rx.text
-      .orEmpty
-      .bind(to: viewModel.input.textFieldDidChange)
-      .disposed(by: disposeBag)
-
     // 인증번호 받기 버튼 클릭
     confirmButton.rx.tap
-      .bind(to: viewModel.input.confirmButtonDidTap)
+      .withUnretained(self)
+      .map { ($0.0.textField.text ?? "", $0.0.type) }
+      .map { PutEmailViewReactor.Action.didTapReceiveButton($0.0, $0.1) }
+      .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
-    // MARK: - Output
+    // MARK: - State
     
-    // 에러 팝업 창 띄우기
-    viewModel.output.presentPopupVC
-      .bind(onNext: { [weak self] mention in
-        let popupVC = BasicPopup(contents: mention)
-        popupVC.modalPresentationStyle = .overFullScreen
-        self?.present(popupVC, animated: false)
-      })
+    // 오류 팝업 창
+    reactor.state
+      .map { $0.isOpenedPopup }
+      .filter { $0.0 }
+      .withUnretained(self)
+      .bind { owner, content in
+        let popup = BasicPopup(contents: content.1)
+        popup.modalPresentationStyle = .overFullScreen
+        owner.present(popup, animated: false)
+      }
       .disposed(by: disposeBag)
     
-    // 인증번호 페이지로 이동
-    viewModel.output.presentAuthVC
-      .bind(onNext: { [weak self] in
-        guard let self = self else { return }
-        let authVC = AuthViewController()
-        let navVC = UINavigationController(rootViewController: authVC)
-        navVC.modalPresentationStyle = .fullScreen
-        self.present(navVC, animated: true)
-        
-        authVC.pushCompletion = {
-          let viewController: ConfirmPasswordViewController
-          switch self.vcType {
-          case .findPW:
-            viewController = ConfirmPasswordViewController(.findPW)
-          case .signUp:
-            viewController = ConfirmPasswordViewController(.signUp)
-          case .updatePW:
-            viewController = ConfirmPasswordViewController(.updatePW)
-          }
-          DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.navigationController?.pushViewController(viewController, animated: true)
-          }
-        }
-      })
-      .disposed(by: disposeBag)
-    
-    // 로딩 애니메이션 제어
-    viewModel.output.isLoading
+    // 인디케이터 제어
+    reactor.state
+      .map { $0.isLoading }
       .bind(to: indicator.rx.isAnimating)
       .disposed(by: disposeBag)
     
-    // 화면 인터렉션 제어
-    viewModel.output.isLoading
-      .map { !$0 }
-      .bind(to: view.rx.isUserInteractionEnabled)
+    // AuthVC로 이동
+    reactor.state
+      .map { $0.isOpenedAuthVC }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let authVC = AuthViewController()
+        owner.navigationController?.pushViewController(authVC, animated: true)
+      }
       .disposed(by: disposeBag)
   }
-  
+
   // MARK: - Setup
   
   override func setupLayouts() {
     super.setupLayouts()
+    
     [infoLabel, textField, confirmButton, inuStack, indicator]
       .forEach { view.addSubview($0) }
   }
   
   override func setupStyles() {
     super.setupStyles()
-    view.backgroundColor = .white
     
-    switch vcType {
+    view.backgroundColor = .white
+    switch type {
     case .signUp:
       navigationItem.title = "회원가입"
-    case .findPW:
+    case .findPw:
       navigationItem.title = "비밀번호 찾기"
-    case .updatePW:
+    case .modifyPw:
       navigationItem.title = "비밀번호 변경"
     }
   }

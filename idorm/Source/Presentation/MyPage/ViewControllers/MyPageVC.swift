@@ -93,19 +93,19 @@ final class MyPageViewController: BaseViewController, View {
       .disposed(by: disposeBag)
     
     // 매칭이미지 버튼 클릭
-    matchingContainerView.manageMatchingImageButton.rx.tap
+    matchingContainerView.likeButton.rx.tap
       .map { MyPageViewReactor.Action.didTapMatchingImageButton }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 좋아요한 룸메이트 버튼 클릭
-    matchingContainerView.likedRoommateButton.rx.tap
+    matchingContainerView.likeButton.rx.tap
       .map { MyPageViewReactor.Action.didTapRoommateButton(.like) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 싫어요한 룸메이트 버튼 클릭
-    matchingContainerView.likedRoommateButton.rx.tap
+    matchingContainerView.likeButton.rx.tap
       .map { MyPageViewReactor.Action.didTapRoommateButton(.dislike) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
@@ -140,7 +140,7 @@ final class MyPageViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let viewController = OnboardingViewController(.initial2)
+        let viewController = OnboardingViewController(.main)
         viewController.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(viewController, animated: true)
       }

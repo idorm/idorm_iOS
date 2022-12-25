@@ -1,11 +1,21 @@
+//
+//  AuthNumberViewController.swift
+//  idorm
+//
+//  Created by 김응철 on 2022/12/24.
+//
+
 import UIKit
 
 import SnapKit
+import Then
 import RxSwift
 import RxCocoa
-import Then
+import ReactorKit
 
-final class AuthNumberViewController: BaseViewController {
+final class AuthNumberViewController: BaseViewController, View {
+  
+  typealias Reactor = AuthNumberViewReactor
   
   // MARK: - Properties
   
@@ -49,15 +59,14 @@ final class AuthNumberViewController: BaseViewController {
   private let confirmButton = idormButton("인증 완료")
   private let textField = idormTextField("인증번호를 입력해주세요.")
 
-  private let viewModel = AuthNumberViewModel()
+  private let reactor: AuthNumberViewReactor
   private let mailTimer: MailTimerChecker
-  
-  var popCompletion: (() -> Void)?
   
   // MARK: - LifeCycle
   
-  init(timer: MailTimerChecker) {
+  init(_ timer: MailTimerChecker) {
     self.mailTimer = timer
+    self.reactor = AuthNumberViewReactor(timer)
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -67,99 +76,99 @@ final class AuthNumberViewController: BaseViewController {
   
   // MARK: - Bind
   
-  override func bind() {
-    super.bind()
+  func bind(reactor: AuthNumberViewReactor) {
     
-    // MARK: - Input
+    // MARK: - Action
     
-    // 텍스트 변화 감지
-    textField.rx.text
-      .orEmpty
-      .bind(to: viewModel.input.textFieldDidChange)
-      .disposed(by: disposeBag)
-    
-    // 인증번호 재요청 버튼 이벤트
-    authOnemoreButton.rx.tap
-      .bind(to: viewModel.input.authOnemoreButtonDidTap)
-      .disposed(by: disposeBag)
-    
-    // 인증번호 입력 버튼 이벤트
+    // 인증 완료 버튼
     confirmButton.rx.tap
-      .bind(to: viewModel.input.confirmButtonDidTap)
+      .withUnretained(self)
+      .map { $0.0.textField.text ?? "" }
+      .map { AuthNumberViewReactor.Action.didTapConfirmButton($0) }
+      .bind(to: reactor.action)
       .disposed(by: disposeBag)
-        
-    // MARK: - Output
     
-    // 남은 인증 시간 텍스트 변화 감지
+    // 인증번호 재요청 버튼
+    authOnemoreButton.rx.tap
+      .map { AuthNumberViewReactor.Action.didTapRequestAuthButton }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // MARK: - State
+    
+    // 인디케이터 제어
+    reactor.state
+      .map { $0.isLoading }
+      .bind(to: indicator.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
+    // 오류 팝업
+    reactor.state
+      .map { $0.isOpenedPopup }
+      .filter { $0.0 }
+      .withUnretained(self)
+      .bind { owner, contents in
+        let popup = BasicPopup(contents: contents.1)
+        popup.modalPresentationStyle = .overFullScreen
+        owner.present(popup, animated: false)
+      }
+      .disposed(by: disposeBag)
+    
+    // TODO: ConfirmPwVC 화면전환 구현
+    // 창 닫기 -> 인증완료
+    reactor.state
+      .map { $0.popVC }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        guard let authVC = owner.presentingViewController else { return }
+        guard let putEmailVC = authVC.presentingViewController else { return }
+        
+//        let confirmPwVC: ConfirmPasswordViewController
+//        switch Logger.shared.type {
+//        case .signUp:
+//        case .findPw, .modifyPw:
+//
+//        }
+        
+        owner.dismiss(animated: true) {
+          authVC.dismiss(animated: true)
+          // TODO: 화면전환 구현
+        }
+      }
+      .disposed(by: disposeBag)
+    
+    // 남은 시간 경과
+    mailTimer.isPassed
+      .distinctUntilChanged()
+      .withUnretained(self)
+      .bind { owner, isPassed in
+        if isPassed {
+          owner.textField.backgroundColor = .idorm_gray_200
+          owner.textField.isEnabled = false
+          owner.authOnemoreButton.isEnabled = true
+          let popup = BasicPopup(contents: "인증번호가 만료되었습니다.")
+          popup.modalPresentationStyle = .overFullScreen
+          owner.present(popup, animated: false)
+        } else {
+          owner.textField.backgroundColor = .white
+          owner.textField.isEnabled = true
+          owner.authOnemoreButton.isEnabled = false
+        }
+      }
+      .disposed(by: disposeBag)
+    
+    // 남은 시간 감지
     mailTimer.leftTime
       .filter { $0 >= 0 }
-      .bind(onNext: { [weak self] elapseTime in
+      .withUnretained(self)
+      .bind { owner, elapseTime in
         let minutes = elapseTime / 60
         let seconds = elapseTime % 60
         let minutesString = String(format: "%02d", minutes)
         let secondsString = String(format: "%02d", seconds)
-        self?.timerLabel.text = "\(minutesString):\(secondsString)"
-      })
-      .disposed(by: disposeBag)
-    
-    // 남은 시간 경과 시 작업 수행
-    mailTimer.isPassed
-      .distinctUntilChanged()
-      .bind(onNext: { [weak self] in
-        if $0 {
-          self?.textField.backgroundColor = .idorm_gray_200
-          self?.textField.isEnabled = false
-          self?.authOnemoreButton.isEnabled = true
-          let popupView = BasicPopup(contents: "인증번호가 만료되었습니다.")
-          popupView.modalPresentationStyle = .overFullScreen
-          self?.present(popupView, animated: false)
-        } else {
-          self?.textField.backgroundColor = .white
-          self?.textField.isEnabled = true
-          self?.authOnemoreButton.isEnabled = false
-        }
-      })
-      .disposed(by: disposeBag)
-    
-    // 타이머 재설정
-    viewModel.output.resetTimer
-      .bind(onNext: { [weak self] _ in
-        self?.mailTimer.restart()
-      })
-      .disposed(by: disposeBag)
-    
-    // 인증 번호 검증 성공 시 페이지 종료
-    viewModel.output.dismissVC
-      .bind(onNext: { [weak self] in
-        self?.popCompletion?()
-        self?.dismiss(animated: true)
-      })
-      .disposed(by: disposeBag)
-    
-    // 오류 문구 출력
-    viewModel.output.presentPopupVC
-      .bind(onNext: { [weak self] mention in
-        let popupVC = BasicPopup(contents: mention)
-        popupVC.modalPresentationStyle = .overFullScreen
-        self?.present(popupVC, animated: false)
-      })
-      .disposed(by: disposeBag)
-    
-    // 로딩 중
-    viewModel.output.isLoading
-      .bind(to: indicator.rx.isAnimating)
-      .disposed(by: disposeBag)
-    
-    viewModel.output.isLoading
-      .map { !$0 }
-      .bind(to: view.rx.isUserInteractionEnabled)
-      .disposed(by: disposeBag)
-    
-    // 인증번호 재요청 버튼 활성/비활성화
-    viewModel.output.isEnableAuthButton
-      .bind(onNext: { [weak self] in
-        self?.authOnemoreButton.isEnabled = $0
-      })
+        owner.timerLabel.text = "\(minutesString):\(secondsString)"
+      }
       .disposed(by: disposeBag)
   }
   
@@ -221,3 +230,4 @@ final class AuthNumberViewController: BaseViewController {
     view.endEditing(true)
   }
 }
+

@@ -14,12 +14,12 @@ final class Logger {
   private init() {
     self.email = ""
     self.password = ""
-    self.authenticationType = .password
+    self.type = .signUp
   }
   
   private(set) var email: String
   private(set) var password: String
-  private(set) var authenticationType: AuthenticationType
+  private(set) var type: RegisterEnumerations
   
   func saveEmail(_ email: String) {
     self.email = email
@@ -29,7 +29,7 @@ final class Logger {
     self.password = password
   }
   
-  func saveAuthenticationType(_ authenticationType: AuthenticationType) {
-    self.authenticationType = authenticationType
+  func saveAuthenticationType(_ type: RegisterEnumerations) {
+    self.type = type
   }
 }

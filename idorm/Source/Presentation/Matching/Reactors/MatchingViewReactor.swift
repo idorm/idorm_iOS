@@ -30,19 +30,19 @@ final class MatchingViewReactor: Reactor {
   }
   
   enum Mutation {
-    case updateLoading(Bool)
-    case updateCurrentTextImage(MatchingEnumerations.TextImage)
-    case updateNoPublicPopup(Bool)
-    case updateNoMatchingInfoPopup(Bool)
-    case updateNoMatchingInfoPopup_initial(Bool)
-    case updateFilterVC(Bool)
-    case updateOnboardingVC(Bool)
-    case updateKakaoPopup(Bool, String)
-    case updateBasicPopup(Bool)
-    case updateIsOpenedWeb(Bool)
-    case updateMatchingMembers([MatchingDTO.Retrieve])
-    case updateBackgroundColor(MatchingEnumerations.Swipe)
-    case updateBackgroundColor_withSwipe(MatchingEnumerations.Swipe)
+    case setLoading(Bool)
+    case setCurrentTextImage(MatchingEnumerations.TextImage)
+    case setNoPublicPopup(Bool)
+    case setNoMatchingInfoPopup(Bool)
+    case setNoMatchingInfoPopup_initial(Bool)
+    case setFilterVC(Bool)
+    case setOnboardingVC(Bool)
+    case setKakaoPopup(Bool, String)
+    case setBasicPopup(Bool)
+    case setWeb(Bool)
+    case setMatchingMembers([MatchingDTO.Retrieve])
+    case setBackgroundColor(MatchingEnumerations.Swipe)
+    case setBackgroundColor_withSwipe(MatchingEnumerations.Swipe)
   }
   
   struct State {
@@ -70,49 +70,49 @@ final class MatchingViewReactor: Reactor {
       if memberStorage.hasMatchingInfo {
         if memberStorage.isPublicMatchingInfo {
           return Observable.concat([
-            .just(.updateLoading(true)),
+            .just(.setLoading(true)),
             fetchMatchingMembers()
           ])
         } else {
           return Observable.concat([
-            .just(.updateNoPublicPopup(true)),
-            .just(.updateNoPublicPopup(false))
+            .just(.setNoPublicPopup(true)),
+            .just(.setNoPublicPopup(false))
           ])
         }
       } else {
         return Observable.concat([
-          .just(.updateNoMatchingInfoPopup_initial(true)),
-          .just(.updateNoMatchingInfoPopup_initial(false))
+          .just(.setNoMatchingInfoPopup_initial(true)),
+          .just(.setNoMatchingInfoPopup_initial(false))
         ])
       }
       
     case .viewWillAppear:
       if memberStorage.hasMatchingInfo {
         if memberStorage.isPublicMatchingInfo {
-          return .just(.updateCurrentTextImage(.noMatchingCardInformation))
+          return .just(.setCurrentTextImage(.noMatchingCardInformation))
         } else {
-          return .just(.updateCurrentTextImage(.noShareState))
+          return .just(.setCurrentTextImage(.noShareState))
         }
       } else {
-        return .just(.updateCurrentTextImage(.noMatchingInformation))
+        return .just(.setCurrentTextImage(.noMatchingInformation))
       }
       
     case .didChangeFilter:
       if FilterStorage.shared.hasFilter {
         return .concat([
-          .just(.updateLoading(true)),
+          .just(.setLoading(true)),
           fetchFilteredMembers()
         ])
       } else {
         return .concat([
-          .just(.updateLoading(true)),
+          .just(.setLoading(true)),
           fetchMatchingMembers()
         ])
       }
       
     case .didTapPublicButton:
       return .concat([
-        .just(.updateLoading(true)),
+        .just(.setLoading(true)),
         APIService.onboardingProvider.rx.request(.modifyPublic(true))
           .asObservable()
           .retry()
@@ -122,12 +122,12 @@ final class MatchingViewReactor: Reactor {
             SharedAPI.retrieveMatchingInfo()
             if FilterStorage.shared.hasFilter {
               return .concat([
-                .just(.updateNoPublicPopup(false)),
+                .just(.setNoPublicPopup(false)),
                 owner.fetchFilteredMembers()
               ])
             } else {
               return .concat([
-                .just(.updateNoPublicPopup(false)),
+                .just(.setNoPublicPopup(false)),
                 owner.fetchMatchingMembers()
               ])
             }
@@ -136,29 +136,29 @@ final class MatchingViewReactor: Reactor {
       
     case .didTapMakeProfileButton:
       return .concat([
-        .just(.updateNoMatchingInfoPopup(false)),
-        .just(.updateNoMatchingInfoPopup_initial(false)),
-        .just(.updateOnboardingVC(true)),
-        .just(.updateOnboardingVC(false))
+        .just(.setNoMatchingInfoPopup(false)),
+        .just(.setNoMatchingInfoPopup_initial(false)),
+        .just(.setOnboardingVC(true)),
+        .just(.setOnboardingVC(false))
       ])
       
     case .didTapFilterButton:
       if memberStorage.hasMatchingInfo {
         if memberStorage.isPublicMatchingInfo {
           return Observable.concat([
-            .just(.updateFilterVC(true)),
-            .just(.updateFilterVC(false))
+            .just(.setFilterVC(true)),
+            .just(.setFilterVC(false))
           ])
         } else {
           return Observable.concat([
-            .just(.updateNoPublicPopup(true)),
-            .just(.updateNoPublicPopup(false))
+            .just(.setNoPublicPopup(true)),
+            .just(.setNoPublicPopup(false))
           ])
         }
       } else {
         return Observable.concat([
-          .just(.updateNoMatchingInfoPopup(true)),
-          .just(.updateNoMatchingInfoPopup(false))
+          .just(.setNoMatchingInfoPopup(true)),
+          .just(.setNoMatchingInfoPopup(false))
         ])
       }
       
@@ -168,59 +168,59 @@ final class MatchingViewReactor: Reactor {
           if FilterStorage.shared.hasFilter {
             let filter = FilterStorage.shared.filter
             return Observable.concat([
-              .just(.updateLoading(true)),
+              .just(.setLoading(true)),
               fetchFilteredMembers()
             ])
           } else {
             return Observable.concat([
-              .just(.updateLoading(true)),
+              .just(.setLoading(true)),
               fetchMatchingMembers()
             ])
           }
         } else {
           return Observable.concat([
-            .just(.updateNoPublicPopup(true)),
-            .just(.updateNoPublicPopup(false))
+            .just(.setNoPublicPopup(true)),
+            .just(.setNoPublicPopup(false))
           ])
         }
       } else {
         return Observable.concat([
-          .just(.updateNoMatchingInfoPopup(true)),
-          .just(.updateNoMatchingInfoPopup(false))
+          .just(.setNoMatchingInfoPopup(true)),
+          .just(.setNoMatchingInfoPopup(false))
         ])
       }
       
     case .didBeginSwipe(let swipeType):
-      return .just(.updateBackgroundColor_withSwipe(swipeType))
+      return .just(.setBackgroundColor_withSwipe(swipeType))
       
     case .cancel(let id):
       return Observable.concat([
-        .just(.updateLoading(true)),
-        .just(.updateBackgroundColor(.cancel)),
+        .just(.setLoading(true)),
+        .just(.setBackgroundColor(.cancel)),
         APIService.matchingProvider.rx.request(.addDisliked(id))
           .asObservable()
           .retry()
           .filterSuccessfulStatusCodes()
           .flatMap { _ -> Observable<Mutation> in
             return Observable.concat([
-              .just(.updateLoading(false)),
-              .just(.updateBackgroundColor(.none))
+              .just(.setLoading(false)),
+              .just(.setBackgroundColor(.none))
             ])
           }
       ])
       
     case .heart(let id):
       return Observable.concat([
-        .just(.updateLoading(true)),
-        .just(.updateBackgroundColor(.heart)),
+        .just(.setLoading(true)),
+        .just(.setBackgroundColor(.heart)),
         APIService.matchingProvider.rx.request(.addLiked(id))
           .asObservable()
           .retry()
           .filterSuccessfulStatusCodes()
           .flatMap { _ -> Observable<Mutation> in
             return Observable.concat([
-              .just(.updateLoading(false)),
-              .just(.updateBackgroundColor(.none))
+              .just(.setLoading(false)),
+              .just(.setBackgroundColor(.none))
             ])
           }
       ])
@@ -228,22 +228,22 @@ final class MatchingViewReactor: Reactor {
     case .message(let index):
       let link = currentState.matchingMembers[index].openKakaoLink
       return .concat([
-        .just(.updateKakaoPopup(true, link)),
-        .just(.updateKakaoPopup(false, ""))
+        .just(.setKakaoPopup(true, link)),
+        .just(.setKakaoPopup(false, ""))
       ])
       
     case .didTapKakaoLinkButton(let url):
       if url.isValidKakaoLink {
         return .concat([
-          .just(.updateIsOpenedWeb(true)),
-          .just(.updateKakaoPopup(false, "")),
-          .just(.updateIsOpenedWeb(false))
+          .just(.setWeb(true)),
+          .just(.setKakaoPopup(false, "")),
+          .just(.setWeb(false))
         ])
       } else {
         return .concat([
-          .just(.updateBasicPopup(true)),
-          .just(.updateKakaoPopup(false, "")),
-          .just(.updateBasicPopup(false))
+          .just(.setBasicPopup(true)),
+          .just(.setKakaoPopup(false, "")),
+          .just(.setBasicPopup(false))
         ])
       }
     }
@@ -253,44 +253,44 @@ final class MatchingViewReactor: Reactor {
     var newState = state
     
     switch mutation {
-    case .updateLoading(let isLoading):
+    case .setLoading(let isLoading):
       newState.isLoading = isLoading
       
-    case .updateFilterVC(let isOpened):
+    case .setFilterVC(let isOpened):
       newState.isOpenedFilterVC = isOpened
       
-    case .updateOnboardingVC(let isOpened):
+    case .setOnboardingVC(let isOpened):
       newState.isOpenedOnboardingVC = isOpened
       
-    case .updateNoPublicPopup(let isOpened):
+    case .setNoPublicPopup(let isOpened):
       newState.isOpenedNoPublicPopup = isOpened
       
-    case .updateNoMatchingInfoPopup(let isOpened):
+    case .setNoMatchingInfoPopup(let isOpened):
       newState.isOpenedNoMatchingInfoPopup = isOpened
       
-    case .updateNoMatchingInfoPopup_initial(let isOpened):
+    case .setNoMatchingInfoPopup_initial(let isOpened):
       newState.isOpenedNoMatchingInfoPopup_Initial = isOpened
       
-    case .updateMatchingMembers(let members):
+    case .setMatchingMembers(let members):
       newState.matchingMembers = members
       newState.isLoading = false
       
-    case let .updateKakaoPopup(isOpened, link):
+    case let .setKakaoPopup(isOpened, link):
       newState.isOpenedKakaoPopup = (isOpened, link)
       
-    case .updateCurrentTextImage(let imageType):
+    case .setCurrentTextImage(let imageType):
       newState.currentTextImage = imageType
       
-    case .updateBackgroundColor(let swipeType):
+    case .setBackgroundColor(let swipeType):
       newState.backgroundColor = swipeType
       
-    case .updateBackgroundColor_withSwipe(let swipeType):
+    case .setBackgroundColor_withSwipe(let swipeType):
       newState.backgroundColor_withSwipe = swipeType
       
-    case .updateIsOpenedWeb(let isOpened):
+    case .setWeb(let isOpened):
       newState.isOpenedWeb = isOpened
       
-    case .updateBasicPopup(let isOpened):
+    case .setBasicPopup(let isOpened):
       newState.isOpenedBasicPopup = isOpened
     }
     
@@ -302,8 +302,8 @@ final class MatchingViewReactor: Reactor {
       .distinctUntilChanged()
       .flatMap { isPublic -> Observable<Mutation> in
         return .concat([
-          .just(.updateNoPublicPopup(true)),
-          .just(.updateNoPublicPopup(false))
+          .just(.setNoPublicPopup(true)),
+          .just(.setNoPublicPopup(false))
         ])
       }
     return Observable.merge(mutation, publicEvent)
@@ -320,9 +320,9 @@ extension MatchingViewReactor {
         switch response.statusCode {
         case 200:
           let members = APIService.decode(ResponseModel<[MatchingDTO.Retrieve]>.self, data: response.data).data
-          return .just(.updateMatchingMembers(members))
+          return .just(.setMatchingMembers(members))
         default:
-          return .just(.updateMatchingMembers([]))
+          return .just(.setMatchingMembers([]))
         }
       }
   }
@@ -337,9 +337,9 @@ extension MatchingViewReactor {
         switch response.statusCode {
         case 200:
           let members = APIService.decode(ResponseModel<[MatchingDTO.Retrieve]>.self, data: response.data).data
-          return .just(.updateMatchingMembers(members))
+          return .just(.setMatchingMembers(members))
         default:
-          return .just(.updateMatchingMembers([]))
+          return .just(.setMatchingMembers([]))
         }
       }
   }

@@ -24,14 +24,14 @@ final class MyPageViewReactor: Reactor {
   }
   
   enum Mutation {
-    case updateIsLoading(Bool)
-    case updateIsOpenedManageMyInfoVC(Bool)
-    case updateIsOpenedOnboardingVC(Bool)
-    case updateIsOpenedRoommateVC(Bool, MyPageEnumerations.Roommate)
-    case updateIsOpenedNoMatchingInfoPopup(Bool)
-    case updateIsOpenedOnboardingDetailVC(Bool)
-    case updateIsSelectedShareButton(Bool)
-    case updateCurrentNickname(String)
+    case setLoading(Bool)
+    case setManageMyInfoVC(Bool)
+    case setOnboardingVC(Bool)
+    case setRoommateVC(Bool, MyPageEnumerations.Roommate)
+    case setNoMatchingInfoPopup(Bool)
+    case setOnboardingDetailVC(Bool)
+    case setShareButton(Bool)
+    case setCurrentNickname(String)
   }
   
   struct State {
@@ -54,38 +54,38 @@ final class MyPageViewReactor: Reactor {
       let currentNickname = MemberStorage.shared.member?.nickname ?? ""
       let isPublic = MemberStorage.shared.isPublicMatchingInfo
       return .concat([
-        .just(.updateIsSelectedShareButton(isPublic)),
-        .just(.updateCurrentNickname(currentNickname))
+        .just(.setShareButton(isPublic)),
+        .just(.setCurrentNickname(currentNickname))
       ])
       
     case .didTapGearButton:
       return .concat([
-        .just(.updateIsOpenedManageMyInfoVC(true)),
-        .just(.updateIsOpenedManageMyInfoVC(false))
+        .just(.setManageMyInfoVC(true)),
+        .just(.setManageMyInfoVC(false))
       ])
       
     case .didTapMatchingImageButton:
       if MemberStorage.shared.hasMatchingInfo {
         return .concat([
-          .just(.updateIsOpenedOnboardingDetailVC(true)),
-          .just(.updateIsOpenedOnboardingDetailVC(false))
+          .just(.setOnboardingDetailVC(true)),
+          .just(.setOnboardingDetailVC(false))
         ])
       } else {
         return .concat([
-          .just(.updateIsOpenedNoMatchingInfoPopup(true)),
-          .just(.updateIsOpenedNoMatchingInfoPopup(false))
+          .just(.setNoMatchingInfoPopup(true)),
+          .just(.setNoMatchingInfoPopup(false))
         ])
       }
       
     case .didTapRoommateButton(let type):
       return .concat([
-        .just(.updateIsOpenedRoommateVC(true, type)),
-        .just(.updateIsOpenedRoommateVC(false, type))
+        .just(.setRoommateVC(true, type)),
+        .just(.setRoommateVC(false, type))
       ])
       
     case .didTapShareButton(let isPublic):
       return .concat([
-        .just(.updateIsLoading(true)),
+        .just(.setLoading(true)),
         APIService.onboardingProvider.rx.request(.modifyPublic(isPublic))
           .asObservable()
           .retry()
@@ -93,17 +93,17 @@ final class MyPageViewReactor: Reactor {
           .flatMap { _ -> Observable<Mutation> in
             SharedAPI.retrieveMatchingInfo()
             return .concat([
-              .just(.updateIsLoading(false)),
-              .just(.updateIsSelectedShareButton(isPublic))
+              .just(.setLoading(false)),
+              .just(.setShareButton(isPublic))
             ])
           }
       ])
       
     case .didTapMakeProfileButton:
       return .concat([
-        .just(.updateIsOpenedNoMatchingInfoPopup(false)),
-        .just(.updateIsOpenedOnboardingVC(true)),
-        .just(.updateIsOpenedOnboardingVC(false))
+        .just(.setNoMatchingInfoPopup(false)),
+        .just(.setOnboardingVC(true)),
+        .just(.setOnboardingVC(false))
       ])
     }
   }
@@ -112,16 +112,19 @@ final class MyPageViewReactor: Reactor {
     var newState = state
     
     switch mutation {
-    case .updateIsOpenedManageMyInfoVC(let isOpened):
+    case .setManageMyInfoVC(let isOpened):
       newState.isOpenedManageMyInfoVC = isOpened
       
-    case .updateIsOpenedNoMatchingInfoPopup(let isOpened):
+    case .setNoMatchingInfoPopup(let isOpened):
       newState.isOpenedNoMatchingInfoPopup = isOpened
       
-    case .updateIsOpenedOnboardingVC(let isOpened):
+    case .setOnboardingVC(let isOpened):
       newState.isOpenedOnboardingVC = isOpened
       
-    case let .updateIsOpenedRoommateVC(isOpened, type):
+    case .setOnboardingDetailVC(let isOpened):
+      newState.isOpenedOnboardingDetailVC = isOpened
+      
+    case let .setRoommateVC(isOpened, type):
       switch type {
       case .like:
         newState.isOpenedLikedRoommateVC = isOpened
@@ -129,13 +132,13 @@ final class MyPageViewReactor: Reactor {
         newState.isOpenedDislikedRoommateVC = isOpened
       }
       
-    case .updateIsLoading(let isLoading):
+    case .setLoading(let isLoading):
       newState.isLoading = isLoading
       
-    case .updateIsSelectedShareButton(let isSelected):
+    case .setShareButton(let isSelected):
       newState.isSelectedShareButton = isSelected
       
-    case .updateCurrentNickname(let nickName):
+    case .setCurrentNickname(let nickName):
       newState.currentNickname = nickName
     }
     

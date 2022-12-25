@@ -1,32 +1,41 @@
+//
+//  OnboardingDetailViewController.swift
+//  idorm
+//
+//  Created by 김응철 on 2022/12/25.
+//
+
 import UIKit
 
 import Then
 import SnapKit
 import RxSwift
 import RxCocoa
+import ReactorKit
 
-final class OnboardingDetailViewController: BaseViewController {
+final class OnboardingDetailViewController: BaseViewController, View {
+  
+  typealias Reactor = OnboardingDetailViewReactor
 
   // MARK: - Properties
-
-  private var floatyBottomView: FloatyBottomView!
-  private var matchingCard: MatchingCard!
   
   private let indicator = UIActivityIndicatorView().then {
     $0.color = .gray
   }
 
-  private let viewModel: OnboardingDetailViewModel
-  
-  private let member: MatchingModel.Member
-  private let vcType: OnboardingVCTypes.OnboardingDetailVCType
+  private var floatyBottomView: FloatyBottomView!
+  private lazy var matchingCard = MatchingCard(member)
+
+  private let member: MatchingDTO.Retrieve
+  private let type: OnboardingEnumerations
+  private let reactor: OnboardingDetailViewReactor
   
   // MARK: - LifeCycle
   
-  init(_ member: MatchingModel.Member, vcType: OnboardingVCTypes.OnboardingDetailVCType) {
-    self.viewModel = OnboardingDetailViewModel(vcType)
+  init(_ member: MatchingDTO.Retrieve, type: OnboardingEnumerations) {
+    self.type = type
     self.member = member
-    self.vcType = vcType
+    self.reactor = OnboardingDetailViewReactor(type)
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -37,27 +46,77 @@ final class OnboardingDetailViewController: BaseViewController {
   // MARK: - LifeCycle
   
   override func viewDidLoad() {
-    setupMatchingCard()
     setupFloatyBottomView()
     super.viewDidLoad()
+  }
+  
+  // MARK: - Bind
+  
+  func bind(reactor: OnboardingDetailViewReactor) {
+    
+    // MARK: - Action
+    
+    // FloatyBottomView 왼쪽버튼 클릭
+    floatyBottomView.leftButton.rx.tap
+      .map { OnboardingDetailViewReactor.Action.didTapLeftButton }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // FloatyBottomView 오른쪽버튼 클릭
+    floatyBottomView.rightButton.rx.tap
+      .withUnretained(self)
+      .map { OnboardingDetailViewReactor.Action.didTapRightButton($0.0.member) }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // MARK: - State
+    
+    // 인디케이터 애니메이션
+    reactor.state
+      .map { $0.isLoading }
+      .bind(to: indicator.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
+    // PopVC
+    reactor.state
+      .map { $0.popVC }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { $0.0.navigationController?.popViewController(animated: true) }
+      .disposed(by: disposeBag)
+    
+    // OnboardingVC로 이동
+    reactor.state
+      .map { $0.isOpenedOnboardingVC }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let onboardingVC = OnboardingViewController(owner.type)
+        owner.navigationController?.pushViewController(onboardingVC, animated: true)
+      }
+      .disposed(by: disposeBag)
+    
+    // MainVC로 이동
+    reactor.state
+      .map { $0.isOpenedMainVC }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let mainVC = TabBarController()
+        mainVC.modalPresentationStyle = .fullScreen
+        owner.present(mainVC, animated: true)
+      }
+      .disposed(by: disposeBag)
   }
 
   // MARK: - Setup
   
-  private func setupMatchingCard() {
-    let matchingCard = MatchingCard(member)
-    self.matchingCard = matchingCard
+  override func setupStyles() {
+    super.setupStyles()
+    view.backgroundColor = .white
+    navigationItem.title = "내 프로필 이미지"
   }
   
-  private func setupFloatyBottomView() {
-    switch vcType {
-    case .update:
-      self.floatyBottomView = FloatyBottomView(.correction)
-    case .initilize:
-      self.floatyBottomView = FloatyBottomView(.back)
-    }
-  }
-
   override func setupLayouts() {
     super.setupLayouts()
     [floatyBottomView, matchingCard, indicator]
@@ -84,82 +143,13 @@ final class OnboardingDetailViewController: BaseViewController {
       make.width.height.equalTo(20)
     }
   }
-
-  override func setupStyles() {
-    super.setupStyles()
-    view.backgroundColor = .white
-    navigationItem.title = "내 프로필 이미지"
-  }
   
-  // MARK: - Bind
-
-  override func bind() {
-    super.bind()
-
-    // MARK: - Input
-    
-    // 왼쪽 버튼 클릭
-    floatyBottomView.leftButton.rx.tap
-      .bind(to: viewModel.input.leftButtonDidTap)
-      .disposed(by: disposeBag)
-    
-    // 오른쪽 버튼 클릭
-    floatyBottomView.rightButton.rx.tap
-      .withUnretained(self)
-      .map { $0.0 }
-      .map { $0.member }
-      .bind(to: viewModel.input.rightButtonDidTap)
-      .disposed(by: disposeBag)
-
-    // MARK: - Output
-
-    // 뒤로가기
-    viewModel.output.popVC
-      .withUnretained(self)
-      .map { $0.0 }
-      .bind(onNext: { $0.navigationController?.popViewController(animated: true) })
-      .disposed(by: disposeBag)
-    
-    // 온보딩 페이지로 넘어가기
-    viewModel.output.pushToOnboardingVC
-      .withUnretained(self)
-      .map { $0.0 }
-      .bind(onNext: {
-        let viewController = OnboardingViewController(.update)
-        $0.navigationController?.pushViewController(viewController, animated: true)
-      })
-      .disposed(by: disposeBag)
-    
-    // 인디케이터 제어
-    viewModel.output.isLoading
-      .bind(to: indicator.rx.isAnimating)
-      .disposed(by: disposeBag)
-    
-    // 화면 인터렉션 제어
-    viewModel.output.isLoading
-      .map { !$0 }
-      .bind(to: view.rx.isUserInteractionEnabled)
-      .disposed(by: disposeBag)
-    
-    // 최초 저장 완료 후 메인 홈으로 이동
-    viewModel.output.presentMainVC
-      .withUnretained(self)
-      .map { $0.0 }
-      .bind(onNext: {
-        let tabBarVC = TabBarController()
-        tabBarVC.modalPresentationStyle = .fullScreen
-        $0.present(tabBarVC, animated: true)
-      })
-      .disposed(by: disposeBag)
-
-    // 오류 팝업 메세지 띄우기
-    viewModel.output.presentPopupVC
-      .withUnretained(self)
-      .bind(onNext: { owner, mention in
-        let popupVC = BasicPopup(contents: mention)
-        popupVC.modalPresentationStyle = .overFullScreen
-        owner.present(popupVC, animated: false)
-      })
-      .disposed(by: disposeBag)
+  private func setupFloatyBottomView() {
+    switch type {
+    case .modify:
+      self.floatyBottomView = FloatyBottomView(.correction)
+    case .main, .initial:
+      self.floatyBottomView = FloatyBottomView(.back)
+    }
   }
 }

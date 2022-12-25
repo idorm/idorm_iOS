@@ -5,7 +5,7 @@ import Then
 import RxSwift
 import RxCocoa
 
-class OnboardingTextField: UIView {
+final class OnboardingTextField: UIView {
   
   // MARK: - Properties
   

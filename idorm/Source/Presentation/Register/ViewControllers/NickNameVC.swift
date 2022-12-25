@@ -1,11 +1,21 @@
+//
+//  NicknameViewController.swift
+//  idorm
+//
+//  Created by 김응철 on 2022/12/25.
+//
+
 import UIKit
 
 import SnapKit
 import Then
 import RxSwift
 import RxCocoa
+import ReactorKit
 
-final class NicknameViewController: BaseViewController {
+final class NicknameViewController: BaseViewController, View {
+  
+  typealias Reactor = NicknameViewReactor
   
   // MARK: - Properties
   
@@ -14,10 +24,6 @@ final class NicknameViewController: BaseViewController {
     $0.textColor = .idorm_gray_400
     $0.font = .init(name: MyFonts.regular.rawValue, size: 16)
   }
-  
-  private let textField = idormTextField("변경할 닉네임을 입력해주세요.")
-  
-  private let confirmButton = idormButton("완료")
   
   private let backgroundView = UIView().then {
     $0.backgroundColor = .white
@@ -63,19 +69,142 @@ final class NicknameViewController: BaseViewController {
     stack.axis = .vertical
   }
   
-  private let viewModel: NicknameViewModel
-  private let vcType: RegisterVCTypes.NicknameVCType
+  private let textField = idormTextField("변경할 닉네임을 입력해주세요.")
+  private let confirmButton = idormButton("완료")
+  
+  private let type: RegisterEnumerations.Nickname
+  private let reactor: NicknameViewReactor
   
   // MARK: - LifeCycle
   
-  init(_ vcType: RegisterVCTypes.NicknameVCType) {
-    self.vcType = vcType
-    self.viewModel = NicknameViewModel(vcType)
+  init(_ type: RegisterEnumerations.Nickname) {
+    self.type = type
+    self.reactor = NicknameViewReactor(type)
     super.init(nibName: nil, bundle: nil)
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  // MARK: - Bind
+  
+  func bind(reactor: NicknameViewReactor) {
+    
+    // MARK: - Action
+    
+    textField.rx.text
+      .orEmpty
+      .scan("") { $1.count > 8 ? $0 : $1 }
+      .bind(to: textField.rx.text)
+      .disposed(by: disposeBag)
+    
+    // 텍스트 반응
+    textField.rx.text
+      .orEmpty
+      .map { NicknameViewReactor.Action.didChangeTextField($0) }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // 텍스트필드 포커싱
+    textField.rx.controlEvent(.editingDidBegin)
+      .map { NicknameViewReactor.Action.editingDidBeginTf }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // 텍스트필드 포커싱 해제
+    textField.rx.controlEvent(.editingDidEnd)
+      .map { NicknameViewReactor.Action.editingDidEndTf }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // 완료 버튼
+    confirmButton.rx.tap
+      .map { NicknameViewReactor.Action.didTapConfirmButton }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // MARK: - State
+    
+    // BorderColor Tf
+    reactor.state
+      .map { $0.currentBorderColorTf }
+      .distinctUntilChanged()
+      .map { $0.cgColor }
+      .bind(to: textField.layer.rx.borderColor)
+      .disposed(by: disposeBag)
+    
+    // CountLabel TextColor
+    reactor.state
+      .map { $0.currentCountLabelTextColor }
+      .distinctUntilChanged()
+      .bind(to: countConditionLabel.rx.textColor)
+      .disposed(by: disposeBag)
+    
+    // Compound TextColor
+    reactor.state
+      .map { $0.currentCompoundLabelTextColor }
+      .distinctUntilChanged()
+      .bind(to: compoundConditionLabel.rx.textColor)
+      .disposed(by: disposeBag)
+    
+    // Spacing TextColor
+    reactor.state
+      .map { $0.currentSpacingLabelTextColor }
+      .distinctUntilChanged()
+      .bind(to: spacingConditionLabel.rx.textColor)
+      .disposed(by: disposeBag)
+    
+    // 체크마크 표시
+    reactor.state
+      .map { $0.isHiddenCheckmark }
+      .bind(to: textField.checkmarkButton.rx.isHidden)
+      .disposed(by: disposeBag)
+    
+    // 현재 글자수
+    reactor.state
+      .map { String($0.currentTextCount) }
+      .bind(to: currentLenghtLabel.rx.text)
+      .disposed(by: disposeBag)
+    
+    // 오류 팝업
+    reactor.state
+      .map { $0.isOpenedPopup }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let popup = BasicPopup(contents: "조건을 다시 확인해주세요.")
+        popup.modalPresentationStyle = .overFullScreen
+        owner.present(popup, animated: false)
+      }
+      .disposed(by: disposeBag)
+    
+    // 로딩 중
+    reactor.state
+      .map { $0.isLoading }
+      .distinctUntilChanged()
+      .bind(to: indicator.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
+    // CompleteSignupVC 이동
+    reactor.state
+      .map { $0.isOpenedCompleteSignupVC }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let completeSignupVC = CompleteSignUpViewController()
+        completeSignupVC.modalPresentationStyle = .fullScreen
+        owner.present(completeSignupVC, animated: true)
+      }
+      .disposed(by: disposeBag)
+    
+    // PopVC
+    reactor.state
+      .map { $0.popVC }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { $0.0.navigationController?.popViewController(animated: true) }
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Setup
@@ -91,7 +220,15 @@ final class NicknameViewController: BaseViewController {
     super.setupLayouts()
     
     view.addSubview(backgroundView)
-    [mainLabel, maxLengthLabel, textField, confirmButton, currentLenghtLabel, ConditionStackView, indicator]
+    [
+      mainLabel,
+      maxLengthLabel,
+      textField,
+      confirmButton,
+      currentLenghtLabel,
+      ConditionStackView,
+      indicator
+    ]
       .forEach { backgroundView.addSubview($0) }
   }
   
@@ -140,124 +277,9 @@ final class NicknameViewController: BaseViewController {
     }
   }
   
-  // MARK: - Bind
-      
-  override func bind() {
-    super.bind()
-
-    // MARK: - Input
-    
-    // 텍스트 변화 감지
-    textField.rx.text
-      .orEmpty
-      .bind(to: viewModel.input.textDidChange)
-      .disposed(by: disposeBag)
-    
-    // 완료 버튼 클릭
-    confirmButton.rx.tap
-      .bind(to: viewModel.input.confirmButtonDidTap)
-      .disposed(by: disposeBag)
-    
-    // 텍스트필드 포커싱 종료
-    textField.rx.controlEvent(.editingDidEnd)
-      .bind(to: viewModel.input.textFieldEditingDidEnd)
-      .disposed(by: disposeBag)
-    
-    // 텍스트필드 포커싱 시작
-    textField.rx.controlEvent(.editingDidBegin)
-      .bind(to: viewModel.input.textFieldEditingDidBegin)
-      .disposed(by: disposeBag)
-    
-    // MARK: - Output
-    
-    // 현재 글자수
-    viewModel.output.currentTextCount
-      .map { String($0) }
-      .bind(to: currentLenghtLabel.rx.text)
-      .disposed(by: disposeBag)
-    
-    // 현재 텍스트
-    viewModel.output.currentText
-      .bind(to: textField.rx.text)
-      .disposed(by: disposeBag)
-
-    // 글자 수 레이블 컬러
-    viewModel.output.countConditionLabelTextColor
-      .bind(to: countConditionLabel.rx.textColor)
-      .disposed(by: disposeBag)
-    
-    // 공백 레이블 컬러
-    viewModel.output.spacingConditionLabelTextColor
-      .bind(to: spacingConditionLabel.rx.textColor)
-      .disposed(by: disposeBag)
-
-    // 특수문자 레이블 컬러
-    viewModel.output.textConditionLabelTextColor
-      .bind(to: compoundConditionLabel.rx.textColor)
-      .disposed(by: disposeBag)
-    
-    // 오류 팝업
-    viewModel.output.presentPopupVC
-      .bind(onNext: { [weak self] in
-        let viewController = BasicPopup(contents: $0)
-        viewController.modalPresentationStyle = .overFullScreen
-        self?.present(viewController, animated: false)
-      })
-      .disposed(by: disposeBag)
-    
-    // 뒤로가기
-    viewModel.output.popVC
-      .bind(onNext: { [weak self] in
-        self?.navigationController?.popViewController(animated: true)
-      })
-      .disposed(by: disposeBag)
-    
-    // CompleteSignUpVC
-    viewModel.output.presentCompleteSignUpVC
-      .bind(onNext: { [weak self] in
-        let viewController = CompleteSignUpViewController()
-        viewController.modalPresentationStyle = .fullScreen
-        self?.present(viewController, animated: true)
-      })
-      .disposed(by: disposeBag)
-    
-    // 로딩 중
-    viewModel.output.isLoading
-      .bind(to: indicator.rx.isAnimating)
-      .disposed(by: disposeBag)
-    
-    // 화면 터치 제어
-    viewModel.output.isLoading
-      .map { !$0 }
-      .bind(to: view.rx.isUserInteractionEnabled)
-      .disposed(by: disposeBag)
-    
-    // 체크마크 숨김처리
-    viewModel.output.isHiddenCheckmark
-      .bind(to: textField.checkmarkButton.rx.isHidden)
-      .disposed(by: disposeBag)
-    
-    // 텍스트 필드 모서리 컬러
-    viewModel.output.textFieldBorderColor
-      .bind(to: textField.layer.rx.borderColor)
-      .disposed(by: disposeBag)
-  }
-  
   // MARK: - Helpers
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     view.endEditing(true)
   }
 }
-
-// MARK: - Preview
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-struct NicknameVC_PreView: PreviewProvider {
-  static var previews: some View {
-    NicknameViewController(.signUp).toPreview()
-  }
-}
-#endif
-

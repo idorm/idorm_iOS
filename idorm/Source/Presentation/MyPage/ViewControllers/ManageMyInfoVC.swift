@@ -26,13 +26,13 @@ final class ManageMyInfoViewController: BaseViewController, View {
     $0.textColor = .idorm_gray_300
   }
   
-  private let nickNameView = ManageMyInfoView(type: .both(description: ""), title: "닉네임")
-  private let changePWView = ManageMyInfoView(type: .onlyArrow, title: "비밀번호 변경")
-  private let emailView = ManageMyInfoView(type: .onlyDescription(description: ""), title: "이메일")
-  private let versionView = ManageMyInfoView(type: .onlyDescription(description: String.version), title: "버전정보")
-  private let profileImage = UIImageView(image: #imageLiteral(resourceName: "human_large"))
-  private var separatorLine1 = MyPageUtilities.separatorLine()
-  private var separatorLine2 = MyPageUtilities.separatorLine()
+  private let nickNameView = ManageMyInfoView(.both(title: "닉네임"))
+  private let changePWView = ManageMyInfoView(.onlyArrow(title: "비밀번호 변경"))
+  private let emailView = ManageMyInfoView(.onlyDescription(title: "이메일"))
+  private let versionView = ManageMyInfoView(.onlyDescription(description: .version ,title: "버전정보"))
+  private let profileImage = UIImageView(image: #imageLiteral(resourceName: "sqaure_human"))
+  private lazy var separatorLine1 = separatorLine()
+  private lazy var separatorLine2 = separatorLine()
   
   private let reactor = ManageMyInfoViewReactor()
   
@@ -86,7 +86,7 @@ final class ManageMyInfoViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let changeNicknameVC = NicknameViewController(.update)
+        let changeNicknameVC = NicknameViewController(.modify)
         owner.navigationController?.pushViewController(changeNicknameVC, animated: true)
       }
       .disposed(by: disposeBag)
@@ -98,7 +98,7 @@ final class ManageMyInfoViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let viewController = PutEmailViewController(.updatePW)
+        let viewController = PutEmailViewController(.modifyPw)
         owner.navigationController?.pushViewController(viewController, animated: true)
       }
       .disposed(by: disposeBag)
@@ -197,12 +197,14 @@ final class ManageMyInfoViewController: BaseViewController, View {
       make.bottom.equalToSuperview()
     }
   }
+}
 
-  // MARK: - Helpers
-  
-  private func updateUI() {
-    guard let memberInfo =  MemberInfoStorage.instance.myInformation.value else { return }
-    nickNameView.descriptionLabel.text = memberInfo.nickname
-    emailView.descriptionLabel.text = memberInfo.email
+// MARK: - Helpers
+
+extension ManageMyInfoViewController {
+  private func separatorLine() -> UIView {
+    let line = UIView()
+    line.backgroundColor = .idorm_gray_100
+    return line
   }
 }

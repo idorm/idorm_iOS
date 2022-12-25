@@ -1,3 +1,10 @@
+//
+//  AuthViewController.swift
+//  idorm
+//
+//  Created by 김응철 on 2022/12/23.
+//
+
 import UIKit
 
 import SnapKit
@@ -5,13 +12,13 @@ import Then
 import WebKit
 import RxSwift
 import RxCocoa
+import ReactorKit
 
-final class AuthViewController: BaseViewController {
+final class AuthViewController: BaseViewController, View {
+  
+  typealias Reactor = AuthViewReactor
   
   // MARK: - Properties
-  
-  private let envelopeImageView = UIImageView(image: #imageLiteral(resourceName: "envelope"))
-  private let confirmButton = idormButton("인증번호 입력")
   
   private let backButton = UIButton().then {
     var config = UIButton.Configuration.plain()
@@ -27,62 +34,48 @@ final class AuthViewController: BaseViewController {
     $0.configuration?.background.strokeColor = .idorm_gray_200
   }
   
-  var pushCompletion: (() -> Void)?
+  private let envelopeImageView = UIImageView(image: #imageLiteral(resourceName: "envelope"))
+  private let confirmButton = idormButton("인증번호 입력")
   
-  private let viewModel = AuthViewModel()
   private let mailTimer = MailTimerChecker()
+  private let reactor = AuthViewReactor()
     
   // MARK: - Bind
   
-  override func bind() {
-    super.bind()
+  func bind(reactor: AuthViewReactor) {
     
-    // MARK: - Input
+    // MARK: - Action
     
-    // 뒤로가기 버튼 이벤트
-    backButton.rx.tap
-      .bind(to: viewModel.input.backButtonDidTap)
-      .disposed(by: disposeBag)
-    
-    // 웹메일 바로 가기 버튼 이벤트
+    // 메일함 바로가기 버튼
     portalButton.rx.tap
-      .bind(to: viewModel.input.portalButtonDidTap)
+      .map { AuthViewReactor.Action.didTapPortalButton }
+      .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
-    // 인증번호 입력 버튼 이벤트
+    // 인증번호 입력 버튼
     confirmButton.rx.tap
-      .bind(to: viewModel.input.confirmButtonDidTap)
-      .disposed(by: disposeBag)
-        
-    // MARK: - Output
-    
-    // 화면 종료
-    viewModel.output.dismissVC
-      .asDriver(onErrorJustReturn: Void())
-      .drive(onNext: { [weak self] in
-        self?.dismiss(animated: true)
-      })
+      .map { AuthViewReactor.Action.didTapConfirmButton }
+      .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
-    // 웹메일 페이지 보여주기
-    viewModel.output.presentPortalWeb
-      .bind(onNext: {
-        guard let url = URL(string: "https://webmail.inu.ac.kr/member/login?host_domain=inu.ac.kr") else { return }
-        UIApplication.shared.open(url)
-      })
+    // MARK: - State
+    
+    // 사파리 열기
+    reactor.state
+      .map { $0.isOpenedSafari }
+      .filter { $0 }
+      .bind { _ in  UIApplication.shared.open(URL(string: "https://webmail.inu.ac.kr/member/login?host_domain=inu.ac.kr")!) }
       .disposed(by: disposeBag)
     
-    // 인증번호 입력 페이지로 넘어가기
-    viewModel.output.pushToAuthNumberVC
-      .asDriver(onErrorJustReturn: Void())
-      .drive(onNext: { [unowned self] in
-        let authNumberVC = AuthNumberViewController(timer: self.mailTimer)
-        self.navigationController?.pushViewController(authNumberVC, animated: true)
-        
-        authNumberVC.popCompletion = {
-          self.pushCompletion?()
-        }
-      })
+    // AuthNumberVC로 이동
+    reactor.state
+      .map { $0.isOpenedAuthNumberVC }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let authNumberVC = AuthNumberViewController(owner.mailTimer)
+        owner.navigationController?.pushViewController(authNumberVC, animated: true)
+      }
       .disposed(by: disposeBag)
   }
   

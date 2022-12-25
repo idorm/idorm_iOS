@@ -1,11 +1,21 @@
+//
+//  LoginViewController.swift
+//  idorm
+//
+//  Created by 김응철 on 2022/12/21.
+//
+
 import UIKit
 
 import Then
 import SnapKit
 import RxSwift
 import RxCocoa
+import ReactorKit
 
-final class LoginViewController: BaseViewController {
+final class LoginViewController: BaseViewController, View {
+  
+  typealias Reactor = LoginViewReactor
   
   // MARK: - Properties
   
@@ -73,13 +83,32 @@ final class LoginViewController: BaseViewController {
     $0.color = .darkGray
   }
   
-  private let idormMarkImage = UIImageView(image: UIImage(named: "i dorm Mark"))
-  private let inuMarkImage = UIImageView(image: UIImage(named: "INUMark"))
-  private var loginStack: UIStackView!
-  private var loginTextFieldStack: UIStackView!
-  private var signUpStack: UIStackView!
+  private lazy var loginStack = UIStackView().then { stack in
+    [inuMarkImage, loginLabel]
+      .forEach { stack.addArrangedSubview($0) }
+    stack.axis = .horizontal
+    stack.spacing = 8
+  }
   
-  private let viewModel = LoginViewModel()
+  private lazy var loginTfStack = UIStackView().then { stack in
+    [idTextField, pwTextField]
+      .forEach { stack.addArrangedSubview($0) }
+    stack.axis = .vertical
+    stack.distribution = .fillEqually
+    stack.spacing = 10
+  }
+  
+  private lazy var signUpStack = UIStackView().then { stack in
+    [signUpLabel, signUpButton]
+      .forEach { stack.addArrangedSubview($0) }
+    stack.axis = .horizontal
+    stack.spacing = 8
+  }
+  
+  private let idormMarkImage = UIImageView(image: #imageLiteral(resourceName: "idorm_gray"))
+  private let inuMarkImage = UIImageView(image: #imageLiteral(resourceName: "inu"))
+  
+  private let reactor = LoginViewReactor()
   
   //MARK: - LifeCycle
   
@@ -96,12 +125,92 @@ final class LoginViewController: BaseViewController {
     self.navigationController?.isNavigationBarHidden = false
   }
   
+  // MARK: - Bind
+  
+  func bind(reactor: LoginViewReactor) {
+    
+    // MARK: - Action
+    
+    // 로그인 버튼 클릭
+    loginButton.rx.tap
+      .withUnretained(self)
+      .map { ($0.0.idTextField.text ?? "", $0.0.pwTextField.text ?? "") }
+      .map { LoginViewReactor.Action.didTapLoginButton($0.0, $0.1) }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // 회원가입 버튼 클릭
+    signUpButton.rx.tap
+      .map { LoginViewReactor.Action.didTapSignupButton }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // 비밀번호 찾기 버튼 클릭
+    forgotPwButton.rx.tap
+      .map { LoginViewReactor.Action.didTapForgotPwButton }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // MARK: - State
+    
+    // 메인VC로 이동
+    reactor.state
+      .map { $0.isOpenedMainVC }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let tabBarVC = TabBarController()
+        tabBarVC.modalPresentationStyle = .fullScreen
+        owner.present(tabBarVC, animated: true)
+      }
+      .disposed(by: disposeBag)
+    
+    // PutEmailVC로 이동
+    reactor.state
+      .map { $0.isOpenedPutEmailVC }
+      .filter { $0.0 }
+      .withUnretained(self)
+      .bind { owner, type in
+        let putEmailVC = PutEmailViewController(type.1)
+        owner.navigationController?.pushViewController(putEmailVC, animated: true)
+      }
+      .disposed(by: disposeBag)
+    
+    // 인디케이터 제어
+    reactor.state
+      .map { $0.isLoading }
+      .distinctUntilChanged()
+      .bind(to: indicator.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
+    // 오류 팝업
+    reactor.state
+      .map { $0.isOpenedPopup }
+      .filter { $0.0 }
+      .withUnretained(self)
+      .bind { owner, message in
+        let popup = BasicPopup(contents: message.1)
+        popup.modalPresentationStyle = .overFullScreen
+        owner.present(popup, animated: false)
+      }
+      .disposed(by: disposeBag)
+  }
+  
   // MARK: - Setup
   
   override func setupLayouts() {
     super.setupLayouts()
     
-    [idormMarkImage, loginTitleLabel, loginTextFieldStack, loginStack, loginButton, forgotPwButton, signUpStack, indicator]
+    [
+      idormMarkImage,
+      loginTitleLabel,
+      loginTfStack,
+      loginStack,
+      loginButton,
+      forgotPwButton,
+      signUpStack,
+      indicator
+    ]
       .forEach { view.addSubview($0) }
   }
   
@@ -112,23 +221,6 @@ final class LoginViewController: BaseViewController {
     navigationController?.isNavigationBarHidden = true
     navigationController?.navigationBar.tintColor = .black
     navigationItem.title = "로그인"
-    
-    let loginStack = UIStackView(arrangedSubviews: [ inuMarkImage, loginLabel ])
-    loginStack.axis = .horizontal
-    loginStack.spacing = 8.0
-    
-    let loginTextFieldStack = UIStackView(arrangedSubviews: [ idTextField, pwTextField ])
-    loginTextFieldStack.axis = .vertical
-    loginTextFieldStack.distribution = .fillEqually
-    loginTextFieldStack.spacing = 10.0
-    
-    let signUpStack = UIStackView(arrangedSubviews: [ signUpLabel, signUpButton ])
-    signUpStack.axis = .horizontal
-    signUpStack.spacing = 8.0
-    
-    self.loginStack = loginStack
-    self.loginTextFieldStack = loginTextFieldStack
-    self.signUpStack = signUpStack
   }
   
   override func setupConstraints() {
@@ -153,17 +245,17 @@ final class LoginViewController: BaseViewController {
     
     loginStack.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(36)
-      make.bottom.equalTo(loginTextFieldStack.snp.top).offset(-54)
+      make.bottom.equalTo(loginTfStack.snp.top).offset(-54)
     }
     
-    loginTextFieldStack.snp.makeConstraints { make in
+    loginTfStack.snp.makeConstraints { make in
       make.centerY.equalToSuperview().offset(-26)
       make.leading.trailing.equalToSuperview().inset(36)
     }
     
     loginButton.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(36)
-      make.top.equalTo(loginTextFieldStack.snp.bottom).offset(32)
+      make.top.equalTo(loginTfStack.snp.bottom).offset(32)
       make.height.equalTo(40)
     }
     
@@ -181,84 +273,6 @@ final class LoginViewController: BaseViewController {
       make.center.equalToSuperview()
     }
   }
-  
-  // MARK: - Bind
-  
-  override func bind() {
-    super.bind()
-    
-    // MARK: - Input
-    
-    // 이메일 텍스트 반응 감지
-    idTextField.rx.text
-      .orEmpty
-      .bind(to: viewModel.input.emailTextFieldDidChange)
-      .disposed(by: disposeBag)
-    
-    // 비밀번호 텍스트 반응 감지
-    pwTextField.rx.text
-      .orEmpty
-      .bind(to: viewModel.input.passwordTextFieldDidChange)
-      .disposed(by: disposeBag)
-    
-    // 로그인 버튼 클릭
-    loginButton.rx.tap
-      .bind(to: viewModel.input.loginButtonDidTap)
-      .disposed(by: disposeBag)
-    
-    // 비밀번호 찾기 버튼 클릭
-    forgotPwButton.rx.tap
-      .bind(to: viewModel.input.forgotButtonDidTap)
-      .disposed(by: disposeBag)
-    
-    // 회원가입 버튼 클릭
-    signUpButton.rx.tap
-      .bind(to: viewModel.input.signUpButtonDidTap)
-      .disposed(by: disposeBag)
-    
-    // MARK: - Output
-    
-    // PutEmailVC
-    viewModel.output.pushToPutEmailVC
-      .bind(onNext: { [weak self] vcType in
-        let putEmailVC = PutEmailViewController(vcType)
-        self?.navigationController?.pushViewController(putEmailVC, animated: true)
-      })
-      .disposed(by: disposeBag)
-    
-    // 에러 팝업
-    viewModel.output.presentPopupVC
-      .bind(onNext: { [weak self] mention in
-        let popupVC = BasicPopup(contents: mention)
-        popupVC.modalPresentationStyle = .overFullScreen
-        self?.present(popupVC, animated: false)
-      })
-      .disposed(by: disposeBag)
-    
-    // 메인화면으로 이동
-    viewModel.output.presentTabBarVC
-      .asDriver(onErrorJustReturn: Void())
-      .drive(onNext: { [weak self] in
-        let tabBarVC = TabBarController()
-        tabBarVC.modalPresentationStyle = .fullScreen
-        self?.present(tabBarVC, animated: true)
-      })
-      .disposed(by: disposeBag)
-    
-    // 로딩 중
-    viewModel.output.isLoading
-      .bind(onNext: { [weak self] in
-        if $0 {
-          self?.indicator.startAnimating()
-          self?.view.isUserInteractionEnabled = false
-        } else {
-          self?.indicator.stopAnimating()
-          self?.view.isUserInteractionEnabled = true
-        }
-      })
-      .disposed(by: disposeBag)
-  }
-  
   
   // MARK: - Helpers
   

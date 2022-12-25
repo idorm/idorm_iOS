@@ -21,9 +21,9 @@ final class MatchingFilterViewReactor: Reactor {
   }
   
   enum Mutation {
-    case updatePopVC
-    case updateRequestCard
-    case updateFilter(MatchingDTO.Filter)
+    case setPopVC
+    case setRequestCard
+    case setFilter(MatchingDTO.Filter)
   }
   
   struct State {
@@ -41,25 +41,25 @@ final class MatchingFilterViewReactor: Reactor {
       FilterStorage.shared.resetFilter()
       FilterDriver.shared.reset()
       return .concat([
-        .just(.updateRequestCard),
-        .just(.updatePopVC)
+        .just(.setRequestCard),
+        .just(.setPopVC)
       ])
       
     case .didTapConfirmButton:
       return Observable.concat([
-        Observable.just(.updateRequestCard),
-        Observable.just(.updatePopVC)
+        Observable.just(.setRequestCard),
+        Observable.just(.setPopVC)
       ])
       
     case .didTapDormButton(let dorm):
       FilterDriver.shared.dorm.accept(true)
       newFilter.dormNum = dorm
-      return Observable.just(.updateFilter(newFilter))
+      return Observable.just(.setFilter(newFilter))
 
     case .didTapJoinPeriodButton(let period):
       FilterDriver.shared.joinPeriod.accept(true)
       newFilter.joinPeriod = period
-      return Observable.just(.updateFilter(newFilter))
+      return Observable.just(.setFilter(newFilter))
       
     case .didTapHabitButton(let habit):
       switch habit {
@@ -74,12 +74,12 @@ final class MatchingFilterViewReactor: Reactor {
       case .allowedFood:
         newFilter.isAllowedFood = !newFilter.isAllowedFood
       }
-      return Observable.just(.updateFilter(newFilter))
+      return Observable.just(.setFilter(newFilter))
       
     case let .didChangeSlider(minValue, maxValue):
       newFilter.minAge = minValue
       newFilter.maxAge = maxValue
-      return Observable.just(.updateFilter(newFilter))
+      return Observable.just(.setFilter(newFilter))
     }
   }
   
@@ -87,13 +87,13 @@ final class MatchingFilterViewReactor: Reactor {
     var newState = state
     
     switch mutation {
-    case .updatePopVC:
+    case .setPopVC:
       newState.popVC = true
       
-    case .updateRequestCard:
+    case .setRequestCard:
       newState.requestCard = true
       
-    case .updateFilter(let newFilter):
+    case .setFilter(let newFilter):
       FilterStorage.shared.saveFilter(newFilter)
     }
     

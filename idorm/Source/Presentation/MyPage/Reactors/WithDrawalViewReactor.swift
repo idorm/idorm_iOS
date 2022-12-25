@@ -39,7 +39,7 @@ final class WithDrawalViewReactor: Reactor {
           .asObservable()
           .retry()
           .filterSuccessfulStatusCodes()
-          .flatMap { _ in Observable<Mutation>.just(.setLoginVC(true)) }        
+          .flatMap { _ in Observable<Mutation>.just(.setLoginVC(true)) }
       ])
     }
   }

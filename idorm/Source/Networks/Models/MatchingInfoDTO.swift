@@ -25,11 +25,11 @@ extension MatchingInfoDTO {
     var showerTime: String = ""
     var mbti: String?
     var wishText: String?
-    var openKakaoLink: String
+    var openKakaoLink: String = ""
   }
   
   struct Retrieve: Codable {
-    let id: Int?
+    var id: Int?
     var dormNum: Dormitory = .no1
     var joinPeriod: JoinPeriod = .period_16
     var gender: Gender = .female

@@ -1,7 +1,6 @@
 import UIKit
 
 final class LoginTextField: UITextField {
-  // MARK: - Properties
   
   // MARK: - Init
   init(_ placeholder: String) {
@@ -11,13 +10,6 @@ final class LoginTextField: UITextField {
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-  
-  // MARK: - LifeCycle
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    
-    
   }
   
   // MARK: - Setup

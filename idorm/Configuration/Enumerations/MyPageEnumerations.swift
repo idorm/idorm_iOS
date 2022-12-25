@@ -11,9 +11,9 @@ struct MyPageEnumerations {}
 
 extension MyPageEnumerations {
   enum ManageMyInfoView {
-    case onlyArrow
-    case onlyDescription(description: String)
-    case both(description: String)
+    case onlyArrow(title: String)
+    case onlyDescription(description: String = "", title: String)
+    case both(description: String = "", title: String)
   }
   
   enum Sort {

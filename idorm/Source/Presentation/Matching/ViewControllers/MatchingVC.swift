@@ -311,7 +311,7 @@ final class MatchingViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let viewController = OnboardingViewController(.initial2)
+        let viewController = OnboardingViewController(.main)
         viewController.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(viewController, animated: true)
       }
@@ -555,7 +555,7 @@ extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelega
     // TODO: 신고하기 기능 구현
     
     // MatchingBottomAlertVC 보여주기
-    let bottomAlertVC = MatchingBottomAlertViewController()
+    let bottomAlertVC = MatchingBottomSheet()
     bottomAlertVC.modalPresentationStyle = .pageSheet
     presentPanModal(bottomAlertVC)
   }

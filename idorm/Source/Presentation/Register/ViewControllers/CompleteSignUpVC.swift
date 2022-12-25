@@ -1,11 +1,21 @@
+//
+//  CompleteSignUpViewController.swift
+//  idorm
+//
+//  Created by 김응철 on 2022/12/25.
+//
+
 import UIKit
 
 import Then
 import SnapKit
 import RxSwift
 import RxCocoa
+import ReactorKit
 
-final class CompleteSignUpViewController: BaseViewController {
+final class CompleteSignUpViewController: BaseViewController, View {
+  
+  typealias Reactor = CompleteSignupViewReactor
   
   // MARK: - Properties
   
@@ -48,51 +58,39 @@ final class CompleteSignUpViewController: BaseViewController {
   }
   
   private let image = UIImageView(image: #imageLiteral(resourceName: "Lion"))
-  
-  private let viewModel = CompleteSignUpViewModel()
+  private let reactor = CompleteSignupViewReactor()
   
   // MARK: - Bind
   
-  override func bind() {
-    super.bind()
+  func bind(reactor: CompleteSignupViewReactor) {
     
-    // MARK: - Input
+    // MARK: - Action
     
-    // 로그인 후 계속하기 버튼 이벤트
+    // 계속하기 버튼
     continueButton.rx.tap
-      .bind(to: viewModel.input.continueButtonDidTap)
+      .map { CompleteSignupViewReactor.Action.didTapContinueButton }
+      .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
-    // MARK: - Output
+    // MARK: - State
     
-    // 온보딩 페이지로 이동
-    viewModel.output.presentOnboardingVC
-      .bind(onNext: { [weak self] in
-        let onboardingVC = UINavigationController(rootViewController: OnboardingViewController(.initial))
-        onboardingVC.modalPresentationStyle = .fullScreen
-        self?.present(onboardingVC, animated: true)
-      })
-      .disposed(by: disposeBag)
-    
-    // 팝업 창 띄우기
-    viewModel.output.presentPopupVC
-      .withUnretained(self)
-      .bind { owner, content in
-        let viewController = BasicPopup(contents: content)
-        viewController.modalPresentationStyle = .overFullScreen
-        owner.present(viewController, animated: false)
-      }
-      .disposed(by: disposeBag)
-    
-    // 로딩 인디케이터
-    viewModel.output.isLoading
+    // 인디케이터 애니메이션
+    reactor.state
+      .map { $0.isLoading }
+      .distinctUntilChanged()
       .bind(to: indicator.rx.isAnimating)
       .disposed(by: disposeBag)
     
-    // 화면 터치 제어
-    viewModel.output.isLoading
-      .map { !$0 }
-      .bind(to: view.rx.isUserInteractionEnabled)
+    // 메인VC 열기
+    reactor.state
+      .map { $0.isOpendOnboardingVC }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let onboardingVC = OnboardingViewController(.initial)
+        onboardingVC.modalPresentationStyle = .fullScreen
+        owner.present(onboardingVC, animated: true)
+      }
       .disposed(by: disposeBag)
   }
   

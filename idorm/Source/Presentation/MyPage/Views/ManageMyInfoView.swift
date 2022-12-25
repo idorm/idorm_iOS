@@ -1,3 +1,10 @@
+//
+//  ManageMyInfoView.swift
+//  idorm
+//
+//  Created by 김응철 on 2022/12/22.
+//
+
 import UIKit
 
 import RxSwift
@@ -19,16 +26,15 @@ final class ManageMyInfoView: UIView {
     $0.textColor = .idorm_gray_300
   }
   
-  private let arrowImageView = UIImageView(image: #imageLiteral(resourceName: "rightArrow(Mypage)"))
-  
+  private let arrowImageView = UIImageView(image: #imageLiteral(resourceName: "rightarrow_gray"))
   private let type: MyPageEnumerations.ManageMyInfoView
   
   // MARK: - LifeCycle
   
-  init(type: MyPageEnumerations.ManageMyInfoView, title: String) {
+  init(_ type: MyPageEnumerations.ManageMyInfoView) {
     self.type = type
     super.init(frame: .zero)
-    titleLabel.text = title
+    setupComponents(type)
     setupStyles()
     setupLayout()
     setupConstraints()
@@ -40,14 +46,23 @@ final class ManageMyInfoView: UIView {
   
   // MARK: - Setup
   
+  private func setupComponents(_ type: MyPageEnumerations.ManageMyInfoView) {
+    switch type {
+    case .onlyArrow(let title):
+      titleLabel.text = title
+      
+    case let .onlyDescription(description, title):
+      descriptionLabel.text = description
+      titleLabel.text = title
+      
+    case let .both(description, title):
+      descriptionLabel.text = description
+      titleLabel.text = title
+    }
+  }
+  
   private func setupStyles() {
     backgroundColor = .white
-    
-    switch type {
-    case .onlyArrow: break
-    case let .onlyDescription(description), let .both(description: description):
-      descriptionLabel.text = description
-    }
   }
   
   private func setupLayout() {
@@ -55,9 +70,9 @@ final class ManageMyInfoView: UIView {
     switch type {
     case .onlyArrow:
       addSubview(arrowImageView)
-    case .onlyDescription(_):
+    case .onlyDescription:
       addSubview(descriptionLabel)
-    case .both(_):
+    case .both:
       addSubview(arrowImageView)
       addSubview(descriptionLabel)
     }

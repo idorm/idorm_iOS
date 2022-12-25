@@ -1,3 +1,10 @@
+//
+//  OnboardingDriver.swift
+//  idorm
+//
+//  Created by 김응철 on 2022/12/25.
+//
+
 import RxSwift
 import RxCocoa
 
@@ -16,7 +23,6 @@ final class OnboardingDriver {
   let disposeBag = DisposeBag()
   
   init() {
-    
     Observable.combineLatest(
       dormConditon,
       genderCondition,

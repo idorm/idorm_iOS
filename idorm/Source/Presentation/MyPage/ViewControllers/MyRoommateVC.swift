@@ -28,7 +28,6 @@ final class MyRoommateViewController: BaseViewController, View {
   }
   
   private let roommate: MyPageEnumerations.Roommate
-  private let viewModel = MyRoommateViewModel()
   private var reactor = MyRoommateViewReactor()
   private var header: MyRoommateHeaderView!
   

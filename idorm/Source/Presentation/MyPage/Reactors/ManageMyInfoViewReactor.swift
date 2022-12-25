@@ -21,11 +21,11 @@ final class ManageMyInfoViewReactor: Reactor {
   }
   
   enum Mutation {
-    case updateIsOpenedNicknameVC(Bool)
-    case updateIsOpenedConfirmPwVC(Bool)
-    case updateIsOpenedWithDrawalVC(Bool)
-    case updateCurrentNickname(String)
-    case updateCurrentEmail(String)
+    case setNicknameVC(Bool)
+    case setConfirmPwVC(Bool)
+    case setWithDrawalVC(Bool)
+    case setCurrentNickname(String)
+    case setCurrentEmail(String)
   }
   
   struct State {
@@ -45,26 +45,26 @@ final class ManageMyInfoViewReactor: Reactor {
       let email = MemberStorage.shared.member?.email ?? ""
       
       return .concat([
-        .just(.updateCurrentNickname(nickName)),
-        .just(.updateCurrentEmail(email))
+        .just(.setCurrentNickname(nickName)),
+        .just(.setCurrentEmail(email))
       ])
       
     case .didTapNicknameButton:
       return .concat([
-        .just(.updateIsOpenedNicknameVC(true)),
-        .just(.updateIsOpenedNicknameVC(false))
+        .just(.setNicknameVC(true)),
+        .just(.setNicknameVC(false))
       ])
       
     case .didTapChangePwButton:
       return .concat([
-        .just(.updateIsOpenedConfirmPwVC(true)),
-        .just(.updateIsOpenedConfirmPwVC(false))
+        .just(.setConfirmPwVC(true)),
+        .just(.setConfirmPwVC(false))
       ])
       
     case .didTapWithDrawalButton:
       return .concat([
-        .just(.updateIsOpenedWithDrawalVC(true)),
-        .just(.updateIsOpenedWithDrawalVC(false))
+        .just(.setWithDrawalVC(true)),
+        .just(.setWithDrawalVC(false))
       ])
     }
   }
@@ -73,19 +73,19 @@ final class ManageMyInfoViewReactor: Reactor {
     var newState = state
     
     switch mutation {
-    case .updateIsOpenedNicknameVC(let isOpened):
+    case .setNicknameVC(let isOpened):
       newState.isOpenedNicknameVC = isOpened
     
-    case .updateIsOpenedConfirmPwVC(let isOpened):
+    case .setConfirmPwVC(let isOpened):
       newState.isOpenedConfirmPwVC = isOpened
       
-    case .updateIsOpenedWithDrawalVC(let isOpened):
+    case .setWithDrawalVC(let isOpened):
       newState.isOpenedWithDrawVC = isOpened
       
-    case .updateCurrentEmail(let email):
+    case .setCurrentEmail(let email):
       newState.currentEmail = email
       
-    case .updateCurrentNickname(let nickname):
+    case .setCurrentNickname(let nickname):
       newState.currentNickname = nickname
     }
     
