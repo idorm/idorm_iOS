@@ -10,12 +10,10 @@ import ReactorKit
 
 final class MyRoommateViewController: BaseViewController, View {
   
-  typealias Reactor = MyRoommateViewReactor
-  
   // MARK: - Properties
   
   private let indicator = UIActivityIndicatorView().then {
-    $0.color = .gray
+    $0.color = .darkGray
   }
   
   private lazy var tableView = UITableView(frame: .zero, style: .grouped).then {
@@ -28,7 +26,6 @@ final class MyRoommateViewController: BaseViewController, View {
   }
   
   private let roommate: MyPageEnumerations.Roommate
-  private var reactor = MyRoommateViewReactor()
   private var header: MyRoommateHeaderView!
   
   // MARK: - LifeCycle
@@ -44,9 +41,24 @@ final class MyRoommateViewController: BaseViewController, View {
   
   // MARK: - Bind
   
-  func bind(reactor: MyRoommateViewReactor) {
+  func bind(reactor: MyRoommateViewReactor) {}
+  
+  private func bindHeader() {
+    guard let reactor = reactor else { return }
     
     // MARK: - Action
+    
+    // 최신순 버튼 클릭
+    header.lastestButton.rx.tap
+      .map { MyRoommateViewReactor.Action.didTapLastestButton }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // 과거순 버튼 클릭
+    header.pastButton.rx.tap
+      .map { MyRoommateViewReactor.Action.didTapPastButton }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
     
     // viewDidLoad
     Observable.just(1)
@@ -62,23 +74,6 @@ final class MyRoommateViewController: BaseViewController, View {
       .map { $0.isLoading }
       .distinctUntilChanged()
       .bind(to: indicator.rx.isAnimating)
-      .disposed(by: disposeBag)
-    
-    // 현재 정렬
-    reactor.state
-      .map { $0.currentSort }
-      .distinctUntilChanged()
-      .withUnretained(self)
-      .bind { owner, sort in
-        switch sort {
-        case .lastest:
-          owner.header.lastestButton.isSelected = true
-          owner.header.pastButton.isSelected = false
-        case .past:
-          owner.header.lastestButton.isSelected = false
-          owner.header.pastButton.isSelected = true
-        }
-      }
       .disposed(by: disposeBag)
     
     // 테이블 뷰 리로드
@@ -109,20 +104,22 @@ final class MyRoommateViewController: BaseViewController, View {
       .filter { $0.0 }
       .bind { UIApplication.shared.open(URL(string: $0.1)!) }
       .disposed(by: disposeBag)
-  }
-  
-  private func bindHeader() {
     
-    // 최신순 버튼 클릭
-    header.lastestButton.rx.tap
-      .map { MyRoommateViewReactor.Action.didTapLastestButton }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
-    
-    // 과거순 버튼 클릭
-    header.pastButton.rx.tap
-      .map { MyRoommateViewReactor.Action.didTapPastButton }
-      .bind(to: reactor.action)
+    // 현재 정렬
+    reactor.state
+      .map { $0.currentSort }
+      .distinctUntilChanged()
+      .withUnretained(self)
+      .bind { owner, sort in
+        switch sort {
+        case .lastest:
+          owner.header.lastestButton.isSelected = true
+          owner.header.pastButton.isSelected = false
+        case .past:
+          owner.header.lastestButton.isSelected = false
+          owner.header.pastButton.isSelected = true
+        }
+      }
       .disposed(by: disposeBag)
   }
   
@@ -171,7 +168,8 @@ extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
     guard let cell = tableView.dequeueReusableCell(
       withIdentifier: MyRoommateCell.identifier,
       for: indexPath
-    ) as? MyRoommateCell else {
+    ) as? MyRoommateCell,
+          let reactor = reactor else {
       return UITableViewCell()
     }
     cell.setupMatchingInfomation(from: reactor.currentState.currentMembers[indexPath.row])
@@ -181,6 +179,7 @@ extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
   
   // Number Of Cells
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    guard let reactor = reactor else { return 0 }
     return reactor.currentState.currentMembers.count
   }
   
@@ -212,6 +211,8 @@ extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
   
   // didSelectCell
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let reactor = reactor else { return }
+    
     let bottomSheet: MyRoommaateBottomSheet
     let member = reactor.currentState.currentMembers[indexPath.row]
     switch roommate {

@@ -7,7 +7,7 @@ final class AppearanceManager {
     let appearance = UINavigationBarAppearance()
     let backButtonAppearance = UIBarButtonItemAppearance()
     
-    let backButton = UIImage(named: "BackButton")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -12, bottom: -5, right: 0))
+    let backButton = #imageLiteral(resourceName: "leftarrow_black").withRenderingMode(.alwaysOriginal).withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -12, bottom: -5, right: 0))
     backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.clear, .font: UIFont.systemFont(ofSize: 0)]
     appearance.setBackIndicatorImage(backButton, transitionMaskImage: backButton)
     appearance.backButtonAppearance = backButtonAppearance

@@ -15,8 +15,6 @@ import ReactorKit
 
 final class WithdrawalViewController: BaseViewController, View {
   
-  typealias Reactor = WithDrawalViewReactor
-  
   // MARK: - Properties
   
   private let mainLabel = UILabel().then {
@@ -75,11 +73,9 @@ final class WithdrawalViewController: BaseViewController, View {
   
   private let scrollView = UIScrollView()
   private let contentView = UIView()
-  private let sadDomiImageView = UIImageView(image: #imageLiteral(resourceName: "sadDomi"))
+  private let sadDomiImageView = UIImageView(image: #imageLiteral(resourceName: "lion_sad"))
   private let floatyBottomView = FloatyBottomView(.withdrawal)
   private let indicator = UIActivityIndicatorView().then { $0.color = .gray }
-  
-  private let reactor = WithDrawalViewReactor()
   
   // MARK: - Bind
   
@@ -150,7 +146,7 @@ final class WithdrawalViewController: BaseViewController, View {
     }
     
     floatyBottomView.snp.makeConstraints { make in
-      make.leading.trailing.bottom.equalToSuperview()
+      make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
       make.height.equalTo(76)
     }
     

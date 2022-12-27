@@ -20,8 +20,6 @@ import RxOptional
 
 final class OnboardingViewController: BaseViewController, View {
   
-  typealias Reactor = OnboardingViewReactor
-  
   // MARK: - Properties
   
   private let titleLabel = OnboardingUtilities.descriptionLabel("룸메이트 매칭을 위한 기본정보를 알려주세요!")
@@ -145,16 +143,10 @@ final class OnboardingViewController: BaseViewController, View {
     $0.textColor = .idorm_blue
     $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
   }
-  
-  private let reactor: OnboardingViewReactor
+
   private let type: OnboardingEnumerations
   
   // MARK: - LifeCycle
-  
-  override func viewDidLoad() {
-    setupFloatyBottomView()
-    super.viewDidLoad()
-  }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -163,8 +155,8 @@ final class OnboardingViewController: BaseViewController, View {
   
   init(_ type: OnboardingEnumerations) {
     self.type = type
-    self.reactor = OnboardingViewReactor(type)
     super.init(nibName: nil, bundle: nil)
+    setupComponents()
   }
   
   required init?(coder: NSCoder) {
@@ -443,7 +435,7 @@ final class OnboardingViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let mainVC = TabBarController()
+        let mainVC = TabBarViewController()
         mainVC.modalPresentationStyle = .fullScreen
         owner.present(mainVC, animated: true)
       }
@@ -496,12 +488,25 @@ final class OnboardingViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, member in
         let onboardingDetailVC = OnboardingDetailViewController(member.1, type: owner.type)
+        onboardingDetailVC.reactor = OnboardingDetailViewReactor(owner.type)
         owner.navigationController?.pushViewController(onboardingDetailVC, animated: true)
       }
       .disposed(by: disposeBag)
   }
   
   // MARK: - Setup
+  
+  private func setupComponents() {
+    switch type {
+    case .initial:
+      self.floatyBottomView = FloatyBottomView(.jump)
+    case .main:
+      self.floatyBottomView = FloatyBottomView(.reset)
+    case .modify:
+      self.floatyBottomView = FloatyBottomView(.reset)
+    }
+    self.floatyBottomView.rightButton.isEnabled = false
+  }
   
   override func setupLayouts() {
     super.setupLayouts()
@@ -740,17 +745,5 @@ final class OnboardingViewController: BaseViewController, View {
       make.centerY.equalTo(wishInfoLabel)
       make.trailing.equalTo(maxLengthLabel.snp.leading).offset(-4)
     }
-  }
-  
-  private func setupFloatyBottomView() {
-    switch type {
-    case .initial:
-      self.floatyBottomView = FloatyBottomView(.jump)
-    case .main:
-      self.floatyBottomView = FloatyBottomView(.reset)
-    case .modify:
-      self.floatyBottomView = FloatyBottomView(.reset)
-    }
-    self.floatyBottomView.rightButton.isEnabled = false
   }
 }

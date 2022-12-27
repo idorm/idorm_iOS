@@ -27,6 +27,7 @@ final class NicknameViewReactor: Reactor {
     case setCompoundLabelTextColor(UIColor)
     case setSpacingLabelTextColor(UIColor)
     case setCheckmark(Bool)
+    case setNickname(String)
     case setTextCount(Int)
     case setPopup(Bool)
     case setLoading(Bool)
@@ -84,7 +85,8 @@ final class NicknameViewReactor: Reactor {
         countCondition,
         compoundCondition,
         spacingCondition,
-        .just(.setTextCount(text.count))
+        .just(.setTextCount(text.count)),
+        .just(.setNickname(text))
       ])
       
     case .editingDidEndTf:
@@ -93,10 +95,10 @@ final class NicknameViewReactor: Reactor {
       let spacingCondition: Observable<Mutation>
       let text = currentState.currentNickname
       
-      if (text.count >= 2 && text.count <= 8) == false {
-        countCondition = .just(.setCountLabelTextColor(.idorm_red))
-      } else {
+      if (text.count >= 2 && text.count <= 8) {
         countCondition = .just(.setCountLabelTextColor(.idorm_blue))
+      } else {
+        countCondition = .just(.setCountLabelTextColor(.idorm_red))
       }
       
       if text.contains(" ") {
@@ -138,6 +140,8 @@ final class NicknameViewReactor: Reactor {
       ])
       
     case .didTapConfirmButton:
+      let email = Logger.shared.email
+      let password = Logger.shared.password
       let nickname = currentState.currentNickname
       
       if nickname.isValidNickname,
@@ -147,11 +151,11 @@ final class NicknameViewReactor: Reactor {
         case .signUp:
           return .concat([
             .just(.setLoading(true)),
-            APIService.memberProvider.rx.request(.changeNickname(nickname: nickname))
+            APIService.memberProvider.rx.request(.register(id: email, pw: password, nickname: nickname))
               .asObservable()
               .retry()
-              .map(ResponseModel<MemberDTO.Retrieve>.self)
-              .flatMap { response -> Observable<Mutation> in
+              .filterSuccessfulStatusCodes()
+              .flatMap { _ -> Observable<Mutation> in
                 return .concat([
                   .just(.setLoading(false)),
                   .just(.setCompleteSignupVC(true)),
@@ -161,11 +165,9 @@ final class NicknameViewReactor: Reactor {
           ])
           
         case .modify:
-          let email = Logger.shared.email
-          let password = Logger.shared.password
           return .concat([
             .just(.setLoading(true)),
-            APIService.memberProvider.rx.request(.register(id: email, pw: password, nickname: nickname))
+            APIService.memberProvider.rx.request(.changeNickname(nickname: nickname))
               .asObservable()
               .retry()
               .map(ResponseModel<MemberDTO.Retrieve>.self)
@@ -221,6 +223,9 @@ final class NicknameViewReactor: Reactor {
       
     case .setSpacingLabelTextColor(let color):
       newState.currentSpacingLabelTextColor = color
+      
+    case .setNickname(let text):
+      newState.currentNickname = text
     }
     
     return newState

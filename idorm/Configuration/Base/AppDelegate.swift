@@ -13,7 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     
-    // MARK: - Setup UI
+    Thread.sleep(forTimeInterval: 1)
     
     let appearance = AppearanceManager.navigationAppearance(from: .white, shadow: false)
     UINavigationBar.appearance().compactAppearance = appearance

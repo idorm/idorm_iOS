@@ -15,8 +15,6 @@ import ReactorKit
 
 final class LoginViewController: BaseViewController, View {
   
-  typealias Reactor = LoginViewReactor
-  
   // MARK: - Properties
   
   private let loginTitleLabel = UILabel().then {
@@ -108,16 +106,11 @@ final class LoginViewController: BaseViewController, View {
   private let idormMarkImage = UIImageView(image: #imageLiteral(resourceName: "idorm_gray"))
   private let inuMarkImage = UIImageView(image: #imageLiteral(resourceName: "inu"))
   
-  private let reactor = LoginViewReactor()
-  
   //MARK: - LifeCycle
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     self.navigationController?.isNavigationBarHidden = true
-    
-    // 토큰 초기화
-    TokenStorage.removeToken()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -130,6 +123,12 @@ final class LoginViewController: BaseViewController, View {
   func bind(reactor: LoginViewReactor) {
     
     // MARK: - Action
+    
+    // viewDidLoad
+    Observable.empty()
+      .map { LoginViewReactor.Action.viewDidLoad }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
     
     // 로그인 버튼 클릭
     loginButton.rx.tap
@@ -159,7 +158,7 @@ final class LoginViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let tabBarVC = TabBarController()
+        let tabBarVC = TabBarViewController()
         tabBarVC.modalPresentationStyle = .fullScreen
         owner.present(tabBarVC, animated: true)
       }
@@ -172,6 +171,7 @@ final class LoginViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, type in
         let putEmailVC = PutEmailViewController(type.1)
+        putEmailVC.reactor = PutEmailViewReactor()
         owner.navigationController?.pushViewController(putEmailVC, animated: true)
       }
       .disposed(by: disposeBag)
@@ -181,6 +181,13 @@ final class LoginViewController: BaseViewController, View {
       .map { $0.isLoading }
       .distinctUntilChanged()
       .bind(to: indicator.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
+    // 화면 인터렉션 제어
+    reactor.state
+      .map { $0.isLoading }
+      .map { !$0 }
+      .bind(to: view.rx.isUserInteractionEnabled)
       .disposed(by: disposeBag)
     
     // 오류 팝업

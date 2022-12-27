@@ -10,7 +10,7 @@ final class idormTextField: UITextField {
   // MARK: - Properties
   
   let checkmarkButton = UIButton().then {
-    $0.setImage(UIImage(named: "Checkmark"), for: .normal)
+    $0.setImage(UIImage(named: "circle_checkmark_blue"), for: .normal)
     $0.isUserInteractionEnabled = false
     $0.isHidden = true
   }

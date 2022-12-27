@@ -15,8 +15,6 @@ import RangeSeekSlider
 
 final class MatchingFilterViewController: BaseViewController, View {
   
-  typealias Reactor = MatchingFilterViewReactor
-  
   // MARK: - Properties
   
   private let scrollView = UIScrollView()
@@ -50,8 +48,6 @@ final class MatchingFilterViewController: BaseViewController, View {
   private let ageLabel = MatchingUtilities.titleLabel(text: "나이")
   private let ageDescriptionLabel = MatchingUtilities.descriptionLabel("선택하신 연령대의 룸메이트만 나와 매칭돼요.")
   private let slider = MatchingUtilities.slider()
-  
-  var reactor = MatchingFilterViewReactor()
   
   // MARK: - LifeCycle
   
@@ -353,6 +349,7 @@ final class MatchingFilterViewController: BaseViewController, View {
 
 extension MatchingFilterViewController: RangeSeekSliderDelegate {
   func rangeSeekSlider(_ slider: RangeSeekSlider, didChange minValue: CGFloat, maxValue: CGFloat) {
+    guard let reactor = reactor else { return }
     let minValue = Int(round(minValue))
     let maxValue = Int(round(maxValue))
     

@@ -31,6 +31,28 @@ final class ModelTransformationManager {
     return newOne
   }
   
+  static func transformToMatchingDTO_RETRIEVE(_ from: MatchingInfoDTO.Retrieve) -> MatchingDTO.Retrieve {
+    var newOne = MatchingDTO.Retrieve()
+    
+    newOne.dormNum = from.dormNum
+    newOne.gender = from.gender
+    newOne.joinPeriod = from.joinPeriod
+    newOne.isSmoking = from.isSmoking
+    newOne.isSnoring = from.isSnoring
+    newOne.isGrinding = from.isGrinding
+    newOne.isAllowedFood = from.isAllowedFood
+    newOne.isWearEarphones = from.isWearEarphones
+    newOne.wakeUpTime = from.wakeUpTime
+    newOne.showerTime = from.showerTime
+    newOne.cleanUpStatus = from.cleanUpStatus
+    newOne.age = from.age
+    newOne.mbti = from.mbti
+    newOne.openKakaoLink = from.openKakaoLink
+    newOne.wishText = from.wishText
+    
+    return newOne
+  }
+  
   static func transformToMatchingInfoDTO_SAVE(_ from: MatchingDTO.Retrieve) -> MatchingInfoDTO.Save {
     var newOne = MatchingInfoDTO.Save()
     

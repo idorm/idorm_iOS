@@ -18,8 +18,6 @@ import ReactorKit
 
 final class MyPageViewController: BaseViewController, View {
   
-  typealias Reactor = MyPageViewReactor
-  
   // MARK: - Properties
   
   private lazy var indicator = UIActivityIndicatorView().then {
@@ -38,11 +36,9 @@ final class MyPageViewController: BaseViewController, View {
     $0.setImage(#imageLiteral(resourceName: "gear"), for: .normal)
   }
   
-  private let lionImageView = UIImageView(image: #imageLiteral(resourceName: "BottonLion(MyPage)"))
+  private let lionImageView = UIImageView(image: #imageLiteral(resourceName: "lion_half"))
   private let topProfileView = TopProfileView()
   private let matchingContainerView = MatchingContainerView()
-  
-  private let reactor = MyPageViewReactor()
   
   // MARK: - LifeCycle
   
@@ -93,7 +89,7 @@ final class MyPageViewController: BaseViewController, View {
       .disposed(by: disposeBag)
     
     // 매칭이미지 버튼 클릭
-    matchingContainerView.likeButton.rx.tap
+    matchingContainerView.matchingImageButton.rx.tap
       .map { MyPageViewReactor.Action.didTapMatchingImageButton }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
@@ -105,7 +101,7 @@ final class MyPageViewController: BaseViewController, View {
       .disposed(by: disposeBag)
     
     // 싫어요한 룸메이트 버튼 클릭
-    matchingContainerView.likeButton.rx.tap
+    matchingContainerView.dislikeButton.rx.tap
       .map { MyPageViewReactor.Action.didTapRoommateButton(.dislike) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
@@ -128,6 +124,7 @@ final class MyPageViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, _ in
         let viewController = ManageMyInfoViewController()
+        viewController.reactor = ManageMyInfoViewReactor()
         viewController.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(viewController, animated: true)
       }
@@ -141,6 +138,7 @@ final class MyPageViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, _ in
         let viewController = OnboardingViewController(.main)
+        viewController.reactor = OnboardingViewReactor(.main)
         viewController.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(viewController, animated: true)
       }
@@ -149,11 +147,13 @@ final class MyPageViewController: BaseViewController, View {
     // 온보딩 디테일 페이지 이동
     reactor.state
       .map { $0.isOpenedOnboardingDetailVC }
-      .distinctUntilChanged()
-      .filter { $0 }
+      .filter { $0.0 }
       .withUnretained(self)
-      .bind { owner, _ in
-        
+      .bind { owner, member in
+        let onboardingDetailVC = OnboardingDetailViewController(member.1, type: .modify)
+        onboardingDetailVC.reactor = OnboardingDetailViewReactor(.modify)
+        onboardingDetailVC.hidesBottomBarWhenPushed = true
+        owner.navigationController?.pushViewController(onboardingDetailVC, animated: true)
       }
       .disposed(by: disposeBag)
     
@@ -176,8 +176,8 @@ final class MyPageViewController: BaseViewController, View {
         
         // 팝업 창 닫기
         reactor.state
-          .map { $0.isOpenedNoMatchingInfoPopup }
-          .filter { $0 == false }
+          .map { $0.isDismissedPopup }
+          .filter { $0 }
           .bind { _ in popup.dismiss(animated: false) }
           .disposed(by: owner.disposeBag)
       }
@@ -191,6 +191,7 @@ final class MyPageViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, _ in
         let viewController = MyRoommateViewController(.like)
+        viewController.reactor = MyRoommateViewReactor()
         viewController.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(viewController, animated: true)
       }
@@ -204,6 +205,7 @@ final class MyPageViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, _ in
         let viewController = MyRoommateViewController(.dislike)
+        viewController.reactor = MyRoommateViewReactor()
         viewController.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(viewController, animated: true)
       }

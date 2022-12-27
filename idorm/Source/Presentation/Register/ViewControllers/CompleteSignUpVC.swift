@@ -15,8 +15,6 @@ import ReactorKit
 
 final class CompleteSignUpViewController: BaseViewController, View {
   
-  typealias Reactor = CompleteSignupViewReactor
-  
   // MARK: - Properties
   
   private let signUpLabel = UILabel().then {
@@ -54,11 +52,10 @@ final class CompleteSignUpViewController: BaseViewController, View {
   }
   
   private let indicator = UIActivityIndicatorView().then {
-    $0.color = .gray
+    $0.color = .darkGray
   }
   
-  private let image = UIImageView(image: #imageLiteral(resourceName: "Lion"))
-  private let reactor = CompleteSignupViewReactor()
+  private let image = UIImageView(image: UIImage(named: "lion"))
   
   // MARK: - Bind
   
@@ -74,6 +71,13 @@ final class CompleteSignUpViewController: BaseViewController, View {
     
     // MARK: - State
     
+    // 화면 인터렉션 제어
+    reactor.state
+      .map { $0.isLoading }
+      .map { !$0 }
+      .bind(to: view.rx.isUserInteractionEnabled)
+      .disposed(by: disposeBag)
+    
     // 인디케이터 애니메이션
     reactor.state
       .map { $0.isLoading }
@@ -81,13 +85,14 @@ final class CompleteSignUpViewController: BaseViewController, View {
       .bind(to: indicator.rx.isAnimating)
       .disposed(by: disposeBag)
     
-    // 메인VC 열기
+    // OnboardingVC 열기
     reactor.state
       .map { $0.isOpendOnboardingVC }
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
         let onboardingVC = OnboardingViewController(.initial)
+        onboardingVC.reactor = OnboardingViewReactor(.initial)
         onboardingVC.modalPresentationStyle = .fullScreen
         owner.present(onboardingVC, animated: true)
       }

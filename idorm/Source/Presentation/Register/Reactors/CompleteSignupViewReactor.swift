@@ -44,7 +44,7 @@ final class CompleteSignupViewReactor: Reactor {
           .map(ResponseModel<MemberDTO.Retrieve>.self)
           .flatMap { member -> Observable<Mutation> in
             let member = member.data
-            TokenStorage.saveToken(token: member.loginToken ?? "")
+            TokenStorage.saveToken(token: member.loginToken!)
             MemberStorage.shared.saveMember(member)
             return .concat([
               .just(.setLoading(false)),

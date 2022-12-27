@@ -34,7 +34,6 @@ final class PutEmailViewReactor: Reactor {
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case let .didTapReceiveButton(email, type):
-      Logger.shared.saveEmail(email)
       switch type {
       case .signUp:
         return .concat([
@@ -46,6 +45,8 @@ final class PutEmailViewReactor: Reactor {
               switch response.statusCode {
               case 200:
                 Logger.shared.saveAuthenticationType(.signUp)
+                Logger.shared.saveEmail(email)
+                UserStorage.saveEmail(from: email)
                 return .concat([
                   .just(.setLoading(false)),
                   .just(.setAuthVC(true)),
@@ -61,7 +62,7 @@ final class PutEmailViewReactor: Reactor {
               }
             }
         ])
-      default:
+      case .findPw, .modifyPw:
         return .concat([
           .just(.setLoading(true)),
           APIService.emailProvider.rx.request(.pwAuthentication(email: email))
@@ -71,6 +72,7 @@ final class PutEmailViewReactor: Reactor {
               switch response.statusCode {
               case 200:
                 Logger.shared.saveAuthenticationType(.findPw)
+                Logger.shared.saveEmail(email)
                 return .concat([
                   .just(.setLoading(false)),
                   .just(.setAuthVC(true)),

@@ -15,8 +15,6 @@ import ReactorKit
 
 final class ConfirmPwViewController: BaseViewController, View {
   
-  typealias Reactor = ConfirmPwViewReactor
-  
   // MARK: - Properties
   
   private let infoLabel = UILabel().then {
@@ -43,21 +41,19 @@ final class ConfirmPwViewController: BaseViewController, View {
     $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
   }
   
-  private let indicator = UIActivityIndicatorView().then { $0.color = .gray }
+  private let indicator = UIActivityIndicatorView().then { $0.color = .darkGray }
   
   private let textField1 = PasswordTextField(placeholder: "비밀번호를 입력해주세요.")
   private let textField2 = PasswordTextField(placeholder: "비밀번호를 한번 더 입력해주세요.")
   private var confirmButton: idormButton!
-  
-  private let reactor: ConfirmPwViewReactor
   private let type: RegisterEnumerations
   
   // MARK: - LifeCycle
   
   init(_ type: RegisterEnumerations) {
     self.type = type
-    self.reactor = ConfirmPwViewReactor(type)
     super.init(nibName: nil, bundle: nil)
+    setupComponents()
   }
   
   required init?(coder: NSCoder) {
@@ -121,7 +117,7 @@ final class ConfirmPwViewController: BaseViewController, View {
       .map { $0.currentBorderColorTf1 }
       .map { $0.cgColor }
       .distinctUntilChanged()
-      .bind(to: textField1.textField.layer.rx.borderColor)
+      .bind(to: textField1.layer.rx.borderColor)
       .disposed(by: disposeBag)
     
     // Tf2 BorderColor
@@ -129,7 +125,7 @@ final class ConfirmPwViewController: BaseViewController, View {
       .map { $0.currentBorderColorTf2 }
       .map { $0.cgColor }
       .distinctUntilChanged()
-      .bind(to: textField2.textField.layer.rx.borderColor)
+      .bind(to: textField2.layer.rx.borderColor)
       .disposed(by: disposeBag)
     
     // CompoundLabel Color
@@ -199,6 +195,7 @@ final class ConfirmPwViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, _ in
         let nicknameVC = NicknameViewController(.signUp)
+        nicknameVC.reactor = NicknameViewReactor(.signUp)
         owner.navigationController?.pushViewController(nicknameVC, animated: true)
       }
       .disposed(by: disposeBag)
@@ -210,6 +207,7 @@ final class ConfirmPwViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, _ in
         let loginVC = LoginViewController()
+        loginVC.reactor = LoginViewReactor()
         loginVC.modalPresentationStyle = .fullScreen
         owner.present(loginVC, animated: true)
       }
@@ -221,9 +219,25 @@ final class ConfirmPwViewController: BaseViewController, View {
       .distinctUntilChanged()
       .bind(to: indicator.rx.isAnimating)
       .disposed(by: disposeBag)
+    
+    // 화면 인터렉션 제어
+    reactor.state
+      .map { $0.isLoading }
+      .map { !$0 }
+      .bind(to: view.rx.isUserInteractionEnabled)
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Setup
+  
+  private func setupComponents() {
+    switch type {
+    case .signUp:
+      self.confirmButton = idormButton("계속하기")
+    case .findPw, .modifyPw:
+      self.confirmButton = idormButton("변경 완료")
+    }
+  }
   
   override func setupLayouts() {
     super.setupLayouts()
@@ -247,10 +261,8 @@ final class ConfirmPwViewController: BaseViewController, View {
     switch type {
     case .signUp:
       navigationItem.title = "회원가입"
-      self.confirmButton = idormButton("계속하기")
     case .findPw, .modifyPw:
       navigationItem.title = "비밀번호 변경"
-      self.confirmButton = idormButton("변경 완료")
     }
   }
   

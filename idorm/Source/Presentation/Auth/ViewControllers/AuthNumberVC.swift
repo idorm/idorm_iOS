@@ -15,8 +15,6 @@ import ReactorKit
 
 final class AuthNumberViewController: BaseViewController, View {
   
-  typealias Reactor = AuthNumberViewReactor
-  
   // MARK: - Properties
   
   private let infoLabel = UILabel().then {
@@ -53,20 +51,18 @@ final class AuthNumberViewController: BaseViewController, View {
   }
   
   private let indicator = UIActivityIndicatorView().then {
-    $0.color = .gray
+    $0.color = .darkGray
   }
   
+  var popCompletion: (() -> Void)?
   private let confirmButton = idormButton("인증 완료")
   private let textField = idormTextField("인증번호를 입력해주세요.")
-
-  private let reactor: AuthNumberViewReactor
   private let mailTimer: MailTimerChecker
   
   // MARK: - LifeCycle
   
   init(_ timer: MailTimerChecker) {
     self.mailTimer = timer
-    self.reactor = AuthNumberViewReactor(timer)
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -102,6 +98,13 @@ final class AuthNumberViewController: BaseViewController, View {
       .bind(to: indicator.rx.isAnimating)
       .disposed(by: disposeBag)
     
+    // 화면 인터렉션 제어
+    reactor.state
+      .map { $0.isLoading }
+      .map { !$0 }
+      .bind(to: view.rx.isUserInteractionEnabled)
+      .disposed(by: disposeBag)
+    
     // 오류 팝업
     reactor.state
       .map { $0.isOpenedPopup }
@@ -114,27 +117,15 @@ final class AuthNumberViewController: BaseViewController, View {
       }
       .disposed(by: disposeBag)
     
-    // TODO: ConfirmPwVC 화면전환 구현
     // 창 닫기 -> 인증완료
     reactor.state
       .map { $0.popVC }
       .filter { $0 }
+      .distinctUntilChanged()
       .withUnretained(self)
       .bind { owner, _ in
-        guard let authVC = owner.presentingViewController else { return }
-        guard let putEmailVC = authVC.presentingViewController else { return }
-        
-//        let confirmPwVC: ConfirmPasswordViewController
-//        switch Logger.shared.type {
-//        case .signUp:
-//        case .findPw, .modifyPw:
-//
-//        }
-        
-        owner.dismiss(animated: true) {
-          authVC.dismiss(animated: true)
-          // TODO: 화면전환 구현
-        }
+        owner.navigationController?.popViewController(animated: true)
+        owner.popCompletion?()
       }
       .disposed(by: disposeBag)
     

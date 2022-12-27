@@ -32,18 +32,20 @@ final class MyPageViewReactor: Reactor {
     case setOnboardingDetailVC(Bool)
     case setShareButton(Bool)
     case setCurrentNickname(String)
+    case setDismissPopup(Bool)
   }
   
   struct State {
     var isOpenedManageMyInfoVC: Bool = false
     var isOpenedOnboardingVC: Bool = false
-    var isOpenedOnboardingDetailVC: Bool = false
+    var isOpenedOnboardingDetailVC: (Bool, MatchingDTO.Retrieve) = (false, .init())
     var isOpenedLikedRoommateVC: Bool = false
     var isOpenedDislikedRoommateVC: Bool = false
     var isOpenedNoMatchingInfoPopup: Bool = false
     var isLoading: Bool = false
     var isSelectedShareButton: Bool = false
     var currentNickname: String = ""
+    var isDismissedPopup: Bool = false
   }
   
   let initialState: State = State()
@@ -84,26 +86,35 @@ final class MyPageViewReactor: Reactor {
       ])
       
     case .didTapShareButton(let isPublic):
-      return .concat([
-        .just(.setLoading(true)),
-        APIService.onboardingProvider.rx.request(.modifyPublic(isPublic))
-          .asObservable()
-          .retry()
-          .filterSuccessfulStatusCodes()
-          .flatMap { _ -> Observable<Mutation> in
-            SharedAPI.retrieveMatchingInfo()
-            return .concat([
-              .just(.setLoading(false)),
-              .just(.setShareButton(isPublic))
-            ])
-          }
-      ])
+      if MemberStorage.shared.hasMatchingInfo {
+        return .concat([
+          .just(.setLoading(true)),
+          APIService.onboardingProvider.rx.request(.modifyPublic(isPublic))
+            .asObservable()
+            .retry()
+            .filterSuccessfulStatusCodes()
+            .flatMap { _ -> Observable<Mutation> in
+              SharedAPI.retrieveMatchingInfo()
+              return .concat([
+                .just(.setLoading(false)),
+                .just(.setShareButton(isPublic))
+              ])
+            }
+        ])
+      } else {
+        return .concat([
+          .just(.setNoMatchingInfoPopup(true)),
+          .just(.setNoMatchingInfoPopup(false))
+        ])
+      }
       
     case .didTapMakeProfileButton:
       return .concat([
         .just(.setNoMatchingInfoPopup(false)),
         .just(.setOnboardingVC(true)),
-        .just(.setOnboardingVC(false))
+        .just(.setOnboardingVC(false)),
+        .just(.setDismissPopup(true)),
+        .just(.setDismissPopup(false))
       ])
     }
   }
@@ -121,8 +132,10 @@ final class MyPageViewReactor: Reactor {
     case .setOnboardingVC(let isOpened):
       newState.isOpenedOnboardingVC = isOpened
       
-    case .setOnboardingDetailVC(let isOpened):
-      newState.isOpenedOnboardingDetailVC = isOpened
+    case let .setOnboardingDetailVC(isOpened):
+      guard let matchingInfo = MemberStorage.shared.matchingInfo else { return newState }
+      let member = ModelTransformationManager.transformToMatchingDTO_RETRIEVE(matchingInfo)
+      newState.isOpenedOnboardingDetailVC = (isOpened, member)
       
     case let .setRoommateVC(isOpened, type):
       switch type {
@@ -140,6 +153,9 @@ final class MyPageViewReactor: Reactor {
       
     case .setCurrentNickname(let nickName):
       newState.currentNickname = nickName
+      
+    case .setDismissPopup(let isDismissed):
+      newState.isDismissedPopup = isDismissed
     }
     
     return newState

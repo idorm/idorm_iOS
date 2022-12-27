@@ -23,7 +23,7 @@ final class NoMatchingInfoPopup: BaseViewController {
   }
   
   private let xmarkButton = UIButton().then {
-    $0.setImage(#imageLiteral(resourceName: "Xmark_Black"), for: .normal)
+    $0.setImage(#imageLiteral(resourceName: "xmark_black"), for: .normal)
   }
   
   private let mainLabel = UILabel().then {

@@ -23,12 +23,12 @@ final class OnboardingTextField: UIView {
   }
   
   let checkmarkButton = UIButton().then {
-    $0.setImage(UIImage(named: "Checkmark"), for: .normal)
+    $0.setImage(UIImage(named: "circle_checkmark_blue"), for: .normal)
     $0.isHidden = true
   }
   
   let xmarkButton = UIButton().then {
-    $0.setImage(UIImage(named: "Xmark_Grey"), for: .normal)
+    $0.setImage(UIImage(named: "circle_xmark_gray"), for: .normal)
     $0.isHidden = true
   }
   

@@ -14,9 +14,9 @@ final class TokenStorage {
     userDefaults.set(token, forKey: "Token")
   }
   
-  static func loadToken() -> String {
+  static func loadToken() -> String? {
     let userDefaults = UserDefaults.standard
-    guard let token = userDefaults.string(forKey: "Token") else { return "" }
+    guard let token = userDefaults.string(forKey: "Token") else { return nil }
     return token
   }
   
@@ -26,6 +26,6 @@ final class TokenStorage {
   }
   
   static func hasToken() -> Bool {
-    loadToken() != "" ? true : false
+    loadToken() != nil ? true : false
   }
 }

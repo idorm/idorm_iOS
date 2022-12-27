@@ -15,8 +15,6 @@ import ReactorKit
 
 final class PutEmailViewController: BaseViewController, View {
   
-  typealias Reactor = PutEmailViewReactor
-  
   // MARK: - Properties
   
   private lazy var infoLabel = UILabel().then {
@@ -37,7 +35,7 @@ final class PutEmailViewController: BaseViewController, View {
   }
   
   private let indicator = UIActivityIndicatorView().then {
-    $0.color = .gray
+    $0.color = .darkGray
   }
   
   private lazy var inuStack = UIStackView().then { stack in
@@ -58,8 +56,7 @@ final class PutEmailViewController: BaseViewController, View {
   private let confirmButton = idormButton("인증번호 받기")
   private let inuMark = UIImageView(image: #imageLiteral(resourceName: "inu"))
   
-  private let type: RegisterEnumerations
-  private let reactor = PutEmailViewReactor()
+  let type: RegisterEnumerations
 
   // MARK: - LifeCycle
   
@@ -106,6 +103,13 @@ final class PutEmailViewController: BaseViewController, View {
       .bind(to: indicator.rx.isAnimating)
       .disposed(by: disposeBag)
     
+    // 화면 인터렉션 제어
+    reactor.state
+      .map { $0.isLoading }
+      .map { !$0 }
+      .bind(to: view.rx.isUserInteractionEnabled)
+      .disposed(by: disposeBag)
+    
     // AuthVC로 이동
     reactor.state
       .map { $0.isOpenedAuthVC }
@@ -113,7 +117,17 @@ final class PutEmailViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, _ in
         let authVC = AuthViewController()
-        owner.navigationController?.pushViewController(authVC, animated: true)
+        authVC.reactor = AuthViewReactor()
+        let navVC = UINavigationController(rootViewController: authVC)
+        navVC.modalPresentationStyle = .fullScreen
+        owner.present(navVC, animated: true)
+        
+        authVC.dismissCompletion = {
+          // ConfirmPwVC로 이동
+          let confirmPwVC = ConfirmPwViewController(owner.type)
+          confirmPwVC.reactor = ConfirmPwViewReactor(owner.type)
+          owner.navigationController?.pushViewController(confirmPwVC, animated: true)
+        }
       }
       .disposed(by: disposeBag)
   }

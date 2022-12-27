@@ -15,6 +15,7 @@ import ReactorKit
 final class LoginViewReactor: Reactor {
   
   enum Action {
+    case viewDidLoad
     case didTapLoginButton(String, String)
     case didTapForgotPwButton
     case didTapSignupButton
@@ -38,6 +39,10 @@ final class LoginViewReactor: Reactor {
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
+    case .viewDidLoad:
+      TokenStorage.removeToken()
+      return .just(.setLoading(false))
+      
     case let .didTapLoginButton(id, pw):
       return .concat([
         .just(.setLoading(true)),
@@ -47,6 +52,8 @@ final class LoginViewReactor: Reactor {
           .flatMap { response -> Observable<Mutation> in
             switch response.statusCode {
             case 200:
+              UserStorage.saveEmail(from: id)
+              UserStorage.savePassword(from: pw)
               let data = APIService.decode(ResponseModel<MemberDTO.Retrieve>.self, data: response.data).data
               MemberStorage.shared.saveMember(data)
               TokenStorage.saveToken(token: data.loginToken ?? "")

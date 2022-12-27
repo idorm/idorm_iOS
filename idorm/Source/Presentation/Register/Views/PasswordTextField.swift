@@ -1,3 +1,10 @@
+//
+//  PasswordTextField.swift
+//  idorm
+//
+//  Created by 김응철 on 2022/12/23.
+//
+
 import UIKit
 
 import Then
@@ -24,17 +31,17 @@ final class PasswordTextField: UIView {
   }
   
   let openEyesButton = UIButton().then {
-    $0.setImage(UIImage(named: "OpenEyes"), for: .normal)
+    $0.setImage(UIImage(named: "eye_open"), for: .normal)
     $0.isHidden = true
   }
   
   let closeEyesButton = UIButton().then {
-    $0.setImage(UIImage(named: "CloseEyes"), for: .normal)
+    $0.setImage(UIImage(named: "eye_close"), for: .normal)
     $0.isHidden = true
   }
   
   let checkmarkButton = UIButton().then {
-    $0.setImage(UIImage(named: "Checkmark"), for: .normal)
+    $0.setImage(UIImage(named: "circle_checkmark_blue"), for: .normal)
     $0.isHidden = true
     $0.isUserInteractionEnabled = false
   }

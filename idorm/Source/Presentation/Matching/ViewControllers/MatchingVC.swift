@@ -12,8 +12,6 @@ import ReactorKit
 
 final class MatchingViewController: BaseViewController, View {
   
-  typealias Reactor = MatchingViewReactor
-  
   // MARK: - Properties
   
   private let filterButton = UIButton().then {
@@ -36,7 +34,7 @@ final class MatchingViewController: BaseViewController, View {
   }
   
   private let topRoundedBackgroundView = UIImageView().then {
-    $0.image = #imageLiteral(resourceName: "topRoundedBackground(Matching)").withRenderingMode(.alwaysTemplate)
+    $0.image = #imageLiteral(resourceName: "background_curve_blue").withRenderingMode(.alwaysTemplate)
     $0.tintColor = .idorm_blue
   }
   
@@ -50,9 +48,7 @@ final class MatchingViewController: BaseViewController, View {
   private let heartButton = MatchingUtilities.matchingButton(imageName: "heart")
   private let backButton = MatchingUtilities.matchingButton(imageName: "back")
   private var buttonStack: UIStackView!
-  
   private let cardStack = SwipeCardStack()
-  private var reactor = MatchingViewReactor()
   
   // MARK: - LifeCycle
   
@@ -292,15 +288,16 @@ final class MatchingViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, _ in
         let viewController = MatchingFilterViewController()
+        viewController.reactor = MatchingFilterViewReactor()
         viewController.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(viewController, animated: true)
 
         // 필터 변경
-        viewController.reactor.state
+        viewController.reactor?.state
           .map { $0.requestCard }
           .filter { $0 }
           .map { _ in MatchingViewReactor.Action.didChangeFilter }
-          .bind(to: owner.reactor.action)
+          .bind(to: reactor.action)
           .disposed(by: owner.disposeBag)
       }
       .disposed(by: disposeBag)
@@ -330,11 +327,11 @@ final class MatchingViewController: BaseViewController, View {
         // 공개허용 클릭
         popup.confirmLabel.rx.tapGesture()
           .map { _ in MatchingViewReactor.Action.didTapPublicButton }
-          .bind(to: owner.reactor.action)
+          .bind(to: reactor.action)
           .disposed(by: owner.disposeBag)
         
         // 팝업 창 닫기
-        owner.reactor.state
+        reactor.state
           .map { $0.isOpenedNoPublicPopup }
           .filter { $0 == false }
           .bind { _ in popup.dismiss(animated: false) }
@@ -355,11 +352,11 @@ final class MatchingViewController: BaseViewController, View {
         // 프로필 이미지 만들기 버튼
         popup.makeButton.rx.tap
           .map { MatchingViewReactor.Action.didTapMakeProfileButton }
-          .bind(to: owner.reactor.action)
+          .bind(to: reactor.action)
           .disposed(by: owner.disposeBag)
         
         // 팝업 창 닫기
-        owner.reactor.state
+        reactor.state
           .map { $0.isOpenedNoMatchingInfoPopup }
           .filter { $0 == false }
           .bind { _ in popup.dismiss(animated: false) }
@@ -380,11 +377,11 @@ final class MatchingViewController: BaseViewController, View {
         // 프로필 이미지 만들기 버튼
         popup.confirmButton.rx.tap
           .map { MatchingViewReactor.Action.didTapMakeProfileButton }
-          .bind(to: owner.reactor.action)
+          .bind(to: reactor.action)
           .disposed(by: owner.disposeBag)
         
         // 팝업 창 닫기
-        owner.reactor.state
+        reactor.state
           .map { $0.isOpenedNoMatchingInfoPopup_Initial }
           .filter { $0 == false }
           .bind { _ in popup.dismiss(animated: false) }
@@ -405,18 +402,18 @@ final class MatchingViewController: BaseViewController, View {
         // 링크 바로가기 버튼
         popup.kakaoButton.rx.tap
           .map { MatchingViewReactor.Action.didTapKakaoLinkButton(link.1) }
-          .bind(to: owner.reactor.action)
+          .bind(to: reactor.action)
           .disposed(by: owner.disposeBag)
         
         // 팝업 창 닫기
-        owner.reactor.state
+        reactor.state
           .map { $0.isOpenedKakaoPopup }
           .filter { $0.0 == false }
           .bind { _ in popup.dismiss(animated: false) }
           .disposed(by: owner.disposeBag)
         
         // 외부 브라우저 이동
-        owner.reactor.state
+        reactor.state
           .map { $0.isOpenedWeb }
           .filter { $0 }
           .bind { _ in UIApplication.shared.open(URL(string: link.1)!) }
@@ -526,14 +523,16 @@ extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelega
   }
   
   func cardStack(_ cardStack: Shuffle_iOS.SwipeCardStack, cardForIndexAt index: Int) -> Shuffle_iOS.SwipeCard {
+    guard let reactor = reactor else { fatalError() }
     return card(from: reactor.currentState.matchingMembers[index])
   }
   
   func numberOfCards(in cardStack: Shuffle_iOS.SwipeCardStack) -> Int {
-    return reactor.currentState.matchingMembers.count
+    return reactor?.currentState.matchingMembers.count ?? 0
   }
   
   func cardStack(_ cardStack: SwipeCardStack, didSwipeCardAt index: Int, with direction: SwipeDirection) {
+    guard let reactor = reactor else { return }
     let id = reactor.currentState.matchingMembers[index].memberId
     switch direction {
     case .left:
@@ -561,6 +560,7 @@ extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelega
   }
   
   @objc private func handlePanGesture(sender: UIPanGestureRecognizer) {
+    guard let reactor = reactor else { return }
     let card = sender.view as! SwipeCard
     let velocity = sender.velocity(in: card)
     

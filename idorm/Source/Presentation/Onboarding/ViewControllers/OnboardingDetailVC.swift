@@ -14,8 +14,6 @@ import RxCocoa
 import ReactorKit
 
 final class OnboardingDetailViewController: BaseViewController, View {
-  
-  typealias Reactor = OnboardingDetailViewReactor
 
   // MARK: - Properties
   
@@ -28,26 +26,18 @@ final class OnboardingDetailViewController: BaseViewController, View {
 
   private let member: MatchingDTO.Retrieve
   private let type: OnboardingEnumerations
-  private let reactor: OnboardingDetailViewReactor
   
   // MARK: - LifeCycle
   
   init(_ member: MatchingDTO.Retrieve, type: OnboardingEnumerations) {
     self.type = type
     self.member = member
-    self.reactor = OnboardingDetailViewReactor(type)
     super.init(nibName: nil, bundle: nil)
+    setupComponents()
   }
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-
-  // MARK: - LifeCycle
-  
-  override func viewDidLoad() {
-    setupFloatyBottomView()
-    super.viewDidLoad()
   }
   
   // MARK: - Bind
@@ -92,6 +82,7 @@ final class OnboardingDetailViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, _ in
         let onboardingVC = OnboardingViewController(owner.type)
+        onboardingVC.reactor = OnboardingViewReactor(owner.type)
         owner.navigationController?.pushViewController(onboardingVC, animated: true)
       }
       .disposed(by: disposeBag)
@@ -102,7 +93,7 @@ final class OnboardingDetailViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let mainVC = TabBarController()
+        let mainVC = TabBarViewController()
         mainVC.modalPresentationStyle = .fullScreen
         owner.present(mainVC, animated: true)
       }
@@ -110,6 +101,15 @@ final class OnboardingDetailViewController: BaseViewController, View {
   }
 
   // MARK: - Setup
+  
+  private func setupComponents() {
+    switch type {
+    case .modify:
+      self.floatyBottomView = FloatyBottomView(.correction)
+    case .main, .initial:
+      self.floatyBottomView = FloatyBottomView(.back)
+    }
+  }
   
   override func setupStyles() {
     super.setupStyles()
@@ -141,15 +141,6 @@ final class OnboardingDetailViewController: BaseViewController, View {
     indicator.snp.makeConstraints { make in
       make.center.equalToSuperview()
       make.width.height.equalTo(20)
-    }
-  }
-  
-  private func setupFloatyBottomView() {
-    switch type {
-    case .modify:
-      self.floatyBottomView = FloatyBottomView(.correction)
-    case .main, .initial:
-      self.floatyBottomView = FloatyBottomView(.back)
     }
   }
 }

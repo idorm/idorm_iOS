@@ -85,8 +85,8 @@ final class ConfirmPwViewReactor: Reactor {
       } else if password.count < 8 && password.isValidCompoundCondition() {
         return .concat([
           .just(.setPassword1(password)),
-          .just(.setCountLabelColor(.idorm_gray_400)),
-          .just(.setCompoundLabelColor(.idorm_blue))
+          .just(.setCompoundLabelColor(.idorm_blue)),
+          .just(.setCountLabelColor(.idorm_gray_400))
         ])
       } else {
         return .concat([
@@ -100,10 +100,16 @@ final class ConfirmPwViewReactor: Reactor {
       return .just(.setPassword2(password))
       
     case .editingDidBeginTf1:
-      return .just(.setBorderColorTf1(.idorm_blue))
+      return .concat([
+        .just(.setBorderColorTf1(.idorm_blue)),
+        .just(.setTf1Checkmark(true))
+        ])
       
     case .editingDidBeginTf2:
-      return .just(.setBorderColorTf2(.idorm_blue))
+      return .concat([
+        .just(.setBorderColorTf2(.idorm_blue)),
+        .just(.setTf2Checkmark(true))
+      ])
       
     case .editingDidEndTf1:
       let currentPw = currentState.currentPassword1
@@ -166,11 +172,13 @@ final class ConfirmPwViewReactor: Reactor {
       let password1 = currentState.currentPassword1
       let password2 = currentState.currentPassword2
       
-      if password1 == password1,
+      if password1 == password2,
          password1.isValidCompoundCondition(),
          password1.count >= 8 {
         switch type {
         case .signUp:
+          UserStorage.savePassword(from: password1)
+          Logger.shared.savePassword(password1)
           return .concat([
             .just(.setNicknameVC(true)),
             .just(.setNicknameVC(false))
@@ -234,7 +242,7 @@ final class ConfirmPwViewReactor: Reactor {
       newState.currentPassword1 = password
       
     case .setPassword2(let password):
-      newState.currentPassword1 = password
+      newState.currentPassword2 = password
       
     case .setBorderColorTf1(let color):
       newState.currentBorderColorTf1 = color

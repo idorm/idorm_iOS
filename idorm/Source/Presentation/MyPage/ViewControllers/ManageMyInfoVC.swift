@@ -8,8 +8,6 @@ import ReactorKit
 
 final class ManageMyInfoViewController: BaseViewController, View {
   
-  typealias Reactor = ManageMyInfoViewReactor
-  
   // MARK: - Properties
   
   private let scrollView = UIScrollView().then {
@@ -34,8 +32,6 @@ final class ManageMyInfoViewController: BaseViewController, View {
   private lazy var separatorLine1 = separatorLine()
   private lazy var separatorLine2 = separatorLine()
   
-  private let reactor = ManageMyInfoViewReactor()
-  
   // MARK: - Bind
   
   func bind(reactor: ManageMyInfoViewReactor) {
@@ -49,18 +45,21 @@ final class ManageMyInfoViewController: BaseViewController, View {
     
     // 닉네임 버튼 클릭
     nickNameView.rx.tapGesture()
+      .skip(1)
       .map { _ in ManageMyInfoViewReactor.Action.didTapNicknameButton }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 비밀번호 변경 버튼 클릭
     changePWView.rx.tapGesture()
+      .skip(1)
       .map { _ in ManageMyInfoViewReactor.Action.didTapChangePwButton }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 회원탈퇴 버튼 클릭
     withDrawLabel.rx.tapGesture()
+      .skip(1)
       .map { _ in ManageMyInfoViewReactor.Action.didTapWithDrawalButton }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
@@ -75,6 +74,7 @@ final class ManageMyInfoViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, _ in
         let viewController = WithdrawalViewController()
+        viewController.reactor = WithDrawalViewReactor()
         owner.navigationController?.pushViewController(viewController, animated: true)
       }
       .disposed(by: disposeBag)
@@ -87,6 +87,7 @@ final class ManageMyInfoViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, _ in
         let changeNicknameVC = NicknameViewController(.modify)
+        changeNicknameVC.reactor = NicknameViewReactor(.modify)
         owner.navigationController?.pushViewController(changeNicknameVC, animated: true)
       }
       .disposed(by: disposeBag)
@@ -99,6 +100,7 @@ final class ManageMyInfoViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, _ in
         let viewController = PutEmailViewController(.modifyPw)
+        viewController.reactor = PutEmailViewReactor()
         owner.navigationController?.pushViewController(viewController, animated: true)
       }
       .disposed(by: disposeBag)

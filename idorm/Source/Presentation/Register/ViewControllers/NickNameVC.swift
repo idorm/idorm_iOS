@@ -15,8 +15,6 @@ import ReactorKit
 
 final class NicknameViewController: BaseViewController, View {
   
-  typealias Reactor = NicknameViewReactor
-  
   // MARK: - Properties
   
   private let mainLabel = UILabel().then {
@@ -42,7 +40,7 @@ final class NicknameViewController: BaseViewController, View {
   }
   
   private let indicator = UIActivityIndicatorView().then {
-    $0.color = .gray
+    $0.color = .darkGray
   }
   
   private let countConditionLabel = UILabel().then {
@@ -71,15 +69,12 @@ final class NicknameViewController: BaseViewController, View {
   
   private let textField = idormTextField("변경할 닉네임을 입력해주세요.")
   private let confirmButton = idormButton("완료")
-  
   private let type: RegisterEnumerations.Nickname
-  private let reactor: NicknameViewReactor
   
   // MARK: - LifeCycle
   
   init(_ type: RegisterEnumerations.Nickname) {
     self.type = type
-    self.reactor = NicknameViewReactor(type)
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -136,6 +131,7 @@ final class NicknameViewController: BaseViewController, View {
     
     // CountLabel TextColor
     reactor.state
+      .skip(1)
       .map { $0.currentCountLabelTextColor }
       .distinctUntilChanged()
       .bind(to: countConditionLabel.rx.textColor)
@@ -143,6 +139,7 @@ final class NicknameViewController: BaseViewController, View {
     
     // Compound TextColor
     reactor.state
+      .skip(1)
       .map { $0.currentCompoundLabelTextColor }
       .distinctUntilChanged()
       .bind(to: compoundConditionLabel.rx.textColor)
@@ -150,6 +147,7 @@ final class NicknameViewController: BaseViewController, View {
     
     // Spacing TextColor
     reactor.state
+      .skip(1)
       .map { $0.currentSpacingLabelTextColor }
       .distinctUntilChanged()
       .bind(to: spacingConditionLabel.rx.textColor)
@@ -186,6 +184,13 @@ final class NicknameViewController: BaseViewController, View {
       .bind(to: indicator.rx.isAnimating)
       .disposed(by: disposeBag)
     
+    // 화면 인터렉션 제어
+    reactor.state
+      .map { $0.isLoading }
+      .map { !$0 }
+      .bind(to: view.rx.isUserInteractionEnabled)
+      .disposed(by: disposeBag)
+    
     // CompleteSignupVC 이동
     reactor.state
       .map { $0.isOpenedCompleteSignupVC }
@@ -193,6 +198,7 @@ final class NicknameViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, _ in
         let completeSignupVC = CompleteSignUpViewController()
+        completeSignupVC.reactor = CompleteSignupViewReactor()
         completeSignupVC.modalPresentationStyle = .fullScreen
         owner.present(completeSignupVC, animated: true)
       }

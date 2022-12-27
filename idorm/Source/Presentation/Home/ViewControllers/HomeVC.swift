@@ -48,11 +48,10 @@ final class HomeViewController: BaseViewController {
     $0.configuration = config
   }
   
-  private let lionImageView = UIImageView(image: #imageLiteral(resourceName: "Lion"))
+  private let lionImageView = UIImageView(image: #imageLiteral(resourceName: "lion_with_circle"))
   
   private var scrollView: UIScrollView!
   private var contentView: UIView!
-  private let viewModel = HomeViewModel()
   
   // MARK: - LifeCycle
   
@@ -104,7 +103,7 @@ final class HomeViewController: BaseViewController {
     
     startMatchingButton.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
-      make.bottom.equalTo(lionImageView.snp.bottom).offset(-15)
+      make.bottom.equalTo(lionImageView.snp.bottom).offset(-13.5)
       make.height.equalTo(52)
       make.bottom.equalToSuperview()
     }
@@ -126,18 +125,18 @@ final class HomeViewController: BaseViewController {
     
     // MARK: - Input
     
-    // 매칭 시작 버튼 클릭 이벤트
-    startMatchingButton.rx.tap
-      .bind(to: viewModel.input.startMatchingButtonTapped)
-      .disposed(by: disposeBag)
+//    // 매칭 시작 버튼 클릭 이벤트
+//    startMatchingButton.rx.tap
+//      .bind(to: viewModel.input.startMatchingButtonTapped)
+//      .disposed(by: disposeBag)
     
     // MARK: - Output
     
-    // 매칭 페이지로 전환
-    viewModel.output.showMatchingPage
-      .bind(onNext: { [weak self] in
-        self?.tabBarController?.selectedIndex = 1
-      })
-      .disposed(by: disposeBag)
+//    // 매칭 페이지로 전환
+//    viewModel.output.showMatchingPage
+//      .bind(onNext: { [weak self] in
+//        self?.tabBarController?.selectedIndex = 1
+//      })
+//      .disposed(by: disposeBag)
   }
 }

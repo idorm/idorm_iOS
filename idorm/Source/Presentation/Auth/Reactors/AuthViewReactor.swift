@@ -16,16 +16,19 @@ final class AuthViewReactor: Reactor {
   enum Action {
     case didTapPortalButton
     case didTapConfirmButton
+    case didTapXmarkButton
   }
   
   enum Mutation {
     case setSafari(Bool)
     case setAuthNumberVC(Bool)
+    case setDismiss(Bool)
   }
   
   struct State {
     var isOpenedSafari: Bool = false
     var isOpenedAuthNumberVC: Bool = false
+    var isDismiss: Bool = false
   }
   
   var initialState: State = State()
@@ -43,6 +46,12 @@ final class AuthViewReactor: Reactor {
         .just(.setAuthNumberVC(true)),
         .just(.setAuthNumberVC(false))
       ])
+      
+    case .didTapXmarkButton:
+      return .concat([
+        .just(.setDismiss(true)),
+        .just(.setDismiss(false))
+      ])
     }
   }
   
@@ -55,6 +64,9 @@ final class AuthViewReactor: Reactor {
       
     case .setAuthNumberVC(let isOpened):
       newState.isOpenedAuthNumberVC = isOpened
+      
+    case .setDismiss(let isDismiss):
+      newState.isDismiss = isDismiss
     }
     
     return newState

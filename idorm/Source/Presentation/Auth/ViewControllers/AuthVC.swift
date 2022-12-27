@@ -16,13 +16,11 @@ import ReactorKit
 
 final class AuthViewController: BaseViewController, View {
   
-  typealias Reactor = AuthViewReactor
-  
   // MARK: - Properties
   
   private let backButton = UIButton().then {
     var config = UIButton.Configuration.plain()
-    config.image = #imageLiteral(resourceName: "Xmark_Black")
+    config.image = #imageLiteral(resourceName: "xmark_black")
     config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
     $0.configuration = config
   }
@@ -34,17 +32,22 @@ final class AuthViewController: BaseViewController, View {
     $0.configuration?.background.strokeColor = .idorm_gray_200
   }
   
+  var dismissCompletion: (() -> Void)?
   private let envelopeImageView = UIImageView(image: #imageLiteral(resourceName: "envelope"))
   private let confirmButton = idormButton("인증번호 입력")
-  
   private let mailTimer = MailTimerChecker()
-  private let reactor = AuthViewReactor()
     
   // MARK: - Bind
   
   func bind(reactor: AuthViewReactor) {
     
     // MARK: - Action
+    
+    // X표시 버튼
+    backButton.rx.tap
+      .map { AuthViewReactor.Action.didTapXmarkButton }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
     
     // 메일함 바로가기 버튼
     portalButton.rx.tap
@@ -74,8 +77,22 @@ final class AuthViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, _ in
         let authNumberVC = AuthNumberViewController(owner.mailTimer)
+        authNumberVC.reactor = AuthNumberViewReactor(owner.mailTimer)
         owner.navigationController?.pushViewController(authNumberVC, animated: true)
+        
+        authNumberVC.popCompletion = {
+          owner.dismiss(animated: true)
+          owner.dismissCompletion?()
+        }
       }
+      .disposed(by: disposeBag)
+    
+    // 화면 종료
+    reactor.state
+      .map { $0.isDismiss }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { $0.0.dismiss(animated: true) }
       .disposed(by: disposeBag)
   }
   

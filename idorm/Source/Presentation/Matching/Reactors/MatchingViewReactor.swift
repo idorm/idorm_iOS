@@ -298,6 +298,7 @@ final class MatchingViewReactor: Reactor {
   }
   
   func transform(mutation: Observable<Mutation>) -> Observable<Mutation> {
+    // TODO: 실험하기
     let publicEvent = MemberStorage.shared.didChangePublicState
       .distinctUntilChanged()
       .flatMap { isPublic -> Observable<Mutation> in
