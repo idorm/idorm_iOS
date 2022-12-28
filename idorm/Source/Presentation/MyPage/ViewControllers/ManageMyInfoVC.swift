@@ -24,10 +24,13 @@ final class ManageMyInfoViewController: BaseViewController, View {
     $0.textColor = .idorm_gray_300
   }
   
+  private let logoutButton = idormButton("로그아웃")
+  
   private let nickNameView = ManageMyInfoView(.both(title: "닉네임"))
   private let changePWView = ManageMyInfoView(.onlyArrow(title: "비밀번호 변경"))
   private let emailView = ManageMyInfoView(.onlyDescription(title: "이메일"))
   private let versionView = ManageMyInfoView(.onlyDescription(description: .version ,title: "버전정보"))
+  private let termsView = ManageMyInfoView(.onlyArrow(title: "서비스 약관 자세히 보기"))
   private let profileImage = UIImageView(image: #imageLiteral(resourceName: "sqaure_human"))
   private lazy var separatorLine1 = separatorLine()
   private lazy var separatorLine2 = separatorLine()
@@ -61,6 +64,12 @@ final class ManageMyInfoViewController: BaseViewController, View {
     withDrawLabel.rx.tapGesture()
       .skip(1)
       .map { _ in ManageMyInfoViewReactor.Action.didTapWithDrawalButton }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // 로그아웃 버튼 클릭
+    logoutButton.rx.tap
+      .map { ManageMyInfoViewReactor.Action.didTapLogoutButton }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -105,6 +114,19 @@ final class ManageMyInfoViewController: BaseViewController, View {
       }
       .disposed(by: disposeBag)
     
+    // LoginVC로 이동
+    reactor.state
+      .map { $0.isOpenedLoginVC }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let loginVC = LoginViewController()
+        loginVC.reactor = LoginViewReactor()
+        loginVC.modalPresentationStyle = .fullScreen
+        owner.present(loginVC, animated: true)
+      }
+      .disposed(by: disposeBag)
+    
     // 닉네임 변경
     reactor.state
       .map { $0.currentNickname }
@@ -135,7 +157,18 @@ final class ManageMyInfoViewController: BaseViewController, View {
     view.addSubview(scrollView)
     scrollView.addSubview(contentView)
     
-    [profileImage, nickNameView, changePWView, emailView, separatorLine1, versionView, separatorLine2, withDrawLabel]
+    [
+      profileImage,
+      nickNameView,
+      changePWView,
+      emailView,
+      separatorLine1,
+      versionView,
+      termsView,
+      separatorLine2,
+      withDrawLabel,
+      logoutButton
+    ]
       .forEach { contentView.addSubview($0) }
   }
   
@@ -181,9 +214,15 @@ final class ManageMyInfoViewController: BaseViewController, View {
       make.height.equalTo(6)
     }
     
-    versionView.snp.makeConstraints { make in
+    termsView.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
       make.top.equalTo(separatorLine1.snp.bottom).offset(24)
+      make.height.equalTo(45)
+    }
+    
+    versionView.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview()
+      make.top.equalTo(termsView.snp.bottom)
       make.height.equalTo(45)
     }
     
@@ -197,6 +236,12 @@ final class ManageMyInfoViewController: BaseViewController, View {
       make.leading.equalToSuperview().inset(24)
       make.top.equalTo(separatorLine2.snp.bottom).offset(32)
       make.bottom.equalToSuperview()
+    }
+    
+    logoutButton.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview().inset(24)
+      make.top.equalTo(withDrawLabel.snp.bottom).offset(36)
+      make.height.equalTo(52)
     }
   }
 }

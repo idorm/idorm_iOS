@@ -1,12 +1,20 @@
+//
+//  HomeViewController.swift
+//  idorm
+//
+//  Created by 김응철 on 2022/12/20.
+//
+
 import UIKit
 
 import SnapKit
 import Then
+import Moya
 import RxSwift
 import RxCocoa
-import Moya
+import ReactorKit
 
-final class HomeViewController: BaseViewController {
+final class HomeViewController: BaseViewController, View {
   
   // MARK: - Properties
   
@@ -36,7 +44,7 @@ final class HomeViewController: BaseViewController {
   private let startMatchingButton = UIButton().then {
     var config = UIButton.Configuration.filled()
     config.baseBackgroundColor = .idorm_blue
-    config.image = UIImage(named: "rightArrow")
+    config.image = UIImage(named: "sqaure_rightarrow")
     config.imagePlacement = .trailing
     config.imagePadding = 12
     
@@ -49,7 +57,6 @@ final class HomeViewController: BaseViewController {
   }
   
   private let lionImageView = UIImageView(image: #imageLiteral(resourceName: "lion_with_circle"))
-  
   private var scrollView: UIScrollView!
   private var contentView: UIView!
   
@@ -58,6 +65,22 @@ final class HomeViewController: BaseViewController {
   override func viewDidLoad() {
     setupScrollView()
     super.viewDidLoad()
+  }
+  
+  // MARK: - Bind
+  
+  func bind(reactor: HomeViewReactor) {
+    
+    // MARK: - Action
+    
+    startMatchingButton.rx.tap
+      .withUnretained(self)
+      .bind {
+        $0.0.tabBarController?.selectedIndex = 1
+      }
+      .disposed(by: disposeBag)
+    
+    // MARK: - State
   }
   
   // MARK: - Setup

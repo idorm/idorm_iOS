@@ -22,7 +22,7 @@ extension MatchingDTO {
     var maxAge: Int = 30
   }
   
-  struct Retrieve: Codable {
+  struct Retrieve: Codable, Equatable {
     var memberId: Int = 0
     var matchingInfoId: Int = 0
     var dormNum: Dormitory = .no1

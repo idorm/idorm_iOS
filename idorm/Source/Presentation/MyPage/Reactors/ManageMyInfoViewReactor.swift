@@ -18,6 +18,7 @@ final class ManageMyInfoViewReactor: Reactor {
     case didTapNicknameButton
     case didTapChangePwButton
     case didTapWithDrawalButton
+    case didTapLogoutButton
   }
   
   enum Mutation {
@@ -26,12 +27,14 @@ final class ManageMyInfoViewReactor: Reactor {
     case setWithDrawalVC(Bool)
     case setCurrentNickname(String)
     case setCurrentEmail(String)
+    case setLoginVC(Bool)
   }
   
   struct State {
     var isOpenedNicknameVC: Bool = false
     var isOpenedConfirmPwVC: Bool = false
     var isOpenedWithDrawVC: Bool = false
+    var isOpenedLoginVC: Bool = false
     var currentNickname: String = ""
     var currentEmail: String = ""
   }
@@ -66,6 +69,12 @@ final class ManageMyInfoViewReactor: Reactor {
         .just(.setWithDrawalVC(true)),
         .just(.setWithDrawalVC(false))
       ])
+      
+    case .didTapLogoutButton:
+      return .concat([
+        .just(.setLoginVC(true)),
+        .just(.setLoginVC(false))
+      ])
     }
   }
   
@@ -87,6 +96,9 @@ final class ManageMyInfoViewReactor: Reactor {
       
     case .setCurrentNickname(let nickname):
       newState.currentNickname = nickname
+      
+    case .setLoginVC(let isOpened):
+      newState.isOpenedLoginVC = isOpened
     }
     
     return newState

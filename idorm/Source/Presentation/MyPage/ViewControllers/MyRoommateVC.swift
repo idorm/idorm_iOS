@@ -239,8 +239,8 @@ extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
         
     // 바텀시트 닫기
     reactor.state
-      .map { $0.isOpenedBottomSheet }
-      .distinctUntilChanged()
+      .map { $0.isDismissedBottomSheet }
+      .filter { $0 }
       .bind { _ in bottomSheet.dismiss(animated: true) }
       .disposed(by: disposeBag)
   }

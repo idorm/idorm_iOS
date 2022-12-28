@@ -168,12 +168,12 @@ final class NicknameViewController: BaseViewController, View {
     // 오류 팝업
     reactor.state
       .map { $0.isOpenedPopup }
-      .filter { $0 }
+      .filter { $0.0 }
       .withUnretained(self)
-      .bind { owner, _ in
-        let popup = BasicPopup(contents: "조건을 다시 확인해주세요.")
-        popup.modalPresentationStyle = .overFullScreen
-        owner.present(popup, animated: false)
+      .bind { owner, message in
+         let popup = BasicPopup(contents: message.1)
+         popup.modalPresentationStyle = .overFullScreen
+         owner.present(popup, animated: false)
       }
       .disposed(by: disposeBag)
     

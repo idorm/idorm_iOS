@@ -77,8 +77,8 @@ extension MyRoommateHeaderView {
   
   private func button() -> UIButton {
     let button = UIButton()
-    button.setImage(#imageLiteral(resourceName: "myPostButton"), for: .normal)
-    button.setImage(#imageLiteral(resourceName: "myPostButton_Hover"), for: .selected)
+    button.setImage(#imageLiteral(resourceName: "circle"), for: .normal)
+    button.setImage(#imageLiteral(resourceName: "circle_blue"), for: .selected)
     
     return button
   }

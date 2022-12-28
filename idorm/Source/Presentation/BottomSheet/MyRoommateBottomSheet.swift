@@ -18,7 +18,7 @@ final class MyRoommaateBottomSheet: BaseViewController {
   // MARK: - Properties
 
   var deleteButton: UIButton!
-  let chatButton = BottomSheetUtils.basicButton("룸메이트와 채팅하기", image: #imageLiteral(resourceName: "speechBubble_small"))
+  let chatButton = BottomSheetUtils.basicButton("룸메이트와 채팅하기", image: #imageLiteral(resourceName: "speechBubble_black"))
   let reportButton = BottomSheetUtils.reportButton()
   private let xmarkButton = BottomSheetUtils.button(#imageLiteral(resourceName: "xmark_black"))
   private let indicator = UIActivityIndicatorView().then { $0.color = .gray }

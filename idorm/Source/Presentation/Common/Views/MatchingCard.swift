@@ -11,7 +11,7 @@ final class MatchingCard: UIView {
   
   private let backgroundImageView = UIImageView().then {
     $0.image = UIImage(
-      named: "OnboardingBackGround"
+      named: "background_card"
     )?.withRenderingMode(.alwaysOriginal)
     $0.contentMode = .scaleToFill
   }
@@ -28,34 +28,28 @@ final class MatchingCard: UIView {
     container.font = UIFont.init(name: MyFonts.bold.rawValue, size: 12)
     container.foregroundColor = UIColor.white
     config.attributedTitle = AttributedString(member.joinPeriod.cardString, attributes: container)
-    config.image = UIImage(named: "Building")
+    config.image = UIImage(named: "building")
     config.imagePlacement = .leading
     config.imagePadding = 8
     $0.configuration = config
   }
   
-  private var snoringView: MatchingCardBoolView!
-  private var grindingView: MatchingCardBoolView!
-  private var smokingView: MatchingCardBoolView!
-  private var foodView: MatchingCardBoolView!
-  private var earphoneView: MatchingCardBoolView!
-  
-  private var wakeupView: MatchingCardStringView!
-  private var cleanUpView: MatchingCardStringView!
-  private var showerView: MatchingCardStringView!
-  private var mbtiView: MatchingCardStringView!
-  
+  private lazy var snoringView = MatchingCardBoolView(member, type: .snoring)
+  private lazy var grindingView = MatchingCardBoolView(member, type: .grinding)
+  private lazy var smokingView = MatchingCardBoolView(member, type: .smoking)
+  private lazy var foodView = MatchingCardBoolView(member, type: .food)
+  private lazy var earphoneView = MatchingCardBoolView(member, type: .earphone)
+  private lazy var wakeupView = MatchingCardStringView(member, type: .wakeUp)
+  private lazy var cleanUpView = MatchingCardStringView(member, type: .cleanUp)
+  private lazy var showerView = MatchingCardStringView(member, type: .showerTime)
+  private lazy var mbtiView = MatchingCardStringView(member, type: .mbti)
   private lazy var wishTextLabel = MatchingCardWishTextView(member)
-  
   private var bottomContainerView: UIView!
-  
-  // MARK: - BottomView
-  private let humanImageView = UIImageView(image: UIImage(named: "Human"))
+  private let humanImageView = UIImageView(image: #imageLiteral(resourceName: "human_white"))
   var optionButton: UIButton!
   private var genderLabel: UILabel!
   private var ageLabel: UILabel!
   private var mbtiLabel: UILabel!
-  
   private let member: MatchingDTO.Retrieve
   
   // MARK: - LifeCycle
@@ -64,8 +58,6 @@ final class MatchingCard: UIView {
     self.member = member
     super.init(frame: .zero)
     setupBottomView()
-    setupBoolView()
-    setupStringView()
     setupLayouts()
     setupConstraints()
   }
@@ -85,7 +77,7 @@ final class MatchingCard: UIView {
     
     let optionButton = UIButton().then {
       var config = UIButton.Configuration.plain()
-      config.image = UIImage(named: "matchingCardOption")
+      config.image = UIImage(named: "option")
       $0.configuration = config
     }
     self.optionButton = optionButton
@@ -112,36 +104,42 @@ final class MatchingCard: UIView {
     self.mbtiLabel = mbtiLabel
   }
   
-  private func setupBoolView() {
-    self.snoringView = MatchingCardBoolView(member, type: .snoring)
-    self.grindingView = MatchingCardBoolView(member, type: .grinding)
-    self.smokingView = MatchingCardBoolView(member, type: .smoking)
-    self.foodView = MatchingCardBoolView(member, type: .food)
-    self.earphoneView = MatchingCardBoolView(member, type: .earphone)
-  }
-  
-  private func setupStringView() {
-    self.wakeupView = MatchingCardStringView(member, type: .wakeUp)
-    self.cleanUpView = MatchingCardStringView(member, type: .cleanUp)
-    self.showerView = MatchingCardStringView(member, type: .showerTime)
-    self.mbtiView = MatchingCardStringView(member, type: .mbti)
-  }
-  
   private func setupLayouts() {
-    [backgroundImageView, bottomContainerView]
+    [
+      backgroundImageView,
+      bottomContainerView
+    ]
       .forEach { addSubview($0) }
     
-    [humanImageView, genderLabel, ageLabel, mbtiLabel, optionButton]
+    [
+      humanImageView,
+      genderLabel,
+      ageLabel,
+      mbtiLabel,
+      optionButton
+    ]
       .forEach { bottomContainerView.addSubview($0) }
     
-    [dormLabel, periodButton, snoringView, grindingView, smokingView, foodView, earphoneView, wakeupView, cleanUpView, showerView, mbtiView, wishTextLabel]
+    [
+      dormLabel,
+      periodButton,
+      snoringView,
+      grindingView,
+      smokingView,
+      foodView,
+      earphoneView,
+      wakeupView,
+      cleanUpView,
+      showerView,
+      mbtiView,
+      wishTextLabel
+    ]
       .forEach { backgroundImageView.addSubview($0) }
   }
   
   private func setupConstraints() {
     backgroundImageView.snp.makeConstraints { make in
       make.top.leading.trailing.equalToSuperview()
-      make.height.equalTo(396)
     }
     
     dormLabel.snp.makeConstraints { make in

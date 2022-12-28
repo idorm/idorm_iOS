@@ -39,7 +39,7 @@ final class NoMatchingInfoPopup_Initial: BaseViewController {
   }
   
   let xmarkButton = UIButton().then {
-    $0.setImage(UIImage(named: "Xmark_Black"), for: .normal)
+    $0.setImage(UIImage(named: "xmark_black"), for: .normal)
   }
   
   let confirmButton = idormButton("프로필 이미지 만들기")

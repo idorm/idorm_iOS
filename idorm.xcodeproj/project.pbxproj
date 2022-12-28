@@ -126,6 +126,7 @@
 		E5BF4C5F28840EBF00B4F0B8 /* PostingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BF4C5E28840EBF00B4F0B8 /* PostingViewController.swift */; };
 		E5C261492919D15E00623C0E /* MyRoommateBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C261482919D15E00623C0E /* MyRoommateBottomSheet.swift */; };
 		E5C2614E2919D3AA00623C0E /* BottomSheetUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C2614D2919D3AA00623C0E /* BottomSheetUtils.swift */; };
+		E5C451CE295C79A900D49988 /* HomeViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C451CD295C79A900D49988 /* HomeViewReactor.swift */; };
 		E5C88908288972E000CBD04E /* CommunityAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C88907288972E000CBD04E /* CommunityAlertViewController.swift */; };
 		E5C89E4928A9ED9B0035D9C6 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C89E4828A9ED9B0035D9C6 /* URL+Extensions.swift */; };
 		E5C89E4B28A9EDA70035D9C6 /* URLRequest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C89E4A28A9EDA70035D9C6 /* URLRequest+Extensions.swift */; };
@@ -292,6 +293,7 @@
 		E5BF4C5E28840EBF00B4F0B8 /* PostingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingViewController.swift; sourceTree = "<group>"; };
 		E5C261482919D15E00623C0E /* MyRoommateBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoommateBottomSheet.swift; sourceTree = "<group>"; };
 		E5C2614D2919D3AA00623C0E /* BottomSheetUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetUtils.swift; sourceTree = "<group>"; };
+		E5C451CD295C79A900D49988 /* HomeViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewReactor.swift; sourceTree = "<group>"; };
 		E5C88907288972E000CBD04E /* CommunityAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityAlertViewController.swift; sourceTree = "<group>"; };
 		E5C89E4828A9ED9B0035D9C6 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		E5C89E4A28A9EDA70035D9C6 /* URLRequest+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+Extensions.swift"; sourceTree = "<group>"; };
@@ -707,6 +709,7 @@
 			isa = PBXGroup;
 			children = (
 				E56DF4C7289405DF00E85B10 /* ViewControllers */,
+				E5C451CC295C799A00D49988 /* Reactors */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -872,6 +875,14 @@
 				E5C2614D2919D3AA00623C0E /* BottomSheetUtils.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		E5C451CC295C799A00D49988 /* Reactors */ = {
+			isa = PBXGroup;
+			children = (
+				E5C451CD295C79A900D49988 /* HomeViewReactor.swift */,
+			);
+			path = Reactors;
 			sourceTree = "<group>";
 		};
 		E5D070882930CE7800D5DF6E /* Trash */ = {
@@ -1246,6 +1257,7 @@
 				E5C88908288972E000CBD04E /* CommunityAlertViewController.swift in Sources */,
 				E5AC2A4D28BB5B250069ABB9 /* ManageMyInfoVC.swift in Sources */,
 				E52E96B429160870009E1773 /* TopProfileView.swift in Sources */,
+				E5C451CE295C79A900D49988 /* HomeViewReactor.swift in Sources */,
 				E52C45E229230ED500638B68 /* Moya+NetworkError.swift in Sources */,
 				E5290EFF2887BBB00004B8E6 /* PostCollectionViewCell.swift in Sources */,
 				E5A15D4A2923A569001CE750 /* MemberAPI.swift in Sources */,

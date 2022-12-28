@@ -9,5 +9,6 @@ target 'idorm' do
 
 pod 'Shuffle-iOS'
 pod 'RangeSeekSlider'
+pod "Koloda"
 
 end

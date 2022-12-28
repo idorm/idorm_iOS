@@ -41,7 +41,7 @@ final class LoginViewReactor: Reactor {
     switch action {
     case .viewDidLoad:
       TokenStorage.removeToken()
-      return .just(.setLoading(false))
+      return .empty()
       
     case let .didTapLoginButton(id, pw):
       return .concat([

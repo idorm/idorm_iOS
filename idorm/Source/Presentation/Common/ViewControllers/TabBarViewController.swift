@@ -31,6 +31,7 @@ final class TabBarViewController: UITabBarController {
     let matchingVC = MatchingViewController()
     let myPageVC = MyPageViewController()
     
+    homeVC.reactor = HomeViewReactor()
     matchingVC.reactor = MatchingViewReactor()
     myPageVC.reactor = MyPageViewReactor()
     

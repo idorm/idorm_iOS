@@ -30,6 +30,7 @@ final class MyRoommateViewReactor: Reactor {
     case setBottomSheet(Bool)
     case setSafari(Bool, String)
     case setPopup(Bool)
+    case setDismissBottomSheet(Bool)
   }
   
   struct State {
@@ -39,6 +40,7 @@ final class MyRoommateViewReactor: Reactor {
     var isOpenedBottomSheet: Bool = false
     var isOpenedSafari: (Bool, String) = (false, "")
     var isOpenedPopup: Bool = false
+    var isDismissedBottomSheet: Bool = false
     var reloadData: Bool = false
   }
   
@@ -157,8 +159,9 @@ final class MyRoommateViewReactor: Reactor {
     var newState = state
     
     switch mutation {
-    case .setCurrentSort:
+    case .setCurrentSort(let sort):
       newState.currentMembers = currentState.currentMembers.reversed()
+      newState.currentSort = sort
       
     case .setLoading(let isLoading):
       newState.isLoading = isLoading
@@ -179,6 +182,9 @@ final class MyRoommateViewReactor: Reactor {
       
     case .setPopup(let isOpened):
       newState.isOpenedPopup = isOpened
+      
+    case .setDismissBottomSheet(let isDismissed):
+      newState.isDismissedBottomSheet = isDismissed
     }
     
     return newState
@@ -198,14 +204,16 @@ extension MyRoommateViewReactor {
             let members = APIService.decode(ResponseModel<[MatchingDTO.Retrieve]>.self, data: response.data).data
             return .concat([
               .just(.setCurrentMembers(members)),
-              .just(.setBottomSheet(false)),
+              .just(.setDismissBottomSheet(true)),
+              .just(.setDismissBottomSheet(false)),
               .just(.setReloadData(true)),
               .just(.setReloadData(false))
             ])
           default:
             return .concat([
               .just(.setCurrentMembers([])),
-              .just(.setBottomSheet(false)),
+              .just(.setDismissBottomSheet(true)),
+              .just(.setDismissBottomSheet(false)),
               .just(.setReloadData(true)),
               .just(.setReloadData(false))
             ])
@@ -221,14 +229,16 @@ extension MyRoommateViewReactor {
             let members = APIService.decode(ResponseModel<[MatchingDTO.Retrieve]>.self, data: response.data).data
             return .concat([
               .just(.setCurrentMembers(members)),
-              .just(.setBottomSheet(false)),
+              .just(.setDismissBottomSheet(true)),
+              .just(.setDismissBottomSheet(false)),
               .just(.setReloadData(true)),
               .just(.setReloadData(false))
             ])
           default:
             return .concat([
               .just(.setCurrentMembers([])),
-              .just(.setBottomSheet(false)),
+              .just(.setDismissBottomSheet(true)),
+              .just(.setDismissBottomSheet(false)),
               .just(.setReloadData(true)),
               .just(.setReloadData(false))
             ])

@@ -1,10 +1,17 @@
+//
+//  MatchingViewController.swift
+//  idorm
+//
+//  Created by 김응철 on 2022/12/21.
+//
+
 import UIKit
 
 import DeviceKit
 import PanModal
 import SnapKit
 import Then
-import Shuffle_iOS
+import Koloda
 import RxSwift
 import RxCocoa
 import RxOptional
@@ -39,24 +46,22 @@ final class MatchingViewController: BaseViewController, View {
   }
   
   private let loadingIndicator = UIActivityIndicatorView().then {
-    $0.color = .gray
+    $0.color = .darkGray
+  }
+  
+  private lazy var kolodaView = KolodaView().then {
+    $0.dataSource = self
+    $0.delegate = self
   }
   
   private let informationImageView = UIImageView()
-  private let cancelButton = MatchingUtilities.matchingButton(imageName: "cancel")
-  private let messageButton = MatchingUtilities.matchingButton(imageName: "message")
-  private let heartButton = MatchingUtilities.matchingButton(imageName: "heart")
-  private let backButton = MatchingUtilities.matchingButton(imageName: "back")
+  private let cancelButton = MatchingUtilities.matchingButton(imageName: "circle_dislike_red")
+  private let messageButton = MatchingUtilities.matchingButton(imageName: "circle_speechBubble_yellow")
+  private let heartButton = MatchingUtilities.matchingButton(imageName: "circle_heart_green")
+  private let backButton = MatchingUtilities.matchingButton(imageName: "circle_back_blue")
   private var buttonStack: UIStackView!
-  private let cardStack = SwipeCardStack()
   
   // MARK: - LifeCycle
-  
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    cardStack.dataSource = self
-    cardStack.delegate = self
-  }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -68,7 +73,16 @@ final class MatchingViewController: BaseViewController, View {
   
   override func setupLayouts() {
     super.setupLayouts()
-    [topRoundedBackgroundView, buttonStack, filterButton, refreshButton, informationImageView, cardStack, loadingIndicator]
+    [
+      topRoundedBackgroundView,
+      buttonStack,
+      filterButton,
+      refreshButton,
+      informationImageView,
+      kolodaView,
+      loadingIndicator,
+      kolodaView
+    ]
       .forEach { view.addSubview($0) }
   }
   
@@ -98,7 +112,7 @@ final class MatchingViewController: BaseViewController, View {
     }
     
     informationImageView.snp.makeConstraints { make in
-      make.centerY.equalTo(cardStack).offset(50)
+      make.centerY.equalTo(kolodaView).offset(50)
       make.centerX.equalToSuperview()
     }
     
@@ -110,10 +124,10 @@ final class MatchingViewController: BaseViewController, View {
     let deviceManager = DeviceManager.shared
     
     if deviceManager.isResoultion568() {
-      cardStack.snp.makeConstraints { make in
+      kolodaView.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalToSuperview()
-        make.height.equalTo(450)
+        make.height.equalTo(436)
       }
       
       buttonStack.snp.makeConstraints { make in
@@ -121,10 +135,10 @@ final class MatchingViewController: BaseViewController, View {
         make.centerX.equalToSuperview()
       }
     } else if deviceManager.isResolution667() {
-      cardStack.snp.makeConstraints { make in
+      kolodaView.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(4)
-        make.height.equalTo(450)
+        make.height.equalTo(436)
       }
       
       buttonStack.snp.makeConstraints { make in
@@ -132,10 +146,10 @@ final class MatchingViewController: BaseViewController, View {
         make.bottom.equalTo(view.safeAreaLayoutGuide).inset(8)
       }
     } else if deviceManager.isResolution736() {
-      cardStack.snp.makeConstraints { make in
+      kolodaView.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(450)
+        make.height.equalTo(436)
       }
       
       buttonStack.snp.makeConstraints { make in
@@ -145,10 +159,10 @@ final class MatchingViewController: BaseViewController, View {
     } else if deviceManager.isResolution812() {
       buttonStack.spacing = 8
       
-      cardStack.snp.makeConstraints { make in
+      kolodaView.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(450)
+        make.height.equalTo(436)
       }
       
       buttonStack.snp.makeConstraints { make in
@@ -158,10 +172,10 @@ final class MatchingViewController: BaseViewController, View {
     } else if deviceManager.isResolution844() {
       buttonStack.spacing = 8
       
-      cardStack.snp.makeConstraints { make in
+      kolodaView.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(450)
+        make.height.equalTo(436)
       }
       
       buttonStack.snp.makeConstraints { make in
@@ -171,10 +185,10 @@ final class MatchingViewController: BaseViewController, View {
     } else if deviceManager.isResolution852() {
       buttonStack.spacing = 8
       
-      cardStack.snp.makeConstraints { make in
+      kolodaView.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(450)
+        make.height.equalTo(436)
       }
       
       buttonStack.snp.makeConstraints { make in
@@ -184,10 +198,10 @@ final class MatchingViewController: BaseViewController, View {
     } else if deviceManager.isResolution896(){
       buttonStack.spacing = 8
       
-      cardStack.snp.makeConstraints { make in
+      kolodaView.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(450)
+        make.height.equalTo(436)
       }
       
       buttonStack.snp.makeConstraints { make in
@@ -197,10 +211,10 @@ final class MatchingViewController: BaseViewController, View {
     } else if deviceManager.isResolution926() {
       buttonStack.spacing = 8
       
-      cardStack.snp.makeConstraints { make in
+      kolodaView.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(32)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(450)
+        make.height.equalTo(436)
       }
       
       buttonStack.snp.makeConstraints { make in
@@ -210,10 +224,10 @@ final class MatchingViewController: BaseViewController, View {
     } else if deviceManager.isResolution932() {
       buttonStack.spacing = 8
       
-      cardStack.snp.makeConstraints { make in
+      kolodaView.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(32)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(450)
+        make.height.equalTo(436)
       }
       
       buttonStack.snp.makeConstraints { make in
@@ -221,10 +235,10 @@ final class MatchingViewController: BaseViewController, View {
         make.bottom.equalTo(view.safeAreaLayoutGuide).inset(100)
       }
     } else {
-      cardStack.snp.makeConstraints { make in
+      kolodaView.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
-        make.height.equalTo(450)
+        make.height.equalTo(436)
       }
       
       buttonStack.snp.makeConstraints { make in
@@ -240,8 +254,9 @@ final class MatchingViewController: BaseViewController, View {
     
     // MARK: - Action
     
-    Observable.empty()
-      .map { MatchingViewReactor.Action.viewDidLoad }
+    rx.viewWillAppear
+      .take(1)
+      .map { _ in MatchingViewReactor.Action.viewDidLoad }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -252,33 +267,44 @@ final class MatchingViewController: BaseViewController, View {
     
     cancelButton.rx.tap
       .withUnretained(self)
-      .bind { $0.0.cardStack.swipe(.left, animated: true) }
+      .bind { $0.0.kolodaView.swipe(.left) }
       .disposed(by: disposeBag)
     
     heartButton.rx.tap
       .withUnretained(self)
-      .bind { $0.0.cardStack.swipe(.right, animated: true) }
+      .bind { $0.0.kolodaView.swipe(.right) }
       .disposed(by: disposeBag)
     
     backButton.rx.tap
       .withUnretained(self)
-      .bind { owner, _ in owner.cardStack.undoLastSwipe(animated: true) }
+      .bind { owner, _ in owner.kolodaView.revertAction(direction: .down) }
       .disposed(by: disposeBag)
-      
+    
     messageButton.rx.tap
       .withUnretained(self)
-      .map { $0.0.cardStack.topCardIndex }
-      .filterNil()
+      .map { $0.0.kolodaView.currentCardIndex }
       .map { MatchingViewReactor.Action.message($0) }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    filterButton.rx.tap
+      .map { MatchingViewReactor.Action.didTapFilterButton }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    refreshButton.rx.tap
+      .map { MatchingViewReactor.Action.didTapRefreshButton }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // MARK: - State
     
+    // ReloadData
     reactor.state
       .map { $0.matchingMembers }
+      .distinctUntilChanged()
       .withUnretained(self)
-      .bind { $0.0.cardStack.reloadData() }
+      .bind { $0.0.kolodaView.reloadData() }
       .disposed(by: disposeBag)
     
     // 필터VC 이동
@@ -291,10 +317,11 @@ final class MatchingViewController: BaseViewController, View {
         viewController.reactor = MatchingFilterViewReactor()
         viewController.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(viewController, animated: true)
-
+        
         // 필터 변경
         viewController.reactor?.state
           .map { $0.requestCard }
+          .distinctUntilChanged()
           .filter { $0 }
           .map { _ in MatchingViewReactor.Action.didChangeFilter }
           .bind(to: reactor.action)
@@ -309,6 +336,7 @@ final class MatchingViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, _ in
         let viewController = OnboardingViewController(.main)
+        viewController.reactor = OnboardingViewReactor(.main)
         viewController.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(viewController, animated: true)
       }
@@ -326,14 +354,15 @@ final class MatchingViewController: BaseViewController, View {
         
         // 공개허용 클릭
         popup.confirmLabel.rx.tapGesture()
+          .skip(1)
           .map { _ in MatchingViewReactor.Action.didTapPublicButton }
           .bind(to: reactor.action)
           .disposed(by: owner.disposeBag)
         
         // 팝업 창 닫기
         reactor.state
-          .map { $0.isOpenedNoPublicPopup }
-          .filter { $0 == false }
+          .map { $0.dismissPopup }
+          .filter { $0 }
           .bind { _ in popup.dismiss(animated: false) }
           .disposed(by: owner.disposeBag)
       }
@@ -357,8 +386,8 @@ final class MatchingViewController: BaseViewController, View {
         
         // 팝업 창 닫기
         reactor.state
-          .map { $0.isOpenedNoMatchingInfoPopup }
-          .filter { $0 == false }
+          .map { $0.dismissPopup }
+          .filter { $0 }
           .bind { _ in popup.dismiss(animated: false) }
           .disposed(by: owner.disposeBag)
       }
@@ -382,8 +411,8 @@ final class MatchingViewController: BaseViewController, View {
         
         // 팝업 창 닫기
         reactor.state
-          .map { $0.isOpenedNoMatchingInfoPopup_Initial }
-          .filter { $0 == false }
+          .map { $0.dismissPopup }
+          .filter { $0 }
           .bind { _ in popup.dismiss(animated: false) }
           .disposed(by: owner.disposeBag)
       }
@@ -407,8 +436,8 @@ final class MatchingViewController: BaseViewController, View {
         
         // 팝업 창 닫기
         reactor.state
-          .map { $0.isOpenedKakaoPopup }
-          .filter { $0.0 == false }
+          .map { $0.dismissPopup }
+          .filter { $0 }
           .bind { _ in popup.dismiss(animated: false) }
           .disposed(by: owner.disposeBag)
         
@@ -510,82 +539,73 @@ final class MatchingViewController: BaseViewController, View {
   }
 }
 
-// MARK: - Card Swipe
+// MARK: - KolodaView
 
-extension MatchingViewController: SwipeCardStackDataSource, SwipeCardStackDelegate, UIGestureRecognizerDelegate {
-  func card(from member: MatchingDTO.Retrieve) -> SwipeCard {
-    let card = SwipeCard()
-    card.swipeDirections = [.left, .right]
-    card.content = MatchingCard(member)
-    card.panGestureRecognizer.addTarget(self, action: #selector(handlePanGesture))
+extension MatchingViewController: KolodaViewDataSource, KolodaViewDelegate {
+  // 카드 생성
+  func koloda(_ koloda: Koloda.KolodaView, viewForCardAt index: Int) -> UIView {
+    guard let reactor = reactor else { return UIView() }
+    let members = reactor.currentState.matchingMembers
+    let card = MatchingCard(members[index])    
     
     return card
   }
   
-  func cardStack(_ cardStack: Shuffle_iOS.SwipeCardStack, cardForIndexAt index: Int) -> Shuffle_iOS.SwipeCard {
-    guard let reactor = reactor else { fatalError() }
-    return card(from: reactor.currentState.matchingMembers[index])
+  // 카드 갯수
+  func kolodaNumberOfCards(_ koloda: Koloda.KolodaView) -> Int {
+    guard let reactor = reactor else { return 0 }
+    return reactor.currentState.matchingMembers.count
   }
   
-  func numberOfCards(in cardStack: Shuffle_iOS.SwipeCardStack) -> Int {
-    return reactor?.currentState.matchingMembers.count ?? 0
+  // 카드 조회 애니메이션 유무
+  func kolodaShouldApplyAppearAnimation(_ koloda: KolodaView) -> Bool {
+    return false
   }
   
-  func cardStack(_ cardStack: SwipeCardStack, didSwipeCardAt index: Int, with direction: SwipeDirection) {
+  // 다음 카드 투명화 유무
+  func kolodaShouldTransparentizeNextCard(_ koloda: KolodaView) -> Bool {
+    return false
+  }
+  
+  // 카드 스와이프 종료
+  func koloda(_ koloda: KolodaView, didSwipeCardAt index: Int, in direction: SwipeResultDirection) {
     guard let reactor = reactor else { return }
-    let id = reactor.currentState.matchingMembers[index].memberId
+    let memberID = reactor.currentState.matchingMembers[index].memberId
+    
     switch direction {
     case .left:
-      Observable.just(id)
-        .map { MatchingViewReactor.Action.cancel($0) }
+      Observable<MatchingViewReactor.Action>.just(.cancel(memberID))
         .bind(to: reactor.action)
         .disposed(by: disposeBag)
     case .right:
-      Observable.just(id)
-        .map { MatchingViewReactor.Action.heart($0) }
+      Observable<MatchingViewReactor.Action>.just(.heart(memberID))
         .bind(to: reactor.action)
         .disposed(by: disposeBag)
-    default: break
+    default:
+      break
     }
   }
   
-  func cardStack(_ cardStack: SwipeCardStack, didSelectCardAt index: Int) {
-    
-    // TODO: 신고하기 기능 구현
-    
-    // MatchingBottomAlertVC 보여주기
-    let bottomAlertVC = MatchingBottomSheet()
-    bottomAlertVC.modalPresentationStyle = .pageSheet
-    presentPanModal(bottomAlertVC)
+  // 카드 드래그 종료
+  func kolodaPanFinished(_ koloda: KolodaView, card: DraggableCardView) {
+    UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+      self.topRoundedBackgroundView.tintColor = .idorm_blue
+    })
   }
   
-  @objc private func handlePanGesture(sender: UIPanGestureRecognizer) {
-    guard let reactor = reactor else { return }
-    let card = sender.view as! SwipeCard
-    let velocity = sender.velocity(in: card)
-    
-    if abs(velocity.x) > abs(velocity.y) {
-      if velocity.x < 0 {
-        // 취소 스와이프 감지
-        Observable.empty()
-          .map { MatchingViewReactor.Action.didBeginSwipe(.cancel) }
-          .bind(to: reactor.action)
-          .disposed(by: disposeBag)
-      } else {
-        // 좋아요 스와이프 감지
-        Observable.empty()
-          .map { MatchingViewReactor.Action.didBeginSwipe(.heart) }
-          .bind(to: reactor.action)
-          .disposed(by: disposeBag)
-      }
-    }
-    
-    if sender.state == .ended {
-      // 스와이프 종료 이벤트
-      Observable.empty()
-        .map { MatchingViewReactor.Action.didBeginSwipe(.none) }
-        .bind(to: reactor.action)
-        .disposed(by: disposeBag)
+  // 카드 드래그 시작
+  func koloda(_ koloda: KolodaView, draggedCardWithPercentage finishPercentage: CGFloat, in direction: SwipeResultDirection) {
+    switch direction {
+    case .left:
+      UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+        self.topRoundedBackgroundView.tintColor = .idorm_red
+      })
+    case .right:
+      UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+        self.topRoundedBackgroundView.tintColor = .idorm_green
+      })
+    default:
+      break
     }
   }
 }

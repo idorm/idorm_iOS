@@ -71,7 +71,7 @@ final class MatchingUtilities {
       $0.selectedMaxValue = 30
       $0.selectedMinValue = 20
       $0.lineHeight = 11
-      $0.handleImage = UIImage(named: "thumb(Matching)")
+      $0.handleImage = UIImage(named: "circle_blue_large")
       $0.minDistance = 1
       $0.enableStep = true
       $0.selectedHandleDiameterMultiplier = 1.0
@@ -103,8 +103,8 @@ extension MatchingUtilities {
 extension MatchingUtilities {
   static func matchingButton(imageName: String) -> UIButton {
     var config = UIButton.Configuration.plain()
-    let name = imageName + "(Matching)"
-    let hoveredName = imageName + "Hover(Matching)"
+    let name = imageName
+    let hoveredName = imageName + "_activated"
     config.image = UIImage(named: name)
     config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
     let button = UIButton(configuration: config)

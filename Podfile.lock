@@ -1,20 +1,28 @@
 PODS:
+  - Koloda (5.0.1):
+    - pop (~> 1.0)
+  - pop (1.0.12)
   - RangeSeekSlider (1.8.0)
   - Shuffle-iOS (0.5.0)
 
 DEPENDENCIES:
+  - Koloda
   - RangeSeekSlider
   - Shuffle-iOS
 
 SPEC REPOS:
   trunk:
+    - Koloda
+    - pop
     - RangeSeekSlider
     - Shuffle-iOS
 
 SPEC CHECKSUMS:
+  Koloda: d07b9199a383abc5898b62aa945a599f5e7c0c4b
+  pop: d582054913807fd11fd50bfe6a539d91c7e1a55a
   RangeSeekSlider: 650b11fa1edcb92e1e0ede797669d98622570fb5
   Shuffle-iOS: ff33658fb1e5eebd6a4724c156473e63754be9cb
 
-PODFILE CHECKSUM: 77b01eeafecc5ff4332110315471322d01d1b1b6
+PODFILE CHECKSUM: fbe738cc77edfd1421db46bea55dee4474a32dd6
 
 COCOAPODS: 1.11.2

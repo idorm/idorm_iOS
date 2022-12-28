@@ -29,7 +29,7 @@ final class NicknameViewReactor: Reactor {
     case setCheckmark(Bool)
     case setNickname(String)
     case setTextCount(Int)
-    case setPopup(Bool)
+    case setPopup(Bool, String)
     case setLoading(Bool)
     case setPopVC(Bool)
     case setCompleteSignupVC(Bool)
@@ -43,7 +43,7 @@ final class NicknameViewReactor: Reactor {
     var currentSpacingLabelTextColor: UIColor = .idorm_gray_400
     var currentTextCount: Int = 0
     var isHiddenCheckmark: Bool = true
-    var isOpenedPopup: (Bool) = false
+    var isOpenedPopup: (Bool, String) = (false, "")
     var isOpenedCompleteSignupVC: Bool = false
     var popVC: Bool = false
     var isLoading: Bool = false
@@ -154,15 +154,26 @@ final class NicknameViewReactor: Reactor {
             APIService.memberProvider.rx.request(.register(id: email, pw: password, nickname: nickname))
               .asObservable()
               .retry()
-              .filterSuccessfulStatusCodes()
-              .flatMap { _ -> Observable<Mutation> in
-                return .concat([
-                  .just(.setLoading(false)),
-                  .just(.setCompleteSignupVC(true)),
-                  .just(.setCompleteSignupVC(false))
-                ])
+              .flatMap { response -> Observable<Mutation> in
+                switch response.statusCode {
+                case 200:
+                  return .concat([
+                    .just(.setLoading(false)),
+                    .just(.setCompleteSignupVC(true)),
+                    .just(.setCompleteSignupVC(false))
+                  ])
+                  
+                default:
+                  let message = APIService.decode(ErrorResponseModel.self, data: response.data).message
+                  return .concat([
+                    .just(.setLoading(false)),
+                    .just(.setPopup(true, message)),
+                    .just(.setPopup(false, ""))
+                  ])
+                }
               }
           ])
+          .subscribe(on: MainScheduler.asyncInstance)
           
         case .modify:
           return .concat([
@@ -170,21 +181,32 @@ final class NicknameViewReactor: Reactor {
             APIService.memberProvider.rx.request(.changeNickname(nickname: nickname))
               .asObservable()
               .retry()
-              .map(ResponseModel<MemberDTO.Retrieve>.self)
               .flatMap { response -> Observable<Mutation> in
-                MemberStorage.shared.saveMember(response.data)
-                return .concat([
-                  .just(.setLoading(false)),
-                  .just(.setPopVC(true)),
-                  .just(.setPopVC(false))
-                ])
+                switch response.statusCode {
+                case 200:
+                  let data = APIService.decode(ResponseModel<MemberDTO.Retrieve>.self, data: response.data).data
+                  MemberStorage.shared.saveMember(data)
+                  return .concat([
+                    .just(.setLoading(false)),
+                    .just(.setPopVC(true)),
+                    .just(.setPopVC(false))
+                  ])
+                default:
+                  let message = APIService.decode(ErrorResponseModel.self, data: response.data).message
+                  return .concat([
+                    .just(.setLoading(false)),
+                    .just(.setPopup(true, message)),
+                    .just(.setPopup(false, ""))
+                  ])
+                }
               }
           ])
+          .subscribe(on: MainScheduler.asyncInstance)
         }
       } else {
         return .concat([
-          .just(.setPopup(true)),
-          .just(.setPopup(false))
+          .just(.setPopup(true, "조건을 다시 확인해주세요.")),
+          .just(.setPopup(false, ""))
         ])
       }
     }
@@ -200,8 +222,8 @@ final class NicknameViewReactor: Reactor {
     case .setLoading(let isLoading):
       newState.isLoading = isLoading
       
-    case .setPopup(let isOpened):
-      newState.isOpenedPopup = isOpened
+    case let .setPopup(isOpened, message):
+      newState.isOpenedPopup = (isOpened, message)
       
     case .setCompleteSignupVC(let isOpened):
       newState.isOpenedCompleteSignupVC = isOpened

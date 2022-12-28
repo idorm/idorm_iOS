@@ -10,6 +10,7 @@ import Foundation
 import Moya
 import RxSwift
 import RxCocoa
+import RxMoya
 import ReactorKit
 
 final class MatchingViewReactor: Reactor {
@@ -43,6 +44,7 @@ final class MatchingViewReactor: Reactor {
     case setMatchingMembers([MatchingDTO.Retrieve])
     case setBackgroundColor(MatchingEnumerations.Swipe)
     case setBackgroundColor_withSwipe(MatchingEnumerations.Swipe)
+    case setDismissPopup(Bool)
   }
   
   struct State {
@@ -56,6 +58,7 @@ final class MatchingViewReactor: Reactor {
     var isOpenedFilterVC: Bool = false
     var isOpenedOnboardingVC: Bool = false
     var isOpenedWeb: Bool = false
+    var dismissPopup: Bool = false
     var backgroundColor: MatchingEnumerations.Swipe = .none
     var backgroundColor_withSwipe: MatchingEnumerations.Swipe = .none
     var currentTextImage: MatchingEnumerations.TextImage = .noMatchingCardInformation
@@ -80,18 +83,26 @@ final class MatchingViewReactor: Reactor {
           ])
         }
       } else {
-        return Observable.concat([
-          .just(.setNoMatchingInfoPopup_initial(true)),
-          .just(.setNoMatchingInfoPopup_initial(false))
-        ])
+        if UserDefaults.standard.bool(forKey: "launchedBefore") {
+          UserDefaults.standard.set(true, forKey: "launchedBefore")
+          return Observable.concat([
+            .just(.setNoMatchingInfoPopup_initial(true)),
+            .just(.setNoMatchingInfoPopup_initial(false))
+          ])
+        } else {
+          return .empty()
+        }
       }
       
     case .viewWillAppear:
       if memberStorage.hasMatchingInfo {
         if memberStorage.isPublicMatchingInfo {
-          return .just(.setCurrentTextImage(.noMatchingCardInformation))
+           return .just(.setCurrentTextImage(.noMatchingCardInformation))
         } else {
-          return .just(.setCurrentTextImage(.noShareState))
+          return .concat([
+            .just(.setCurrentTextImage(.noShareState)),
+            .just(.setMatchingMembers([]))
+          ])
         }
       } else {
         return .just(.setCurrentTextImage(.noMatchingInformation))
@@ -112,6 +123,8 @@ final class MatchingViewReactor: Reactor {
       
     case .didTapPublicButton:
       return .concat([
+        .just(.setDismissPopup(true)),
+        .just(.setDismissPopup(false)),
         .just(.setLoading(true)),
         APIService.onboardingProvider.rx.request(.modifyPublic(true))
           .asObservable()
@@ -136,8 +149,8 @@ final class MatchingViewReactor: Reactor {
       
     case .didTapMakeProfileButton:
       return .concat([
-        .just(.setNoMatchingInfoPopup(false)),
-        .just(.setNoMatchingInfoPopup_initial(false)),
+        .just(.setDismissPopup(true)),
+        .just(.setDismissPopup(false)),
         .just(.setOnboardingVC(true)),
         .just(.setOnboardingVC(false))
       ])
@@ -166,7 +179,6 @@ final class MatchingViewReactor: Reactor {
       if memberStorage.hasMatchingInfo {
         if memberStorage.isPublicMatchingInfo {
           if FilterStorage.shared.hasFilter {
-            let filter = FilterStorage.shared.filter
             return Observable.concat([
               .just(.setLoading(true)),
               fetchFilteredMembers()
@@ -200,7 +212,6 @@ final class MatchingViewReactor: Reactor {
         APIService.matchingProvider.rx.request(.addDisliked(id))
           .asObservable()
           .retry()
-          .filterSuccessfulStatusCodes()
           .flatMap { _ -> Observable<Mutation> in
             return Observable.concat([
               .just(.setLoading(false)),
@@ -216,8 +227,7 @@ final class MatchingViewReactor: Reactor {
         APIService.matchingProvider.rx.request(.addLiked(id))
           .asObservable()
           .retry()
-          .filterSuccessfulStatusCodes()
-          .flatMap { _ -> Observable<Mutation> in
+          .flatMap { response -> Observable<Mutation> in
             return Observable.concat([
               .just(.setLoading(false)),
               .just(.setBackgroundColor(.none))
@@ -235,8 +245,9 @@ final class MatchingViewReactor: Reactor {
     case .didTapKakaoLinkButton(let url):
       if url.isValidKakaoLink {
         return .concat([
+          .just(.setDismissPopup(true)),
+          .just(.setDismissPopup(false)),
           .just(.setWeb(true)),
-          .just(.setKakaoPopup(false, "")),
           .just(.setWeb(false))
         ])
       } else {
@@ -292,22 +303,12 @@ final class MatchingViewReactor: Reactor {
       
     case .setBasicPopup(let isOpened):
       newState.isOpenedBasicPopup = isOpened
+      
+    case .setDismissPopup(let isDismissed):
+      newState.dismissPopup = isDismissed
     }
     
     return newState
-  }
-  
-  func transform(mutation: Observable<Mutation>) -> Observable<Mutation> {
-    // TODO: 실험하기
-    let publicEvent = MemberStorage.shared.didChangePublicState
-      .distinctUntilChanged()
-      .flatMap { isPublic -> Observable<Mutation> in
-        return .concat([
-          .just(.setNoPublicPopup(true)),
-          .just(.setNoPublicPopup(false))
-        ])
-      }
-    return Observable.merge(mutation, publicEvent)
   }
 }
 

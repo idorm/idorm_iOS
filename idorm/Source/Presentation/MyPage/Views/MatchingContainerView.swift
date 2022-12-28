@@ -45,7 +45,7 @@ final class MatchingContainerView: UIView {
     let handler: UIButton.ConfigurationUpdateHandler = { button in
       switch button.state {
       case .selected:
-        button.configuration?.image = #imageLiteral(resourceName: "toggleHover(Matching)")
+        button.configuration?.image = #imageLiteral(resourceName: "ellipse_blue_activated")
       default:
         button.configuration?.image = UIImage(named: "ellipse_gray")
         button.configuration?.baseBackgroundColor = .clear

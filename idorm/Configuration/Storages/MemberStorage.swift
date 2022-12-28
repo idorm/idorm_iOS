@@ -23,7 +23,7 @@ final class MemberStorage {
   }
   
   private(set) var member: MemberDTO.Retrieve?
-
+  
   private(set) var didChangePublicState = PublishSubject<Bool>()
   var hasMatchingInfo: Bool { matchingInfo != nil ? true : false }
   var isPublicMatchingInfo: Bool { matchingInfo?.isMatchingInfoPublic ?? false }

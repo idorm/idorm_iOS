@@ -125,8 +125,7 @@ final class LoginViewController: BaseViewController, View {
     // MARK: - Action
     
     // viewDidLoad
-    Observable.empty()
-      .map { LoginViewReactor.Action.viewDidLoad }
+    Observable.just(LoginViewReactor.Action.viewDidLoad)
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -179,7 +178,6 @@ final class LoginViewController: BaseViewController, View {
     // 인디케이터 제어
     reactor.state
       .map { $0.isLoading }
-      .distinctUntilChanged()
       .bind(to: indicator.rx.isAnimating)
       .disposed(by: disposeBag)
     
