@@ -54,12 +54,17 @@ final class MatchingViewController: BaseViewController, View {
     $0.delegate = self
   }
   
+  private lazy var buttonStack = UIStackView().then { stack in
+    [cancelButton, backButton, messageButton, heartButton]
+      .forEach { stack.addArrangedSubview($0) }
+    stack.spacing = 4
+  }
+  
   private let informationImageView = UIImageView()
   private let cancelButton = MatchingUtilities.matchingButton(imageName: "circle_dislike_red")
   private let messageButton = MatchingUtilities.matchingButton(imageName: "circle_speechBubble_yellow")
   private let heartButton = MatchingUtilities.matchingButton(imageName: "circle_heart_green")
   private let backButton = MatchingUtilities.matchingButton(imageName: "circle_back_blue")
-  private var buttonStack: UIStackView!
   
   // MARK: - LifeCycle
   
@@ -71,6 +76,12 @@ final class MatchingViewController: BaseViewController, View {
   
   // MARK: - Setup
   
+  override func setupStyles() {
+    super.setupStyles()
+    
+    view.backgroundColor = .white
+  }
+  
   override func setupLayouts() {
     super.setupLayouts()
     [
@@ -80,26 +91,16 @@ final class MatchingViewController: BaseViewController, View {
       refreshButton,
       informationImageView,
       kolodaView,
-      loadingIndicator,
-      kolodaView
+      loadingIndicator
     ]
       .forEach { view.addSubview($0) }
-  }
-  
-  override func setupStyles() {
-    super.setupStyles()
-    view.backgroundColor = .white
-    
-    let buttonStack = UIStackView(arrangedSubviews: [cancelButton, backButton, messageButton, heartButton])
-    buttonStack.spacing = 4
-    self.buttonStack = buttonStack
   }
   
   override func setupConstraints() {
     super.setupConstraints()
     
     loadingIndicator.snp.makeConstraints { make in
-      make.center.equalToSuperview()
+      make.center.equalTo(kolodaView)
     }
     
     topRoundedBackgroundView.snp.makeConstraints { make in
@@ -267,12 +268,16 @@ final class MatchingViewController: BaseViewController, View {
     
     cancelButton.rx.tap
       .withUnretained(self)
-      .bind { $0.0.kolodaView.swipe(.left) }
+      .map { $0.0.kolodaView.swipe(.left, force: true) }
+      .map { MatchingViewReactor.Action.didTapXmarkButton }
+      .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     heartButton.rx.tap
       .withUnretained(self)
-      .bind { $0.0.kolodaView.swipe(.right) }
+      .map { $0.0.kolodaView.swipe(.right) }
+      .map { MatchingViewReactor.Action.didTapHeartButton }
+      .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     backButton.rx.tap
@@ -283,7 +288,7 @@ final class MatchingViewController: BaseViewController, View {
     messageButton.rx.tap
       .withUnretained(self)
       .map { $0.0.kolodaView.currentCardIndex }
-      .map { MatchingViewReactor.Action.message($0) }
+      .map { MatchingViewReactor.Action.didTapSpeechBubbleButton($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -361,7 +366,7 @@ final class MatchingViewController: BaseViewController, View {
         
         // 팝업 창 닫기
         reactor.state
-          .map { $0.dismissPopup }
+          .map { $0.isDismissedPopup }
           .filter { $0 }
           .bind { _ in popup.dismiss(animated: false) }
           .disposed(by: owner.disposeBag)
@@ -386,7 +391,7 @@ final class MatchingViewController: BaseViewController, View {
         
         // 팝업 창 닫기
         reactor.state
-          .map { $0.dismissPopup }
+          .map { $0.isDismissedPopup }
           .filter { $0 }
           .bind { _ in popup.dismiss(animated: false) }
           .disposed(by: owner.disposeBag)
@@ -411,7 +416,7 @@ final class MatchingViewController: BaseViewController, View {
         
         // 팝업 창 닫기
         reactor.state
-          .map { $0.dismissPopup }
+          .map { $0.isDismissedPopup }
           .filter { $0 }
           .bind { _ in popup.dismiss(animated: false) }
           .disposed(by: owner.disposeBag)
@@ -436,7 +441,7 @@ final class MatchingViewController: BaseViewController, View {
         
         // 팝업 창 닫기
         reactor.state
-          .map { $0.dismissPopup }
+          .map { $0.isDismissedPopup }
           .filter { $0 }
           .bind { _ in popup.dismiss(animated: false) }
           .disposed(by: owner.disposeBag)
@@ -484,53 +489,43 @@ final class MatchingViewController: BaseViewController, View {
       }
       .disposed(by: disposeBag)
     
-    // 터치시 백그라운드 컬러 변경
+    // 바텀 시트
     reactor.state
-      .map { $0.backgroundColor }
+      .map { $0.isOpenedBottomSheet }
+      .filter { $0 }
       .withUnretained(self)
-      .bind { owner, swipeType in
-        switch swipeType {
-        case .heart:
-          UIView.animate(withDuration: 0.2, animations: {
-            owner.topRoundedBackgroundView.tintColor = .idorm_green
-          }) { isFinished in
-            if isFinished {
-              UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-                owner.topRoundedBackgroundView.tintColor = .idorm_blue
-              }
-            }
+      .bind {
+        let bottomSheet = MatchingBottomSheet()
+        $0.0.presentPanModal(bottomSheet)
+      }
+      .disposed(by: disposeBag)
+    
+    // TODO: 매칭 카드 맞추기
+    
+    reactor.state
+      .map { $0.isGreenBackgroundColor }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+          owner.topRoundedBackgroundView.tintColor = .idorm_green
+        }) { isFinished in
+          UIView.animate(withDuration: 0.2, delay: 0) {
+            owner.topRoundedBackgroundView.tintColor = .idorm_blue
           }
-        case .cancel:
-          UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
-            owner.topRoundedBackgroundView.tintColor = .idorm_red
-          }) { isFinished in
-            if isFinished {
-              UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
-                owner.topRoundedBackgroundView.tintColor = .idorm_blue
-              }
-            }
-          }
-        default: break
         }
       }
       .disposed(by: disposeBag)
     
-    // 스와이프시 백그라운드 컬러 변경
     reactor.state
-      .map { $0.backgroundColor_withSwipe }
+      .map { $0.isRedBackgroundColor }
+      .filter { $0 }
       .withUnretained(self)
-      .bind { owner, swipeType in
-        switch swipeType {
-        case .heart:
-          UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
-            owner.topRoundedBackgroundView.tintColor = .idorm_green
-          })
-        case .cancel:
-          UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
-            owner.topRoundedBackgroundView.tintColor = .idorm_red
-          })
-        case .none:
-          UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
+      .bind { owner, _ in
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+          owner.topRoundedBackgroundView.tintColor = .idorm_red
+        }) { isFinished in
+          UIView.animate(withDuration: 0.2, delay: 0) {
             owner.topRoundedBackgroundView.tintColor = .idorm_blue
           }
         }
@@ -546,7 +541,13 @@ extension MatchingViewController: KolodaViewDataSource, KolodaViewDelegate {
   func koloda(_ koloda: Koloda.KolodaView, viewForCardAt index: Int) -> UIView {
     guard let reactor = reactor else { return UIView() }
     let members = reactor.currentState.matchingMembers
-    let card = MatchingCard(members[index])    
+    let card = MatchingCard(members[index])
+    
+    // 옵션 버튼 클릭 이벤트
+    card.optionButton.rx.tap
+      .map { MatchingViewReactor.Action.didTapOptionButton }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
     
     return card
   }
@@ -571,19 +572,22 @@ extension MatchingViewController: KolodaViewDataSource, KolodaViewDelegate {
   func koloda(_ koloda: KolodaView, didSwipeCardAt index: Int, in direction: SwipeResultDirection) {
     guard let reactor = reactor else { return }
     let memberID = reactor.currentState.matchingMembers[index].memberId
-    
     switch direction {
     case .left:
-      Observable<MatchingViewReactor.Action>.just(.cancel(memberID))
+      Observable<MatchingViewReactor.Action>.just(.dislikeCard(memberID))
         .bind(to: reactor.action)
         .disposed(by: disposeBag)
     case .right:
-      Observable<MatchingViewReactor.Action>.just(.heart(memberID))
+      Observable<MatchingViewReactor.Action>.just(.likeCard(memberID))
         .bind(to: reactor.action)
         .disposed(by: disposeBag)
     default:
       break
     }
+    
+    UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
+      self.topRoundedBackgroundView.tintColor = .idorm_blue
+    })
   }
   
   // 카드 드래그 종료

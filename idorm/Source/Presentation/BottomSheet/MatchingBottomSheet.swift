@@ -13,7 +13,7 @@ final class MatchingBottomSheet: BaseViewController {
   private let reportButton = BottomSheetUtils.reportButton()
   
   private let xmarkButton = UIButton().then {
-    $0.setImage(UIImage(named: "Xmark_Black"), for: .normal)
+    $0.setImage(UIImage(named: "xmark_black"), for: .normal)
   }
   
   // MARK: - Setup
@@ -68,15 +68,13 @@ final class MatchingBottomSheet: BaseViewController {
 
 extension MatchingBottomSheet: PanModalPresentable {
   
-  var panScrollable: UIScrollView? {
-    return nil
-  }
+  var panScrollable: UIScrollView? { nil }
   
-  var longFormHeight: PanModalHeight {
-    return PanModalHeight.contentHeight(113)
-  }
+  var longFormHeight: PanModalHeight { .contentHeight(113) }
   
-  var shortFormHeight: PanModalHeight {
-    return PanModalHeight.contentHeight(113)
-  }
+  var shortFormHeight: PanModalHeight { .contentHeight(113) }
+  
+  var showDragIndicator: Bool { false }
+  
+  var cornerRadius: CGFloat { return 24 }
 }

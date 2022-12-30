@@ -20,9 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     setupNavigationBarAppearance()
     setupTabBarAppearance()
-    setupMemberStorage()
-    
-    Thread.sleep(forTimeInterval: 1)
     
     return true
   }
@@ -47,27 +44,5 @@ extension AppDelegate {
     tabBar.standardAppearance = tabBarAppearance
     UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
     UITabBar.appearance().standardAppearance = tabBarAppearance
-  }
-  
-  private func setupMemberStorage() {
-    let email = UserStorage.loadEmail()
-    let password = UserStorage.loadPassword()
-    
-    _ = APIService.memberProvider.rx.request(.login(id: email, pw: password))
-      .asObservable()
-      .retry()
-      .map(ResponseModel<MemberDTO.Retrieve>.self)
-      .bind { response in
-        TokenStorage.saveToken(token: response.data.loginToken!)
-        MemberStorage.shared.saveMember(response.data)
-      }
-    
-    _ = APIService.onboardingProvider.rx.request(.retrieve)
-      .asObservable()
-      .retry()
-      .map(ResponseModel<MatchingInfoDTO.Retrieve>.self)
-      .bind {
-        MemberStorage.shared.saveMatchingInfo($0.data)
-      }
   }
 }

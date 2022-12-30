@@ -236,7 +236,7 @@ extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
       .map { MyRoommateViewReactor.Action.didTapChatButton(member.openKakaoLink) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
-        
+    
     // 바텀시트 닫기
     reactor.state
       .map { $0.isDismissedBottomSheet }

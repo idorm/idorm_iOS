@@ -23,15 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let windowScene = (scene as? UIWindowScene) else { return }
     window = UIWindow(windowScene: windowScene)
     
-    if TokenStorage.hasToken() {
-      window?.rootViewController = TabBarViewController()
-    } else {
-      let loginVC = LoginViewController()
-      loginVC.reactor = LoginViewReactor()
-      window?.rootViewController = UINavigationController(rootViewController: loginVC)
-    }
-    
-    window?.makeKeyAndVisible()
+    window?.rootViewController = LaunchViewController()
+    window?.makeKeyAndVisible()    
   }
 }
-

@@ -23,10 +23,12 @@ final class MatchingViewReactor: Reactor {
     case didTapPublicButton
     case didTapMakeProfileButton
     case didTapKakaoLinkButton(String)
-    case didBeginSwipe(MatchingEnumerations.Swipe)
-    case cancel(Int)
-    case heart(Int)
-    case message(Int)
+    case didTapOptionButton
+    case dislikeCard(Int)
+    case likeCard(Int)
+    case didTapHeartButton
+    case didTapXmarkButton
+    case didTapSpeechBubbleButton(Int)
     case didChangeFilter
   }
   
@@ -42,9 +44,10 @@ final class MatchingViewReactor: Reactor {
     case setBasicPopup(Bool)
     case setWeb(Bool)
     case setMatchingMembers([MatchingDTO.Retrieve])
-    case setBackgroundColor(MatchingEnumerations.Swipe)
-    case setBackgroundColor_withSwipe(MatchingEnumerations.Swipe)
     case setDismissPopup(Bool)
+    case setBottomSheet(Bool)
+    case setGreenBackgroundColor(Bool)
+    case setRedBackgroundColor(Bool)
   }
   
   struct State {
@@ -58,10 +61,11 @@ final class MatchingViewReactor: Reactor {
     var isOpenedFilterVC: Bool = false
     var isOpenedOnboardingVC: Bool = false
     var isOpenedWeb: Bool = false
-    var dismissPopup: Bool = false
-    var backgroundColor: MatchingEnumerations.Swipe = .none
-    var backgroundColor_withSwipe: MatchingEnumerations.Swipe = .none
+    var isOpenedBottomSheet: Bool = false
+    var isDismissedPopup: Bool = false
     var currentTextImage: MatchingEnumerations.TextImage = .noMatchingCardInformation
+    var isGreenBackgroundColor: Bool = false
+    var isRedBackgroundColor: Bool = false
   }
   
   let initialState: State = State()
@@ -107,6 +111,12 @@ final class MatchingViewReactor: Reactor {
       } else {
         return .just(.setCurrentTextImage(.noMatchingInformation))
       }
+      
+    case .didTapOptionButton:
+      return .concat([
+        .just(.setBottomSheet(true)),
+        .just(.setBottomSheet(false))
+      ])
       
     case .didChangeFilter:
       if FilterStorage.shared.hasFilter {
@@ -181,11 +191,13 @@ final class MatchingViewReactor: Reactor {
           if FilterStorage.shared.hasFilter {
             return Observable.concat([
               .just(.setLoading(true)),
+              .just(.setMatchingMembers([])),
               fetchFilteredMembers()
             ])
           } else {
             return Observable.concat([
               .just(.setLoading(true)),
+              .just(.setMatchingMembers([])),
               fetchMatchingMembers()
             ])
           }
@@ -202,40 +214,45 @@ final class MatchingViewReactor: Reactor {
         ])
       }
       
-    case .didBeginSwipe(let swipeType):
-      return .just(.setBackgroundColor_withSwipe(swipeType))
-      
-    case .cancel(let id):
+    case .dislikeCard(let id):
       return Observable.concat([
         .just(.setLoading(true)),
-        .just(.setBackgroundColor(.cancel)),
         APIService.matchingProvider.rx.request(.addDisliked(id))
           .asObservable()
           .retry()
           .flatMap { _ -> Observable<Mutation> in
             return Observable.concat([
-              .just(.setLoading(false)),
-              .just(.setBackgroundColor(.none))
+              .just(.setLoading(false))
             ])
           }
       ])
       
-    case .heart(let id):
+    case .likeCard(let id):
       return Observable.concat([
         .just(.setLoading(true)),
-        .just(.setBackgroundColor(.heart)),
         APIService.matchingProvider.rx.request(.addLiked(id))
           .asObservable()
           .retry()
           .flatMap { response -> Observable<Mutation> in
             return Observable.concat([
-              .just(.setLoading(false)),
-              .just(.setBackgroundColor(.none))
+              .just(.setLoading(false))
             ])
           }
       ])
       
-    case .message(let index):
+    case .didTapHeartButton:
+      return .concat([
+        .just(.setGreenBackgroundColor(true)),
+        .just(.setGreenBackgroundColor(false))
+      ])
+      
+    case .didTapXmarkButton:
+      return .concat([
+        .just(.setRedBackgroundColor(true)),
+        .just(.setRedBackgroundColor(false))
+      ])
+      
+    case .didTapSpeechBubbleButton(let index):
       let link = currentState.matchingMembers[index].openKakaoLink
       return .concat([
         .just(.setKakaoPopup(true, link)),
@@ -292,12 +309,6 @@ final class MatchingViewReactor: Reactor {
     case .setCurrentTextImage(let imageType):
       newState.currentTextImage = imageType
       
-    case .setBackgroundColor(let swipeType):
-      newState.backgroundColor = swipeType
-      
-    case .setBackgroundColor_withSwipe(let swipeType):
-      newState.backgroundColor_withSwipe = swipeType
-      
     case .setWeb(let isOpened):
       newState.isOpenedWeb = isOpened
       
@@ -305,7 +316,16 @@ final class MatchingViewReactor: Reactor {
       newState.isOpenedBasicPopup = isOpened
       
     case .setDismissPopup(let isDismissed):
-      newState.dismissPopup = isDismissed
+      newState.isDismissedPopup = isDismissed
+      
+    case .setBottomSheet(let isOpened):
+      newState.isOpenedBottomSheet = isOpened
+      
+    case .setGreenBackgroundColor(let isActivated):
+      newState.isGreenBackgroundColor = isActivated
+      
+    case .setRedBackgroundColor(let isActivated):
+      newState.isRedBackgroundColor = isActivated
     }
     
     return newState

@@ -89,6 +89,7 @@
 		E55DE2F92896DDC6004F1401 /* CalendarUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55DE2F82896DDC6004F1401 /* CalendarUtilities.swift */; };
 		E56342232878353100E93D17 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56342222878353100E93D17 /* TabBarViewController.swift */; };
 		E563422528784ED400E93D17 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E563422428784ED400E93D17 /* HomeVC.swift */; };
+		E5695C15295EFBD40083E48D /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5695C14295EFBD40083E48D /* LaunchViewController.swift */; };
 		E56DF4A2289354AF00E85B10 /* CalendarRoundedBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56DF4A1289354AF00E85B10 /* CalendarRoundedBackgroundView.swift */; };
 		E56DF4A428935B0800E85B10 /* UICollectionReusableView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56DF4A328935B0800E85B10 /* UICollectionReusableView+Extensions.swift */; };
 		E56DF4AF2893C81F00E85B10 /* WeekdayCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56DF4AE2893C81F00E85B10 /* WeekdayCalendarView.swift */; };
@@ -256,6 +257,7 @@
 		E55DE2F82896DDC6004F1401 /* CalendarUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarUtilities.swift; sourceTree = "<group>"; };
 		E56342222878353100E93D17 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		E563422428784ED400E93D17 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
+		E5695C14295EFBD40083E48D /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		E56DF4A1289354AF00E85B10 /* CalendarRoundedBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarRoundedBackgroundView.swift; sourceTree = "<group>"; };
 		E56DF4A328935B0800E85B10 /* UICollectionReusableView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionReusableView+Extensions.swift"; sourceTree = "<group>"; };
 		E56DF4AE2893C81F00E85B10 /* WeekdayCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekdayCalendarView.swift; sourceTree = "<group>"; };
@@ -505,6 +507,7 @@
 		E54B3E2428C6E25C0062EF7E /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				E5695C14295EFBD40083E48D /* LaunchViewController.swift */,
 				E5084957293CA74B00F79823 /* Popup */,
 				E575D37129544B5200B13530 /* BottomSheet */,
 				E56DF4CC2894063100E85B10 /* Common */,
@@ -1310,6 +1313,7 @@
 				E5AD7391287A863800BA2C5E /* LoginVC.swift in Sources */,
 				E51D1C7E29531B8300A7EE49 /* MyRoommateViewReactor.swift in Sources */,
 				E5AD739F287AEF2D00BA2C5E /* PutEmailVC.swift in Sources */,
+				E5695C15295EFBD40083E48D /* LaunchViewController.swift in Sources */,
 				E5D31BF8289ABDC100510315 /* SetCalendarViewController.swift in Sources */,
 				E5290EFD2887BBA40004B8E6 /* CommunityPopularCollectionVIewCell.swift in Sources */,
 				E513DA002955ECB4002EA592 /* ConfirmPwViewReactor.swift in Sources */,

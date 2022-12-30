@@ -51,6 +51,7 @@ final class MyRoommateViewReactor: Reactor {
     case .viewDidLoad(let roommate):
       switch roommate {
       case .dislike:
+        
         return .concat([
           .just(.setLoading(true)),
           APIService.matchingProvider.rx.request(.retrieveDisliked)
@@ -74,6 +75,7 @@ final class MyRoommateViewReactor: Reactor {
               }
             }
         ])
+        
       case .like:
         return .concat([
           .just(.setLoading(true)),
@@ -220,7 +222,7 @@ extension MyRoommateViewReactor {
           }
         }
     case .dislike:
-      return APIService.matchingProvider.rx.request(.retrieveLiked)
+      return APIService.matchingProvider.rx.request(.retrieveDisliked)
         .asObservable()
         .retry()
         .flatMap { response -> Observable<Mutation> in

@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Launch_idorm" translatesAutoresizingMaskIntoConstraints="NO" id="n7l-cC-Xqc">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="idorm_white" translatesAutoresizingMaskIntoConstraints="NO" id="n7l-cC-Xqc">
                                 <rect key="frame" x="141" y="428" width="132" height="54"/>
                             </imageView>
                         </subviews>
@@ -34,6 +34,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Launch_idorm" width="132" height="54"/>
+        <image name="idorm_white" width="132" height="54"/>
     </resources>
 </document>
