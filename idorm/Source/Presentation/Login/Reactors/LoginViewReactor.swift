@@ -49,7 +49,8 @@ final class LoginViewReactor: Reactor {
         APIService.memberProvider.rx.request(.login(id: id, pw: pw))
           .asObservable()
           .retry()
-          .flatMap { response -> Observable<Mutation> in
+          .withUnretained(self)
+          .flatMap { owner, response -> Observable<Mutation> in
             switch response.statusCode {
             case 200:
               UserStorage.saveEmail(from: id)
@@ -57,11 +58,7 @@ final class LoginViewReactor: Reactor {
               let data = APIService.decode(ResponseModel<MemberDTO.Retrieve>.self, data: response.data).data
               MemberStorage.shared.saveMember(data)
               TokenStorage.saveToken(token: data.loginToken ?? "")
-              return .concat([
-                .just(.setLoading(false)),
-                .just(.setMainVC(true)),
-                .just(.setMainVC(false))
-              ])
+              return owner.retrieveMatchingInfo()
             default:
               let message = APIService.decode(ErrorResponseModel.self, data: response.data).message
               return .concat([
@@ -105,5 +102,23 @@ final class LoginViewReactor: Reactor {
     }
     
     return newState
+  }
+}
+
+extension LoginViewReactor {
+  private func retrieveMatchingInfo() -> Observable<Mutation> {
+    APIService.onboardingProvider.rx.request(.retrieve)
+      .asObservable()
+      .retry()
+      .filterSuccessfulStatusCodes()
+      .map(ResponseModel<MatchingInfoDTO.Retrieve>.self)
+      .flatMap { response -> Observable<Mutation> in
+        MemberStorage.shared.saveMatchingInfo(response.data)
+        return .concat([
+          .just(.setLoading(false)),
+          .just(.setMainVC(true)),
+          .just(.setMainVC(false))
+        ])
+      }
   }
 }

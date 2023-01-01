@@ -15,7 +15,7 @@ import ReactorKit
 final class OnboardingViewReactor: Reactor {
   
   enum Action {
-    case viewDidLoad
+    case viewDidLoad(MatchingInfoDTO.Retrieve)
     case didTapDormButton(Dormitory)
     case didTapGenderButton(Gender)
     case didTapJoinPeriodButton(JoinPeriod)
@@ -72,9 +72,30 @@ final class OnboardingViewReactor: Reactor {
     let newDriver = currentState.currentDriver
     
     switch action {
-    case .viewDidLoad:
+    case .viewDidLoad(let matchingInfo):
       newDriver.convertConditionToAllTrue()
-      return .just(.setDriver(newDriver))
+      
+      newMatchingInfo.dormNum = matchingInfo.dormNum
+      newMatchingInfo.joinPeriod = matchingInfo.joinPeriod
+      newMatchingInfo.gender = matchingInfo.gender
+      newMatchingInfo.age = String(matchingInfo.age)
+      newMatchingInfo.isSnoring = matchingInfo.isSnoring
+      newMatchingInfo.isGrinding = matchingInfo.isGrinding
+      newMatchingInfo.isSmoking = matchingInfo.isSmoking
+      newMatchingInfo.isAllowedFood = matchingInfo.isAllowedFood
+      newMatchingInfo.isWearEarphones = matchingInfo.isWearEarphones
+      newMatchingInfo.wakeupTime = matchingInfo.wakeUpTime
+      newMatchingInfo.cleanUpStatus = matchingInfo.cleanUpStatus
+      newMatchingInfo.showerTime = matchingInfo.showerTime
+      newMatchingInfo.mbti = matchingInfo.mbti
+      newMatchingInfo.wishText = matchingInfo.wishText
+      newMatchingInfo.openKakaoLink = matchingInfo.openKakaoLink
+      
+      return .concat([
+        .just(.setDriver(newDriver)),
+        .just(.setMatchingInfo(newMatchingInfo)),
+        .just(.setChatTfCheckmark(false))
+      ])
       
     case .didTapDormButton(let dorm):
       newMatchingInfo.dormNum = dorm
@@ -166,7 +187,6 @@ final class OnboardingViewReactor: Reactor {
         newDriver.chatLinkCondition.accept(true)
       }
       newMatchingInfo.openKakaoLink = string
-      
       return .concat([
         .just(.setMatchingInfo(newMatchingInfo)),
         .just(.setDriver(newDriver)),
@@ -232,13 +252,13 @@ final class OnboardingViewReactor: Reactor {
         }
         
       case .modify:
-        
         if kakaoLink.isValidKakaoLink {
           return .concat([
             .just(.setLoading(true)),
             APIService.onboardingProvider.rx.request(.modify(currentState.currentMatchingInfo))
               .asObservable()
               .retry()
+              .debug()
               .map(ResponseModel<MatchingInfoDTO.Retrieve>.self)
               .flatMap { response -> Observable<Mutation> in
                 MemberStorage.shared.saveMatchingInfo(response.data)

@@ -435,7 +435,7 @@ final class MatchingViewController: BaseViewController, View {
         
         // 링크 바로가기 버튼
         popup.kakaoButton.rx.tap
-          .map { MatchingViewReactor.Action.didTapKakaoLinkButton(link.1) }
+          .map { MatchingViewReactor.Action.didTapKakaoLinkButton }
           .bind(to: reactor.action)
           .disposed(by: owner.disposeBag)
         
@@ -467,14 +467,14 @@ final class MatchingViewController: BaseViewController, View {
       }
       .disposed(by: disposeBag)
     
-    // 텍스트이미지 변경
+    // 현재 텍스트 이미지
     reactor.state
       .map { $0.currentTextImage }
       .map { UIImage(named: $0.imageName) }
       .bind(to: informationImageView.rx.image)
       .disposed(by: disposeBag)
     
-    // 로딩 중
+    // 로딩중
     reactor.state
       .map { $0.isLoading }
       .withUnretained(self)
@@ -489,7 +489,7 @@ final class MatchingViewController: BaseViewController, View {
       }
       .disposed(by: disposeBag)
     
-    // 바텀 시트
+    // MatchingBottomSheet Present
     reactor.state
       .map { $0.isOpenedBottomSheet }
       .filter { $0 }
@@ -500,8 +500,7 @@ final class MatchingViewController: BaseViewController, View {
       }
       .disposed(by: disposeBag)
     
-    // TODO: 매칭 카드 맞추기
-    
+    // TopRoundedBackgroundView 좋아요 반응
     reactor.state
       .map { $0.isGreenBackgroundColor }
       .filter { $0 }
@@ -517,6 +516,7 @@ final class MatchingViewController: BaseViewController, View {
       }
       .disposed(by: disposeBag)
     
+    // TopRoundedBackgroundView 싫어요 반응
     reactor.state
       .map { $0.isRedBackgroundColor }
       .filter { $0 }

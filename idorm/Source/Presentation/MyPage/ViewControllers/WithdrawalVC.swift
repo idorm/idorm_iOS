@@ -103,16 +103,31 @@ final class WithdrawalViewController: BaseViewController, View {
       .bind(to: indicator.rx.isAnimating)
       .disposed(by: disposeBag)
     
-    // 로그인VC로 이동
+    // 회원탈퇴 완료 팝업
     reactor.state
-      .map { $0.isOpenedLoginVC }
-      .distinctUntilChanged()
+      .map { $0.isOpenedPopup }
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let loginVC = LoginViewController()
-        loginVC.modalPresentationStyle = .fullScreen
-        owner.present(loginVC, animated: true)
+        let popup = BasicPopup(
+          contents: """
+          탈퇴 처리가 성공적으로 완료되었습니다.
+          언제든지 다시 돌아와 주세요!
+          """
+        )
+        popup.modalPresentationStyle = .overFullScreen
+        owner.present(popup, animated: false)
+        
+        // 로그인VC로 이동
+        popup.confirmButton.rx.tap
+          .delay(.microseconds(10), scheduler: MainScheduler.instance)
+          .bind {
+            let loginVC = LoginViewController()
+            loginVC.reactor = LoginViewReactor()
+            loginVC.modalPresentationStyle = .fullScreen
+            owner.present(loginVC, animated: true)
+          }
+          .disposed(by: owner.disposeBag)
       }
       .disposed(by: disposeBag)
   }
@@ -133,13 +148,19 @@ final class WithdrawalViewController: BaseViewController, View {
     view.addSubview(floatyBottomView)
     scrollView.addSubview(contentView)
     
-    [mainLabel, sadDomiImageView, mainLabel2, descriptionBackgroundView, descriptionLabelStack]
+    [
+      mainLabel,
+      sadDomiImageView,
+      mainLabel2,
+      descriptionBackgroundView,
+      descriptionLabelStack
+    ]
       .forEach { contentView.addSubview($0) }
   }
   
   override func setupConstraints() {
     super.setupConstraints()
-    
+
     scrollView.snp.makeConstraints { make in
       make.top.leading.trailing.equalToSuperview()
       make.bottom.equalTo(floatyBottomView.snp.top)

@@ -69,6 +69,7 @@ final class ManageMyInfoViewController: BaseViewController, View {
     
     // 로그아웃 버튼 클릭
     logoutButton.rx.tap
+      .debug()
       .map { ManageMyInfoViewReactor.Action.didTapLogoutButton }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
@@ -235,13 +236,13 @@ final class ManageMyInfoViewController: BaseViewController, View {
     withDrawLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(24)
       make.top.equalTo(separatorLine2.snp.bottom).offset(32)
-      make.bottom.equalToSuperview()
     }
     
     logoutButton.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
       make.top.equalTo(withDrawLabel.snp.bottom).offset(36)
       make.height.equalTo(52)
+      make.bottom.equalToSuperview()
     }
   }
 }

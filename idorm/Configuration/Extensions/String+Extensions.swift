@@ -50,6 +50,6 @@ extension String {
   }
   
   var isValidKakaoLink: Bool {
-    return self.contains("open.kakao.com/")
+    return self.contains("https://open.kakao.com/")
   }
 }

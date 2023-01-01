@@ -20,12 +20,12 @@ final class WithDrawalViewReactor: Reactor {
   
   enum Mutation {
     case setLoading(Bool)
-    case setLoginVC(Bool)
+    case setPopup(Bool)
   }
   
   struct State {
     var isLoading: Bool = false
-    var isOpenedLoginVC: Bool = false
+    var isOpenedPopup: Bool = false
   }
   
   var initialState: State = State()
@@ -39,7 +39,13 @@ final class WithDrawalViewReactor: Reactor {
           .asObservable()
           .retry()
           .filterSuccessfulStatusCodes()
-          .flatMap { _ in Observable<Mutation>.just(.setLoginVC(true)) }
+          .flatMap { _ -> Observable<Mutation> in
+            TokenStorage.removeToken()
+            return .concat([
+              .just(.setPopup(true)),
+              .just(.setPopup(false))
+            ])
+          }
       ])
     }
   }
@@ -51,8 +57,8 @@ final class WithDrawalViewReactor: Reactor {
     case .setLoading(let isLoading):
       newState.isLoading = isLoading
       
-    case .setLoginVC(let isOpened):
-      newState.isOpenedLoginVC = isOpened
+    case .setPopup(let isOpened):
+      newState.isOpenedPopup = isOpened
     }
     
     return newState

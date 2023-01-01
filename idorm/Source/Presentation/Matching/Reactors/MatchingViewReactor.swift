@@ -22,7 +22,7 @@ final class MatchingViewReactor: Reactor {
     case didTapRefreshButton
     case didTapPublicButton
     case didTapMakeProfileButton
-    case didTapKakaoLinkButton(String)
+    case didTapKakaoLinkButton
     case didTapOptionButton
     case dislikeCard(Int)
     case likeCard(Int)
@@ -257,21 +257,13 @@ final class MatchingViewReactor: Reactor {
         .just(.setKakaoPopup(false, ""))
       ])
       
-    case .didTapKakaoLinkButton(let url):
-      if url.isValidKakaoLink {
-        return .concat([
-          .just(.setDismissPopup(true)),
-          .just(.setDismissPopup(false)),
-          .just(.setWeb(true)),
-          .just(.setWeb(false))
-        ])
-      } else {
-        return .concat([
-          .just(.setBasicPopup(true)),
-          .just(.setKakaoPopup(false, "")),
-          .just(.setBasicPopup(false))
-        ])
-      }
+    case .didTapKakaoLinkButton:
+      return .concat([
+        .just(.setDismissPopup(true)),
+        .just(.setDismissPopup(false)),
+        .just(.setWeb(true)),
+        .just(.setWeb(false))
+      ])
     }
   }
   

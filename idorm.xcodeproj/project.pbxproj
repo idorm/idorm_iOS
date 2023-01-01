@@ -448,8 +448,8 @@
 		E5084957293CA74B00F79823 /* Popup */ = {
 			isa = PBXGroup;
 			children = (
-				E5DDA26E292D9CC8003B46BA /* KakaoPopup.swift */,
 				E5AD739C287AE08F00BA2C5E /* BasicPopup.swift */,
+				E5DDA26E292D9CC8003B46BA /* KakaoPopup.swift */,
 				E5FD982328EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift */,
 				E57B3E4D2933688500B2C0F0 /* NoMatchingInfoPopup.swift */,
 				E51063C3291E250400FA0EAC /* NoPublicStatePopUp.swift */,

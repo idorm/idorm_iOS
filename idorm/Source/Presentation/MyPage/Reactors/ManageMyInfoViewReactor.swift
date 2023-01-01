@@ -71,6 +71,7 @@ final class ManageMyInfoViewReactor: Reactor {
       ])
       
     case .didTapLogoutButton:
+      TokenStorage.removeToken()
       return .concat([
         .just(.setLoginVC(true)),
         .just(.setLoginVC(false))

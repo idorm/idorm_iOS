@@ -168,8 +168,10 @@ final class OnboardingViewController: BaseViewController, View {
     // MARK: - Action
     
     rx.viewDidLoad
-      .filter { _ in MemberStorage.shared.hasMatchingInfo }
-      .map { _ in OnboardingViewReactor.Action.viewDidLoad }
+      .filter { MemberStorage.shared.hasMatchingInfo }
+      .map { MemberStorage.shared.matchingInfo }
+      .filterNil()
+      .map { OnboardingViewReactor.Action.viewDidLoad($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -354,7 +356,7 @@ final class OnboardingViewController: BaseViewController, View {
     mbtiTextField.textField.rx.text
       .orEmpty
       .skip(1)
-      .map { OnboardingViewReactor.Action.didChangeChatTextField($0) }
+      .map { OnboardingViewReactor.Action.didChangeMbtiTextField($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -536,7 +538,6 @@ final class OnboardingViewController: BaseViewController, View {
     // ChatTextField 체크마크 숨김
     reactor.state
       .map { $0.isHiddenChatTfCheckmark }
-      .distinctUntilChanged()
       .bind(to: chatTextField.checkmarkButton.rx.isHidden)
       .disposed(by: disposeBag)
     
