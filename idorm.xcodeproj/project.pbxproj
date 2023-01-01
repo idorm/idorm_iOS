@@ -508,6 +508,7 @@
 			isa = PBXGroup;
 			children = (
 				E5695C14295EFBD40083E48D /* LaunchViewController.swift */,
+				E56342222878353100E93D17 /* TabBarViewController.swift */,
 				E5084957293CA74B00F79823 /* Popup */,
 				E575D37129544B5200B13530 /* BottomSheet */,
 				E56DF4CC2894063100E85B10 /* Common */,
@@ -767,7 +768,6 @@
 		E56DF4CC2894063100E85B10 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				E5E8A3E22895215700A48A91 /* ViewControllers */,
 				E5E8A3E12895215100A48A91 /* Views */,
 				E5294FF1292778EC004D408C /* Models */,
 			);
@@ -1008,14 +1008,6 @@
 				E5E8A3E02895214C00A48A91 /* Cells */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		E5E8A3E22895215700A48A91 /* ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				E56342222878353100E93D17 /* TabBarViewController.swift */,
-			);
-			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		E5EB0D022952923D00E70573 /* Enumerations */ = {

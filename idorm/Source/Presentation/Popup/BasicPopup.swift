@@ -29,6 +29,7 @@ final class BasicPopup: BaseViewController {
     let label = UILabel()
     label.textColor = .black
     label.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
+    label.numberOfLines = 0
     
     return label
   }()

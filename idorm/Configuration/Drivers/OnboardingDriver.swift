@@ -38,7 +38,7 @@ final class OnboardingDriver {
     .disposed(by: disposeBag)
   }
   
-  func convertConditionToAll() {
+  func convertConditionToAllTrue() {
     [
       dormConditon,
       genderCondition,
@@ -49,5 +49,18 @@ final class OnboardingDriver {
       showerTimeCondition,
       chatLinkCondition
     ].forEach { $0.accept(true) }
+  }
+  
+  func convertConditionToAllFalse() {
+    [
+      dormConditon,
+      genderCondition,
+      joinPeriodCondition,
+      ageCondition,
+      wakeUpCondition,
+      cleanupCondition,
+      showerTimeCondition,
+      chatLinkCondition
+    ].forEach { $0.accept(false) }
   }
 }

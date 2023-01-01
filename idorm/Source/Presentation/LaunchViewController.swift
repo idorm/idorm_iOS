@@ -21,8 +21,8 @@ final class LaunchViewController: BaseViewController {
   
   // MARK: - LifeCycle
   
-  override func viewDidLoad() {
-    super.viewDidLoad()
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
     
     if TokenStorage.hasToken() {
       requestAPI()

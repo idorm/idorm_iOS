@@ -1,5 +1,5 @@
 ${PODS_ROOT}/Target Support Files/Pods-idorm/Pods-idorm-frameworks.sh
+${BUILT_PRODUCTS_DIR}/AEOTPTextField/AEOTPTextField.framework
 ${BUILT_PRODUCTS_DIR}/Koloda/Koloda.framework
 ${BUILT_PRODUCTS_DIR}/RangeSeekSlider/RangeSeekSlider.framework
-${BUILT_PRODUCTS_DIR}/Shuffle-iOS/Shuffle_iOS.framework
 ${BUILT_PRODUCTS_DIR}/pop/pop.framework

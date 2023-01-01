@@ -216,7 +216,6 @@ final class MatchingViewReactor: Reactor {
       
     case .dislikeCard(let id):
       return Observable.concat([
-        .just(.setLoading(true)),
         APIService.matchingProvider.rx.request(.addDisliked(id))
           .asObservable()
           .retry()
@@ -229,11 +228,10 @@ final class MatchingViewReactor: Reactor {
       
     case .likeCard(let id):
       return Observable.concat([
-        .just(.setLoading(true)),
         APIService.matchingProvider.rx.request(.addLiked(id))
           .asObservable()
           .retry()
-          .flatMap { response -> Observable<Mutation> in
+          .flatMap { _ -> Observable<Mutation> in
             return Observable.concat([
               .just(.setLoading(false))
             ])

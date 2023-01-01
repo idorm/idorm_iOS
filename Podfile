@@ -7,8 +7,8 @@ target 'idorm' do
 
   # Pods for idorm
 
-pod 'Shuffle-iOS'
 pod 'RangeSeekSlider'
 pod "Koloda"
+pod 'AEOTPTextField'
 
 end

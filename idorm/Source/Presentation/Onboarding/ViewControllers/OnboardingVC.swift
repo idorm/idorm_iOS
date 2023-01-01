@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 import Then
-import CHIOTPField
+import AEOTPTextField
 import RSKGrowingTextView
 import RxSwift
 import RxCocoa
@@ -21,25 +21,12 @@ import RxOptional
 final class OnboardingViewController: BaseViewController, View {
   
   // MARK: - Properties
-  
-  private let titleLabel = OnboardingUtilities.descriptionLabel("룸메이트 매칭을 위한 기본정보를 알려주세요!")
-  private var floatyBottomView: FloatyBottomView!
-  
+    
   private let indicator = UIActivityIndicatorView().then {
-    $0.color = .gray
+    $0.color = .darkGray
   }
   
-  private let scrollView = UIScrollView().then {
-    $0.keyboardDismissMode = .onDrag
-  }
-  
-  private let contentView = UIView()
-  
-  private let dormLabel = OnboardingUtilities.titleLabel(text: "기숙사")
-  private let dorm1Button = OnboardingUtilities.basicButton(title: "1 기숙사")
-  private let dorm2Button = OnboardingUtilities.basicButton(title: "2 기숙사")
-  private let dorm3Button = OnboardingUtilities.basicButton(title: "3 기숙사")
-  private let dormLine = OnboardingUtilities.separatorLine()
+  private let scrollView = UIScrollView()
   
   private lazy var dormStack = UIStackView().then { stack in
     [dorm1Button, dorm2Button, dorm3Button]
@@ -47,36 +34,17 @@ final class OnboardingViewController: BaseViewController, View {
     stack.spacing = 12
   }
   
-  private let genderLabel = OnboardingUtilities.titleLabel(text: "성별")
-  private let maleButton = OnboardingUtilities.basicButton(title: "남성")
-  private let femaleButton = OnboardingUtilities.basicButton(title: "여성")
-  private let genderLine = OnboardingUtilities.separatorLine()
-  
   private lazy var genderStack = UIStackView().then { stack in
     [maleButton, femaleButton]
       .forEach { stack.addArrangedSubview($0) }
     stack.spacing = 12
   }
   
-  private let periodLabel = OnboardingUtilities.titleLabel(text: "입사 기간")
-  private let period16Button = OnboardingUtilities.basicButton(title: "16 주")
-  private let period24Button = OnboardingUtilities.basicButton(title: "24 주")
-  private let periodLine = OnboardingUtilities.separatorLine()
-  
   private lazy var periodStack = UIStackView().then { stack in
     [period16Button, period24Button]
       .forEach { stack.addArrangedSubview($0) }
     stack.spacing = 12
   }
-  
-  private let habitDescriptionLabel = OnboardingUtilities.descriptionLabel("불호요소가 있는 내 습관을 미리 알려주세요.")
-  private let habitLabel = OnboardingUtilities.titleLabel(text: "내 습관")
-  private let snoreButton = OnboardingUtilities.basicButton(title: "코골이")
-  private let grindingButton = OnboardingUtilities.basicButton(title: "이갈이")
-  private let smokingButton = OnboardingUtilities.basicButton(title: "흡연")
-  private let allowedFoodButton = OnboardingUtilities.basicButton(title: "실내 음식 섭취 함")
-  private let allowedEarphoneButton = OnboardingUtilities.basicButton(title: "이어폰 착용 안함")
-  private let habitLine = OnboardingUtilities.separatorLine()
   
   private lazy var habitStack1 = UIStackView().then { stack in
     [snoreButton, grindingButton, smokingButton]
@@ -90,34 +58,25 @@ final class OnboardingViewController: BaseViewController, View {
     stack.spacing = 12
   }
   
-  private let ageTextField = CHIOTPFieldTwo().then {
-    $0.numberOfDigits = 2
-    $0.borderColor = .idorm_gray_200
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
-    $0.cornerRadius = 10
-    $0.spacing = 2
+  private lazy var ageTextField = AEOTPTextField().then {
+    $0.otpDefaultBorderColor = .idorm_gray_200
+    $0.otpFilledBorderColor = .idorm_gray_200
+    $0.otpFilledBorderWidth = 1
+    $0.otpDefaultBorderWidth = 1
+    $0.otpFont = .init(name: MyFonts.medium.rawValue, size: 14)!
+    $0.otpTextColor = .idorm_gray_400
+    $0.otpBackgroundColor = .white
+    $0.otpFilledBackgroundColor = .white
+    $0.configure(with: 2)
+    $0.clearOTP()
   }
   
-  private let ageDescriptionLabel = OnboardingUtilities.descriptionLabel("살")
-  private let ageLabel = OnboardingUtilities.titleLabel(text: "나이")
-  private let ageLine = OnboardingUtilities.separatorLine()
+  private let chatDescriptionLabel = UILabel().then {
+    $0.text = "open.kakao 카카오 오픈채팅 형식을 기입해주세요."
+    $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
+    $0.textColor = .idorm_gray_300
+  }
   
-  private let wakeUpInfoLabel = OnboardingUtilities.infoLabel("기상시간을 알려주세요.", isEssential: true)
-  private let wakeUpTextField = OnboardingTextField(placeholder: "입력")
-  
-  private let cleanUpInfoLabel = OnboardingUtilities.infoLabel("정리정돈은 얼마나 하시나요?", isEssential: true)
-  private let cleanUpTextField = OnboardingTextField(placeholder: "입력")
-  
-  private let showerInfoLabel = OnboardingUtilities.infoLabel("샤워는 주로 언제/몇 분 동안 하시나요?", isEssential: true)
-  private let showerTextField = OnboardingTextField(placeholder: "입력")
-  
-  private let mbtiInfoLabel = OnboardingUtilities.infoLabel("MBTI를 알려주세요.", isEssential: false)
-  private let mbtiTextField = OnboardingTextField(placeholder: "입력")
-  
-  private let chatInfoLabel = OnboardingUtilities.infoLabel("연락을 위한 개인 오픈채팅 링크를 알려주세요.", isEssential: true)
-  private let chatTextField = OnboardingTextField(placeholder: "입력")
-  
-  private let wishInfoLabel = OnboardingUtilities.infoLabel("미래의 룸메에게 하고 싶은 말은?", isEssential: false)
   private let wishTextView = RSKGrowingTextView().then {
     $0.attributedPlaceholder = NSAttributedString(string: "입력", attributes: [NSAttributedString.Key.font: UIFont.init(name: MyFonts.regular.rawValue, size: 14) ?? 0, NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_300])
     $0.font = .init(name: MyFonts.regular.rawValue, size: 14)
@@ -143,7 +102,46 @@ final class OnboardingViewController: BaseViewController, View {
     $0.textColor = .idorm_blue
     $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
   }
-
+  
+  private let titleLabel = OnboardingUtilities.descriptionLabel("룸메이트 매칭을 위한 기본정보를 알려주세요!")
+  private var floatyBottomView: FloatyBottomView!
+  private let contentView = UIView()
+  private let dormLabel = OnboardingUtilities.titleLabel(text: "기숙사")
+  private let dorm1Button = OnboardingUtilities.basicButton(title: "1 기숙사")
+  private let dorm2Button = OnboardingUtilities.basicButton(title: "2 기숙사")
+  private let dorm3Button = OnboardingUtilities.basicButton(title: "3 기숙사")
+  private let dormLine = OnboardingUtilities.separatorLine()
+  private let genderLabel = OnboardingUtilities.titleLabel(text: "성별")
+  private let maleButton = OnboardingUtilities.basicButton(title: "남성")
+  private let femaleButton = OnboardingUtilities.basicButton(title: "여성")
+  private let genderLine = OnboardingUtilities.separatorLine()
+  private let periodLabel = OnboardingUtilities.titleLabel(text: "입사 기간")
+  private let period16Button = OnboardingUtilities.basicButton(title: "16 주")
+  private let period24Button = OnboardingUtilities.basicButton(title: "24 주")
+  private let periodLine = OnboardingUtilities.separatorLine()
+  private let habitDescriptionLabel = OnboardingUtilities.descriptionLabel("불호요소가 있는 내 습관을 미리 알려주세요.")
+  private let habitLabel = OnboardingUtilities.titleLabel(text: "내 습관")
+  private let snoreButton = OnboardingUtilities.basicButton(title: "코골이")
+  private let grindingButton = OnboardingUtilities.basicButton(title: "이갈이")
+  private let smokingButton = OnboardingUtilities.basicButton(title: "흡연")
+  private let allowedFoodButton = OnboardingUtilities.basicButton(title: "실내 음식 섭취 함")
+  private let allowedEarphoneButton = OnboardingUtilities.basicButton(title: "이어폰 착용 안함")
+  private let habitLine = OnboardingUtilities.separatorLine()
+  private let ageDescriptionLabel = OnboardingUtilities.descriptionLabel("살")
+  private let ageLabel = OnboardingUtilities.titleLabel(text: "나이")
+  private let ageLine = OnboardingUtilities.separatorLine()
+  private let wakeUpInfoLabel = OnboardingUtilities.infoLabel("기상시간을 알려주세요.", isEssential: true)
+  private let wakeUpTextField = OnboardingTextField(placeholder: "입력")
+  private let cleanUpInfoLabel = OnboardingUtilities.infoLabel("정리정돈은 얼마나 하시나요?", isEssential: true)
+  private let cleanUpTextField = OnboardingTextField(placeholder: "입력")
+  private let showerInfoLabel = OnboardingUtilities.infoLabel("샤워는 주로 언제/몇 분 동안 하시나요?", isEssential: true)
+  private let showerTextField = OnboardingTextField(placeholder: "입력")
+  private let mbtiInfoLabel = OnboardingUtilities.infoLabel("MBTI를 알려주세요.", isEssential: false)
+  private let mbtiTextField = OnboardingTextField(placeholder: "입력")
+  private let chatInfoLabel = OnboardingUtilities.infoLabel("연락을 위한 개인 오픈채팅 링크를 알려주세요.", isEssential: true)
+  private let chatTextField = OnboardingTextField(placeholder: "입력")
+  private let wishInfoLabel = OnboardingUtilities.infoLabel("미래의 룸메에게 하고 싶은 말은?", isEssential: false)
+  
   private let type: OnboardingEnumerations
   
   // MARK: - LifeCycle
@@ -169,9 +167,9 @@ final class OnboardingViewController: BaseViewController, View {
     
     // MARK: - Action
     
-    Observable.empty()
-      .filter { MemberStorage.shared.hasMatchingInfo }
-      .map { OnboardingViewReactor.Action.viewDidLoad }
+    rx.viewDidLoad
+      .filter { _ in MemberStorage.shared.hasMatchingInfo }
+      .map { _ in OnboardingViewReactor.Action.viewDidLoad }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -301,54 +299,70 @@ final class OnboardingViewController: BaseViewController, View {
       .disposed(by: disposeBag)
     
     // 나이 텍스트 반응
-    Observable<Int>
-      .interval(.microseconds(100000), scheduler: MainScheduler.instance)
-      .withUnretained(self)
-      .map { $0.0 }
-      .map { $0.ageTextField.text ?? "" }
-      .map { OnboardingViewReactor.Action.didChangeAgeTf($0) }
+    ageTextField.rx.text
+      .orEmpty
+      .skip(1)
+      .map { OnboardingViewReactor.Action.didChangeAgeTextField($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 기상시간 텍스트필드
     wakeUpTextField.textField.rx.text
       .orEmpty
-      .map { OnboardingViewReactor.Action.didChangeWakeUpTf($0) }
+      .skip(1)
+      .map { OnboardingViewReactor.Action.didChangeWakeUpTextField($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 정리정돈 텍스트필드
     cleanUpTextField.textField.rx.text
       .orEmpty
-      .map { OnboardingViewReactor.Action.didChangeCleanUpTf($0) }
+      .skip(1)
+      .map { OnboardingViewReactor.Action.didChangeCleanUpTextField($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 샤워시간 텍스트필드
     showerTextField.textField.rx.text
       .orEmpty
-      .map { OnboardingViewReactor.Action.didChangeShowerTimeTf($0) }
+      .skip(1)
+      .map { OnboardingViewReactor.Action.didChangeShowerTextField($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
+    
+    chatTextField.isDefault = false
     
     // 오픈카카오 텍스트필드
     chatTextField.textField.rx.text
       .orEmpty
-      .map { OnboardingViewReactor.Action.didChangeOpenKakaoLinkTf($0) }
+      .skip(1)
+      .distinctUntilChanged()
+      .map { OnboardingViewReactor.Action.didChangeChatTextField($0) }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // 오픈카카오 텍스트필드 포커싱 해제
+    chatTextField.textField.rx.controlEvent(.editingDidEnd)
+      .withUnretained(self)
+      .map { $0.0.chatTextField.textField.text }
+      .filterNil()
+      .map { OnboardingViewReactor.Action.didEndEditingChatTextField($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // MBTI 텍스트필드
     mbtiTextField.textField.rx.text
       .orEmpty
-      .map { OnboardingViewReactor.Action.didChangeOpenKakaoLinkTf($0) }
+      .skip(1)
+      .map { OnboardingViewReactor.Action.didChangeChatTextField($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 하고싶은 말 텍스트 뷰
     wishTextView.rx.text
       .orEmpty
-      .map { OnboardingViewReactor.Action.didChangeWishTv($0) }
+      .skip(1)
+      .map { OnboardingViewReactor.Action.didChangeWishTextView($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -364,10 +378,17 @@ final class OnboardingViewController: BaseViewController, View {
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
-    // MARK: - State
+    // 빈 공간 터치 시 키보드 내림
+    scrollView.rx.tapGesture(configuration: { _, delegate in
+      delegate.simultaneousRecognitionPolicy = .never
+    })
+      .when(.recognized)
+      .withUnretained(self)
+      .bind { $0.0.view.endEditing(true) }
+      .disposed(by: disposeBag)
     
     // 화면 최초 접속
-    Observable.empty()
+    rx.viewDidLoad
       .map { MemberStorage.shared.matchingInfo }
       .filterNil()
       .withUnretained(self)
@@ -393,7 +414,8 @@ final class OnboardingViewController: BaseViewController, View {
         owner.smokingButton.isSelected = info.isSmoking
         owner.allowedFoodButton.isSelected = info.isAllowedFood
         owner.allowedEarphoneButton.isSelected = info.isWearEarphones
-        owner.ageTextField.text = String(info.age)
+        owner.ageTextField.setText(String(info.age))
+        owner.ageTextField.rx.text.onNext(String(info.age))
         owner.wakeUpTextField.textField.rx.text.onNext(info.wakeUpTime)
         owner.cleanUpTextField.textField.text = info.cleanUpStatus
         owner.showerTextField.textField.text = info.showerTime
@@ -415,6 +437,8 @@ final class OnboardingViewController: BaseViewController, View {
         }
       }
       .disposed(by: disposeBag)
+    
+    // MARK: - State
 
     // 인디케이터 애니메이션
     reactor.state
@@ -460,7 +484,6 @@ final class OnboardingViewController: BaseViewController, View {
           .forEach { $0.isSelected = false }
         
         [
-          owner.ageTextField,
           owner.wakeUpTextField.textField,
           owner.cleanUpTextField.textField,
           owner.showerTextField.textField,
@@ -469,7 +492,17 @@ final class OnboardingViewController: BaseViewController, View {
         ]
           .forEach { $0.text = "" }
         
+        [
+          owner.wakeUpTextField.checkmarkButton,
+          owner.cleanUpTextField.checkmarkButton,
+          owner.showerTextField.checkmarkButton,
+          owner.chatTextField.checkmarkButton,
+          owner.mbtiTextField.checkmarkButton
+        ]
+          .forEach { $0.isHidden = true }
+        
         owner.wishTextView.text = ""
+        owner.ageTextField.clearOTP()
       }
       .disposed(by: disposeBag)
     
@@ -492,6 +525,43 @@ final class OnboardingViewController: BaseViewController, View {
         owner.navigationController?.pushViewController(onboardingDetailVC, animated: true)
       }
       .disposed(by: disposeBag)
+    
+    // ChatTextField 모서리 색상
+    reactor.state
+      .map { $0.currentChatBorderColor }
+      .map { $0.cgColor }
+      .bind(to: chatTextField.layer.rx.borderColor)
+      .disposed(by: disposeBag)
+    
+    // ChatTextField 체크마크 숨김
+    reactor.state
+      .map { $0.isHiddenChatTfCheckmark }
+      .distinctUntilChanged()
+      .bind(to: chatTextField.checkmarkButton.rx.isHidden)
+      .disposed(by: disposeBag)
+    
+    // ChatDescriptionLabel 텍스트 색상
+    reactor.state
+      .map { $0.currentChatDescriptionTextColor }
+      .bind(to: chatDescriptionLabel.rx.textColor)
+      .disposed(by: disposeBag)
+    
+    // 오류 팝업 창
+    reactor.state
+      .map { $0.isOpenedPopup }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { owner, _ in
+        let popup = BasicPopup(contents:
+          """
+          올바른 형식의 링크가 아닙니다.
+          open.kakao 형식을 포함했는지 확인해주세요.
+          """
+        )
+        popup.modalPresentationStyle = .overFullScreen
+        owner.present(popup, animated: false)
+      }
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Setup
@@ -510,9 +580,14 @@ final class OnboardingViewController: BaseViewController, View {
   
   override func setupLayouts() {
     super.setupLayouts()
-    view.addSubview(scrollView)
-    view.addSubview(floatyBottomView)
-    view.addSubview(indicator)
+    
+    [
+      scrollView,
+      floatyBottomView,
+      indicator
+    ]
+      .forEach { view.addSubview($0) }
+    
     scrollView.addSubview(contentView)
     
     [
@@ -526,10 +601,11 @@ final class OnboardingViewController: BaseViewController, View {
       cleanUpInfoLabel, cleanUpTextField,
       showerInfoLabel, showerTextField,
       mbtiInfoLabel, mbtiTextField,
-      chatInfoLabel, chatTextField,
+      chatInfoLabel, chatTextField, chatDescriptionLabel,
       wishInfoLabel, wishTextView,
       currentLengthLabel, maxLengthLabel
-    ].forEach { contentView.addSubview($0) }
+    ]
+      .forEach { contentView.addSubview($0) }
   }
   
   override func setupStyles() {
@@ -714,9 +790,14 @@ final class OnboardingViewController: BaseViewController, View {
       make.height.equalTo(50)
     }
     
+    chatDescriptionLabel.snp.makeConstraints { make in
+      make.top.equalTo(chatTextField.snp.bottom).offset(4)
+      make.leading.equalToSuperview().inset(25)
+    }
+    
     mbtiInfoLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(25)
-      make.top.equalTo(chatTextField.snp.bottom).offset(32)
+      make.top.equalTo(chatDescriptionLabel.snp.bottom).offset(36)
     }
     
     mbtiTextField.snp.makeConstraints { make in
@@ -746,4 +827,6 @@ final class OnboardingViewController: BaseViewController, View {
       make.trailing.equalTo(maxLengthLabel.snp.leading).offset(-4)
     }
   }
+  
+  // MARK: - Helpers
 }

@@ -33,6 +33,7 @@ final class OnboardingTextField: UIView {
   }
   
   let placeholder: String
+  var isDefault: Bool = true
   private var disposeBag = DisposeBag()
   
   // MARK: - LifeCycle
@@ -53,7 +54,12 @@ final class OnboardingTextField: UIView {
   // MARK: - Setup
   
   private func setupLayout() {
-    [ textField, checkmarkButton, xmarkButton ]
+    
+    [
+      textField,
+      checkmarkButton,
+      xmarkButton
+    ]
       .forEach { addSubview($0) }
   }
   
@@ -86,12 +92,22 @@ final class OnboardingTextField: UIView {
   private func bind() {
     
     // 글자 수 30자 제한
-    textField.rx.text.orEmpty
-      .scan("") { pervious, new -> String in
-        if new.count >= 30 {
-          return pervious
+    textField.rx.text
+      .orEmpty
+      .scan("") { [weak self] previous, new -> String in
+        guard let self = self else { return "" }
+        if self.isDefault {
+          if new.count >= 30 {
+            return previous
+          } else {
+            return new
+          }
         } else {
-          return new
+          if new.count >= 50 {
+            return previous
+          } else {
+            return new
+          }
         }
       }
       .asDriver(onErrorJustReturn: "")
@@ -115,19 +131,24 @@ final class OnboardingTextField: UIView {
       })
       .disposed(by: disposeBag)
     
-    // 입력 종료 -> 테두리 Color 변경 & 체크 버튼 활성/비활성화
     textField.rx.controlEvent(.editingDidEnd)
-      .asDriver()
-      .drive(onNext: { [weak self] in
-        let text = self?.textField.text ?? ""
-        self?.layer.borderColor = UIColor.idorm_gray_300.cgColor
-        self?.xmarkButton.isHidden = true
+      .map { true }
+      .bind(to: xmarkButton.rx.isHidden)
+      .disposed(by: disposeBag)
+        
+    textField.rx.controlEvent(.editingDidEnd)
+      .withUnretained(self)
+      .filter { $0.0.isDefault }
+      .bind {
+        let text = $0.0.textField.text ?? ""
         if text.count >= 1 {
-          self?.checkmarkButton.isHidden = false
+          $0.0.checkmarkButton.isHidden = false
         } else {
-          self?.checkmarkButton.isHidden = true
+          $0.0.checkmarkButton.isHidden = true
         }
-      })
+        $0.0.layer.borderColor = UIColor.idorm_gray_300.cgColor
+        $0.0.xmarkButton.isHidden = true
+      }
       .disposed(by: disposeBag)
     
     // X버튼 클릭 -> 텍스트 모두 지우기

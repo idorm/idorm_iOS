@@ -5,7 +5,7 @@
 //  Created by 김응철 on 2022/12/25.
 //
 
-import Foundation
+import UIKit
 
 import RxSwift
 import RxCocoa
@@ -20,13 +20,14 @@ final class OnboardingViewReactor: Reactor {
     case didTapGenderButton(Gender)
     case didTapJoinPeriodButton(JoinPeriod)
     case didTapHabitButton(Habit, Bool)
-    case didChangeAgeTf(String)
-    case didChangeWakeUpTf(String)
-    case didChangeCleanUpTf(String)
-    case didChangeShowerTimeTf(String)
-    case didChangeOpenKakaoLinkTf(String)
-    case didChangeMbtiTf(String)
-    case didChangeWishTv(String)
+    case didChangeAgeTextField(String)
+    case didChangeWakeUpTextField(String)
+    case didChangeCleanUpTextField(String)
+    case didChangeShowerTextField(String)
+    case didChangeChatTextField(String)
+    case didEndEditingChatTextField(String)
+    case didChangeMbtiTextField(String)
+    case didChangeWishTextView(String)
     case didTapLeftButton
     case didTapRightButton
   }
@@ -39,6 +40,10 @@ final class OnboardingViewReactor: Reactor {
     case setMainVC(Bool)
     case setRootVC(Bool)
     case setOnboardingDetailVC(Bool, MatchingDTO.Retrieve)
+    case setChatBorderColor(UIColor)
+    case setChatDescriptionTextColor(UIColor)
+    case setChatTfCheckmark(Bool)
+    case setPopup(Bool)
   }
   
   struct State {
@@ -49,6 +54,10 @@ final class OnboardingViewReactor: Reactor {
     var isOpenedMainVC: Bool = false
     var isOpenedRootVC: Bool = false
     var isOpenedOnboardingDetailVC: (Bool, MatchingDTO.Retrieve) = (false, .init())
+    var currentChatBorderColor: UIColor = .idorm_gray_300
+    var currentChatDescriptionTextColor: UIColor = .idorm_gray_300
+    var isHiddenChatTfCheckmark: Bool = true
+    var isOpenedPopup: Bool = false
   }
   
   var initialState: State = State()
@@ -60,11 +69,11 @@ final class OnboardingViewReactor: Reactor {
   
   func mutate(action: Action) -> Observable<Mutation> {
     var newMatchingInfo = currentState.currentMatchingInfo
-    var newDriver = currentState.currentDriver
+    let newDriver = currentState.currentDriver
     
     switch action {
     case .viewDidLoad:
-      newDriver.convertConditionToAll()
+      newDriver.convertConditionToAllTrue()
       return .just(.setDriver(newDriver))
       
     case .didTapDormButton(let dorm):
@@ -114,15 +123,19 @@ final class OnboardingViewReactor: Reactor {
         return .just(.setMatchingInfo(newMatchingInfo))
       }
       
-    case .didChangeAgeTf(let age):
+    case .didChangeAgeTextField(let age):
       newMatchingInfo.age = age
-      age == "" ? newDriver.ageCondition.accept(false) : newDriver.ageCondition.accept(true)
+      if age.count < 2 {
+        newDriver.ageCondition.accept(false)
+      } else {
+        newDriver.ageCondition.accept(true)
+      }
       return .concat([
         .just(.setMatchingInfo(newMatchingInfo)),
         .just(.setDriver(newDriver))
       ])
       
-    case .didChangeWakeUpTf(let string):
+    case .didChangeWakeUpTextField(let string):
       newMatchingInfo.wakeupTime = string
       string == "" ? newDriver.wakeUpCondition.accept(false) : newDriver.wakeUpCondition.accept(true)
       return .concat([
@@ -130,7 +143,7 @@ final class OnboardingViewReactor: Reactor {
         .just(.setDriver(newDriver))
       ])
       
-    case .didChangeCleanUpTf(let string):
+    case .didChangeCleanUpTextField(let string):
       newMatchingInfo.cleanUpStatus = string
       string == "" ? newDriver.cleanupCondition.accept(false) : newDriver.cleanupCondition.accept(true)
       return .concat([
@@ -138,7 +151,7 @@ final class OnboardingViewReactor: Reactor {
         .just(.setDriver(newDriver))
       ])
       
-    case .didChangeShowerTimeTf(let string):
+    case .didChangeShowerTextField(let string):
       newMatchingInfo.showerTime = string
       string == "" ? newDriver.showerTimeCondition.accept(false) : newDriver.showerTimeCondition.accept(true)
       return .concat([
@@ -146,19 +159,40 @@ final class OnboardingViewReactor: Reactor {
         .just(.setDriver(newDriver))
       ])
       
-    case .didChangeOpenKakaoLinkTf(let string):
+    case .didChangeChatTextField(let string):
+      if string == "" {
+        newDriver.chatLinkCondition.accept(false)
+      } else {
+        newDriver.chatLinkCondition.accept(true)
+      }
       newMatchingInfo.openKakaoLink = string
-      string == "" ? newDriver.chatLinkCondition.accept(false) : newDriver.chatLinkCondition.accept(true)
+      
       return .concat([
         .just(.setMatchingInfo(newMatchingInfo)),
-        .just(.setDriver(newDriver))
+        .just(.setDriver(newDriver)),
+        .just(.setChatTfCheckmark(true))
       ])
       
-    case .didChangeMbtiTf(let string):
+    case .didEndEditingChatTextField(let text):
+      if text.isValidKakaoLink {
+        return .concat([
+          .just(.setChatBorderColor(.idorm_gray_300)),
+          .just(.setChatTfCheckmark(false)),
+          .just(.setChatDescriptionTextColor(.idorm_gray_300))
+        ])
+      } else {
+        return .concat([
+          .just(.setChatBorderColor(.idorm_red)),
+          .just(.setChatTfCheckmark(true)),
+          .just(.setChatDescriptionTextColor(.idorm_red))
+        ])
+      }
+      
+    case .didChangeMbtiTextField(let string):
       newMatchingInfo.mbti = string
       return .just(.setMatchingInfo(newMatchingInfo))
       
-    case .didChangeWishTv(let string):
+    case .didChangeWishTextView(let string):
       newMatchingInfo.wishText = string
       return .just(.setMatchingInfo(newMatchingInfo))
       
@@ -170,7 +204,7 @@ final class OnboardingViewReactor: Reactor {
           .just(.setMainVC(false))
         ])
       case .main, .modify:
-        newDriver = OnboardingDriver()
+        newDriver.convertConditionToAllFalse()
         return .concat([
           .just(.setClear(true)),
           .just(.setClear(false)),
@@ -179,29 +213,49 @@ final class OnboardingViewReactor: Reactor {
       }
       
     case .didTapRightButton:
+      let kakaoLink = currentState.currentMatchingInfo.openKakaoLink
+      
       switch type {
       case .initial, .main:
         let member = ModelTransformationManager.transformToMatchingDTO_RETRIEVE(currentState.currentMatchingInfo)
-        return .concat([
-          .just(.setOnboardingDetailVC(true, member)),
-          .just(.setOnboardingDetailVC(false, member))
-        ])
+        
+        if kakaoLink.isValidKakaoLink {
+          return .concat([
+            .just(.setOnboardingDetailVC(true, member)),
+            .just(.setOnboardingDetailVC(false, member))
+          ])
+        } else {
+          return .concat([
+            .just(.setPopup(true)),
+            .just(.setPopup(false))
+          ])
+        }
+        
       case .modify:
-        return .concat([
-          .just(.setLoading(true)),
-          APIService.onboardingProvider.rx.request(.modify(currentState.currentMatchingInfo))
-            .asObservable()
-            .retry()
-            .map(ResponseModel<MatchingInfoDTO.Retrieve>.self)
-            .flatMap { response -> Observable<Mutation> in
-              MemberStorage.shared.saveMatchingInfo(response.data)
-              return .concat([
-                .just(.setLoading(false)),
-                .just(.setRootVC(true)),
-                .just(.setRootVC(false))
-              ])
-            }
-        ])
+        
+        if kakaoLink.isValidKakaoLink {
+          return .concat([
+            .just(.setLoading(true)),
+            APIService.onboardingProvider.rx.request(.modify(currentState.currentMatchingInfo))
+              .asObservable()
+              .retry()
+              .map(ResponseModel<MatchingInfoDTO.Retrieve>.self)
+              .flatMap { response -> Observable<Mutation> in
+                MemberStorage.shared.saveMatchingInfo(response.data)
+                return .concat([
+                  .just(.setLoading(false)),
+                  .just(.setRootVC(true)),
+                  .just(.setRootVC(false))
+                ])
+              }
+          ])
+        } else {
+          return .concat([
+            .just(.setPopup(true)),
+            .just(.setPopup(false))
+          ])
+        }
+        
       }
     }
   }
@@ -230,6 +284,18 @@ final class OnboardingViewReactor: Reactor {
       
     case .setMainVC(let isOpened):
       newState.isOpenedMainVC = isOpened
+      
+    case .setChatTfCheckmark(let isHidden):
+      newState.isHiddenChatTfCheckmark = isHidden
+      
+    case .setChatBorderColor(let color):
+      newState.currentChatBorderColor = color
+      
+    case .setChatDescriptionTextColor(let textColor):
+      newState.currentChatDescriptionTextColor = textColor
+      
+    case .setPopup(let isOpened):
+      newState.isOpenedPopup = isOpened
     }
     
     return newState
