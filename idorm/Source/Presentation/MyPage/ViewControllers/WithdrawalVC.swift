@@ -124,8 +124,9 @@ final class WithdrawalViewController: BaseViewController, View {
           .bind {
             let loginVC = LoginViewController()
             loginVC.reactor = LoginViewReactor()
-            loginVC.modalPresentationStyle = .fullScreen
-            owner.present(loginVC, animated: true)
+            let navVC = UINavigationController(rootViewController: loginVC)
+            navVC.modalPresentationStyle = .fullScreen
+            owner.present(navVC, animated: true)
           }
           .disposed(by: owner.disposeBag)
       }

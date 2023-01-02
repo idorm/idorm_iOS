@@ -93,8 +93,9 @@ final class CompleteSignUpViewController: BaseViewController, View {
       .bind { owner, _ in
         let onboardingVC = OnboardingViewController(.initial)
         onboardingVC.reactor = OnboardingViewReactor(.initial)
-        onboardingVC.modalPresentationStyle = .fullScreen
-        owner.present(onboardingVC, animated: true)
+        let navVC = UINavigationController(rootViewController: onboardingVC)
+        navVC.modalPresentationStyle = .fullScreen
+        owner.present(navVC, animated: true)
       }
       .disposed(by: disposeBag)
   }

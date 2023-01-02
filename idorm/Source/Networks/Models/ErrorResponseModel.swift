@@ -119,7 +119,7 @@ struct ErrorResponseModel: Codable {
      */
     
     /// 서버 에러가 발생했습니다.
-    case SERVER_ERROR
+    case INTERNAL_SERVER_ERROR
   }
   
   let error: String

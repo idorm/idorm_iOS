@@ -9,6 +9,7 @@ import UIKit
 
 import SnapKit
 import Then
+import PanModal
 import RxSwift
 import RxCocoa
 import ReactorKit
@@ -68,18 +69,94 @@ final class NicknameViewController: BaseViewController, View {
   }
   
   private let textField = idormTextField("변경할 닉네임을 입력해주세요.")
-  private let confirmButton = idormButton("완료")
+  private var confirmButton: idormButton
   private let type: RegisterEnumerations.Nickname
   
   // MARK: - LifeCycle
   
   init(_ type: RegisterEnumerations.Nickname) {
     self.type = type
+    
+    switch type {
+    case .modify:
+      self.confirmButton = idormButton("변경하기")
+    case .signUp:
+      self.confirmButton = idormButton("계속하기")
+    }
+    
     super.init(nibName: nil, bundle: nil)
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  // MARK: - Setup
+  
+  override func setupStyles() {
+    view.backgroundColor = .idorm_gray_100
+    navigationItem.title = "닉네임"
+  }
+  
+  override func setupLayouts() {
+    super.setupLayouts()
+    
+    view.addSubview(backgroundView)
+    [
+      mainLabel,
+      maxLengthLabel,
+      textField,
+      confirmButton,
+      currentLenghtLabel,
+      ConditionStackView,
+      indicator
+    ]
+      .forEach { backgroundView.addSubview($0) }
+  }
+  
+  override func setupConstraints() {
+    super.setupConstraints()
+    
+    backgroundView.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview()
+      make.top.equalTo(view.safeAreaLayoutGuide).inset(24)
+      make.height.equalTo(320)
+    }
+    
+    mainLabel.snp.makeConstraints { make in
+      make.leading.equalToSuperview().inset(24)
+      make.top.equalTo(view.safeAreaLayoutGuide).inset(48)
+    }
+    
+    maxLengthLabel.snp.makeConstraints { make in
+      make.trailing.equalToSuperview().inset(24)
+      make.top.equalTo(mainLabel.snp.bottom).offset(24)
+    }
+    
+    textField.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview().inset(24)
+      make.top.equalTo(maxLengthLabel.snp.bottom).offset(8)
+      make.height.equalTo(50)
+    }
+    
+    confirmButton.snp.makeConstraints { make in
+      make.bottom.leading.trailing.equalToSuperview().inset(24)
+      make.height.equalTo(52)
+    }
+    
+    currentLenghtLabel.snp.makeConstraints { make in
+      make.centerY.equalTo(maxLengthLabel)
+      make.trailing.equalTo(maxLengthLabel.snp.leading).offset(-4)
+    }
+    
+    ConditionStackView.snp.makeConstraints { make in
+      make.leading.equalToSuperview().inset(24)
+      make.top.equalTo(textField.snp.bottom).offset(8)
+    }
+    
+    indicator.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+    }
   }
   
   // MARK: - Bind
@@ -191,16 +268,15 @@ final class NicknameViewController: BaseViewController, View {
       .bind(to: view.rx.isUserInteractionEnabled)
       .disposed(by: disposeBag)
     
-    // CompleteSignupVC 이동
+    // PrivacyPolicyBottomSheet 열기
     reactor.state
-      .map { $0.isOpenedCompleteSignupVC }
+      .map { $0.isOpenedPrivacyPolicyBottomSheet }
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let completeSignupVC = CompleteSignUpViewController()
-        completeSignupVC.reactor = CompleteSignupViewReactor()
-        completeSignupVC.modalPresentationStyle = .fullScreen
-        owner.present(completeSignupVC, animated: true)
+        let bottomSheet = PrivacyPolicyBottomSheet()
+        bottomSheet.reactor = PrivacyPolicyBottomSheetReactor()
+        owner.presentPanModal(bottomSheet)
       }
       .disposed(by: disposeBag)
     
@@ -211,76 +287,6 @@ final class NicknameViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { $0.0.navigationController?.popViewController(animated: true) }
       .disposed(by: disposeBag)
-  }
-  
-  // MARK: - Setup
-  
-  override func setupStyles() {
-    super.setupStyles()
-    
-    view.backgroundColor = .idorm_gray_100
-    navigationItem.title = "닉네임"
-  }
-  
-  override func setupLayouts() {
-    super.setupLayouts()
-    
-    view.addSubview(backgroundView)
-    [
-      mainLabel,
-      maxLengthLabel,
-      textField,
-      confirmButton,
-      currentLenghtLabel,
-      ConditionStackView,
-      indicator
-    ]
-      .forEach { backgroundView.addSubview($0) }
-  }
-  
-  override func setupConstraints() {
-    super.setupConstraints()
-    
-    backgroundView.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview()
-      make.top.equalTo(view.safeAreaLayoutGuide).inset(24)
-      make.height.equalTo(320)
-    }
-    
-    mainLabel.snp.makeConstraints { make in
-      make.leading.equalToSuperview().inset(24)
-      make.top.equalTo(view.safeAreaLayoutGuide).inset(48)
-    }
-    
-    maxLengthLabel.snp.makeConstraints { make in
-      make.trailing.equalToSuperview().inset(24)
-      make.top.equalTo(mainLabel.snp.bottom).offset(24)
-    }
-    
-    textField.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview().inset(24)
-      make.top.equalTo(maxLengthLabel.snp.bottom).offset(8)
-      make.height.equalTo(50)
-    }
-    
-    confirmButton.snp.makeConstraints { make in
-      make.bottom.leading.trailing.equalToSuperview().inset(24)
-      make.height.equalTo(52)
-    }
-    
-    currentLenghtLabel.snp.makeConstraints { make in
-      make.centerY.equalTo(maxLengthLabel)
-      make.trailing.equalTo(maxLengthLabel.snp.leading).offset(-4)
-    }
-    
-    ConditionStackView.snp.makeConstraints { make in
-      make.leading.equalToSuperview().inset(24)
-      make.top.equalTo(textField.snp.bottom).offset(8)
-    }
-    
-    indicator.snp.makeConstraints { make in
-      make.center.equalToSuperview()
-    }
   }
   
   // MARK: - Helpers

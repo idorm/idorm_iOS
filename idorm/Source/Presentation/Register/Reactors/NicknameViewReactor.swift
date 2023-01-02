@@ -32,7 +32,7 @@ final class NicknameViewReactor: Reactor {
     case setPopup(Bool, String)
     case setLoading(Bool)
     case setPopVC(Bool)
-    case setCompleteSignupVC(Bool)
+    case setPrivacyPolicyBottomSheet(Bool)
   }
   
   struct State {
@@ -44,7 +44,7 @@ final class NicknameViewReactor: Reactor {
     var currentTextCount: Int = 0
     var isHiddenCheckmark: Bool = true
     var isOpenedPopup: (Bool, String) = (false, "")
-    var isOpenedCompleteSignupVC: Bool = false
+    var isOpenedPrivacyPolicyBottomSheet: Bool = false
     var popVC: Bool = false
     var isLoading: Bool = false
   }
@@ -140,8 +140,6 @@ final class NicknameViewReactor: Reactor {
       ])
       
     case .didTapConfirmButton:
-      let email = Logger.shared.email
-      let password = Logger.shared.password
       let nickname = currentState.currentNickname
       
       if nickname.isValidNickname,
@@ -149,31 +147,12 @@ final class NicknameViewReactor: Reactor {
          nickname.contains(" ") == false {
         switch type {
         case .signUp:
+          Logger.shared.saveNickname(nickname)
+          
           return .concat([
-            .just(.setLoading(true)),
-            APIService.memberProvider.rx.request(.register(id: email, pw: password, nickname: nickname))
-              .asObservable()
-              .retry()
-              .flatMap { response -> Observable<Mutation> in
-                switch response.statusCode {
-                case 200:
-                  return .concat([
-                    .just(.setLoading(false)),
-                    .just(.setCompleteSignupVC(true)),
-                    .just(.setCompleteSignupVC(false))
-                  ])
-                  
-                default:
-                  let message = APIService.decode(ErrorResponseModel.self, data: response.data).message
-                  return .concat([
-                    .just(.setLoading(false)),
-                    .just(.setPopup(true, message)),
-                    .just(.setPopup(false, ""))
-                  ])
-                }
-              }
+            .just(.setPrivacyPolicyBottomSheet(true)),
+            .just(.setPrivacyPolicyBottomSheet(false))
           ])
-          .subscribe(on: MainScheduler.asyncInstance)
           
         case .modify:
           return .concat([
@@ -225,8 +204,8 @@ final class NicknameViewReactor: Reactor {
     case let .setPopup(isOpened, message):
       newState.isOpenedPopup = (isOpened, message)
       
-    case .setCompleteSignupVC(let isOpened):
-      newState.isOpenedCompleteSignupVC = isOpened
+    case .setPrivacyPolicyBottomSheet(let isOpened):
+      newState.isOpenedPrivacyPolicyBottomSheet = isOpened
       
     case .setTextCount(let count):
       newState.currentTextCount = count

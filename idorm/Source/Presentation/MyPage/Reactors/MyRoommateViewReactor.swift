@@ -141,19 +141,12 @@ final class MyRoommateViewReactor: Reactor {
       }
       
     case .didTapChatButton(let url):
-      if url.isValidKakaoLink {
-        return .concat([
-          .just(.setBottomSheet(false)),
-          .just(.setSafari(true, url)),
-          .just(.setSafari(false, url))
-        ])
-      } else {
-        return .concat([
-          .just(.setBottomSheet(false)),
-          .just(.setPopup(true)),
-          .just(.setPopup(false))
-        ])
-      }
+      return .concat([
+        .just(.setDismissBottomSheet(true)),
+        .just(.setDismissBottomSheet(false)),
+        .just(.setSafari(true, url)),
+        .just(.setSafari(false, ""))
+      ])
     }
   }
   

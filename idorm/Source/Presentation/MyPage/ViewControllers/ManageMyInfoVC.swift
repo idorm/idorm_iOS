@@ -69,7 +69,6 @@ final class ManageMyInfoViewController: BaseViewController, View {
     
     // 로그아웃 버튼 클릭
     logoutButton.rx.tap
-      .debug()
       .map { ManageMyInfoViewReactor.Action.didTapLogoutButton }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
@@ -123,8 +122,9 @@ final class ManageMyInfoViewController: BaseViewController, View {
       .bind { owner, _ in
         let loginVC = LoginViewController()
         loginVC.reactor = LoginViewReactor()
-        loginVC.modalPresentationStyle = .fullScreen
-        owner.present(loginVC, animated: true)
+        let navVC = UINavigationController(rootViewController: loginVC)
+        navVC.modalPresentationStyle = .fullScreen
+        owner.present(navVC, animated: true)
       }
       .disposed(by: disposeBag)
     

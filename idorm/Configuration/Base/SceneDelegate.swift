@@ -24,6 +24,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     window = UIWindow(windowScene: windowScene)
     
     window?.rootViewController = LaunchViewController()
-    window?.makeKeyAndVisible()    
+    window?.makeKeyAndVisible()
+  }
+  
+  func sceneDidEnterBackground(_ scene: UIScene) {
+    let email = UserStorage.loadEmail()
+    let password = UserStorage.loadPassword()
+    
+    // 토큰 Refresh
+    _ = APIService.memberProvider.rx.request(.login(id: email, pw: password))
+      .asObservable()
+      .retry()
+      .filterSuccessfulStatusCodes()
+      .map(ResponseModel<MemberDTO.Retrieve>.self)
+      .debug()
+      .bind { response in
+        TokenStorage.saveToken(token: response.data.loginToken!)
+      }
   }
 }
