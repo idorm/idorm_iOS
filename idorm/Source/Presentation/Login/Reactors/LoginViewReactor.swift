@@ -38,7 +38,7 @@ final class LoginViewReactor: Reactor {
   var initialState: State = State()
   
   func mutate(action: Action) -> Observable<Mutation> {
-    switch action {
+    switch action {      
     case .viewDidLoad:
       TokenStorage.removeToken()
       return .empty()

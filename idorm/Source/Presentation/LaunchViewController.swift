@@ -70,12 +70,17 @@ final class LaunchViewController: BaseViewController {
     APIService.memberProvider.rx.request(.login(id: email, pw: password))
       .asObservable()
       .retry()
-      .map(ResponseModel<MemberDTO.Retrieve>.self)
       .withUnretained(self)
       .bind { owner, response in
-        TokenStorage.saveToken(token: response.data.loginToken!)
-        MemberStorage.shared.saveMember(response.data)
-        owner.retrieveMatchingInfoAPI()
+        switch response.statusCode {
+        case 200..<300:
+          let responseData = APIService.decode(ResponseModel<MemberDTO.Retrieve>.self, data: response.data).data
+          TokenStorage.saveToken(token: responseData.loginToken!)
+          MemberStorage.shared.saveMember(responseData)
+          owner.retrieveMatchingInfoAPI()
+        default:
+          owner.loginVC()
+        }
       }
       .disposed(by: disposeBag)
   }
@@ -84,11 +89,18 @@ final class LaunchViewController: BaseViewController {
     APIService.onboardingProvider.rx.request(.retrieve)
       .asObservable()
       .retry()
-      .map(ResponseModel<MatchingInfoDTO.Retrieve>.self)
       .withUnretained(self)
       .bind { owner, response in
-        MemberStorage.shared.saveMatchingInfo(response.data)
-        owner.mainVC()
+        switch response.statusCode {
+        case 200:
+          let responseData = APIService.decode(ResponseModel<MatchingInfoDTO.Retrieve>.self, data: response.data).data
+          MemberStorage.shared.saveMatchingInfo(responseData)
+          owner.mainVC()
+        case 204:
+          owner.mainVC()
+        default:
+          owner.loginVC()
+        }
       }
       .disposed(by: disposeBag)
   }
