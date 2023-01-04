@@ -125,7 +125,7 @@ final class LoginViewController: BaseViewController, View {
     // MARK: - Action
     
     // viewDidLoad
-    rx.viewDidLoad    
+    rx.viewDidLoad
       .map { LoginViewReactor.Action.viewDidLoad }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)

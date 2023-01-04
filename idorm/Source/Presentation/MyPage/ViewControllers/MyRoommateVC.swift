@@ -76,35 +76,14 @@ final class MyRoommateViewController: BaseViewController, View {
       .bind(to: indicator.rx.isAnimating)
       .disposed(by: disposeBag)
     
-    // 테이블 뷰 리로드
+    // 새로고침
     reactor.state
-      .map { $0.reloadData }
+      .map { $0.currentMembers }
       .distinctUntilChanged()
-      .filter { $0 }
       .withUnretained(self)
       .bind { $0.0.tableView.reloadData() }
       .disposed(by: disposeBag)
-    
-    // 팝업창 열기
-    reactor.state
-      .map { $0.isOpenedPopup }
-      .distinctUntilChanged()
-      .filter { $0 }
-      .withUnretained(self)
-      .bind { owner, _ in
-        let popup = BasicPopup(contents: "링크가 유효하지 않습니다.")
-        popup.modalPresentationStyle = .overFullScreen
-        owner.present(popup, animated: false)
-      }
-      .disposed(by: disposeBag)
-    
-    // 사파리 열기
-    reactor.state
-      .map { $0.isOpenedSafari }
-      .filter { $0.0 }
-      .bind { UIApplication.shared.open(URL(string: $0.1)!) }
-      .disposed(by: disposeBag)
-    
+        
     // 현재 정렬
     reactor.state
       .map { $0.currentSort }
@@ -119,6 +98,38 @@ final class MyRoommateViewController: BaseViewController, View {
           owner.header.lastestButton.isSelected = false
           owner.header.pastButton.isSelected = true
         }
+      }
+      .disposed(by: disposeBag)
+    
+    // 사파리 열기
+    reactor.state
+      .map { $0.isOpenedSafari }
+      .filter { $0.0 }
+      .bind { UIApplication.shared.open(URL(string: $0.1)!) }
+      .disposed(by: disposeBag)
+    
+    // 카카오 팝업
+    reactor.state
+      .map { $0.isOpenedKakaoPopup }
+      .filter { $0.0 }
+      .withUnretained(self)
+      .bind { owner, url in
+        let kakaoPopup = KakaoPopup()
+        kakaoPopup.modalPresentationStyle = .overFullScreen
+        owner.present(kakaoPopup, animated: false)
+        
+        // 카카오버튼부터 구현
+        kakaoPopup.kakaoButton.rx.tap
+          .map { MyRoommateViewReactor.Action.didTapKakaoButton(url.1) }
+          .bind(to: reactor.action)
+          .disposed(by: owner.disposeBag)
+        
+        // 팝업창 닫기
+        reactor.state
+          .map { $0.isDismissed }
+          .filter { $0 }
+          .bind { _ in kakaoPopup.dismiss(animated: false) }
+          .disposed(by: owner.disposeBag)
       }
       .disposed(by: disposeBag)
   }
@@ -239,7 +250,7 @@ extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
     
     // 바텀시트 닫기
     reactor.state
-      .map { $0.isDismissedBottomSheet }
+      .map { $0.isDismissed }
       .filter { $0 }
       .bind { _ in bottomSheet.dismiss(animated: true) }
       .disposed(by: disposeBag)

@@ -110,15 +110,23 @@ extension LoginViewReactor {
     APIService.onboardingProvider.rx.request(.retrieve)
       .asObservable()
       .retry()
-      .filterSuccessfulStatusCodes()
-      .map(ResponseModel<MatchingInfoDTO.Retrieve>.self)
       .flatMap { response -> Observable<Mutation> in
-        MemberStorage.shared.saveMatchingInfo(response.data)
-        return .concat([
-          .just(.setLoading(false)),
-          .just(.setMainVC(true)),
-          .just(.setMainVC(false))
-        ])
+        switch response.statusCode {
+        case 200..<300:
+          let matchingInfo = APIService.decode(ResponseModel<MatchingInfoDTO.Retrieve>.self, data: response.data).data
+          MemberStorage.shared.saveMatchingInfo(matchingInfo)
+          return .concat([
+            .just(.setLoading(false)),
+            .just(.setMainVC(true)),
+            .just(.setMainVC(false))
+          ])
+        default:
+          return .concat([
+            .just(.setLoading(false)),
+            .just(.setMainVC(true)),
+            .just(.setMainVC(false))
+          ])
+        }
       }
   }
 }

@@ -203,6 +203,7 @@ final class ConfirmPwViewReactor: Reactor {
                   fatalError()
                 }
               }
+              .subscribe(on: MainScheduler.asyncInstance)
           ])
           
         case .modifyPw:

@@ -168,8 +168,9 @@ final class OnboardingViewController: BaseViewController, View {
     // MARK: - Action
     
     rx.viewDidLoad
-      .filter { MemberStorage.shared.hasMatchingInfo }
-      .map { MemberStorage.shared.matchingInfo }
+      .withUnretained(self)
+      .filter { $0.0.type == .modify }
+      .map { _ in MemberStorage.shared.matchingInfo }
       .filterNil()
       .map { OnboardingViewReactor.Action.viewDidLoad($0) }
       .bind(to: reactor.action)
@@ -364,6 +365,13 @@ final class OnboardingViewController: BaseViewController, View {
     wishTextView.rx.text
       .orEmpty
       .skip(1)
+      .scan("") { previous, new in
+        if new.count > 100 {
+          return previous
+        } else {
+          return new
+        }
+      }
       .map { OnboardingViewReactor.Action.didChangeWishTextView($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
@@ -562,6 +570,13 @@ final class OnboardingViewController: BaseViewController, View {
         popup.modalPresentationStyle = .overFullScreen
         owner.present(popup, animated: false)
       }
+      .disposed(by: disposeBag)
+    
+    // 현재 하고싶은 말 TextView 글자 수
+    reactor.state
+      .map { $0.currentWishTextCount }
+      .map { String($0) }
+      .bind(to: currentLengthLabel.rx.text)
       .disposed(by: disposeBag)
   }
   

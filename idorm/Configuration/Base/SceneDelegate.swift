@@ -31,15 +31,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let email = UserStorage.loadEmail()
     let password = UserStorage.loadPassword()
     
-    // 토큰 Refresh
-    _ = APIService.memberProvider.rx.request(.login(id: email, pw: password))
-      .asObservable()
-      .retry()
-      .filterSuccessfulStatusCodes()
-      .map(ResponseModel<MemberDTO.Retrieve>.self)
-      .debug()
-      .bind { response in
-        TokenStorage.saveToken(token: response.data.loginToken!)
-      }
+    if TokenStorage.hasToken() {
+      // 토큰 Refresh
+      _ = APIService.memberProvider.rx.request(.login(id: email, pw: password))
+        .asObservable()
+        .retry()
+        .bind { response in
+          switch response.statusCode {
+          case 200..<300:
+            let responseModel = APIService.decode(ResponseModel<MemberDTO.Retrieve>.self, data: response.data).data
+            TokenStorage.saveToken(token: responseModel.loginToken!)
+          default:
+            break
+          }
+        }
+    }
   }
 }

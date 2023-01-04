@@ -9,6 +9,7 @@ import UIKit.UIViewController
 
 import class RxSwift.DisposeBag
 import ReactorKit
+import Alamofire
 
 class BaseViewController: UIViewController {
   

@@ -9,20 +9,22 @@ import Foundation
 
 final class TokenStorage {
   
+  static let key = "TOKEN"
+  
   static func saveToken(token: String) {
     let userDefaults = UserDefaults.standard
-    userDefaults.set(token, forKey: "Token")
+    userDefaults.set(token, forKey: key)
   }
   
   static func loadToken() -> String? {
     let userDefaults = UserDefaults.standard
-    guard let token = userDefaults.string(forKey: "Token") else { return nil }
+    guard let token = userDefaults.string(forKey: key) else { return nil }
     return token
   }
   
   static func removeToken() {
     let userDefaults = UserDefaults.standard
-    userDefaults.removeObject(forKey: "Token")
+    userDefaults.removeObject(forKey: key)
   }
   
   static func hasToken() -> Bool {

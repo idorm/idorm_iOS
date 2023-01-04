@@ -96,7 +96,7 @@ final class LaunchViewController: BaseViewController {
           let responseData = APIService.decode(ResponseModel<MatchingInfoDTO.Retrieve>.self, data: response.data).data
           MemberStorage.shared.saveMatchingInfo(responseData)
           owner.mainVC()
-        case 204:
+        case 404:
           owner.mainVC()
         default:
           owner.loginVC()

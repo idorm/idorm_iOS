@@ -251,6 +251,7 @@ final class MatchingViewReactor: Reactor {
       ])
       
     case .didTapSpeechBubbleButton(let index):
+      guard currentState.matchingMembers.indices.contains(index) else { return .empty() }
       let link = currentState.matchingMembers[index].openKakaoLink
       return .concat([
         .just(.setKakaoPopup(true, link)),

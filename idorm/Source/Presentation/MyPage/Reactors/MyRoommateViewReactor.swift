@@ -20,17 +20,17 @@ final class MyRoommateViewReactor: Reactor {
     case didTapPastButton
     case didTapDeleteButton(MyPageEnumerations.Roommate, Int)
     case didTapChatButton(String)
+    case didTapKakaoButton(String)
   }
   
   enum Mutation {
     case setCurrentSort(MyPageEnumerations.Sort)
     case setCurrentMembers([MatchingDTO.Retrieve])
     case setLoading(Bool)
-    case setReloadData(Bool)
     case setBottomSheet(Bool)
     case setSafari(Bool, String)
-    case setPopup(Bool)
-    case setDismissBottomSheet(Bool)
+    case setDismiss(Bool)
+    case setKakaoPopup(Bool, String)
   }
   
   struct State {
@@ -39,9 +39,8 @@ final class MyRoommateViewReactor: Reactor {
     var isLoading: Bool = false
     var isOpenedBottomSheet: Bool = false
     var isOpenedSafari: (Bool, String) = (false, "")
-    var isOpenedPopup: Bool = false
-    var isDismissedBottomSheet: Bool = false
-    var reloadData: Bool = false
+    var isDismissed: Bool = false
+    var isOpenedKakaoPopup: (Bool, String) = (false, "")
   }
   
   var initialState: State = State()
@@ -63,14 +62,12 @@ final class MyRoommateViewReactor: Reactor {
                 let members = APIService.decode(ResponseModel<[MatchingDTO.Retrieve]>.self, data: response.data).data
                 return .concat([
                   .just(.setCurrentMembers(members)),
-                  .just(.setReloadData(true)),
-                  .just(.setReloadData(false))
+                  .just(.setLoading(false))
                 ])
               default:
                 return .concat([
                   .just(.setCurrentMembers([])),
-                  .just(.setReloadData(true)),
-                  .just(.setReloadData(false))
+                  .just(.setLoading(false))
                 ])
               }
             }
@@ -88,14 +85,12 @@ final class MyRoommateViewReactor: Reactor {
                 let members = APIService.decode(ResponseModel<[MatchingDTO.Retrieve]>.self, data: response.data).data
                 return .concat([
                   .just(.setCurrentMembers(members)),
-                  .just(.setReloadData(true)),
-                  .just(.setReloadData(false))
+                  .just(.setLoading(false))
                 ])
               default:
                 return .concat([
                   .just(.setCurrentMembers([])),
-                  .just(.setReloadData(true)),
-                  .just(.setReloadData(false))
+                  .just(.setLoading(false))
                 ])
               }
             }
@@ -105,15 +100,11 @@ final class MyRoommateViewReactor: Reactor {
     case .didTapPastButton:
       return .concat([
         .just(.setCurrentSort(.past)),
-        .just(.setReloadData(true)),
-        .just(.setReloadData(false))
       ])
       
     case .didTapLastestButton:
       return .concat([
         .just(.setCurrentSort(.lastest)),
-        .just(.setReloadData(true)),
-        .just(.setReloadData(false))
       ])
       
     case let .didTapDeleteButton(roommate, id):
@@ -142,8 +133,16 @@ final class MyRoommateViewReactor: Reactor {
       
     case .didTapChatButton(let url):
       return .concat([
-        .just(.setDismissBottomSheet(true)),
-        .just(.setDismissBottomSheet(false)),
+        .just(.setDismiss(true)),
+        .just(.setDismiss(false)),
+        .just(.setKakaoPopup(true, url)),
+        .just(.setKakaoPopup(false, ""))
+      ])
+      
+    case .didTapKakaoButton(let url):
+      return .concat([
+        .just(.setDismiss(true)),
+        .just(.setDismiss(false)),
         .just(.setSafari(true, url)),
         .just(.setSafari(false, ""))
       ])
@@ -163,11 +162,6 @@ final class MyRoommateViewReactor: Reactor {
       
     case .setCurrentMembers(let members):
       newState.currentMembers = members
-      newState.isLoading = false
-      newState.reloadData = false
-      
-    case .setReloadData(let reloadData):
-      newState.reloadData = reloadData
       
     case .setBottomSheet(let isOpened):
       newState.isOpenedBottomSheet = isOpened
@@ -175,11 +169,11 @@ final class MyRoommateViewReactor: Reactor {
     case let .setSafari(isOpened, url):
       newState.isOpenedSafari = (isOpened, url)
       
-    case .setPopup(let isOpened):
-      newState.isOpenedPopup = isOpened
+    case .setDismiss(let isDismissed):
+      newState.isDismissed = isDismissed
       
-    case .setDismissBottomSheet(let isDismissed):
-      newState.isDismissedBottomSheet = isDismissed
+    case let .setKakaoPopup(isOpened, url):
+      newState.isOpenedKakaoPopup = (isOpened, url)
     }
     
     return newState
@@ -199,18 +193,16 @@ extension MyRoommateViewReactor {
             let members = APIService.decode(ResponseModel<[MatchingDTO.Retrieve]>.self, data: response.data).data
             return .concat([
               .just(.setCurrentMembers(members)),
-              .just(.setDismissBottomSheet(true)),
-              .just(.setDismissBottomSheet(false)),
-              .just(.setReloadData(true)),
-              .just(.setReloadData(false))
+              .just(.setDismiss(true)),
+              .just(.setDismiss(false)),
+              .just(.setLoading(false))
             ])
           default:
             return .concat([
               .just(.setCurrentMembers([])),
-              .just(.setDismissBottomSheet(true)),
-              .just(.setDismissBottomSheet(false)),
-              .just(.setReloadData(true)),
-              .just(.setReloadData(false))
+              .just(.setDismiss(true)),
+              .just(.setDismiss(false)),
+              .just(.setLoading(false))
             ])
           }
         }
@@ -224,18 +216,16 @@ extension MyRoommateViewReactor {
             let members = APIService.decode(ResponseModel<[MatchingDTO.Retrieve]>.self, data: response.data).data
             return .concat([
               .just(.setCurrentMembers(members)),
-              .just(.setDismissBottomSheet(true)),
-              .just(.setDismissBottomSheet(false)),
-              .just(.setReloadData(true)),
-              .just(.setReloadData(false))
+              .just(.setDismiss(true)),
+              .just(.setDismiss(false)),
+              .just(.setLoading(false))
             ])
           default:
             return .concat([
               .just(.setCurrentMembers([])),
-              .just(.setDismissBottomSheet(true)),
-              .just(.setDismissBottomSheet(false)),
-              .just(.setReloadData(true)),
-              .just(.setReloadData(false))
+              .just(.setDismiss(true)),
+              .just(.setDismiss(false)),
+              .just(.setLoading(false))
             ])
           }
         }

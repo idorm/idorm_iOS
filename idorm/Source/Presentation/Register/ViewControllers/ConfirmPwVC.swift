@@ -208,8 +208,9 @@ final class ConfirmPwViewController: BaseViewController, View {
       .bind { owner, _ in
         let loginVC = LoginViewController()
         loginVC.reactor = LoginViewReactor()
-        loginVC.modalPresentationStyle = .fullScreen
-        owner.present(loginVC, animated: true)
+        let navVC = UINavigationController(rootViewController: loginVC)
+        navVC.modalPresentationStyle = .fullScreen
+        owner.present(navVC, animated: true)
       }
       .disposed(by: disposeBag)
     

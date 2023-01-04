@@ -44,11 +44,13 @@ final class OnboardingViewReactor: Reactor {
     case setChatDescriptionTextColor(UIColor)
     case setChatTfCheckmark(Bool)
     case setPopup(Bool)
+    case setWishTextCount(Int)
   }
   
   struct State {
     var currentMatchingInfo: MatchingInfoDTO.Save = .init()
     var currentDriver: OnboardingDriver = .init()
+    var currentWishTextCount: Int = 0
     var isLoading: Bool = false
     var isCleared: Bool = false
     var isOpenedMainVC: Bool = false
@@ -214,7 +216,10 @@ final class OnboardingViewReactor: Reactor {
       
     case .didChangeWishTextView(let string):
       newMatchingInfo.wishText = string
-      return .just(.setMatchingInfo(newMatchingInfo))
+      return .concat([
+        .just(.setMatchingInfo(newMatchingInfo)),
+        .just(.setWishTextCount(string.count))
+      ])
       
     case .didTapLeftButton:
       switch type {
@@ -316,6 +321,9 @@ final class OnboardingViewReactor: Reactor {
       
     case .setPopup(let isOpened):
       newState.isOpenedPopup = isOpened
+      
+    case .setWishTextCount(let count):
+      newState.currentWishTextCount = count
     }
     
     return newState

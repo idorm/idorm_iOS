@@ -9,7 +9,7 @@ import RxMoya
 import RxSwift
 
 final class SharedAPI {
-
+  
   static func retrieveMatchingInfo() {
     _ = APIService.onboardingProvider.rx.request(.retrieve)
       .asObservable()
