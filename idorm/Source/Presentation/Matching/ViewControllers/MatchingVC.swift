@@ -60,6 +60,11 @@ final class MatchingViewController: BaseViewController, View {
     stack.spacing = 4
   }
   
+  private lazy var buttonContainerView = UIView().then {
+    $0.backgroundColor = .clear
+    $0.addSubview(buttonStack)
+  }
+  
   private let informationImageView = UIImageView()
   private let cancelButton = MatchingUtilities.matchingButton(imageName: "circle_dislike_red")
   private let messageButton = MatchingUtilities.matchingButton(imageName: "circle_speechBubble_yellow")
@@ -86,12 +91,12 @@ final class MatchingViewController: BaseViewController, View {
     super.setupLayouts()
     [
       topRoundedBackgroundView,
-      buttonStack,
       filterButton,
       refreshButton,
       informationImageView,
       kolodaView,
-      loadingIndicator
+      loadingIndicator,
+      buttonContainerView
     ]
       .forEach { view.addSubview($0) }
   }
@@ -122,18 +127,22 @@ final class MatchingViewController: BaseViewController, View {
       make.trailing.equalTo(filterButton.snp.leading).offset(-16)
     }
     
-    let deviceManager = DeviceManager.shared
+    buttonContainerView.snp.makeConstraints { make in
+      make.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+      make.top.equalTo(kolodaView.snp.bottom)
+    }
     
+    buttonStack.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+    }
+    
+    let deviceManager = DeviceManager.shared
+
     if deviceManager.isResoultion568() {
       kolodaView.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalToSuperview()
         make.height.equalTo(436)
-      }
-      
-      buttonStack.snp.makeConstraints { make in
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(4)
-        make.centerX.equalToSuperview()
       }
     } else if deviceManager.isResolution667() {
       kolodaView.snp.makeConstraints { make in
@@ -141,110 +150,65 @@ final class MatchingViewController: BaseViewController, View {
         make.top.equalTo(filterButton.snp.bottom).offset(4)
         make.height.equalTo(436)
       }
-      
-      buttonStack.snp.makeConstraints { make in
-        make.centerX.equalToSuperview()
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(8)
-      }
     } else if deviceManager.isResolution736() {
       kolodaView.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
         make.height.equalTo(436)
       }
-      
-      buttonStack.snp.makeConstraints { make in
-        make.centerX.equalToSuperview()
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(32)
-      }
     } else if deviceManager.isResolution812() {
       buttonStack.spacing = 8
-      
+
       kolodaView.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(filterButton.snp.bottom).offset(40)
         make.height.equalTo(436)
-      }
-      
-      buttonStack.snp.makeConstraints { make in
-        make.centerX.equalToSuperview()
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(40)
       }
     } else if deviceManager.isResolution844() {
       buttonStack.spacing = 8
-      
+
       kolodaView.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
-        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.top.equalTo(filterButton.snp.bottom).offset(52)
         make.height.equalTo(436)
-      }
-      
-      buttonStack.snp.makeConstraints { make in
-        make.centerX.equalToSuperview()
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(62)
       }
     } else if deviceManager.isResolution852() {
       buttonStack.spacing = 8
-      
+
       kolodaView.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
-        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.top.equalTo(filterButton.snp.bottom).offset(52)
         make.height.equalTo(436)
-      }
-      
-      buttonStack.snp.makeConstraints { make in
-        make.centerX.equalToSuperview()
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(62)
       }
     } else if deviceManager.isResolution896(){
       buttonStack.spacing = 8
       
       kolodaView.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
-        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.top.equalTo(filterButton.snp.bottom).offset(68)
         make.height.equalTo(436)
-      }
-      
-      buttonStack.snp.makeConstraints { make in
-        make.centerX.equalToSuperview()
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(80)
       }
     } else if deviceManager.isResolution926() {
       buttonStack.spacing = 8
       
       kolodaView.snp.makeConstraints { make in
-        make.leading.trailing.equalToSuperview().inset(32)
-        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(filterButton.snp.bottom).offset(52)
         make.height.equalTo(436)
-      }
-      
-      buttonStack.snp.makeConstraints { make in
-        make.centerX.equalToSuperview()
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(100)
       }
     } else if deviceManager.isResolution932() {
       buttonStack.spacing = 8
       
       kolodaView.snp.makeConstraints { make in
-        make.leading.trailing.equalToSuperview().inset(32)
-        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(filterButton.snp.bottom).offset(60)
         make.height.equalTo(436)
-      }
-      
-      buttonStack.snp.makeConstraints { make in
-        make.centerX.equalToSuperview()
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(100)
       }
     } else {
       kolodaView.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
-        make.top.equalTo(filterButton.snp.bottom).offset(40)
+        make.top.equalTo(filterButton.snp.bottom).offset(16)
         make.height.equalTo(436)
-      }
-      
-      buttonStack.snp.makeConstraints { make in
-        make.centerX.equalToSuperview()
-        make.bottom.equalTo(view.safeAreaLayoutGuide).inset(50)
       }
     }
   }
