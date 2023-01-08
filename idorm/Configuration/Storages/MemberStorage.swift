@@ -35,4 +35,9 @@ final class MemberStorage {
   func saveMember(_ member: MemberDTO.Retrieve) {
     self.member = member
   }
+  
+  func resetMember() {
+    self.matchingInfo = nil
+    self.member = nil
+  }
 }

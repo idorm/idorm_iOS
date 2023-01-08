@@ -118,6 +118,14 @@ final class LoginViewController: BaseViewController, View {
     self.navigationController?.isNavigationBarHidden = false
   }
   
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    TokenStorage.removeToken()
+    MemberStorage.shared.resetMember()
+    FilterStorage.shared.resetFilter()
+  }
+  
   // MARK: - Bind
   
   func bind(reactor: LoginViewReactor) {

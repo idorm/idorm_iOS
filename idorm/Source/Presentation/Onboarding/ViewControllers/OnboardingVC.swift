@@ -21,7 +21,7 @@ import RxOptional
 final class OnboardingViewController: BaseViewController, View {
   
   // MARK: - Properties
-    
+  
   private let indicator = UIActivityIndicatorView().then {
     $0.color = .darkGray
   }
@@ -151,6 +151,12 @@ final class OnboardingViewController: BaseViewController, View {
     navigationController?.isNavigationBarHidden = false
   }
   
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    
+  }
+  
   init(_ type: OnboardingEnumerations) {
     self.type = type
     super.init(nibName: nil, bundle: nil)
@@ -264,7 +270,7 @@ final class OnboardingViewController: BaseViewController, View {
       .map { OnboardingViewReactor.Action.didTapHabitButton(.smoking, $0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
-
+    
     // 코골이 버튼 클릭
     snoreButton.rx.tap
       .withUnretained(self)
@@ -273,7 +279,7 @@ final class OnboardingViewController: BaseViewController, View {
       .map { OnboardingViewReactor.Action.didTapHabitButton(.snoring, $0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
-
+    
     // 이갈이 버튼 클릭
     grindingButton.rx.tap
       .withUnretained(self)
@@ -282,7 +288,7 @@ final class OnboardingViewController: BaseViewController, View {
       .map { OnboardingViewReactor.Action.didTapHabitButton(.grinding, $0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
-
+    
     // 음식 허용 버튼 클릭
     allowedFoodButton.rx.tap
       .withUnretained(self)
@@ -291,7 +297,7 @@ final class OnboardingViewController: BaseViewController, View {
       .map { OnboardingViewReactor.Action.didTapHabitButton(.allowedFood, $0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
-
+    
     // 이어폰 허용 버튼 클릭
     allowedEarphoneButton.rx.tap
       .withUnretained(self)
@@ -392,14 +398,16 @@ final class OnboardingViewController: BaseViewController, View {
     scrollView.rx.tapGesture(configuration: { _, delegate in
       delegate.simultaneousRecognitionPolicy = .never
     })
-      .when(.recognized)
-      .withUnretained(self)
-      .bind { $0.0.view.endEditing(true) }
-      .disposed(by: disposeBag)
+    .when(.recognized)
+    .withUnretained(self)
+    .bind { $0.0.view.endEditing(true) }
+    .disposed(by: disposeBag)
     
     // 화면 최초 접속
     rx.viewDidLoad
-      .map { MemberStorage.shared.matchingInfo }
+      .withUnretained(self)
+      .filter { $0.0.type == .modify }
+      .map { _ in MemberStorage.shared.matchingInfo }
       .filterNil()
       .withUnretained(self)
       .bind { owner, info in
@@ -449,7 +457,7 @@ final class OnboardingViewController: BaseViewController, View {
       .disposed(by: disposeBag)
     
     // MARK: - State
-
+    
     // 인디케이터 애니메이션
     reactor.state
       .map { $0.isLoading }
@@ -845,4 +853,8 @@ final class OnboardingViewController: BaseViewController, View {
   }
   
   // MARK: - Helpers
+  
+  private func setupMatchingInfo() {
+    
+  }
 }

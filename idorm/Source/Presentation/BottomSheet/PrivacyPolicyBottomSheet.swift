@@ -18,36 +18,19 @@ final class PrivacyPolicyBottomSheet: BaseViewController, View {
   
   // MARK: - Properties
   
-  private let agreementLabel1 = UILabel().then {
-    $0.text = "회원가입 약관 필수동의"
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
-    $0.textColor = .idorm_gray_400
-  }
-  
-  private let agreementLabel2 = UILabel().then {
+  private let agreementLabel = UILabel().then {
     $0.text = "개인정보 처리방침 필수동의"
     $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
     $0.textColor = .idorm_gray_400
   }
-
-  private let agreementButton1 = UILabel().then {
+  
+  private let agreementButton = UILabel().then {
     $0.text = "보기"
     $0.textColor = .idorm_gray_200
     $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
   }
   
-  private let agreementButton2 = UILabel().then {
-    $0.text = "보기"
-    $0.textColor = .idorm_gray_200
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
-  }
-  
-  private let agreementCircleButton1 = UIButton().then {
-    $0.setImage(UIImage(named: "circle_gray"), for: .normal)
-    $0.setImage(UIImage(named: "circle_blue"), for: .selected)
-  }
-  
-  private let agreementCircleButton2 = UIButton().then {
+  private let agreementCircleButton = UIButton().then {
     $0.setImage(UIImage(named: "circle_gray"), for: .normal)
     $0.setImage(UIImage(named: "circle_blue"), for: .selected)
   }
@@ -67,15 +50,11 @@ final class PrivacyPolicyBottomSheet: BaseViewController, View {
   override func setupLayouts() {
     [
       confirmButton,
-      agreementCircleButton1,
-      agreementCircleButton2,
-      agreementLabel1,
-      agreementLabel2,
-      agreementButton1,
-      agreementButton2,
+      agreementCircleButton,
+      agreementLabel,
+      agreementButton,
       indicator
-    ]
-      .forEach { view.addSubview($0) }
+    ].forEach { view.addSubview($0) }
   }
   
   override func setupConstraints() {
@@ -86,34 +65,19 @@ final class PrivacyPolicyBottomSheet: BaseViewController, View {
       make.height.equalTo(53)
     }
     
-    agreementCircleButton1.snp.makeConstraints { make in
-      make.leading.equalToSuperview().inset(27.5)
-      make.bottom.equalTo(agreementButton2.snp.top).offset(-15)
-    }
-    
-    agreementCircleButton2.snp.makeConstraints { make in
+    agreementCircleButton.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(27.5)
       make.bottom.equalTo(confirmButton.snp.top).offset(-33.5)
     }
     
-    agreementLabel1.snp.makeConstraints { make in
-      make.centerY.equalTo(agreementCircleButton1)
-      make.leading.equalTo(agreementCircleButton1.snp.trailing).offset(11.5)
+    agreementLabel.snp.makeConstraints { make in
+      make.centerY.equalTo(agreementCircleButton)
+      make.leading.equalTo(agreementCircleButton.snp.trailing).offset(11.5)
     }
     
-    agreementLabel2.snp.makeConstraints { make in
-      make.centerY.equalTo(agreementCircleButton2)
-      make.leading.equalTo(agreementCircleButton2.snp.trailing).offset(11.5)
-    }
-    
-    agreementButton1.snp.makeConstraints { make in
-      make.centerY.equalTo(agreementCircleButton1)
-      make.leading.equalTo(agreementLabel1.snp.trailing).offset(8)
-    }
-    
-    agreementButton2.snp.makeConstraints { make in
-      make.centerY.equalTo(agreementCircleButton2)
-      make.leading.equalTo(agreementLabel2.snp.trailing).offset(8)
+    agreementButton.snp.makeConstraints { make in
+      make.centerY.equalTo(agreementCircleButton)
+      make.leading.equalTo(agreementLabel.snp.trailing).offset(8)
     }
     
     indicator.snp.makeConstraints { make in
@@ -124,34 +88,29 @@ final class PrivacyPolicyBottomSheet: BaseViewController, View {
   // MARK: - Bind
   
   func bind(reactor: PrivacyPolicyBottomSheetReactor) {
-    
+
     // MARK: -  Action
     
     // 버튼 토글
-    agreementCircleButton1.rx.tap
+    agreementCircleButton.rx.tap
       .withUnretained(self)
-      .map { !$0.0.agreementCircleButton1.isSelected }
-      .bind(to: agreementCircleButton1.rx.isSelected)
-      .disposed(by: disposeBag)
-    
-    agreementCircleButton2.rx.tap
-      .withUnretained(self)
-      .map { !$0.0.agreementCircleButton2.isSelected }
-      .bind(to: agreementCircleButton2.rx.isSelected)
+      .map { !$0.0.agreementCircleButton.isSelected }
+      .bind(to: agreementCircleButton.rx.isSelected)
       .disposed(by: disposeBag)
     
     // 완료 버튼
     confirmButton.rx.tap
       .withUnretained(self)
-      .filter {
-        $0.0.agreementCircleButton1.isSelected &&
-        $0.0.agreementCircleButton2.isSelected
-      }
+      .filter { $0.0.agreementCircleButton.isSelected }
       .map { _ in PrivacyPolicyBottomSheetReactor.Action.didTapConfirmButton }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
-    // TODO: 보기 버튼 노션 페이지로 이동하기
+    // 노션 페이지로 이동
+    agreementButton.rx.tapGesture()
+      .skip(1)
+      .bind { _ in UIApplication.shared.open(URL(string: "https://idorm.notion.site/e5a42262cf6b4665b99bce865f08319b")!) }
+      .disposed(by: disposeBag)
     
     // MARK: - State
     
@@ -196,9 +155,9 @@ final class PrivacyPolicyBottomSheet: BaseViewController, View {
 extension PrivacyPolicyBottomSheet: PanModalPresentable {
   var panScrollable: UIScrollView? { nil }
   
-  var longFormHeight: PanModalHeight { .contentHeight(202) }
+  var longFormHeight: PanModalHeight { .contentHeight(158) }
   
-  var shortFormHeight: PanModalHeight { .contentHeight(202) }
+  var shortFormHeight: PanModalHeight { .contentHeight(158) }
   
   var cornerRadius: CGFloat { 24 }
 }

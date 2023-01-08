@@ -73,6 +73,11 @@ final class ManageMyInfoViewController: BaseViewController, View {
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
+    termsView.rx.tapGesture()
+      .skip(1)
+      .bind { _ in UIApplication.shared.open(URL(string: "https://idorm.notion.site/e5a42262cf6b4665b99bce865f08319b")!) }
+      .disposed(by: disposeBag)
+    
     // MARK: - State
     
     // 회원탈퇴 페이지로 이동
