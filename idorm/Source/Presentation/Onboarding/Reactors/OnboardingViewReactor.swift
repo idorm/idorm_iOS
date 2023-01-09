@@ -263,7 +263,6 @@ final class OnboardingViewReactor: Reactor {
             APIService.onboardingProvider.rx.request(.modify(currentState.currentMatchingInfo))
               .asObservable()
               .retry()
-              .debug()
               .map(ResponseModel<MatchingInfoDTO.Retrieve>.self)
               .flatMap { response -> Observable<Mutation> in
                 MemberStorage.shared.saveMatchingInfo(response.data)

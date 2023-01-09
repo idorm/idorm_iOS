@@ -14,7 +14,7 @@ import RxMoya
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   
   var window: UIWindow?
-
+  
   func scene(
     _ scene: UIScene,
     willConnectTo session: UISceneSession,
@@ -46,5 +46,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
           }
         }
     }
+  }
+  
+  func sceneDidBecomeActive(_ scene: UIScene) {
+  
+    // PasteBoard
+    let pasteBoard = UIPasteboard.general
+    
+    guard let string = pasteBoard.string else { return }
+    guard string.contains("https://open.kakao.com/") else { return }
+    guard let newString = string.checkForUrls.first?.absoluteString else { return }
+    
+    pasteBoard.string = newString
+    print(#function)
+    print(newString)
   }
 }

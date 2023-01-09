@@ -31,19 +31,3 @@ extension Resource {
     self.url = url
   }
 }
-//
-//extension URLRequest {
-//  static func load<T: Decodable>(resource: Resource<T>) -> Observable<T> {
-//    return Observable.just(resource.url)
-//      .flatMap { url -> Observable<HTTPURLResponse, Data> in
-//        var request = URLRequest(url: url)
-//        request.httpMethod = resource.httpMethod.rawValue
-//        request.httpBody = resource.body
-//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//        return URLSession.shared.rx.response(request: request)
-//      }
-//      .map { response -> T in
-//        return try JSONDecoder().decode(T.self, from: data)
-//      }
-//  }
-//}

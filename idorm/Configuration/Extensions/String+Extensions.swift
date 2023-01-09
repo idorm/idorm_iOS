@@ -31,25 +31,41 @@ extension String {
   }
   
   var isValidNickname: Bool {
-      // String -> Array
-      let arr = Array(self)
-      // 정규식 pattern. 한글, 영어, 숫자, 밑줄(_)만 있어야함
-      let pattern = "^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9_]$"
-      if let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive) {
-          var index = 0
-          while index < arr.count { // string 내 각 문자 하나하나 마다 정규식 체크 후 충족하지 못한것은 제거.
-              let results = regex.matches(in: String(arr[index]), options: [], range: NSRange(location: 0, length: 1))
-              if results.count == 0 {
-                  return false
-              } else {
-                  index += 1
-              }
-          }
+    // String -> Array
+    let arr = Array(self)
+    // 정규식 pattern. 한글, 영어, 숫자, 밑줄(_)만 있어야함
+    let pattern = "^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9_]$"
+    if let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive) {
+      var index = 0
+      while index < arr.count { // string 내 각 문자 하나하나 마다 정규식 체크 후 충족하지 못한것은 제거.
+        let results = regex.matches(in: String(arr[index]), options: [], range: NSRange(location: 0, length: 1))
+        if results.count == 0 {
+          return false
+        } else {
+          index += 1
+        }
       }
-      return true
+    }
+    return true
   }
   
   var isValidKakaoLink: Bool {
     return self.contains("https://open.kakao.com/")
+  }
+  
+  var checkForUrls: [URL] {
+    let types: NSTextCheckingResult.CheckingType = .link
+    
+    do {
+      let detector = try NSDataDetector(types: types.rawValue)
+      
+      let matches = detector.matches(in: self, options: .reportCompletion, range: NSMakeRange(0, self.count))
+      
+      return matches.compactMap({$0.url})
+    } catch let error {
+      debugPrint(error.localizedDescription)
+    }
+    
+    return []
   }
 }

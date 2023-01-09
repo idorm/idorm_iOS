@@ -151,12 +151,6 @@ final class OnboardingViewController: BaseViewController, View {
     navigationController?.isNavigationBarHidden = false
   }
   
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    
-    
-  }
-  
   init(_ type: OnboardingEnumerations) {
     self.type = type
     super.init(nibName: nil, bundle: nil)
@@ -850,11 +844,5 @@ final class OnboardingViewController: BaseViewController, View {
       make.centerY.equalTo(wishInfoLabel)
       make.trailing.equalTo(maxLengthLabel.snp.leading).offset(-4)
     }
-  }
-  
-  // MARK: - Helpers
-  
-  private func setupMatchingInfo() {
-    
   }
 }
