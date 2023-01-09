@@ -511,8 +511,7 @@
 		E54B3E2428C6E25C0062EF7E /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				E5695C14295EFBD40083E48D /* LaunchViewController.swift */,
-				E56342222878353100E93D17 /* TabBarViewController.swift */,
+				E556AC5A296C22BE00464FBC /* App */,
 				E5084957293CA74B00F79823 /* Popup */,
 				E575D37129544B5200B13530 /* BottomSheet */,
 				E56DF4CC2894063100E85B10 /* Common */,
@@ -525,6 +524,15 @@
 				E56DF4CA2894061000E85B10 /* MyPage */,
 			);
 			path = Presentation;
+			sourceTree = "<group>";
+		};
+		E556AC5A296C22BE00464FBC /* App */ = {
+			isa = PBXGroup;
+			children = (
+				E5695C14295EFBD40083E48D /* LaunchViewController.swift */,
+				E56342222878353100E93D17 /* TabBarViewController.swift */,
+			);
+			path = App;
 			sourceTree = "<group>";
 		};
 		E55DE2F72896DDBC004F1401 /* Utilities */ = {

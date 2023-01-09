@@ -441,8 +441,7 @@ final class OnboardingViewController: BaseViewController, View {
           owner.showerTextField.checkmarkButton,
           owner.chatTextField.checkmarkButton,
           owner.mbtiTextField.checkmarkButton
-        ]
-          .forEach { $0.isHidden = false }
+        ].forEach { $0.isHidden = false }
         
         if info.mbti == nil || info.mbti == "" {
           owner.mbtiTextField.checkmarkButton.isHidden = true
