@@ -16,7 +16,10 @@ final class PostViewController: BaseViewController {
   
   private lazy var pictsCollectionView: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
+    layout.scrollDirection = .horizontal
     let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+    cv.showsHorizontalScrollIndicator = false
+    cv.register(PostCell.self, forCellWithReuseIdentifier: PostCell.identifier)
     cv.dataSource = self
     cv.delegate = self
     
@@ -85,7 +88,8 @@ final class PostViewController: BaseViewController {
   override func setupLayouts() {
     [
       titleTf,
-      separatorLine
+      separatorLine,
+      pictsCollectionView
     ].forEach {
       view.addSubview($0)
     }
@@ -102,6 +106,12 @@ final class PostViewController: BaseViewController {
       make.height.equalTo(0.3)
       make.top.equalTo(titleTf.snp.bottom).offset(12)
     }
+    
+    pictsCollectionView.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview()
+      make.top.equalTo(separatorLine.snp.bottom).offset(22)
+      make.height.equalTo(85)
+    }
   }
   
   // MARK: - Bind
@@ -111,12 +121,41 @@ final class PostViewController: BaseViewController {
 
 extension PostViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
   
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    numberOfItemsInSection section: Int
+  ) -> Int {
     return 5
   }
   
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    return UICollectionViewCell()
+  func collectionView(
+    _ collectionView: UICollectionView,
+    cellForItemAt indexPath: IndexPath
+  ) -> UICollectionViewCell {
+    guard let cell = collectionView.dequeueReusableCell(
+      withReuseIdentifier: PostCell.identifier,
+      for: indexPath
+    ) as? PostCell else {
+      return UICollectionViewCell()
+    }
+    
+    return cell
+  }
+  
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    insetForSectionAt section: Int
+  ) -> UIEdgeInsets {
+    return .init(top: 0, left: 24, bottom: 0, right: 24)
+  }
+  
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    sizeForItemAt indexPath: IndexPath
+  ) -> CGSize {
+    return .init(width: 83, height: 83)
   }
 }
 
