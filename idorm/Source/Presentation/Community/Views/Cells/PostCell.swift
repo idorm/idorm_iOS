@@ -65,8 +65,9 @@ final class PostCell: UICollectionViewCell {
     }
     
     deleteBtn.snp.makeConstraints { make in
-      make.trailing.equalToSuperview()
-      make.top.equalToSuperview().offset(-2)
+      make.trailing.equalToSuperview().offset(3)
+      make.top.equalToSuperview().offset(-3)
+      make.width.height.equalTo(25)
     }
   }
 }
