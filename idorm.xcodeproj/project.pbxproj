@@ -35,6 +35,8 @@
 		E51D1C7A295299FD00A7EE49 /* MyPageEnumerations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51D1C79295299FD00A7EE49 /* MyPageEnumerations.swift */; };
 		E51D1C7C2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51D1C7B2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift */; };
 		E51D1C7E29531B8300A7EE49 /* MyRoommateViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51D1C7D29531B8300A7EE49 /* MyRoommateViewReactor.swift */; };
+		E52233B3296CFCAD00C5DD07 /* PostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52233B2296CFCAD00C5DD07 /* PostVC.swift */; };
+		E52233B6296D04A200C5DD07 /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52233B5296D04A200C5DD07 /* PostCell.swift */; };
 		E5226D582911F3610065C809 /* Dormitory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D572911F3610065C809 /* Dormitory.swift */; };
 		E5226D5A2911F36B0065C809 /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D592911F36B0065C809 /* Gender.swift */; };
 		E5226D5C2911F3760065C809 /* JoinPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D5B2911F3760065C809 /* JoinPeriod.swift */; };
@@ -222,6 +224,8 @@
 		E51D1C79295299FD00A7EE49 /* MyPageEnumerations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageEnumerations.swift; sourceTree = "<group>"; };
 		E51D1C7B2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMyInfoViewReactor.swift; sourceTree = "<group>"; };
 		E51D1C7D29531B8300A7EE49 /* MyRoommateViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoommateViewReactor.swift; sourceTree = "<group>"; };
+		E52233B2296CFCAD00C5DD07 /* PostVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostVC.swift; sourceTree = "<group>"; };
+		E52233B5296D04A200C5DD07 /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		E5226D572911F3610065C809 /* Dormitory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dormitory.swift; sourceTree = "<group>"; };
 		E5226D592911F36B0065C809 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
 		E5226D5B2911F3760065C809 /* JoinPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinPeriod.swift; sourceTree = "<group>"; };
@@ -461,6 +465,13 @@
 			path = Popup;
 			sourceTree = "<group>";
 		};
+		E52233B4296CFCB900C5DD07 /* Reactors */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Reactors;
+			sourceTree = "<group>";
+		};
 		E52791C4291B7CD2009C0ADA /* Storages */ = {
 			isa = PBXGroup;
 			children = (
@@ -518,6 +529,7 @@
 				E56DF4BD2894041D00E85B10 /* Login */,
 				E5E77EC928D8261E00031010 /* Register */,
 				E5E77ECC28D8293400031010 /* Auth */,
+				E56DF4B02893CE4F00E85B10 /* Community */,
 				E56DF4B6289403A400E85B10 /* Onboarding */,
 				E56DF4C2289405C000E85B10 /* Home */,
 				E56DF4C3289405CD00E85B10 /* Matching */,
@@ -611,8 +623,8 @@
 		E56DF4B02893CE4F00E85B10 /* Community */ = {
 			isa = PBXGroup;
 			children = (
-				E56DF4B32893CE6700E85B10 /* Cells */,
 				E56DF4B22893CE6100E85B10 /* ViewControllers */,
+				E52233B4296CFCB900C5DD07 /* Reactors */,
 				E56DF4B12893CE5B00E85B10 /* Views */,
 			);
 			path = Community;
@@ -621,6 +633,7 @@
 		E56DF4B12893CE5B00E85B10 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E56DF4B32893CE6700E85B10 /* Cells */,
 				E5290F0828881C6E0004B8E6 /* CommunityDetailCollectionHeaderView.swift */,
 			);
 			path = Views;
@@ -629,6 +642,7 @@
 		E56DF4B22893CE6100E85B10 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				E52233B2296CFCAD00C5DD07 /* PostVC.swift */,
 				E5F5EC732884025E0026DE21 /* CommunityViewController.swift */,
 				E5290F05288818E70004B8E6 /* CommunityDetailViewController.swift */,
 				E5BF4C5E28840EBF00B4F0B8 /* PostingViewController.swift */,
@@ -642,6 +656,7 @@
 		E56DF4B32893CE6700E85B10 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				E52233B5296D04A200C5DD07 /* PostCell.swift */,
 				E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */,
 				E5290F0D288867E50004B8E6 /* CommunityDetailTableViewCell.swift */,
 				E5290F0F288869700004B8E6 /* CommunityDetailHeaderCollectionViewCell.swift */,
@@ -913,7 +928,6 @@
 		E5D070882930CE7800D5DF6E /* Trash */ = {
 			isa = PBXGroup;
 			children = (
-				E56DF4B02893CE4F00E85B10 /* Community */,
 				E56DF4A82893C73600E85B10 /* Calendar */,
 			);
 			path = Trash;
@@ -1261,6 +1275,7 @@
 				E5F56574291908DE0043FCB4 /* MyRoommateCell.swift in Sources */,
 				E57B3E4E2933688500B2C0F0 /* NoMatchingInfoPopup.swift in Sources */,
 				E5D4900B288BFA0200311493 /* MatchingVC.swift in Sources */,
+				E52233B3296CFCAD00C5DD07 /* PostVC.swift in Sources */,
 				E5FD982428EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift in Sources */,
 				E50F850329582D5E008B7052 /* CompleteSignupViewReactor.swift in Sources */,
 				E5E14984295058FB00A3827C /* MatchingInfoDTO.swift in Sources */,
@@ -1290,6 +1305,7 @@
 				E58F96FB2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift in Sources */,
 				E513D9FC2955C251002EA592 /* RegisterEnumerations.swift in Sources */,
 				E5226D5A2911F36B0065C809 /* Gender.swift in Sources */,
+				E52233B6296D04A200C5DD07 /* PostCell.swift in Sources */,
 				E5D31BF3289AB83800510315 /* SetCalendarTabmanController.swift in Sources */,
 				E5226D582911F3610065C809 /* Dormitory.swift in Sources */,
 				E5AC2DCB2882F24000B82AD8 /* OnboardingTextField.swift in Sources */,
