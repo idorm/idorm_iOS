@@ -14,6 +14,15 @@ final class PostViewController: BaseViewController {
   
   // MARK: - Properties
   
+  private lazy var pictsCollectionView: UICollectionView = {
+    let layout = UICollectionViewFlowLayout()
+    let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+    cv.dataSource = self
+    cv.delegate = self
+    
+    return cv
+  }()
+  
   private let completeBtn: UIButton = {
     let button = UIButton()
     var config = UIButton.Configuration.plain()
@@ -59,6 +68,13 @@ final class PostViewController: BaseViewController {
     return tv
   }()
   
+  private let separatorLine: UIView = {
+    let view = UIView()
+    view.backgroundColor = .idorm_gray_200
+    
+    return view
+  }()
+  
   // MARK: - Setup
   
   override func setupStyles() {
@@ -68,7 +84,8 @@ final class PostViewController: BaseViewController {
   
   override func setupLayouts() {
     [
-      titleTf
+      titleTf,
+      separatorLine
     ].forEach {
       view.addSubview($0)
     }
@@ -79,9 +96,28 @@ final class PostViewController: BaseViewController {
       make.leading.trailing.equalToSuperview().inset(24)
       make.top.equalToSuperview().inset(30)
     }
+    
+    separatorLine.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview().inset(24)
+      make.height.equalTo(0.3)
+      make.top.equalTo(titleTf.snp.bottom).offset(12)
+    }
   }
   
   // MARK: - Bind
+}
+
+// MARK: - CollectionView Setup
+
+extension PostViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+  
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return 5
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    return UICollectionViewCell()
+  }
 }
 
 #if canImport(SwiftUI) && DEBUG

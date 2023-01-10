@@ -36,6 +36,7 @@
 		E51D1C7C2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51D1C7B2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift */; };
 		E51D1C7E29531B8300A7EE49 /* MyRoommateViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51D1C7D29531B8300A7EE49 /* MyRoommateViewReactor.swift */; };
 		E52233B3296CFCAD00C5DD07 /* PostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52233B2296CFCAD00C5DD07 /* PostVC.swift */; };
+		E52233B6296D04A200C5DD07 /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52233B5296D04A200C5DD07 /* PostCell.swift */; };
 		E5226D582911F3610065C809 /* Dormitory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D572911F3610065C809 /* Dormitory.swift */; };
 		E5226D5A2911F36B0065C809 /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D592911F36B0065C809 /* Gender.swift */; };
 		E5226D5C2911F3760065C809 /* JoinPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D5B2911F3760065C809 /* JoinPeriod.swift */; };
@@ -224,6 +225,7 @@
 		E51D1C7B2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMyInfoViewReactor.swift; sourceTree = "<group>"; };
 		E51D1C7D29531B8300A7EE49 /* MyRoommateViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoommateViewReactor.swift; sourceTree = "<group>"; };
 		E52233B2296CFCAD00C5DD07 /* PostVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostVC.swift; sourceTree = "<group>"; };
+		E52233B5296D04A200C5DD07 /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		E5226D572911F3610065C809 /* Dormitory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dormitory.swift; sourceTree = "<group>"; };
 		E5226D592911F36B0065C809 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
 		E5226D5B2911F3760065C809 /* JoinPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinPeriod.swift; sourceTree = "<group>"; };
@@ -623,7 +625,6 @@
 			children = (
 				E56DF4B22893CE6100E85B10 /* ViewControllers */,
 				E52233B4296CFCB900C5DD07 /* Reactors */,
-				E56DF4B32893CE6700E85B10 /* Cells */,
 				E56DF4B12893CE5B00E85B10 /* Views */,
 			);
 			path = Community;
@@ -632,6 +633,7 @@
 		E56DF4B12893CE5B00E85B10 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E56DF4B32893CE6700E85B10 /* Cells */,
 				E5290F0828881C6E0004B8E6 /* CommunityDetailCollectionHeaderView.swift */,
 			);
 			path = Views;
@@ -654,6 +656,7 @@
 		E56DF4B32893CE6700E85B10 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				E52233B5296D04A200C5DD07 /* PostCell.swift */,
 				E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */,
 				E5290F0D288867E50004B8E6 /* CommunityDetailTableViewCell.swift */,
 				E5290F0F288869700004B8E6 /* CommunityDetailHeaderCollectionViewCell.swift */,
@@ -1302,6 +1305,7 @@
 				E58F96FB2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift in Sources */,
 				E513D9FC2955C251002EA592 /* RegisterEnumerations.swift in Sources */,
 				E5226D5A2911F36B0065C809 /* Gender.swift in Sources */,
+				E52233B6296D04A200C5DD07 /* PostCell.swift in Sources */,
 				E5D31BF3289AB83800510315 /* SetCalendarTabmanController.swift in Sources */,
 				E5226D582911F3610065C809 /* Dormitory.swift in Sources */,
 				E5AC2DCB2882F24000B82AD8 /* OnboardingTextField.swift in Sources */,
