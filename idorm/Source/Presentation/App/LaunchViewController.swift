@@ -66,6 +66,8 @@ final class LaunchViewController: BaseViewController {
   private func requestAPI() {
     let email = UserStorage.loadEmail()
     let password = UserStorage.loadPassword()
+    print(email)
+    print(password)
 
     APIService.memberProvider.rx.request(.login(id: email, pw: password))
       .asObservable()
