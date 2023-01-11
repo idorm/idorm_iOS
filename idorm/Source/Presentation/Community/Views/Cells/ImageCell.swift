@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class PostCell: UICollectionViewCell {
+final class ImageCell: UICollectionViewCell {
   
   // MARK: - Properties
   

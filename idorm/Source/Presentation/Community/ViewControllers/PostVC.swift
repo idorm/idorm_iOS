@@ -19,7 +19,7 @@ final class PostViewController: BaseViewController {
     layout.scrollDirection = .horizontal
     let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
     cv.showsHorizontalScrollIndicator = false
-    cv.register(PostCell.self, forCellWithReuseIdentifier: PostCell.identifier)
+    cv.register(ImageCell.self, forCellWithReuseIdentifier: ImageCell.identifier)
     cv.dataSource = self
     cv.delegate = self
     
@@ -230,9 +230,9 @@ extension PostViewController: UICollectionViewDataSource, UICollectionViewDelega
     cellForItemAt indexPath: IndexPath
   ) -> UICollectionViewCell {
     guard let cell = collectionView.dequeueReusableCell(
-      withReuseIdentifier: PostCell.identifier,
+      withReuseIdentifier: ImageCell.identifier,
       for: indexPath
-    ) as? PostCell else {
+    ) as? ImageCell else {
       return UICollectionViewCell()
     }
     
