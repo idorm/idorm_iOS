@@ -30,6 +30,7 @@ final class TabBarViewController: UITabBarController {
     let homeVC = HomeViewController()
     let matchingVC = MatchingViewController()
     let myPageVC = MyPageViewController()
+    let postListVC = PostListViewController()
     
     homeVC.reactor = HomeViewReactor()
     matchingVC.reactor = MatchingViewReactor()
@@ -38,12 +39,14 @@ final class TabBarViewController: UITabBarController {
     let naviHomeVC = UINavigationController(rootViewController: homeVC)
     let naviMatchingVC = UINavigationController(rootViewController: matchingVC)
     let naviMyPageVC = UINavigationController(rootViewController: myPageVC)
+    let naviPostListVC = UINavigationController(rootViewController: postListVC)
     
     naviHomeVC.tabBarItem = tabBarItem("홈", image: UIImage(named: "house"))
     naviMatchingVC.tabBarItem = tabBarItem("룸메 매칭", image: UIImage(named: "circle_heart_lightgray"))
     naviMyPageVC.tabBarItem = tabBarItem("마이페이지", image: UIImage(named: "human_lightgray"))
+    naviPostListVC.tabBarItem = tabBarItem("커뮤니티", image: UIImage(named: "speechBubble_gray"))
     
-    viewControllers = [naviHomeVC, naviMatchingVC, naviMyPageVC]
+    viewControllers = [naviHomeVC, naviMatchingVC, naviPostListVC, naviMyPageVC]
   }
   
   private func setupStyles() {
