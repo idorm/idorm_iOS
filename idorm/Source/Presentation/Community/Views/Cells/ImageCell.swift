@@ -13,7 +13,7 @@ final class ImageCell: UICollectionViewCell {
   
   // MARK: - Properties
   
-  static let identifier = "PostCell"
+  static let identifier = "ImageCell"
   
   let deleteBtn: UIButton = {
     let btn = UIButton()

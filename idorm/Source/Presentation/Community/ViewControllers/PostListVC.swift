@@ -47,8 +47,14 @@ final class PostListViewController: BaseViewController {
   private lazy var postListCV: UICollectionView = {
     let cv = UICollectionView(frame: .zero, collectionViewLayout: getLayout())
     cv.backgroundColor = .idorm_gray_100
+    cv.register(
+      PostCell.self,
+      forCellWithReuseIdentifier: PostCell.identifier
+    )
     cv.dataSource = self
     cv.delegate = self
+    
+    return cv
   }()
   
   // MARK: - Setup
@@ -60,11 +66,23 @@ final class PostListViewController: BaseViewController {
   }
   
   override func setupLayouts() {
-    
+    [
+      floatyBtn,
+      postListCV
+    ].forEach {
+      view.addSubview($0)
+    }
   }
   
   override func setupConstraints() {
+    floatyBtn.snp.makeConstraints { make in
+      make.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+      make.centerX.equalToSuperview()
+    }
     
+    postListCV.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
+    }
   }
   
   // MARK: - Helpers
@@ -98,12 +116,3 @@ extension PostListViewController: UICollectionViewDataSource, UICollectionViewDe
     return UICollectionViewCell()
   }
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-struct PostListVC_PreView: PreviewProvider {
-  static var previews: some View {
-    PostListViewController().toPreview()
-  }
-}
-#endif
