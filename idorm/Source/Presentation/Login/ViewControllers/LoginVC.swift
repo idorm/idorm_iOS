@@ -124,7 +124,7 @@ final class LoginViewController: BaseViewController, View {
     TokenStorage.removeToken()
     MemberStorage.shared.resetMember()
     FilterStorage.shared.resetFilter()
-    
+    UserStorage.reset()
   }
   
   // MARK: - Bind
