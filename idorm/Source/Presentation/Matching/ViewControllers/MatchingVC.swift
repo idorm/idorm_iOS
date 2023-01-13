@@ -55,8 +55,12 @@ final class MatchingViewController: BaseViewController, View {
   }
   
   private lazy var buttonStack = UIStackView().then { stack in
-    [cancelButton, backButton, messageButton, heartButton]
-      .forEach { stack.addArrangedSubview($0) }
+    [
+      cancelButton,
+      backButton,
+      messageButton,
+      heartButton
+    ].forEach { stack.addArrangedSubview($0) }
     stack.spacing = 4
   }
   

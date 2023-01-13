@@ -60,6 +60,11 @@ final class MatchingFilterViewController: BaseViewController, View {
     }
   }
   
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    navigationController?.isNavigationBarHidden = false
+  }
+  
   // MARK: - Bind
   
   func bind(reactor: MatchingFilterViewReactor) {
