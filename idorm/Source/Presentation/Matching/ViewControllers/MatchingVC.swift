@@ -69,6 +69,7 @@ final class MatchingViewController: BaseViewController, View {
     $0.addSubview(buttonStack)
   }
   
+  override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
   private let informationImageView = UIImageView()
   private let cancelButton = MatchingUtilities.matchingButton(imageName: "circle_dislike_red")
   private let messageButton = MatchingUtilities.matchingButton(imageName: "circle_speechBubble_yellow")
@@ -79,8 +80,7 @@ final class MatchingViewController: BaseViewController, View {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    navigationController?.isNavigationBarHidden = true
-    tabBarController?.tabBar.isHidden = false
+    navigationController?.setNavigationBarHidden(true, animated: true)
   }
   
   // MARK: - Setup

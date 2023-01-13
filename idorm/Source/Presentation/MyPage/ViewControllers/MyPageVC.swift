@@ -39,12 +39,13 @@ final class MyPageViewController: BaseViewController, View {
   private let lionImageView = UIImageView(image: #imageLiteral(resourceName: "lion_half"))
   private let topProfileView = TopProfileView()
   private let matchingContainerView = MatchingContainerView()
+  override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
   
   // MARK: - LifeCycle
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    navigationController?.navigationBar.isHidden = false
+//    navigationController?.isNavigationBarHidden = false
     tabBarController?.tabBar.isHidden = false
     
     let navigationBarAppearance = AppearanceManager.navigationAppearance(from: .idorm_blue, shadow: false)
@@ -68,6 +69,12 @@ final class MyPageViewController: BaseViewController, View {
     let tabBarAppearance = AppearanceManager.tabbarAppearance(from: .white)
     tabBarController?.tabBar.standardAppearance = tabBarAppearance
     tabBarController?.tabBar.scrollEdgeAppearance = tabBarAppearance
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    navigationController?.isNavigationBarHidden = false
+    print(#function)
   }
   
   // MARK: - Bind
@@ -257,8 +264,11 @@ final class MyPageViewController: BaseViewController, View {
     view.addSubview(indicator)
     scrollView.addSubview(contentView)
     
-    [topProfileView, matchingContainerView, lionImageView]
-      .forEach { contentView.addSubview($0) }
+    [
+      topProfileView,
+      matchingContainerView,
+      lionImageView
+    ].forEach { contentView.addSubview($0) }
   }
   
   override func setupConstraints() {
