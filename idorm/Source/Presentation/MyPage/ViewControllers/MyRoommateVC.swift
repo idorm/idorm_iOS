@@ -83,7 +83,7 @@ final class MyRoommateViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { $0.0.tableView.reloadData() }
       .disposed(by: disposeBag)
-        
+    
     // 현재 정렬
     reactor.state
       .map { $0.currentSort }
@@ -137,8 +137,7 @@ final class MyRoommateViewController: BaseViewController, View {
   // MARK: - Setup
   
   override func setupStyles() {
-    super.setupStyles()
-    
+    navigationController?.setNavigationBarHidden(false, animated: true)
     view.backgroundColor = .idorm_gray_100
     switch roommate {
     case .like:

@@ -151,15 +151,12 @@ final class ManageMyInfoViewController: BaseViewController, View {
   // MARK: - Setup
   
   override func setupStyles() {
-    super.setupStyles()
-    
+    navigationController?.setNavigationBarHidden(false, animated: true)
     navigationItem.title = "내 정보 관리"
     view.backgroundColor = .white
   }
   
   override func setupLayouts() {
-    super.setupLayouts()
-    
     view.addSubview(scrollView)
     scrollView.addSubview(contentView)
     
@@ -174,8 +171,7 @@ final class ManageMyInfoViewController: BaseViewController, View {
       separatorLine2,
       withDrawLabel,
       logoutButton
-    ]
-      .forEach { contentView.addSubview($0) }
+    ].forEach { contentView.addSubview($0) }
   }
   
   override func setupConstraints() {
