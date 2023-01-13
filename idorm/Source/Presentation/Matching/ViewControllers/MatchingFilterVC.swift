@@ -59,7 +59,7 @@ final class MatchingFilterViewController: BaseViewController, View {
       updateFilteredUI(FilterStorage.shared.filter)
     }
   }
-  
+
   // MARK: - Bind
   
   func bind(reactor: MatchingFilterViewReactor) {
@@ -171,7 +171,7 @@ final class MatchingFilterViewController: BaseViewController, View {
   override func setupStyles() {
     super.setupStyles()
     
-    navigationController?.isNavigationBarHidden = false
+    navigationController?.setNavigationBarHidden(false, animated: true)
     contentView.backgroundColor = .white
     view.backgroundColor = .white
     navigationItem.title = "필터"

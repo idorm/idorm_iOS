@@ -31,6 +31,7 @@
 		E50F850B29588878008B7052 /* OnboardingDetailViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F850A29588878008B7052 /* OnboardingDetailViewReactor.swift */; };
 		E50F850D29589256008B7052 /* CommunityUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F850C29589256008B7052 /* CommunityUtils.swift */; };
 		E50F850F29589270008B7052 /* MatchingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F850E29589270008B7052 /* MatchingUtils.swift */; };
+		E50FB5242971920B00E938B8 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50FB5232971920B00E938B8 /* BaseView.swift */; };
 		E51063C4291E250400FA0EAC /* NoPublicStatePopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51063C3291E250400FA0EAC /* NoPublicStatePopUp.swift */; };
 		E513D9FC2955C251002EA592 /* RegisterEnumerations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E513D9FB2955C251002EA592 /* RegisterEnumerations.swift */; };
 		E513D9FE2955C70A002EA592 /* PutEmailViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E513D9FD2955C70A002EA592 /* PutEmailViewReactor.swift */; };
@@ -201,6 +202,7 @@
 		E50F850A29588878008B7052 /* OnboardingDetailViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDetailViewReactor.swift; sourceTree = "<group>"; };
 		E50F850C29589256008B7052 /* CommunityUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityUtils.swift; sourceTree = "<group>"; };
 		E50F850E29589270008B7052 /* MatchingUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingUtils.swift; sourceTree = "<group>"; };
+		E50FB5232971920B00E938B8 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		E51063C3291E250400FA0EAC /* NoPublicStatePopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoPublicStatePopUp.swift; sourceTree = "<group>"; };
 		E513D9FB2955C251002EA592 /* RegisterEnumerations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterEnumerations.swift; sourceTree = "<group>"; };
 		E513D9FD2955C70A002EA592 /* PutEmailViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailViewReactor.swift; sourceTree = "<group>"; };
@@ -718,6 +720,7 @@
 				E50300F628773A5D00611C62 /* AppDelegate.swift */,
 				E50300F828773A5D00611C62 /* SceneDelegate.swift */,
 				E5909CE528D94B610083075D /* BaseViewController.swift */,
+				E50FB5232971920B00E938B8 /* BaseView.swift */,
 				E503010128773A5E00611C62 /* LaunchScreen.storyboard */,
 				E50300FF28773A5E00611C62 /* Assets.xcassets */,
 			);
@@ -1212,6 +1215,7 @@
 				E513DA002955ECB4002EA592 /* ConfirmPwViewReactor.swift in Sources */,
 				E5B15F6F287FE355004D4164 /* OnboardingDetailVC.swift in Sources */,
 				E547E3EA291CF669000D3A47 /* MatchingCardStringList.swift in Sources */,
+				E50FB5242971920B00E938B8 /* BaseView.swift in Sources */,
 				E5D49014288C3DDB00311493 /* OnboardingUtils.swift in Sources */,
 				E5D31BF1289AAE3D00510315 /* UIScrollView+.swift in Sources */,
 			);
@@ -1370,7 +1374,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = eungcheol.idorm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1407,7 +1411,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = eungcheol.idorm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

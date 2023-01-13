@@ -22,7 +22,6 @@ class BaseViewController: UIViewController {
     setupLayouts()
     setupConstraints()
     bind()
-    print(#function)
   }
 
   /// UI 프로퍼티를 view에 할당합니다.

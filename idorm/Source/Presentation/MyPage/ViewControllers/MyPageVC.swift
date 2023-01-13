@@ -25,6 +25,7 @@ final class MyPageViewController: BaseViewController, View {
   }
   
   private let scrollView = UIScrollView().then {
+    $0.contentInsetAdjustmentBehavior = .never
     $0.bounces = false
   }
   
@@ -32,25 +33,17 @@ final class MyPageViewController: BaseViewController, View {
     $0.backgroundColor = .idorm_gray_100
   }
   
-  private let gearButton = UIButton().then {
-    $0.setImage(#imageLiteral(resourceName: "gear"), for: .normal)
-  }
-  
   private let lionImageView = UIImageView(image: #imageLiteral(resourceName: "lion_half"))
   private let topProfileView = TopProfileView()
   private let matchingContainerView = MatchingContainerView()
+  override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
   
   // MARK: - LifeCycle
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    navigationController?.navigationBar.isHidden = false
+    navigationController?.setNavigationBarHidden(true, animated: true)
     tabBarController?.tabBar.isHidden = false
-    
-    let navigationBarAppearance = AppearanceManager.navigationAppearance(from: .idorm_blue, shadow: false)
-    navigationController?.navigationBar.standardAppearance = navigationBarAppearance
-    navigationController?.navigationBar.scrollEdgeAppearance = navigationBarAppearance
-    navigationController?.navigationBar.compactAppearance = navigationBarAppearance
     
     let tabBarAppearance = AppearanceManager.tabbarAppearance(from: .idorm_gray_100)
     tabBarController?.tabBar.standardAppearance = tabBarAppearance
@@ -59,11 +52,6 @@ final class MyPageViewController: BaseViewController, View {
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    
-    let navigationBarAppearance = AppearanceManager.navigationAppearance(from: .white, shadow: false)
-    navigationController?.navigationBar.standardAppearance = navigationBarAppearance
-    navigationController?.navigationBar.scrollEdgeAppearance = navigationBarAppearance
-    navigationController?.navigationBar.compactAppearance = navigationBarAppearance
     
     let tabBarAppearance = AppearanceManager.tabbarAppearance(from: .white)
     tabBarController?.tabBar.standardAppearance = tabBarAppearance
@@ -83,7 +71,7 @@ final class MyPageViewController: BaseViewController, View {
       .disposed(by: disposeBag)
         
     // 설정 버튼 클릭
-    gearButton.rx.tap
+    topProfileView.gearBtn.rx.tap
       .map { MyPageViewReactor.Action.didTapGearButton }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
@@ -245,20 +233,19 @@ final class MyPageViewController: BaseViewController, View {
   // MARK: - Setup
   
   override func setupStyles() {
-    super.setupStyles()
-    view.backgroundColor = .white
-    navigationItem.rightBarButtonItem = UIBarButtonItem(customView: gearButton)
+    view.backgroundColor = .idorm_blue
   }
   
   override func setupLayouts() {
-    super.setupLayouts()
-    
     view.addSubview(scrollView)
     view.addSubview(indicator)
     scrollView.addSubview(contentView)
     
-    [topProfileView, matchingContainerView, lionImageView]
-      .forEach { contentView.addSubview($0) }
+    [
+      topProfileView,
+      matchingContainerView,
+      lionImageView
+    ].forEach { contentView.addSubview($0) }
   }
   
   override func setupConstraints() {
@@ -280,7 +267,7 @@ final class MyPageViewController: BaseViewController, View {
     
     topProfileView.snp.makeConstraints { make in
       make.leading.trailing.top.equalToSuperview()
-      make.height.equalTo(146)
+      make.height.equalTo(190)
     }
     
     matchingContainerView.snp.makeConstraints { make in

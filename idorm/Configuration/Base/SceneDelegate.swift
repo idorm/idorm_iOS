@@ -49,7 +49,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
   
   func sceneDidBecomeActive(_ scene: UIScene) {
-  
+    
     // PasteBoard
     let pasteBoard = UIPasteboard.general
     
@@ -58,7 +58,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let newString = string.checkForUrls.first?.absoluteString else { return }
     
     pasteBoard.string = newString
-    print(#function)
-    print(newString)
   }
 }
