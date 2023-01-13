@@ -136,9 +136,8 @@ final class MyRoommateViewController: BaseViewController, View {
   
   // MARK: - Setup
   
-  override func setupStyles() {
-    super.setupStyles()
-    
+  override func setupStyles() {    
+    navigationController?.setNavigationBarHidden(false, animated: true)
     view.backgroundColor = .idorm_gray_100
     switch roommate {
     case .like:
