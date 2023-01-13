@@ -52,7 +52,6 @@
 		E523ECB1295198B100E79386 /* MemberStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523ECB0295198B100E79386 /* MemberStorage.swift */; };
 		E523ECB329519C6600E79386 /* MemberDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523ECB229519C6600E79386 /* MemberDTO.swift */; };
 		E5283D5629489E28004DD34F /* ErrorResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5283D5529489E28004DD34F /* ErrorResponseModel.swift */; };
-		E5290EFD2887BBA40004B8E6 /* CommunityPopularCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */; };
 		E5290EFF2887BBB00004B8E6 /* PostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFE2887BBB00004B8E6 /* PostCollectionViewCell.swift */; };
 		E5290F06288818E70004B8E6 /* CommunityDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290F05288818E70004B8E6 /* CommunityDetailViewController.swift */; };
 		E5290F0928881C6E0004B8E6 /* CommunityDetailCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290F0828881C6E0004B8E6 /* CommunityDetailCollectionHeaderView.swift */; };
@@ -223,7 +222,6 @@
 		E523ECB0295198B100E79386 /* MemberStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberStorage.swift; sourceTree = "<group>"; };
 		E523ECB229519C6600E79386 /* MemberDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberDTO.swift; sourceTree = "<group>"; };
 		E5283D5529489E28004DD34F /* ErrorResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponseModel.swift; sourceTree = "<group>"; };
-		E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPopularCollectionVIewCell.swift; sourceTree = "<group>"; };
 		E5290EFE2887BBB00004B8E6 /* PostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCollectionViewCell.swift; sourceTree = "<group>"; };
 		E5290F05288818E70004B8E6 /* CommunityDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityDetailViewController.swift; sourceTree = "<group>"; };
 		E5290F0828881C6E0004B8E6 /* CommunityDetailCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityDetailCollectionHeaderView.swift; sourceTree = "<group>"; };
@@ -547,7 +545,6 @@
 				E5066429296E6B9B00B581E1 /* PostCell.swift */,
 				E506642B296E6BAA00B581E1 /* PopularPostCell.swift */,
 				E52233B5296D04A200C5DD07 /* ImageCell.swift */,
-				E5290EFC2887BBA30004B8E6 /* CommunityPopularCollectionVIewCell.swift */,
 				E5290F0D288867E50004B8E6 /* CommunityDetailTableViewCell.swift */,
 				E5290F0F288869700004B8E6 /* CommunityDetailHeaderCollectionViewCell.swift */,
 				E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */,
@@ -1211,7 +1208,6 @@
 				E51D1C7E29531B8300A7EE49 /* MyRoommateViewReactor.swift in Sources */,
 				E5AD739F287AEF2D00BA2C5E /* PutEmailVC.swift in Sources */,
 				E5695C15295EFBD40083E48D /* LaunchVC.swift in Sources */,
-				E5290EFD2887BBA40004B8E6 /* CommunityPopularCollectionVIewCell.swift in Sources */,
 				E513DA002955ECB4002EA592 /* ConfirmPwViewReactor.swift in Sources */,
 				E5B15F6F287FE355004D4164 /* OnboardingDetailVC.swift in Sources */,
 				E547E3EA291CF669000D3A47 /* MatchingCardStringList.swift in Sources */,
