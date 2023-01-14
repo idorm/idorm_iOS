@@ -2,7 +2,7 @@
 //  PostCell.swift
 //  idorm
 //
-//  Created by 김응철 on 2023/01/10.
+//  Created by 김응철 on 2023/01/11.
 //
 
 import UIKit
@@ -15,27 +15,95 @@ final class PostCell: UICollectionViewCell {
   
   static let identifier = "PostCell"
   
-  let deleteBtn: UIButton = {
-    let btn = UIButton()
-    btn.setImage(UIImage(named: "circle_xmark_darkgray"), for: .normal)
+  private let titleLb: UILabel = {
+    let lb = UILabel()
+    lb.text = "제목"
+    lb.font = .init(name: MyFonts.medium.rawValue, size: 14)
+    lb.textColor = .black
     
-    return btn
+    return lb
   }()
   
-  let imageView: UIImageView = {
-    let iv = UIImageView()
-    iv.layer.cornerRadius = 10
-    iv.backgroundColor = .blue
+  private let contentLb: UILabel = {
+    let lb = UILabel()
+    lb.text = "내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용"
+    lb.font = .init(name: MyFonts.medium.rawValue, size: 12)
+    lb.textColor = .idorm_gray_400
     
-    return iv
+    return lb
   }()
+  
+  private let nicknameLb: UILabel = {
+    let lb = UILabel()
+    lb.text = "닉네임닉네임"
+    lb.font = .init(name: MyFonts.regular.rawValue, size: 12)
+    lb.textColor = .idorm_gray_300
+    
+    return lb
+  }()
+  
+  private let timeLb: UILabel = {
+    let lb = UILabel()
+    lb.text = "1시간 전"
+    lb.font = .init(name: MyFonts.medium.rawValue, size: 12)
+    lb.textColor = .idorm_gray_300
+    
+    return lb
+  }()
+  
+  private let dotLb: UILabel = {
+    let lb = UILabel()
+    lb.font = .init(name: MyFonts.regular.rawValue, size: 12)
+    lb.text = "∙"
+    lb.textColor = .idorm_gray_300
+    
+    return lb
+  }()
+  
+  private let separatorLine: UIView = {
+    let view = UIView()
+    view.backgroundColor = .idorm_gray_200
+    
+    return view
+  }()
+  
+  private let likeCountLb: UILabel = {
+    let lb = UILabel()
+    lb.text = "100"
+    lb.textColor = .idorm_gray_300
+    lb.font = .init(name: MyFonts.regular.rawValue, size: 12)
+    
+    return lb
+  }()
+  
+  private let commentsCountLb: UILabel = {
+    let lb = UILabel()
+    lb.text = "100"
+    lb.textColor = .idorm_gray_300
+    lb.font = .init(name: MyFonts.regular.rawValue, size: 12)
+    
+    return lb
+  }()
+
+  private let pictureCountLb: UILabel = {
+    let lb = UILabel()
+    lb.text = "100"
+    lb.textColor = .idorm_gray_300
+    lb.font = .init(name: MyFonts.regular.rawValue, size: 12)
+    
+    return lb
+  }()
+  
+  private let likeIv = UIImageView(image: UIImage(named: "thumbsup_small"))
+  private let commentIv = UIImageView(image: UIImage(named: "speechBubble_double_small"))
+  private let pictureIv = UIImageView(image: UIImage(named: "picture_small"))
   
   // MARK: - LifeCycle
   
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupStyles()
-    setupLayout()
+    setupLayouts()
     setupConstraints()
   }
   
@@ -43,31 +111,89 @@ final class PostCell: UICollectionViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  // MARK: - Setup
+  // MARK: - Setup\
+  
   
   private func setupStyles() {
     contentView.backgroundColor = .white
   }
   
-  private func setupLayout() {
+  private func setupLayouts() {
     [
-      imageView,
-      deleteBtn
+      titleLb,
+      contentLb,
+      nicknameLb,
+      timeLb,
+      dotLb,
+      separatorLine,
+      likeIv,likeCountLb,
+      commentIv,commentsCountLb,
+      pictureIv,pictureCountLb
     ].forEach {
       contentView.addSubview($0)
     }
   }
-
+  
   private func setupConstraints() {
-    imageView.snp.makeConstraints { make in
-      make.bottom.leading.equalToSuperview()
-      make.width.height.equalTo(80)
+    titleLb.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview().inset(24)
+      make.top.equalToSuperview().inset(12)
     }
     
-    deleteBtn.snp.makeConstraints { make in
-      make.trailing.equalToSuperview().offset(3)
-      make.top.equalToSuperview().offset(-3)
-      make.width.height.equalTo(25)
+    contentLb.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview().inset(24)
+      make.top.equalTo(titleLb.snp.bottom).offset(4)
+    }
+    
+    nicknameLb.snp.makeConstraints { make in
+      make.top.equalTo(contentLb.snp.bottom).offset(12)
+      make.leading.equalToSuperview().inset(24)
+    }
+    
+    dotLb.snp.makeConstraints { make in
+      make.leading.equalTo(nicknameLb.snp.trailing).offset(4)
+      make.centerY.equalTo(nicknameLb)
+    }
+    
+    timeLb.snp.makeConstraints { make in
+      make.leading.equalTo(dotLb.snp.trailing).offset(4)
+      make.centerY.equalTo(nicknameLb)
+    }
+    
+    separatorLine.snp.makeConstraints { make in
+      make.top.equalTo(nicknameLb.snp.bottom).offset(14)
+      make.leading.trailing.equalToSuperview()
+      make.height.equalTo(1)
+    }
+    
+    likeIv.snp.makeConstraints { make in
+      make.leading.equalToSuperview().inset(24)
+      make.top.equalTo(separatorLine.snp.bottom).offset(12)
+    }
+    
+    likeCountLb.snp.makeConstraints { make in
+      make.centerY.equalTo(likeIv)
+      make.leading.equalTo(likeIv.snp.trailing).offset(4)
+    }
+    
+    commentIv.snp.makeConstraints { make in
+      make.centerY.equalTo(likeIv)
+      make.leading.equalTo(likeCountLb.snp.trailing).offset(12)
+    }
+    
+    commentsCountLb.snp.makeConstraints { make in
+      make.leading.equalTo(commentIv.snp.trailing).offset(4)
+      make.centerY.equalTo(likeIv)
+    }
+    
+    pictureIv.snp.makeConstraints { make in
+      make.leading.equalTo(commentsCountLb.snp.trailing).offset(12)
+      make.centerY.equalTo(likeIv)
+    }
+    
+    pictureCountLb.snp.makeConstraints { make in
+      make.leading.equalTo(pictureIv.snp.trailing).offset(4)
+      make.centerY.equalTo(likeIv)
     }
   }
 }

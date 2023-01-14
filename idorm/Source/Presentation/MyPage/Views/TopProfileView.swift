@@ -7,10 +7,20 @@ final class TopProfileView: UIView {
   
   // MARK: - Properties
   
-  let nicknameLabel = UILabel().then {
-    $0.textColor = .idorm_gray_100
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
-  }
+  let gearBtn: UIButton = {
+    let btn = UIButton()
+    btn.setImage(UIImage(named: "gear"), for: .normal)
+    
+    return btn
+  }()
+  
+  let nicknameLabel: UILabel = {
+    let lb = UILabel()
+    lb.textColor = .idorm_gray_100
+    lb.font = .init(name: MyFonts.medium.rawValue, size: 14)
+    
+    return lb
+  }()
   
   let profileImageView = UIImageView(image: #imageLiteral(resourceName: "sqaure_human"))
   
@@ -39,19 +49,27 @@ final class TopProfileView: UIView {
   }
   
   private func setupLayout() {
-    [profileImageView, nicknameLabel]
-      .forEach { addSubview($0) }
+    [
+      profileImageView,
+      nicknameLabel,
+      gearBtn
+    ].forEach { addSubview($0) }
   }
   
   private func setupConstraints() {
     profileImageView.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.top.equalToSuperview().inset(16)
+      make.bottom.equalTo(nicknameLabel.snp.top).offset(-8)
     }
     
     nicknameLabel.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.top.equalTo(profileImageView.snp.bottom).offset(8)
+      make.bottom.equalToSuperview().inset(24)
+    }
+    
+    gearBtn.snp.makeConstraints { make in
+      make.top.equalToSuperview().inset(16)
+      make.trailing.equalToSuperview().inset(24)
     }
   }
 }

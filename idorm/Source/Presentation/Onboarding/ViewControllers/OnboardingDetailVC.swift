@@ -115,6 +115,7 @@ final class OnboardingDetailViewController: BaseViewController, View {
     super.setupStyles()
     view.backgroundColor = .white
     navigationItem.title = "내 프로필 이미지"
+    navigationController?.setNavigationBarHidden(false, animated: true)
   }
   
   override func setupLayouts() {

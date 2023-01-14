@@ -27,7 +27,7 @@ extension String {
   }
   
   static var version: String {
-    return "\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String).\(Bundle.main.infoDictionary?["CFBundleVersion"] as! String)"
+    return "\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String)"
   }
   
   var isValidNickname: Bool {

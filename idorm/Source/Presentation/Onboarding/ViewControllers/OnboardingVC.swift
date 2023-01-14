@@ -626,7 +626,7 @@ final class OnboardingViewController: BaseViewController, View {
   }
   
   override func setupStyles() {
-    super.setupStyles()
+    navigationController?.setNavigationBarHidden(false, animated: true)
     contentView.backgroundColor = .white
     view.backgroundColor = .white
     
