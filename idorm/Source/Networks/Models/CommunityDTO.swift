@@ -9,7 +9,7 @@ import Foundation
 
 struct CommunityDTO: Codable {
   
-  struct Post: Codable {
+  struct Post: Codable, Equatable {
     let postId: Int
     let title: String
     let content: String

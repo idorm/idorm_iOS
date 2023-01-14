@@ -138,4 +138,11 @@ final class PopularPostCell: UICollectionViewCell, BaseView {
     
     return sv
   }
+  
+  func configure(_ post: CommunityDTO.Post) {
+    contentsLabel.text = post.content
+    likeCountLabel.text = "\(post.likesCount)"
+    pictureCountLabel.text = "\(post.imagesCount)"
+    messageCountLabel.text = "\(post.commentsCount)"
+  }
 }

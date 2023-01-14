@@ -22,9 +22,9 @@ extension CommunityAPI: TargetType {
   var path: String {
     switch self {
     case .retrievePosts(let dorm, _):
-      return "/member/posts/\(dorm)"
-    case .retrieveTopPosts(dorm: let dorm):
-      return "/member/posts/\(dorm)/top"
+      return "/member/posts/\(dorm.rawValue)"
+    case .retrieveTopPosts(let dorm):
+      return "/member/posts/\(dorm.rawValue)/top"
     }
   }
   

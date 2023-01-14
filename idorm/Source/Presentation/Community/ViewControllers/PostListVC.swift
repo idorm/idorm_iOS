@@ -53,6 +53,13 @@ final class PostListViewController: BaseViewController, View {
     return btn
   }()
   
+  private let indicator: UIActivityIndicatorView = {
+    let indicator = UIActivityIndicatorView()
+    indicator.color = .darkGray
+    
+    return indicator
+  }()
+  
   private lazy var postListCV: UICollectionView = {
     let cv = UICollectionView(frame: .zero, collectionViewLayout: getLayout())
     cv.backgroundColor = .idorm_gray_100
@@ -90,7 +97,8 @@ final class PostListViewController: BaseViewController, View {
   override func setupLayouts() {
     [
       postListCV,
-      floatyBtn
+      floatyBtn,
+      indicator
     ].forEach {
       view.addSubview($0)
     }
@@ -104,6 +112,10 @@ final class PostListViewController: BaseViewController, View {
     
     postListCV.snp.makeConstraints { make in
       make.edges.equalToSuperview()
+    }
+    
+    indicator.snp.makeConstraints { make in
+      make.center.equalToSuperview()
     }
   }
   
@@ -130,6 +142,20 @@ final class PostListViewController: BaseViewController, View {
     
     // MARK: - State
     
+    // 게시글 변화
+    reactor.state
+      .map { $0.currentPosts }
+      .distinctUntilChanged()
+      .withUnretained(self)
+      .debug()
+      .bind { $0.0.postListCV.reloadData() }
+      .disposed(by: disposeBag)
+    
+    // 로딩 인디케이터
+    reactor.state
+      .map { $0.isLoading }
+      .bind(to: indicator.rx.isAnimating)
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers
@@ -153,13 +179,13 @@ extension PostListViewController: UICollectionViewDataSource, UICollectionViewDe
     _ collectionView: UICollectionView,
     numberOfItemsInSection section: Int
   ) -> Int {
-    guard let posts = reactor?.currentState.currentPosts else { return 0 }
-
+    guard let currentState = reactor?.currentState else { return 0 }
+    
     switch section {
     case Section.popular.rawValue:
-      return 10
+      return currentState.currentTopPosts.count
     default:
-      return posts.count
+      return currentState.currentPosts.count
     }
   }
   
@@ -179,14 +205,21 @@ extension PostListViewController: UICollectionViewDataSource, UICollectionViewDe
       let popularPostCell = collectionView.dequeueReusableCell(
         withReuseIdentifier: PopularPostCell.identifier,
         for: indexPath
-      ) as? PopularPostCell else {
+      ) as? PopularPostCell,
+      let currentState = reactor?.currentState
+    else {
       return UICollectionViewCell()
     }
     
+    let topPosts = currentState.currentTopPosts
+    let posts = currentState.currentPosts
+        
     switch indexPath.section {
     case Section.popular.rawValue :
+      popularPostCell.configure(topPosts[indexPath.row])
       return popularPostCell
     default:
+      postCell.configure(posts[indexPath.row])
       return postCell
     }
   }

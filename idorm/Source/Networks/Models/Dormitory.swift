@@ -3,17 +3,6 @@ enum Dormitory: String, Codable {
   case no2 = "DORM2"
   case no3 = "DORM3"
   
-  var parsingString: String {
-    switch self {
-    case .no1:
-      return "DORM1"
-    case .no2:
-      return "DORM2"
-    case .no3:
-      return "DORM3"
-    }
-  }
-  
   var cardString: String {
     switch self {
     case .no1: return "1 기숙사"
