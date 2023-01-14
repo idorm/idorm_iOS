@@ -11,6 +11,7 @@ import SnapKit
 import ReactorKit
 import RxSwift
 import RxCocoa
+import PanModal
 
 final class PostListViewController: BaseViewController, View {
   
@@ -69,6 +70,15 @@ final class PostListViewController: BaseViewController, View {
     return cv
   }()
   
+  // MARK: - LifeCycle
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    // 화면 최초 접근
+    reactor?.action.onNext(.viewDidLoad)
+  }
+  
   // MARK: - Setup
   
   override func setupStyles() {
@@ -97,6 +107,31 @@ final class PostListViewController: BaseViewController, View {
     }
   }
   
+  // MARK: - Bind
+  
+  func bind(reactor: PostListViewReactor) {
+    
+    // MARK: - Action
+    
+    // 기숙사 버튼 클릭
+    dormBtn.rx.tap
+      .withUnretained(self)
+      .bind { owner, _ in
+        let dormBS = DormBottomSheet()
+        owner.presentPanModal(dormBS)
+
+        // 기숙사 버튼 클릭
+        dormBS.didTapDormBtn
+          .map { PostListViewReactor.Action.didTapDormBtn($0) }
+          .bind(to: reactor.action)
+          .disposed(by: owner.disposeBag)
+      }
+      .disposed(by: disposeBag)
+    
+    // MARK: - State
+    
+  }
+  
   // MARK: - Helpers
   
   private func getLayout() -> UICollectionViewCompositionalLayout {
@@ -109,12 +144,6 @@ final class PostListViewController: BaseViewController, View {
       }
     }
   }
-  
-  // MARK: - Bind
-  
-  func bind(reactor: PostListViewReactor) {
-    
-  }
 }
 
 // MARK: - CollectionView Setup
@@ -124,7 +153,14 @@ extension PostListViewController: UICollectionViewDataSource, UICollectionViewDe
     _ collectionView: UICollectionView,
     numberOfItemsInSection section: Int
   ) -> Int {
-    return 10
+    guard let posts = reactor?.currentState.currentPosts else { return 0 }
+
+    switch section {
+    case Section.popular.rawValue:
+      return 10
+    default:
+      return posts.count
+    }
   }
   
   func numberOfSections(in collectionView: UICollectionView) -> Int {

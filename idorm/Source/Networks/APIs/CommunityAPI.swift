@@ -10,7 +10,8 @@ import Foundation
 import Moya
 
 enum CommunityAPI {
-  case retrieveWithDorm(dorm: Dormitory, page: Int)
+  case retrievePosts(dorm: Dormitory, page: Int)
+  case retrieveTopPosts(Dormitory)
 }
 
 extension CommunityAPI: TargetType {
@@ -20,24 +21,29 @@ extension CommunityAPI: TargetType {
   
   var path: String {
     switch self {
-    case .retrieveWithDorm(let dorm, _):
+    case .retrievePosts(let dorm, _):
       return "/member/posts/\(dorm)"
+    case .retrieveTopPosts(dorm: let dorm):
+      return "/member/posts/\(dorm)/top"
     }
   }
   
   var method: Moya.Method {
     switch self {
-    case .retrieveWithDorm:
+    case .retrievePosts, .retrieveTopPosts:
       return .get
     }
   }
   
   var task: Moya.Task {
     switch self {
-    case let .retrieveWithDorm(_, page):
+    case let .retrievePosts(_, page):
       return .requestParameters(parameters: [
         "page": page
       ], encoding: URLEncoding.queryString)
+      
+    case .retrieveTopPosts:
+      return .requestPlain
     }
   }
   
