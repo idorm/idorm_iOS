@@ -11,6 +11,11 @@ import SnapKit
 
 final class PostListViewController: BaseViewController {
   
+  enum Section: Int, CaseIterable {
+    case popular
+    case common
+  }
+  
   // MARK: - Properties
   
   private let floatyBtn: UIButton = {
@@ -50,6 +55,10 @@ final class PostListViewController: BaseViewController {
     cv.register(
       PostCell.self,
       forCellWithReuseIdentifier: PostCell.identifier
+    )
+    cv.register(
+      PopularPostCell.self,
+      forCellWithReuseIdentifier: PopularPostCell.identifier
     )
     cv.dataSource = self
     cv.delegate = self
@@ -106,13 +115,34 @@ extension PostListViewController: UICollectionViewDataSource, UICollectionViewDe
     _ collectionView: UICollectionView,
     numberOfItemsInSection section: Int
   ) -> Int {
-    return 3
+    return 10
+  }
+  
+  func numberOfSections(in collectionView: UICollectionView) -> Int {
+    return Section.allCases.count
   }
   
   func collectionView(
     _ collectionView: UICollectionView,
     cellForItemAt indexPath: IndexPath
   ) -> UICollectionViewCell {
-    return UICollectionViewCell()
+    guard
+      let postCell = collectionView.dequeueReusableCell(
+        withReuseIdentifier: PostCell.identifier,
+        for: indexPath
+      ) as? PostCell,
+      let popularPostCell = collectionView.dequeueReusableCell(
+        withReuseIdentifier: PopularPostCell.identifier,
+        for: indexPath
+      ) as? PopularPostCell else {
+      return UICollectionViewCell()
+    }
+    
+    switch indexPath.section {
+    case Section.popular.rawValue :
+      return popularPostCell
+    default:
+      return postCell
+    }
   }
 }

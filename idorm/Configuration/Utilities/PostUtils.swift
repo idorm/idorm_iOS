@@ -17,13 +17,13 @@ final class PostUtils {
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
     
     let groupSize = NSCollectionLayoutSize(
-      widthDimension: .absolute(404),
+      widthDimension: .absolute(138),
       heightDimension: .absolute(132)
     )
     let group = NSCollectionLayoutGroup.horizontal(
       layoutSize: groupSize,
       repeatingSubitem: item,
-      count: 3
+      count: 1
     )
     
     let section = NSCollectionLayoutSection(group: group)

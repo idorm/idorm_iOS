@@ -13,6 +13,8 @@ final class PopularPostCell: UICollectionViewCell, BaseView {
   
   // MARK: - Properties
   
+  static let identifier = "PopularPostCell"
+  
   private let popularLabel: UILabel = {
     let lb = UILabel()
     lb.text = "인기"
