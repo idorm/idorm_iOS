@@ -66,8 +66,8 @@ class CommunityDetailViewController: UIViewController {
   
   // MARK: - Selectors
   @objc private func didTapPostOptionButton() {
-    let communityAlertVC = CommunityAlertViewController(communityAlertType: .myPost)
-    presentPanModal(communityAlertVC)
+//    let communityAlertVC = CommunityAlertViewController(communityAlertType: .myPost)
+//    presentPanModal(communityAlertVC)
   }
   
   // MARK: - Helpers
@@ -131,7 +131,7 @@ extension CommunityDetailViewController: UITableViewDataSource, UITableViewDeleg
 
 extension CommunityDetailViewController: CommunityDetailTableViewCellDelegate {
   func didTapCommentOptionButton() {
-    let communityAlertVC = CommunityAlertViewController(communityAlertType: .myComment)
-    presentPanModal(communityAlertVC)
+//    let communityAlertVC = CommunityAlertViewController(communityAlertType: .myComment)
+//    presentPanModal(communityAlertVC)
   }
 }
