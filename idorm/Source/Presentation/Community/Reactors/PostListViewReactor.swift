@@ -16,22 +16,30 @@ final class PostListViewReactor: Reactor {
     case viewDidLoad
     case didTapDormBtn(Dormitory)
     case pullToRefresh
+    case fetchMorePosts
   }
   
   enum Mutation {
-    case setPosts([CommunityDTO.Post])
+    case appendPosts([CommunityDTO.Post])
     case setTopPosts([CommunityDTO.Post])
     case setDorm(Dormitory)
     case setLoading(Bool)
     case setRefreshing(Bool)
+    case setPage(Int)
+    case setPagination(Bool)
+    case setBlockRequest(Bool)
+    case resetPosts
   }
   
   struct State {
     var currentPosts: [CommunityDTO.Post] = []
     var currentTopPosts: [CommunityDTO.Post] = []
     var currentDorm: Dormitory = .no3
+    var currentPage: Int = 0
     var isLoading: Bool = false
     var isRefreshing: Bool = false
+    var isPagination: Bool = false
+    var isBlockedRequest: Bool = false
   }
   
   var initialState: State = State()
@@ -57,16 +65,24 @@ final class PostListViewReactor: Reactor {
       return .concat([
         .just(.setLoading(true)),
         .just(.setDorm(dorm)),
+        .just(.resetPosts),
         retrieveTopPosts(dorm)
       ])
       
     case .pullToRefresh:
       return .concat([
         .just(.setRefreshing(true)),
+        .just(.resetPosts),
         retrieveTopPosts(currentState.currentDorm)
       ])
       
+    case .fetchMorePosts:
+      let nextPage = currentState.currentPage + 20
       
+      return .concat([
+        .just(.setPagination(true)),
+        retrievePosts(currentState.currentDorm, page: nextPage)
+      ])
     }
   }
   
@@ -77,8 +93,8 @@ final class PostListViewReactor: Reactor {
     case .setLoading(let isLoading):
       newState.isLoading = isLoading
       
-    case .setPosts(let posts):
-      newState.currentPosts = posts
+    case .appendPosts(let posts):
+      newState.currentPosts += posts
       
     case .setTopPosts(let posts):
       newState.currentTopPosts = posts
@@ -88,6 +104,18 @@ final class PostListViewReactor: Reactor {
       
     case .setRefreshing(let isRefreshing):
       newState.isRefreshing = isRefreshing
+      
+    case .setPage(let page):
+      newState.currentPage = page
+      
+    case .setPagination(let isPagination):
+      newState.isPagination = isPagination
+      
+    case .setBlockRequest(let isBlockedRequest):
+      newState.isBlockedRequest = isBlockedRequest
+      
+    case .resetPosts:
+      newState.currentPosts = []
     }
     
     return newState
@@ -99,20 +127,32 @@ extension PostListViewReactor {
     _ dorm: Dormitory,
     page: Int
   ) -> Observable<Mutation> {
-    return APIService.communityProvider.rx.request(
-      .retrievePosts(dorm: dorm, page: page)
-    )
-    .asObservable()
-    .retry()
-    .map(ResponseModel<[CommunityDTO.Post]>.self)
-    .flatMap { responseModel -> Observable<Mutation> in
-      let posts = responseModel.data
-      return .concat([
-        .just(.setPosts(posts)),
-        .just(.setLoading(false)),
-        .just(.setRefreshing(false))
-      ])
-    }
+    return .concat([
+      APIService.communityProvider.rx.request(
+        .retrievePosts(dorm: dorm, page: page)
+      )
+      .asObservable()
+      .retry()
+      .map(ResponseModel<[CommunityDTO.Post]>.self)
+      .flatMap { responseModel -> Observable<Mutation> in
+        let posts = responseModel.data
+        
+        if posts.count < 20 {
+          return .concat([
+            .just(.setBlockRequest(true)),
+            .just(.appendPosts(posts))
+          ])
+        } else {
+          return .concat([
+            .just(.setBlockRequest(false)),
+            .just(.appendPosts(posts))
+          ])
+        }
+      },
+      .just(.setPagination(false)),
+      .just(.setLoading(false)),
+      .just(.setRefreshing(false))
+    ])
   }
   
   private func retrieveTopPosts(_ dorm: Dormitory) -> Observable<Mutation> {

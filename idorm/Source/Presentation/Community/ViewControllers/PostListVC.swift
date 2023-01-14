@@ -67,6 +67,10 @@ final class PostListViewController: BaseViewController, View {
       PopularPostCell.self,
       forCellWithReuseIdentifier: PopularPostCell.identifier
     )
+    cv.register(
+      LoadingCell.self,
+      forCellWithReuseIdentifier: LoadingCell.id
+    )
     cv.refreshControl = UIRefreshControl()
     cv.dataSource = self
     cv.delegate = self
@@ -245,5 +249,14 @@ extension PostListViewController: UICollectionViewDataSource, UICollectionViewDe
       postCell.configure(posts[indexPath.row])
       return postCell
     }
+  }
+  
+  func collectionView(
+    _ collectionView: UICollectionView,
+    willDisplay cell: UICollectionViewCell,
+    forItemAt indexPath: IndexPath
+  ) {
+    guard let currentState = reactor?.currentState else { return }
+    
   }
 }

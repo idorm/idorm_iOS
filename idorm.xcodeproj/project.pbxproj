@@ -36,6 +36,7 @@
 		E50FB52B2972B36E00E938B8 /* DormBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50FB52A2972B36E00E938B8 /* DormBottomSheet.swift */; };
 		E50FB52D2972BA9E00E938B8 /* CommunityAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50FB52C2972BA9E00E938B8 /* CommunityAPI.swift */; };
 		E50FB52F2972BED600E938B8 /* CommunityDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50FB52E2972BED600E938B8 /* CommunityDTO.swift */; };
+		E50FB5312972E41600E938B8 /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50FB5302972E41600E938B8 /* LoadingCell.swift */; };
 		E51063C4291E250400FA0EAC /* NoPublicStatePopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51063C3291E250400FA0EAC /* NoPublicStatePopUp.swift */; };
 		E513D9FC2955C251002EA592 /* RegisterEnumerations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E513D9FB2955C251002EA592 /* RegisterEnumerations.swift */; };
 		E513D9FE2955C70A002EA592 /* PutEmailViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E513D9FD2955C70A002EA592 /* PutEmailViewReactor.swift */; };
@@ -208,6 +209,7 @@
 		E50FB52A2972B36E00E938B8 /* DormBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DormBottomSheet.swift; sourceTree = "<group>"; };
 		E50FB52C2972BA9E00E938B8 /* CommunityAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityAPI.swift; sourceTree = "<group>"; };
 		E50FB52E2972BED600E938B8 /* CommunityDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityDTO.swift; sourceTree = "<group>"; };
+		E50FB5302972E41600E938B8 /* LoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
 		E51063C3291E250400FA0EAC /* NoPublicStatePopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoPublicStatePopUp.swift; sourceTree = "<group>"; };
 		E513D9FB2955C251002EA592 /* RegisterEnumerations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterEnumerations.swift; sourceTree = "<group>"; };
 		E513D9FD2955C70A002EA592 /* PutEmailViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailViewReactor.swift; sourceTree = "<group>"; };
@@ -560,6 +562,7 @@
 				E5066429296E6B9B00B581E1 /* PostCell.swift */,
 				E506642B296E6BAA00B581E1 /* PopularPostCell.swift */,
 				E52233B5296D04A200C5DD07 /* ImageCell.swift */,
+				E50FB5302972E41600E938B8 /* LoadingCell.swift */,
 				E5290F0D288867E50004B8E6 /* CommunityDetailTableViewCell.swift */,
 				E5290F0F288869700004B8E6 /* CommunityDetailHeaderCollectionViewCell.swift */,
 				E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */,
@@ -1145,6 +1148,7 @@
 				E5290F10288869700004B8E6 /* CommunityDetailHeaderCollectionViewCell.swift in Sources */,
 				E58A6297289D6BEF0074F646 /* DeviceManager.swift in Sources */,
 				E5EB0D0129528FD300E70573 /* MatchingEnumerations.swift in Sources */,
+				E50FB5312972E41600E938B8 /* LoadingCell.swift in Sources */,
 				E52E96B22915FAB6009E1773 /* MatchingContainerView.swift in Sources */,
 				E5D03359294AD8B1006DD107 /* UserStorage.swift in Sources */,
 				E547E3E3291CEF21000D3A47 /* MatchingCardBoolView.swift in Sources */,
