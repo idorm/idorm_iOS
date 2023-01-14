@@ -152,7 +152,6 @@ final class PostListViewController: BaseViewController, View {
     // 게시글 변화
     reactor.state
       .map { $0.currentPosts }
-      .distinctUntilChanged()
       .withUnretained(self)
       .bind { $0.0.postListCV.reloadData() }
       .disposed(by: disposeBag)
@@ -178,8 +177,8 @@ final class PostListViewController: BaseViewController, View {
     // 당겨서 새로고침 로딩 인디케이터
     reactor.state
       .map { $0.isRefreshing }
+      .distinctUntilChanged()
       .filter { !$0 }
-      .debug()
       .withUnretained(self)
       .bind { $0.0.postListCV.refreshControl?.endRefreshing() }
       .disposed(by: disposeBag)
@@ -256,7 +255,19 @@ extension PostListViewController: UICollectionViewDataSource, UICollectionViewDe
     willDisplay cell: UICollectionViewCell,
     forItemAt indexPath: IndexPath
   ) {
-    guard let currentState = reactor?.currentState else { return }
-    
+    guard let reactor = reactor else { return }
+    guard reactor.currentState.currentPosts.count >= 20 else { return }
+
+    switch indexPath.section {
+    case Section.common.rawValue:
+      if indexPath.row == reactor.currentState.currentPosts.count - 1 &&
+          !reactor.currentState.isBlockedRequest &&
+          !reactor.currentState.isPagination {
+        reactor.action.onNext(.fetchMorePosts)
+      }
+
+    default:
+      return
+    }
   }
 }
