@@ -23,11 +23,17 @@ final class DormBottomSheet: BaseViewController {
     return btn
   }()
   
-  let dorm1Btn = BottomSheetUtils.dormNumberButton(title: "인천대 1기숙사")
-  let dorm2Btn = BottomSheetUtils.dormNumberButton(title: "인천대 2기숙사")
-  let dorm3Btn = BottomSheetUtils.dormNumberButton(title: "인천대 3기숙사")
+  private let dorm1Btn = BottomSheetUtils.dormNumberButton(title: "인천대 1기숙사")
+  private let dorm2Btn = BottomSheetUtils.dormNumberButton(title: "인천대 2기숙사")
+  private let dorm3Btn = BottomSheetUtils.dormNumberButton(title: "인천대 3기숙사")
+  
+  let didTapDormBtn = PublishSubject<Dormitory>()
   
   // MARK: - Setup
+  
+  override func setupStyles() {
+    view.backgroundColor = .white
+  }
   
   override func setupLayouts() {
     [
@@ -69,6 +75,34 @@ final class DormBottomSheet: BaseViewController {
     cancelBtn.rx.tap
       .withUnretained(self)
       .bind { $0.0.dismiss(animated: true) }
+      .disposed(by: disposeBag)
+    
+    // 기숙사 버튼 클릭
+    dorm1Btn.rx.tap
+      .map { Dormitory.no1 }
+      .withUnretained(self)
+      .bind { owner, dorm in
+        owner.didTapDormBtn.onNext(dorm)
+        owner.dismiss(animated: true)
+      }
+      .disposed(by: disposeBag)
+    
+    dorm2Btn.rx.tap
+      .map { Dormitory.no1 }
+      .withUnretained(self)
+      .bind { owner, dorm in
+        owner.didTapDormBtn.onNext(dorm)
+        owner.dismiss(animated: true)
+      }
+      .disposed(by: disposeBag)
+
+    dorm3Btn.rx.tap
+      .map { Dormitory.no1 }
+      .withUnretained(self)
+      .bind { owner, dorm in
+        owner.didTapDormBtn.onNext(dorm)
+        owner.dismiss(animated: true)
+      }
       .disposed(by: disposeBag)
   }
 }
