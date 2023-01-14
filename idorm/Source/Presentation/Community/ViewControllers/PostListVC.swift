@@ -67,6 +67,7 @@ final class PostListViewController: BaseViewController, View {
       PopularPostCell.self,
       forCellWithReuseIdentifier: PopularPostCell.identifier
     )
+    cv.refreshControl = UIRefreshControl()
     cv.dataSource = self
     cv.delegate = self
     
@@ -136,6 +137,12 @@ final class PostListViewController: BaseViewController, View {
       }
       .disposed(by: disposeBag)
     
+    // 당겨서 새로고침
+    postListCV.refreshControl?.rx.controlEvent(.valueChanged)
+      .map { PostListViewReactor.Action.pullToRefresh }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
     // MARK: - State
     
     // 게시글 변화
@@ -153,7 +160,7 @@ final class PostListViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, string in
         var container = AttributeContainer()
-        container.font = .init(name: MyFonts.bold.rawValue, size: 20)        
+        container.font = .init(name: MyFonts.bold.rawValue, size: 20)
         owner.dormBtn.configuration?.attributedTitle = AttributedString(string, attributes: container)
       }
       .disposed(by: disposeBag)
@@ -162,6 +169,15 @@ final class PostListViewController: BaseViewController, View {
     reactor.state
       .map { $0.isLoading }
       .bind(to: indicator.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
+    // 당겨서 새로고침 로딩 인디케이터
+    reactor.state
+      .map { $0.isRefreshing }
+      .filter { !$0 }
+      .debug()
+      .withUnretained(self)
+      .bind { $0.0.postListCV.refreshControl?.endRefreshing() }
       .disposed(by: disposeBag)
   }
   

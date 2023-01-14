@@ -15,6 +15,7 @@ final class PostListViewReactor: Reactor {
   enum Action {
     case viewDidLoad
     case didTapDormBtn(Dormitory)
+    case pullToRefresh
   }
   
   enum Mutation {
@@ -22,6 +23,7 @@ final class PostListViewReactor: Reactor {
     case setTopPosts([CommunityDTO.Post])
     case setDorm(Dormitory)
     case setLoading(Bool)
+    case setRefreshing(Bool)
   }
   
   struct State {
@@ -29,6 +31,7 @@ final class PostListViewReactor: Reactor {
     var currentTopPosts: [CommunityDTO.Post] = []
     var currentDorm: Dormitory = .no3
     var isLoading: Bool = false
+    var isRefreshing: Bool = false
   }
   
   var initialState: State = State()
@@ -56,6 +59,14 @@ final class PostListViewReactor: Reactor {
         .just(.setDorm(dorm)),
         retrieveTopPosts(dorm)
       ])
+      
+    case .pullToRefresh:
+      return .concat([
+        .just(.setRefreshing(true)),
+        retrieveTopPosts(currentState.currentDorm)
+      ])
+      
+      
     }
   }
   
@@ -74,6 +85,9 @@ final class PostListViewReactor: Reactor {
       
     case .setDorm(let dorm):
       newState.currentDorm = dorm
+      
+    case .setRefreshing(let isRefreshing):
+      newState.isRefreshing = isRefreshing
     }
     
     return newState
@@ -95,7 +109,8 @@ extension PostListViewReactor {
       let posts = responseModel.data
       return .concat([
         .just(.setPosts(posts)),
-        .just(.setLoading(false))
+        .just(.setLoading(false)),
+        .just(.setRefreshing(false))
       ])
     }
   }
