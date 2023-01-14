@@ -34,6 +34,7 @@
 		E50FB5242971920B00E938B8 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50FB5232971920B00E938B8 /* BaseView.swift */; };
 		E50FB5262972B28400E938B8 /* PostListViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50FB5252972B28400E938B8 /* PostListViewReactor.swift */; };
 		E50FB52B2972B36E00E938B8 /* DormBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50FB52A2972B36E00E938B8 /* DormBottomSheet.swift */; };
+		E50FB52D2972BA9E00E938B8 /* CommunityAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50FB52C2972BA9E00E938B8 /* CommunityAPI.swift */; };
 		E51063C4291E250400FA0EAC /* NoPublicStatePopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51063C3291E250400FA0EAC /* NoPublicStatePopUp.swift */; };
 		E513D9FC2955C251002EA592 /* RegisterEnumerations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E513D9FB2955C251002EA592 /* RegisterEnumerations.swift */; };
 		E513D9FE2955C70A002EA592 /* PutEmailViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E513D9FD2955C70A002EA592 /* PutEmailViewReactor.swift */; };
@@ -204,6 +205,7 @@
 		E50FB5232971920B00E938B8 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		E50FB5252972B28400E938B8 /* PostListViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewReactor.swift; sourceTree = "<group>"; };
 		E50FB52A2972B36E00E938B8 /* DormBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DormBottomSheet.swift; sourceTree = "<group>"; };
+		E50FB52C2972BA9E00E938B8 /* CommunityAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityAPI.swift; sourceTree = "<group>"; };
 		E51063C3291E250400FA0EAC /* NoPublicStatePopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoPublicStatePopUp.swift; sourceTree = "<group>"; };
 		E513D9FB2955C251002EA592 /* RegisterEnumerations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterEnumerations.swift; sourceTree = "<group>"; };
 		E513D9FD2955C70A002EA592 /* PutEmailViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailViewReactor.swift; sourceTree = "<group>"; };
@@ -761,6 +763,7 @@
 				E5A47F052924F25000908E20 /* MailAPI.swift */,
 				E5A15D4B2923A5EA001CE750 /* OnboardingAPI.swift */,
 				E5294FF229277A06004D408C /* MatchingAPI.swift */,
+				E50FB52C2972BA9E00E938B8 /* CommunityAPI.swift */,
 			);
 			path = APIs;
 			sourceTree = "<group>";
@@ -1201,6 +1204,7 @@
 				E547E3E8291CF61B000D3A47 /* MatchingCardStringView.swift in Sources */,
 				E508437B28814CAB0047A2EC /* AuthVC.swift in Sources */,
 				E523ECB1295198B100E79386 /* MemberStorage.swift in Sources */,
+				E50FB52D2972BA9E00E938B8 /* CommunityAPI.swift in Sources */,
 				E52CD85628BE371F00A262ED /* ManageMyInfoView.swift in Sources */,
 				E50F85012957E44B008B7052 /* NicknameViewReactor.swift in Sources */,
 				E51D1C7C2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift in Sources */,
