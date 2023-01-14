@@ -32,6 +32,7 @@
 		E50F850D29589256008B7052 /* CommunityUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F850C29589256008B7052 /* CommunityUtils.swift */; };
 		E50F850F29589270008B7052 /* MatchingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F850E29589270008B7052 /* MatchingUtils.swift */; };
 		E50FB5242971920B00E938B8 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50FB5232971920B00E938B8 /* BaseView.swift */; };
+		E50FB5262972B28400E938B8 /* PostListViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50FB5252972B28400E938B8 /* PostListViewReactor.swift */; };
 		E51063C4291E250400FA0EAC /* NoPublicStatePopUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51063C3291E250400FA0EAC /* NoPublicStatePopUp.swift */; };
 		E513D9FC2955C251002EA592 /* RegisterEnumerations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E513D9FB2955C251002EA592 /* RegisterEnumerations.swift */; };
 		E513D9FE2955C70A002EA592 /* PutEmailViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E513D9FD2955C70A002EA592 /* PutEmailViewReactor.swift */; };
@@ -202,6 +203,7 @@
 		E50F850C29589256008B7052 /* CommunityUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityUtils.swift; sourceTree = "<group>"; };
 		E50F850E29589270008B7052 /* MatchingUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingUtils.swift; sourceTree = "<group>"; };
 		E50FB5232971920B00E938B8 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
+		E50FB5252972B28400E938B8 /* PostListViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListViewReactor.swift; sourceTree = "<group>"; };
 		E51063C3291E250400FA0EAC /* NoPublicStatePopUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoPublicStatePopUp.swift; sourceTree = "<group>"; };
 		E513D9FB2955C251002EA592 /* RegisterEnumerations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterEnumerations.swift; sourceTree = "<group>"; };
 		E513D9FD2955C70A002EA592 /* PutEmailViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PutEmailViewReactor.swift; sourceTree = "<group>"; };
@@ -428,6 +430,7 @@
 		E52233B4296CFCB900C5DD07 /* Reactors */ = {
 			isa = PBXGroup;
 			children = (
+				E50FB5252972B28400E938B8 /* PostListViewReactor.swift */,
 			);
 			path = Reactors;
 			sourceTree = "<group>";
@@ -1180,6 +1183,7 @@
 				E5AC2DCB2882F24000B82AD8 /* OnboardingTextField.swift in Sources */,
 				E5909CE628D94B610083075D /* BaseViewController.swift in Sources */,
 				E58131A8288E6AC6000DB8C9 /* FloatyBottomView.swift in Sources */,
+				E50FB5262972B28400E938B8 /* PostListViewReactor.swift in Sources */,
 				E51063C4291E250400FA0EAC /* NoPublicStatePopUp.swift in Sources */,
 				E50F850529584747008B7052 /* OnboardingEnumerations.swift in Sources */,
 				E56342232878353100E93D17 /* TabBarVC.swift in Sources */,

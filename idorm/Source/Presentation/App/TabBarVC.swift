@@ -35,6 +35,7 @@ final class TabBarViewController: UITabBarController {
     homeVC.reactor = HomeViewReactor()
     matchingVC.reactor = MatchingViewReactor()
     myPageVC.reactor = MyPageViewReactor()
+    postListVC.reactor = PostListViewReactor()
     
     let naviHomeVC = UINavigationController(rootViewController: homeVC)
     let naviMatchingVC = UINavigationController(rootViewController: matchingVC)

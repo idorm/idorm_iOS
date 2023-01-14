@@ -8,8 +8,11 @@
 import UIKit
 
 import SnapKit
+import ReactorKit
+import RxSwift
+import RxCocoa
 
-final class PostListViewController: BaseViewController {
+final class PostListViewController: BaseViewController, View {
   
   enum Section: Int, CaseIterable {
     case popular
@@ -105,6 +108,12 @@ final class PostListViewController: BaseViewController {
         return PostUtils.postSection()
       }
     }
+  }
+  
+  // MARK: - Bind
+  
+  func bind(reactor: PostListViewReactor) {
+    
   }
 }
 
