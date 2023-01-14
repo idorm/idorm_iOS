@@ -29,13 +29,13 @@ final class PostListViewController: BaseViewController {
   private let dormBtn: UIButton = {
     var container = AttributeContainer()
     container.font = .init(name: MyFonts.bold.rawValue, size: 20)
-    container.strokeColor = .black
 
     var config = UIButton.Configuration.plain()
     config.imagePadding = 16
     config.imagePlacement = .trailing
     config.image = #imageLiteral(resourceName: "downarrow")
     config.attributedTitle = AttributedString("인천대 3기숙사", attributes: container)
+    config.baseForegroundColor = .black
     
     let btn = UIButton(configuration: config)
     
@@ -76,8 +76,8 @@ final class PostListViewController: BaseViewController {
   
   override func setupLayouts() {
     [
-      floatyBtn,
-      postListCV
+      postListCV,
+      floatyBtn
     ].forEach {
       view.addSubview($0)
     }
@@ -99,7 +99,7 @@ final class PostListViewController: BaseViewController {
   private func getLayout() -> UICollectionViewCompositionalLayout {
     UICollectionViewCompositionalLayout { section, _ in
       switch section {
-      case 0:
+      case Section.popular.rawValue:
         return PostUtils.popularPostSection()
       default:
         return PostUtils.postSection()
