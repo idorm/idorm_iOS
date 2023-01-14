@@ -199,5 +199,10 @@ final class PostCell: UICollectionViewCell {
     likeCountLb.text = "\(post.likesCount)"
     pictureCountLb.text = "\(post.imagesCount)"
     commentsCountLb.text = "\(post.commentsCount)"
+    
+    if post.imagesCount == 0 {
+      pictureCountLb.isHidden = true
+      pictureIv.isHidden = true
+    }
   }
 }

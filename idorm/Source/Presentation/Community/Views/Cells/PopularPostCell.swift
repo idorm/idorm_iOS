@@ -114,7 +114,7 @@ final class PopularPostCell: UICollectionViewCell, BaseView {
     
     likeStack.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(10)
-      make.bottom.equalToSuperview().inset(16.5)
+      make.bottom.equalToSuperview().inset(10)
     }
     
     messageStack.snp.makeConstraints { make in

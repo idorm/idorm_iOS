@@ -31,14 +31,10 @@ final class PostListViewController: BaseViewController, View {
   }()
   
   private let dormBtn: UIButton = {
-    var container = AttributeContainer()
-    container.font = .init(name: MyFonts.bold.rawValue, size: 20)
-
     var config = UIButton.Configuration.plain()
     config.imagePadding = 16
     config.imagePlacement = .trailing
     config.image = #imageLiteral(resourceName: "downarrow")
-    config.attributedTitle = AttributedString("인천대 3기숙사", attributes: container)
     config.baseForegroundColor = .black
     
     let btn = UIButton(configuration: config)
@@ -147,8 +143,19 @@ final class PostListViewController: BaseViewController, View {
       .map { $0.currentPosts }
       .distinctUntilChanged()
       .withUnretained(self)
-      .debug()
       .bind { $0.0.postListCV.reloadData() }
+      .disposed(by: disposeBag)
+    
+    // 현재 선택된 기숙사
+    reactor.state
+      .map { $0.currentDorm.postListString }
+      .distinctUntilChanged()
+      .withUnretained(self)
+      .bind { owner, string in
+        var container = AttributeContainer()
+        container.font = .init(name: MyFonts.bold.rawValue, size: 20)        
+        owner.dormBtn.configuration?.attributedTitle = AttributedString(string, attributes: container)
+      }
       .disposed(by: disposeBag)
     
     // 로딩 인디케이터

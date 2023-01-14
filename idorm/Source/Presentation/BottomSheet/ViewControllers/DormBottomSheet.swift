@@ -88,7 +88,7 @@ final class DormBottomSheet: BaseViewController {
       .disposed(by: disposeBag)
     
     dorm2Btn.rx.tap
-      .map { Dormitory.no1 }
+      .map { Dormitory.no2 }
       .withUnretained(self)
       .bind { owner, dorm in
         owner.didTapDormBtn.onNext(dorm)
@@ -97,7 +97,7 @@ final class DormBottomSheet: BaseViewController {
       .disposed(by: disposeBag)
 
     dorm3Btn.rx.tap
-      .map { Dormitory.no1 }
+      .map { Dormitory.no3 }
       .withUnretained(self)
       .bind { owner, dorm in
         owner.didTapDormBtn.onNext(dorm)

@@ -20,12 +20,14 @@ final class PostListViewReactor: Reactor {
   enum Mutation {
     case setPosts([CommunityDTO.Post])
     case setTopPosts([CommunityDTO.Post])
+    case setDorm(Dormitory)
     case setLoading(Bool)
   }
   
   struct State {
     var currentPosts: [CommunityDTO.Post] = []
     var currentTopPosts: [CommunityDTO.Post] = []
+    var currentDorm: Dormitory = .no3
     var isLoading: Bool = false
   }
   
@@ -38,6 +40,7 @@ final class PostListViewReactor: Reactor {
       if let dorm = MemberStorage.shared.matchingInfo?.dormNum {
         return .concat([
           .just(.setLoading(true)),
+          .just(.setDorm(dorm)),
           retrieveTopPosts(dorm)
         ])
       } else {
@@ -48,7 +51,11 @@ final class PostListViewReactor: Reactor {
       }
       
     case .didTapDormBtn(let dorm):
-      return .empty()
+      return .concat([
+        .just(.setLoading(true)),
+        .just(.setDorm(dorm)),
+        retrieveTopPosts(dorm)
+      ])
     }
   }
   
@@ -64,6 +71,9 @@ final class PostListViewReactor: Reactor {
       
     case .setTopPosts(let posts):
       newState.currentTopPosts = posts
+      
+    case .setDorm(let dorm):
+      newState.currentDorm = dorm
     }
     
     return newState
@@ -94,14 +104,27 @@ extension PostListViewReactor {
     return APIService.communityProvider.rx.request(.retrieveTopPosts(dorm))
       .asObservable()
       .retry()
-      .map(ResponseModel<[CommunityDTO.Post]>.self)
       .withUnretained(self)
-      .flatMap { owner, responseModel -> Observable<Mutation> in
-        let posts = responseModel.data
-        return .concat([
-          .just(.setTopPosts(posts)),
-          owner.retrievePosts(dorm, page: 0)
-        ])
+      .flatMap { owner, response -> Observable<Mutation> in
+        switch response.statusCode {
+        case 200:
+          let posts = APIService.decode(
+            ResponseModel<[CommunityDTO.Post]>.self,
+            data: response.data
+          ).data
+          
+          return .concat([
+            .just(.setTopPosts(posts)),
+            owner.retrievePosts(dorm, page: 0)
+          ])
+        case 204:
+          return .concat([
+            .just(.setTopPosts([])),
+            owner.retrievePosts(dorm, page: 0)
+          ])
+        default:
+          return .empty()
+        }
       }
   }
 }
