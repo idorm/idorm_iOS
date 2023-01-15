@@ -17,7 +17,6 @@ final class PostCell: UICollectionViewCell {
   
   private let titleLb: UILabel = {
     let lb = UILabel()
-    lb.text = "제목"
     lb.font = .init(name: MyFonts.medium.rawValue, size: 14)
     lb.textColor = .black
     
@@ -26,7 +25,6 @@ final class PostCell: UICollectionViewCell {
   
   private let contentLb: UILabel = {
     let lb = UILabel()
-    lb.text = "내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용"
     lb.font = .init(name: MyFonts.medium.rawValue, size: 12)
     lb.textColor = .idorm_gray_400
     
@@ -35,7 +33,6 @@ final class PostCell: UICollectionViewCell {
   
   private let nicknameLb: UILabel = {
     let lb = UILabel()
-    lb.text = "닉네임닉네임"
     lb.font = .init(name: MyFonts.regular.rawValue, size: 12)
     lb.textColor = .idorm_gray_300
     
@@ -44,7 +41,6 @@ final class PostCell: UICollectionViewCell {
   
   private let timeLb: UILabel = {
     let lb = UILabel()
-    lb.text = "1시간 전"
     lb.font = .init(name: MyFonts.medium.rawValue, size: 12)
     lb.textColor = .idorm_gray_300
     
@@ -69,7 +65,6 @@ final class PostCell: UICollectionViewCell {
   
   private let likeCountLb: UILabel = {
     let lb = UILabel()
-    lb.text = "100"
     lb.textColor = .idorm_gray_300
     lb.font = .init(name: MyFonts.regular.rawValue, size: 12)
     
@@ -78,7 +73,6 @@ final class PostCell: UICollectionViewCell {
   
   private let commentsCountLb: UILabel = {
     let lb = UILabel()
-    lb.text = "100"
     lb.textColor = .idorm_gray_300
     lb.font = .init(name: MyFonts.regular.rawValue, size: 12)
     
@@ -87,7 +81,6 @@ final class PostCell: UICollectionViewCell {
 
   private let pictureCountLb: UILabel = {
     let lb = UILabel()
-    lb.text = "100"
     lb.textColor = .idorm_gray_300
     lb.font = .init(name: MyFonts.regular.rawValue, size: 12)
     
@@ -111,7 +104,7 @@ final class PostCell: UICollectionViewCell {
     fatalError("init(coder:) has not been implemented")
   }
   
-  // MARK: - Setup\
+  // MARK: - Setup
   
   
   private func setupStyles() {
@@ -194,6 +187,22 @@ final class PostCell: UICollectionViewCell {
     pictureCountLb.snp.makeConstraints { make in
       make.leading.equalTo(pictureIv.snp.trailing).offset(4)
       make.centerY.equalTo(likeIv)
+    }
+  }
+  
+  // MARK: - Helpers
+  
+  func configure(_ post: CommunityDTO.Post) {
+    titleLb.text = post.title
+    contentLb.text = post.content
+    nicknameLb.text = post.nickname
+    likeCountLb.text = "\(post.likesCount)"
+    pictureCountLb.text = "\(post.imagesCount)"
+    commentsCountLb.text = "\(post.commentsCount)"
+    
+    if post.imagesCount == 0 {
+      pictureCountLb.isHidden = true
+      pictureIv.isHidden = true
     }
   }
 }

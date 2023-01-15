@@ -8,8 +8,12 @@
 import UIKit
 
 import SnapKit
+import ReactorKit
+import RxSwift
+import RxCocoa
+import PanModal
 
-final class PostListViewController: BaseViewController {
+final class PostListViewController: BaseViewController, View {
   
   enum Section: Int, CaseIterable {
     case popular
@@ -27,14 +31,10 @@ final class PostListViewController: BaseViewController {
   }()
   
   private let dormBtn: UIButton = {
-    var container = AttributeContainer()
-    container.font = .init(name: MyFonts.bold.rawValue, size: 20)
-
     var config = UIButton.Configuration.plain()
     config.imagePadding = 16
     config.imagePlacement = .trailing
     config.image = #imageLiteral(resourceName: "downarrow")
-    config.attributedTitle = AttributedString("인천대 3기숙사", attributes: container)
     config.baseForegroundColor = .black
     
     let btn = UIButton(configuration: config)
@@ -49,6 +49,13 @@ final class PostListViewController: BaseViewController {
     return btn
   }()
   
+  private let indicator: UIActivityIndicatorView = {
+    let indicator = UIActivityIndicatorView()
+    indicator.color = .darkGray
+    
+    return indicator
+  }()
+  
   private lazy var postListCV: UICollectionView = {
     let cv = UICollectionView(frame: .zero, collectionViewLayout: getLayout())
     cv.backgroundColor = .idorm_gray_100
@@ -60,11 +67,25 @@ final class PostListViewController: BaseViewController {
       PopularPostCell.self,
       forCellWithReuseIdentifier: PopularPostCell.identifier
     )
+    cv.register(
+      LoadingCell.self,
+      forCellWithReuseIdentifier: LoadingCell.id
+    )
+    cv.refreshControl = UIRefreshControl()
     cv.dataSource = self
     cv.delegate = self
     
     return cv
   }()
+  
+  // MARK: - LifeCycle
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    // 화면 최초 접근
+    reactor?.action.onNext(.viewDidLoad)
+  }
   
   // MARK: - Setup
   
@@ -77,7 +98,8 @@ final class PostListViewController: BaseViewController {
   override func setupLayouts() {
     [
       postListCV,
-      floatyBtn
+      floatyBtn,
+      indicator
     ].forEach {
       view.addSubview($0)
     }
@@ -92,6 +114,74 @@ final class PostListViewController: BaseViewController {
     postListCV.snp.makeConstraints { make in
       make.edges.equalToSuperview()
     }
+    
+    indicator.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+    }
+  }
+  
+  // MARK: - Bind
+  
+  func bind(reactor: PostListViewReactor) {
+    
+    // MARK: - Action
+    
+    // 기숙사 버튼 클릭
+    dormBtn.rx.tap
+      .withUnretained(self)
+      .bind { owner, _ in
+        let dormBS = DormBottomSheet()
+        owner.presentPanModal(dormBS)
+
+        // 기숙사 버튼 클릭
+        dormBS.didTapDormBtn
+          .map { PostListViewReactor.Action.didTapDormBtn($0) }
+          .bind(to: reactor.action)
+          .disposed(by: owner.disposeBag)
+      }
+      .disposed(by: disposeBag)
+    
+    // 당겨서 새로고침
+    postListCV.refreshControl?.rx.controlEvent(.valueChanged)
+      .map { PostListViewReactor.Action.pullToRefresh }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // MARK: - State
+    
+    // 게시글 변화
+    reactor.state
+      .map { $0.currentPosts }
+      .withUnretained(self)
+      .bind { $0.0.postListCV.reloadData() }
+      .disposed(by: disposeBag)
+    
+    // 현재 선택된 기숙사
+    reactor.state
+      .map { $0.currentDorm.postListString }
+      .distinctUntilChanged()
+      .withUnretained(self)
+      .bind { owner, string in
+        var container = AttributeContainer()
+        container.font = .init(name: MyFonts.bold.rawValue, size: 20)
+        owner.dormBtn.configuration?.attributedTitle = AttributedString(string, attributes: container)
+      }
+      .disposed(by: disposeBag)
+    
+    // 로딩 인디케이터
+    reactor.state
+      .map { $0.isLoading }
+      .bind(to: indicator.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
+    // 당겨서 새로고침 로딩 인디케이터
+    reactor.state
+      .map { $0.isRefreshing }
+      .distinctUntilChanged()
+      .filter { !$0 }
+      .withUnretained(self)
+      .bind { $0.0.postListCV.refreshControl?.endRefreshing() }
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers
@@ -115,7 +205,14 @@ extension PostListViewController: UICollectionViewDataSource, UICollectionViewDe
     _ collectionView: UICollectionView,
     numberOfItemsInSection section: Int
   ) -> Int {
-    return 10
+    guard let currentState = reactor?.currentState else { return 0 }
+    
+    switch section {
+    case Section.popular.rawValue:
+      return currentState.currentTopPosts.count
+    default:
+      return currentState.currentPosts.count
+    }
   }
   
   func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -134,15 +231,43 @@ extension PostListViewController: UICollectionViewDataSource, UICollectionViewDe
       let popularPostCell = collectionView.dequeueReusableCell(
         withReuseIdentifier: PopularPostCell.identifier,
         for: indexPath
-      ) as? PopularPostCell else {
+      ) as? PopularPostCell,
+      let currentState = reactor?.currentState
+    else {
       return UICollectionViewCell()
     }
     
+    let topPosts = currentState.currentTopPosts
+    let posts = currentState.currentPosts
+        
     switch indexPath.section {
     case Section.popular.rawValue :
+      popularPostCell.configure(topPosts[indexPath.row])
       return popularPostCell
     default:
+      postCell.configure(posts[indexPath.row])
       return postCell
+    }
+  }
+  
+  func collectionView(
+    _ collectionView: UICollectionView,
+    willDisplay cell: UICollectionViewCell,
+    forItemAt indexPath: IndexPath
+  ) {
+    guard let reactor = reactor else { return }
+    guard reactor.currentState.currentPosts.count >= 20 else { return }
+
+    switch indexPath.section {
+    case Section.common.rawValue:
+      if indexPath.row == reactor.currentState.currentPosts.count - 1 &&
+          !reactor.currentState.isBlockedRequest &&
+          !reactor.currentState.isPagination {
+        reactor.action.onNext(.fetchMorePosts)
+      }
+
+    default:
+      return
     }
   }
 }

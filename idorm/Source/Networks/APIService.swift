@@ -16,6 +16,7 @@ final class APIService {
   static let onboardingProvider = MoyaProvider<OnboardingAPI>()
   static let emailProvider = MoyaProvider<EmailAPI>()
   static let matchingProvider = MoyaProvider<MatchingAPI>()
+  static let communityProvider = MoyaProvider<CommunityAPI>()
 
   static func decode<T: Codable>(_ t: T.Type, data: Data) -> T {
     let decoder = JSONDecoder()
