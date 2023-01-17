@@ -77,7 +77,7 @@ final class PostListViewReactor: Reactor {
       ])
       
     case .fetchMorePosts:
-      let nextPage = currentState.currentPage + 20
+      let nextPage = currentState.currentPage + 1
       
       return .concat([
         .just(.setPagination(true)),
