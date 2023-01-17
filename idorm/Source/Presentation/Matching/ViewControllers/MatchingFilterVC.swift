@@ -48,12 +48,16 @@ final class MatchingFilterViewController: BaseViewController, View {
   private let ageLabel = MatchingUtilities.titleLabel(text: "나이")
   private let ageDescriptionLabel = MatchingUtilities.descriptionLabel("선택하신 연령대의 룸메이트만 나와 매칭돼요.")
   private let slider = MatchingUtilities.slider()
+  private let filterDriver = FilterDriver()
   
   // MARK: - LifeCycle
   
   override func viewDidLoad() {
     setupStackView()
     super.viewDidLoad()
+    
+    reactor?.filterDriver = filterDriver
+    reactor?.action.onNext(.viewDidLoad)
     
     if FilterStorage.shared.hasFilter {
       updateFilteredUI(FilterStorage.shared.filter)
@@ -119,35 +123,40 @@ final class MatchingFilterViewController: BaseViewController, View {
     snoreButton.rx.tap
       .withUnretained(self)
       .do { $0.0.snoreButton.isSelected.toggle() }
-      .map { _ in MatchingFilterViewReactor.Action.didTapHabitButton(.snoring) }
+      .map { $0.0.snoreButton.isSelected }
+      .map { MatchingFilterViewReactor.Action.didTapHabitButton(.snoring, $0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
 
     grindingButton.rx.tap
       .withUnretained(self)
       .do { $0.0.grindingButton.isSelected.toggle() }
-      .map { _ in MatchingFilterViewReactor.Action.didTapHabitButton(.grinding) }
+      .map { $0.0.grindingButton.isSelected }
+      .map { MatchingFilterViewReactor.Action.didTapHabitButton(.grinding, $0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
 
     smokingButton.rx.tap
       .withUnretained(self)
       .do { $0.0.smokingButton.isSelected.toggle() }
-      .map { _ in MatchingFilterViewReactor.Action.didTapHabitButton(.smoking) }
+      .map { $0.0.smokingButton.isSelected }
+      .map { MatchingFilterViewReactor.Action.didTapHabitButton(.smoking, $0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
 
     allowedFoodButton.rx.tap
       .withUnretained(self)
       .do { $0.0.allowedFoodButton.isSelected.toggle() }
-      .map { _ in MatchingFilterViewReactor.Action.didTapHabitButton(.allowedFood) }
+      .map { $0.0.allowedFoodButton.isSelected }
+      .map { MatchingFilterViewReactor.Action.didTapHabitButton(.allowedFood, $0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
 
     allowedEarphoneButton.rx.tap
       .withUnretained(self)
       .do { $0.0.allowedEarphoneButton.isSelected.toggle() }
-      .map { _ in MatchingFilterViewReactor.Action.didTapHabitButton(.allowedEarphone) }
+      .map { $0.0.allowedEarphoneButton.isSelected }
+      .map { MatchingFilterViewReactor.Action.didTapHabitButton(.allowedEarphone, $0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -161,7 +170,7 @@ final class MatchingFilterViewController: BaseViewController, View {
       .bind { $0.0.navigationController?.popViewController(animated: true) }
       .disposed(by: disposeBag)
 
-    FilterDriver.shared.isAllowed
+    filterDriver.isAllowed
       .bind(to: floatyBottomView.rightButton.rx.isEnabled)
       .disposed(by: disposeBag)
   }

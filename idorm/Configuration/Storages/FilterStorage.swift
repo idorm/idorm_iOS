@@ -17,11 +17,9 @@ final class FilterStorage {
   
   func saveFilter(_ filter: MatchingDTO.Filter) {
     self.filter = filter
-    self.hasFilter = true
   }
   
   func resetFilter() {
     self.filter = MatchingDTO.Filter()
-    self.hasFilter = false
   }
 }

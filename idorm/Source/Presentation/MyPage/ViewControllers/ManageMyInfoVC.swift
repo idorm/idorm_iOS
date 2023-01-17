@@ -106,15 +106,15 @@ final class ManageMyInfoViewController: BaseViewController, View {
       }
       .disposed(by: disposeBag)
     
-    // PutEmailVC 이동
+    // ConfirmPwVC 이동
     reactor.state
       .map { $0.isOpenedConfirmPwVC }
       .distinctUntilChanged()
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let viewController = PutEmailViewController(.modifyPw)
-        viewController.reactor = PutEmailViewReactor()
+        let viewController = ConfirmPwViewController(.modifyPw)
+        viewController.reactor = ConfirmPwViewReactor(.modifyPw)
         owner.navigationController?.pushViewController(viewController, animated: true)
       }
       .disposed(by: disposeBag)
@@ -132,7 +132,7 @@ final class ManageMyInfoViewController: BaseViewController, View {
         owner.present(navVC, animated: true)
       }
       .disposed(by: disposeBag)
-    
+        
     // 닉네임 변경
     reactor.state
       .map { $0.currentNickname }

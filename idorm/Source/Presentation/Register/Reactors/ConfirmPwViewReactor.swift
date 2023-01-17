@@ -40,6 +40,7 @@ final class ConfirmPwViewReactor: Reactor {
     case setNicknameVC(Bool)
     case setLoading(Bool)
     case setLoginVC(Bool)
+    case setPopVC(Bool)
   }
   
   struct State {
@@ -58,6 +59,7 @@ final class ConfirmPwViewReactor: Reactor {
     var isOpenedNicknameVC: Bool = false
     var isOpenedLoginVC: Bool = false
     var isLoading: Bool = false
+    var popVC: Bool = false
   }
   
   var initialState: State = State()
@@ -205,6 +207,7 @@ final class ConfirmPwViewReactor: Reactor {
               }
               .subscribe(on: MainScheduler.asyncInstance)
           ])
+          .subscribe(on: MainScheduler.asyncInstance)
           
         case .modifyPw:
           return .concat([
@@ -215,10 +218,12 @@ final class ConfirmPwViewReactor: Reactor {
               .flatMap { response -> Observable<Mutation> in
                 switch response.statusCode {
                 case 200:
+                  UserStorage.savePassword(from: password1)
+                  
                   return .concat([
                     .just(.setLoading(false)),
-                    .just(.setLoginVC(true)),
-                    .just(.setLoginVC(false))
+                    .just(.setPopVC(true)),
+                    .just(.setPopVC(false))
                   ])
                 default:
                   fatalError()
@@ -283,6 +288,9 @@ final class ConfirmPwViewReactor: Reactor {
       
     case .setLoginVC(let isOpened):
       newState.isOpenedLoginVC = isOpened
+      
+    case .setPopVC(let state):
+      newState.popVC = state
     }
     
     return newState
