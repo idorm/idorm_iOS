@@ -169,7 +169,7 @@ final class PostingViewController: BaseViewController, View {
   override func setupConstraints() {
     titleTf.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
-      make.top.equalToSuperview().inset(30)
+      make.top.equalTo(view.safeAreaLayoutGuide).inset(30)
     }
     
     separatorLine.snp.makeConstraints { make in
@@ -180,14 +180,14 @@ final class PostingViewController: BaseViewController, View {
     
     pictsCollectionView.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
-      make.top.equalTo(separatorLine.snp.bottom).offset(22)
+      make.top.equalTo(separatorLine.snp.bottom).offset(16)
       make.height.equalTo(85)
     }
     
     contentsTv.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
       make.top.equalTo(pictsCollectionView.snp.bottom).offset(16)
-      make.bottom.equalToSuperview()
+      make.bottom.equalTo(bottomContainerView.snp.top).offset(-16)
     }
     
     bottomContainerView.snp.makeConstraints { make in
@@ -227,6 +227,8 @@ final class PostingViewController: BaseViewController, View {
         make.leading.trailing.bottom.equalToSuperview()
       }
     }
+    
+    updateConstraints()
   }
   
   // MARK: - Bind
@@ -256,9 +258,13 @@ final class PostingViewController: BaseViewController, View {
     reactor.state
       .map { $0.currentImages }
       .distinctUntilChanged()
+      .skip(1)
       .withUnretained(self)
       .observe(on: MainScheduler.asyncInstance)
-      .bind { $0.0.pictsCollectionView.reloadData() }
+      .bind {
+        $0.0.updateConstraints()
+        $0.0.pictsCollectionView.reloadData()
+      }
       .disposed(by: disposeBag)
     
     // 현재 사진 갯수
@@ -319,6 +325,28 @@ final class PostingViewController: BaseViewController, View {
     alert.addAction(cancelAction)
     
     present(alert, animated: false)
+  }
+  
+  private func updateConstraints() {
+    guard let images = reactor?.currentState.currentImages else { return }
+    
+    if images.count > 0 {
+      pictsCollectionView.isHidden = false
+      
+      contentsTv.snp.updateConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(pictsCollectionView.snp.bottom).offset(16)
+        make.bottom.equalTo(bottomContainerView.snp.top).offset(-16)
+      }
+    } else {
+      pictsCollectionView.isHidden = true
+      
+      contentsTv.snp.updateConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(pictsCollectionView.snp.bottom).offset(-84)
+        make.bottom.equalTo(bottomContainerView.snp.top).offset(-16)
+      }
+    }
   }
 }
 
