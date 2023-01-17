@@ -6,25 +6,15 @@
 //
 
 import UIKit
+
 import SnapKit
 import Photos
 
-protocol ImagePickerViewControllerDelegate: AnyObject {
-  func didTapConfirmButton(assets: [PHAsset])
-}
-
-final class ImagePickerViewController: UIViewController {
+final class GalleryViewController: UIViewController {
   
   // MARK: - Properties
-  var fetchResult: PHFetchResult<PHAsset>?
-  weak var delegate: ImagePickerViewControllerDelegate?
-  let currentPhotoCount: Int
-  
-  /// 선택된 사진 Numbering Properties
-  var photoArray: [Int] = []
-  var selectedAsset: [PHAsset] = []
-  
-  lazy var collectionView: UICollectionView = {
+    
+  private lazy var collectionView: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
     layout.minimumLineSpacing = 2
     layout.minimumInteritemSpacing = 2
@@ -38,7 +28,7 @@ final class ImagePickerViewController: UIViewController {
     return collectionView
   }()
   
-  lazy var countLabel: UILabel = {
+  private lazy var countLabel: UILabel = {
     let label = UILabel()
     label.font = .init(name: MyFonts.medium.rawValue, size: 16)
     label.textColor = .idorm_blue
@@ -46,14 +36,31 @@ final class ImagePickerViewController: UIViewController {
     return label
   }()
   
-  lazy var confirmButton: UIButton = {
+  private lazy var confirmButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setTitle("완료", for: .normal)
     button.titleLabel?.font = .init(name: MyFonts.bold.rawValue, size: 16)
     button.setTitleColor(UIColor.idorm_gray_300, for: .normal)
+    button.addTarget(self, action: #selector(didTapConfirmButton), for: .touchUpInside)
     
     return button
   }()
+  
+  private let indicator: UIActivityIndicatorView = {
+    let indicator = UIActivityIndicatorView()
+    indicator.color = .darkGray
+    
+    return indicator
+  }()
+  
+  var fetchResult: PHFetchResult<PHAsset>?
+  let currentPhotoCount: Int
+  
+  /// 선택된 사진 Numbering Properties
+  var photoArray: [Int] = []
+  var selectedAsset: [PHAsset] = []
+
+  var completion: (([UIImage]) -> Void)?
   
   // MARK: - LifeCycle
   
@@ -74,25 +81,46 @@ final class ImagePickerViewController: UIViewController {
   
   // MARK: - Selectors
   
-  @objc private func didTapConfirmButton() {
-    delegate?.didTapConfirmButton(assets: selectedAsset)
+  @objc
+  private func didTapConfirmButton() {
+    indicator.startAnimating()
+    
+    DispatchQueue.global().async {
+      var images: [UIImage] = []
+      
+      self.selectedAsset.forEach {
+        images.append($0.getImageFromPHAsset())
+      }
+      
+      self.completion?(images)
+    }
     navigationController?.popViewController(animated: true)
   }
   
   // MARK: - Helpers
   
   private func configureUI() {
-    let confirmStack = UIStackView(arrangedSubviews: [ countLabel, confirmButton ])
+    let confirmStack = UIStackView(arrangedSubviews: [countLabel, confirmButton])
     confirmStack.axis = .horizontal
     confirmStack.spacing = 4
     
+    [
+      collectionView,
+      indicator
+    ].forEach {
+      view.addSubview($0)
+    }
+    
     navigationItem.rightBarButtonItem = UIBarButtonItem(customView: confirmStack)
     navigationItem.title = "모든 사진"
-    view.addSubview(collectionView)
     view.backgroundColor = .white
     
     collectionView.snp.makeConstraints { make in
       make.edges.equalTo(view.safeAreaLayoutGuide)
+    }
+    
+    indicator.snp.makeConstraints { make in
+      make.center.equalToSuperview()
     }
   }
   
@@ -110,7 +138,7 @@ final class ImagePickerViewController: UIViewController {
 
 // MARK: - CollectionView Setup
 
-extension ImagePickerViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension GalleryViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
   
   func collectionView(
     _ collectionView: UICollectionView,

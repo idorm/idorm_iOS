@@ -5,20 +5,27 @@
 //  Created by 김응철 on 2023/01/17.
 //
 
+import UIKit
+
 import ReactorKit
 
 final class PostingViewReactor: Reactor {
   
   enum Action {
     case didTapPictIv
+    case didPickedImages([UIImage])
+    case didTapDeleteBtn(Int)
   }
   
   enum Mutation {
-    case setImagePickerVC(Bool)
+    case setGalleryVC(Bool)
+    case setImages([UIImage])
+    case deleteImages(Int)
   }
   
   struct State {
-    var showsImagePickerVC: Bool = false
+    var showsGalleryVC: Bool = false
+    var currentImages: [UIImage] = []
   }
   
   var initialState: State = State()
@@ -27,9 +34,15 @@ final class PostingViewReactor: Reactor {
     switch action {
     case .didTapPictIv:
       return .concat([
-        .just(.setImagePickerVC(true)),
-        .just(.setImagePickerVC(false))
+        .just(.setGalleryVC(true)),
+        .just(.setGalleryVC(false))
       ])
+      
+    case .didPickedImages(let images):
+      return .just(.setImages(images))
+      
+    case .didTapDeleteBtn(let index):
+      return .just(.deleteImages(index))
     }
   }
   
@@ -37,8 +50,16 @@ final class PostingViewReactor: Reactor {
     var newState = state
     
     switch mutation {
-    case .setImagePickerVC(let isOpened):
-      newState.showsImagePickerVC = isOpened
+    case .setGalleryVC(let isOpened):
+      newState.showsGalleryVC = isOpened
+      
+    case .setImages(let images):
+      newState.currentImages += images
+      
+    case .deleteImages(let index):
+      var images = currentState.currentImages
+      images.remove(at: index)
+      newState.currentImages = images
     }
     
     return newState

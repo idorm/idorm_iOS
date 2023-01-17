@@ -244,11 +244,29 @@ final class PostingViewController: BaseViewController, View {
     
     // MARK: - State
     
+    // 갤러리VC
     reactor.state
-      .map { $0.showsImagePickerVC }
+      .map { $0.showsGalleryVC }
       .filter { $0 }
       .withUnretained(self)
       .bind { $0.0.checkAuthorization() }
+      .disposed(by: disposeBag)
+    
+    // 현재 사진 목록
+    reactor.state
+      .map { $0.currentImages }
+      .distinctUntilChanged()
+      .withUnretained(self)
+      .observe(on: MainScheduler.asyncInstance)
+      .bind { $0.0.pictsCollectionView.reloadData() }
+      .disposed(by: disposeBag)
+    
+    // 현재 사진 갯수
+    reactor.state
+      .map { $0.currentImages.count }
+      .map { String($0) }
+      .distinctUntilChanged()
+      .bind(to: currentPictsCountLb.rx.text)
       .disposed(by: disposeBag)
   }
   
@@ -259,13 +277,17 @@ final class PostingViewController: BaseViewController, View {
   }
   
   private func checkAuthorization() {
+    let galleryVC = GalleryViewController(count: reactor?.currentState.currentImages.count ?? 0)
     
-    let imagePickerVC = ImagePickerViewController(count: 3)
+    galleryVC.completion = { [weak self] images in
+      // 선택된 이미지 반응
+      self?.reactor?.action.onNext(.didPickedImages(images))
+    }
     
     switch PHPhotoLibrary.authorizationStatus(for: .readWrite) {
     case .authorized, .limited:
       DispatchQueue.main.async {
-        self.navigationController?.pushViewController(imagePickerVC, animated: true)
+        self.navigationController?.pushViewController(galleryVC, animated: true)
       }
       
     case .notDetermined:
@@ -273,7 +295,7 @@ final class PostingViewController: BaseViewController, View {
         switch status {
         case .authorized, .limited:
           DispatchQueue.main.async {
-            self.navigationController?.pushViewController(imagePickerVC, animated: true)
+            self.navigationController?.pushViewController(galleryVC, animated: true)
           }
         default:
           break
@@ -308,7 +330,8 @@ extension PostingViewController: UICollectionViewDataSource, UICollectionViewDel
     _ collectionView: UICollectionView,
     numberOfItemsInSection section: Int
   ) -> Int {
-    return 5
+    guard let images = reactor?.currentState.currentImages else { return 0 }
+    return images.count
   }
   
   func collectionView(
@@ -318,8 +341,17 @@ extension PostingViewController: UICollectionViewDataSource, UICollectionViewDel
     guard let cell = collectionView.dequeueReusableCell(
       withReuseIdentifier: ImageCell.identifier,
       for: indexPath
-    ) as? ImageCell else {
+    ) as? ImageCell,
+          let reactor = reactor else {
       return UICollectionViewCell()
+    }
+    
+    let image = reactor.currentState.currentImages[indexPath.row]
+    cell.setupImage(image)
+    
+    // 특정 셀 지우기
+    cell.deleteCompletion = {
+      reactor.action.onNext(.didTapDeleteBtn(indexPath.row))
     }
     
     return cell

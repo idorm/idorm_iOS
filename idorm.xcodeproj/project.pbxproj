@@ -102,7 +102,7 @@
 		E57FB8562886E2710050BBAE /* PhotoLibrary+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57FB8552886E2710050BBAE /* PhotoLibrary+.swift */; };
 		E58131A8288E6AC6000DB8C9 /* FloatyBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58131A7288E6AC6000DB8C9 /* FloatyBottomView.swift */; };
 		E58A6297289D6BEF0074F646 /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58A6296289D6BEF0074F646 /* DeviceManager.swift */; };
-		E58ACB8728846E050031BD86 /* ImagePickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58ACB8628846E050031BD86 /* ImagePickerVC.swift */; };
+		E58ACB8728846E050031BD86 /* GalleryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58ACB8628846E050031BD86 /* GalleryVC.swift */; };
 		E58F96FB2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */; };
 		E59037C829769DBD001239D1 /* PostingViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59037C729769DBD001239D1 /* PostingViewReactor.swift */; };
 		E5909CE628D94B610083075D /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5909CE528D94B610083075D /* BaseViewController.swift */; };
@@ -259,7 +259,7 @@
 		E57FB8552886E2710050BBAE /* PhotoLibrary+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotoLibrary+.swift"; sourceTree = "<group>"; };
 		E58131A7288E6AC6000DB8C9 /* FloatyBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatyBottomView.swift; sourceTree = "<group>"; };
 		E58A6296289D6BEF0074F646 /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
-		E58ACB8628846E050031BD86 /* ImagePickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerVC.swift; sourceTree = "<group>"; };
+		E58ACB8628846E050031BD86 /* GalleryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryVC.swift; sourceTree = "<group>"; };
 		E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerCollectionViewCell.swift; sourceTree = "<group>"; };
 		E59037C729769DBD001239D1 /* PostingViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingViewReactor.swift; sourceTree = "<group>"; };
 		E5909CE528D94B610083075D /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
@@ -553,7 +553,7 @@
 			children = (
 				E5066425296E560B00B581E1 /* PostListVC.swift */,
 				E52233B2296CFCAD00C5DD07 /* PostingVC.swift */,
-				E58ACB8628846E050031BD86 /* ImagePickerVC.swift */,
+				E58ACB8628846E050031BD86 /* GalleryVC.swift */,
 				E5290F05288818E70004B8E6 /* CommunityDetailViewController.swift */,
 			);
 			path = ViewControllers;
@@ -1211,7 +1211,7 @@
 				E55DDAE929179DD900E62ECB /* AppearanceManager.swift in Sources */,
 				E5E8A3DF2895208500A48A91 /* MyCommentsCollectionVIewCell.swift in Sources */,
 				E5F565702918FF5A0043FCB4 /* MyRoommateVC.swift in Sources */,
-				E58ACB8728846E050031BD86 /* ImagePickerVC.swift in Sources */,
+				E58ACB8728846E050031BD86 /* GalleryVC.swift in Sources */,
 				E50F850D29589256008B7052 /* CommunityUtils.swift in Sources */,
 				E547E3E8291CF61B000D3A47 /* MatchingCardStringView.swift in Sources */,
 				E508437B28814CAB0047A2EC /* AuthVC.swift in Sources */,
