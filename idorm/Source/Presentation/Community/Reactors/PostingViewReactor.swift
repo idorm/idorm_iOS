@@ -8,24 +8,25 @@
 import UIKit
 
 import ReactorKit
+import Photos
 
 final class PostingViewReactor: Reactor {
   
   enum Action {
     case didTapPictIv
-    case didPickedImages([UIImage])
+    case didPickedImages([PHAsset])
     case didTapDeleteBtn(Int)
   }
   
   enum Mutation {
     case setGalleryVC(Bool)
-    case setImages([UIImage])
+    case setImages([PHAsset])
     case deleteImages(Int)
   }
   
   struct State {
     var showsGalleryVC: Bool = false
-    var currentImages: [UIImage] = []
+    var currentImages: [PHAsset] = []
   }
   
   var initialState: State = State()

@@ -60,7 +60,7 @@ final class GalleryViewController: UIViewController {
   var photoArray: [Int] = []
   var selectedAsset: [PHAsset] = []
 
-  var completion: (([UIImage]) -> Void)?
+  var completion: (([PHAsset]) -> Void)?
   
   // MARK: - LifeCycle
   
@@ -84,16 +84,7 @@ final class GalleryViewController: UIViewController {
   @objc
   private func didTapConfirmButton() {
     indicator.startAnimating()
-    
-    DispatchQueue.global().async {
-      var images: [UIImage] = []
-      
-      self.selectedAsset.forEach {
-        images.append($0.getImageFromPHAsset())
-      }
-      
-      self.completion?(images)
-    }
+    self.completion?(selectedAsset)
     navigationController?.popViewController(animated: true)
   }
   

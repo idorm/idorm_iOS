@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import Photos
 
 final class ImageCell: UICollectionViewCell {
   
@@ -76,8 +77,21 @@ final class ImageCell: UICollectionViewCell {
     }
   }
   
-  func setupImage(_ image: UIImage) {
-    imageView.image = image
+  func setupImage(_ image: PHAsset) {
+    let options = PHImageRequestOptions()
+    options.deliveryMode = .opportunistic
+    
+    var newImage: UIImage?
+    
+    PHImageManager.default().requestImage(
+      for: image,
+      targetSize: CGSize(width: 100, height: 100),
+      contentMode: .aspectFill,
+      options: options) { image, _ in
+        newImage = image
+      }
+    
+    imageView.image = newImage
   }
   
   // MARK: - Helpers
