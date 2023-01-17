@@ -104,6 +104,7 @@
 		E58A6297289D6BEF0074F646 /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58A6296289D6BEF0074F646 /* DeviceManager.swift */; };
 		E58ACB8728846E050031BD86 /* ImagePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58ACB8628846E050031BD86 /* ImagePickerViewController.swift */; };
 		E58F96FB2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */; };
+		E59037C829769DBD001239D1 /* PostingViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59037C729769DBD001239D1 /* PostingViewReactor.swift */; };
 		E5909CE628D94B610083075D /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5909CE528D94B610083075D /* BaseViewController.swift */; };
 		E591B77E28C6EB0600B8B581 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591B77D28C6EB0600B8B581 /* APIService.swift */; };
 		E59F0D502920A47E00D3B737 /* MatchingBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59F0D4F2920A47E00D3B737 /* MatchingBottomSheet.swift */; };
@@ -260,6 +261,7 @@
 		E58A6296289D6BEF0074F646 /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 		E58ACB8628846E050031BD86 /* ImagePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerViewController.swift; sourceTree = "<group>"; };
 		E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerCollectionViewCell.swift; sourceTree = "<group>"; };
+		E59037C729769DBD001239D1 /* PostingViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingViewReactor.swift; sourceTree = "<group>"; };
 		E5909CE528D94B610083075D /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		E591B77D28C6EB0600B8B581 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		E59F0D4F2920A47E00D3B737 /* MatchingBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingBottomSheet.swift; sourceTree = "<group>"; };
@@ -446,6 +448,7 @@
 			isa = PBXGroup;
 			children = (
 				E50FB5252972B28400E938B8 /* PostListViewReactor.swift */,
+				E59037C729769DBD001239D1 /* PostingViewReactor.swift */,
 			);
 			path = Reactors;
 			sourceTree = "<group>";
@@ -1135,6 +1138,7 @@
 				E55794EE287C36F5002DB2B0 /* UIView+.swift in Sources */,
 				E5E149882950635500A3827C /* FilterDriver.swift in Sources */,
 				E5AF633D29568FBD009A3865 /* AuthNumberViewReactor.swift in Sources */,
+				E59037C829769DBD001239D1 /* PostingViewReactor.swift in Sources */,
 				E50F850B29588878008B7052 /* OnboardingDetailViewReactor.swift in Sources */,
 				E50FB52F2972BED600E938B8 /* CommunityDTO.swift in Sources */,
 				E5AD7398287A8D8800BA2C5E /* UITextField+.swift in Sources */,

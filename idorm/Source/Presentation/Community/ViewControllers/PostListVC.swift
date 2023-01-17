@@ -22,7 +22,7 @@ final class PostListViewController: BaseViewController, View {
   
   // MARK: - Properties
   
-  private let floatyBtn: UIButton = {
+  private let postingBtn: UIButton = {
     let btn = UIButton()
     btn.setImage(UIImage(named: "ellipse_posting"), for: .normal)
     btn.setImage(UIImage(named: "ellipse_posting_activated"), for: .highlighted)
@@ -98,7 +98,7 @@ final class PostListViewController: BaseViewController, View {
   override func setupLayouts() {
     [
       postListCV,
-      floatyBtn,
+      postingBtn,
       indicator
     ].forEach {
       view.addSubview($0)
@@ -106,7 +106,7 @@ final class PostListViewController: BaseViewController, View {
   }
   
   override func setupConstraints() {
-    floatyBtn.snp.makeConstraints { make in
+    postingBtn.snp.makeConstraints { make in
       make.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
       make.centerX.equalToSuperview()
     }
@@ -147,11 +147,18 @@ final class PostListViewController: BaseViewController, View {
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
+    // 글쓰기 버튼 클릭
+    postingBtn.rx.tap
+      .map { PostListViewReactor.Action.didTapPostingBtn }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
     // MARK: - State
     
     // 게시글 변화
     reactor.state
       .map { $0.currentPosts }
+      .distinctUntilChanged()
       .withUnretained(self)
       .bind { $0.0.postListCV.reloadData() }
       .disposed(by: disposeBag)
@@ -181,6 +188,18 @@ final class PostListViewController: BaseViewController, View {
       .filter { !$0 }
       .withUnretained(self)
       .bind { $0.0.postListCV.refreshControl?.endRefreshing() }
+      .disposed(by: disposeBag)
+    
+    // PostingVC로 이동
+    reactor.state
+      .map { $0.showsPostingVC }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind {
+        let postingVC = PostingViewController()
+        postingVC.reactor = PostingViewReactor()
+        $0.0.navigationController?.pushViewController(postingVC, animated: true)
+      }
       .disposed(by: disposeBag)
   }
   
@@ -260,9 +279,10 @@ extension PostListViewController: UICollectionViewDataSource, UICollectionViewDe
 
     switch indexPath.section {
     case Section.common.rawValue:
-      if indexPath.row == reactor.currentState.currentPosts.count - 1 &&
+      if indexPath.row == reactor.currentState.currentPosts.count - 5 &&
           !reactor.currentState.isBlockedRequest &&
           !reactor.currentState.isPagination {
+        print(#function)
         reactor.action.onNext(.fetchMorePosts)
       }
 

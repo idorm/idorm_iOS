@@ -9,8 +9,9 @@ import UIKit
 
 import SnapKit
 import RSKPlaceholderTextView
+import ReactorKit
 
-final class PostingViewController: BaseViewController {
+final class PostingViewController: BaseViewController, View {
   
   // MARK: - Properties
   
@@ -212,6 +213,10 @@ final class PostingViewController: BaseViewController {
   }
   
   // MARK: - Bind
+  
+  func bind(reactor: PostingViewReactor) {
+    
+  }
 }
 
 // MARK: - CollectionView Setup
@@ -255,12 +260,3 @@ extension PostingViewController: UICollectionViewDataSource, UICollectionViewDel
     return .init(width: 83, height: 83)
   }
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-struct PostVC_PreView: PreviewProvider {
-  static var previews: some View {
-    PostingViewController().toPreview()
-  }
-}
-#endif

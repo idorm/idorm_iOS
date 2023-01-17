@@ -15,6 +15,7 @@ final class PostListViewReactor: Reactor {
   enum Action {
     case viewDidLoad
     case didTapDormBtn(Dormitory)
+    case didTapPostingBtn
     case pullToRefresh
     case fetchMorePosts
   }
@@ -29,6 +30,7 @@ final class PostListViewReactor: Reactor {
     case setPagination(Bool)
     case setBlockRequest(Bool)
     case resetPosts
+    case setPostingVC(Bool)
   }
   
   struct State {
@@ -40,6 +42,7 @@ final class PostListViewReactor: Reactor {
     var isRefreshing: Bool = false
     var isPagination: Bool = false
     var isBlockedRequest: Bool = false
+    var showsPostingVC: Bool = false
   }
   
   var initialState: State = State()
@@ -67,6 +70,12 @@ final class PostListViewReactor: Reactor {
         .just(.setDorm(dorm)),
         .just(.resetPosts),
         retrieveTopPosts(dorm)
+      ])
+      
+    case .didTapPostingBtn:
+      return .concat([
+        .just(.setPostingVC(true)),
+        .just(.setPostingVC(false))
       ])
       
     case .pullToRefresh:
@@ -116,6 +125,9 @@ final class PostListViewReactor: Reactor {
       
     case .resetPosts:
       newState.currentPosts = []
+      
+    case .setPostingVC(let isOpened):
+      newState.showsPostingVC = isOpened
     }
     
     return newState
