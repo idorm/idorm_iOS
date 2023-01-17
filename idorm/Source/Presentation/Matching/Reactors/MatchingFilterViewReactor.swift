@@ -12,67 +12,88 @@ import ReactorKit
 final class MatchingFilterViewReactor: Reactor {
   
   enum Action {
+    case viewDidLoad
     case didTapResetButton
     case didTapConfirmButton
     case didTapDormButton(Dormitory)
     case didTapJoinPeriodButton(JoinPeriod)
-    case didTapHabitButton(Habit)
+    case didTapHabitButton(Habit, Bool)
     case didChangeSlider(minValue: Int, maxValue: Int)
   }
   
   enum Mutation {
     case setPopVC
     case setRequestCard
+    case saveFilter
     case setFilter(MatchingDTO.Filter)
   }
   
   struct State {
     var popVC: Bool = false
     var requestCard: Bool = false
+    var currentFilter: MatchingDTO.Filter = .init()
+    var isAllowedConfirmBtn: Bool = false
   }
   
   let initialState: State = State()
+  var filterDriver = FilterDriver()
   
   func mutate(action: Action) -> Observable<Mutation> {
-    var newFilter = FilterStorage.shared.filter
+    var newFilter = currentState.currentFilter
     
     switch action {
+    case .viewDidLoad:
+      if FilterStorage.shared.hasFilter {
+        filterDriver.dorm.accept(true)
+        filterDriver.joinPeriod.accept(true)
+        
+        let currentFilter = FilterStorage.shared.filter
+        return .just(.setFilter(currentFilter))
+      } else {
+        
+        return .empty()
+      }
+      
     case .didTapResetButton:
+      FilterStorage.shared.hasFilter = false
       FilterStorage.shared.resetFilter()
-      FilterDriver.shared.reset()
+      
       return .concat([
         .just(.setRequestCard),
         .just(.setPopVC)
       ])
       
     case .didTapConfirmButton:
+      FilterStorage.shared.hasFilter = true
+      
       return Observable.concat([
-        Observable.just(.setRequestCard),
-        Observable.just(.setPopVC)
+        .just(.saveFilter),
+        .just(.setRequestCard),
+        .just(.setPopVC)
       ])
       
     case .didTapDormButton(let dorm):
-      FilterDriver.shared.dorm.accept(true)
+      filterDriver.dorm.accept(true)
       newFilter.dormNum = dorm
-      return Observable.just(.setFilter(newFilter))
+      return .just(.setFilter(newFilter))
 
     case .didTapJoinPeriodButton(let period):
-      FilterDriver.shared.joinPeriod.accept(true)
+      filterDriver.joinPeriod.accept(true)
       newFilter.joinPeriod = period
-      return Observable.just(.setFilter(newFilter))
+      return .just(.setFilter(newFilter))
       
-    case .didTapHabitButton(let habit):
+    case let .didTapHabitButton(habit, state):
       switch habit {
       case .snoring:
-        newFilter.isSnoring = !newFilter.isSnoring
+        newFilter.isSnoring = state
       case .smoking:
-        newFilter.isSmoking = !newFilter.isSmoking
+        newFilter.isSmoking = state
       case .grinding:
-        newFilter.isGrinding = !newFilter.isGrinding
+        newFilter.isGrinding = state
       case .allowedEarphone:
-        newFilter.isWearEarphones = !newFilter.isWearEarphones
+        newFilter.isWearEarphones = state
       case .allowedFood:
-        newFilter.isAllowedFood = !newFilter.isAllowedFood
+        newFilter.isAllowedFood = state
       }
       return Observable.just(.setFilter(newFilter))
       
@@ -94,7 +115,13 @@ final class MatchingFilterViewReactor: Reactor {
       newState.requestCard = true
       
     case .setFilter(let newFilter):
-      FilterStorage.shared.saveFilter(newFilter)
+      newState.currentFilter = newFilter
+      
+    case .saveFilter:
+      let currentFilter = currentState.currentFilter
+      
+      print(currentFilter)
+      FilterStorage.shared.saveFilter(currentFilter)
     }
     
     return newState
