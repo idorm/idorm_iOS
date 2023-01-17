@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import RSKPlaceholderTextView
 
-final class PostViewController: BaseViewController {
+final class PostingViewController: BaseViewController {
   
   // MARK: - Properties
   
@@ -216,7 +216,7 @@ final class PostViewController: BaseViewController {
 
 // MARK: - CollectionView Setup
 
-extension PostViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension PostingViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
   
   func collectionView(
     _ collectionView: UICollectionView,
@@ -260,7 +260,7 @@ extension PostViewController: UICollectionViewDataSource, UICollectionViewDelega
 import SwiftUI
 struct PostVC_PreView: PreviewProvider {
   static var previews: some View {
-    PostViewController().toPreview()
+    PostingViewController().toPreview()
   }
 }
 #endif
