@@ -57,7 +57,7 @@ final class LoginViewReactor: Reactor {
               UserStorage.savePassword(from: pw)
               let data = APIService.decode(ResponseModel<MemberDTO.Retrieve>.self, data: response.data).data
               MemberStorage.shared.saveMember(data)
-              TokenStorage.saveToken(token: data.loginToken ?? "")
+              TokenStorage.saveToken(token: data.loginToken!)
               return owner.retrieveMatchingInfo()
             default:
               let message = APIService.decode(ErrorResponseModel.self, data: response.data).message

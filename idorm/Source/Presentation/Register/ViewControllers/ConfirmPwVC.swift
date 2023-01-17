@@ -206,12 +206,22 @@ final class ConfirmPwViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let loginVC = LoginViewController()
-        loginVC.reactor = LoginViewReactor()
-        let navVC = UINavigationController(rootViewController: loginVC)
-        navVC.modalPresentationStyle = .fullScreen
-        owner.present(navVC, animated: true)
+        owner.navigationController?.popToRootViewController(animated: true)
+//
+//        let loginVC = LoginViewController()
+//        loginVC.reactor = LoginViewReactor()
+//        let navVC = UINavigationController(rootViewController: loginVC)
+//        navVC.modalPresentationStyle = .fullScreen
+//        owner.present(navVC, animated: true)
       }
+      .disposed(by: disposeBag)
+    
+    // 뒤로가기
+    reactor.state
+      .map { $0.popVC }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { $0.0.navigationController?.popViewController(animated: true) }
       .disposed(by: disposeBag)
     
     // 인디케이터 애니메이션
