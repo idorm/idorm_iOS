@@ -197,6 +197,7 @@ final class PostListViewController: BaseViewController, View {
       .withUnretained(self)
       .bind {
         let postingVC = PostingViewController()
+        postingVC.hidesBottomBarWhenPushed = true 
         postingVC.reactor = PostingViewReactor()
         $0.0.navigationController?.pushViewController(postingVC, animated: true)
       }

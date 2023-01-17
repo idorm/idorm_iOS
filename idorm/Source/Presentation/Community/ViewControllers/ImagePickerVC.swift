@@ -13,7 +13,8 @@ protocol ImagePickerViewControllerDelegate: AnyObject {
   func didTapConfirmButton(assets: [PHAsset])
 }
 
-class ImagePickerViewController: UIViewController {
+final class ImagePickerViewController: UIViewController {
+  
   // MARK: - Properties
   var fetchResult: PHFetchResult<PHAsset>?
   weak var delegate: ImagePickerViewControllerDelegate?
@@ -50,12 +51,12 @@ class ImagePickerViewController: UIViewController {
     button.setTitle("완료", for: .normal)
     button.titleLabel?.font = .init(name: MyFonts.bold.rawValue, size: 16)
     button.setTitleColor(UIColor.idorm_gray_300, for: .normal)
-//    button.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
     
     return button
   }()
   
   // MARK: - LifeCycle
+  
   init(count: Int) {
     self.currentPhotoCount = count
     super.init(nibName: nil, bundle: nil)
@@ -72,12 +73,14 @@ class ImagePickerViewController: UIViewController {
   }
   
   // MARK: - Selectors
+  
   @objc private func didTapConfirmButton() {
     delegate?.didTapConfirmButton(assets: selectedAsset)
     navigationController?.popViewController(animated: true)
   }
   
   // MARK: - Helpers
+  
   private func configureUI() {
     let confirmStack = UIStackView(arrangedSubviews: [ countLabel, confirmButton ])
     confirmStack.axis = .horizontal
@@ -105,12 +108,20 @@ class ImagePickerViewController: UIViewController {
   }
 }
 
+// MARK: - CollectionView Setup
+
 extension ImagePickerViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+  
+  func collectionView(
+    _ collectionView: UICollectionView,
+    cellForItemAt indexPath: IndexPath
+  ) -> UICollectionViewCell {
     guard
       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImagePickerCollectionViewCell.identifier, for: indexPath) as? ImagePickerCollectionViewCell,
       let asset = fetchResult?.object(at: indexPath.row)
-    else { return UICollectionViewCell() }
+    else {
+      return UICollectionViewCell()
+    }
     
     cell.configureUI(asset: asset)
     
@@ -133,14 +144,20 @@ extension ImagePickerViewController: UICollectionViewDataSource, UICollectionVie
     return cell
   }
   
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    numberOfItemsInSection section: Int
+  ) -> Int {
     if let count = fetchResult?.count {
       return count
     }
     return 0
   }
   
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    didSelectItemAt indexPath: IndexPath
+  ) {
     let cell = collectionView.cellForItem(at: indexPath) as! ImagePickerCollectionViewCell
     
     if cell.numberLabel.isHidden {

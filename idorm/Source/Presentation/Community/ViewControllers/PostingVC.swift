@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import RSKPlaceholderTextView
 import ReactorKit
+import Photos
 
 final class PostingViewController: BaseViewController, View {
   
@@ -125,7 +126,14 @@ final class PostingViewController: BaseViewController, View {
     return btn
   }()
   
-  private let pictIv = UIImageView(image: UIImage(named: "picture"))
+  private let bottomWhiteView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .white
+    
+    return view
+  }()
+  
+  private let pictIv = UIImageView(image: UIImage(named: "picture_medium"))
   
   // MARK: - Setup
   
@@ -141,7 +149,8 @@ final class PostingViewController: BaseViewController, View {
       separatorLine,
       pictsCollectionView,
       contentsTv,
-      bottomContainerView
+      bottomContainerView,
+      bottomWhiteView
     ].forEach {
       view.addSubview($0)
     }
@@ -182,13 +191,14 @@ final class PostingViewController: BaseViewController, View {
     }
     
     bottomContainerView.snp.makeConstraints { make in
-      make.bottom.leading.trailing.equalToSuperview()
-      make.height.equalTo(76)
+      make.leading.trailing.equalToSuperview()
+      make.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
+      make.height.equalTo(56)
     }
     
     pictIv.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(24)
-      make.top.equalToSuperview().inset(12)
+      make.centerY.equalToSuperview()
     }
 
     currentPictsCountLb.snp.makeConstraints { make in
@@ -202,13 +212,20 @@ final class PostingViewController: BaseViewController, View {
     }
     
     anonymousLabel.snp.makeConstraints { make in
-      make.centerY.equalTo(anonymousBtn)
+      make.centerY.equalToSuperview()
       make.trailing.equalTo(anonymousBtn.snp.leading).offset(-6)
     }
     
     anonymousBtn.snp.makeConstraints { make in
       make.trailing.equalToSuperview().inset(24)
-      make.top.equalToSuperview().inset(12)
+      make.centerY.equalToSuperview()
+    }
+    
+    if DeviceManager.shared.hasNotch() {
+      bottomWhiteView.snp.makeConstraints { make in
+        make.height.equalTo(50)
+        make.leading.trailing.bottom.equalToSuperview()
+      }
     }
   }
   
@@ -216,6 +233,70 @@ final class PostingViewController: BaseViewController, View {
   
   func bind(reactor: PostingViewReactor) {
     
+    // MARK: - Action
+    
+    // 사진 버튼 클릭
+    pictIv.rx.tapGesture()
+      .skip(1)
+      .map { _ in PostingViewReactor.Action.didTapPictIv }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // MARK: - State
+    
+    reactor.state
+      .map { $0.showsImagePickerVC }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { $0.0.checkAuthorization() }
+      .disposed(by: disposeBag)
+  }
+  
+  // MARK: - Helpers
+  
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    view.endEditing(true)
+  }
+  
+  private func checkAuthorization() {
+    
+    let imagePickerVC = ImagePickerViewController(count: 3)
+    
+    switch PHPhotoLibrary.authorizationStatus(for: .readWrite) {
+    case .authorized, .limited:
+      DispatchQueue.main.async {
+        self.navigationController?.pushViewController(imagePickerVC, animated: true)
+      }
+      
+    case .notDetermined:
+      PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
+        switch status {
+        case .authorized, .limited:
+          DispatchQueue.main.async {
+            self.navigationController?.pushViewController(imagePickerVC, animated: true)
+          }
+        default:
+          break
+        }
+      }
+
+    default:
+      presentAuthenticationAlert()
+    }
+  }
+  
+  private func presentAuthenticationAlert() {
+    let alert = UIAlertController(title: "알림", message: "모든 사진의 권한을 허용해주세요.", preferredStyle: .alert)
+    
+    let settingAction = UIAlertAction(title: "설정", style: .default) { _ in
+      UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+    }
+    let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+    
+    alert.addAction(settingAction)
+    alert.addAction(cancelAction)
+    
+    present(alert, animated: false)
   }
 }
 
