@@ -5,7 +5,8 @@
 //  Created by 김응철 on 2023/01/14.
 //
 
-import Foundation
+import UIKit
+import Photos
 
 struct CommunityDTO: Codable {
   
@@ -18,5 +19,13 @@ struct CommunityDTO: Codable {
     let likesCount: Int
     let imagesCount: Int
     let createdAt: String
+  }
+  
+  struct Save {
+    let content: String
+    let title: String
+    let dormNum: Dormitory
+    let assets: [PHAsset]
+    let isAnonymous: Bool
   }
 }

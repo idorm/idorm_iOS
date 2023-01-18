@@ -6,38 +6,29 @@
 //
 
 import UIKit
+
 import SnapKit
 import Photos
 
-protocol ImagePickerViewControllerDelegate: AnyObject {
-  func didTapConfirmButton(assets: [PHAsset])
-}
-
-class ImagePickerViewController: UIViewController {
+final class GalleryViewController: UIViewController {
+  
   // MARK: - Properties
-  var fetchResult: PHFetchResult<PHAsset>?
-  weak var delegate: ImagePickerViewControllerDelegate?
-  let currentPhotoCount: Int
-  
-  /// 선택된 사진 Numbering Properties
-  var photoArray: [Int] = []
-  var selectedAsset: [PHAsset] = []
-  
-  lazy var collectionView: UICollectionView = {
+    
+  private lazy var collectionView: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
     layout.minimumLineSpacing = 2
     layout.minimumInteritemSpacing = 2
     let width = (UIScreen.main.bounds.width - 4) / 3
     layout.itemSize = CGSize(width: width, height: width)
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    collectionView.register(ImagePickerCollectionViewCell.self, forCellWithReuseIdentifier: ImagePickerCollectionViewCell.identifier)
+    collectionView.register(GalleryCell.self, forCellWithReuseIdentifier: GalleryCell.identifier)
     collectionView.dataSource = self
     collectionView.delegate = self
     
     return collectionView
   }()
   
-  lazy var countLabel: UILabel = {
+  private lazy var countLabel: UILabel = {
     let label = UILabel()
     label.font = .init(name: MyFonts.medium.rawValue, size: 16)
     label.textColor = .idorm_blue
@@ -45,17 +36,34 @@ class ImagePickerViewController: UIViewController {
     return label
   }()
   
-  lazy var confirmButton: UIButton = {
+  private lazy var confirmButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setTitle("완료", for: .normal)
     button.titleLabel?.font = .init(name: MyFonts.bold.rawValue, size: 16)
     button.setTitleColor(UIColor.idorm_gray_300, for: .normal)
-//    button.addTarget(self, action: #selector(nextButtonDidTap), for: .touchUpInside)
+    button.addTarget(self, action: #selector(didTapConfirmButton), for: .touchUpInside)
     
     return button
   }()
   
+  private let indicator: UIActivityIndicatorView = {
+    let indicator = UIActivityIndicatorView()
+    indicator.color = .darkGray
+    
+    return indicator
+  }()
+  
+  var fetchResult: PHFetchResult<PHAsset>?
+  let currentPhotoCount: Int
+  
+  /// 선택된 사진 Numbering Properties
+  var photoArray: [Int] = []
+  var selectedAsset: [PHAsset] = []
+
+  var completion: (([PHAsset]) -> Void)?
+  
   // MARK: - LifeCycle
+  
   init(count: Int) {
     self.currentPhotoCount = count
     super.init(nibName: nil, bundle: nil)
@@ -72,24 +80,38 @@ class ImagePickerViewController: UIViewController {
   }
   
   // MARK: - Selectors
-  @objc private func didTapConfirmButton() {
-    delegate?.didTapConfirmButton(assets: selectedAsset)
+  
+  @objc
+  private func didTapConfirmButton() {
+    indicator.startAnimating()
+    self.completion?(selectedAsset)
     navigationController?.popViewController(animated: true)
   }
   
   // MARK: - Helpers
+  
   private func configureUI() {
-    let confirmStack = UIStackView(arrangedSubviews: [ countLabel, confirmButton ])
+    let confirmStack = UIStackView(arrangedSubviews: [countLabel, confirmButton])
     confirmStack.axis = .horizontal
     confirmStack.spacing = 4
     
+    [
+      collectionView,
+      indicator
+    ].forEach {
+      view.addSubview($0)
+    }
+    
     navigationItem.rightBarButtonItem = UIBarButtonItem(customView: confirmStack)
     navigationItem.title = "모든 사진"
-    view.addSubview(collectionView)
     view.backgroundColor = .white
     
     collectionView.snp.makeConstraints { make in
       make.edges.equalTo(view.safeAreaLayoutGuide)
+    }
+    
+    indicator.snp.makeConstraints { make in
+      make.center.equalToSuperview()
     }
   }
   
@@ -105,12 +127,20 @@ class ImagePickerViewController: UIViewController {
   }
 }
 
-extension ImagePickerViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+// MARK: - CollectionView Setup
+
+extension GalleryViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+  
+  func collectionView(
+    _ collectionView: UICollectionView,
+    cellForItemAt indexPath: IndexPath
+  ) -> UICollectionViewCell {
     guard
-      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImagePickerCollectionViewCell.identifier, for: indexPath) as? ImagePickerCollectionViewCell,
+      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GalleryCell.identifier, for: indexPath) as? GalleryCell,
       let asset = fetchResult?.object(at: indexPath.row)
-    else { return UICollectionViewCell() }
+    else {
+      return UICollectionViewCell()
+    }
     
     cell.configureUI(asset: asset)
     
@@ -133,15 +163,21 @@ extension ImagePickerViewController: UICollectionViewDataSource, UICollectionVie
     return cell
   }
   
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    numberOfItemsInSection section: Int
+  ) -> Int {
     if let count = fetchResult?.count {
       return count
     }
     return 0
   }
   
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let cell = collectionView.cellForItem(at: indexPath) as! ImagePickerCollectionViewCell
+  func collectionView(
+    _ collectionView: UICollectionView,
+    didSelectItemAt indexPath: IndexPath
+  ) {
+    let cell = collectionView.cellForItem(at: indexPath) as! GalleryCell
     
     if cell.numberLabel.isHidden {
       if photoArray.count < 10 - currentPhotoCount {

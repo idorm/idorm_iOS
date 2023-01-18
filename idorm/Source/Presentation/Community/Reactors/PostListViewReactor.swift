@@ -15,8 +15,10 @@ final class PostListViewReactor: Reactor {
   enum Action {
     case viewDidLoad
     case didTapDormBtn(Dormitory)
+    case didTapPostingBtn
     case pullToRefresh
     case fetchMorePosts
+    case postingCompletion
   }
   
   enum Mutation {
@@ -29,6 +31,7 @@ final class PostListViewReactor: Reactor {
     case setPagination(Bool)
     case setBlockRequest(Bool)
     case resetPosts
+    case setPostingVC(Bool, Dormitory)
   }
   
   struct State {
@@ -40,6 +43,7 @@ final class PostListViewReactor: Reactor {
     var isRefreshing: Bool = false
     var isPagination: Bool = false
     var isBlockedRequest: Bool = false
+    var showsPostingVC: (Bool, Dormitory) = (false, .no3)
   }
   
   var initialState: State = State()
@@ -69,6 +73,12 @@ final class PostListViewReactor: Reactor {
         retrieveTopPosts(dorm)
       ])
       
+    case .didTapPostingBtn:
+      return .concat([
+        .just(.setPostingVC(true, currentState.currentDorm)),
+        .just(.setPostingVC(false, .no3))
+      ])
+      
     case .pullToRefresh:
       return .concat([
         .just(.setRefreshing(true)),
@@ -77,11 +87,18 @@ final class PostListViewReactor: Reactor {
       ])
       
     case .fetchMorePosts:
-      let nextPage = currentState.currentPage + 20
+      let nextPage = currentState.currentPage + 1
       
       return .concat([
         .just(.setPagination(true)),
         retrievePosts(currentState.currentDorm, page: nextPage)
+      ])
+      
+    case .postingCompletion:
+      return .concat([
+        .just(.setLoading(true)),
+        .just(.resetPosts),
+        retrieveTopPosts(currentState.currentDorm)
       ])
     }
   }
@@ -116,6 +133,9 @@ final class PostListViewReactor: Reactor {
       
     case .resetPosts:
       newState.currentPosts = []
+      
+    case let .setPostingVC(isOpened, dorm):
+      newState.showsPostingVC = (isOpened, dorm)
     }
     
     return newState
@@ -151,7 +171,7 @@ extension PostListViewReactor {
       },
       .just(.setPagination(false)),
       .just(.setLoading(false)),
-      .just(.setRefreshing(false))
+      .just(.setRefreshing(false)).delay(.seconds(1), scheduler: MainScheduler.asyncInstance)
     ])
   }
   

@@ -77,4 +77,9 @@ class DeviceManager {
   func isResolution932() -> Bool {
     return Device.current.isOneOf(DeviceGroup.resolution_932.rawValue)
   }
+  
+  func hasNotch() -> Bool {
+    let notchs = Device.allDevicesWithSensorHousing + Device.allSimulatorDevicesWithSensorHousing
+    return Device.current.isOneOf(notchs)
+  }
 }

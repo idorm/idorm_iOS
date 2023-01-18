@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import Photos
 
 final class ImageCell: UICollectionViewCell {
   
@@ -15,9 +16,10 @@ final class ImageCell: UICollectionViewCell {
   
   static let identifier = "ImageCell"
   
-  let deleteBtn: UIButton = {
+  private lazy var deleteBtn: UIButton = {
     let btn = UIButton()
     btn.setImage(UIImage(named: "circle_xmark_darkgray"), for: .normal)
+    btn.addTarget(self, action: #selector(didTapDeleteBtn), for: .touchUpInside)
     
     return btn
   }()
@@ -25,10 +27,14 @@ final class ImageCell: UICollectionViewCell {
   let imageView: UIImageView = {
     let iv = UIImageView()
     iv.layer.cornerRadius = 10
+    iv.layer.masksToBounds = true
+    iv.contentMode = .scaleAspectFill
     iv.backgroundColor = .blue
     
     return iv
   }()
+  
+  var deleteCompletion: (() -> Void)?
   
   // MARK: - LifeCycle
   
@@ -69,5 +75,29 @@ final class ImageCell: UICollectionViewCell {
       make.top.equalToSuperview().offset(-3)
       make.width.height.equalTo(25)
     }
+  }
+  
+  func setupImage(_ image: PHAsset) {
+    let options = PHImageRequestOptions()
+    options.deliveryMode = .opportunistic
+    
+    var newImage: UIImage?
+    
+    PHImageManager.default().requestImage(
+      for: image,
+      targetSize: CGSize(width: 100, height: 100),
+      contentMode: .aspectFill,
+      options: options) { image, _ in
+        newImage = image
+      }
+    
+    imageView.image = newImage
+  }
+  
+  // MARK: - Helpers
+  
+  @objc
+  private func didTapDeleteBtn() {
+    deleteCompletion?()
   }
 }
