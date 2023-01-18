@@ -296,6 +296,12 @@ final class PostingViewController: BaseViewController, View {
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
+    // 완료 버튼
+    completeBtn.rx.tap
+      .map { PostingViewReactor.Action.didTapCompleteBtn }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
     // MARK: - State
     
     // 갤러리VC

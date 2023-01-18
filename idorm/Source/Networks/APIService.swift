@@ -30,4 +30,11 @@ final class APIService {
       "X-AUTH-TOKEN": TokenStorage.loadToken() ?? ""
     ]
   }
+  
+  static func multiPartHeader() -> [String: String] {
+    return [
+      "Content-Type": "multipart/form-data",
+      "X-AUTH-TOKEN": TokenStorage.loadToken() ?? ""
+    ]
+  }
 }

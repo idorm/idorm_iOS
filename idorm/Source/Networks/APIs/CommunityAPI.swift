@@ -5,13 +5,14 @@
 //  Created by 김응철 on 2023/01/14.
 //
 
-import Foundation
+import UIKit
 
 import Moya
 
 enum CommunityAPI {
   case retrievePosts(dorm: Dormitory, page: Int)
   case retrieveTopPosts(Dormitory)
+  case posting(CommunityDTO.Save)
 }
 
 extension CommunityAPI: TargetType {
@@ -25,6 +26,8 @@ extension CommunityAPI: TargetType {
       return "/member/posts/\(dorm.rawValue)"
     case .retrieveTopPosts(let dorm):
       return "/member/posts/\(dorm.rawValue)/top"
+    case .posting:
+      return "/member/post"
     }
   }
   
@@ -32,6 +35,8 @@ extension CommunityAPI: TargetType {
     switch self {
     case .retrievePosts, .retrieveTopPosts:
       return .get
+    case .posting:
+      return .post
     }
   }
   
@@ -44,10 +49,34 @@ extension CommunityAPI: TargetType {
       
     case .retrieveTopPosts:
       return .requestPlain
+      
+    case .posting(let post):
+      var multiFormDatas: [MultipartFormData] = []
+      
+      let titleData = MultipartFormData(provider: .data(post.title.data(using: .utf8)!), name: "title")
+      let contentsData = MultipartFormData(provider: .data(post.content.data(using: .utf8)!), name: "content")
+      let anonymousData = MultipartFormData(provider: .data(post.isAnonymous.description.data(using: .utf8)!), name: "isAnonymous")
+      let dormNumData = MultipartFormData(provider: .data(post.dormNum.rawValue.data(using: .utf8)!), name: "dormNum")
+      
+      for i in 0..<post.assets.count {
+        let image = post.assets[i].getImageFromPHAsset()
+        let data = image.jpegData(compressionQuality: 0.5)!
+        let imageData = MultipartFormData(provider: .data(data), name: "files", fileName: "\(i)", mimeType: "image/jpeg")
+        multiFormDatas.append(imageData)
+      }
+      
+      multiFormDatas = [titleData, contentsData, anonymousData, dormNumData]
+
+      return .uploadMultipart(multiFormDatas)
     }
   }
   
   var headers: [String : String]? {
-    APIService.basicHeader()
+    switch self {
+    case .posting:
+      return APIService.multiPartHeader()
+    default:
+      return APIService.basicHeader()
+    }
   }
 }

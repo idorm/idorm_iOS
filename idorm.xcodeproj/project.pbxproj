@@ -566,9 +566,9 @@
 				E506642B296E6BAA00B581E1 /* PopularPostCell.swift */,
 				E52233B5296D04A200C5DD07 /* ImageCell.swift */,
 				E50FB5302972E41600E938B8 /* LoadingCell.swift */,
+				E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */,
 				E5290F0D288867E50004B8E6 /* CommunityDetailTableViewCell.swift */,
 				E5290F0F288869700004B8E6 /* CommunityDetailHeaderCollectionViewCell.swift */,
-				E58F96FA2884E85B00CC3C75 /* ImagePickerCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";

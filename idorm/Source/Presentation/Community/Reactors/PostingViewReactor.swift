@@ -8,12 +8,14 @@
 import UIKit
 
 import ReactorKit
+import RxMoya
 import Photos
 
 final class PostingViewReactor: Reactor {
   
   enum Action {
     case didTapPictIv
+    case didTapCompleteBtn
     case didPickedImages([PHAsset])
     case didTapDeleteBtn(Int)
     case didChangeTitle(String)
@@ -30,6 +32,7 @@ final class PostingViewReactor: Reactor {
     case setCompleteBtn
     case setAnonymous(Bool)
     case setLoading(Bool)
+    case setPopVC(Bool)
   }
   
   struct State {
@@ -40,9 +43,16 @@ final class PostingViewReactor: Reactor {
     var isEnabledCompleteBtn: Bool = false
     var isAnonymous: Bool = true
     var isLoading: Bool = false
+    var popVC: Bool = false
   }
-  
+    
+  private let currentDorm: Dormitory
+  var reloadCompletion: (() -> Void)?
   var initialState: State = State()
+  
+  init(_ dorm: Dormitory) {
+    self.currentDorm = dorm
+  }
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
@@ -50,6 +60,36 @@ final class PostingViewReactor: Reactor {
       return .concat([
         .just(.setGalleryVC(true)),
         .just(.setGalleryVC(false))
+      ])
+      
+    case .didTapCompleteBtn:
+      let newPost = CommunityDTO.Save(
+        content: currentState.currentContents,
+        title: currentState.currentTitle,
+        dormNum: currentDorm,
+        assets: currentState.currentImages,
+        isAnonymous: currentState.isAnonymous
+      )
+      
+      return .concat([
+        .just(.setLoading(true)),
+        APIService.communityProvider.rx.request(.posting(newPost))
+          .asObservable()
+          .retry()
+          .withUnretained(self)
+          .flatMap { owner, response -> Observable<Mutation> in
+            switch response.statusCode {
+            case 200..<300:
+              owner.reloadCompletion?()
+              return .concat([
+                .just(.setLoading(false)),
+                .just(.setPopVC(true))
+              ])
+              
+            default:
+              break
+            }
+          }
       ])
       
     case .didPickedImages(let images):

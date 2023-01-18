@@ -193,13 +193,20 @@ final class PostListViewController: BaseViewController, View {
     // PostingVC로 이동
     reactor.state
       .map { $0.showsPostingVC }
-      .filter { $0 }
+      .filter { $0.0 }
       .withUnretained(self)
-      .bind {
+      .bind { owner, dorm in
         let postingVC = PostingViewController()
+        let postingReactor = PostingViewReactor(dorm.1)
+        
         postingVC.hidesBottomBarWhenPushed = true 
-        postingVC.reactor = PostingViewReactor()
-        $0.0.navigationController?.pushViewController(postingVC, animated: true)
+        postingVC.reactor = postingReactor
+        
+        postingReactor.reloadCompletion = { [weak self] in
+          self?.reactor?.action.onNext(.reloadCompletion)
+        }
+        
+        owner.navigationController?.pushViewController(postingVC, animated: true)
       }
       .disposed(by: disposeBag)
   }
