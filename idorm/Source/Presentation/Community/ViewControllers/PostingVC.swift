@@ -10,6 +10,8 @@ import UIKit
 import SnapKit
 import RSKPlaceholderTextView
 import ReactorKit
+import RxSwift
+import RxCocoa
 import Photos
 
 final class PostingViewController: BaseViewController, View {
@@ -28,14 +30,26 @@ final class PostingViewController: BaseViewController, View {
     return cv
   }()
   
-  private let completeBtn: UIButton = {
+  private lazy var completeBtn: UIButton = {
     let button = UIButton()
     var config = UIButton.Configuration.plain()
     var container = AttributeContainer()
     container.font = .init(name: MyFonts.bold.rawValue, size: 16)
-    container.strokeColor = .idorm_gray_300
     config.attributedTitle = AttributedString("완료", attributes: container)
+    
+    let handler: UIButton.ConfigurationUpdateHandler = { button in
+      switch button.state {
+      case .disabled:
+        button.configuration?.baseForegroundColor = .idorm_gray_300
+      case .normal:
+        button.configuration?.baseForegroundColor = .idorm_blue
+      default:
+        break
+      }
+    }
+    
     button.configuration = config
+    button.configurationUpdateHandler = handler
     
     return button
   }()
@@ -133,6 +147,13 @@ final class PostingViewController: BaseViewController, View {
     return view
   }()
   
+  private let indicator: UIActivityIndicatorView = {
+    let indicator = UIActivityIndicatorView()
+    indicator.color = .darkGray
+    
+    return indicator
+  }()
+  
   private let pictIv = UIImageView(image: UIImage(named: "picture_medium"))
   
   // MARK: - Setup
@@ -141,6 +162,7 @@ final class PostingViewController: BaseViewController, View {
     navigationItem.title = "글쓰기"
     navigationItem.rightBarButtonItem = UIBarButtonItem(customView: completeBtn)
     view.backgroundColor = .white
+    completeBtn.isEnabled = false
   }
   
   override func setupLayouts() {
@@ -150,7 +172,8 @@ final class PostingViewController: BaseViewController, View {
       pictsCollectionView,
       contentsTv,
       bottomContainerView,
-      bottomWhiteView
+      bottomWhiteView,
+      indicator
     ].forEach {
       view.addSubview($0)
     }
@@ -185,7 +208,7 @@ final class PostingViewController: BaseViewController, View {
     }
     
     contentsTv.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview().inset(24)
+      make.leading.trailing.equalToSuperview().inset(20)
       make.top.equalTo(pictsCollectionView.snp.bottom).offset(16)
       make.bottom.equalTo(bottomContainerView.snp.top).offset(-16)
     }
@@ -221,6 +244,10 @@ final class PostingViewController: BaseViewController, View {
       make.centerY.equalToSuperview()
     }
     
+    indicator.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+    }
+    
     if DeviceManager.shared.hasNotch() {
       bottomWhiteView.snp.makeConstraints { make in
         make.height.equalTo(50)
@@ -241,6 +268,31 @@ final class PostingViewController: BaseViewController, View {
     pictIv.rx.tapGesture()
       .skip(1)
       .map { _ in PostingViewReactor.Action.didTapPictIv }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // 제목 변경
+    titleTf.rx.text
+      .orEmpty
+      .distinctUntilChanged()
+      .map { PostingViewReactor.Action.didChangeTitle($0) }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // 내용 변경
+    contentsTv.rx.text
+      .orEmpty
+      .distinctUntilChanged()
+      .map { PostingViewReactor.Action.didChangeContent($0) }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // 익명 버튼 이벤트
+    anonymousBtn.rx.tap
+      .withUnretained(self)
+      .do { $0.0.anonymousBtn.isSelected.toggle() }
+      .map { $0.0.anonymousBtn.isSelected }
+      .map { PostingViewReactor.Action.didTapAnonymousBtn($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -273,6 +325,13 @@ final class PostingViewController: BaseViewController, View {
       .map { String($0) }
       .distinctUntilChanged()
       .bind(to: currentPictsCountLb.rx.text)
+      .disposed(by: disposeBag)
+
+    // 완료버튼 활성/비활성
+    reactor.state
+      .map { $0.isEnabledCompleteBtn }
+      .distinctUntilChanged()
+      .bind(to: completeBtn.rx.isEnabled)
       .disposed(by: disposeBag)
   }
   
@@ -334,7 +393,7 @@ final class PostingViewController: BaseViewController, View {
       pictsCollectionView.isHidden = false
       
       contentsTv.snp.updateConstraints { make in
-        make.leading.trailing.equalToSuperview().inset(24)
+        make.leading.trailing.equalToSuperview().inset(20)
         make.top.equalTo(pictsCollectionView.snp.bottom).offset(16)
         make.bottom.equalTo(bottomContainerView.snp.top).offset(-16)
       }
@@ -342,7 +401,7 @@ final class PostingViewController: BaseViewController, View {
       pictsCollectionView.isHidden = true
       
       contentsTv.snp.updateConstraints { make in
-        make.leading.trailing.equalToSuperview().inset(24)
+        make.leading.trailing.equalToSuperview().inset(20)
         make.top.equalTo(pictsCollectionView.snp.bottom).offset(-84)
         make.bottom.equalTo(bottomContainerView.snp.top).offset(-16)
       }

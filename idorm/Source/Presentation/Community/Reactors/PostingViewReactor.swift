@@ -16,17 +16,30 @@ final class PostingViewReactor: Reactor {
     case didTapPictIv
     case didPickedImages([PHAsset])
     case didTapDeleteBtn(Int)
+    case didChangeTitle(String)
+    case didChangeContent(String)
+    case didTapAnonymousBtn(Bool)
   }
   
   enum Mutation {
     case setGalleryVC(Bool)
     case setImages([PHAsset])
     case deleteImages(Int)
+    case setTitle(String)
+    case setContents(String)
+    case setCompleteBtn
+    case setAnonymous(Bool)
+    case setLoading(Bool)
   }
   
   struct State {
     var showsGalleryVC: Bool = false
     var currentImages: [PHAsset] = []
+    var currentTitle: String = ""
+    var currentContents: String = ""
+    var isEnabledCompleteBtn: Bool = false
+    var isAnonymous: Bool = true
+    var isLoading: Bool = false
   }
   
   var initialState: State = State()
@@ -44,6 +57,21 @@ final class PostingViewReactor: Reactor {
       
     case .didTapDeleteBtn(let index):
       return .just(.deleteImages(index))
+      
+    case .didChangeTitle(let title):
+      return .concat([
+        .just(.setTitle(title)),
+        .just(.setCompleteBtn)
+      ])
+      
+    case .didChangeContent(let contents):
+      return .concat([
+        .just(.setContents(contents)),
+        .just(.setCompleteBtn)
+      ])
+      
+    case .didTapAnonymousBtn(let isSelected):
+      return .just(.setAnonymous(isSelected))
     }
   }
   
@@ -61,6 +89,27 @@ final class PostingViewReactor: Reactor {
       var images = currentState.currentImages
       images.remove(at: index)
       newState.currentImages = images
+      
+    case .setTitle(let title):
+      newState.currentTitle = title
+      
+    case .setContents(let contents):
+      newState.currentContents = contents
+      
+    case .setCompleteBtn:
+      if !currentState.currentTitle.isEmpty,
+         !currentState.currentContents.isEmpty
+      {
+        newState.isEnabledCompleteBtn = true
+      } else {
+        newState.isEnabledCompleteBtn = false
+      }
+      
+    case .setAnonymous(let isSelected):
+      newState.isAnonymous = isSelected
+      
+    case .setLoading(let isLoading):
+      newState.isLoading = isLoading
     }
     
     return newState
