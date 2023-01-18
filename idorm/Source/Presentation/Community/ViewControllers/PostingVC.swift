@@ -339,6 +339,14 @@ final class PostingViewController: BaseViewController, View {
       .distinctUntilChanged()
       .bind(to: completeBtn.rx.isEnabled)
       .disposed(by: disposeBag)
+    
+    // 뒤로가기
+    reactor.state
+      .map { $0.popVC }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { $0.0.navigationController?.popViewController(animated: true) }
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers

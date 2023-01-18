@@ -47,7 +47,7 @@ final class PostingViewReactor: Reactor {
   }
     
   private let currentDorm: Dormitory
-  var reloadCompletion: (() -> Void)?
+  var postingCompletion: (() -> Void)?
   var initialState: State = State()
   
   init(_ dorm: Dormitory) {
@@ -80,14 +80,14 @@ final class PostingViewReactor: Reactor {
           .flatMap { owner, response -> Observable<Mutation> in
             switch response.statusCode {
             case 200..<300:
-              owner.reloadCompletion?()
+              owner.postingCompletion?()
               return .concat([
                 .just(.setLoading(false)),
                 .just(.setPopVC(true))
               ])
               
             default:
-              break
+              fatalError("게시글 저장 실패")
             }
           }
       ])
@@ -150,6 +150,9 @@ final class PostingViewReactor: Reactor {
       
     case .setLoading(let isLoading):
       newState.isLoading = isLoading
+      
+    case .setPopVC(let state):
+      newState.popVC = state
     }
     
     return newState

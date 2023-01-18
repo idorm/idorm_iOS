@@ -18,7 +18,7 @@ final class PostListViewReactor: Reactor {
     case didTapPostingBtn
     case pullToRefresh
     case fetchMorePosts
-    case reloadCompletion
+    case postingCompletion
   }
   
   enum Mutation {
@@ -94,9 +94,10 @@ final class PostListViewReactor: Reactor {
         retrievePosts(currentState.currentDorm, page: nextPage)
       ])
       
-    case .reloadCompletion:
+    case .postingCompletion:
       return .concat([
         .just(.setLoading(true)),
+        .just(.resetPosts),
         retrieveTopPosts(currentState.currentDorm)
       ])
     }
@@ -170,7 +171,7 @@ extension PostListViewReactor {
       },
       .just(.setPagination(false)),
       .just(.setLoading(false)),
-      .just(.setRefreshing(false))
+      .just(.setRefreshing(false)).delay(.seconds(1), scheduler: MainScheduler.asyncInstance)
     ])
   }
   

@@ -202,8 +202,8 @@ final class PostListViewController: BaseViewController, View {
         postingVC.hidesBottomBarWhenPushed = true 
         postingVC.reactor = postingReactor
         
-        postingReactor.reloadCompletion = { [weak self] in
-          self?.reactor?.action.onNext(.reloadCompletion)
+        postingReactor.postingCompletion = { [weak self] in
+          self?.reactor?.action.onNext(.postingCompletion)
         }
         
         owner.navigationController?.pushViewController(postingVC, animated: true)
@@ -290,7 +290,6 @@ extension PostListViewController: UICollectionViewDataSource, UICollectionViewDe
       if indexPath.row == reactor.currentState.currentPosts.count - 5 &&
           !reactor.currentState.isBlockedRequest &&
           !reactor.currentState.isPagination {
-        print(#function)
         reactor.action.onNext(.fetchMorePosts)
       }
 
