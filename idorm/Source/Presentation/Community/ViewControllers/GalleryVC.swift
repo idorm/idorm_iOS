@@ -21,7 +21,7 @@ final class GalleryViewController: UIViewController {
     let width = (UIScreen.main.bounds.width - 4) / 3
     layout.itemSize = CGSize(width: width, height: width)
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    collectionView.register(ImagePickerCollectionViewCell.self, forCellWithReuseIdentifier: ImagePickerCollectionViewCell.identifier)
+    collectionView.register(GalleryCell.self, forCellWithReuseIdentifier: GalleryCell.identifier)
     collectionView.dataSource = self
     collectionView.delegate = self
     
@@ -136,7 +136,7 @@ extension GalleryViewController: UICollectionViewDataSource, UICollectionViewDel
     cellForItemAt indexPath: IndexPath
   ) -> UICollectionViewCell {
     guard
-      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImagePickerCollectionViewCell.identifier, for: indexPath) as? ImagePickerCollectionViewCell,
+      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GalleryCell.identifier, for: indexPath) as? GalleryCell,
       let asset = fetchResult?.object(at: indexPath.row)
     else {
       return UICollectionViewCell()
@@ -177,7 +177,7 @@ extension GalleryViewController: UICollectionViewDataSource, UICollectionViewDel
     _ collectionView: UICollectionView,
     didSelectItemAt indexPath: IndexPath
   ) {
-    let cell = collectionView.cellForItem(at: indexPath) as! ImagePickerCollectionViewCell
+    let cell = collectionView.cellForItem(at: indexPath) as! GalleryCell
     
     if cell.numberLabel.isHidden {
       if photoArray.count < 10 - currentPhotoCount {
