@@ -347,6 +347,19 @@ final class PostingViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { $0.0.navigationController?.popViewController(animated: true) }
       .disposed(by: disposeBag)
+    
+    // 로딩 인디케이터 제어
+    reactor.state
+      .map { $0.isLoading }
+      .bind(to: indicator.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
+    // 화면 인터렉션 제어
+    reactor.state
+      .map { !$0.isLoading }
+      .distinctUntilChanged()
+      .bind(to: view.rx.isUserInteractionEnabled)
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers

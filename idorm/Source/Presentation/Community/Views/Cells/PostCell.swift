@@ -199,10 +199,14 @@ final class PostCell: UICollectionViewCell {
     likeCountLb.text = "\(post.likesCount)"
     pictureCountLb.text = "\(post.imagesCount)"
     commentsCountLb.text = "\(post.commentsCount)"
-    
+    timeLb.text = TimeManager.postList(post.createdAt)
+
     if post.imagesCount == 0 {
       pictureCountLb.isHidden = true
       pictureIv.isHidden = true
+    } else {
+      pictureCountLb.isHidden = false
+      pictureIv.isHidden = false
     }
   }
 }

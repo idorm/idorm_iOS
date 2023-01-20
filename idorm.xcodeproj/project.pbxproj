@@ -69,6 +69,7 @@
 		E52CD85628BE371F00A262ED /* ManageMyInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52CD85528BE371F00A262ED /* ManageMyInfoView.swift */; };
 		E52E96B22915FAB6009E1773 /* MatchingContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52E96B12915FAB6009E1773 /* MatchingContainerView.swift */; };
 		E52E96B429160870009E1773 /* TopProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52E96B329160870009E1773 /* TopProfileView.swift */; };
+		E52EDAC3297AA75D007CC138 /* TimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52EDAC2297AA75D007CC138 /* TimeManager.swift */; };
 		E5359117292343A900E28C1C /* (null) in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E53C60B0287B37CB00977909 /* CompleteSignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53C60AF287B37CB00977909 /* CompleteSignUpVC.swift */; };
 		E547E3E3291CEF21000D3A47 /* MatchingCardBoolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E547E3E2291CEF21000D3A47 /* MatchingCardBoolView.swift */; };
@@ -243,6 +244,7 @@
 		E52CD85528BE371F00A262ED /* ManageMyInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMyInfoView.swift; sourceTree = "<group>"; };
 		E52E96B12915FAB6009E1773 /* MatchingContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingContainerView.swift; sourceTree = "<group>"; };
 		E52E96B329160870009E1773 /* TopProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopProfileView.swift; sourceTree = "<group>"; };
+		E52EDAC2297AA75D007CC138 /* TimeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeManager.swift; sourceTree = "<group>"; };
 		E53C60AF287B37CB00977909 /* CompleteSignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpVC.swift; sourceTree = "<group>"; };
 		E547E3E2291CEF21000D3A47 /* MatchingCardBoolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCardBoolView.swift; sourceTree = "<group>"; };
 		E547E3E5291CF120000D3A47 /* MatchingCardBoolList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCardBoolList.swift; sourceTree = "<group>"; };
@@ -481,6 +483,7 @@
 				E55DDAE829179DD900E62ECB /* AppearanceManager.swift */,
 				E5FD982528EAF8F0005A29E2 /* MailTimerChecker.swift */,
 				E50F850829587C8B008B7052 /* ModelTransformationManager.swift */,
+				E52EDAC2297AA75D007CC138 /* TimeManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1207,6 +1210,7 @@
 				E51063C4291E250400FA0EAC /* NoPublicStatePopUp.swift in Sources */,
 				E50F850529584747008B7052 /* OnboardingEnumerations.swift in Sources */,
 				E56342232878353100E93D17 /* TabBarVC.swift in Sources */,
+				E52EDAC3297AA75D007CC138 /* TimeManager.swift in Sources */,
 				E5226D5E2911F7110065C809 /* OnboardingVC.swift in Sources */,
 				E55DDAE929179DD900E62ECB /* AppearanceManager.swift in Sources */,
 				E5E8A3DF2895208500A48A91 /* MyCommentsCollectionVIewCell.swift in Sources */,
