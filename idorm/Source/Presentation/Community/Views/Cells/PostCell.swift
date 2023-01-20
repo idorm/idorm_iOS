@@ -204,6 +204,9 @@ final class PostCell: UICollectionViewCell {
     if post.imagesCount == 0 {
       pictureCountLb.isHidden = true
       pictureIv.isHidden = true
+    } else {
+      pictureCountLb.isHidden = false
+      pictureIv.isHidden = false
     }
   }
 }

@@ -58,14 +58,14 @@ extension CommunityAPI: TargetType {
       let anonymousData = MultipartFormData(provider: .data(post.isAnonymous.description.data(using: .utf8)!), name: "isAnonymous")
       let dormNumData = MultipartFormData(provider: .data(post.dormNum.rawValue.data(using: .utf8)!), name: "dormNum")
       
+      multiFormDatas = [titleData, contentsData, anonymousData, dormNumData]
+      
       for i in 0..<post.assets.count {
         let image = post.assets[i].getImageFromPHAsset()
-        let data = image.jpegData(compressionQuality: 0.5)!
+        let data = image.jpegData(compressionQuality: 0.1)!
         let imageData = MultipartFormData(provider: .data(data), name: "files", fileName: "\(i)", mimeType: "image/jpeg")
         multiFormDatas.append(imageData)
       }
-      
-      multiFormDatas = [titleData, contentsData, anonymousData, dormNumData]
 
       return .uploadMultipart(multiFormDatas)
     }
