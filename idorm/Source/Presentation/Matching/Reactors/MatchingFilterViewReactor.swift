@@ -23,7 +23,7 @@ final class MatchingFilterViewReactor: Reactor {
   enum Mutation {
     case setPopVC
     case setRequestCard
-    case setFilter(MatchingDTO.Filter)
+    case setFilter(MatchingRequestModel.Filter)
   }
   
   struct State {

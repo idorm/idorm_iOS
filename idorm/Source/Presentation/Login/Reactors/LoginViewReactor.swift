@@ -25,14 +25,14 @@ final class LoginViewReactor: Reactor {
     case setLoading(Bool)
     case setPopup(Bool, String)
     case setMainVC(Bool)
-    case setPutEmailVC(Bool , RegisterEnumerations)
+    case setPutEmailVC(Bool , Register)
   }
   
   struct State {
     var isLoading: Bool = false
     var isOpenedPopup: (Bool, String) = (false, "")
     var isOpenedMainVC: Bool = false
-    var isOpenedPutEmailVC: (Bool, RegisterEnumerations) = (false, .findPw)
+    var isOpenedPutEmailVC: (Bool, Register) = (false, .findPw)
   }
   
   var initialState: State = State()
@@ -46,7 +46,7 @@ final class LoginViewReactor: Reactor {
     case let .didTapLoginButton(id, pw):
       return .concat([
         .just(.setLoading(true)),
-        APIService.memberProvider.rx.request(.login(id: id, pw: pw))
+        MemberAPI.provider.rx.request(.login(id: id, pw: pw))
           .asObservable()
           .retry()
           .withUnretained(self)
@@ -55,12 +55,18 @@ final class LoginViewReactor: Reactor {
             case 200:
               UserStorage.saveEmail(from: id)
               UserStorage.savePassword(from: pw)
-              let data = APIService.decode(ResponseModel<MemberDTO.Retrieve>.self, data: response.data).data
-              MemberStorage.shared.saveMember(data)
-              TokenStorage.saveToken(token: data.loginToken ?? "")
+              let member = MemberAPI.decode(
+                ResponseModel<MemberResponseModel.Member>.self,
+                data: response.data
+              ).data
+              MemberStorage.shared.saveMember(member)
+              TokenStorage.saveToken(token: member.loginToken ?? "")
               return owner.retrieveMatchingInfo()
             default:
-              let message = APIService.decode(ErrorResponseModel.self, data: response.data).message
+              let message = MemberAPI.decode(
+                ErrorResponseModel.self,
+                data: response.data
+              ).message
               return .concat([
                 .just(.setLoading(false)),
                 .just(.setPopup(true, message)),
@@ -107,13 +113,16 @@ final class LoginViewReactor: Reactor {
 
 extension LoginViewReactor {
   private func retrieveMatchingInfo() -> Observable<Mutation> {
-    APIService.onboardingProvider.rx.request(.retrieve)
+    MatchingInfoAPI.provider.rx.request(.retrieve)
       .asObservable()
       .retry()
       .flatMap { response -> Observable<Mutation> in
         switch response.statusCode {
         case 200..<300:
-          let matchingInfo = APIService.decode(ResponseModel<MatchingInfoDTO.Retrieve>.self, data: response.data).data
+          let matchingInfo = MatchingInfoAPI.decode(
+            ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self,
+            data: response.data
+          ).data
           MemberStorage.shared.saveMatchingInfo(matchingInfo)
           return .concat([
             .just(.setLoading(false)),

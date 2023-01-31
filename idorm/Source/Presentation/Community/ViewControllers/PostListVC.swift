@@ -209,6 +209,20 @@ final class PostListViewController: BaseViewController, View {
         owner.navigationController?.pushViewController(postingVC, animated: true)
       }
       .disposed(by: disposeBag)
+    
+    // PostDetailVC로 이동
+    reactor.state
+      .map { $0.showsPostDetailVC }
+      .filter { $0.0 }
+      .bind(with: self) { owner, postId in
+        let postDetailVC = PostDetailViewController()
+        postDetailVC.reactor = PostDetailViewReactor(postId.1)
+        
+        postDetailVC.hidesBottomBarWhenPushed = true
+        
+        owner.navigationController?.pushViewController(postDetailVC, animated: true)
+      }
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Helpers
@@ -274,6 +288,28 @@ extension PostListViewController: UICollectionViewDataSource, UICollectionViewDe
     default:
       postCell.configure(posts[indexPath.row])
       return postCell
+    }
+  }
+  
+  func collectionView(
+    _ collectionView: UICollectionView,
+    didSelectItemAt indexPath: IndexPath
+  ) {
+    guard let reactor = reactor else { return }
+    
+    // 게시물 클릭
+    switch indexPath.section {
+    case 0 :
+      Observable.just(reactor.currentState.currentTopPosts[indexPath.row].postId)
+        .map { PostListViewReactor.Action.didTapPostBtn($0) }
+        .bind(to: reactor.action)
+        .disposed(by: disposeBag)
+      
+    default:
+      Observable.just(reactor.currentState.currentPosts[indexPath.row].postId)
+        .map { PostListViewReactor.Action.didTapPostBtn($0) }
+        .bind(to: reactor.action)
+        .disposed(by: disposeBag)
     }
   }
   

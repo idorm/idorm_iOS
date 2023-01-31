@@ -45,7 +45,7 @@ final class MyPageViewController: BaseViewController, View {
     navigationController?.setNavigationBarHidden(true, animated: true)
     tabBarController?.tabBar.isHidden = false
     
-    let tabBarAppearance = AppearanceManager.tabbarAppearance(from: .idorm_gray_100)
+    let tabBarAppearance = NavigationAppearanceUtils.tabbarAppearance(from: .idorm_gray_100)
     tabBarController?.tabBar.standardAppearance = tabBarAppearance
     tabBarController?.tabBar.scrollEdgeAppearance = tabBarAppearance
   }
@@ -53,7 +53,7 @@ final class MyPageViewController: BaseViewController, View {
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     
-    let tabBarAppearance = AppearanceManager.tabbarAppearance(from: .white)
+    let tabBarAppearance = NavigationAppearanceUtils.tabbarAppearance(from: .white)
     tabBarController?.tabBar.standardAppearance = tabBarAppearance
     tabBarController?.tabBar.scrollEdgeAppearance = tabBarAppearance
   }

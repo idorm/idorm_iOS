@@ -69,3 +69,18 @@ extension String {
     return []
   }
 }
+
+// MARK: - CommunityDTO
+
+extension String {
+  var isAnonymous: String {
+    switch self {
+    case "anonymous":
+      return "익명"
+    case nil:
+      return "탈퇴한 사용자"
+    default:
+      return self
+    }
+  }
+}

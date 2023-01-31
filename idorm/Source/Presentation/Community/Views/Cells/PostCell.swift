@@ -192,14 +192,14 @@ final class PostCell: UICollectionViewCell {
   
   // MARK: - Helpers
   
-  func configure(_ post: CommunityDTO.Post) {
+  func configure(_ post: CommunityResponseModel.Posts) {
     titleLb.text = post.title
     contentLb.text = post.content
     nicknameLb.text = post.nickname
     likeCountLb.text = "\(post.likesCount)"
     pictureCountLb.text = "\(post.imagesCount)"
     commentsCountLb.text = "\(post.commentsCount)"
-    timeLb.text = TimeManager.postList(post.createdAt)
+    timeLb.text = TimeUtils.postList(post.createdAt)
 
     if post.imagesCount == 0 {
       pictureCountLb.isHidden = true

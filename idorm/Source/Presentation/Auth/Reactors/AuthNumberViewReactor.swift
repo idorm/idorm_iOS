@@ -47,7 +47,9 @@ final class AuthNumberViewReactor: Reactor {
       case .signUp:
         return .concat([
           .just(.setLoading(true)),
-          APIService.emailProvider.rx.request(.emailVerification(email: email, code: number))
+          MailAPI.provider.rx.request(
+            .emailVerification(email: email, code: number)
+          )
             .asObservable()
             .retry()
             .flatMap { response -> Observable<Mutation> in
@@ -58,7 +60,10 @@ final class AuthNumberViewReactor: Reactor {
                   .just(.setPopVC(true))
                 ])
               default:
-                let message = APIService.decode(ErrorResponseModel.self, data: response.data).message
+                let message = MailAPI.decode(
+                  ErrorResponseModel.self,
+                  data: response.data
+                ).message
                 return .concat([
                   .just(.setLoading(false)),
                   .just(.setPopup(true, message)),
@@ -71,7 +76,9 @@ final class AuthNumberViewReactor: Reactor {
       case .findPw, .modifyPw:
         return .concat([
           .just(.setLoading(true)),
-          APIService.emailProvider.rx.request(.pwVerification(email: email, code: number))
+          MailAPI.provider.rx.request(
+            .pwVerification(email: email, code: number)
+          )
             .asObservable()
             .retry()
             .flatMap { response -> Observable<Mutation> in
@@ -82,7 +89,10 @@ final class AuthNumberViewReactor: Reactor {
                   .just(.setPopVC(true))
                 ])
               default:
-                let message = APIService.decode(ErrorResponseModel.self, data: response.data).message
+                let message = MailAPI.decode(
+                  ErrorResponseModel.self,
+                  data: response.data
+                ).message
                 return .concat([
                   .just(.setLoading(false)),
                   .just(.setPopup(true, message)),
@@ -98,7 +108,9 @@ final class AuthNumberViewReactor: Reactor {
       case .signUp:
         return .concat([
           .just(.setLoading(true)),
-          APIService.emailProvider.rx.request(.emailAuthentication(email: email))
+          MailAPI.provider.rx.request(
+            .emailAuthentication(email: email)
+          )
             .asObservable()
             .retry()
             .filterSuccessfulStatusCodes()
@@ -112,7 +124,9 @@ final class AuthNumberViewReactor: Reactor {
       case .findPw, .modifyPw:
         return .concat([
           .just(.setLoading(true)),
-          APIService.emailProvider.rx.request(.pwAuthentication(email: email))
+          MailAPI.provider.rx.request(
+            .pwAuthentication(email: email)
+          )
             .asObservable()
             .retry()
             .filterSuccessfulStatusCodes()

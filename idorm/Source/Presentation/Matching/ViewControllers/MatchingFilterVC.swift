@@ -21,33 +21,84 @@ final class MatchingFilterViewController: BaseViewController, View {
   private let contentView = UIView()
   private let floatyBottomView = FloatyBottomView(.filter)
   
-  private let dormLabel = MatchingUtilities.titleLabel(text: "기숙사")
-  private let dorm1Button = MatchingUtilities.basicButton(title: "1 기숙사")
-  private let dorm2Button = MatchingUtilities.basicButton(title: "2 기숙사")
-  private let dorm3Button = MatchingUtilities.basicButton(title: "3 기숙사")
-  private let dormLine = MatchingUtilities.separatorLine()
+  private let dormLabel = UIFactory.label(
+    "기숙사",
+    textColor: .black,
+    font: .idormFont(.medium, size: 16)
+  )
+  
+  private let periodLabel = UIFactory.label(
+    "입사 기간",
+    textColor: .black,
+    font: .idormFont(.medium, size: 16)
+  )
+  
+  private let habitLabel = UIFactory.label(
+    "불호요소",
+    textColor: .black,
+    font: .idormFont(.medium, size: 16)
+  )
+  
+  private let ageLabel = UIFactory.label(
+    "나이",
+    textColor: .black,
+    font: .idormFont(.medium, size: 16)
+  )
+
+  private let habitDescriptionLabel = UIFactory.label(
+    "선택하신 요소를 가진 룸메이트는 나와 매칭되지 않아요.",
+    textColor: .idorm_gray_300,
+    font: .idormFont(.medium, size: 12)
+  )
+  
+  private let ageDescriptionLabel = UIFactory.label(
+    "선택하신 연령대의 룸메이트만 나와 매칭돼요.",
+    textColor: .idorm_gray_300,
+    font: .idormFont(.medium, size: 12)
+  )
+  
+  private let slider: RangeSeekSlider = {
+    let slider = RangeSeekSlider()
+    slider.backgroundColor = .white
+    slider.colorBetweenHandles = .idorm_blue
+    slider.tintColor = .idorm_gray_100
+    slider.labelPadding = 6
+    slider.minLabelColor = .black
+    slider.maxLabelColor = .black
+    slider.minLabelFont = .init(name: MyFonts.medium.rawValue, size: 12)!
+    slider.maxLabelFont = .init(name: MyFonts.medium.rawValue, size: 12)!
+    slider.minValue = 20
+    slider.maxValue = 40
+    slider.selectedMaxValue = 30
+    slider.selectedMinValue = 20
+    slider.lineHeight = 11
+    slider.handleImage = UIImage(named: "circle_blue_large")
+    slider.minDistance = 1
+    slider.enableStep = true
+    slider.selectedHandleDiameterMultiplier = 1.0
+    
+    return slider
+  }()
+
+  private let dorm1Button = OnboardingButton("1 기숙사")
+  private let dorm2Button = OnboardingButton("2 기숙사")
+  private let dorm3Button = OnboardingButton("3 기숙사")
+  private let period16Button = OnboardingButton("16 주")
+  private let period24Button = OnboardingButton("24 주")
+  private let snoreButton = OnboardingButton("코골이")
+  private let grindingButton = OnboardingButton("이갈이")
+  private let smokingButton = OnboardingButton("흡연")
+  private let allowedFoodButton = OnboardingButton("실내 음식 섭취 함")
+  private let allowedEarphoneButton = OnboardingButton("이어폰 착용 안함")
+
+  private let dormLine = UIFactory.view(.idorm_gray_100)
+  private let periodLine = UIFactory.view(.idorm_gray_100)
+  private let habitLine = UIFactory.view(.idorm_gray_100)
+  
   private var dormStack: UIStackView!
-  
-  private let periodLabel = MatchingUtilities.titleLabel(text: "입사 기간")
-  private let period16Button = MatchingUtilities.basicButton(title: "16 주")
-  private let period24Button = MatchingUtilities.basicButton(title: "24 주")
-  private let periodLine = MatchingUtilities.separatorLine()
   private var periodStack: UIStackView!
-  
-  private let habitDescriptionLabel = MatchingUtilities.descriptionLabel("선택하신 요소를 가진 룸메이트는 나와 매칭되지 않아요.")
-  private let habitLabel = MatchingUtilities.titleLabel(text: "불호 요소")
-  private let snoreButton = MatchingUtilities.basicButton(title: "코골이")
-  private let grindingButton = MatchingUtilities.basicButton(title: "이갈이")
-  private let smokingButton = MatchingUtilities.basicButton(title: "흡연")
-  private let allowedFoodButton = MatchingUtilities.basicButton(title: "실내 음식 섭취 함")
-  private let allowedEarphoneButton = MatchingUtilities.basicButton(title: "이어폰 착용 안함")
-  private let habitLine = MatchingUtilities.separatorLine()
   private var habitStack1: UIStackView!
   private var habitStack2: UIStackView!
-  
-  private let ageLabel = MatchingUtilities.titleLabel(text: "나이")
-  private let ageDescriptionLabel = MatchingUtilities.descriptionLabel("선택하신 연령대의 룸메이트만 나와 매칭돼요.")
-  private let slider = MatchingUtilities.slider()
   
   // MARK: - LifeCycle
   
@@ -303,7 +354,7 @@ final class MatchingFilterViewController: BaseViewController, View {
 
   // MARK: - Helpers
 
-  private func updateFilteredUI(_ filter: MatchingDTO.Filter) {
+  private func updateFilteredUI(_ filter: MatchingRequestModel.Filter) {
     toggleDromButton(filter.dormNum)
     togglePeriodButton(filter.joinPeriod)
     snoreButton.isSelected = filter.isSnoring

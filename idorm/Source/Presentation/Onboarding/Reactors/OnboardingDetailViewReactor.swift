@@ -16,7 +16,7 @@ final class OnboardingDetailViewReactor: Reactor {
   
   enum Action {
     case didTapLeftButton
-    case didTapRightButton(MatchingDTO.Retrieve)
+    case didTapRightButton(MatchingResponseModel.Member)
   }
   
   enum Mutation {
@@ -34,9 +34,9 @@ final class OnboardingDetailViewReactor: Reactor {
   }
   
   var initialState: State = State()
-  private let type: OnboardingEnumerations
+  private let type: Onboarding
   
-  init(_ type: OnboardingEnumerations) {
+  init(_ type: Onboarding) {
     self.type = type
   }
   
@@ -66,13 +66,14 @@ final class OnboardingDetailViewReactor: Reactor {
         ])
         
       case .main, .initial:
-        let saveData = ModelTransformationManager.transformToMatchingInfoDTO_SAVE(member)
+        let requestModel = TransformUtils.transfer(member)
+        
         return .concat([
           .just(.setLoading(true)),
-          APIService.onboardingProvider.rx.request(.save(saveData))
+          MatchingInfoAPI.provider.rx.request(.save(requestModel))
             .asObservable()
             .retry()
-            .map(ResponseModel<MatchingInfoDTO.Retrieve>.self)
+            .map(ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self)
             .flatMap { response -> Observable<Mutation> in
               MemberStorage.shared.saveMatchingInfo(response.data)
               return .concat([

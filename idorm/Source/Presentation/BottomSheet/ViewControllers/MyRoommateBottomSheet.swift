@@ -23,11 +23,11 @@ final class MyRoommaateBottomSheet: BaseViewController {
   private let xmarkButton = BottomSheetUtils.button(#imageLiteral(resourceName: "xmark_black"))
   private let indicator = UIActivityIndicatorView().then { $0.color = .gray }
   
-  private let roommate: MyPageEnumerations.Roommate
+  private let roommate: Roommate
   
   // MARK: - LifeCycle
   
-  init(_ roommate: MyPageEnumerations.Roommate) {
+  init(_ roommate: Roommate) {
     self.roommate = roommate
     super.init(nibName: nil, bundle: nil)
   }

@@ -35,7 +35,7 @@ final class WithDrawalViewReactor: Reactor {
     case .didTapWithDrawalButton:
       return .concat([
         .just(.setLoading(true)),
-        APIService.memberProvider.rx.request(.withdrawal)
+        MemberAPI.provider.rx.request(.withdrawal)
           .asObservable()
           .retry()
           .filterSuccessfulStatusCodes()

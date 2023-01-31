@@ -16,6 +16,11 @@ import ReactorKit
 
 final class NicknameViewController: BaseViewController, View {
   
+  enum VCType {
+    case modify
+    case signUp
+  }
+  
   // MARK: - Properties
   
   private let mainLabel = UILabel().then {
@@ -70,11 +75,11 @@ final class NicknameViewController: BaseViewController, View {
   
   private let textField = idormTextField("변경할 닉네임을 입력해주세요.")
   private var confirmButton: idormButton
-  private let type: RegisterEnumerations.Nickname
+  private let type: VCType
   
   // MARK: - LifeCycle
   
-  init(_ type: RegisterEnumerations.Nickname) {
+  init(_ type: VCType) {
     self.type = type
     
     switch type {
