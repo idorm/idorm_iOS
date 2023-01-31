@@ -61,9 +61,9 @@ final class ConfirmPwViewReactor: Reactor {
   }
   
   var initialState: State = State()
-  private let type: RegisterEnumerations
+  private let type: Register
   
-  init(_ type: RegisterEnumerations) {
+  init(_ type: Register) {
     self.type = type
   }
   
@@ -188,7 +188,9 @@ final class ConfirmPwViewReactor: Reactor {
           let email = Logger.shared.email
           return .concat([
             .just(.setLoading(true)),
-            APIService.memberProvider.rx.request(.changePassword_Logout(id: email, pw: password1))
+            MemberAPI.provider.rx.request(
+              .changePassword_Logout(id: email, pw: password1)
+            )
               .asObservable()
               .retry()
               .flatMap { response -> Observable<Mutation> in
@@ -209,7 +211,7 @@ final class ConfirmPwViewReactor: Reactor {
         case .modifyPw:
           return .concat([
             .just(.setLoading(true)),
-            APIService.memberProvider.rx.request(.changePassword_Login(pw: password1))
+            MemberAPI.provider.rx.request(.changePassword_Login(pw: password1))
               .asObservable()
               .retry()
               .flatMap { response -> Observable<Mutation> in

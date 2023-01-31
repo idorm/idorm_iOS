@@ -33,13 +33,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     if TokenStorage.hasToken() {
       // 토큰 Refresh
-      _ = APIService.memberProvider.rx.request(.login(id: email, pw: password))
+      _ = MemberAPI.provider.rx.request(
+        .login(id: email, pw: password)
+      )
         .asObservable()
         .retry()
         .bind { response in
           switch response.statusCode {
           case 200..<300:
-            let responseModel = APIService.decode(ResponseModel<MemberDTO.Retrieve>.self, data: response.data).data
+            let responseModel = MemberAPI.decode(
+              ResponseModel<MemberResponseModel.Member>.self,
+              data: response.data
+            ).data
+            
             TokenStorage.saveToken(token: responseModel.loginToken!)
           default:
             break

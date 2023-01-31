@@ -46,11 +46,11 @@ final class ConfirmPwViewController: BaseViewController, View {
   private let textField1 = PasswordTextField(placeholder: "비밀번호를 입력해주세요.")
   private let textField2 = PasswordTextField(placeholder: "비밀번호를 한번 더 입력해주세요.")
   private var confirmButton: idormButton!
-  private let type: RegisterEnumerations
+  private let type: Register
   
   // MARK: - LifeCycle
   
-  init(_ type: RegisterEnumerations) {
+  init(_ type: Register) {
     self.type = type
     super.init(nibName: nil, bundle: nil)
     setupComponents()

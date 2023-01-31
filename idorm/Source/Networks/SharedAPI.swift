@@ -11,20 +11,20 @@ import RxSwift
 final class SharedAPI {
   
   static func retrieveMatchingInfo() {
-    _ = APIService.onboardingProvider.rx.request(.retrieve)
+    _ = MatchingInfoAPI.provider.rx.request(.retrieve)
       .asObservable()
       .retry()
       .filterSuccessfulStatusCodes()
-      .map(ResponseModel<MatchingInfoDTO.Retrieve>.self)
+      .map(ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self)
       .bind { MemberStorage.shared.saveMatchingInfo($0.data) }
   }
   
   static func retrieveMemberInfo() {
-    _ = APIService.memberProvider.rx.request(.retrieveMember)
+    _ = MemberAPI.provider.rx.request(.retrieveMember)
       .asObservable()
       .retry()
       .filterSuccessfulStatusCodes()
-      .map(ResponseModel<MemberDTO.Retrieve>.self)
+      .map(ResponseModel<MemberResponseModel.Member>.self)
       .bind { MemberStorage.shared.saveMember($0.data) }
   }
 }

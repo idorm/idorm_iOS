@@ -16,14 +16,15 @@ final class PostListViewReactor: Reactor {
     case viewDidLoad
     case didTapDormBtn(Dormitory)
     case didTapPostingBtn
+    case didTapPostBtn(Int)
     case pullToRefresh
     case fetchMorePosts
     case postingCompletion
   }
   
   enum Mutation {
-    case appendPosts([CommunityDTO.Post])
-    case setTopPosts([CommunityDTO.Post])
+    case appendPosts([CommunityResponseModel.Posts])
+    case setTopPosts([CommunityResponseModel.Posts])
     case setDorm(Dormitory)
     case setLoading(Bool)
     case setRefreshing(Bool)
@@ -32,11 +33,12 @@ final class PostListViewReactor: Reactor {
     case setBlockRequest(Bool)
     case resetPosts
     case setPostingVC(Bool, Dormitory)
+    case setPostDetailVC(Bool, Int)
   }
   
   struct State {
-    var currentPosts: [CommunityDTO.Post] = []
-    var currentTopPosts: [CommunityDTO.Post] = []
+    var currentPosts: [CommunityResponseModel.Posts] = []
+    var currentTopPosts: [CommunityResponseModel.Posts] = []
     var currentDorm: Dormitory = .no3
     var currentPage: Int = 0
     var isLoading: Bool = false
@@ -44,6 +46,7 @@ final class PostListViewReactor: Reactor {
     var isPagination: Bool = false
     var isBlockedRequest: Bool = false
     var showsPostingVC: (Bool, Dormitory) = (false, .no3)
+    var showsPostDetailVC: (Bool, Int) = (false, 0)
   }
   
   var initialState: State = State()
@@ -77,6 +80,12 @@ final class PostListViewReactor: Reactor {
       return .concat([
         .just(.setPostingVC(true, currentState.currentDorm)),
         .just(.setPostingVC(false, .no3))
+      ])
+      
+    case .didTapPostBtn(let postId):
+      return .concat([
+        .just(.setPostDetailVC(true, postId)),
+        .just(.setPostDetailVC(false, 0))
       ])
       
     case .pullToRefresh:
@@ -136,6 +145,9 @@ final class PostListViewReactor: Reactor {
       
     case let .setPostingVC(isOpened, dorm):
       newState.showsPostingVC = (isOpened, dorm)
+      
+    case let .setPostDetailVC(isOpened, postId):
+      newState.showsPostDetailVC = (isOpened, postId)
     }
     
     return newState
@@ -148,12 +160,12 @@ extension PostListViewReactor {
     page: Int
   ) -> Observable<Mutation> {
     return .concat([
-      APIService.communityProvider.rx.request(
+      CommunityAPI.provider.rx.request(
         .retrievePosts(dorm: dorm, page: page)
       )
       .asObservable()
       .retry()
-      .map(ResponseModel<[CommunityDTO.Post]>.self)
+      .map(ResponseModel<[CommunityResponseModel.Posts]>.self)
       .flatMap { responseModel -> Observable<Mutation> in
         let posts = responseModel.data
         
@@ -176,15 +188,15 @@ extension PostListViewReactor {
   }
   
   private func retrieveTopPosts(_ dorm: Dormitory) -> Observable<Mutation> {
-    return APIService.communityProvider.rx.request(.retrieveTopPosts(dorm))
+    return CommunityAPI.provider.rx.request(.retrieveTopPosts(dorm))
       .asObservable()
       .retry()
       .withUnretained(self)
       .flatMap { owner, response -> Observable<Mutation> in
         switch response.statusCode {
         case 200:
-          let posts = APIService.decode(
-            ResponseModel<[CommunityDTO.Post]>.self,
+          let posts = CommunityAPI.decode(
+            ResponseModel<[CommunityResponseModel.Posts]>.self,
             data: response.data
           ).data
           

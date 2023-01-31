@@ -39,7 +39,9 @@ final class PrivacyPolicyBottomSheetReactor: Reactor {
     case .didTapConfirmButton:
       return .concat([
         .just(.setLoading(true)),
-        APIService.memberProvider.rx.request(.register(id: email, pw: password, nickname: nickname))
+        MemberAPI.provider.rx.request(
+          .register(id: email, pw: password, nickname: nickname)
+        )
           .asObservable()
           .retry()
           .flatMap { response -> Observable<Mutation> in
@@ -51,7 +53,10 @@ final class PrivacyPolicyBottomSheetReactor: Reactor {
                 .just(.setCompleteSignUpVC(false))
               ])
             default:
-              let message = APIService.decode(ErrorResponseModel.self, data: response.data).message
+              let message = MemberAPI.decode(
+                ErrorResponseModel.self,
+                data: response.data
+              ).message
               return .concat([
                 .just(.setLoading(false)),
                 .just(.setPopup(true, message)),

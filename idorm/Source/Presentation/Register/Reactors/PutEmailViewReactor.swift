@@ -14,7 +14,7 @@ import RxMoya
 final class PutEmailViewReactor: Reactor {
   
   enum Action {
-    case didTapReceiveButton(String, RegisterEnumerations)
+    case didTapReceiveButton(String, Register)
   }
   
   enum Mutation {
@@ -38,7 +38,9 @@ final class PutEmailViewReactor: Reactor {
       case .signUp:
         return .concat([
           .just(.setLoading(true)),
-          APIService.emailProvider.rx.request(.emailAuthentication(email: email))
+          MailAPI.provider.rx.request(
+            .emailAuthentication(email: email)
+          )
             .asObservable()
             .retry()
             .flatMap { response -> Observable<Mutation> in
@@ -53,7 +55,10 @@ final class PutEmailViewReactor: Reactor {
                   .just(.setAuthVC(false))
                 ])
               default:
-                let errorMessage = APIService.decode(ErrorResponseModel.self, data: response.data).message
+                let errorMessage = MailAPI.decode(
+                  ErrorResponseModel.self,
+                  data: response.data
+                ).message
                 return .concat([
                   .just(.setLoading(false)),
                   .just(.setPopup(true, errorMessage)),
@@ -65,7 +70,9 @@ final class PutEmailViewReactor: Reactor {
       case .findPw, .modifyPw:
         return .concat([
           .just(.setLoading(true)),
-          APIService.emailProvider.rx.request(.pwAuthentication(email: email))
+          MailAPI.provider.rx.request(
+            .pwAuthentication(email: email)
+          )
             .asObservable()
             .retry()
             .flatMap { response -> Observable<Mutation> in
@@ -79,7 +86,10 @@ final class PutEmailViewReactor: Reactor {
                   .just(.setAuthVC(false))
                 ])
               default:
-                let errorMessage = APIService.decode(ErrorResponseModel.self, data: response.data).message
+                let errorMessage = MailAPI.decode(
+                  ErrorResponseModel.self,
+                  data: response.data
+                ).message
                 return .concat([
                   .just(.setLoading(false)),
                   .just(.setPopup(true, errorMessage)),

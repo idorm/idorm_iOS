@@ -71,10 +71,10 @@ final class MatchingViewController: BaseViewController, View {
   
   override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
   private let informationImageView = UIImageView()
-  private let cancelButton = MatchingUtilities.matchingButton(imageName: "circle_dislike_red")
-  private let messageButton = MatchingUtilities.matchingButton(imageName: "circle_speechBubble_yellow")
-  private let heartButton = MatchingUtilities.matchingButton(imageName: "circle_heart_green")
-  private let backButton = MatchingUtilities.matchingButton(imageName: "circle_back_blue")
+  private lazy var cancelButton = cardButton("circle_dislike_red")
+  private lazy var messageButton = cardButton("circle_speechBubble_yellow")
+  private lazy var heartButton = cardButton("circle_heart_green")
+  private lazy var backButton = cardButton("circle_back_blue")
   
   // MARK: - LifeCycle
   
@@ -499,6 +499,31 @@ final class MatchingViewController: BaseViewController, View {
         }
       }
       .disposed(by: disposeBag)
+  }
+}
+
+// MARK: - UI
+
+extension MatchingViewController {
+  func cardButton(_ imageName: String) -> UIButton {
+    var config = UIButton.Configuration.plain()
+    let name = imageName
+    let hoveredName = imageName + "_activated"
+    config.image = UIImage(named: name)
+    config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+    let button = UIButton(configuration: config)
+    
+    let handler: UIButton.ConfigurationUpdateHandler = { button in
+      switch button.state {
+      case .highlighted:
+        button.configuration?.image = UIImage(named: hoveredName)
+      default:
+        button.configuration?.image = UIImage(named: name)
+      }
+    }
+    button.configurationUpdateHandler = handler
+    
+    return button
   }
 }
 

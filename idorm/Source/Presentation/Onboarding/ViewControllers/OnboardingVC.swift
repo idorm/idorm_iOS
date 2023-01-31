@@ -63,7 +63,7 @@ final class OnboardingViewController: BaseViewController, View {
     $0.otpFilledBorderColor = .idorm_gray_200
     $0.otpFilledBorderWidth = 1
     $0.otpDefaultBorderWidth = 1
-    $0.otpFont = .init(name: MyFonts.medium.rawValue, size: 14)!
+    $0.otpFont = .idormFont(.medium, size: 14)
     $0.otpTextColor = .idorm_gray_400
     $0.otpBackgroundColor = .white
     $0.otpFilledBackgroundColor = .white
@@ -71,15 +71,20 @@ final class OnboardingViewController: BaseViewController, View {
     $0.clearOTP()
   }
   
-  private let chatDescriptionLabel = UILabel().then {
-    $0.text = "open.kakao 카카오 오픈채팅 형식을 기입해주세요."
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
-    $0.textColor = .idorm_gray_300
-  }
+  private let chatDescriptionLabel = UIFactory.label(
+    "open.kakao 카카오 오픈채팅 형식을 기입해주세요.",
+    textColor: .idorm_gray_300,
+    font: .idormFont(.medium, size: 14)
+  )
   
   private let wishTextView = RSKGrowingTextView().then {
-    $0.attributedPlaceholder = NSAttributedString(string: "입력", attributes: [NSAttributedString.Key.font: UIFont.init(name: MyFonts.regular.rawValue, size: 14) ?? 0, NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_300])
-    $0.font = .init(name: MyFonts.regular.rawValue, size: 14)
+    $0.attributedPlaceholder = NSAttributedString(
+      string: "입력",
+      attributes: [
+        NSAttributedString.Key.font: UIFont.idormFont(.regular, size: 14),
+        NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_300]
+    )
+    $0.font = .idormFont(.regular, size: 14)
     $0.textColor = .black
     $0.layer.cornerRadius = 10
     $0.layer.borderColor = UIColor.idorm_gray_300.cgColor
@@ -91,58 +96,102 @@ final class OnboardingViewController: BaseViewController, View {
     $0.textContainerInset = UIEdgeInsets(top: 15, left: 9, bottom: 15, right: 9)
   }
   
-  private let maxLengthLabel = UILabel().then {
-    $0.text = "/ 100 pt"
-    $0.textColor = .idorm_gray_300
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
-  }
+  private let maxLengthLabel = UIFactory.label(
+    "/ 100 pt",
+    textColor: .idorm_gray_300,
+    font: .idormFont(.medium, size: 14)
+  )
   
-  private let currentLengthLabel = UILabel().then {
-    $0.text = "0"
-    $0.textColor = .idorm_blue
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
-  }
+  private let currentLengthLabel = UIFactory.label(
+    "0",
+    textColor: .idorm_blue,
+    font: .idormFont(.medium, size: 14)
+  )
   
-  private let titleLabel = OnboardingUtilities.descriptionLabel("룸메이트 매칭을 위한 기본정보를 알려주세요!")
+  private let titleLabel = UIFactory.label(
+    "룸메이트 매칭을 위한 기본정보를 알려주세요!",
+    textColor: .idorm_gray_300,
+    font: .idormFont(.bold, size: 12)
+  )
+  
+  private let dormLabel = UIFactory.label(
+    "기숙사",
+    textColor: .black,
+    font: .idormFont(.medium, size: 16)
+  )
+  
+  private let genderLabel = UIFactory.label(
+    "성별",
+    textColor: .black,
+    font: .idormFont(.medium, size: 16)
+  )
+
+  private let periodLabel = UIFactory.label(
+    "입사기간",
+    textColor: .black,
+    font: .idormFont(.medium, size: 16)
+  )
+  
+  private let habitLabel = UIFactory.label(
+    "내 습관",
+    textColor: .black,
+    font: .idormFont(.medium, size: 16)
+  )
+
+  private let ageLabel = UIFactory.label(
+    "나이",
+    textColor: .black,
+    font: .idormFont(.medium, size: 16)
+  )
+  
+  private let habitDescriptionLabel = UIFactory.label(
+    "불호요소가 있는 내 습관을 미리 알려주세요.",
+    textColor: .idorm_gray_300,
+    font: .idormFont(.bold, size: 12)
+  )
+  
+  private let ageDescriptionLabel = UIFactory.label(
+    "살",
+    textColor: .idorm_gray_300,
+    font: .idormFont(.bold, size: 12)
+  )
+
   private var floatyBottomView: FloatyBottomView!
   private let contentView = UIView()
-  private let dormLabel = OnboardingUtilities.titleLabel(text: "기숙사")
-  private let dorm1Button = OnboardingUtilities.basicButton(title: "1 기숙사")
-  private let dorm2Button = OnboardingUtilities.basicButton(title: "2 기숙사")
-  private let dorm3Button = OnboardingUtilities.basicButton(title: "3 기숙사")
-  private let dormLine = OnboardingUtilities.separatorLine()
-  private let genderLabel = OnboardingUtilities.titleLabel(text: "성별")
-  private let maleButton = OnboardingUtilities.basicButton(title: "남성")
-  private let femaleButton = OnboardingUtilities.basicButton(title: "여성")
-  private let genderLine = OnboardingUtilities.separatorLine()
-  private let periodLabel = OnboardingUtilities.titleLabel(text: "입사 기간")
-  private let period16Button = OnboardingUtilities.basicButton(title: "16 주")
-  private let period24Button = OnboardingUtilities.basicButton(title: "24 주")
-  private let periodLine = OnboardingUtilities.separatorLine()
-  private let habitDescriptionLabel = OnboardingUtilities.descriptionLabel("불호요소가 있는 내 습관을 미리 알려주세요.")
-  private let habitLabel = OnboardingUtilities.titleLabel(text: "내 습관")
-  private let snoreButton = OnboardingUtilities.basicButton(title: "코골이")
-  private let grindingButton = OnboardingUtilities.basicButton(title: "이갈이")
-  private let smokingButton = OnboardingUtilities.basicButton(title: "흡연")
-  private let allowedFoodButton = OnboardingUtilities.basicButton(title: "실내 음식 섭취 함")
-  private let allowedEarphoneButton = OnboardingUtilities.basicButton(title: "이어폰 착용 안함")
-  private let habitLine = OnboardingUtilities.separatorLine()
-  private let ageDescriptionLabel = OnboardingUtilities.descriptionLabel("살")
-  private let ageLabel = OnboardingUtilities.titleLabel(text: "나이")
-  private let ageLine = OnboardingUtilities.separatorLine()
-  private let wakeUpInfoLabel = OnboardingUtilities.infoLabel("기상시간을 알려주세요.", isEssential: true)
-  private let wakeUpTextField = OnboardingTextField(placeholder: "입력")
-  private let cleanUpInfoLabel = OnboardingUtilities.infoLabel("정리정돈은 얼마나 하시나요?", isEssential: true)
-  private let cleanUpTextField = OnboardingTextField(placeholder: "입력")
-  private let showerInfoLabel = OnboardingUtilities.infoLabel("샤워는 주로 언제/몇 분 동안 하시나요?", isEssential: true)
-  private let showerTextField = OnboardingTextField(placeholder: "입력")
-  private let mbtiInfoLabel = OnboardingUtilities.infoLabel("MBTI를 알려주세요.", isEssential: false)
-  private let mbtiTextField = OnboardingTextField(placeholder: "입력")
-  private let chatInfoLabel = OnboardingUtilities.infoLabel("연락을 위한 개인 오픈채팅 링크를 알려주세요.", isEssential: true)
-  private let chatTextField = OnboardingTextField(placeholder: "입력")
-  private let wishInfoLabel = OnboardingUtilities.infoLabel("미래의 룸메에게 하고 싶은 말은?", isEssential: false)
   
-  private let type: OnboardingEnumerations
+  private let dorm1Button = OnboardingButton("1 기숙사")
+  private let dorm2Button = OnboardingButton("2 기숙사")
+  private let dorm3Button = OnboardingButton("3 기숙사")
+  private let maleButton = OnboardingButton("남성")
+  private let femaleButton = OnboardingButton("여성")
+  private let period16Button = OnboardingButton("16 주")
+  private let period24Button = OnboardingButton("24 주")
+  private let snoreButton = OnboardingButton("코골이")
+  private let grindingButton = OnboardingButton("이갈이")
+  private let smokingButton = OnboardingButton("흡연")
+  private let allowedFoodButton = OnboardingButton("실내 음식 섭취 함")
+  private let allowedEarphoneButton = OnboardingButton("이어폰 착용 안함")
+
+  private let dormLine = UIFactory.view(.idorm_gray_100)
+  private let genderLine = UIFactory.view(.idorm_gray_100)
+  private let periodLine = UIFactory.view(.idorm_gray_100)
+  private let habitLine = UIFactory.view(.idorm_gray_100)
+  private let ageLine = UIFactory.view(.idorm_gray_100)
+
+
+  private lazy var wakeUpInfoLabel = infoLabel("기상시간을 알려주세요.", isEssential: true)
+  private let wakeUpTextField = OnboardingTextField(placeholder: "입력")
+  private lazy var cleanUpInfoLabel = infoLabel("정리정돈은 얼마나 하시나요?", isEssential: true)
+  private let cleanUpTextField = OnboardingTextField(placeholder: "입력")
+  private lazy var showerInfoLabel = infoLabel("샤워는 주로 언제/몇 분 동안 하시나요?", isEssential: true)
+  private let showerTextField = OnboardingTextField(placeholder: "입력")
+  private lazy var mbtiInfoLabel = infoLabel("MBTI를 알려주세요.", isEssential: false)
+  private let mbtiTextField = OnboardingTextField(placeholder: "입력")
+  private lazy var chatInfoLabel = infoLabel("연락을 위한 개인 오픈채팅 링크를 알려주세요.", isEssential: true)
+  private let chatTextField = OnboardingTextField(placeholder: "입력")
+  private lazy var wishInfoLabel = infoLabel("미래의 룸메에게 하고 싶은 말은?", isEssential: false)
+  
+  private let type: Onboarding
   
   // MARK: - LifeCycle
   
@@ -151,7 +200,7 @@ final class OnboardingViewController: BaseViewController, View {
     navigationController?.isNavigationBarHidden = false
   }
   
-  init(_ type: OnboardingEnumerations) {
+  init(_ type: Onboarding) {
     self.type = type
     super.init(nibName: nil, bundle: nil)
     setupComponents()
@@ -843,5 +892,33 @@ final class OnboardingViewController: BaseViewController, View {
       make.centerY.equalTo(wishInfoLabel)
       make.trailing.equalTo(maxLengthLabel.snp.leading).offset(-4)
     }
+  }
+}
+
+// MARK: - Helpers
+
+private extension OnboardingViewController {
+  func infoLabel(_ title: String, isEssential: Bool) -> UILabel {
+    let lb = UIFactory.label(
+      title,
+      textColor: .idorm_gray_400,
+      font: .idormFont(.medium, size: 14)
+    )
+    
+    if isEssential {
+      let trailingLb = UIFactory.label(
+        "(필수)",
+        textColor: .idorm_blue,
+        font: .idormFont(.medium, size: 14)
+      )
+      
+      lb.addSubview(trailingLb)
+      trailingLb.snp.makeConstraints { make in
+        make.centerY.equalToSuperview()
+        make.leading.equalTo(lb.snp.trailing).offset(8)
+      }
+    }
+    
+    return lb
   }
 }

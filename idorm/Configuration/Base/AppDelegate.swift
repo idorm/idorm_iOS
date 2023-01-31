@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate {
   private func setupNavigationBarAppearance() {
-    let appearance = AppearanceManager.navigationAppearance(from: .white, shadow: false)
+    let appearance = NavigationAppearanceUtils.navigationAppearance(from: .white, shadow: false)
     UINavigationBar.appearance().compactAppearance = appearance
     UINavigationBar.appearance().standardAppearance = appearance
     UINavigationBar.appearance().scrollEdgeAppearance = appearance

@@ -38,10 +38,12 @@ final class CompleteSignupViewReactor: Reactor {
     case .didTapContinueButton:
       return .concat([
         .just(.setLoading(true)),
-        APIService.memberProvider.rx.request(.login(id: email, pw: password))
+        MemberAPI.provider.rx.request(
+          .login(id: email, pw: password)
+        )
           .asObservable()
           .retry()
-          .map(ResponseModel<MemberDTO.Retrieve>.self)
+          .map(ResponseModel<MemberResponseModel.Member>.self)
           .flatMap { member -> Observable<Mutation> in
             let member = member.data
             TokenStorage.saveToken(token: member.loginToken!)

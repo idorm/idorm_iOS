@@ -63,7 +63,7 @@ final class PostingViewReactor: Reactor {
       ])
       
     case .didTapCompleteBtn:
-      let newPost = CommunityDTO.Save(
+      let newPost = CommunityRequestModel.Post(
         content: currentState.currentContents,
         title: currentState.currentTitle,
         dormNum: currentDorm,
@@ -73,7 +73,7 @@ final class PostingViewReactor: Reactor {
       
       return .concat([
         .just(.setLoading(true)),
-        APIService.communityProvider.rx.request(.posting(newPost))
+        CommunityAPI.provider.rx.request(.posting(newPost))
           .asObservable()
           .retry()
           .withUnretained(self)

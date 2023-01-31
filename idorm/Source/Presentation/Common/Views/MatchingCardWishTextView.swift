@@ -9,11 +9,11 @@ final class MatchingCardWishTextView: UIView {
   
   private var contentsLabel: UILabel!
   
-  private let member: MatchingDTO.Retrieve
+  private let member: MatchingResponseModel.Member
   
   // MARK: - LifeCycle
   
-  init(_ from: MatchingDTO.Retrieve) {
+  init(_ from: MatchingResponseModel.Member) {
     self.member = from
     super.init(frame: .zero)
     setupContentsLabel()
@@ -30,7 +30,7 @@ final class MatchingCardWishTextView: UIView {
   
   private func setupContentsLabel() {
     let contentsLabel = UILabel()
-    contentsLabel.font = .init(name: MyFonts.medium.rawValue, size: 14)
+    contentsLabel.font = .idormFont(.medium, size: 14)
     contentsLabel.text = member.wishText
     contentsLabel.textColor = .idorm_gray_400
     contentsLabel.numberOfLines = 0

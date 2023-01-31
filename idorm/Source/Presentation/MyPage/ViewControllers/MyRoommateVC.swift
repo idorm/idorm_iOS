@@ -25,12 +25,12 @@ final class MyRoommateViewController: BaseViewController, View {
     $0.delegate = self
   }
   
-  private let roommate: MyPageEnumerations.Roommate
+  private let roommate: Roommate
   private var header: MyRoommateHeaderView!
   
   // MARK: - LifeCycle
   
-  init(_ roommate: MyPageEnumerations.Roommate) {
+  init(_ roommate: Roommate) {
     self.roommate = roommate
     super.init(nibName: nil, bundle: nil)
   }

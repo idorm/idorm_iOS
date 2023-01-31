@@ -73,4 +73,8 @@ extension UIColor {
   static var idorm_green: UIColor {
     return UIColor.init(rgb: 0x60D989)
   }
+  
+  static var idorm_matchingScreen: UIColor {
+    return .init(rgb: 0xF8FDFF)
+  }
 }

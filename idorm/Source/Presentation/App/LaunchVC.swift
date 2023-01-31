@@ -67,14 +67,19 @@ final class LaunchViewController: BaseViewController {
     let email = UserStorage.loadEmail()
     let password = UserStorage.loadPassword()
 
-    APIService.memberProvider.rx.request(.login(id: email, pw: password))
+    MemberAPI.provider.rx.request(
+      .login(id: email, pw: password)
+    )
       .asObservable()
       .retry()
       .withUnretained(self)
       .bind { owner, response in
         switch response.statusCode {
         case 200..<300:
-          let responseData = APIService.decode(ResponseModel<MemberDTO.Retrieve>.self, data: response.data).data
+          let responseData = MemberAPI.decode(
+            ResponseModel<MemberResponseModel.Member>.self,
+            data: response.data
+          ).data
           TokenStorage.saveToken(token: responseData.loginToken!)
           MemberStorage.shared.saveMember(responseData)
           owner.retrieveMatchingInfoAPI()
@@ -86,14 +91,17 @@ final class LaunchViewController: BaseViewController {
   }
   
   private func retrieveMatchingInfoAPI() {
-    APIService.onboardingProvider.rx.request(.retrieve)
+    MatchingInfoAPI.provider.rx.request(.retrieve)
       .asObservable()
       .retry()
       .withUnretained(self)
       .bind { owner, response in
         switch response.statusCode {
         case 200:
-          let responseData = APIService.decode(ResponseModel<MatchingInfoDTO.Retrieve>.self, data: response.data).data
+          let responseData = MatchingInfoAPI.decode(
+            ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self,
+            data: response.data
+          ).data
           MemberStorage.shared.saveMatchingInfo(responseData)
           owner.mainVC()
         case 404:

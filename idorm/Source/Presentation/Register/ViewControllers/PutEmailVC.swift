@@ -56,11 +56,11 @@ final class PutEmailViewController: BaseViewController, View {
   private let confirmButton = idormButton("인증번호 받기")
   private let inuMark = UIImageView(image: #imageLiteral(resourceName: "inu"))
   
-  let type: RegisterEnumerations
+  let type: Register
 
   // MARK: - LifeCycle
   
-  init(_ type: RegisterEnumerations) {
+  init(_ type: Register) {
     self.type = type
     super.init(nibName: nil, bundle: nil)
   }

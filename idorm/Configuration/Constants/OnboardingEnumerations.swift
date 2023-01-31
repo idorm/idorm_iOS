@@ -7,8 +7,3 @@
 
 import Foundation
 
-enum OnboardingEnumerations {
-  case initial
-  case main
-  case modify
-}

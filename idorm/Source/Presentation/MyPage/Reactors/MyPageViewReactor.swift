@@ -18,7 +18,7 @@ final class MyPageViewReactor: Reactor {
     case viewWillAppear
     case didTapGearButton
     case didTapMatchingImageButton
-    case didTapRoommateButton(MyPageEnumerations.Roommate)
+    case didTapRoommateButton(Roommate)
     case didTapShareButton(Bool)
     case didTapMakeProfileButton
   }
@@ -27,7 +27,7 @@ final class MyPageViewReactor: Reactor {
     case setLoading(Bool)
     case setManageMyInfoVC(Bool)
     case setOnboardingVC(Bool)
-    case setRoommateVC(Bool, MyPageEnumerations.Roommate)
+    case setRoommateVC(Bool, Roommate)
     case setNoMatchingInfoPopup(Bool)
     case setOnboardingDetailVC(Bool)
     case setShareButton(Bool)
@@ -38,7 +38,7 @@ final class MyPageViewReactor: Reactor {
   struct State {
     var isOpenedManageMyInfoVC: Bool = false
     var isOpenedOnboardingVC: Bool = false
-    var isOpenedOnboardingDetailVC: (Bool, MatchingDTO.Retrieve) = (false, .init())
+    var isOpenedOnboardingDetailVC: (Bool, MatchingResponseModel.Member) = (false, .init())
     var isOpenedLikedRoommateVC: Bool = false
     var isOpenedDislikedRoommateVC: Bool = false
     var isOpenedNoMatchingInfoPopup: Bool = false
@@ -89,7 +89,9 @@ final class MyPageViewReactor: Reactor {
       if MemberStorage.shared.hasMatchingInfo {
         return .concat([
           .just(.setLoading(true)),
-          APIService.onboardingProvider.rx.request(.modifyPublic(isPublic))
+          MatchingInfoAPI.provider.rx.request(
+            .modifyPublic(isPublic)
+          )
             .asObservable()
             .retry()
             .filterSuccessfulStatusCodes()
@@ -134,7 +136,7 @@ final class MyPageViewReactor: Reactor {
       
     case let .setOnboardingDetailVC(isOpened):
       guard let matchingInfo = MemberStorage.shared.matchingInfo else { return newState }
-      let member = ModelTransformationManager.transformToMatchingDTO_RETRIEVE(matchingInfo)
+      let member = TransformUtils.transfer(matchingInfo)
       newState.isOpenedOnboardingDetailVC = (isOpened, member)
       
     case let .setRoommateVC(isOpened, type):

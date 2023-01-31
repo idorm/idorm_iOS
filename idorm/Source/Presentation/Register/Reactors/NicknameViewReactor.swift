@@ -50,9 +50,9 @@ final class NicknameViewReactor: Reactor {
   }
   
   var initialState: State = State()
-  private let type: RegisterEnumerations.Nickname
+  private let type: NicknameViewController.VCType
   
-  init(_ type: RegisterEnumerations.Nickname) {
+  init(_ type: NicknameViewController.VCType) {
     self.type = type
   }
   
@@ -157,13 +157,18 @@ final class NicknameViewReactor: Reactor {
         case .modify:
           return .concat([
             .just(.setLoading(true)),
-            APIService.memberProvider.rx.request(.changeNickname(nickname: nickname))
+            MemberAPI.provider.rx.request(
+              .changeNickname(nickname: nickname)
+            )
               .asObservable()
               .retry()
               .flatMap { response -> Observable<Mutation> in
                 switch response.statusCode {
                 case 200:
-                  let data = APIService.decode(ResponseModel<MemberDTO.Retrieve>.self, data: response.data).data
+                  let data = MemberAPI.decode(
+                    ResponseModel<MemberResponseModel.Member>.self,
+                    data: response.data
+                  ).data
                   MemberStorage.shared.saveMember(data)
                   return .concat([
                     .just(.setLoading(false)),
@@ -171,7 +176,10 @@ final class NicknameViewReactor: Reactor {
                     .just(.setPopVC(false))
                   ])
                 default:
-                  let message = APIService.decode(ErrorResponseModel.self, data: response.data).message
+                  let message = MemberAPI.decode(
+                    ErrorResponseModel.self,
+                    data: response.data
+                  ).message
                   return .concat([
                     .just(.setLoading(false)),
                     .just(.setPopup(true, message)),
