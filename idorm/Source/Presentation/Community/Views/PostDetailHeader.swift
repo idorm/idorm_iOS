@@ -83,7 +83,7 @@ final class PostDetailHeader: UIView {
 //    return collectionView
 //  }()
   
-  private let sympathyButton = idormCommunityButton("공감하기")
+  let sympathyButton = idormCommunityButton("공감하기")
   private let likeImageView = UIImageView(image: UIImage(named: "thumbsup_medium"))
   private lazy var likeCountLabel = countLabel()
   private let commentImageView = UIImageView(image: UIImage(named: "speechBubble_double_medium"))
@@ -92,8 +92,8 @@ final class PostDetailHeader: UIView {
   private lazy var pictureCountLabel = countLabel()
   private let separatorLine = UIView()
   private let separatorLine2 = UIView()
-  private lazy var orderByLastestButton = orderButton("최신순")
-  private lazy var orderByRegisterationButton = orderButton("등록순")
+  lazy var orderByLastestButton = orderButton("최신순")
+  lazy var orderByRegisterationButton = orderButton("등록순")
   
   // MARK: - Initializer
   
@@ -118,7 +118,7 @@ final class PostDetailHeader: UIView {
     return lb
   }
   
-  private func orderButton(_ title: String) -> UIButton {
+  func orderButton(_ title: String) -> UIButton {
     let btn = UIButton()
     btn.setTitle(title, for: .normal)
     btn.setTitleColor(.black, for: .selected)

@@ -54,6 +54,7 @@ final class PostDetailViewController: BaseViewController, View {
   
   private let commentView = CommentView()
   private let bottomView = UIView()
+  private var header: PostDetailHeader!
   
   // MARK: - Setup
   
@@ -152,6 +153,14 @@ final class PostDetailViewController: BaseViewController, View {
       .bind(to: indicator.rx.isAnimating)
       .disposed(by: disposeBag)
   }
+  
+  func bindHeader() {
+    guard let reactor = reactor else { return }
+    
+    // 공감하기 버튼 클릭
+    self.header.sympathyButton.rx.tap
+    
+  }
 }
 
 // MARK: - Setup TableView
@@ -212,6 +221,11 @@ extension PostDetailViewController: UITableViewDataSource, UITableViewDelegate {
     guard let post = reactor?.currentState.currentPost else { return nil }
     let header = PostDetailHeader()
     header.configure(post)
+    self.header = header
+    
+    if self.header == nil {
+      self.bindHeader()
+    }
     
     return header
   }
