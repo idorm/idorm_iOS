@@ -20,21 +20,26 @@ enum CommentUtils {
       )
 
       if let parentId = comment.parentCommentId {
-        // 대댓글
-        
-        
-        
-        if let lastIndex = newComments.lastIndex(
-          where: { $0.comment.commentId == parentId }
-        ) {
-          
+        if let lastIndex = newComments.lastIndex(where: {
+          $0.comment.parentCommentId == parentId
+        }) {
+          // MARK: - 두 번째 대댓글
           orderedComment.state = .reply
           newComments.insert(orderedComment, at: lastIndex + 1)
+        } else {
+          // MARK: - 첫 번째 대댓글
+          guard let lastIndex = newComments.lastIndex(where: {
+            $0.comment.commentId == parentId
+          }) else {
+            return []
+          }
           
+          orderedComment.state = .firstReply
+          newComments.insert(orderedComment, at: lastIndex + 1)
         }
         
       } else {
-        // 댓글인 경우
+        // MARK: - 일반 댓글
         newComments.append(orderedComment)
       }
     }
