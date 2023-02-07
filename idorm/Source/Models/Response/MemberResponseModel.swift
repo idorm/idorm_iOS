@@ -11,11 +11,9 @@ enum MemberResponseModel {}
 
 extension MemberResponseModel {
   struct Member: Codable {
-    let id: Int
+    let memberId: Int
     let email: String
     var nickname: String
     var profilePhotoUrl: String?
-    let matchingInfoId: Int?
-    let loginToken: String?
   }
 }
