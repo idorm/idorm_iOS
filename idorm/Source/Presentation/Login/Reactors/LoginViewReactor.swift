@@ -52,15 +52,10 @@ final class LoginViewReactor: Reactor {
           .withUnretained(self)
           .flatMap { owner, response -> Observable<Mutation> in
             switch response.statusCode {
-            case 200:
+            case 200..<300:
               UserStorage.saveEmail(from: id)
               UserStorage.savePassword(from: pw)
-              let member = MemberAPI.decode(
-                ResponseModel<MemberResponseModel.Member>.self,
-                data: response.data
-              ).data
-              MemberStorage.shared.saveMember(member)
-              TokenStorage.saveToken(token: member.loginToken ?? "")
+              MemberAPI.loginProcess(response)
               return owner.retrieveMatchingInfo()
             default:
               let message = MemberAPI.decode(

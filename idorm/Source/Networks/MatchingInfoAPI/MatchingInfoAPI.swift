@@ -25,3 +25,14 @@ extension MatchingInfoAPI: TargetType, BaseAPI {
   var task: Moya.Task { getTask() }
   var headers: [String : String]? { getJsonHeader() }
 }
+
+extension MatchingInfoAPI {
+  static func retrieveProcess(_ respose: Response) {
+    let matchingInfo = MatchingInfoAPI.decode(
+      ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self,
+      data: respose.data
+    ).data
+    
+    MemberStorage.shared.saveMatchingInfo(matchingInfo)
+  }
+}

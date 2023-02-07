@@ -11,8 +11,8 @@ enum MatchingInfoResponseModel {}
 
 extension MatchingInfoResponseModel {
   struct MatchingInfo: Codable {
-    var id: Int?
-    var dormNum: Dormitory = .no1
+    var matchingInfoId: Int?
+    var dormCategory: Dormitory = .no1
     var joinPeriod: JoinPeriod = .period_16
     var gender: Gender = .female
     var age: Int = 0

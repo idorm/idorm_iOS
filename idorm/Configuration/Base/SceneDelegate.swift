@@ -41,12 +41,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         .bind { response in
           switch response.statusCode {
           case 200..<300:
-            let responseModel = MemberAPI.decode(
-              ResponseModel<MemberResponseModel.Member>.self,
-              data: response.data
-            ).data
-            
-            TokenStorage.saveToken(token: responseModel.loginToken!)
+            MemberAPI.loginProcess(response)
           default:
             break
           }

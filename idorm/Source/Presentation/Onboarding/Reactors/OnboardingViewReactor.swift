@@ -77,7 +77,7 @@ final class OnboardingViewReactor: Reactor {
     case .viewDidLoad(let matchingInfo):
       newDriver.convertConditionToAllTrue()
       
-      newMatchingInfo.dormNum = matchingInfo.dormNum
+      newMatchingInfo.dormNum = matchingInfo.dormCategory
       newMatchingInfo.joinPeriod = matchingInfo.joinPeriod
       newMatchingInfo.gender = matchingInfo.gender
       newMatchingInfo.age = String(matchingInfo.age)
