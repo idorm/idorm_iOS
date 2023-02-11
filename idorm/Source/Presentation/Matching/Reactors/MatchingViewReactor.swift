@@ -248,7 +248,9 @@ final class MatchingViewReactor: Reactor {
         MatchingAPI.provider.rx.request(.addMember(true, id))
           .asObservable()
           .retry()
-          .flatMap { _ -> Observable<Mutation> in
+          .debug()
+          .flatMap { response -> Observable<Mutation> in
+            print(response.response?.url)
             return Observable.concat([
               .just(.setLoading(false))
             ])

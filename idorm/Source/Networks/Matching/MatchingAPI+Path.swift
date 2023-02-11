@@ -16,7 +16,7 @@ extension MatchingAPI {
       return "/member/matching"
     case .lookupLikeMembers:
       return "/member/matching/like"
-    case .addMember(let memberId), .deleteMember(let memberId):
+    case .addMember(_, let memberId), .deleteMember(_, let memberId):
       return "/member/matching/\(memberId)"
     case .lookupDislikeMembers:
       return "/member/matching/dislike"

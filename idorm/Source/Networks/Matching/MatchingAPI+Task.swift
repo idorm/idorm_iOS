@@ -17,7 +17,7 @@ extension MatchingAPI {
     case .addMember(let matchingType, _), .deleteMember(let matchingType, _):
       return .requestParameters(
         parameters: [
-          "matchingType": matchingType
+          "matchingType": String(matchingType)
       ],
         encoding: URLEncoding.queryString
       )
