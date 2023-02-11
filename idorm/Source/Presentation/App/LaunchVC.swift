@@ -76,12 +76,7 @@ final class LaunchViewController: BaseViewController {
       .bind { owner, response in
         switch response.statusCode {
         case 200..<300:
-          let responseData = MemberAPI.decode(
-            ResponseModel<MemberResponseModel.Member>.self,
-            data: response.data
-          ).data
-          TokenStorage.saveToken(token: responseData.loginToken!)
-          MemberStorage.shared.saveMember(responseData)
+          MemberAPI.loginProcess(response)
           owner.retrieveMatchingInfoAPI()
         default:
           owner.loginVC()
@@ -98,11 +93,7 @@ final class LaunchViewController: BaseViewController {
       .bind { owner, response in
         switch response.statusCode {
         case 200:
-          let responseData = MatchingInfoAPI.decode(
-            ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self,
-            data: response.data
-          ).data
-          MemberStorage.shared.saveMatchingInfo(responseData)
+          MatchingInfoAPI.retrieveProcess(response)
           owner.mainVC()
         case 404:
           owner.mainVC()

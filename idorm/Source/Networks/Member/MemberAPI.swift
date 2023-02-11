@@ -23,3 +23,19 @@ extension MemberAPI: TargetType, BaseAPI {
   var task: Task { getTask() }
   var headers: [String : String]? { getJsonHeader() }
 }
+
+extension MemberAPI {
+  static func loginProcess(_ response: Response) {
+    guard let token = response.response?.headers.value(for: "authorization") else {
+      fatalError("Can't found Token!")
+    }
+    
+    let member = MemberAPI.decode(
+      ResponseModel<MemberResponseModel.Member>.self,
+      data: response.data
+    ).data
+    
+    MemberStorage.shared.saveMember(member)
+    TokenStorage.saveToken(token: token)
+  }
+}

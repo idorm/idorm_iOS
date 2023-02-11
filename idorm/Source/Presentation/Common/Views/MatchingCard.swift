@@ -18,7 +18,7 @@ final class MatchingCard: UIView {
   
   private lazy var dormLabel = UILabel().then {
     $0.font = .init(name: MyFonts.bold.rawValue, size: 20)
-    $0.text = member.dormNum.cardString
+    $0.text = member.dormCategory.cardString
     $0.textColor = .white
   }
   

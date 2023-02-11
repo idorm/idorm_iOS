@@ -55,7 +55,7 @@ final class PostListViewReactor: Reactor {
     switch action {
       
     case .viewDidLoad:
-      if let dorm = MemberStorage.shared.matchingInfo?.dormNum {
+      if let dorm = MemberStorage.shared.matchingInfo?.dormCategory {
         return .concat([
           .just(.setLoading(true)),
           .just(.setDorm(dorm)),

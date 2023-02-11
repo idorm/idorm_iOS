@@ -454,7 +454,7 @@ final class OnboardingViewController: BaseViewController, View {
       .filterNil()
       .withUnretained(self)
       .bind { owner, info in
-        switch info.dormNum {
+        switch info.dormCategory {
         case .no1: owner.dorm1Button.isSelected = true
         case .no2: owner.dorm2Button.isSelected = true
         case .no3: owner.dorm3Button.isSelected = true

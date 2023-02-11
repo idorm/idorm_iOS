@@ -233,7 +233,7 @@ final class MatchingViewReactor: Reactor {
       
     case .dislikeCard(let id):
       return Observable.concat([
-        MatchingAPI.provider.rx.request(.addDisliked(id))
+        MatchingAPI.provider.rx.request(.addMember(false, id))
           .asObservable()
           .retry()
           .flatMap { _ -> Observable<Mutation> in
@@ -245,10 +245,12 @@ final class MatchingViewReactor: Reactor {
       
     case .likeCard(let id):
       return Observable.concat([
-        MatchingAPI.provider.rx.request(.addLiked(id))
+        MatchingAPI.provider.rx.request(.addMember(true, id))
           .asObservable()
           .retry()
-          .flatMap { _ -> Observable<Mutation> in
+          .debug()
+          .flatMap { response -> Observable<Mutation> in
+            print(response.response?.url)
             return Observable.concat([
               .just(.setLoading(false))
             ])
@@ -342,7 +344,7 @@ final class MatchingViewReactor: Reactor {
 
 extension MatchingViewReactor {
   private func fetchMatchingMembers() -> Observable<Mutation> {
-    return MatchingAPI.provider.rx.request(.retrieve)
+    return MatchingAPI.provider.rx.request(.lookupMembers)
       .asObservable()
       .retry()
       .filterSuccessfulStatusCodes()
@@ -363,7 +365,7 @@ extension MatchingViewReactor {
   private func fetchFilteredMembers() -> Observable<Mutation> {
     let filter = FilterStorage.shared.filter
     return MatchingAPI.provider.rx.request(
-      .retrieveFiltered(filter: filter)
+      .lookupFilterMembers(filter: filter)
     )
       .asObservable()
       .retry()

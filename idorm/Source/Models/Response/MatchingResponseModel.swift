@@ -13,7 +13,7 @@ extension MatchingResponseModel {
   struct Member: Codable, Equatable {
     var memberId: Int = 0
     var matchingInfoId: Int = 0
-    var dormNum: Dormitory = .no1
+    var dormCategory: Dormitory = .no1
     var joinPeriod: JoinPeriod = .period_16
     var gender: Gender = .female
     var age: Int = 0
@@ -28,6 +28,5 @@ extension MatchingResponseModel {
     var openKakaoLink: String = ""
     var mbti: String?
     var wishText: String?
-    var addedAt: String?
   }
 }

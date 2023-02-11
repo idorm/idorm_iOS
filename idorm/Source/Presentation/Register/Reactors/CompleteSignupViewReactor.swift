@@ -43,16 +43,18 @@ final class CompleteSignupViewReactor: Reactor {
         )
           .asObservable()
           .retry()
-          .map(ResponseModel<MemberResponseModel.Member>.self)
-          .flatMap { member -> Observable<Mutation> in
-            let member = member.data
-            TokenStorage.saveToken(token: member.loginToken!)
-            MemberStorage.shared.saveMember(member)
-            return .concat([
-              .just(.setLoading(false)),
-              .just(.setOnboardingVC(true)),
-              .just(.setOnboardingVC(false))
-            ])
+          .flatMap { response -> Observable<Mutation> in
+            switch response.statusCode {
+            case 200..<300:
+              MemberAPI.loginProcess(response)
+              return .concat([
+                .just(.setLoading(false)),
+                .just(.setOnboardingVC(true)),
+                .just(.setOnboardingVC(false))
+              ])
+            default:
+              fatalError("Login is Failed!")
+            }
           }
       ])
     }

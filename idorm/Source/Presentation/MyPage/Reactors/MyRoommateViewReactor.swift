@@ -58,7 +58,7 @@ final class MyRoommateViewReactor: Reactor {
         
         return .concat([
           .just(.setLoading(true)),
-          MatchingAPI.provider.rx.request(.retrieveDisliked)
+          MatchingAPI.provider.rx.request(.lookupDislikeMembers)
             .asObservable()
             .retry()
             .flatMap { response -> Observable<Mutation> in
@@ -84,7 +84,7 @@ final class MyRoommateViewReactor: Reactor {
       case .like:
         return .concat([
           .just(.setLoading(true)),
-          MatchingAPI.provider.rx.request(.retrieveLiked)
+          MatchingAPI.provider.rx.request(.lookupLikeMembers)
             .asObservable()
             .retry()
             .flatMap { response -> Observable<Mutation> in
@@ -123,7 +123,7 @@ final class MyRoommateViewReactor: Reactor {
       case .like:
         return .concat([
           .just(.setLoading(true)),
-          MatchingAPI.provider.rx.request(.deleteLiked(id))
+          MatchingAPI.provider.rx.request(.deleteMember(true, id))
             .asObservable()
             .retry()
             .filterSuccessfulStatusCodes()
@@ -133,7 +133,7 @@ final class MyRoommateViewReactor: Reactor {
       case .dislike:
         return .concat([
           .just(.setLoading(true)),
-          MatchingAPI.provider.rx.request(.deleteDisliked(id))
+          MatchingAPI.provider.rx.request(.deleteMember(false, id))
             .asObservable()
             .retry()
             .filterSuccessfulStatusCodes()
@@ -195,7 +195,7 @@ extension MyRoommateViewReactor {
   private func fetchMembers(_ roommate: Roommate) -> Observable<Mutation> {
     switch roommate {
     case .like:
-      return MatchingAPI.provider.rx.request(.retrieveLiked)
+      return MatchingAPI.provider.rx.request(.lookupLikeMembers)
         .asObservable()
         .retry()
         .flatMap { response -> Observable<Mutation> in
@@ -221,7 +221,7 @@ extension MyRoommateViewReactor {
           }
         }
     case .dislike:
-      return MatchingAPI.provider.rx.request(.retrieveDisliked)
+      return MatchingAPI.provider.rx.request(.lookupDislikeMembers)
         .asObservable()
         .retry()
         .flatMap { response -> Observable<Mutation> in
