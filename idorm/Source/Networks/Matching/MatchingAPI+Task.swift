@@ -12,9 +12,15 @@ import Moya
 extension MatchingAPI {
   func getTask() -> Task {
     switch self {
-    case .retrieveFiltered(let filter):
+    case .lookupFilterMembers(let filter):
       return .requestJSONEncodable(filter)
-      
+    case .addMember(let matchingType, _), .deleteMember(let matchingType, _):
+      return .requestParameters(
+        parameters: [
+          "matchingType": matchingType
+      ],
+        encoding: URLEncoding.queryString
+      )
     default:
       return .requestPlain
     }

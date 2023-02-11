@@ -3,16 +3,12 @@ import Foundation
 import Moya
 
 enum MatchingAPI {
-  case retrieve
-  case retrieveLiked
-  case retrieveDisliked
-  case retrieveFiltered(filter: MatchingRequestModel.Filter)
-  
-  case addLiked(Int)
-  case addDisliked(Int)
-  
-  case deleteLiked(Int)
-  case deleteDisliked(Int)
+  case lookupMembers
+  case lookupLikeMembers
+  case lookupDislikeMembers
+  case lookupFilterMembers(filter: MatchingRequestModel.Filter)
+  case addMember(Bool, Int)
+  case deleteMember(Bool, Int)
 }
 
 extension MatchingAPI: TargetType, BaseAPI {

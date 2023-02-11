@@ -12,11 +12,11 @@ import Moya
 extension MatchingAPI {
   func getMethod() -> Moya.Method{
     switch self {
-    case .retrieve, .retrieveLiked, .retrieveDisliked:
+    case .lookupMembers, .lookupLikeMembers, .lookupDislikeMembers:
       return .get
-    case .addLiked, .addDisliked, .retrieveFiltered:
+    case .addMember , .lookupFilterMembers:
       return .post
-    case .deleteLiked, .deleteDisliked:
+    case .deleteMember:
       return .delete
     }
   }

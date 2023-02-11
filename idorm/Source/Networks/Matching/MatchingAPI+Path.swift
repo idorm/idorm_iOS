@@ -12,17 +12,15 @@ import Moya
 extension MatchingAPI {
   func getPath() -> String {
     switch self {
-    case .retrieve:
+    case .lookupMembers:
       return "/member/matching"
-    case .retrieveLiked:
+    case .lookupLikeMembers:
       return "/member/matching/like"
-    case .addLiked(let id), .deleteLiked(let id):
-      return "/member/matching/like/\(id)"
-    case .addDisliked(let id), .deleteDisliked(let id):
-      return "/member/matching/dislike/\(id)"
-    case .retrieveDisliked:
+    case .addMember(let memberId), .deleteMember(let memberId):
+      return "/member/matching/\(memberId)"
+    case .lookupDislikeMembers:
       return "/member/matching/dislike"
-    case .retrieveFiltered:
+    case .lookupFilterMembers:
       return "/member/matching/filter"
     }
   }
