@@ -10,40 +10,50 @@ enum CommentUtils {
   static func registeredComments(
     _ comments: [CommunityResponseModel.Comment]
   ) -> [OrderedComment] {
-    var newComments: [OrderedComment] = []
+    var parentIds = [Int]()
+    var orderedComments = [OrderedComment]()
     
-    for comment in comments {
+    for i in comments {
+      var currentComment = OrderedComment(comment: i, isLast: false, state: .normal)
       
-      var orderedComment = OrderedComment(
-        comment: comment,
-        state: .normal
-      )
-
-      if let parentId = comment.parentCommentId {
-        if let lastIndex = newComments.lastIndex(where: {
-          $0.comment.parentCommentId == parentId
-        }) {
-          // MARK: - 두 번째 대댓글
-          orderedComment.state = .reply
-          newComments.insert(orderedComment, at: lastIndex + 1)
-        } else {
-          // MARK: - 첫 번째 대댓글
-          guard let lastIndex = newComments.lastIndex(where: {
-            $0.comment.commentId == parentId
-          }) else {
-            return []
-          }
-          
-          orderedComment.state = .firstReply
-          newComments.insert(orderedComment, at: lastIndex + 1)
+      if let parentId = i.parentCommentId {
+        
+        if let lastIndex = orderedComments.lastIndex(
+          where: { $0.comment.parentCommentId == parentId }
+        ) {
+          currentComment.state = .reply
+          orderedComments.insert(currentComment, at: lastIndex + 1)
+        } else if let lastIndex = orderedComments.lastIndex(
+          where: { $0.comment.commentId == parentId }
+        ) {
+          currentComment.state = .firstReply
+          orderedComments.insert(currentComment, at: lastIndex + 1)
         }
         
       } else {
-        // MARK: - 일반 댓글
-        newComments.append(orderedComment)
+        orderedComments.append(currentComment)
       }
     }
     
-    return newComments
+    parentIds = comments
+      .filter { $0.parentCommentId != nil }
+      .map { $0.parentCommentId! }
+      .uniqued()
+
+    orderedComments.indices.forEach {
+      if parentIds.contains(orderedComments[$0].comment.commentId) == false {
+        orderedComments[$0].isLast = true
+      }
+    }
+    
+    parentIds.forEach { parentId in
+      if let lastIndex = orderedComments.lastIndex(where: {
+        $0.comment.parentCommentId == parentId
+      }) {
+        orderedComments[lastIndex].isLast = true
+      }
+    }
+    
+    return orderedComments
   }
 }

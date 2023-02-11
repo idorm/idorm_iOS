@@ -14,6 +14,7 @@ struct OrderedComment {
     case normal
   }
   
-  let comment: CommunityResponseModel.Comment
+  var comment: CommunityResponseModel.Comment
+  var isLast: Bool
   var state: State
 }
