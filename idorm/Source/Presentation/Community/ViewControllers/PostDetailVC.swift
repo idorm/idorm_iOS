@@ -194,6 +194,29 @@ extension PostDetailViewController: UITableViewDataSource, UITableViewDelegate {
       let orderedComment = reactor.currentState.currentComments[indexPath.row]
       cell.inject(orderedComment)
       
+      cell.replyButtonCompletion = { [weak self] parentId in
+        let alert = UIAlertController(
+          title: "대댓글을 작성하시겠습니까?",
+          message: nil,
+          preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(
+          title: "작성",
+          style: .default,
+          handler: { [weak self] _ in
+            self?.reactor?.action.onNext(.didTapReplyButton(parentId))
+          }
+        ))
+        
+        alert.addAction(UIAlertAction(
+          title: "취소",
+          style: .cancel
+        ))
+        
+        self?.present(alert, animated: true)
+      }
+      
       return cell
     }
   }

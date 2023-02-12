@@ -16,6 +16,7 @@ final class PostDetailViewReactor: Reactor {
     case viewDidLoad
     case didChangeComment(String)
     case didTapSendButton
+    case didTapReplyButton(Int)
   }
   
   enum Mutation {
@@ -55,6 +56,12 @@ final class PostDetailViewReactor: Reactor {
       return .concat([
         .just(.setLoading(true)),
         saveComment()
+      ])
+      
+    case .didTapReplyButton(let parentCommentId):
+      return .concat([
+        .just(.setLoading(true)),
+        saveComment(parentCommentId)
       ])
     }
   }

@@ -48,8 +48,8 @@ final class CommentCell: UITableViewCell {
   
   lazy var optionButton: UIButton = {
     let btn = UIButton(type: .custom)
-    btn.setImage(UIImage(named: "option"), for: .normal)
-     
+    btn.setImage(UIImage(named: "option_gray"), for: .normal)
+    
     return btn
   }()
   
@@ -58,9 +58,18 @@ final class CommentCell: UITableViewCell {
     textColor: .idorm_gray_400,
     font: .idormFont(.medium, size: 14)
   )
-
+  
+  private lazy var replyButton: idormCommunityButton = {
+    let btn = idormCommunityButton("답글 쓰기")
+    btn.addTarget(self, action: #selector(didTapReplyButton), for: .touchUpInside)
+    
+    return btn
+  }()
+  
+  private let dividerLine = UIFactory.view(.idorm_gray_200)
   private let replyImageView = UIImageView(image: UIImage(named: "corner_down_right"))
-  private let replyButton = idormCommunityButton("답글 쓰기")
+  private var comment: OrderedComment?
+  var replyButtonCompletion: ((Int) -> Void)?
   
   // MARK: - Initializer
   
@@ -74,16 +83,31 @@ final class CommentCell: UITableViewCell {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+  
+  // MARK: - Selectors
+  
+  @objc
+  private func didTapReplyButton() {
+    guard let commentId = self.comment?.comment.commentId else { return }
+    self.replyButtonCompletion?(commentId)
+  }
 }
 
 // MARK: - Setup
 
 extension CommentCell: BaseView {
   func inject(_ comment: OrderedComment) {
+    self.comment = comment
     nicknameLabel.text = comment.comment.nickname?.isAnonymous
     timeLabel.text = TimeUtils.detailPost(comment.comment.createdAt)
     contentsLabel.text = comment.comment.content
     replyImageView.isHidden = true
+    
+    if comment.isLast {
+      dividerLine.isHidden = false
+    } else {
+      dividerLine.isHidden = true
+    }
     
     switch comment.state {
     case .normal:
@@ -121,7 +145,8 @@ extension CommentCell: BaseView {
       profileStack,
       optionButton,
       contentsLabel,
-      replyButton
+      replyButton,
+      dividerLine
     ].forEach {
       contentView.addSubview($0)
     }
@@ -160,6 +185,11 @@ extension CommentCell: BaseView {
     optionButton.snp.makeConstraints { make in
       make.top.equalToSuperview().inset(16)
       make.trailing.equalToSuperview().inset(14)
+    }
+    
+    dividerLine.snp.makeConstraints { make in
+      make.bottom.leading.trailing.equalToSuperview()
+      make.height.equalTo(1)
     }
   }
 }
