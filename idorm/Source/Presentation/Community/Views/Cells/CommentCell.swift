@@ -102,6 +102,7 @@ extension CommentCell: BaseView {
     timeLabel.text = TimeUtils.detailPost(comment.comment.createdAt)
     contentsLabel.text = comment.comment.content
     replyImageView.isHidden = true
+    replyButton.isHidden = true
     
     if comment.isLast {
       dividerLine.isHidden = false
@@ -112,24 +113,49 @@ extension CommentCell: BaseView {
     switch comment.state {
     case .normal:
       contentView.backgroundColor = .white
+      replyButton.isHidden = false
       
       replyImageView.snp.updateConstraints { make in
         make.top.equalToSuperview().inset(-24)
       }
       
+      replyButton.snp.updateConstraints { make in
+        make.top.equalTo(contentsLabel.snp.bottom).offset(10)
+      }
+      
+      optionButton.snp.updateConstraints { make in
+        make.top.equalToSuperview().inset(16)
+      }
+      
     case .reply:
       contentView.backgroundColor = .idorm_matchingScreen
       
+      replyButton.snp.updateConstraints { make in
+        make.top.equalTo(contentsLabel.snp.bottom).offset(-30)
+      }
+      
       replyImageView.snp.updateConstraints { make in
         make.top.equalToSuperview().inset(-24)
+      }
+      
+      optionButton.snp.updateConstraints { make in
+        make.top.equalToSuperview().inset(16)
       }
       
     case .firstReply:
       contentView.backgroundColor = .idorm_matchingScreen
       replyImageView.isHidden = false
       
+      replyButton.snp.updateConstraints { make in
+        make.top.equalTo(contentsLabel.snp.bottom).offset(-30)
+      }
+      
       replyImageView.snp.updateConstraints { make in
         make.top.equalToSuperview().inset(16)
+      }
+      
+      optionButton.snp.updateConstraints { make in
+        make.top.equalToSuperview().inset(56)
       }
     }
   }
@@ -179,7 +205,6 @@ extension CommentCell: BaseView {
     replyButton.snp.makeConstraints { make in
       make.top.equalTo(contentsLabel.snp.bottom).offset(10)
       make.leading.equalTo(profileStack.snp.leading)
-      make.bottom.equalToSuperview().inset(16)
     }
     
     optionButton.snp.makeConstraints { make in
@@ -188,7 +213,9 @@ extension CommentCell: BaseView {
     }
     
     dividerLine.snp.makeConstraints { make in
-      make.bottom.leading.trailing.equalToSuperview()
+      make.leading.trailing.equalToSuperview()
+      make.top.equalTo(replyButton.snp.bottom).offset(16)
+      make.bottom.equalToSuperview()
       make.height.equalTo(1)
     }
   }

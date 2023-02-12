@@ -166,6 +166,7 @@ extension PostListViewReactor {
       .asObservable()
       .retry()
       .map(ResponseModel<[CommunityResponseModel.Posts]>.self)
+      .debug()
       .flatMap { responseModel -> Observable<Mutation> in
         let posts = responseModel.data
         

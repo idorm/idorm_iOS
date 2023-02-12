@@ -46,10 +46,16 @@ enum CommentUtils {
       }
     }
     
+    orderedComments.indices.forEach {
+      if orderedComments[$0].comment.parentCommentId != nil {
+        orderedComments[$0].isLast = false
+      }
+    }
+    
     parentIds.forEach { parentId in
-      if let lastIndex = orderedComments.lastIndex(where: {
-        $0.comment.parentCommentId == parentId
-      }) {
+      if let lastIndex = orderedComments.lastIndex(
+        where: { $0.comment.parentCommentId == parentId }
+      ) {
         orderedComments[lastIndex].isLast = true
       }
     }

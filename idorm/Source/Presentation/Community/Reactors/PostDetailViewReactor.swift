@@ -16,14 +16,19 @@ final class PostDetailViewReactor: Reactor {
     case viewDidLoad
     case didChangeComment(String)
     case didTapSendButton
-    case didTapReplyButton(Int)
+    case didTapReplyButton(indexPath: Int, parentId: Int)
+    case didTapBackground
+    case didTapAnonymousButton(Bool)
   }
   
   enum Mutation {
     case setLoading(Bool)
+    case setAnonymous(Bool)
     case setPost(CommunityResponseModel.Post)
     case setComment(String)
     case setComments([OrderedComment])
+    case setFocusedComment(Int?)
+    case setCellBackgroundColor(Bool, Int)
   }
   
   struct State {
@@ -32,6 +37,8 @@ final class PostDetailViewReactor: Reactor {
     var currentComment: String = ""
     var currentComments: [OrderedComment] = []
     var isAnonymous: Bool = true
+    var currentFocusedComment: Int?
+    var currentCellBackgroundColor: (Bool, Int) = (false, 0)
   }
   
   var initialState: State = State()
@@ -55,14 +62,24 @@ final class PostDetailViewReactor: Reactor {
     case .didTapSendButton:
       return .concat([
         .just(.setLoading(true)),
-        saveComment()
+        saveComment(currentState.currentFocusedComment)
       ])
       
-    case .didTapReplyButton(let parentCommentId):
+    case let .didTapReplyButton(indexPath, parentId):
       return .concat([
-        .just(.setLoading(true)),
-        saveComment(parentCommentId)
+        .just(.setFocusedComment(parentId)),
+        .just(.setCellBackgroundColor(true, indexPath)),
       ])
+      
+    case .didTapBackground:
+      return .concat([
+        .just(.setCellBackgroundColor(false, 0)),
+        .just(.setFocusedComment(nil)),
+      ])
+      .subscribe(on: MainScheduler.asyncInstance)
+      
+    case .didTapAnonymousButton(let isSelected):
+      return .just(.setAnonymous(isSelected))
     }
   }
   
@@ -81,6 +98,15 @@ final class PostDetailViewReactor: Reactor {
       
     case .setComments(let comments):
       newState.currentComments = comments
+      
+    case let .setFocusedComment(commentId):
+      newState.currentFocusedComment = commentId
+      
+    case let .setCellBackgroundColor(isBlocked, indexPath):
+      newState.currentCellBackgroundColor = (isBlocked, indexPath)
+      
+    case .setAnonymous(let isSelected):
+      newState.isAnonymous = isSelected
     }
     
     return newState
@@ -134,7 +160,10 @@ private extension PostDetailViewReactor {
       .flatMap { owner, response -> Observable<Mutation> in
         switch response.statusCode {
         case 200..<300:
-          return owner.retrievePost()
+          return .concat([
+            owner.retrievePost(),
+            .just(.setComment(""))
+          ])
         default:
           // TODO: 게시글 삭제 알럿 구현
           return .empty()

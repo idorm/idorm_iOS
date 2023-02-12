@@ -12,6 +12,7 @@ import RSKGrowingTextView
 import ReactorKit
 import RxAppState
 import RxOptional
+import RxGesture
 import PanModal
 
 final class PostDetailViewController: BaseViewController, View {
@@ -100,8 +101,6 @@ final class PostDetailViewController: BaseViewController, View {
   
   func bind(reactor: PostDetailViewReactor) {
     
-    // MARK: - Action
-    
     // 화면 최초 접속
     rx.viewDidLoad
       .map { PostDetailViewReactor.Action.viewDidLoad }
@@ -118,6 +117,22 @@ final class PostDetailViewController: BaseViewController, View {
     // 전송 버튼 클릭
     commentView.sendButton.rx.tap
       .map { PostDetailViewReactor.Action.didTapSendButton }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // 빈 화면 클릭
+    tableView.rx.tapGesture()
+      .withUnretained(self)
+      .do { $0.0.commentView.textView.resignFirstResponder() }
+      .map { _ in PostDetailViewReactor.Action.didTapBackground }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // 익명 버튼 클릭
+    commentView.anonymousButton.rx.tap
+      .withUnretained(self)
+      .map { !$0.0.commentView.anonymousButton.isSelected }
+      .map { PostDetailViewReactor.Action.didTapAnonymousButton($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -138,6 +153,12 @@ final class PostDetailViewController: BaseViewController, View {
       .bind(to: commentView.sendButton.rx.isEnabled)
       .disposed(by: disposeBag)
     
+    // 현재 입력된 댓글
+    reactor.state
+      .map { $0.currentComment }
+      .bind(to: commentView.textView.rx.text)
+      .disposed(by: disposeBag)
+    
     // 리로딩
     reactor.state
       .map { $0.currentPost }
@@ -152,14 +173,34 @@ final class PostDetailViewController: BaseViewController, View {
       .map { $0.isLoading }
       .bind(to: indicator.rx.isAnimating)
       .disposed(by: disposeBag)
+    
+    // 현재 포커싱된 댓글 색깔
+    reactor.state
+      .map { $0.currentCellBackgroundColor }
+      .withUnretained(self)
+      .bind {
+        let backgroundColor: UIColor
+        if $1.0 {
+          backgroundColor = .idorm_gray_100
+        } else {
+          backgroundColor = .white
+        }
+        $0.tableView.cellForRow(
+          at: IndexPath(row: $1.1, section: 0)
+        )?.contentView.backgroundColor = backgroundColor
+      }
+      .disposed(by: disposeBag)
+    
+    // 익명 버튼 상태 변경
+    reactor.state
+      .map { $0.isAnonymous }
+      .distinctUntilChanged()
+      .bind(to: commentView.anonymousButton.rx.isSelected)
+      .disposed(by: disposeBag)
   }
   
   func bindHeader() {
     guard let reactor = reactor else { return }
-    
-    // 공감하기 버튼 클릭
-    self.header.sympathyButton.rx.tap
-    
   }
 }
 
@@ -205,7 +246,8 @@ extension PostDetailViewController: UITableViewDataSource, UITableViewDelegate {
           title: "작성",
           style: .default,
           handler: { [weak self] _ in
-            self?.reactor?.action.onNext(.didTapReplyButton(parentId))
+            self?.reactor?.action.onNext(.didTapReplyButton(indexPath: indexPath.row, parentId: parentId))
+            self?.commentView.textView.becomeFirstResponder()
           }
         ))
         
