@@ -88,7 +88,7 @@ final class CommentCell: UITableViewCell {
   
   @objc
   private func didTapReplyButton() {
-    guard let commentId = self.comment?.comment.commentId else { return }
+    guard let commentId = self.comment?.commentId else { return }
     self.replyButtonCompletion?(commentId)
   }
 }
@@ -98,9 +98,9 @@ final class CommentCell: UITableViewCell {
 extension CommentCell: BaseView {
   func inject(_ comment: OrderedComment) {
     self.comment = comment
-    nicknameLabel.text = comment.comment.nickname?.isAnonymous
-    timeLabel.text = TimeUtils.detailPost(comment.comment.createdAt)
-    contentsLabel.text = comment.comment.content
+    nicknameLabel.text = comment.nickname
+    timeLabel.text = TimeUtils.detailPost(comment.createdAt)
+    contentsLabel.text = comment.content
     replyImageView.isHidden = true
     replyButton.isHidden = true
     

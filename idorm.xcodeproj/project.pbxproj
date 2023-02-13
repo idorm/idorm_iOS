@@ -52,10 +52,9 @@
 		E523ECB1295198B100E79386 /* MemberStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E523ECB0295198B100E79386 /* MemberStorage.swift */; };
 		E5283D5629489E28004DD34F /* ErrorResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5283D5529489E28004DD34F /* ErrorResponseModel.swift */; };
 		E5290EFF2887BBB00004B8E6 /* PostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290EFE2887BBB00004B8E6 /* PostCollectionViewCell.swift */; };
-		E5290F06288818E70004B8E6 /* PostDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290F05288818E70004B8E6 /* PostDetailVC.swift */; };
+		E5290F06288818E70004B8E6 /* DetailPostVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290F05288818E70004B8E6 /* DetailPostVC.swift */; };
 		E5290F0928881C6E0004B8E6 /* PostDetailHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290F0828881C6E0004B8E6 /* PostDetailHeader.swift */; };
 		E5290F0E288867E50004B8E6 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290F0D288867E50004B8E6 /* CommentCell.swift */; };
-		E5290F10288869700004B8E6 /* CommunityDetailHeaderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5290F0F288869700004B8E6 /* CommunityDetailHeaderCollectionViewCell.swift */; };
 		E5294FF329277A06004D408C /* MatchingAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5294FF229277A06004D408C /* MatchingAPI.swift */; };
 		E5294FF52927807A004D408C /* Encodable+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5294FF42927807A004D408C /* Encodable+.swift */; };
 		E52B0B5F2959E91E000CDE13 /* UINavigationController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52B0B5E2959E91E000CDE13 /* UINavigationController+.swift */; };
@@ -99,6 +98,8 @@
 		E55794EE287C36F5002DB2B0 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55794ED287C36F5002DB2B0 /* UIView+.swift */; };
 		E55DDAE929179DD900E62ECB /* NavigationAppearanceUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55DDAE829179DD900E62ECB /* NavigationAppearanceUtils.swift */; };
 		E562611129977A6800D14020 /* Sequence+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E562611029977A6800D14020 /* Sequence+.swift */; };
+		E5626113299A500800D14020 /* DetailPostPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5626112299A500800D14020 /* DetailPostPhotoCell.swift */; };
+		E5626116299A789100D14020 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E5626115299A789100D14020 /* Kingfisher */; };
 		E56342232878353100E93D17 /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56342222878353100E93D17 /* TabBarVC.swift */; };
 		E563422528784ED400E93D17 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E563422428784ED400E93D17 /* HomeVC.swift */; };
 		E5695C15295EFBD40083E48D /* LaunchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5695C14295EFBD40083E48D /* LaunchVC.swift */; };
@@ -143,11 +144,11 @@
 		E5C451CE295C79A900D49988 /* HomeViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C451CD295C79A900D49988 /* HomeViewReactor.swift */; };
 		E5C89E4B28A9EDA70035D9C6 /* URLRequest+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C89E4A28A9EDA70035D9C6 /* URLRequest+.swift */; };
 		E5CFF6EE297E3D4D00E11D9A /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CFF6ED297E3D4D00E11D9A /* CommentView.swift */; };
-		E5CFF6F0297E76F300E11D9A /* PostDetailViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CFF6EF297E76F300E11D9A /* PostDetailViewReactor.swift */; };
+		E5CFF6F0297E76F300E11D9A /* DetailPostViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CFF6EF297E76F300E11D9A /* DetailPostViewReactor.swift */; };
 		E5CFF6F4297E7B3D00E11D9A /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CFF6F3297E7B3D00E11D9A /* UIFont+.swift */; };
 		E5CFF6F6297E8A6700E11D9A /* idormCommunityButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CFF6F5297E8A6700E11D9A /* idormCommunityButton.swift */; };
 		E5CFF6FB2981761700E11D9A /* GrowingTextView in Frameworks */ = {isa = PBXBuildFile; productRef = E5CFF6FA2981761700E11D9A /* GrowingTextView */; };
-		E5CFF6FD29826F8E00E11D9A /* CommentEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CFF6FC29826F8E00E11D9A /* CommentEmptyCell.swift */; };
+		E5CFF6FD29826F8E00E11D9A /* DetailPostEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CFF6FC29826F8E00E11D9A /* DetailPostEmptyCell.swift */; };
 		E5CFF7032982CD8A00E11D9A /* CommunityAPI+Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CFF7022982CD8A00E11D9A /* CommunityAPI+Task.swift */; };
 		E5CFF7052982CDDC00E11D9A /* CommunityAPI+Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CFF7042982CDDC00E11D9A /* CommunityAPI+Path.swift */; };
 		E5CFF7072982CE3200E11D9A /* CommunityAPI+Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CFF7062982CE3200E11D9A /* CommunityAPI+Method.swift */; };
@@ -253,10 +254,9 @@
 		E523ECB0295198B100E79386 /* MemberStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberStorage.swift; sourceTree = "<group>"; };
 		E5283D5529489E28004DD34F /* ErrorResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorResponseModel.swift; sourceTree = "<group>"; };
 		E5290EFE2887BBB00004B8E6 /* PostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCollectionViewCell.swift; sourceTree = "<group>"; };
-		E5290F05288818E70004B8E6 /* PostDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailVC.swift; sourceTree = "<group>"; };
+		E5290F05288818E70004B8E6 /* DetailPostVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPostVC.swift; sourceTree = "<group>"; };
 		E5290F0828881C6E0004B8E6 /* PostDetailHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailHeader.swift; sourceTree = "<group>"; };
 		E5290F0D288867E50004B8E6 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
-		E5290F0F288869700004B8E6 /* CommunityDetailHeaderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityDetailHeaderCollectionViewCell.swift; sourceTree = "<group>"; };
 		E5294FF229277A06004D408C /* MatchingAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingAPI.swift; sourceTree = "<group>"; };
 		E5294FF42927807A004D408C /* Encodable+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+.swift"; sourceTree = "<group>"; };
 		E52B0B5E2959E91E000CDE13 /* UINavigationController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+.swift"; sourceTree = "<group>"; };
@@ -283,6 +283,7 @@
 		E55794ED287C36F5002DB2B0 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		E55DDAE829179DD900E62ECB /* NavigationAppearanceUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationAppearanceUtils.swift; sourceTree = "<group>"; };
 		E562611029977A6800D14020 /* Sequence+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+.swift"; sourceTree = "<group>"; };
+		E5626112299A500800D14020 /* DetailPostPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPostPhotoCell.swift; sourceTree = "<group>"; };
 		E56342222878353100E93D17 /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
 		E563422428784ED400E93D17 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		E5695C14295EFBD40083E48D /* LaunchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchVC.swift; sourceTree = "<group>"; };
@@ -327,10 +328,10 @@
 		E5C451CD295C79A900D49988 /* HomeViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewReactor.swift; sourceTree = "<group>"; };
 		E5C89E4A28A9EDA70035D9C6 /* URLRequest+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+.swift"; sourceTree = "<group>"; };
 		E5CFF6ED297E3D4D00E11D9A /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
-		E5CFF6EF297E76F300E11D9A /* PostDetailViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewReactor.swift; sourceTree = "<group>"; };
+		E5CFF6EF297E76F300E11D9A /* DetailPostViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPostViewReactor.swift; sourceTree = "<group>"; };
 		E5CFF6F3297E7B3D00E11D9A /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		E5CFF6F5297E8A6700E11D9A /* idormCommunityButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = idormCommunityButton.swift; sourceTree = "<group>"; };
-		E5CFF6FC29826F8E00E11D9A /* CommentEmptyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentEmptyCell.swift; sourceTree = "<group>"; };
+		E5CFF6FC29826F8E00E11D9A /* DetailPostEmptyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPostEmptyCell.swift; sourceTree = "<group>"; };
 		E5CFF7022982CD8A00E11D9A /* CommunityAPI+Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunityAPI+Task.swift"; sourceTree = "<group>"; };
 		E5CFF7042982CDDC00E11D9A /* CommunityAPI+Path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunityAPI+Path.swift"; sourceTree = "<group>"; };
 		E5CFF7062982CE3200E11D9A /* CommunityAPI+Method.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CommunityAPI+Method.swift"; sourceTree = "<group>"; };
@@ -381,6 +382,7 @@
 				E551030B29236E84001E1530 /* RxSwift in Frameworks */,
 				E551031129236F88001E1530 /* Tabman in Frameworks */,
 				E551031D29237080001E1530 /* CHIOTPField in Frameworks */,
+				E5626116299A789100D14020 /* Kingfisher in Frameworks */,
 				E5E1498B2950700B00A3827C /* ReactorKit in Frameworks */,
 				E551032929237177001E1530 /* Then in Frameworks */,
 				E551030E29236EF1001E1530 /* Alamofire in Frameworks */,
@@ -504,7 +506,7 @@
 			isa = PBXGroup;
 			children = (
 				E50FB5252972B28400E938B8 /* PostListViewReactor.swift */,
-				E5CFF6EF297E76F300E11D9A /* PostDetailViewReactor.swift */,
+				E5CFF6EF297E76F300E11D9A /* DetailPostViewReactor.swift */,
 				E59037C729769DBD001239D1 /* PostingViewReactor.swift */,
 			);
 			path = Reactors;
@@ -626,7 +628,7 @@
 			isa = PBXGroup;
 			children = (
 				E5066425296E560B00B581E1 /* PostListVC.swift */,
-				E5290F05288818E70004B8E6 /* PostDetailVC.swift */,
+				E5290F05288818E70004B8E6 /* DetailPostVC.swift */,
 				E52233B2296CFCAD00C5DD07 /* PostingVC.swift */,
 				E58ACB8628846E050031BD86 /* GalleryVC.swift */,
 			);
@@ -636,14 +638,14 @@
 		E56DF4B32893CE6700E85B10 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				E5626112299A500800D14020 /* DetailPostPhotoCell.swift */,
+				E5CFF6FC29826F8E00E11D9A /* DetailPostEmptyCell.swift */,
 				E5066429296E6B9B00B581E1 /* PostCell.swift */,
 				E506642B296E6BAA00B581E1 /* PopularPostCell.swift */,
 				E52233B5296D04A200C5DD07 /* ImageCell.swift */,
 				E50FB5302972E41600E938B8 /* LoadingCell.swift */,
 				E58F96FA2884E85B00CC3C75 /* GalleryCell.swift */,
 				E5290F0D288867E50004B8E6 /* CommentCell.swift */,
-				E5CFF6FC29826F8E00E11D9A /* CommentEmptyCell.swift */,
-				E5290F0F288869700004B8E6 /* CommunityDetailHeaderCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1122,6 +1124,7 @@
 				E551032B292371E9001E1530 /* RxOptional */,
 				E5E1498A2950700B00A3827C /* ReactorKit */,
 				E5CFF6FA2981761700E11D9A /* GrowingTextView */,
+				E5626115299A789100D14020 /* Kingfisher */,
 			);
 			productName = idorm;
 			productReference = E50300F328773A5D00611C62 /* idorm.app */;
@@ -1167,6 +1170,7 @@
 				E551032A292371E9001E1530 /* XCRemoteSwiftPackageReference "RxOptional" */,
 				E5ED233B292EF245008E698D /* XCRemoteSwiftPackageReference "ReactorKit" */,
 				E5CFF6F92981761700E11D9A /* XCRemoteSwiftPackageReference "GrowingTextView" */,
+				E5626114299A789100D14020 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = E50300F428773A5D00611C62 /* Products */;
 			projectDirPath = "";
@@ -1246,6 +1250,7 @@
 				E52C2789298917F8002429B5 /* Register.swift in Sources */,
 				E513D9FE2955C70A002EA592 /* PutEmailViewReactor.swift in Sources */,
 				E575D37529548DF900B13530 /* WithDrawalViewReactor.swift in Sources */,
+				E5626113299A500800D14020 /* DetailPostPhotoCell.swift in Sources */,
 				E5CFF6EE297E3D4D00E11D9A /* CommentView.swift in Sources */,
 				E53D1A412988A5C00074308B /* MemberAPI+Path.swift in Sources */,
 				E5AD73A3287B2B5200BA2C5E /* ConfirmPwVC.swift in Sources */,
@@ -1254,7 +1259,7 @@
 				E5E1497E2950498300A3827C /* TokenStorage.swift in Sources */,
 				E58865112988E1F60068BEB2 /* MatchingAPI+Path.swift in Sources */,
 				E547E3EC291CFBBC000D3A47 /* MatchingCardWishTextView.swift in Sources */,
-				E5CFF6FD29826F8E00E11D9A /* CommentEmptyCell.swift in Sources */,
+				E5CFF6FD29826F8E00E11D9A /* DetailPostEmptyCell.swift in Sources */,
 				E5D07087292F098500D5DF6E /* String+.swift in Sources */,
 				E5C89E4B28A9EDA70035D9C6 /* URLRequest+.swift in Sources */,
 				E52B0B5F2959E91E000CDE13 /* UINavigationController+.swift in Sources */,
@@ -1289,7 +1294,6 @@
 				E5E1498029504ACA00A3827C /* Logger.swift in Sources */,
 				E506642A296E6B9B00B581E1 /* PostCell.swift in Sources */,
 				E5AC2DCF288303A300B82AD8 /* PasswordTextField.swift in Sources */,
-				E5290F10288869700004B8E6 /* CommunityDetailHeaderCollectionViewCell.swift in Sources */,
 				E58A6297289D6BEF0074F646 /* DeviceManager.swift in Sources */,
 				E50FB5312972E41600E938B8 /* LoadingCell.swift in Sources */,
 				E562611129977A6800D14020 /* Sequence+.swift in Sources */,
@@ -1310,7 +1314,7 @@
 				E53D1A3F2988A5780074308B /* MemberAPI+Task.swift in Sources */,
 				E5FD982628EAF8F0005A29E2 /* MailTimerChecker.swift in Sources */,
 				E5290F0E288867E50004B8E6 /* CommentCell.swift in Sources */,
-				E5CFF6F0297E76F300E11D9A /* PostDetailViewReactor.swift in Sources */,
+				E5CFF6F0297E76F300E11D9A /* DetailPostViewReactor.swift in Sources */,
 				E5CFF6F4297E7B3D00E11D9A /* UIFont+.swift in Sources */,
 				E57FB8562886E2710050BBAE /* PhotoLibrary+.swift in Sources */,
 				E50300F928773A5D00611C62 /* SceneDelegate.swift in Sources */,
@@ -1340,7 +1344,7 @@
 				E5A15D4A2923A569001CE750 /* MemberAPI.swift in Sources */,
 				E50F850929587C8B008B7052 /* TransformUtils.swift in Sources */,
 				E5226D5C2911F3760065C809 /* JoinPeriod.swift in Sources */,
-				E5290F06288818E70004B8E6 /* PostDetailVC.swift in Sources */,
+				E5290F06288818E70004B8E6 /* DetailPostVC.swift in Sources */,
 				E5D98F8F28C4863900D493FF /* NickNameVC.swift in Sources */,
 				E58F96FB2884E85B00CC3C75 /* GalleryCell.swift in Sources */,
 				E53D1A462988A6A40074308B /* MailAPI+Path.swift in Sources */,
@@ -1727,6 +1731,14 @@
 				minimumVersion = 5.0.2;
 			};
 		};
+		E5626114299A789100D14020 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 7.6.0;
+			};
+		};
 		E5CFF6F92981761700E11D9A /* XCRemoteSwiftPackageReference "GrowingTextView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/KennethTsang/GrowingTextView.git";
@@ -1825,6 +1837,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E551032A292371E9001E1530 /* XCRemoteSwiftPackageReference "RxOptional" */;
 			productName = RxOptional;
+		};
+		E5626115299A789100D14020 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E5626114299A789100D14020 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 		E5CFF6FA2981761700E11D9A /* GrowingTextView */ = {
 			isa = XCSwiftPackageProductDependency;

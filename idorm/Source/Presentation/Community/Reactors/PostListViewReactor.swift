@@ -161,7 +161,7 @@ extension PostListViewReactor {
   ) -> Observable<Mutation> {
     return .concat([
       CommunityAPI.provider.rx.request(
-        .retrievePosts(dorm: dorm, page: page)
+        .lookupPosts(dorm: dorm, page: page)
       )
       .asObservable()
       .retry()
@@ -189,7 +189,7 @@ extension PostListViewReactor {
   }
   
   private func retrieveTopPosts(_ dorm: Dormitory) -> Observable<Mutation> {
-    return CommunityAPI.provider.rx.request(.retrieveTopPosts(dorm))
+    return CommunityAPI.provider.rx.request(.lookupTopPosts(dorm))
       .asObservable()
       .retry()
       .withUnretained(self)

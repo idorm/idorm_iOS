@@ -10,7 +10,7 @@ import Foundation
 import ReactorKit
 import RxMoya
 
-final class PostDetailViewReactor: Reactor {
+final class DetailPostViewReactor: Reactor {
   
   enum Action {
     case viewDidLoad
@@ -19,20 +19,25 @@ final class PostDetailViewReactor: Reactor {
     case didTapReplyButton(indexPath: Int, parentId: Int)
     case didTapBackground
     case didTapAnonymousButton(Bool)
+    case didTapSympathyButton(Bool)
   }
   
   enum Mutation {
     case setLoading(Bool)
     case setAnonymous(Bool)
+    case setSympathy(Bool)
     case setPost(CommunityResponseModel.Post)
     case setComment(String)
     case setComments([OrderedComment])
     case setFocusedComment(Int?)
     case setCellBackgroundColor(Bool, Int)
+    case setAlert(Bool, String)
   }
   
   struct State {
     var isLoading: Bool = false
+    var isSympathy: Bool = false
+    var isPresentedAlert: (Bool, String) = (false, "")
     var currentPost: CommunityResponseModel.Post?
     var currentComment: String = ""
     var currentComments: [OrderedComment] = []
@@ -80,6 +85,31 @@ final class PostDetailViewReactor: Reactor {
       
     case .didTapAnonymousButton(let isSelected):
       return .just(.setAnonymous(isSelected))
+      
+    case .didTapSympathyButton(let isSympathy):
+      return .concat([
+        .just(.setLoading(true)),
+        CommunityAPI.provider.rx.request(.editPostSympathy(postId: postId, isSympathy: isSympathy))
+          .asObservable()
+          .withUnretained(self)
+          .flatMap { owner, response -> Observable<Mutation> in
+            switch response.statusCode {
+            case 200..<300:
+              return .concat([
+                .just(.setSympathy(isSympathy)),
+                owner.retrievePost()
+              ])
+            case 409:
+              return .concat([
+                .just(.setLoading(false)),
+                .just(.setAlert(true, "내 게시글은 공감할 수 없습니다.")),
+                .just(.setAlert(false, ""))
+              ])
+            default:
+              return .empty()
+            }
+          }
+      ])
     }
   }
   
@@ -107,16 +137,22 @@ final class PostDetailViewReactor: Reactor {
       
     case .setAnonymous(let isSelected):
       newState.isAnonymous = isSelected
+      
+    case .setSympathy(let isSympathy):
+      newState.isSympathy = isSympathy
+      
+    case let .setAlert(isBlocked, title):
+      newState.isPresentedAlert = (isBlocked, title)
     }
     
     return newState
   }
 }
 
-private extension PostDetailViewReactor {
+private extension DetailPostViewReactor {
   func retrievePost() -> Observable<Mutation> {
     return CommunityAPI.provider.rx.request(
-      .retrievePost(postId: postId)
+      .lookupDetailPost(postId: postId)
     )
       .asObservable()
       .retry()
@@ -128,7 +164,7 @@ private extension PostDetailViewReactor {
             data: response.data
           ).data
           
-          let orderedComments = CommentUtils.registeredComments(post.comments)
+          let orderedComments = CommentUtils.newestOrderedComments(post.comments)
           
           return .concat([
             .just(.setLoading(false)),

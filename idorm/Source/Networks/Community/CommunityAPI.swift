@@ -10,11 +10,12 @@ import Foundation
 import Moya
 
 enum CommunityAPI {
-  case retrievePosts(dorm: Dormitory, page: Int)
-  case retrievePost(postId: Int)
-  case retrieveTopPosts(Dormitory)
-  case posting(CommunityRequestModel.Post)
+  case lookupPosts(dorm: Dormitory, page: Int)
+  case lookupDetailPost(postId: Int)
+  case lookupTopPosts(Dormitory)
+  case savePost(CommunityRequestModel.Post)
   case saveComment(postId: Int, body: CommunityRequestModel.Comment)
+  case editPostSympathy(postId: Int, isSympathy: Bool)
 }
 
 extension CommunityAPI: TargetType, BaseAPI {
@@ -26,7 +27,7 @@ extension CommunityAPI: TargetType, BaseAPI {
   var task: Moya.Task { return getTask() }
   var headers: [String : String]? {
     switch self {
-    case .posting:
+    case .savePost:
       return getMultipartHeader()
     default:
       return getJsonHeader()

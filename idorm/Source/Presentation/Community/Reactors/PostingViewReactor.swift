@@ -73,7 +73,7 @@ final class PostingViewReactor: Reactor {
       
       return .concat([
         .just(.setLoading(true)),
-        CommunityAPI.provider.rx.request(.posting(newPost))
+        CommunityAPI.provider.rx.request(.savePost(newPost))
           .asObservable()
           .retry()
           .withUnretained(self)

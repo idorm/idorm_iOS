@@ -10,20 +10,23 @@ import Foundation
 extension CommunityAPI {
   func getPath() -> String {
     switch self {
-    case .retrievePosts(let dorm, _):
+    case .lookupPosts(let dorm, _):
       return "/member/posts/\(dorm.rawValue)"
       
-    case .retrieveTopPosts(let dorm):
+    case .lookupTopPosts(let dorm):
       return "/member/posts/\(dorm.rawValue)/top"
       
-    case .posting:
+    case .savePost:
       return "/member/post"
       
-    case .retrievePost(let postId):
+    case .lookupDetailPost(let postId):
       return "/member/post/\(postId)"
       
     case .saveComment(let postId, _):
       return "/member/post/\(postId)/comment"
+      
+    case .editPostSympathy(let postId, _):
+      return "/member/post/\(postId)/like"
     }
   }
 }

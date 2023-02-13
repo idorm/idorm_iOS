@@ -8,13 +8,18 @@
 import Foundation
 
 struct OrderedComment {
-  enum State {
+  enum CommentState {
     case reply
     case firstReply
     case normal
   }
-  
-  var comment: CommunityResponseModel.Comment
+  let content: String
+  let memberId: Int
+  let commentId: Int
+  let isDeleted: Bool
+  let nickname: String?
+  let profileUrl: String?
+  let createdAt: String
   var isLast: Bool
-  var state: State
+  var state: CommentState
 }

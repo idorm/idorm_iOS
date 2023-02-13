@@ -7,59 +7,50 @@
 
 enum CommentUtils {
   
-  static func registeredComments(
+  static func newestOrderedComments(
     _ comments: [CommunityResponseModel.Comment]
   ) -> [OrderedComment] {
-    var parentIds = [Int]()
     var orderedComments = [OrderedComment]()
     
-    for i in comments {
-      var currentComment = OrderedComment(comment: i, isLast: false, state: .normal)
+    for (index, comment) in comments.enumerated() {
+      var orderedComment = OrderedComment(
+        content: comment.content,
+        memberId: comment.memberId,
+        commentId: comment.commentId,
+        isDeleted: comment.isDeleted,
+        nickname: comment.nickname,
+        profileUrl: comment.profileUrl,
+        createdAt: comment.createdAt,
+        isLast: false,
+        state: .normal
+      )
       
-      if let parentId = i.parentCommentId {
-        
-        if let lastIndex = orderedComments.lastIndex(
-          where: { $0.comment.parentCommentId == parentId }
-        ) {
-          currentComment.state = .reply
-          orderedComments.insert(currentComment, at: lastIndex + 1)
-        } else if let lastIndex = orderedComments.lastIndex(
-          where: { $0.comment.commentId == parentId }
-        ) {
-          currentComment.state = .firstReply
-          orderedComments.insert(currentComment, at: lastIndex + 1)
+      orderedComments.append(orderedComment)
+      
+      if comment.subComments.isNotEmpty {
+        var subComments: [OrderedComment] = []
+        subComments = comment.subComments.map {
+          return OrderedComment(
+            content: $0.content,
+            memberId: $0.memberId,
+            commentId: $0.commentId,
+            isDeleted: $0.isDeleted,
+            nickname: $0.nickname,
+            profileUrl: $0.profileUrl,
+            createdAt: $0.createdAt,
+            isLast: false,
+            state: .reply
+          )
         }
         
+        subComments[subComments.startIndex].state = .firstReply
+        subComments[subComments.endIndex - 1].isLast = true
+        orderedComments.append(contentsOf: subComments)
       } else {
-        orderedComments.append(currentComment)
+        orderedComments[index].isLast = true
       }
     }
-    
-    parentIds = comments
-      .filter { $0.parentCommentId != nil }
-      .map { $0.parentCommentId! }
-      .uniqued()
 
-    orderedComments.indices.forEach {
-      if parentIds.contains(orderedComments[$0].comment.commentId) == false {
-        orderedComments[$0].isLast = true
-      }
-    }
-    
-    orderedComments.indices.forEach {
-      if orderedComments[$0].comment.parentCommentId != nil {
-        orderedComments[$0].isLast = false
-      }
-    }
-    
-    parentIds.forEach { parentId in
-      if let lastIndex = orderedComments.lastIndex(
-        where: { $0.comment.parentCommentId == parentId }
-      ) {
-        orderedComments[lastIndex].isLast = true
-      }
-    }
-    
     return orderedComments
   }
 }
