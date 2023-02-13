@@ -10,15 +10,15 @@ import Moya
 extension CommunityAPI {
   func getTask() -> Task {
     switch self {
-    case let .retrievePosts(_, page):
+    case let .lookupPosts(_, page):
       return .requestParameters(parameters: [
         "page": page
       ], encoding: URLEncoding.queryString)
       
-    case .retrieveTopPosts:
+    case .lookupTopPosts:
       return .requestPlain
       
-    case .posting(let post):
+    case .savePost(let post):
       var multiFormDatas: [MultipartFormData] = []
       
       let titleData = MultipartFormData(provider: .data(post.title.data(using: .utf8)!), name: "title")
@@ -37,11 +37,14 @@ extension CommunityAPI {
 
       return .uploadMultipart(multiFormDatas)
       
-    case .retrievePost:
+    case .lookupDetailPost:
       return .requestPlain
       
     case .saveComment(_, let comment):
       return .requestJSONEncodable(comment)
+      
+    case .editPostSympathy:
+      return .requestPlain
     }
   }
 }

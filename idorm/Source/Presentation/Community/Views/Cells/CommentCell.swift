@@ -48,8 +48,8 @@ final class CommentCell: UITableViewCell {
   
   lazy var optionButton: UIButton = {
     let btn = UIButton(type: .custom)
-    btn.setImage(UIImage(named: "option"), for: .normal)
-     
+    btn.setImage(UIImage(named: "option_gray"), for: .normal)
+    
     return btn
   }()
   
@@ -58,9 +58,18 @@ final class CommentCell: UITableViewCell {
     textColor: .idorm_gray_400,
     font: .idormFont(.medium, size: 14)
   )
-
+  
+  private lazy var replyButton: idormCommunityButton = {
+    let btn = idormCommunityButton("답글 쓰기")
+    btn.addTarget(self, action: #selector(didTapReplyButton), for: .touchUpInside)
+    
+    return btn
+  }()
+  
+  private let dividerLine = UIFactory.view(.idorm_gray_200)
   private let replyImageView = UIImageView(image: UIImage(named: "corner_down_right"))
-  private let replyButton = idormCommunityButton("답글 쓰기")
+  private var comment: OrderedComment?
+  var replyButtonCompletion: ((Int) -> Void)?
   
   // MARK: - Initializer
   
@@ -74,38 +83,79 @@ final class CommentCell: UITableViewCell {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+  
+  // MARK: - Selectors
+  
+  @objc
+  private func didTapReplyButton() {
+    guard let commentId = self.comment?.commentId else { return }
+    self.replyButtonCompletion?(commentId)
+  }
 }
 
 // MARK: - Setup
 
 extension CommentCell: BaseView {
   func inject(_ comment: OrderedComment) {
-    nicknameLabel.text = comment.comment.nickname?.isAnonymous
-    timeLabel.text = TimeUtils.detailPost(comment.comment.createdAt)
-    contentsLabel.text = comment.comment.content
+    self.comment = comment
+    nicknameLabel.text = comment.nickname
+    timeLabel.text = TimeUtils.detailPost(comment.createdAt)
+    contentsLabel.text = comment.content
     replyImageView.isHidden = true
+    replyButton.isHidden = true
+    
+    if comment.isLast {
+      dividerLine.isHidden = false
+    } else {
+      dividerLine.isHidden = true
+    }
     
     switch comment.state {
     case .normal:
       contentView.backgroundColor = .white
+      replyButton.isHidden = false
       
       replyImageView.snp.updateConstraints { make in
         make.top.equalToSuperview().inset(-24)
       }
       
+      replyButton.snp.updateConstraints { make in
+        make.top.equalTo(contentsLabel.snp.bottom).offset(10)
+      }
+      
+      optionButton.snp.updateConstraints { make in
+        make.top.equalToSuperview().inset(16)
+      }
+      
     case .reply:
       contentView.backgroundColor = .idorm_matchingScreen
       
+      replyButton.snp.updateConstraints { make in
+        make.top.equalTo(contentsLabel.snp.bottom).offset(-30)
+      }
+      
       replyImageView.snp.updateConstraints { make in
         make.top.equalToSuperview().inset(-24)
+      }
+      
+      optionButton.snp.updateConstraints { make in
+        make.top.equalToSuperview().inset(16)
       }
       
     case .firstReply:
       contentView.backgroundColor = .idorm_matchingScreen
       replyImageView.isHidden = false
       
+      replyButton.snp.updateConstraints { make in
+        make.top.equalTo(contentsLabel.snp.bottom).offset(-30)
+      }
+      
       replyImageView.snp.updateConstraints { make in
         make.top.equalToSuperview().inset(16)
+      }
+      
+      optionButton.snp.updateConstraints { make in
+        make.top.equalToSuperview().inset(56)
       }
     }
   }
@@ -121,7 +171,8 @@ extension CommentCell: BaseView {
       profileStack,
       optionButton,
       contentsLabel,
-      replyButton
+      replyButton,
+      dividerLine
     ].forEach {
       contentView.addSubview($0)
     }
@@ -154,12 +205,18 @@ extension CommentCell: BaseView {
     replyButton.snp.makeConstraints { make in
       make.top.equalTo(contentsLabel.snp.bottom).offset(10)
       make.leading.equalTo(profileStack.snp.leading)
-      make.bottom.equalToSuperview().inset(16)
     }
     
     optionButton.snp.makeConstraints { make in
       make.top.equalToSuperview().inset(16)
       make.trailing.equalToSuperview().inset(14)
+    }
+    
+    dividerLine.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview()
+      make.top.equalTo(replyButton.snp.bottom).offset(16)
+      make.bottom.equalToSuperview()
+      make.height.equalTo(1)
     }
   }
 }

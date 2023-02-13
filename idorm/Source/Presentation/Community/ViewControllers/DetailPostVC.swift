@@ -12,11 +12,12 @@ import RSKGrowingTextView
 import ReactorKit
 import RxAppState
 import RxOptional
+import RxGesture
 import PanModal
 
-final class PostDetailViewController: BaseViewController, View {
+final class DetailPostViewController: BaseViewController, View {
   
-  // MARK: - Properties
+  // MARK: - PROPERTIES
   
   private lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .grouped)
@@ -26,8 +27,8 @@ final class PostDetailViewController: BaseViewController, View {
       forCellReuseIdentifier: CommentCell.identifier
     )
     tableView.register(
-      CommentEmptyCell.self,
-      forCellReuseIdentifier: CommentEmptyCell.identifier
+      DetailPostEmptyCell.self,
+      forCellReuseIdentifier: DetailPostEmptyCell.identifier
     )
     tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     tableView.allowsSelection = false
@@ -56,7 +57,7 @@ final class PostDetailViewController: BaseViewController, View {
   private let bottomView = UIView()
   private var header: PostDetailHeader!
   
-  // MARK: - Setup
+  // MARK: - SETUP
   
   override func setupStyles() {
     view.backgroundColor = .white
@@ -96,32 +97,50 @@ final class PostDetailViewController: BaseViewController, View {
     }
   }
   
-  // MARK: - Bind
+  // MARK: - BIND
   
-  func bind(reactor: PostDetailViewReactor) {
+  func bind(reactor: DetailPostViewReactor) {
     
-    // MARK: - Action
+    // MARK: - ACTION
     
     // 화면 최초 접속
     rx.viewDidLoad
-      .map { PostDetailViewReactor.Action.viewDidLoad }
+      .map { DetailPostViewReactor.Action.viewDidLoad }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 댓글 입력 반응
     commentView.textView.rx.text
       .orEmpty
-      .map { PostDetailViewReactor.Action.didChangeComment($0) }
+      .map { DetailPostViewReactor.Action.didChangeComment($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 전송 버튼 클릭
     commentView.sendButton.rx.tap
-      .map { PostDetailViewReactor.Action.didTapSendButton }
+      .map { DetailPostViewReactor.Action.didTapSendButton }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
-    // MARK: - State
+    // 빈 화면 클릭
+    tableView.rx.tapGesture { _, delegate in
+      delegate.simultaneousRecognitionPolicy = .never
+    }
+      .withUnretained(self)
+      .do { $0.0.commentView.textView.resignFirstResponder() }
+      .map { _ in DetailPostViewReactor.Action.didTapBackground }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // 익명 버튼 클릭
+    commentView.anonymousButton.rx.tap
+      .withUnretained(self)
+      .map { !$0.0.commentView.anonymousButton.isSelected }
+      .map { DetailPostViewReactor.Action.didTapAnonymousButton($0) }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // MARK: - STATE
     
     // 전송 버튼 상태 변경
     reactor.state
@@ -138,9 +157,16 @@ final class PostDetailViewController: BaseViewController, View {
       .bind(to: commentView.sendButton.rx.isEnabled)
       .disposed(by: disposeBag)
     
+    // 현재 입력된 댓글
+    reactor.state
+      .map { $0.currentComment }
+      .bind(to: commentView.textView.rx.text)
+      .disposed(by: disposeBag)
+    
     // 리로딩
     reactor.state
       .map { $0.currentPost }
+      .distinctUntilChanged()
       .filterNil()
       .bind(with: self) { owner, _ in
         owner.tableView.reloadData()
@@ -152,20 +178,74 @@ final class PostDetailViewController: BaseViewController, View {
       .map { $0.isLoading }
       .bind(to: indicator.rx.isAnimating)
       .disposed(by: disposeBag)
+    
+    // 현재 포커싱된 댓글 색깔
+    reactor.state
+      .map { $0.currentCellBackgroundColor }
+      .withUnretained(self)
+      .bind {
+        let backgroundColor: UIColor
+        if $1.0 {
+          backgroundColor = .idorm_gray_100
+        } else {
+          backgroundColor = .white
+        }
+        $0.tableView.cellForRow(
+          at: IndexPath(row: $1.1, section: 0)
+        )?.contentView.backgroundColor = backgroundColor
+      }
+      .disposed(by: disposeBag)
+    
+    // 익명 버튼 상태 변경
+    reactor.state
+      .map { $0.isAnonymous }
+      .distinctUntilChanged()
+      .bind(to: commentView.anonymousButton.rx.isSelected)
+      .disposed(by: disposeBag)
+    
+    // 알림창 띄우기
+    reactor.state
+      .map { $0.isPresentedAlert }
+      .filter { $0.0 }
+      .withUnretained(self)
+      .bind {
+        let alert = UIAlertController(title: $1.1, message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .cancel))
+        $0.present(alert, animated: true)
+      }
+      .disposed(by: disposeBag)
   }
+  
+  // MARK: - BIND HEADER
   
   func bindHeader() {
     guard let reactor = reactor else { return }
+  }
+  
+  // MARK: - HELPERS
+  
+  private func presentSympathyAlert(_ nextState: Bool) {
+    let title: String
     
-    // 공감하기 버튼 클릭
-    self.header.sympathyButton.rx.tap
+    if nextState {
+      title = "공감을 취소하시겠습니까?"
+    } else {
+      title = "게시글을 공감하시겠습니까?"
+    }
+    let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
     
+    alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+    alert.addAction(UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+      self?.reactor?.action.onNext(.didTapSympathyButton(!nextState))
+    })
+    
+    self.present(alert, animated: true)
   }
 }
 
 // MARK: - Setup TableView
 
-extension PostDetailViewController: UITableViewDataSource, UITableViewDelegate {
+extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
   // 셀 생성
   func tableView(
     _ tableView: UITableView,
@@ -176,9 +256,9 @@ extension PostDetailViewController: UITableViewDataSource, UITableViewDelegate {
     switch reactor.currentState.currentPost?.comments.count ?? 0 {
     case 0:
       guard let cell = tableView.dequeueReusableCell(
-        withIdentifier: CommentEmptyCell.identifier,
+        withIdentifier: DetailPostEmptyCell.identifier,
         for: indexPath
-      ) as? CommentEmptyCell else {
+      ) as? DetailPostEmptyCell else {
         return UITableViewCell()
       }
       
@@ -193,6 +273,30 @@ extension PostDetailViewController: UITableViewDataSource, UITableViewDelegate {
       
       let orderedComment = reactor.currentState.currentComments[indexPath.row]
       cell.inject(orderedComment)
+      
+      cell.replyButtonCompletion = { [weak self] parentId in
+        let alert = UIAlertController(
+          title: "대댓글을 작성하시겠습니까?",
+          message: nil,
+          preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(
+          title: "작성",
+          style: .default,
+          handler: { [weak self] _ in
+            self?.reactor?.action.onNext(.didTapReplyButton(indexPath: indexPath.row, parentId: parentId))
+            self?.commentView.textView.becomeFirstResponder()
+          }
+        ))
+        
+        alert.addAction(UIAlertAction(
+          title: "취소",
+          style: .cancel
+        ))
+        
+        self?.present(alert, animated: true)
+      }
       
       return cell
     }
@@ -218,13 +322,21 @@ extension PostDetailViewController: UITableViewDataSource, UITableViewDelegate {
     _ tableView: UITableView,
     viewForHeaderInSection section: Int
   ) -> UIView? {
-    guard let post = reactor?.currentState.currentPost else { return nil }
-    let header = PostDetailHeader()
-    header.configure(post)
-    self.header = header
+    guard let reactor = reactor,
+          let currentPost = reactor.currentState.currentPost else {
+      return PostDetailHeader()
+    }
     
+    let header = PostDetailHeader()
+    header.injectData(currentPost, isSympathy: reactor.currentState.isSympathy)
+
     if self.header == nil {
+      self.header = header
       self.bindHeader()
+    }
+    
+    header.sympathyButtonCompletion = { [weak self] in
+      self?.presentSympathyAlert($0)
     }
     
     return header

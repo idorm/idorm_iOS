@@ -10,11 +10,17 @@ import Moya
 extension CommunityAPI {
   func getMethod() -> Method {
     switch self {
-    case .retrievePosts, .retrieveTopPosts, .retrievePost:
+    case .lookupPosts, .lookupTopPosts, .lookupDetailPost:
       return .get
       
-    case .posting, .saveComment:
+    case .savePost, .saveComment:
       return .post
+      
+    case .editPostSympathy(_, let isSympathy):
+      switch isSympathy {
+      case true: return .put
+      case false: return .delete
+      }
     }
   }
 }

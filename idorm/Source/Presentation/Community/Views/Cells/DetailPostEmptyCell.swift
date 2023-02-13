@@ -9,7 +9,8 @@ import UIKit
 
 import SnapKit
 
-final class CommentEmptyCell: UITableViewCell {
+
+final class DetailPostEmptyCell: UITableViewCell {
   
   // MARK: - Properties
   
@@ -29,7 +30,7 @@ final class CommentEmptyCell: UITableViewCell {
   }
 }
 
-extension CommentEmptyCell: BaseView {
+extension DetailPostEmptyCell: BaseView {
   func setupStyles() {
     contentView.backgroundColor = .white
   }

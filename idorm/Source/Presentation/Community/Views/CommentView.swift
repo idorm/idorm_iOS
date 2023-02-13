@@ -26,8 +26,8 @@ final class CommentView: UIView {
   
   let anonymousButton: UIButton = {
     let btn = UIButton()
-    btn.setImage(UIImage(named: "circle_blue"), for: .selected)
-    btn.setImage(UIImage(named: "circle"), for: .normal)
+    btn.setImage(UIImage(named: "circle_blue_gray"), for: .selected)
+    btn.setImage(UIImage(named: "circle_gray"), for: .normal)
     btn.isSelected = true
     
     return btn

@@ -68,24 +68,46 @@ final class PostDetailHeader: UIView {
     return label
   }()
   
-//  lazy var collectionView: UICollectionView = {
-//    let layout = UICollectionViewFlowLayout()
-//    layout.scrollDirection = .horizontal
-//    layout.itemSize = CGSize(width: 120, height: 120)
-//    layout.minimumInteritemSpacing = 8
-//    layout.sectionInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
-//    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-//    collectionView.register(CommunityDetailHeaderCollectionViewCell.self, forCellWithReuseIdentifier: CommunityDetailHeaderCollectionViewCell.identifier)
-//    collectionView.showsHorizontalScrollIndicator = false
-//    collectionView.dataSource = self
-//    collectionView.delegate = self
-//
-//    return collectionView
-//  }()
+  lazy var photoCollectionView: UICollectionView = {
+    let layout = UICollectionViewFlowLayout()
+    layout.scrollDirection = .horizontal
+    layout.itemSize = CGSize(width: 120, height: 120)
+    layout.minimumInteritemSpacing = 8
+    layout.sectionInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 24)
+    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+    collectionView.register(
+      DetailPostPhotoCell.self,
+      forCellWithReuseIdentifier: DetailPostPhotoCell.identifier
+    )
+    collectionView.showsHorizontalScrollIndicator = false
+    collectionView.dataSource = self
+    collectionView.delegate = self
+
+    return collectionView
+  }()
   
-  let sympathyButton = idormCommunityButton("공감하기")
-  private let likeImageView = UIImageView(image: UIImage(named: "thumbsup_medium"))
-  private lazy var likeCountLabel = countLabel()
+  lazy var sympathyButton: idormCommunityButton = {
+    let btn = idormCommunityButton("공감하기")
+    
+    btn.configurationUpdateHandler = {
+      switch $0.state {
+      case .selected:
+        $0.configuration?.baseBackgroundColor = .idorm_blue
+        $0.configuration?.baseForegroundColor = .white
+      case .normal:
+        $0.configuration?.baseBackgroundColor = .idorm_gray_100
+        $0.configuration?.baseForegroundColor = .black
+      default:
+        break
+      }
+    }
+    btn.addTarget(self, action: #selector(didTapSympathyButton), for: .touchUpInside)
+    
+    return btn
+  }()
+  
+  let likeImageView = UIImageView(image: UIImage(named: "thumbsup_medium")?.withRenderingMode(.alwaysTemplate))
+  lazy var likeCountLabel = countLabel()
   private let commentImageView = UIImageView(image: UIImage(named: "speechBubble_double_medium"))
   private lazy var commentCountLabel = countLabel()
   private let pictureImageView = UIImageView(image: UIImage(named: "picture_medium"))
@@ -94,6 +116,9 @@ final class PostDetailHeader: UIView {
   private let separatorLine2 = UIView()
   lazy var orderByLastestButton = orderButton("최신순")
   lazy var orderByRegisterationButton = orderButton("등록순")
+  var sympathyButtonCompletion: ((Bool) -> Void)?
+  
+  private var photoUrls: [String] = []
   
   // MARK: - Initializer
   
@@ -127,12 +152,44 @@ final class PostDetailHeader: UIView {
     
     return btn
   }
+  
+  @objc
+  private func didTapSympathyButton() {
+    self.sympathyButtonCompletion?(sympathyButton.isSelected)
+  }
 }
 
 // MARK: - Setup
 
 extension PostDetailHeader: BaseView {
-  func configure(_ post: CommunityResponseModel.Post) {
+  func injectData(_ post: CommunityResponseModel.Post, isSympathy: Bool) {
+    self.photoUrls = post.photoUrls
+    
+    if photoUrls.isEmpty {
+      self.photoCollectionView.isHidden = true
+
+      self.separatorLine.snp.updateConstraints { make in
+        make.top.equalTo(self.photoCollectionView.snp.bottom).offset(-120)
+      }
+      
+    } else {
+      self.photoCollectionView.isHidden = false
+      
+      self.separatorLine.snp.updateConstraints { make in
+        make.top.equalTo(self.photoCollectionView.snp.bottom).offset(24)
+      }
+    }
+    
+    if isSympathy {
+      likeImageView.tintColor = .idorm_blue
+      likeCountLabel.textColor = .idorm_blue
+      sympathyButton.isSelected = true
+    } else {
+      likeImageView.tintColor = .idorm_gray_300
+      likeCountLabel.textColor = .idorm_gray_300
+      sympathyButton.isSelected = false
+    }
+    
     titleLabel.text = post.title
     contentsLabel.text = post.content
     nicknameLabel.text = post.nickname?.isAnonymous
@@ -166,6 +223,8 @@ extension PostDetailHeader: BaseView {
         make.bottom.equalToSuperview().inset(8)
       }
     }
+    
+    self.photoCollectionView.reloadData()
   }
   
   func setupStyles() {
@@ -190,7 +249,8 @@ extension PostDetailHeader: BaseView {
       pictureImageView, pictureCountLabel,
       separatorLine2,
       sympathyButton,
-      orderByRegisterationButton, orderByLastestButton
+      orderByRegisterationButton, orderByLastestButton,
+      photoCollectionView
     ].forEach {
       self.addSubview($0)
     }
@@ -218,9 +278,15 @@ extension PostDetailHeader: BaseView {
       make.leading.trailing.equalToSuperview().inset(24)
     }
     
-    separatorLine.snp.makeConstraints { make in
+    self.photoCollectionView.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
       make.top.equalTo(contentsLabel.snp.bottom).offset(24)
+      make.height.equalTo(120)
+    }
+    
+    separatorLine.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview()
+      make.top.equalTo(photoCollectionView.snp.bottom).offset(24)
       make.height.equalTo(1)
     }
     
@@ -277,16 +343,31 @@ extension PostDetailHeader: BaseView {
     }
   }
 }
-//
-//extension PostDetailHeader: UICollectionViewDataSource, UICollectionViewDelegate {
-//  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CommunityDetailHeaderCollectionViewCell.identifier, for: indexPath) as? CommunityDetailHeaderCollectionViewCell else { return UICollectionViewCell() }
-//    cell.configureUI()
-//
-//    return cell
-//  }
-//
-//  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//    return 10
-//  }
-//}
+
+// MARK: - SETUP COLLECTIONVIEW
+
+extension PostDetailHeader: UICollectionViewDataSource, UICollectionViewDelegate {
+  
+  // 셀 생성
+  func collectionView(
+    _ collectionView: UICollectionView,
+    cellForItemAt indexPath: IndexPath
+  ) -> UICollectionViewCell {
+    guard let cell = collectionView.dequeueReusableCell(
+      withReuseIdentifier: DetailPostPhotoCell.identifier,
+      for: indexPath
+    ) as? DetailPostPhotoCell else {
+      return UICollectionViewCell()
+    }
+    cell.injectData(photoUrls[indexPath.row])
+    
+    return cell
+  }
+
+  func collectionView(
+    _ collectionView: UICollectionView,
+    numberOfItemsInSection section: Int
+  ) -> Int {
+    return photoUrls.count
+  }
+}

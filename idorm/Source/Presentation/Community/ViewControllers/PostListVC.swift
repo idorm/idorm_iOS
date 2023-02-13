@@ -215,8 +215,8 @@ final class PostListViewController: BaseViewController, View {
       .map { $0.showsPostDetailVC }
       .filter { $0.0 }
       .bind(with: self) { owner, postId in
-        let postDetailVC = PostDetailViewController()
-        postDetailVC.reactor = PostDetailViewReactor(postId.1)
+        let postDetailVC = DetailPostViewController()
+        postDetailVC.reactor = DetailPostViewReactor(postId.1)
         
         postDetailVC.hidesBottomBarWhenPushed = true
         
