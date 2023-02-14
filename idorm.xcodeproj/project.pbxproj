@@ -100,6 +100,8 @@
 		E562611129977A6800D14020 /* Sequence+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E562611029977A6800D14020 /* Sequence+.swift */; };
 		E5626113299A500800D14020 /* DetailPostPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5626112299A500800D14020 /* DetailPostPhotoCell.swift */; };
 		E5626116299A789100D14020 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E5626115299A789100D14020 /* Kingfisher */; };
+		E5626118299B5A5D00D14020 /* BottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5626117299B5A5D00D14020 /* BottomSheet.swift */; };
+		E562611A299B5B5700D14020 /* BottomSheetVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5626119299B5B5700D14020 /* BottomSheetVC.swift */; };
 		E56342232878353100E93D17 /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56342222878353100E93D17 /* TabBarVC.swift */; };
 		E563422528784ED400E93D17 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E563422428784ED400E93D17 /* HomeVC.swift */; };
 		E5695C15295EFBD40083E48D /* LaunchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5695C14295EFBD40083E48D /* LaunchVC.swift */; };
@@ -284,6 +286,8 @@
 		E55DDAE829179DD900E62ECB /* NavigationAppearanceUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationAppearanceUtils.swift; sourceTree = "<group>"; };
 		E562611029977A6800D14020 /* Sequence+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+.swift"; sourceTree = "<group>"; };
 		E5626112299A500800D14020 /* DetailPostPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPostPhotoCell.swift; sourceTree = "<group>"; };
+		E5626117299B5A5D00D14020 /* BottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheet.swift; sourceTree = "<group>"; };
+		E5626119299B5B5700D14020 /* BottomSheetVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetVC.swift; sourceTree = "<group>"; };
 		E56342222878353100E93D17 /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
 		E563422428784ED400E93D17 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		E5695C14295EFBD40083E48D /* LaunchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchVC.swift; sourceTree = "<group>"; };
@@ -826,6 +830,7 @@
 		E575D37129544B5200B13530 /* BottomSheet */ = {
 			isa = PBXGroup;
 			children = (
+				E5626119299B5B5700D14020 /* BottomSheetVC.swift */,
 				E50FB5292972B34300E938B8 /* ViewControllers */,
 				E5B249BE2962742E00081609 /* Reactors */,
 			);
@@ -1079,6 +1084,7 @@
 				E5226D592911F36B0065C809 /* Gender.swift */,
 				E5226D5B2911F3760065C809 /* JoinPeriod.swift */,
 				E5226D5F291207AA0065C809 /* Habit.swift */,
+				E5626117299B5A5D00D14020 /* BottomSheet.swift */,
 				E52C27862989148B002429B5 /* Roommate.swift */,
 				E52C2788298917F8002429B5 /* Register.swift */,
 				E52C278A2989195D002429B5 /* Onboarding.swift */,
@@ -1349,6 +1355,7 @@
 				E58F96FB2884E85B00CC3C75 /* GalleryCell.swift in Sources */,
 				E53D1A462988A6A40074308B /* MailAPI+Path.swift in Sources */,
 				E5CFF71929835D0700E11D9A /* MatchingInfoResponseModel.swift in Sources */,
+				E562611A299B5B5700D14020 /* BottomSheetVC.swift in Sources */,
 				E5226D5A2911F36B0065C809 /* Gender.swift in Sources */,
 				E52233B6296D04A200C5DD07 /* ImageCell.swift in Sources */,
 				E5CFF71D29835DC300E11D9A /* MatchingRequestModel.swift in Sources */,
@@ -1397,6 +1404,7 @@
 				E547E3EA291CF669000D3A47 /* MatchingCardStringList.swift in Sources */,
 				E5CFF7262983668600E11D9A /* UIFactory.swift in Sources */,
 				E50FB5242971920B00E938B8 /* BaseView.swift in Sources */,
+				E5626118299B5A5D00D14020 /* BottomSheet.swift in Sources */,
 				E5D31BF1289AAE3D00510315 /* UIScrollView+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

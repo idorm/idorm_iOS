@@ -50,7 +50,9 @@ final class BottomSheetUtils {
     button.configurationUpdateHandler = BottomSheetUtils.getButtonUpdateHandler()
     return button
   }
-  
+}
+
+private extension BottomSheetUtils {
   static func getButtonUpdateHandler() -> UIButton.ConfigurationUpdateHandler {
     let handler: UIButton.ConfigurationUpdateHandler = { button in
       switch button.state {
