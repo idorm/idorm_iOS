@@ -64,13 +64,9 @@ final class DetailPostViewController: BaseViewController, View {
   // MARK: - SETUP
   
   override func setupStyles() {
-    view.backgroundColor = .white
-    bottomView.backgroundColor = .white
-    navigationItem.rightBarButtonItem = UIBarButtonItem(customView: optionButton)
-    
-    self.tableView.performBatchUpdates {
-      print(#function)
-    }
+    self.view.backgroundColor = .white
+    self.bottomView.backgroundColor = .white
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: optionButton)
   }
   
   override func setupLayouts() {

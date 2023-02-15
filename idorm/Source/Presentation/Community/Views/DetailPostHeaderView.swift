@@ -112,21 +112,24 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
   private lazy var commentCountLabel = countLabel()
   private let pictureImageView = UIImageView(image: UIImage(named: "picture_medium"))
   private lazy var pictureCountLabel = countLabel()
-  private let separatorLine = UIView()
-  private let separatorLine2 = UIView()
+  private let separatorLine = UIFactory.view(.idorm_gray_200)
+  private let separatorLine2 = UIFactory.view(.idorm_gray_200)
   lazy var orderByLastestButton = orderButton("최신순")
   lazy var orderByRegisterationButton = orderButton("등록순")
   var sympathyButtonCompletion: ((Bool) -> Void)?
+  private var post: CommunityResponseModel.Post!
+  private var isSympathy: Bool = false
+  private var isInitialized: Bool = false
+  private var bottomConstraints: Constraint?
+  private var photoConstarints: Constraint?
   
-  private var photoUrls: [String] = []
-  
-  // MARK: - Initializer
+  // MARK: - INITIALIZER
   
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
-    setupStyles()
-    setupLayouts()
-    setupConstraints()
+    self.setupStyles()
+    self.setupLayouts()
+    self.setupConstraints()
   }
   
   required init?(coder: NSCoder) {
@@ -143,7 +146,7 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
     return lb
   }
   
-  func orderButton(_ title: String) -> UIButton {
+  private func orderButton(_ title: String) -> UIButton {
     let btn = UIButton()
     btn.setTitle(title, for: .normal)
     btn.setTitleColor(.black, for: .selected)
@@ -152,6 +155,38 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
     
     return btn
   }
+  
+  private func updateUI() {
+    if self.post.commentsCount == 0 {
+      self.bottomConstraints?.update(inset: 0)
+      self.orderByLastestButton.isHidden = true
+      self.orderByRegisterationButton.isHidden = true
+    } else {
+      self.bottomConstraints?.update(inset: 32)
+      self.orderByLastestButton.isHidden = false
+      self.orderByRegisterationButton.isHidden = false
+    }
+    
+    if self.isSympathy {
+      self.likeImageView.tintColor = .idorm_blue
+      self.likeCountLabel.textColor = .idorm_blue
+      self.sympathyButton.isSelected = true
+    } else {
+      self.likeImageView.tintColor = .idorm_gray_300
+      self.likeCountLabel.textColor = .idorm_gray_300
+      self.sympathyButton.isSelected = false
+    }
+    
+    if self.post.photoUrls.isEmpty {
+      self.photoCollectionView.isHidden = true
+      self.photoConstarints?.update(offset: 24)
+    } else {
+      self.photoCollectionView.isHidden = false
+      self.photoConstarints?.update(offset: 168)
+    }
+  }
+  
+  // MARK: - SELECTORS
   
   @objc
   private func didTapSympathyButton() {
@@ -163,183 +198,129 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
 
 extension DetailPostHeaderView: BaseView {
   func injectData(_ post: CommunityResponseModel.Post, isSympathy: Bool) {
-    self.photoUrls = post.photoUrls
-    
-    if photoUrls.isEmpty {
-      self.photoCollectionView.isHidden = true
-
-      self.separatorLine.snp.updateConstraints { make in
-        make.top.equalTo(self.photoCollectionView.snp.bottom).offset(-120)
-      }
-      
-    } else {
-      self.photoCollectionView.isHidden = false
-      
-      self.separatorLine.snp.updateConstraints { make in
-        make.top.equalTo(self.photoCollectionView.snp.bottom).offset(24)
-      }
+    self.post = post
+    self.isSympathy = isSympathy
+    self.titleLabel.text = post.title
+    self.contentsLabel.text = post.content
+    self.nicknameLabel.text = post.nickname?.isAnonymous
+    self.timeLabel.text = TimeUtils.detailPost(post.createdAt)
+    self.likeCountLabel.text = "\(post.likesCount)"
+    self.commentCountLabel.text = "\(post.commentsCount)"
+    self.pictureCountLabel.text = "\(post.imagesCount)"
+    if !self.isInitialized {
+      self.isInitialized = true
     }
-    
-    if isSympathy {
-      likeImageView.tintColor = .idorm_blue
-      likeCountLabel.textColor = .idorm_blue
-      sympathyButton.isSelected = true
-    } else {
-      likeImageView.tintColor = .idorm_gray_300
-      likeCountLabel.textColor = .idorm_gray_300
-      sympathyButton.isSelected = false
-    }
-    
-    titleLabel.text = post.title
-    contentsLabel.text = post.content
-    nicknameLabel.text = post.nickname?.isAnonymous
-    timeLabel.text = TimeUtils.detailPost(post.createdAt)
-    likeCountLabel.text = "\(post.likesCount)"
-    commentCountLabel.text = "\(post.commentsCount)"
-    pictureCountLabel.text = "\(post.imagesCount)"
-    
-    switch post.comments.count {
-    case 0:
-      [
-        orderByLastestButton,
-        orderByRegisterationButton
-      ].forEach {
-        $0.isHidden = true
-      }
-      
-      orderByLastestButton.snp.updateConstraints { make in
-        make.bottom.equalToSuperview().inset(-38)
-      }
-      
-    default:
-      [
-        orderByLastestButton,
-        orderByRegisterationButton
-      ].forEach {
-        $0.isHidden = false
-      }
-
-      orderByLastestButton.snp.updateConstraints { make in
-        make.bottom.equalToSuperview().inset(8)
-      }
-    }
-    
+    self.updateUI()
     self.photoCollectionView.reloadData()
   }
   
   func setupStyles() {
-    [
-      separatorLine,
-      separatorLine2
-    ].forEach {
-      $0.backgroundColor = .idorm_gray_200
-    }
-    orderByRegisterationButton.isSelected = true
+    self.orderByRegisterationButton.isSelected = true
   }
   
   func setupLayouts() {
     [
-      myProfileImageView,
-      profileStack,
-      titleLabel,
-      contentsLabel,
-      separatorLine,
-      likeImageView, likeCountLabel,
-      commentImageView, commentCountLabel,
-      pictureImageView, pictureCountLabel,
-      separatorLine2,
-      sympathyButton,
-      orderByRegisterationButton, orderByLastestButton,
-      photoCollectionView
+      self.myProfileImageView,
+      self.profileStack,
+      self.titleLabel,
+      self.contentsLabel,
+      self.separatorLine,
+      self.likeImageView, self.likeCountLabel,
+      self.commentImageView, self.commentCountLabel,
+      self.pictureImageView, self.pictureCountLabel,
+      self.separatorLine2,
+      self.sympathyButton,
+      self.orderByRegisterationButton, self.orderByLastestButton,
+      self.photoCollectionView
     ].forEach {
       self.addSubview($0)
     }
   }
   
   func setupConstraints() {
-    myProfileImageView.snp.makeConstraints { make in
+    self.myProfileImageView.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(24)
       make.top.equalToSuperview().inset(16)
       make.width.height.equalTo(42)
     }
     
-    profileStack.snp.makeConstraints { make in
+    self.profileStack.snp.makeConstraints { make in
       make.leading.equalTo(myProfileImageView.snp.trailing).offset(10)
       make.centerY.equalTo(myProfileImageView)
     }
     
-    titleLabel.snp.makeConstraints { make in
+    self.titleLabel.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
       make.top.equalTo(myProfileImageView.snp.bottom).offset(12)
     }
     
-    contentsLabel.snp.makeConstraints { make in
-      make.top.equalTo(titleLabel.snp.bottom).offset(12)
+    self.contentsLabel.snp.makeConstraints { make in
+      make.top.equalTo(self.titleLabel.snp.bottom).offset(12)
       make.leading.trailing.equalToSuperview().inset(24)
     }
     
     self.photoCollectionView.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
-      make.top.equalTo(contentsLabel.snp.bottom).offset(24)
+      make.top.equalTo(self.contentsLabel.snp.bottom).offset(24)
       make.height.equalTo(120)
     }
     
-    separatorLine.snp.makeConstraints { make in
+    self.separatorLine.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
-      make.top.equalTo(photoCollectionView.snp.bottom).offset(24)
+      self.photoConstarints = make.top.equalTo(self.contentsLabel.snp.bottom).offset(24).constraint
       make.height.equalTo(1)
     }
     
-    likeImageView.snp.makeConstraints { make in
+    self.likeImageView.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(25.5)
       make.top.equalTo(separatorLine.snp.bottom).offset(25.5)
     }
     
-    likeCountLabel.snp.makeConstraints { make in
-      make.leading.equalTo(likeImageView.snp.trailing).offset(5.5)
-      make.centerY.equalTo(likeImageView)
+    self.likeCountLabel.snp.makeConstraints { make in
+      make.leading.equalTo(self.likeImageView.snp.trailing).offset(5.5)
+      make.centerY.equalTo(self.likeImageView)
     }
     
-    commentImageView.snp.makeConstraints { make in
-      make.leading.equalTo(likeCountLabel.snp.trailing).offset(13.5)
-      make.centerY.equalTo(likeImageView)
+    self.commentImageView.snp.makeConstraints { make in
+      make.leading.equalTo(self.likeCountLabel.snp.trailing).offset(13.5)
+      make.centerY.equalTo(self.likeImageView)
     }
     
-    commentCountLabel.snp.makeConstraints { make in
-      make.leading.equalTo(commentImageView.snp.trailing).offset(5.5)
-      make.centerY.equalTo(likeImageView)
+    self.commentCountLabel.snp.makeConstraints { make in
+      make.leading.equalTo(self.commentImageView.snp.trailing).offset(5.5)
+      make.centerY.equalTo(self.likeImageView)
     }
     
-    pictureImageView.snp.makeConstraints { make in
-      make.leading.equalTo(commentCountLabel.snp.trailing).offset(13.5)
-      make.centerY.equalTo(likeImageView)
+    self.pictureImageView.snp.makeConstraints { make in
+      make.leading.equalTo(self.commentCountLabel.snp.trailing).offset(13.5)
+      make.centerY.equalTo(self.likeImageView)
     }
     
-    pictureCountLabel.snp.makeConstraints { make in
+    self.pictureCountLabel.snp.makeConstraints { make in
       make.leading.equalTo(pictureImageView.snp.trailing).offset(5.5)
       make.centerY.equalTo(likeImageView)
     }
     
-    sympathyButton.snp.makeConstraints { make in
+    self.sympathyButton.snp.makeConstraints { make in
       make.trailing.equalToSuperview().inset(24)
       make.centerY.equalTo(likeImageView)
     }
     
-    separatorLine2.snp.makeConstraints { make in
+    self.separatorLine2.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
-      make.top.equalTo(sympathyButton.snp.bottom).offset(12)
+      make.top.equalTo(self.sympathyButton.snp.bottom).offset(12)
+      self.bottomConstraints = make.bottom.equalToSuperview().inset(34).constraint
       make.height.equalTo(1)
     }
     
-    orderByRegisterationButton.snp.makeConstraints { make in
+    self.orderByRegisterationButton.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(24)
       make.top.equalTo(separatorLine2.snp.bottom).offset(8)
     }
     
-    orderByLastestButton.snp.makeConstraints { make in
+    self.orderByLastestButton.snp.makeConstraints { make in
       make.leading.equalTo(orderByRegisterationButton.snp.trailing).offset(12)
       make.centerY.equalTo(orderByRegisterationButton)
-      make.bottom.equalToSuperview().inset(8)
     }
   }
 }
@@ -359,15 +340,16 @@ extension DetailPostHeaderView: UICollectionViewDataSource, UICollectionViewDele
     ) as? DetailPostPhotoCell else {
       return UICollectionViewCell()
     }
-    cell.injectData(photoUrls[indexPath.row])
+    cell.injectData(self.post.photoUrls[indexPath.row])
     
     return cell
   }
 
+  // 셀 갯수
   func collectionView(
     _ collectionView: UICollectionView,
     numberOfItemsInSection section: Int
   ) -> Int {
-    return photoUrls.count
+    return self.post.photoUrls.count
   }
 }
