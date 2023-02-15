@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class PostDetailHeader: UIView {
+final class DetailPostHeaderView: UITableViewHeaderFooterView {
   
   // MARK: - Properties
   
@@ -122,8 +122,8 @@ final class PostDetailHeader: UIView {
   
   // MARK: - Initializer
   
-  override init(frame: CGRect) {
-    super.init(frame: .zero)
+  override init(reuseIdentifier: String?) {
+    super.init(reuseIdentifier: reuseIdentifier)
     setupStyles()
     setupLayouts()
     setupConstraints()
@@ -161,7 +161,7 @@ final class PostDetailHeader: UIView {
 
 // MARK: - Setup
 
-extension PostDetailHeader: BaseView {
+extension DetailPostHeaderView: BaseView {
   func injectData(_ post: CommunityResponseModel.Post, isSympathy: Bool) {
     self.photoUrls = post.photoUrls
     
@@ -346,7 +346,7 @@ extension PostDetailHeader: BaseView {
 
 // MARK: - SETUP COLLECTIONVIEW
 
-extension PostDetailHeader: UICollectionViewDataSource, UICollectionViewDelegate {
+extension DetailPostHeaderView: UICollectionViewDataSource, UICollectionViewDelegate {
   
   // 셀 생성
   func collectionView(

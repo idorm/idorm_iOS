@@ -30,6 +30,10 @@ final class DetailPostViewController: BaseViewController, View {
       DetailPostEmptyCell.self,
       forCellReuseIdentifier: DetailPostEmptyCell.identifier
     )
+    tableView.register(
+      DetailPostHeaderView.self,
+      forHeaderFooterViewReuseIdentifier: DetailPostHeaderView.identifier
+    )
     tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     tableView.allowsSelection = false
     tableView.separatorStyle = .none
@@ -55,7 +59,7 @@ final class DetailPostViewController: BaseViewController, View {
   
   private let commentView = CommentView()
   private let bottomView = UIView()
-  private var header: PostDetailHeader!
+  private var header: DetailPostHeaderView!
   
   // MARK: - SETUP
   
@@ -351,17 +355,15 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
   ) -> UIView? {
     guard
       let reactor = reactor,
-      let currentPost = reactor.currentState.currentPost
+      let currentPost = reactor.currentState.currentPost,
+      let header = tableView.dequeueReusableHeaderFooterView(
+        withIdentifier: DetailPostHeaderView.identifier
+      ) as? DetailPostHeaderView
     else {
       return UIView()
     }
     
-    let header = PostDetailHeader()
     header.injectData(currentPost, isSympathy: reactor.currentState.isSympathy)
-
-    if self.header == nil {
-      self.header = header
-    }
     
     header.sympathyButtonCompletion = { [weak self] in
       self?.presentSympathyAlert($0)
