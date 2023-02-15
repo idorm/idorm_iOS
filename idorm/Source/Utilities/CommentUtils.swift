@@ -12,7 +12,7 @@ enum CommentUtils {
   ) -> [OrderedComment] {
     var orderedComments = [OrderedComment]()
     
-    for (index, comment) in comments.enumerated() {
+    for comment in comments {
       var orderedComment = OrderedComment(
         content: comment.content,
         memberId: comment.memberId,
@@ -22,13 +22,11 @@ enum CommentUtils {
         profileUrl: comment.profileUrl,
         createdAt: comment.createdAt,
         isLast: false,
-        state: .normal
+        state: .normal(isRemoved: false)
       )
       
-      orderedComments.append(orderedComment)
-      
       if comment.subComments.isNotEmpty {
-        var subComments: [OrderedComment] = []
+        var subComments = [OrderedComment]()
         subComments = comment.subComments.map {
           return OrderedComment(
             content: $0.content,
@@ -43,14 +41,47 @@ enum CommentUtils {
           )
         }
         
-        subComments[subComments.startIndex].state = .firstReply
-        subComments[subComments.endIndex - 1].isLast = true
-        orderedComments.append(contentsOf: subComments)
+        switch comment.isDeleted {
+        case true:
+          // 대댓글들이 모두 삭제된 경우
+          if comment.subComments.allSatisfy({ $0.isDeleted == true }) {
+            break
+          } else {
+            orderedComment.state = .normal(isRemoved: true)
+            orderedComments.append(orderedComment)
+            orderedComments.append(contentsOf: arrangeSubComments(subComments))
+          }
+        case false:
+          orderedComments.append(orderedComment)
+          orderedComments.append(contentsOf: arrangeSubComments(subComments))
+        }
       } else {
-        orderedComments[index].isLast = true
+        orderedComment.isLast = true
+        if !orderedComment.isDeleted {
+          orderedComments.append(orderedComment)
+        }
       }
     }
-
+    
     return orderedComments
+  }
+  
+  static func arrangeSubComments(
+    _ subComments: [OrderedComment]
+  ) -> [OrderedComment] {
+    var newComments = [OrderedComment]()
+    
+    subComments.indices.forEach {
+      if !subComments[$0].isDeleted {
+        newComments.append(subComments[$0])
+      }
+    }
+    
+    if newComments.isNotEmpty {
+      newComments[newComments.startIndex].state = .firstReply
+      newComments[newComments.endIndex - 1].isLast = true
+    }
+    
+    return newComments
   }
 }

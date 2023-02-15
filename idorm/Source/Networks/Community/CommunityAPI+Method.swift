@@ -21,6 +21,9 @@ extension CommunityAPI {
       case true: return .put
       case false: return .delete
       }
+      
+    case .deleteComment:
+      return .delete
     }
   }
 }

@@ -582,7 +582,6 @@
 		E54B3E2428C6E25C0062EF7E /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				E556AC5A296C22BE00464FBC /* App */,
 				E56DF4CC2894063100E85B10 /* Common */,
 				E5084957293CA74B00F79823 /* Popup */,
 				E575D37129544B5200B13530 /* BottomSheet */,
@@ -598,13 +597,14 @@
 			path = Presentation;
 			sourceTree = "<group>";
 		};
-		E556AC5A296C22BE00464FBC /* App */ = {
+		E562611B299B655300D14020 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				E5695C14295EFBD40083E48D /* LaunchVC.swift */,
 				E56342222878353100E93D17 /* TabBarVC.swift */,
+				E5626119299B5B5700D14020 /* BottomSheetVC.swift */,
 			);
-			path = App;
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		E56DF4B02893CE4F00E85B10 /* Community */ = {
@@ -644,12 +644,12 @@
 			children = (
 				E5626112299A500800D14020 /* DetailPostPhotoCell.swift */,
 				E5CFF6FC29826F8E00E11D9A /* DetailPostEmptyCell.swift */,
+				E5290F0D288867E50004B8E6 /* CommentCell.swift */,
 				E5066429296E6B9B00B581E1 /* PostCell.swift */,
 				E506642B296E6BAA00B581E1 /* PopularPostCell.swift */,
 				E52233B5296D04A200C5DD07 /* ImageCell.swift */,
 				E50FB5302972E41600E938B8 /* LoadingCell.swift */,
 				E58F96FA2884E85B00CC3C75 /* GalleryCell.swift */,
-				E5290F0D288867E50004B8E6 /* CommentCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -783,6 +783,7 @@
 		E56DF4CC2894063100E85B10 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				E562611B299B655300D14020 /* ViewControllers */,
 				E5E8A3E12895215100A48A91 /* Views */,
 				E5294FF1292778EC004D408C /* Models */,
 			);
@@ -830,7 +831,6 @@
 		E575D37129544B5200B13530 /* BottomSheet */ = {
 			isa = PBXGroup;
 			children = (
-				E5626119299B5B5700D14020 /* BottomSheetVC.swift */,
 				E50FB5292972B34300E938B8 /* ViewControllers */,
 				E5B249BE2962742E00081609 /* Reactors */,
 			);

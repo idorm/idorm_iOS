@@ -166,11 +166,10 @@ extension PostListViewReactor {
       .asObservable()
       .retry()
       .map(ResponseModel<[CommunityResponseModel.Posts]>.self)
-      .debug()
       .flatMap { responseModel -> Observable<Mutation> in
         let posts = responseModel.data
         
-        if posts.count < 20 {
+        if posts.count < 10 {
           return .concat([
             .just(.setBlockRequest(true)),
             .just(.appendPosts(posts))

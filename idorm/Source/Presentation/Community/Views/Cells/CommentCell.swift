@@ -11,7 +11,7 @@ import SnapKit
 
 final class CommentCell: UITableViewCell {
   
-  // MARK: - Properties
+  // MARK: - PROPERTIES
   
   static let identifier = "CommentCell"
   
@@ -59,163 +59,166 @@ final class CommentCell: UITableViewCell {
     font: .idormFont(.medium, size: 14)
   )
   
-  private lazy var replyButton: idormCommunityButton = {
-    let btn = idormCommunityButton("답글 쓰기")
-    btn.addTarget(self, action: #selector(didTapReplyButton), for: .touchUpInside)
-    
-    return btn
-  }()
-  
+  private let replyButton = idormCommunityButton("답글 쓰기")
   private let dividerLine = UIFactory.view(.idorm_gray_200)
   private let replyImageView = UIImageView(image: UIImage(named: "corner_down_right"))
-  private var comment: OrderedComment?
+  
   var replyButtonCompletion: ((Int) -> Void)?
+  var optionButtonCompletion: ((Int) -> Void)?
+
+  private var comment: OrderedComment!
+  private var isInitialized: Bool = false
+  private var topConstraints: Constraint?
+  private var bottomConstarints: Constraint?
   
-  // MARK: - Initializer
-  
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
-    setupStyles()
-    setupLayouts()
-    setupConstraints()
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
-  // MARK: - Selectors
+  // MARK: - SELECTORS
   
   @objc
   private func didTapReplyButton() {
     guard let commentId = self.comment?.commentId else { return }
     self.replyButtonCompletion?(commentId)
   }
+  
+  @objc
+  private func didTapOptionButton() {
+    guard let commentId = self.comment?.commentId else { return }
+    self.optionButtonCompletion?(commentId)
+  }
+  
+  // MARK: - HELPERS
+  
+  private func registerButtonTargets() {
+    self.replyButton.addTarget(self, action: #selector(didTapReplyButton), for: .touchUpInside)
+    self.optionButton.addTarget(self, action: #selector(didTapOptionButton), for: .touchUpInside)
+  }
 }
 
-// MARK: - Setup
+// MARK: - SETUP
 
 extension CommentCell: BaseView {
   func inject(_ comment: OrderedComment) {
     self.comment = comment
-    nicknameLabel.text = comment.nickname
-    timeLabel.text = TimeUtils.detailPost(comment.createdAt)
-    contentsLabel.text = comment.content
-    replyImageView.isHidden = true
-    replyButton.isHidden = true
-    
-    if comment.isLast {
-      dividerLine.isHidden = false
-    } else {
-      dividerLine.isHidden = true
+    self.nicknameLabel.text = comment.nickname
+    self.timeLabel.text = TimeUtils.detailPost(comment.createdAt)
+    self.contentsLabel.text = comment.content
+
+    self.setupStyles()
+    self.setupLayouts()
+    if !self.isInitialized {
+      self.isInitialized = true
+      self.setupConstraints()
+      self.registerButtonTargets()
     }
     
     switch comment.state {
-    case .normal:
-      contentView.backgroundColor = .white
-      replyButton.isHidden = false
-      
-      replyImageView.snp.updateConstraints { make in
-        make.top.equalToSuperview().inset(-24)
+    case .normal(let isRemoved):
+      if isRemoved {
+        self.topConstraints?.update(inset: 16)
+        self.bottomConstarints?.update(inset: 16)
+      } else {
+        self.topConstraints?.update(inset: 16)
+        self.bottomConstarints?.update(inset: 56)
       }
-      
-      replyButton.snp.updateConstraints { make in
-        make.top.equalTo(contentsLabel.snp.bottom).offset(10)
-      }
-      
-      optionButton.snp.updateConstraints { make in
-        make.top.equalToSuperview().inset(16)
-      }
-      
     case .reply:
-      contentView.backgroundColor = .idorm_matchingScreen
-      
-      replyButton.snp.updateConstraints { make in
-        make.top.equalTo(contentsLabel.snp.bottom).offset(-30)
-      }
-      
-      replyImageView.snp.updateConstraints { make in
-        make.top.equalToSuperview().inset(-24)
-      }
-      
-      optionButton.snp.updateConstraints { make in
-        make.top.equalToSuperview().inset(16)
-      }
-      
+      self.topConstraints?.update(inset: 16)
+      self.bottomConstarints?.update(inset: 16)
     case .firstReply:
-      contentView.backgroundColor = .idorm_matchingScreen
-      replyImageView.isHidden = false
-      
-      replyButton.snp.updateConstraints { make in
-        make.top.equalTo(contentsLabel.snp.bottom).offset(-30)
-      }
-      
-      replyImageView.snp.updateConstraints { make in
-        make.top.equalToSuperview().inset(16)
-      }
-      
-      optionButton.snp.updateConstraints { make in
-        make.top.equalToSuperview().inset(56)
-      }
+      self.topConstraints?.update(inset: 56)
+      self.bottomConstarints?.update(inset: 16)
     }
   }
-  
+
   func setupStyles() {
     contentView.backgroundColor = .white
+    self.replyImageView.isHidden = true
+    self.replyButton.isHidden = true
+    self.contentsLabel.numberOfLines = 0
+    
+    if self.comment.isLast {
+      self.dividerLine.isHidden = false
+    } else {
+      self.dividerLine.isHidden = true
+    }
+
+    switch self.comment.state {
+    case .firstReply:
+      self.replyImageView.isHidden = false
+      self.replyButton.isHidden = true
+      self.nicknameLabel.textColor = .idorm_gray_400
+      self.contentView.backgroundColor = .idorm_matchingScreen
+    case .reply:
+      self.replyImageView.isHidden = true
+      self.replyButton.isHidden = true
+      self.nicknameLabel.textColor = .idorm_gray_400
+      self.contentView.backgroundColor = .idorm_matchingScreen
+    case .normal(let isRemoved):
+      if isRemoved {
+        self.replyButton.isHidden = true
+        self.replyImageView.isHidden = true
+        self.nicknameLabel.text = "삭제"
+        self.nicknameLabel.textColor = .idorm_gray_300
+        self.contentsLabel.text = "삭제된 댓글입니다."
+        self.contentView.backgroundColor = .white
+      } else {
+        self.replyButton.isHidden = false
+        self.replyImageView.isHidden = true
+        self.nicknameLabel.textColor = .idorm_gray_400
+        self.contentView.backgroundColor = .white
+      }
+    }
   }
   
   func setupLayouts() {
     [
-      replyImageView,
-      profileImageView,
-      profileStack,
-      optionButton,
-      contentsLabel,
-      replyButton,
-      dividerLine
+      self.replyImageView,
+      self.profileImageView,
+      self.profileStack,
+      self.optionButton,
+      self.contentsLabel,
+      self.replyButton,
+      self.dividerLine
     ].forEach {
-      contentView.addSubview($0)
+      self.contentView.addSubview($0)
     }
   }
   
   func setupConstraints() {
-    replyImageView.snp.makeConstraints { make in
+    self.replyImageView.snp.makeConstraints { make in
       make.top.equalToSuperview().inset(16)
       make.leading.equalToSuperview().inset(24)
     }
     
-    profileImageView.snp.makeConstraints { make in
+    self.profileImageView.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(24)
-      make.top.equalTo(replyImageView.snp.bottom).offset(16)
+      self.topConstraints = make.top.equalToSuperview().inset(56).constraint
       make.width.height.equalTo(42)
     }
     
-    profileStack.snp.makeConstraints { make in
+    self.profileStack.snp.makeConstraints { make in
       make.centerY.equalTo(profileImageView)
       make.leading.equalTo(profileImageView.snp.trailing).offset(10)
       make.trailing.equalTo(optionButton.snp.leading).offset(-10)
     }
     
-    contentsLabel.snp.makeConstraints { make in
+    self.contentsLabel.snp.makeConstraints { make in
       make.leading.equalTo(profileStack.snp.leading)
       make.top.equalTo(profileStack.snp.bottom).offset(8)
       make.trailing.equalToSuperview().inset(24)
+      self.bottomConstarints = make.bottom.equalToSuperview().inset(56).constraint
     }
     
-    replyButton.snp.makeConstraints { make in
+    self.replyButton.snp.makeConstraints { make in
       make.top.equalTo(contentsLabel.snp.bottom).offset(10)
       make.leading.equalTo(profileStack.snp.leading)
     }
     
-    optionButton.snp.makeConstraints { make in
-      make.top.equalToSuperview().inset(16)
+    self.optionButton.snp.makeConstraints { make in
+      make.top.equalTo(self.profileImageView.snp.top)
       make.trailing.equalToSuperview().inset(14)
     }
     
-    dividerLine.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview()
-      make.top.equalTo(replyButton.snp.bottom).offset(16)
-      make.bottom.equalToSuperview()
+    self.dividerLine.snp.makeConstraints { make in
+      make.bottom.leading.trailing.equalToSuperview()
       make.height.equalTo(1)
     }
   }

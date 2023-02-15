@@ -20,6 +20,7 @@ final class DetailPostViewReactor: Reactor {
     case didTapBackground
     case didTapAnonymousButton(Bool)
     case didTapSympathyButton(Bool)
+    case didTapDeleteCommentButton(commentId: Int)
   }
   
   enum Mutation {
@@ -32,6 +33,8 @@ final class DetailPostViewReactor: Reactor {
     case setFocusedComment(Int?)
     case setCellBackgroundColor(Bool, Int)
     case setAlert(Bool, String)
+    case setReload(Bool)
+    case setEndEditing(Bool)
   }
   
   struct State {
@@ -44,6 +47,8 @@ final class DetailPostViewReactor: Reactor {
     var isAnonymous: Bool = true
     var currentFocusedComment: Int?
     var currentCellBackgroundColor: (Bool, Int) = (false, 0)
+    var reloadData: Bool = false
+    var endEditing: Bool = false
   }
   
   var initialState: State = State()
@@ -65,9 +70,14 @@ final class DetailPostViewReactor: Reactor {
       return .just(.setComment(comment))
       
     case .didTapSendButton:
+      let indexPath = currentState.currentCellBackgroundColor.1
       return .concat([
         .just(.setLoading(true)),
-        saveComment(currentState.currentFocusedComment)
+        .just(.setCellBackgroundColor(false, indexPath)),
+        .just(.setFocusedComment(nil)),
+        saveComment(currentState.currentFocusedComment),
+        .just(.setEndEditing(true)),
+        .just(.setEndEditing(false))
       ])
       
     case let .didTapReplyButton(indexPath, parentId):
@@ -77,8 +87,9 @@ final class DetailPostViewReactor: Reactor {
       ])
       
     case .didTapBackground:
+      let indexPath = currentState.currentCellBackgroundColor.1
       return .concat([
-        .just(.setCellBackgroundColor(false, 0)),
+        .just(.setCellBackgroundColor(false, indexPath)),
         .just(.setFocusedComment(nil)),
       ])
       .subscribe(on: MainScheduler.asyncInstance)
@@ -109,6 +120,30 @@ final class DetailPostViewReactor: Reactor {
               return .empty()
             }
           }
+      ])
+      
+    case .didTapDeleteCommentButton(let commentId):
+      return .concat([
+        .just(.setLoading(true)),
+        CommunityAPI.provider.rx.request(
+          .deleteComment(postId: postId, commentId: commentId)
+        )
+        .asObservable()
+        .withUnretained(self)
+        .flatMap { owner, response -> Observable<Mutation> in
+          switch response.statusCode {
+          case 200..<300:
+            return owner.retrievePost()
+          case 404:
+            return .concat([
+              .just(.setLoading(false)),
+              .just(.setAlert(true, "이미 삭제된 댓글입니다.")),
+              .just(.setAlert(false, ""))
+            ])
+          default:
+            return .empty()
+          }
+        }
       ])
     }
   }
@@ -143,6 +178,12 @@ final class DetailPostViewReactor: Reactor {
       
     case let .setAlert(isBlocked, title):
       newState.isPresentedAlert = (isBlocked, title)
+      
+    case .setReload(let state):
+      newState.reloadData = state
+      
+    case .setEndEditing(let state):
+      newState.endEditing = state
     }
     
     return newState
@@ -169,7 +210,9 @@ private extension DetailPostViewReactor {
           return .concat([
             .just(.setLoading(false)),
             .just(.setComments(orderedComments)),
-            .just(.setPost(post))
+            .just(.setPost(post)),
+            .just(.setReload(true)),
+            .just(.setReload(false))
           ])
 
         default:

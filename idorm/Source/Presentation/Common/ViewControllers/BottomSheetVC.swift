@@ -61,6 +61,7 @@ final class BottomSheetViewController: BaseViewController {
     self.deleteCommentButton.addTarget(self, action: #selector(didTapDeleteCommentButton), for: .touchUpInside)
     self.shareButton.addTarget(self, action: #selector(didTapShareButton), for: .touchUpInside)
     self.editPostButton.addTarget(self, action: #selector(didTapEditPostButton), for: .touchUpInside)
+    self.exitButton.addTarget(self, action: #selector(didTapExitButton), for: .touchUpInside)
   }
   
   override func setupStyles() {
@@ -182,41 +183,54 @@ final class BottomSheetViewController: BaseViewController {
   @objc
   private func didTapDorm1Button() {
     self.dormButtonCompletion?(.no1)
+    self.dismiss(animated: true)
   }
   
   @objc
   private func didTapDorm2Button() {
     self.dormButtonCompletion?(.no2)
+    self.dismiss(animated: true)
   }
   
   @objc
   private func didTapDorm3Button() {
     self.dormButtonCompletion?(.no3)
+    self.dismiss(animated: true)
   }
 
   @objc
   private func didTapReportButton() {
     self.reportButtonCompletion?()
+    self.dismiss(animated: true)
   }
   
   @objc
   private func didTapDeletePostButton() {
     self.deleteButtonCompletion?()
+    self.dismiss(animated: true)
   }
   
   @objc
   private func didTapDeleteCommentButton() {
     self.deleteButtonCompletion?()
+    self.dismiss(animated: true)
   }
 
   @objc
   private func didTapShareButton() {
     self.shareButtonCompletion?()
+    self.dismiss(animated: true)
   }
   
   @objc
   private func didTapEditPostButton() {
     self.editButtonCompletion?()
+    self.dismiss(animated: true)
+  }
+  
+  @objc
+  private func didTapExitButton() {
+    self.dismiss(animated: true)
   }
 }
 

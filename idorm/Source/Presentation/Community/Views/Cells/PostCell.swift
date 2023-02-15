@@ -192,7 +192,7 @@ final class PostCell: UICollectionViewCell {
   
   // MARK: - Helpers
   
-  func configure(_ post: CommunityResponseModel.Posts) {
+  func injectData(_ post: CommunityResponseModel.Posts) {
     titleLb.text = post.title
     contentLb.text = post.content
     nicknameLb.text = post.nickname

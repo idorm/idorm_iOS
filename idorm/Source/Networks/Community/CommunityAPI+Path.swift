@@ -27,6 +27,9 @@ extension CommunityAPI {
       
     case .editPostSympathy(let postId, _):
       return "/member/post/\(postId)/like"
+      
+    case let .deleteComment(postId, commentId):
+      return "/member/post/\(postId)/comment/\(commentId)"
     }
   }
 }

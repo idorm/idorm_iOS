@@ -11,12 +11,12 @@ struct OrderedComment {
   enum CommentState {
     case reply
     case firstReply
-    case normal
+    case normal(isRemoved: Bool)
   }
   let content: String
   let memberId: Int
   let commentId: Int
-  let isDeleted: Bool
+  var isDeleted: Bool
   let nickname: String?
   let profileUrl: String?
   let createdAt: String

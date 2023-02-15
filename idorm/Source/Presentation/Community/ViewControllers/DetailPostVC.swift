@@ -63,6 +63,10 @@ final class DetailPostViewController: BaseViewController, View {
     view.backgroundColor = .white
     bottomView.backgroundColor = .white
     navigationItem.rightBarButtonItem = UIBarButtonItem(customView: optionButton)
+    
+    self.tableView.performBatchUpdates {
+      print(#function)
+    }
   }
   
   override func setupLayouts() {
@@ -165,12 +169,10 @@ final class DetailPostViewController: BaseViewController, View {
     
     // 리로딩
     reactor.state
-      .map { $0.currentPost }
-      .distinctUntilChanged()
-      .filterNil()
-      .bind(with: self) { owner, _ in
-        owner.tableView.reloadData()
-      }
+      .map { $0.reloadData }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { $0.0.tableView.reloadData() }
       .disposed(by: disposeBag)
     
     // 로딩 인디케이터 제어
@@ -214,12 +216,13 @@ final class DetailPostViewController: BaseViewController, View {
         $0.present(alert, animated: true)
       }
       .disposed(by: disposeBag)
-  }
-  
-  // MARK: - BIND HEADER
-  
-  func bindHeader() {
-    guard let reactor = reactor else { return }
+    
+    // 키보드 종료
+    reactor.state
+      .map { $0.endEditing }
+      .filter { $0 }
+      .bind(with: self) { $0.view.endEditing($1) }
+      .disposed(by: disposeBag)
   }
   
   // MARK: - HELPERS
@@ -253,7 +256,7 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
   ) -> UITableViewCell {
     guard let reactor = reactor else { return UITableViewCell() }
     
-    switch reactor.currentState.currentPost?.comments.count ?? 0 {
+    switch reactor.currentState.currentPost?.commentsCount ?? 0 {
     case 0:
       guard let cell = tableView.dequeueReusableCell(
         withIdentifier: DetailPostEmptyCell.identifier,
@@ -274,6 +277,7 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
       let orderedComment = reactor.currentState.currentComments[indexPath.row]
       cell.inject(orderedComment)
       
+      // 답글 쓰기 버튼
       cell.replyButtonCompletion = { [weak self] parentId in
         let alert = UIAlertController(
           title: "대댓글을 작성하시겠습니까?",
@@ -296,6 +300,29 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
         ))
         
         self?.present(alert, animated: true)
+      }
+      
+      // 댓글 옵션 버튼 클릭
+      cell.optionButtonCompletion = { [weak self] commentId in
+        let bottomSheet: BottomSheetViewController
+        
+        if orderedComment.commentId == commentId {
+          bottomSheet = BottomSheetViewController(.myComment)
+        } else {
+          bottomSheet = BottomSheetViewController(.comment)
+        }
+        
+        self?.presentPanModal(bottomSheet)
+        
+        // 댓글 삭제 버튼
+        bottomSheet.deleteButtonCompletion = {
+          self?.reactor?.action.onNext(.didTapDeleteCommentButton(commentId: commentId))
+        }
+        
+        // 신고하기 버튼
+        bottomSheet.reportButtonCompletion = {
+          
+        }
       }
       
       return cell
@@ -322,9 +349,11 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
     _ tableView: UITableView,
     viewForHeaderInSection section: Int
   ) -> UIView? {
-    guard let reactor = reactor,
-          let currentPost = reactor.currentState.currentPost else {
-      return PostDetailHeader()
+    guard
+      let reactor = reactor,
+      let currentPost = reactor.currentState.currentPost
+    else {
+      return UIView()
     }
     
     let header = PostDetailHeader()
@@ -332,7 +361,6 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
 
     if self.header == nil {
       self.header = header
-      self.bindHeader()
     }
     
     header.sympathyButtonCompletion = { [weak self] in
@@ -349,7 +377,7 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
   ) -> CGFloat {
     guard let post = reactor?.currentState.currentPost else { return 0 }
 
-    switch post.comments.count {
+    switch post.commentsCount {
     case 0:
       return 143
     default:

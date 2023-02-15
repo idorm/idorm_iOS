@@ -286,7 +286,7 @@ extension PostListViewController: UICollectionViewDataSource, UICollectionViewDe
       popularPostCell.configure(topPosts[indexPath.row])
       return popularPostCell
     default:
-      postCell.configure(posts[indexPath.row])
+      postCell.injectData(posts[indexPath.row])
       return postCell
     }
   }
@@ -319,16 +319,16 @@ extension PostListViewController: UICollectionViewDataSource, UICollectionViewDe
     forItemAt indexPath: IndexPath
   ) {
     guard let reactor = reactor else { return }
-    guard reactor.currentState.currentPosts.count >= 20 else { return }
+    guard reactor.currentState.currentPosts.count >= 10 else { return }
 
     switch indexPath.section {
     case Section.common.rawValue:
-      if indexPath.row == reactor.currentState.currentPosts.count - 5 &&
+      if indexPath.row == reactor.currentState.currentPosts.count - 3 &&
           !reactor.currentState.isBlockedRequest &&
           !reactor.currentState.isPagination {
         reactor.action.onNext(.fetchMorePosts)
       }
-
+      
     default:
       return
     }

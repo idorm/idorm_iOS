@@ -45,6 +45,9 @@ extension CommunityAPI {
       
     case .editPostSympathy:
       return .requestPlain
+      
+    case .deleteComment:
+      return .requestPlain
     }
   }
 }
