@@ -21,6 +21,8 @@ final class DetailPostViewReactor: Reactor {
     case didTapAnonymousButton(Bool)
     case didTapSympathyButton(Bool)
     case didTapDeleteCommentButton(commentId: Int)
+    case pullToRefresh
+    case didTapDeletePostButton
   }
   
   enum Mutation {
@@ -35,6 +37,8 @@ final class DetailPostViewReactor: Reactor {
     case setAlert(Bool, String)
     case setReload(Bool)
     case setEndEditing(Bool)
+    case setEndRefresh(Bool)
+    case setPopVC(Bool)
   }
   
   struct State {
@@ -49,6 +53,8 @@ final class DetailPostViewReactor: Reactor {
     var currentCellBackgroundColor: (Bool, Int) = (false, 0)
     var reloadData: Bool = false
     var endEditing: Bool = false
+    var endRefresh: Bool = false
+    var popVC: Bool = false
   }
   
   var initialState: State = State()
@@ -145,6 +151,28 @@ final class DetailPostViewReactor: Reactor {
           }
         }
       ])
+      
+    case .pullToRefresh:
+      return retrievePost()
+      
+    case .didTapDeletePostButton:
+      return .concat([
+        .just(.setLoading(true)),
+        CommunityAPI.provider.rx.request(.deletePost(postId: postId))
+          .asObservable()
+          .flatMap { response -> Observable<Mutation> in
+            switch response.statusCode {
+            case 200..<300:
+              return .concat([
+                .just(.setLoading(false)),
+                .just(.setPopVC(true)),
+                .just(.setPopVC(false))
+              ])
+            default:
+              return .empty()
+            }
+          }
+      ])
     }
   }
   
@@ -184,6 +212,12 @@ final class DetailPostViewReactor: Reactor {
       
     case .setEndEditing(let state):
       newState.endEditing = state
+      
+    case .setEndRefresh(let state):
+      newState.endRefresh = state
+      
+    case .setPopVC(let state):
+      newState.popVC = state
     }
     
     return newState
@@ -208,9 +242,12 @@ private extension DetailPostViewReactor {
           let orderedComments = CommentUtils.newestOrderedComments(post.comments)
           
           return .concat([
+            .just(.setEndRefresh(true)),
+            .just(.setEndRefresh(false)),
             .just(.setLoading(false)),
             .just(.setComments(orderedComments)),
             .just(.setPost(post)),
+            .just(.setSympathy(post.isLiked)),
             .just(.setReload(true)),
             .just(.setReload(false))
           ])

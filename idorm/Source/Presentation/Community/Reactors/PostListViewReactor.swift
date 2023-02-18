@@ -20,6 +20,7 @@ final class PostListViewReactor: Reactor {
     case pullToRefresh
     case fetchMorePosts
     case postingCompletion
+    case fetchNewPosts
   }
   
   enum Mutation {
@@ -104,6 +105,13 @@ final class PostListViewReactor: Reactor {
       ])
       
     case .postingCompletion:
+      return .concat([
+        .just(.setLoading(true)),
+        .just(.resetPosts),
+        retrieveTopPosts(currentState.currentDorm)
+      ])
+      
+    case .fetchNewPosts:
       return .concat([
         .just(.setLoading(true)),
         .just(.resetPosts),

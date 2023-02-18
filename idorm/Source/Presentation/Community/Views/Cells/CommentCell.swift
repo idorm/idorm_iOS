@@ -96,7 +96,7 @@ final class CommentCell: UITableViewCell {
 // MARK: - SETUP
 
 extension CommentCell: BaseView {
-  func inject(_ comment: OrderedComment) {
+  func injectComment(_ comment: OrderedComment) {
     self.comment = comment
     self.nicknameLabel.text = comment.nickname
     self.timeLabel.text = TimeUtils.detailPost(comment.createdAt)

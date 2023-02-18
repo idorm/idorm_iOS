@@ -17,7 +17,7 @@ import PanModal
 
 final class DetailPostViewController: BaseViewController, View {
   
-  // MARK: - PROPERTIES
+  // MARK: - UI
   
   private lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .grouped)
@@ -34,6 +34,7 @@ final class DetailPostViewController: BaseViewController, View {
       DetailPostHeaderView.self,
       forHeaderFooterViewReuseIdentifier: DetailPostHeaderView.identifier
     )
+    tableView.refreshControl = self.refreshControl
     tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     tableView.allowsSelection = false
     tableView.separatorStyle = .none
@@ -57,9 +58,19 @@ final class DetailPostViewController: BaseViewController, View {
     return btn
   }()
   
+  private let refreshControl: UIRefreshControl = {
+    let rc = UIRefreshControl()
+    
+    return rc
+  }()
+  
   private let commentView = CommentView()
   private let bottomView = UIView()
   private var header: DetailPostHeaderView!
+  
+  // MARK: - PROPERTIES
+  
+  var popCompletion: (() -> Void)?
   
   // MARK: - SETUP
   
@@ -71,33 +82,33 @@ final class DetailPostViewController: BaseViewController, View {
   
   override func setupLayouts() {
     [
-      tableView,
-      commentView,
-      indicator,
-      bottomView
+      self.tableView,
+      self.commentView,
+      self.indicator,
+      self.bottomView
     ].forEach {
-      view.addSubview($0)
+      self.view.addSubview($0)
     }
   }
   
   override func setupConstraints() {
-    commentView.snp.makeConstraints { make in
-      make.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
+    self.commentView.snp.makeConstraints { make in
+      make.bottom.equalTo(self.view.keyboardLayoutGuide.snp.top)
       make.leading.trailing.equalToSuperview()
     }
     
-    tableView.snp.makeConstraints { make in
+    self.tableView.snp.makeConstraints { make in
       make.top.leading.trailing.equalToSuperview()
-      make.bottom.equalTo(commentView.snp.top)
+      make.bottom.equalTo(self.commentView.snp.top)
     }
     
-    indicator.snp.makeConstraints { make in
+    self.indicator.snp.makeConstraints { make in
       make.center.equalToSuperview()
     }
     
-    bottomView.snp.makeConstraints { make in
+    self.bottomView.snp.makeConstraints { make in
       make.bottom.leading.trailing.equalToSuperview()
-      make.top.equalTo(commentView.snp.bottom)
+      make.top.equalTo(self.commentView.snp.bottom)
     }
   }
   
@@ -108,26 +119,26 @@ final class DetailPostViewController: BaseViewController, View {
     // MARK: - ACTION
     
     // 화면 최초 접속
-    rx.viewDidLoad
+    self.rx.viewDidLoad
       .map { DetailPostViewReactor.Action.viewDidLoad }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 댓글 입력 반응
-    commentView.textView.rx.text
+    self.commentView.textView.rx.text
       .orEmpty
       .map { DetailPostViewReactor.Action.didChangeComment($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 전송 버튼 클릭
-    commentView.sendButton.rx.tap
+    self.commentView.sendButton.rx.tap
       .map { DetailPostViewReactor.Action.didTapSendButton }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 빈 화면 클릭
-    tableView.rx.tapGesture { _, delegate in
+    self.tableView.rx.tapGesture { _, delegate in
       delegate.simultaneousRecognitionPolicy = .never
     }
       .withUnretained(self)
@@ -137,15 +148,46 @@ final class DetailPostViewController: BaseViewController, View {
       .disposed(by: disposeBag)
     
     // 익명 버튼 클릭
-    commentView.anonymousButton.rx.tap
+    self.commentView.anonymousButton.rx.tap
       .withUnretained(self)
       .map { !$0.0.commentView.anonymousButton.isSelected }
       .map { DetailPostViewReactor.Action.didTapAnonymousButton($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
-    // MARK: - STATE
+    // 게시글 옵션 버튼 클릭 -> 바텀 시트 출력
+    self.optionButton.rx.tap
+      .bind(with: self) { owner, _ in
+        guard
+          let memberId = MemberStorage.shared.member?.memberId,
+          let postMemberId = reactor.currentState.currentPost?.memberId
+        else { return }
+        
+        let bottomSheet: BottomSheetViewController
+        
+        if memberId == postMemberId {
+          bottomSheet = BottomSheetViewController(.myPost)
+        } else {
+          bottomSheet = BottomSheetViewController(.post)
+        }
+        
+        // 게시글 삭제 버튼 클릭
+        bottomSheet.deleteButtonCompletion = {
+          reactor.action.onNext(.didTapDeletePostButton)
+        }
+        
+        owner.presentPanModal(bottomSheet)
+      }
+      .disposed(by: disposeBag)
     
+    // 당겨서 새로고침
+    self.refreshControl.rx.controlEvent(.valueChanged)
+      .map { DetailPostViewReactor.Action.pullToRefresh }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // MARK: - STATE
+     
     // 전송 버튼 상태 변경
     reactor.state
       .map { $0.currentComment }
@@ -223,6 +265,26 @@ final class DetailPostViewController: BaseViewController, View {
       .filter { $0 }
       .bind(with: self) { $0.view.endEditing($1) }
       .disposed(by: disposeBag)
+    
+    // 당겨서 새로고침 취소
+    reactor.state
+      .map { $0.endRefresh }
+      .filter { $0 }
+      .delay(.seconds(1), scheduler: MainScheduler.asyncInstance)
+      .bind(with: self) { owner, _ in
+        owner.tableView.refreshControl?.endRefreshing()
+      }
+      .disposed(by: disposeBag)
+    
+    // 뒤로가기
+    reactor.state
+      .map { $0.popVC }
+      .filter { $0 }
+      .bind(with: self) { owner, _ in
+        owner.navigationController?.popViewController(animated: true)
+        owner.popCompletion?()
+      }
+      .disposed(by: disposeBag)
   }
   
   // MARK: - HELPERS
@@ -246,7 +308,7 @@ final class DetailPostViewController: BaseViewController, View {
   }
 }
 
-// MARK: - Setup TableView
+// MARK: - SETUP TABLEVIEW
 
 extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
   // 셀 생성
@@ -254,9 +316,10 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
     _ tableView: UITableView,
     cellForRowAt indexPath: IndexPath
   ) -> UITableViewCell {
-    guard let reactor = reactor else { return UITableViewCell() }
+    guard let currentPost = self.reactor?.currentState.currentPost else { return UITableViewCell() }
+    guard let reactor = self.reactor else { return UITableViewCell() }
     
-    switch reactor.currentState.currentPost?.commentsCount ?? 0 {
+    switch currentPost.commentsCount {
     case 0:
       guard let cell = tableView.dequeueReusableCell(
         withIdentifier: DetailPostEmptyCell.identifier,
@@ -275,7 +338,7 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
       }
       
       let orderedComment = reactor.currentState.currentComments[indexPath.row]
-      cell.inject(orderedComment)
+      cell.injectComment(orderedComment)
       
       // 답글 쓰기 버튼
       cell.replyButtonCompletion = { [weak self] parentId in

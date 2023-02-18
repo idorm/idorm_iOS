@@ -55,10 +55,10 @@ final class TabBarViewController: UITabBarController {
     tabBar.tintColor = .idorm_blue
     tabBar.barTintColor = .white
     tabBar.backgroundColor = .white
-    tabBar.layer.borderColor = UIColor.idorm_gray_200.cgColor
-    tabBar.layer.borderWidth = 1
     tabBar.layer.cornerRadius = 24.0
     tabBar.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMaxXMinYCorner)
+    tabBar.layer.borderColor = UIColor.idorm_gray_200.cgColor
+    tabBar.layer.borderWidth = 1
   }
 }
 

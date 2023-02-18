@@ -11,7 +11,7 @@ import SnapKit
 
 final class DetailPostHeaderView: UITableViewHeaderFooterView {
   
-  // MARK: - Properties
+  // MARK: - UI
   
   static let identifier = "PostDetailHeader"
   
@@ -101,7 +101,6 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
         break
       }
     }
-    btn.addTarget(self, action: #selector(didTapSympathyButton), for: .touchUpInside)
     
     return btn
   }()
@@ -116,10 +115,13 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
   private let separatorLine2 = UIFactory.view(.idorm_gray_200)
   lazy var orderByLastestButton = orderButton("최신순")
   lazy var orderByRegisterationButton = orderButton("등록순")
+  
+  // MARK: - PROPERTIES
+  
   var sympathyButtonCompletion: ((Bool) -> Void)?
+  var optionButtonCompletion: (() -> Void)?
   private var post: CommunityResponseModel.Post!
   private var isSympathy: Bool = false
-  private var isInitialized: Bool = false
   private var bottomConstraints: Constraint?
   private var photoConstarints: Constraint?
   
@@ -130,6 +132,8 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
     self.setupStyles()
     self.setupLayouts()
     self.setupConstraints()
+    self.setupSelectors()
+    print(#function)
   }
   
   required init?(coder: NSCoder) {
@@ -162,7 +166,7 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
       self.orderByLastestButton.isHidden = true
       self.orderByRegisterationButton.isHidden = true
     } else {
-      self.bottomConstraints?.update(inset: 32)
+      self.bottomConstraints?.update(inset: 40)
       self.orderByLastestButton.isHidden = false
       self.orderByRegisterationButton.isHidden = false
     }
@@ -177,13 +181,27 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
       self.sympathyButton.isSelected = false
     }
     
-    if self.post.photoUrls.isEmpty {
+    if self.post.postPhotos.isEmpty {
       self.photoCollectionView.isHidden = true
       self.photoConstarints?.update(offset: 24)
     } else {
       self.photoCollectionView.isHidden = false
       self.photoConstarints?.update(offset: 168)
     }
+  }
+  
+  func injectData(_ post: CommunityResponseModel.Post, isSympathy: Bool) {
+    self.post = post
+    self.isSympathy = isSympathy
+    self.titleLabel.text = post.title
+    self.contentsLabel.text = post.content
+    self.nicknameLabel.text = post.nickname?.isAnonymous
+    self.timeLabel.text = TimeUtils.detailPost(post.createdAt)
+    self.likeCountLabel.text = "\(post.likesCount)"
+    self.commentCountLabel.text = "\(post.commentsCount)"
+    self.pictureCountLabel.text = "\(post.imagesCount)"
+    self.updateUI()
+    self.photoCollectionView.reloadData()
   }
   
   // MARK: - SELECTORS
@@ -197,21 +215,9 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
 // MARK: - Setup
 
 extension DetailPostHeaderView: BaseView {
-  func injectData(_ post: CommunityResponseModel.Post, isSympathy: Bool) {
-    self.post = post
-    self.isSympathy = isSympathy
-    self.titleLabel.text = post.title
-    self.contentsLabel.text = post.content
-    self.nicknameLabel.text = post.nickname?.isAnonymous
-    self.timeLabel.text = TimeUtils.detailPost(post.createdAt)
-    self.likeCountLabel.text = "\(post.likesCount)"
-    self.commentCountLabel.text = "\(post.commentsCount)"
-    self.pictureCountLabel.text = "\(post.imagesCount)"
-    if !self.isInitialized {
-      self.isInitialized = true
-    }
-    self.updateUI()
-    self.photoCollectionView.reloadData()
+  
+  private func setupSelectors() {
+    self.sympathyButton.addTarget(self, action: #selector(didTapSympathyButton), for: .touchUpInside)
   }
   
   func setupStyles() {
@@ -245,8 +251,8 @@ extension DetailPostHeaderView: BaseView {
     }
     
     self.profileStack.snp.makeConstraints { make in
-      make.leading.equalTo(myProfileImageView.snp.trailing).offset(10)
-      make.centerY.equalTo(myProfileImageView)
+      make.leading.equalTo(self.myProfileImageView.snp.trailing).offset(10)
+      make.centerY.equalTo(self.myProfileImageView)
     }
     
     self.titleLabel.snp.makeConstraints { make in
@@ -309,7 +315,7 @@ extension DetailPostHeaderView: BaseView {
     self.separatorLine2.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
       make.top.equalTo(self.sympathyButton.snp.bottom).offset(12)
-      self.bottomConstraints = make.bottom.equalToSuperview().inset(34).constraint
+      self.bottomConstraints = make.bottom.equalToSuperview().inset(40).constraint
       make.height.equalTo(1)
     }
     
@@ -340,7 +346,7 @@ extension DetailPostHeaderView: UICollectionViewDataSource, UICollectionViewDele
     ) as? DetailPostPhotoCell else {
       return UICollectionViewCell()
     }
-    cell.injectData(self.post.photoUrls[indexPath.row])
+    cell.injectData(self.post.postPhotos[indexPath.row].photoUrl)
     
     return cell
   }
@@ -350,6 +356,6 @@ extension DetailPostHeaderView: UICollectionViewDataSource, UICollectionViewDele
     _ collectionView: UICollectionView,
     numberOfItemsInSection section: Int
   ) -> Int {
-    return self.post.photoUrls.count
+    return self.post.postPhotos.count
   }
 }

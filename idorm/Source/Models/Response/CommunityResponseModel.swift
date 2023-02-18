@@ -24,16 +24,24 @@ extension CommunityResponseModel {
   struct Post: Codable, Equatable {
     let postId: Int
     let title: String
+    let memberId: Int
+    let dormCategory: Dormitory
     let content: String
     let nickname: String?
     let profileUrl: String?
     let likesCount: Int
     let commentsCount: Int
     let imagesCount: Int
+    let isLiked: Bool
     let createdAt: String
     let updatedAt: String
-    let photoUrls: [String]
+    let postPhotos: [PostPhotos]
     let comments: [Comment]
+  }
+  
+  struct PostPhotos: Codable, Equatable {
+    let photoId: Int
+    let photoUrl: String
   }
   
   struct Comment: Codable, Equatable {

@@ -16,6 +16,7 @@ enum CommunityAPI {
   case savePost(CommunityRequestModel.Post)
   case saveComment(postId: Int, body: CommunityRequestModel.Comment)
   case deleteComment(postId: Int, commentId: Int)
+  case deletePost(postId: Int)
   case editPostSympathy(postId: Int, isSympathy: Bool)
 }
 

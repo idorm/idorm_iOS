@@ -217,10 +217,12 @@ final class PostListViewController: BaseViewController, View {
       .bind(with: self) { owner, postId in
         let postDetailVC = DetailPostViewController()
         postDetailVC.reactor = DetailPostViewReactor(postId.1)
-        
         postDetailVC.hidesBottomBarWhenPushed = true
-        
         owner.navigationController?.pushViewController(postDetailVC, animated: true)
+        
+        postDetailVC.popCompletion = {
+          reactor.action.onNext(.fetchNewPosts)
+        }
       }
       .disposed(by: disposeBag)
   }

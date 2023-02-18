@@ -245,4 +245,6 @@ extension BottomSheetViewController: PanModalPresentable {
   var longFormHeight: PanModalHeight {
     PanModalHeight.contentHeight(self.bottomSheet.height)
   }
+  
+  var showDragIndicator: Bool { false }
 }

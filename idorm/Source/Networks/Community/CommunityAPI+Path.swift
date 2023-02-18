@@ -30,6 +30,9 @@ extension CommunityAPI {
       
     case let .deleteComment(postId, commentId):
       return "/member/post/\(postId)/comment/\(commentId)"
+      
+    case .deletePost(let postId):
+      return "/member/post/\(postId)"
     }
   }
 }

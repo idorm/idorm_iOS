@@ -24,6 +24,9 @@ extension CommunityAPI {
       
     case .deleteComment:
       return .delete
+      
+    case .deletePost:
+      return .delete
     }
   }
 }
