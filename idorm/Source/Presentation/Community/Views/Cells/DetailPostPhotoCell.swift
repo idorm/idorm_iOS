@@ -20,7 +20,7 @@ final class DetailPostPhotoCell: UICollectionViewCell {
     let iv = UIImageView()
     iv.layer.cornerRadius = 8
     iv.layer.masksToBounds = true
-    iv.contentMode = .scaleToFill
+    iv.contentMode = .scaleAspectFill
     
     return iv
   }()

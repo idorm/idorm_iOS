@@ -363,6 +363,6 @@ extension DetailPostHeaderView: UICollectionViewDataSource, UICollectionViewDele
     _ collectionView: UICollectionView,
     didSelectItemAt indexPath: IndexPath
   ) {
-    print(#function)
+    self.photoCompletion?(indexPath.row)
   }
 }

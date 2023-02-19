@@ -309,6 +309,11 @@ final class DetailPostViewController: BaseViewController, View {
   }
   
   private func presentDetailPhotosVC(_ indexPath: Int) {
+    guard let postPhotos = self.reactor?.currentState.currentPost?.postPhotos else { return }
+    let photosURL = postPhotos.map { $0.photoUrl }
+    let detailPhotosVC = DetailPhotosViewController(photosURL, currentIndex: indexPath)
+    detailPhotosVC.modalPresentationStyle = .fullScreen
+    self.present(detailPhotosVC, animated: true)
   }
 }
 
@@ -441,7 +446,7 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
     
     // 사진 클릭
     header.photoCompletion = { [weak self] in
-      print($0)
+      self?.presentDetailPhotosVC($0)
     }
     
     return header

@@ -8,16 +8,23 @@
 import UIKit
 
 import SnapKit
+import Kingfisher
 
 final class DetailPhotoCell: UICollectionViewCell {
   
   // MARK: - UI COMPONENTS
   
-  private let photoView: UIImageView = {
+  let mainImageView: UIImageView = {
     let iv = UIImageView()
+    iv.contentMode = .scaleAspectFit
+    iv.kf.indicatorType = .activity
     
     return iv
   }()
+  
+  // MARK: - PROPERTIES
+  
+  static let identifier = "DetailPhotoCell"
   
   // MARK: - INITIALIZER
   
@@ -36,17 +43,22 @@ final class DetailPhotoCell: UICollectionViewCell {
 // MARK: - SETUP
 
 extension DetailPhotoCell: BaseView {
+  /// 명시적으로 호출되어야 합니다.
+  func injectImage(_ url: String) {
+    self.mainImageView.kf.setImage(with: URL(string: url))
+  }
+  
   func setupStyles() {
     self.contentView.backgroundColor = .black
   }
   
   func setupLayouts() {
-    self.contentView.addSubview(self.photoView)
+    self.contentView.addSubview(self.mainImageView)
   }
   
   func setupConstraints() {
-    self.photoView.snp.makeConstraints { make in
-      make.center.equalToSuperview()
+    self.mainImageView.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
     }
   }
 }
