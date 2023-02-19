@@ -68,7 +68,7 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
     return label
   }()
   
-  lazy var photoCollectionView: UICollectionView = {
+  private lazy var photoCollectionView: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
     layout.scrollDirection = .horizontal
     layout.itemSize = CGSize(width: 120, height: 120)
@@ -86,9 +86,8 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
     return collectionView
   }()
   
-  lazy var sympathyButton: idormCommunityButton = {
+  private lazy var sympathyButton: idormCommunityButton = {
     let btn = idormCommunityButton("공감하기")
-    
     btn.configurationUpdateHandler = {
       switch $0.state {
       case .selected:
@@ -105,8 +104,8 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
     return btn
   }()
   
-  let likeImageView = UIImageView(image: UIImage(named: "thumbsup_medium")?.withRenderingMode(.alwaysTemplate))
-  lazy var likeCountLabel = countLabel()
+  private let likeImageView = UIImageView(image: UIImage(named: "thumbsup_medium")?.withRenderingMode(.alwaysTemplate))
+  private lazy var likeCountLabel = countLabel()
   private let commentImageView = UIImageView(image: UIImage(named: "speechBubble_double_medium"))
   private lazy var commentCountLabel = countLabel()
   private let pictureImageView = UIImageView(image: UIImage(named: "picture_medium"))
@@ -120,6 +119,7 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
   
   var sympathyButtonCompletion: ((Bool) -> Void)?
   var optionButtonCompletion: (() -> Void)?
+  var photoCompletion: ((Int) -> Void)?
   private var post: CommunityResponseModel.Post!
   private var isSympathy: Bool = false
   private var bottomConstraints: Constraint?
@@ -133,7 +133,6 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
     self.setupLayouts()
     self.setupConstraints()
     self.setupSelectors()
-    print(#function)
   }
   
   required init?(coder: NSCoder) {
@@ -207,8 +206,8 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
   // MARK: - SELECTORS
   
   @objc
-  private func didTapSympathyButton() {
-    self.sympathyButtonCompletion?(sympathyButton.isSelected)
+  private func sympathyButtonDidTap() {
+    self.sympathyButtonCompletion?(self.sympathyButton.isSelected)
   }
 }
 
@@ -217,7 +216,7 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
 extension DetailPostHeaderView: BaseView {
   
   private func setupSelectors() {
-    self.sympathyButton.addTarget(self, action: #selector(didTapSympathyButton), for: .touchUpInside)
+    self.sympathyButton.addTarget(self, action: #selector(sympathyButtonDidTap), for: .touchUpInside)
   }
   
   func setupStyles() {
@@ -357,5 +356,13 @@ extension DetailPostHeaderView: UICollectionViewDataSource, UICollectionViewDele
     numberOfItemsInSection section: Int
   ) -> Int {
     return self.post.postPhotos.count
+  }
+  
+  // 셀 터치
+  func collectionView(
+    _ collectionView: UICollectionView,
+    didSelectItemAt indexPath: IndexPath
+  ) {
+    print(#function)
   }
 }

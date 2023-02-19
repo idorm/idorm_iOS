@@ -79,6 +79,8 @@
 		E547E3E8291CF61B000D3A47 /* MatchingCardStringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E547E3E7291CF61B000D3A47 /* MatchingCardStringView.swift */; };
 		E547E3EA291CF669000D3A47 /* MatchingCardStringList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E547E3E9291CF669000D3A47 /* MatchingCardStringList.swift */; };
 		E547E3EC291CFBBC000D3A47 /* MatchingCardWishTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E547E3EB291CFBBC000D3A47 /* MatchingCardWishTextView.swift */; };
+		E550476C29A0E57C0050AD1C /* DetailPhotosVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E550476B29A0E57C0050AD1C /* DetailPhotosVC.swift */; };
+		E550476E29A0F1FD0050AD1C /* DetailPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E550476D29A0F1FD0050AD1C /* DetailPhotoCell.swift */; };
 		E551030229236E4F001E1530 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = E551030129236E4F001E1530 /* Moya */; };
 		E551030429236E4F001E1530 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = E551030329236E4F001E1530 /* RxMoya */; };
 		E551030729236E84001E1530 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = E551030629236E84001E1530 /* RxCocoa */; };
@@ -282,6 +284,8 @@
 		E547E3E7291CF61B000D3A47 /* MatchingCardStringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCardStringView.swift; sourceTree = "<group>"; };
 		E547E3E9291CF669000D3A47 /* MatchingCardStringList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCardStringList.swift; sourceTree = "<group>"; };
 		E547E3EB291CFBBC000D3A47 /* MatchingCardWishTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCardWishTextView.swift; sourceTree = "<group>"; };
+		E550476B29A0E57C0050AD1C /* DetailPhotosVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPhotosVC.swift; sourceTree = "<group>"; };
+		E550476D29A0F1FD0050AD1C /* DetailPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPhotoCell.swift; sourceTree = "<group>"; };
 		E55794ED287C36F5002DB2B0 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		E55DDAE829179DD900E62ECB /* NavigationAppearanceUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationAppearanceUtils.swift; sourceTree = "<group>"; };
 		E562611029977A6800D14020 /* Sequence+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+.swift"; sourceTree = "<group>"; };
@@ -632,6 +636,7 @@
 			isa = PBXGroup;
 			children = (
 				E5066425296E560B00B581E1 /* PostListVC.swift */,
+				E550476B29A0E57C0050AD1C /* DetailPhotosVC.swift */,
 				E5290F05288818E70004B8E6 /* DetailPostVC.swift */,
 				E52233B2296CFCAD00C5DD07 /* PostingVC.swift */,
 				E58ACB8628846E050031BD86 /* GalleryVC.swift */,
@@ -644,6 +649,7 @@
 			children = (
 				E5626112299A500800D14020 /* DetailPostPhotoCell.swift */,
 				E5CFF6FC29826F8E00E11D9A /* DetailPostEmptyCell.swift */,
+				E550476D29A0F1FD0050AD1C /* DetailPhotoCell.swift */,
 				E5290F0D288867E50004B8E6 /* CommentCell.swift */,
 				E5066429296E6B9B00B581E1 /* PostCell.swift */,
 				E506642B296E6BAA00B581E1 /* PopularPostCell.swift */,
@@ -1298,6 +1304,7 @@
 				E588650C2988E0EC0068BEB2 /* MatchingInfoAPI+Method.swift in Sources */,
 				E5A15D4C2923A5EA001CE750 /* MatchingInfoAPI.swift in Sources */,
 				E5E1498029504ACA00A3827C /* Logger.swift in Sources */,
+				E550476C29A0E57C0050AD1C /* DetailPhotosVC.swift in Sources */,
 				E506642A296E6B9B00B581E1 /* PostCell.swift in Sources */,
 				E5AC2DCF288303A300B82AD8 /* PasswordTextField.swift in Sources */,
 				E58A6297289D6BEF0074F646 /* DeviceManager.swift in Sources */,
@@ -1392,6 +1399,7 @@
 				E5AD7396287A8C2F00BA2C5E /* UIColor+.swift in Sources */,
 				E5D49012288C003800311493 /* MatchingCard.swift in Sources */,
 				E5EB0D042952928F00E70573 /* MyPageViewReactor.swift in Sources */,
+				E550476E29A0F1FD0050AD1C /* DetailPhotoCell.swift in Sources */,
 				E5AD7391287A863800BA2C5E /* LoginVC.swift in Sources */,
 				E5F35E1D2986672F00211C99 /* ResponseModel.swift in Sources */,
 				E51D1C7E29531B8300A7EE49 /* MyRoommateViewReactor.swift in Sources */,

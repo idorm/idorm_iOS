@@ -138,9 +138,10 @@ final class DetailPostViewController: BaseViewController, View {
       .disposed(by: disposeBag)
     
     // 빈 화면 클릭
-    self.tableView.rx.tapGesture { _, delegate in
+    self.tableView.rx.tapGesture { gesture, delegate in
+      gesture.cancelsTouchesInView = false
       delegate.simultaneousRecognitionPolicy = .never
-    }
+    }.when(.recognized)
       .withUnretained(self)
       .do { $0.0.commentView.textView.resignFirstResponder() }
       .map { _ in DetailPostViewReactor.Action.didTapBackground }
@@ -306,6 +307,9 @@ final class DetailPostViewController: BaseViewController, View {
     
     self.present(alert, animated: true)
   }
+  
+  private func presentDetailPhotosVC(_ indexPath: Int) {
+  }
 }
 
 // MARK: - SETUP TABLEVIEW
@@ -316,8 +320,11 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
     _ tableView: UITableView,
     cellForRowAt indexPath: IndexPath
   ) -> UITableViewCell {
-    guard let currentPost = self.reactor?.currentState.currentPost else { return UITableViewCell() }
-    guard let reactor = self.reactor else { return UITableViewCell() }
+    guard let currentPost = self.reactor?.currentState.currentPost,
+          let reactor = self.reactor
+    else {
+      return UITableViewCell()
+    }
     
     switch currentPost.commentsCount {
     case 0:
@@ -352,7 +359,10 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
           title: "작성",
           style: .default,
           handler: { [weak self] _ in
-            self?.reactor?.action.onNext(.didTapReplyButton(indexPath: indexPath.row, parentId: parentId))
+            self?.reactor?.action.onNext(.didTapReplyButton(
+              indexPath: indexPath.row,
+              parentId: parentId
+            ))
             self?.commentView.textView.becomeFirstResponder()
           }
         ))
@@ -424,8 +434,14 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
     
     header.injectData(currentPost, isSympathy: reactor.currentState.isSympathy)
     
+    // 공감 버튼 클릭
     header.sympathyButtonCompletion = { [weak self] in
       self?.presentSympathyAlert($0)
+    }
+    
+    // 사진 클릭
+    header.photoCompletion = { [weak self] in
+      print($0)
     }
     
     return header
