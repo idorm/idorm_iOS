@@ -139,24 +139,18 @@ final class DetailPhotosViewController: BaseViewController {
     else {
       return
     }
-    
-    UIImageWriteToSavedPhotosAlbum(
-      UIImage(),
-      self,
-      #selector(self.presentAlert),
-      nil
-    )
-  }
-  
-  @objc
-  private func presentAlert() {
-    let alertVC = UIAlertController(
-      title: "사진이 저장되었습니다.",
-      message: nil,
-      preferredStyle: .alert
-    )
-    alertVC.addAction(UIAlertAction(title: "닫기", style: .cancel))
-    self.present(alertVC, animated: true)
+        
+    let imageSaver = ImageSaver()
+    imageSaver.writeToPhotoAlbum(image: photo)
+    imageSaver.saveCompletion = { [weak self] in
+      let alertVC = UIAlertController(
+        title: "사진이 저장되었습니다.",
+        message: nil,
+        preferredStyle: .alert
+      )
+      alertVC.addAction(UIAlertAction(title: "확인", style: .cancel))
+      self?.present(alertVC, animated: true)
+    }
   }
 }
 

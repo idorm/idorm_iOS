@@ -81,6 +81,7 @@
 		E547E3EC291CFBBC000D3A47 /* MatchingCardWishTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E547E3EB291CFBBC000D3A47 /* MatchingCardWishTextView.swift */; };
 		E550476C29A0E57C0050AD1C /* DetailPhotosVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E550476B29A0E57C0050AD1C /* DetailPhotosVC.swift */; };
 		E550476E29A0F1FD0050AD1C /* DetailPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E550476D29A0F1FD0050AD1C /* DetailPhotoCell.swift */; };
+		E550477029A2FAC90050AD1C /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E550476F29A2FAC90050AD1C /* ImageSaver.swift */; };
 		E551030229236E4F001E1530 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = E551030129236E4F001E1530 /* Moya */; };
 		E551030429236E4F001E1530 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = E551030329236E4F001E1530 /* RxMoya */; };
 		E551030729236E84001E1530 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = E551030629236E84001E1530 /* RxCocoa */; };
@@ -286,6 +287,7 @@
 		E547E3EB291CFBBC000D3A47 /* MatchingCardWishTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCardWishTextView.swift; sourceTree = "<group>"; };
 		E550476B29A0E57C0050AD1C /* DetailPhotosVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPhotosVC.swift; sourceTree = "<group>"; };
 		E550476D29A0F1FD0050AD1C /* DetailPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPhotoCell.swift; sourceTree = "<group>"; };
+		E550476F29A2FAC90050AD1C /* ImageSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaver.swift; sourceTree = "<group>"; };
 		E55794ED287C36F5002DB2B0 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		E55DDAE829179DD900E62ECB /* NavigationAppearanceUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationAppearanceUtils.swift; sourceTree = "<group>"; };
 		E562611029977A6800D14020 /* Sequence+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+.swift"; sourceTree = "<group>"; };
@@ -579,6 +581,7 @@
 			children = (
 				E58A6296289D6BEF0074F646 /* DeviceManager.swift */,
 				E5FD982528EAF8F0005A29E2 /* MailTimerChecker.swift */,
+				E550476F29A2FAC90050AD1C /* ImageSaver.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1302,6 +1305,7 @@
 				E508437728813CE80047A2EC /* FontManager.swift in Sources */,
 				E5CFF71B29835D4000E11D9A /* MemberResponseModel.swift in Sources */,
 				E588650C2988E0EC0068BEB2 /* MatchingInfoAPI+Method.swift in Sources */,
+				E550477029A2FAC90050AD1C /* ImageSaver.swift in Sources */,
 				E5A15D4C2923A5EA001CE750 /* MatchingInfoAPI.swift in Sources */,
 				E5E1498029504ACA00A3827C /* Logger.swift in Sources */,
 				E550476C29A0E57C0050AD1C /* DetailPhotosVC.swift in Sources */,
