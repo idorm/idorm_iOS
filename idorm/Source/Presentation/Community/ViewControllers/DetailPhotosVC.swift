@@ -139,7 +139,7 @@ final class DetailPhotosViewController: BaseViewController {
     else {
       return
     }
-        
+    
     let imageSaver = ImageSaver()
     imageSaver.writeToPhotoAlbum(image: photo)
     imageSaver.saveCompletion = { [weak self] in

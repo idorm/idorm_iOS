@@ -16,14 +16,14 @@ import Photos
 
 final class PostingViewController: BaseViewController, View {
   
-  // MARK: - Properties
+  // MARK: - UI COMPONENTS
   
   private lazy var pictsCollectionView: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
     layout.scrollDirection = .horizontal
     let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
     cv.showsHorizontalScrollIndicator = false
-    cv.register(ImageCell.self, forCellWithReuseIdentifier: ImageCell.identifier)
+    cv.register(PostingPhotoCell.self, forCellWithReuseIdentifier: PostingPhotoCell.identifier)
     cv.dataSource = self
     cv.delegate = self
     
@@ -156,100 +156,104 @@ final class PostingViewController: BaseViewController, View {
   
   private let pictIv = UIImageView(image: UIImage(named: "picture_medium"))
   
+  // MARK: - PROPERTIES
+  
+  var saveCompletion: (() -> Void)?
+  
   // MARK: - Setup
   
   override func setupStyles() {
-    navigationItem.title = "글쓰기"
-    navigationItem.rightBarButtonItem = UIBarButtonItem(customView: completeBtn)
-    view.backgroundColor = .white
-    completeBtn.isEnabled = false
+    self.navigationItem.title = "글쓰기"
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: completeBtn)
+    self.view.backgroundColor = .white
+    self.completeBtn.isEnabled = false
   }
   
   override func setupLayouts() {
     [
-      titleTf,
-      separatorLine,
-      pictsCollectionView,
-      contentsTv,
-      bottomContainerView,
-      bottomWhiteView,
-      indicator
+      self.titleTf,
+      self.separatorLine,
+      self.pictsCollectionView,
+      self.contentsTv,
+      self.bottomContainerView,
+      self.bottomWhiteView,
+      self.indicator
     ].forEach {
-      view.addSubview($0)
+      self.view.addSubview($0)
     }
     
     [
-      pictIv,
-      currentPictsCountLb,
-      pictsCountLb,
-      anonymousLabel,
-      anonymousBtn
+      self.pictIv,
+      self.currentPictsCountLb,
+      self.pictsCountLb,
+      self.anonymousLabel,
+      self.anonymousBtn
     ].forEach {
-      bottomContainerView.addSubview($0)
+      self.bottomContainerView.addSubview($0)
     }
   }
   
   override func setupConstraints() {
-    titleTf.snp.makeConstraints { make in
+    self.titleTf.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
-      make.top.equalTo(view.safeAreaLayoutGuide).inset(30)
+      make.top.equalTo(self.view.safeAreaLayoutGuide).inset(30)
     }
     
-    separatorLine.snp.makeConstraints { make in
+    self.separatorLine.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
       make.height.equalTo(0.3)
-      make.top.equalTo(titleTf.snp.bottom).offset(12)
+      make.top.equalTo(self.titleTf.snp.bottom).offset(12)
     }
     
-    pictsCollectionView.snp.makeConstraints { make in
+    self.pictsCollectionView.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
-      make.top.equalTo(separatorLine.snp.bottom).offset(16)
+      make.top.equalTo(self.separatorLine.snp.bottom).offset(16)
       make.height.equalTo(85)
     }
     
-    contentsTv.snp.makeConstraints { make in
+    self.contentsTv.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(20)
-      make.top.equalTo(pictsCollectionView.snp.bottom).offset(16)
-      make.bottom.equalTo(bottomContainerView.snp.top).offset(-16)
+      make.top.equalTo(self.pictsCollectionView.snp.bottom).offset(16)
+      make.bottom.equalTo(self.bottomContainerView.snp.top).offset(-16)
     }
     
-    bottomContainerView.snp.makeConstraints { make in
+    self.bottomContainerView.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
-      make.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
+      make.bottom.equalTo(self.view.keyboardLayoutGuide.snp.top)
       make.height.equalTo(56)
     }
     
-    pictIv.snp.makeConstraints { make in
+    self.pictIv.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(24)
       make.centerY.equalToSuperview()
     }
 
-    currentPictsCountLb.snp.makeConstraints { make in
-      make.leading.equalTo(pictIv.snp.trailing).offset(10)
-      make.centerY.equalTo(pictIv)
+    self.currentPictsCountLb.snp.makeConstraints { make in
+      make.leading.equalTo(self.pictIv.snp.trailing).offset(10)
+      make.centerY.equalTo(self.pictIv)
     }
     
-    pictsCountLb.snp.makeConstraints { make in
+    self.pictsCountLb.snp.makeConstraints { make in
       make.leading.equalTo(currentPictsCountLb.snp.trailing)
       make.centerY.equalTo(pictIv)
     }
     
-    anonymousLabel.snp.makeConstraints { make in
+    self.anonymousLabel.snp.makeConstraints { make in
       make.centerY.equalToSuperview()
-      make.trailing.equalTo(anonymousBtn.snp.leading).offset(-6)
+      make.trailing.equalTo(self.anonymousBtn.snp.leading).offset(-6)
     }
     
-    anonymousBtn.snp.makeConstraints { make in
+    self.anonymousBtn.snp.makeConstraints { make in
       make.trailing.equalToSuperview().inset(24)
       make.centerY.equalToSuperview()
     }
     
-    indicator.snp.makeConstraints { make in
+    self.indicator.snp.makeConstraints { make in
       make.center.equalToSuperview()
     }
     
     if DeviceManager.shared.hasNotch() {
-      bottomWhiteView.snp.makeConstraints { make in
+      self.bottomWhiteView.snp.makeConstraints { make in
         make.height.equalTo(50)
         make.leading.trailing.bottom.equalToSuperview()
       }
@@ -332,7 +336,7 @@ final class PostingViewController: BaseViewController, View {
       .distinctUntilChanged()
       .bind(to: currentPictsCountLb.rx.text)
       .disposed(by: disposeBag)
-
+    
     // 완료버튼 활성/비활성
     reactor.state
       .map { $0.isEnabledCompleteBtn }
@@ -345,7 +349,10 @@ final class PostingViewController: BaseViewController, View {
       .map { $0.popVC }
       .filter { $0 }
       .withUnretained(self)
-      .bind { $0.0.navigationController?.popViewController(animated: true) }
+      .bind {
+        $0.0.saveCompletion?()
+        $0.0.navigationController?.popViewController(animated: true)
+      }
       .disposed(by: disposeBag)
     
     // 로딩 인디케이터 제어
@@ -362,7 +369,7 @@ final class PostingViewController: BaseViewController, View {
       .disposed(by: disposeBag)
   }
   
-  // MARK: - Helpers
+  // MARK: - HELPERS
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     view.endEditing(true)
@@ -393,7 +400,7 @@ final class PostingViewController: BaseViewController, View {
           break
         }
       }
-
+      
     default:
       presentAuthenticationAlert()
     }
@@ -453,9 +460,9 @@ extension PostingViewController: UICollectionViewDataSource, UICollectionViewDel
     cellForItemAt indexPath: IndexPath
   ) -> UICollectionViewCell {
     guard let cell = collectionView.dequeueReusableCell(
-      withReuseIdentifier: ImageCell.identifier,
+      withReuseIdentifier: PostingPhotoCell.identifier,
       for: indexPath
-    ) as? ImageCell,
+    ) as? PostingPhotoCell,
           let reactor = reactor else {
       return UICollectionViewCell()
     }

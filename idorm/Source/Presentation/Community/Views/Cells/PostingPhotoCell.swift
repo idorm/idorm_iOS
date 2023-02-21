@@ -10,11 +10,11 @@ import UIKit
 import SnapKit
 import Photos
 
-final class ImageCell: UICollectionViewCell {
+final class PostingPhotoCell: UICollectionViewCell {
   
   // MARK: - Properties
   
-  static let identifier = "ImageCell"
+  static let identifier = "PostingPhotoCell"
   
   private lazy var deleteBtn: UIButton = {
     let btn = UIButton()
@@ -28,8 +28,7 @@ final class ImageCell: UICollectionViewCell {
     let iv = UIImageView()
     iv.layer.cornerRadius = 10
     iv.layer.masksToBounds = true
-    iv.contentMode = .scaleAspectFill
-    iv.backgroundColor = .blue
+    iv.contentMode = .scaleAspectFit
     
     return iv
   }()
@@ -57,47 +56,43 @@ final class ImageCell: UICollectionViewCell {
   
   private func setupLayout() {
     [
-      imageView,
-      deleteBtn
+      self.imageView,
+      self.deleteBtn
     ].forEach {
-      contentView.addSubview($0)
+      self.contentView.addSubview($0)
     }
   }
-
+  
   private func setupConstraints() {
-    imageView.snp.makeConstraints { make in
+    self.imageView.snp.makeConstraints { make in
       make.bottom.leading.equalToSuperview()
       make.width.height.equalTo(80)
     }
     
-    deleteBtn.snp.makeConstraints { make in
+    self.deleteBtn.snp.makeConstraints { make in
       make.trailing.equalToSuperview().offset(3)
       make.top.equalToSuperview().offset(-3)
       make.width.height.equalTo(25)
     }
   }
   
-  func setupImage(_ image: PHAsset) {
+  func setupImage(_ asset: PHAsset) {
     let options = PHImageRequestOptions()
-    options.deliveryMode = .opportunistic
+    let manager = PHImageManager.default()
     
-    var newImage: UIImage?
-    
-    PHImageManager.default().requestImage(
-      for: image,
-      targetSize: CGSize(width: 100, height: 100),
-      contentMode: .aspectFill,
-      options: options) { image, _ in
-        newImage = image
+    manager.requestImage(
+      for: asset,
+      targetSize: CGSize(width: 80, height: 80),
+      contentMode: .aspectFit,
+      options: options) { [weak self] image, _ in
+        self?.imageView.image = image
       }
-    
-    imageView.image = newImage
   }
   
-  // MARK: - Helpers
+  // MARK: - ACTIONS
   
   @objc
   private func didTapDeleteBtn() {
-    deleteCompletion?()
+    self.deleteCompletion?()
   }
 }

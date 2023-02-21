@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class PopularPostCell: UICollectionViewCell, BaseView {
+final class PopularPostCell: UICollectionViewCell {
   
   // MARK: - Properties
   
@@ -23,14 +23,14 @@ final class PopularPostCell: UICollectionViewCell, BaseView {
     
     return lb
   }()
-
+  
   private let contentsLabel: UILabel = {
     let lb = UILabel()
     lb.text = "3 기숙사 카페 혜윰메뉴 올려드립니다! 제가"
     lb.font = .init(name: MyFonts.regular.rawValue, size: 12)
     lb.textColor = .black
     lb.lineBreakMode = .byCharWrapping
-    lb.numberOfLines = 0
+    lb.numberOfLines = 3
     
     return lb
   }()
@@ -52,7 +52,7 @@ final class PopularPostCell: UICollectionViewCell, BaseView {
     
     return lb
   }()
-
+  
   private let likeCountLabel: UILabel = {
     let lb = UILabel()
     lb.textColor = .idorm_gray_400
@@ -65,11 +65,8 @@ final class PopularPostCell: UICollectionViewCell, BaseView {
   private let messageImageView = UIImageView(image: UIImage(named: "speechBubble_double_small"))
   private let pictureImageView = UIImageView(image: UIImage(named: "picture_small"))
   private let likeImageView = UIImageView(image: UIImage(named: "thumbsup_small"))
-  private lazy var messageStack = stackView([messageImageView, messageCountLabel])
-  private lazy var pictureStack = stackView([pictureImageView, pictureCountLabel])
-  private lazy var likeStack = stackView([likeImageView, likeCountLabel])
   
-  // MARK: - Initialize
+  // MARK: - INITIALIZER
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -81,8 +78,18 @@ final class PopularPostCell: UICollectionViewCell, BaseView {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+}
+
+// MARK: - Setup
+
+extension PopularPostCell: BaseView {
   
-  // MARK: - Setup
+  func configure(_ post: CommunityResponseModel.Posts) {
+    contentsLabel.text = post.content
+    likeCountLabel.text = "\(post.likesCount)"
+    pictureCountLabel.text = "\(post.imagesCount)"
+    messageCountLabel.text = "\(post.commentsCount)"
+  }
   
   func setupStyles() {
     contentView.layer.cornerRadius = 8
@@ -92,57 +99,58 @@ final class PopularPostCell: UICollectionViewCell, BaseView {
   
   func setupLayouts() {
     [
-      popularLabel,
-      contentsLabel,
-      messageStack,
-      pictureStack,
-      likeStack
-    ].forEach { contentView.addSubview($0) }
+      self.popularLabel,
+      self.contentsLabel,
+      self.likeImageView,
+      self.likeCountLabel,
+      self.messageImageView,
+      self.messageCountLabel,
+      self.pictureImageView,
+      self.pictureCountLabel
+    ].forEach {
+      self.contentView.addSubview($0)
+    }
   }
   
   func setupConstraints() {
-    popularLabel.snp.makeConstraints { make in
+    self.popularLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(10)
       make.top.equalToSuperview().inset(15)
     }
     
-    contentsLabel.snp.makeConstraints { make in
+    self.contentsLabel.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(10)
-      make.top.equalTo(popularLabel.snp.bottom).offset(4)
-      make.bottom.equalTo(messageStack.snp.top).offset(-30)
+      make.top.equalTo(self.popularLabel.snp.bottom).offset(4)
     }
     
-    likeStack.snp.makeConstraints { make in
+    self.likeImageView.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(10)
-      make.bottom.equalToSuperview().inset(10)
+      make.bottom.equalToSuperview().inset(12)
     }
     
-    messageStack.snp.makeConstraints { make in
-      make.leading.equalTo(likeStack.snp.trailing).offset(8)
-      make.centerY.equalTo(likeStack)
+    self.likeCountLabel.snp.makeConstraints { make in
+      make.leading.equalTo(self.likeImageView.snp.trailing).offset(3)
+      make.centerY.equalTo(self.likeImageView)
     }
     
-    pictureStack.snp.makeConstraints { make in
-      make.leading.equalTo(messageStack.snp.trailing).offset(8)
-      make.centerY.equalTo(likeStack)
+    self.messageImageView.snp.makeConstraints { make in
+      make.leading.equalTo(self.likeCountLabel.snp.trailing).offset(8)
+      make.bottom.equalToSuperview().inset(12)
     }
-  }
-  
-  // MARK: - Helpers
-  
-  private func stackView(_ views: [UIView]) -> UIStackView {
-    let sv = UIStackView(arrangedSubviews: views)
-    sv.axis = .horizontal
-    sv.spacing = 3
-    sv.alignment = .center
     
-    return sv
-  }
-  
-  func configure(_ post: CommunityResponseModel.Posts) {
-    contentsLabel.text = post.content
-    likeCountLabel.text = "\(post.likesCount)"
-    pictureCountLabel.text = "\(post.imagesCount)"
-    messageCountLabel.text = "\(post.commentsCount)"
+    self.messageCountLabel.snp.makeConstraints { make in
+      make.leading.equalTo(self.messageImageView.snp.trailing).offset(3)
+      make.centerY.equalTo(self.messageImageView)
+    }
+    
+    self.pictureImageView.snp.makeConstraints { make in
+      make.leading.equalTo(self.messageCountLabel.snp.trailing).offset(8)
+      make.bottom.equalToSuperview().inset(12)
+    }
+    
+    self.pictureCountLabel.snp.makeConstraints { make in
+      make.leading.equalTo(self.pictureImageView.snp.trailing).offset(3)
+      make.centerY.equalTo(self.pictureImageView)
+    }
   }
 }

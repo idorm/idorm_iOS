@@ -154,14 +154,14 @@ final class PostListViewController: BaseViewController, View {
       .disposed(by: disposeBag)
     
     // MARK: - State
-    
-    // 게시글 변화
+
+    // ReloadData
     reactor.state
-      .map { $0.currentPosts }
-      .distinctUntilChanged()
+      .map { $0.reloadData }
+      .filter { $0 }
       .withUnretained(self)
       .bind { $0.0.postListCV.reloadData() }
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
     
     // 현재 선택된 기숙사
     reactor.state
@@ -181,11 +181,11 @@ final class PostListViewController: BaseViewController, View {
       .bind(to: indicator.rx.isAnimating)
       .disposed(by: disposeBag)
     
-    // 당겨서 새로고침 로딩 인디케이터
+    // 새로고침 인디케이터 종료
     reactor.state
-      .map { $0.isRefreshing }
-      .distinctUntilChanged()
-      .filter { !$0 }
+      .map { $0.endRefreshing }
+      .filter { $0 }
+      .delay(.seconds(1), scheduler: MainScheduler.asyncInstance)
       .withUnretained(self)
       .bind { $0.0.postListCV.refreshControl?.endRefreshing() }
       .disposed(by: disposeBag)
@@ -197,16 +197,13 @@ final class PostListViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, dorm in
         let postingVC = PostingViewController()
-        let postingReactor = PostingViewReactor(dorm.1)
-        
-        postingVC.hidesBottomBarWhenPushed = true 
+        let postingReactor = PostingViewReactor(.new, dorm: dorm.1)
+        postingVC.hidesBottomBarWhenPushed = true
         postingVC.reactor = postingReactor
-        
-        postingReactor.postingCompletion = { [weak self] in
-          self?.reactor?.action.onNext(.postingCompletion)
-        }
-        
         owner.navigationController?.pushViewController(postingVC, animated: true)
+        postingVC.saveCompletion = { [weak self] in
+          self?.reactor?.action.onNext(.fetchNewPosts)
+        }
       }
       .disposed(by: disposeBag)
     
@@ -219,10 +216,7 @@ final class PostListViewController: BaseViewController, View {
         postDetailVC.reactor = DetailPostViewReactor(postId.1)
         postDetailVC.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(postDetailVC, animated: true)
-        
-        postDetailVC.popCompletion = {
-          reactor.action.onNext(.fetchNewPosts)
-        }
+        postDetailVC.popCompletion = { reactor.action.onNext(.fetchNewPosts) }
       }
       .disposed(by: disposeBag)
   }

@@ -18,9 +18,9 @@ final class MyRoommaateBottomSheet: BaseViewController {
   // MARK: - Properties
 
   var deleteButton: UIButton!
-  let chatButton = BottomSheetUtils.basicButton("룸메이트와 채팅하기", image: #imageLiteral(resourceName: "speechBubble_black"))
+  let chatButton = BottomSheetUtils.basicButton("룸메이트와 채팅하기", imageName: "speechBubble_black")
   let reportButton = BottomSheetUtils.reportButton()
-  private let xmarkButton = BottomSheetUtils.button(#imageLiteral(resourceName: "xmark_black"))
+  private let xmarkButton = UIFactory.button("xmark_black")
   private let indicator = UIActivityIndicatorView().then { $0.color = .gray }
   
   private let roommate: Roommate
@@ -43,9 +43,9 @@ final class MyRoommaateBottomSheet: BaseViewController {
     var button: UIButton
     switch roommate {
     case .dislike:
-      button = BottomSheetUtils.basicButton("싫어요한 룸메에서 삭제", image: #imageLiteral(resourceName: "trash"))
+      button = BottomSheetUtils.basicButton("싫어요한 룸메에서 삭제", imageName: "trash")
     case .like:
-      button = BottomSheetUtils.basicButton("좋아요한 룸메에서 삭제", image: #imageLiteral(resourceName: "trash"))
+      button = BottomSheetUtils.basicButton("좋아요한 룸메에서 삭제", imageName:"trash")
     }
     self.deleteButton = button
   }

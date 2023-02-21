@@ -41,7 +41,7 @@
 		E51D1C7C2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51D1C7B2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift */; };
 		E51D1C7E29531B8300A7EE49 /* MyRoommateViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51D1C7D29531B8300A7EE49 /* MyRoommateViewReactor.swift */; };
 		E52233B3296CFCAD00C5DD07 /* PostingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52233B2296CFCAD00C5DD07 /* PostingVC.swift */; };
-		E52233B6296D04A200C5DD07 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52233B5296D04A200C5DD07 /* ImageCell.swift */; };
+		E52233B6296D04A200C5DD07 /* PostingPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52233B5296D04A200C5DD07 /* PostingPhotoCell.swift */; };
 		E5226D582911F3610065C809 /* Dormitory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D572911F3610065C809 /* Dormitory.swift */; };
 		E5226D5A2911F36B0065C809 /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D592911F36B0065C809 /* Gender.swift */; };
 		E5226D5C2911F3760065C809 /* JoinPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D5B2911F3760065C809 /* JoinPeriod.swift */; };
@@ -248,7 +248,7 @@
 		E51D1C7B2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMyInfoViewReactor.swift; sourceTree = "<group>"; };
 		E51D1C7D29531B8300A7EE49 /* MyRoommateViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoommateViewReactor.swift; sourceTree = "<group>"; };
 		E52233B2296CFCAD00C5DD07 /* PostingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingVC.swift; sourceTree = "<group>"; };
-		E52233B5296D04A200C5DD07 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
+		E52233B5296D04A200C5DD07 /* PostingPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingPhotoCell.swift; sourceTree = "<group>"; };
 		E5226D572911F3610065C809 /* Dormitory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dormitory.swift; sourceTree = "<group>"; };
 		E5226D592911F36B0065C809 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
 		E5226D5B2911F3760065C809 /* JoinPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinPeriod.swift; sourceTree = "<group>"; };
@@ -656,7 +656,7 @@
 				E5290F0D288867E50004B8E6 /* CommentCell.swift */,
 				E5066429296E6B9B00B581E1 /* PostCell.swift */,
 				E506642B296E6BAA00B581E1 /* PopularPostCell.swift */,
-				E52233B5296D04A200C5DD07 /* ImageCell.swift */,
+				E52233B5296D04A200C5DD07 /* PostingPhotoCell.swift */,
 				E50FB5302972E41600E938B8 /* LoadingCell.swift */,
 				E58F96FA2884E85B00CC3C75 /* GalleryCell.swift */,
 			);
@@ -1368,7 +1368,7 @@
 				E5CFF71929835D0700E11D9A /* MatchingInfoResponseModel.swift in Sources */,
 				E562611A299B5B5700D14020 /* BottomSheetVC.swift in Sources */,
 				E5226D5A2911F36B0065C809 /* Gender.swift in Sources */,
-				E52233B6296D04A200C5DD07 /* ImageCell.swift in Sources */,
+				E52233B6296D04A200C5DD07 /* PostingPhotoCell.swift in Sources */,
 				E5CFF71D29835DC300E11D9A /* MatchingRequestModel.swift in Sources */,
 				E5226D582911F3610065C809 /* Dormitory.swift in Sources */,
 				E5AC2DCB2882F24000B82AD8 /* OnboardingTextField.swift in Sources */,

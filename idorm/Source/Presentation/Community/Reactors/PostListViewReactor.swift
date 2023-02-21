@@ -19,7 +19,6 @@ final class PostListViewReactor: Reactor {
     case didTapPostBtn(Int)
     case pullToRefresh
     case fetchMorePosts
-    case postingCompletion
     case fetchNewPosts
   }
   
@@ -28,13 +27,14 @@ final class PostListViewReactor: Reactor {
     case setTopPosts([CommunityResponseModel.Posts])
     case setDorm(Dormitory)
     case setLoading(Bool)
-    case setRefreshing(Bool)
+    case setEndRefreshing(Bool)
     case setPage(Int)
     case setPagination(Bool)
     case setBlockRequest(Bool)
-    case resetPosts
     case setPostingVC(Bool, Dormitory)
     case setPostDetailVC(Bool, Int)
+    case setReloadData(Bool)
+    case resetPosts
   }
   
   struct State {
@@ -43,9 +43,10 @@ final class PostListViewReactor: Reactor {
     var currentDorm: Dormitory = .no3
     var currentPage: Int = 0
     var isLoading: Bool = false
-    var isRefreshing: Bool = false
+    var endRefreshing: Bool = false
     var isPagination: Bool = false
     var isBlockedRequest: Bool = false
+    var reloadData: Bool = false
     var showsPostingVC: (Bool, Dormitory) = (false, .no3)
     var showsPostDetailVC: (Bool, Int) = (false, 0)
   }
@@ -72,8 +73,8 @@ final class PostListViewReactor: Reactor {
     case .didTapDormBtn(let dorm):
       return .concat([
         .just(.setLoading(true)),
-        .just(.setDorm(dorm)),
         .just(.resetPosts),
+        .just(.setDorm(dorm)),
         retrieveTopPosts(dorm)
       ])
       
@@ -91,7 +92,6 @@ final class PostListViewReactor: Reactor {
       
     case .pullToRefresh:
       return .concat([
-        .just(.setRefreshing(true)),
         .just(.resetPosts),
         retrieveTopPosts(currentState.currentDorm)
       ])
@@ -102,13 +102,6 @@ final class PostListViewReactor: Reactor {
       return .concat([
         .just(.setPagination(true)),
         retrievePosts(currentState.currentDorm, page: nextPage)
-      ])
-      
-    case .postingCompletion:
-      return .concat([
-        .just(.setLoading(true)),
-        .just(.resetPosts),
-        retrieveTopPosts(currentState.currentDorm)
       ])
       
     case .fetchNewPosts:
@@ -136,9 +129,6 @@ final class PostListViewReactor: Reactor {
     case .setDorm(let dorm):
       newState.currentDorm = dorm
       
-    case .setRefreshing(let isRefreshing):
-      newState.isRefreshing = isRefreshing
-      
     case .setPage(let page):
       newState.currentPage = page
       
@@ -148,14 +138,20 @@ final class PostListViewReactor: Reactor {
     case .setBlockRequest(let isBlockedRequest):
       newState.isBlockedRequest = isBlockedRequest
       
-    case .resetPosts:
-      newState.currentPosts = []
-      
     case let .setPostingVC(isOpened, dorm):
       newState.showsPostingVC = (isOpened, dorm)
       
     case let .setPostDetailVC(isOpened, postId):
       newState.showsPostDetailVC = (isOpened, postId)
+      
+    case .setEndRefreshing(let state):
+      newState.endRefreshing = state
+      
+    case .setReloadData(let state):
+      newState.reloadData = state
+      
+    case .resetPosts:
+      newState.currentPosts = []
     }
     
     return newState
@@ -189,9 +185,12 @@ extension PostListViewReactor {
           ])
         }
       },
+      .just(.setEndRefreshing(true)),
+      .just(.setEndRefreshing(false)),
       .just(.setPagination(false)),
       .just(.setLoading(false)),
-      .just(.setRefreshing(false)).delay(.seconds(1), scheduler: MainScheduler.asyncInstance)
+      .just(.setReloadData(true)),
+      .just(.setReloadData(false))
     ])
   }
   

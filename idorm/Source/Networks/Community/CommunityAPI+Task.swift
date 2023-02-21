@@ -24,7 +24,7 @@ extension CommunityAPI {
       let titleData = MultipartFormData(provider: .data(post.title.data(using: .utf8)!), name: "title")
       let contentsData = MultipartFormData(provider: .data(post.content.data(using: .utf8)!), name: "content")
       let anonymousData = MultipartFormData(provider: .data(post.isAnonymous.description.data(using: .utf8)!), name: "isAnonymous")
-      let dormNumData = MultipartFormData(provider: .data(post.dormNum.rawValue.data(using: .utf8)!), name: "dormNum")
+      let dormNumData = MultipartFormData(provider: .data(post.dormCategory.rawValue.data(using: .utf8)!), name: "dormCategory")
       
       multiFormDatas = [titleData, contentsData, anonymousData, dormNumData]
       

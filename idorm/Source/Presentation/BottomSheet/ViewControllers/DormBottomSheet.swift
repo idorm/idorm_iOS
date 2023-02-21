@@ -23,9 +23,9 @@ final class DormBottomSheet: BaseViewController {
     return btn
   }()
   
-  private let dorm1Btn = BottomSheetUtils.dormNumberButton(title: "인천대 1기숙사")
-  private let dorm2Btn = BottomSheetUtils.dormNumberButton(title: "인천대 2기숙사")
-  private let dorm3Btn = BottomSheetUtils.dormNumberButton(title: "인천대 3기숙사")
+  private let dorm1Btn = BottomSheetUtils.dormNumberButton("인천대 1기숙사")
+  private let dorm2Btn = BottomSheetUtils.dormNumberButton("인천대 2기숙사")
+  private let dorm3Btn = BottomSheetUtils.dormNumberButton("인천대 3기숙사")
   
   let didTapDormBtn = PublishSubject<Dormitory>()
   

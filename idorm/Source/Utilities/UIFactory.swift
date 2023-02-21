@@ -25,4 +25,11 @@ extension UIFactory {
     
     return view
   }
+  
+  static func button(_ imageName: String) -> UIButton {
+    let btn = UIButton()
+    btn.setImage(UIImage(named: imageName), for: .normal)
+    
+    return btn
+  }
 }

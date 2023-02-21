@@ -9,41 +9,42 @@ import UIKit
 
 import SnapKit
 import PanModal
+import RxSwift
+import RxCocoa
 
 final class BottomSheetViewController: BaseViewController {
+  
+  enum BottomSheetButtonType {
+    case dorm(Dormitory)
+    case report
+    case deleteComment
+    case deletePost
+    case share
+    case editPost
+  }
+  
+  // MARK: - UI COMPONENTS
+    
+  private let dorm1Button = BottomSheetUtils.dormNumberButton("인천대 1기숙사")
+  private let dorm2Button = BottomSheetUtils.dormNumberButton("인천대 2기숙사")
+  private let dorm3Button = BottomSheetUtils.dormNumberButton("인천대 3기숙사")
+  private let reportButton = BottomSheetUtils.reportButton()
+  private let deleteCommentButton = BottomSheetUtils.basicButton("댓글 삭제", imageName: "trash")
+  private let deletePostButton = BottomSheetUtils.basicButton("게시글 삭제", imageName: "trash")
+  private let shareButton = BottomSheetUtils.basicButton("공유하기", imageName: "arrow_square")
+  private let editPostButton = BottomSheetUtils.basicButton("게시글 수정", imageName: "pencil_square")
+  private let exitButton = UIFactory.button("xmark_black")
   
   // MARK: - PROPERTIES
   
   private let bottomSheet: BottomSheet
-  
-  private let dorm1Button = BottomSheetUtils.dormNumberButton(title: "인천대 1기숙사")
-  private let dorm2Button = BottomSheetUtils.dormNumberButton(title: "인천대 2기숙사")
-  private let dorm3Button = BottomSheetUtils.dormNumberButton(title: "인천대 3기숙사")
-  private let reportButton = BottomSheetUtils.reportButton()
-  private let deleteCommentButton = BottomSheetUtils.basicButton("댓글 삭제", image: UIImage(named: "trash"))
-  private let deletePostButton = BottomSheetUtils.basicButton("게시글 삭제", image: UIImage(named: "trash"))
-  private let shareButton = BottomSheetUtils.basicButton("공유하기", image: UIImage(named: "arrow_square"))
-  private let editPostButton = BottomSheetUtils.basicButton("게시글 수정", image: UIImage(named: "pencil_square"))
-  
-  private let exitButton: UIButton = {
-    let btn = UIButton()
-    btn.setImage(UIImage(named: "xmark_black"), for: .normal)
-    
-    return btn
-  }()
-  
-  var dormButtonCompletion: ((Dormitory) -> Void)?
-  var reportButtonCompletion: (() -> Void)?
-  var deleteButtonCompletion: (() -> Void)?
-  var editButtonCompletion: (() -> Void)?
-  var shareButtonCompletion: (() -> Void)?
+  let buttonDidTap = PublishSubject<BottomSheetButtonType>()
   
   // MARK: - INITIALIZER
   
   init(_ bottomSheet: BottomSheet) {
     self.bottomSheet = bottomSheet
     super.init(nibName: nil, bundle: nil)
-    setupSelectors()
   }
   
   required init?(coder: NSCoder) {
@@ -51,19 +52,7 @@ final class BottomSheetViewController: BaseViewController {
   }
   
   // MARK: - SETUP
-  
-  private func setupSelectors() {
-    self.dorm1Button.addTarget(self, action: #selector(didTapDorm1Button), for: .touchUpInside)
-    self.dorm1Button.addTarget(self, action: #selector(didTapDorm2Button), for: .touchUpInside)
-    self.dorm1Button.addTarget(self, action: #selector(didTapDorm3Button), for: .touchUpInside)
-    self.reportButton.addTarget(self, action: #selector(didTapReportButton), for: .touchUpInside)
-    self.deletePostButton.addTarget(self, action: #selector(didTapDeletePostButton), for: .touchUpInside)
-    self.deleteCommentButton.addTarget(self, action: #selector(didTapDeleteCommentButton), for: .touchUpInside)
-    self.shareButton.addTarget(self, action: #selector(didTapShareButton), for: .touchUpInside)
-    self.editPostButton.addTarget(self, action: #selector(didTapEditPostButton), for: .touchUpInside)
-    self.exitButton.addTarget(self, action: #selector(didTapExitButton), for: .touchUpInside)
-  }
-  
+
   override func setupStyles() {
     self.view.backgroundColor = .white
   }
@@ -178,59 +167,77 @@ final class BottomSheetViewController: BaseViewController {
     }
   }
   
-  // MARK: - SELECTORS
+  // MARK: - Bind
   
-  @objc
-  private func didTapDorm1Button() {
-    self.dormButtonCompletion?(.no1)
-    self.dismiss(animated: true)
-  }
-  
-  @objc
-  private func didTapDorm2Button() {
-    self.dormButtonCompletion?(.no2)
-    self.dismiss(animated: true)
-  }
-  
-  @objc
-  private func didTapDorm3Button() {
-    self.dormButtonCompletion?(.no3)
-    self.dismiss(animated: true)
-  }
+  override func bind() {
+    
+    // 종료 버튼 -> 화면 종료
+    self.exitButton.rx.tap
+      .bind(with: self) { owner, _ in
+        owner.dismiss(animated: true)
+      }
+      .disposed(by: self.disposeBag)
+    
+    // 기숙사 버튼
+    self.dorm1Button.rx.tap
+      .map { BottomSheetButtonType.dorm(.no1) }
+      .withUnretained(self)
+      .do { $0.0.dismiss(animated: true) }
+      .map { $0.1 }
+      .bind(to: self.buttonDidTap)
+      .disposed(by: self.disposeBag)
+    
+    self.dorm2Button.rx.tap
+      .map { BottomSheetButtonType.dorm(.no2) }
+      .withUnretained(self)
+      .do { $0.0.dismiss(animated: true) }
+      .map { $0.1 }
+      .bind(to: self.buttonDidTap)
+      .disposed(by: self.disposeBag)
 
-  @objc
-  private func didTapReportButton() {
-    self.reportButtonCompletion?()
-    self.dismiss(animated: true)
-  }
-  
-  @objc
-  private func didTapDeletePostButton() {
-    self.deleteButtonCompletion?()
-    self.dismiss(animated: true)
-  }
-  
-  @objc
-  private func didTapDeleteCommentButton() {
-    self.deleteButtonCompletion?()
-    self.dismiss(animated: true)
-  }
+    self.dorm3Button.rx.tap
+      .map { BottomSheetButtonType.dorm(.no3) }
+      .withUnretained(self)
+      .do { $0.0.dismiss(animated: true) }
+      .map { $0.1 }
+      .bind(to: self.buttonDidTap)
+      .disposed(by: self.disposeBag)
+    
+    // 신고 버튼
+    self.reportButton.rx.tap
+      .map { BottomSheetButtonType.report }
+      .withUnretained(self)
+      .do { $0.0.dismiss(animated: true) }
+      .map { $0.1 }
+      .bind(to: self.buttonDidTap)
+      .disposed(by: self.disposeBag)
+    
+    // 댓글 삭제
+    self.deleteCommentButton.rx.tap
+      .map { BottomSheetButtonType.deleteComment }
+      .withUnretained(self)
+      .do { $0.0.dismiss(animated: true) }
+      .map { $0.1 }
+      .bind(to: self.buttonDidTap)
+      .disposed(by: self.disposeBag)
 
-  @objc
-  private func didTapShareButton() {
-    self.shareButtonCompletion?()
-    self.dismiss(animated: true)
-  }
-  
-  @objc
-  private func didTapEditPostButton() {
-    self.editButtonCompletion?()
-    self.dismiss(animated: true)
-  }
-  
-  @objc
-  private func didTapExitButton() {
-    self.dismiss(animated: true)
+    // 게시글 삭제
+    self.deletePostButton.rx.tap
+      .map { BottomSheetButtonType.deletePost }
+      .withUnretained(self)
+      .do { $0.0.dismiss(animated: true) }
+      .map { $0.1 }
+      .bind(to: self.buttonDidTap)
+      .disposed(by: self.disposeBag)
+    
+    // 게시글 수정
+    self.editPostButton.rx.tap
+      .map { BottomSheetButtonType.editPost }
+      .withUnretained(self)
+      .do { $0.0.dismiss(animated: true) }
+      .map { $0.1 }
+      .bind(to: self.buttonDidTap)
+      .disposed(by: self.disposeBag)
   }
 }
 

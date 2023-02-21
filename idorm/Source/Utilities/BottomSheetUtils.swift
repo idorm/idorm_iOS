@@ -1,3 +1,10 @@
+//
+//  BottomSheetUtils.swift
+//  idorm
+//
+//  Created by 김응철 on 2023/02/14.
+//
+
 import UIKit
 
 final class BottomSheetUtils {
@@ -5,10 +12,10 @@ final class BottomSheetUtils {
   static func reportButton() -> UIButton {
     var config = UIButton.Configuration.filled()
     var titleContainer = AttributeContainer()
-    titleContainer.font = UIFont.init(name: MyFonts.medium.rawValue, size: 20)
+    titleContainer.font = .idormFont(.medium, size: 20)
     titleContainer.foregroundColor = UIColor.black
     var subtitleContainer = AttributeContainer()
-    subtitleContainer.font = UIFont.init(name: MyFonts.medium.rawValue, size: 14)
+    subtitleContainer.font = .idormFont(.medium, size: 14)
     subtitleContainer.foregroundColor = UIColor.idorm_gray_400
     config.attributedTitle = AttributedString("신고하기", attributes: titleContainer)
     config.attributedSubtitle = AttributedString("idorm의 커뮤니티 가이드라인에 위배되는 댓글", attributes: subtitleContainer)
@@ -21,13 +28,13 @@ final class BottomSheetUtils {
   }
   
   /// 일반 버튼을 반환합니다.
-  static func basicButton(_ title: String, image: UIImage?) -> UIButton {
+  static func basicButton(_ title: String, imageName: String) -> UIButton {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
-    container.font = UIFont.init(name: MyFonts.medium.rawValue, size: 20)
+    container.font = .idormFont(.medium, size: 20)
     container.foregroundColor = UIColor.black
     config.attributedTitle = AttributedString(title, attributes: container)
-    config.image = image
+    config.image = UIImage(named: imageName)
     config.imagePlacement = .leading
     config.imagePadding = 8
     config.baseBackgroundColor = .white
@@ -39,10 +46,10 @@ final class BottomSheetUtils {
   }
 
   /// 기숙사 별 버튼을 반환합니다.
-  static func dormNumberButton(title: String) -> UIButton {
+  static func dormNumberButton(_ title: String) -> UIButton {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
-    container.font = UIFont.init(name: MyFonts.bold.rawValue, size: 20)
+    container.font = .idormFont(.bold, size: 20)
     container.foregroundColor = UIColor.black
     config.attributedTitle = AttributedString(title, attributes: container)
     let button = UIButton(configuration: config)
@@ -64,10 +71,10 @@ extension BottomSheetUtils {
     }
     return handler
   }
-  
-  static func button(_ image: UIImage) -> UIButton {
+
+  static func button(_ imageName: String) -> UIButton {
     let button = UIButton()
-    button.setImage(image, for: .normal)
+    button.setImage(UIImage(named: imageName), for: .normal)
 
     return button
   }

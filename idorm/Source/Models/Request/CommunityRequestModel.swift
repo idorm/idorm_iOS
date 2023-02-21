@@ -20,7 +20,7 @@ extension CommunityRequestModel {
   struct Post {
     let content: String
     let title: String
-    let dormNum: Dormitory
+    let dormCategory: Dormitory
     let assets: [PHAsset]
     let isAnonymous: Bool
   }

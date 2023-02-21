@@ -12,7 +12,7 @@ import RxMoya
 import Photos
 
 final class PostingViewReactor: Reactor {
-  
+    
   enum Action {
     case didTapPictIv
     case didTapCompleteBtn
@@ -45,13 +45,28 @@ final class PostingViewReactor: Reactor {
     var isLoading: Bool = false
     var popVC: Bool = false
   }
+  
+  enum PostingType {
+    case new
+    case edit(CommunityResponseModel.Post)
+  }
     
   private let currentDorm: Dormitory
-  var postingCompletion: (() -> Void)?
+  private var post: CommunityResponseModel.Post?
   var initialState: State = State()
   
-  init(_ dorm: Dormitory) {
+  init(
+    _ postingType: PostingType,
+    dorm: Dormitory
+  ) {
     self.currentDorm = dorm
+    
+    switch postingType {
+    case .new:
+      break
+    case .edit(let post):
+      self.post = post
+    }
   }
   
   func mutate(action: Action) -> Observable<Mutation> {
@@ -61,16 +76,14 @@ final class PostingViewReactor: Reactor {
         .just(.setGalleryVC(true)),
         .just(.setGalleryVC(false))
       ])
-      
     case .didTapCompleteBtn:
       let newPost = CommunityRequestModel.Post(
         content: currentState.currentContents,
         title: currentState.currentTitle,
-        dormNum: currentDorm,
+        dormCategory: currentDorm,
         assets: currentState.currentImages,
         isAnonymous: currentState.isAnonymous
       )
-      
       return .concat([
         .just(.setLoading(true)),
         CommunityAPI.provider.rx.request(.savePost(newPost))
@@ -80,36 +93,29 @@ final class PostingViewReactor: Reactor {
           .flatMap { owner, response -> Observable<Mutation> in
             switch response.statusCode {
             case 200..<300:
-              owner.postingCompletion?()
               return .concat([
                 .just(.setLoading(false)),
                 .just(.setPopVC(true))
               ])
-              
             default:
               fatalError("게시글 저장 실패")
             }
           }
       ])
-      
     case .didPickedImages(let images):
       return .just(.setImages(images))
-      
     case .didTapDeleteBtn(let index):
       return .just(.deleteImages(index))
-      
     case .didChangeTitle(let title):
       return .concat([
         .just(.setTitle(title)),
         .just(.setCompleteBtn)
       ])
-      
     case .didChangeContent(let contents):
       return .concat([
         .just(.setContents(contents)),
         .just(.setCompleteBtn)
       ])
-      
     case .didTapAnonymousBtn(let isSelected):
       return .just(.setAnonymous(isSelected))
     }

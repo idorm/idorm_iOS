@@ -127,13 +127,13 @@ final class DetailPostViewController: BaseViewController, View {
     // 댓글 입력 반응
     self.commentView.textView.rx.text
       .orEmpty
-      .map { DetailPostViewReactor.Action.didChangeComment($0) }
+      .map { DetailPostViewReactor.Action.commentDidChange($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 전송 버튼 클릭
     self.commentView.sendButton.rx.tap
-      .map { DetailPostViewReactor.Action.didTapSendButton }
+      .map { DetailPostViewReactor.Action.sendButtonDidTap }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -144,7 +144,7 @@ final class DetailPostViewController: BaseViewController, View {
     }.when(.recognized)
       .withUnretained(self)
       .do { $0.0.commentView.textView.resignFirstResponder() }
-      .map { _ in DetailPostViewReactor.Action.didTapBackground }
+      .map { _ in DetailPostViewReactor.Action.backgroundDidTap }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -152,7 +152,7 @@ final class DetailPostViewController: BaseViewController, View {
     self.commentView.anonymousButton.rx.tap
       .withUnretained(self)
       .map { !$0.0.commentView.anonymousButton.isSelected }
-      .map { DetailPostViewReactor.Action.didTapAnonymousButton($0) }
+      .map { DetailPostViewReactor.Action.anonymousButtonDidTap($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -165,21 +165,24 @@ final class DetailPostViewController: BaseViewController, View {
         else { return }
         
         let bottomSheet: BottomSheetViewController
-        
-        if memberId == postMemberId {
-          bottomSheet = BottomSheetViewController(.myPost)
-        } else {
-          bottomSheet = BottomSheetViewController(.post)
-        }
-        
-        // 게시글 삭제 버튼 클릭
-        bottomSheet.deleteButtonCompletion = {
-          reactor.action.onNext(.didTapDeletePostButton)
-        }
-        
+        bottomSheet = memberId == postMemberId ? .init(.myPost) : .init(.post)
         owner.presentPanModal(bottomSheet)
+        
+        // 바텀시트 버튼 클릭
+        bottomSheet.buttonDidTap
+          .bind {
+            switch $0 {
+            case .deletePost:
+              reactor.action.onNext(.deletePostButtonDidTap)
+            case .editPost:
+              reactor.action.onNext(.editPostButtonDidTap)
+            default:
+              break
+            }
+          }
+          .disposed(by: owner.disposeBag)
       }
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
     
     // 당겨서 새로고침
     self.refreshControl.rx.controlEvent(.valueChanged)
@@ -253,19 +256,28 @@ final class DetailPostViewController: BaseViewController, View {
       .map { $0.isPresentedAlert }
       .filter { $0.0 }
       .withUnretained(self)
-      .bind {
-        let alert = UIAlertController(title: $1.1, message: nil, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "확인", style: .cancel))
-        $0.present(alert, animated: true)
+      .bind { owner, title in
+        let alert = UIAlertController(
+          title: title.1,
+          message: nil,
+          preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "확인", style: .cancel) { _ in
+          if title.1 == "게시글이 삭제되었습니다." {
+            owner.popCompletion?()
+            owner.navigationController?.popViewController(animated: true)
+          }
+        })
+        owner.present(alert, animated: true)
       }
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
     
     // 키보드 종료
     reactor.state
       .map { $0.endEditing }
       .filter { $0 }
       .bind(with: self) { $0.view.endEditing($1) }
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
     
     // 당겨서 새로고침 취소
     reactor.state
@@ -286,6 +298,16 @@ final class DetailPostViewController: BaseViewController, View {
         owner.popCompletion?()
       }
       .disposed(by: disposeBag)
+    
+    // PostingVC 이동
+    reactor.state
+      .map { $0.showsPostingVC }
+      .filter { $0 }
+      .bind(with: self) { owner, _ in
+        guard let post = reactor.currentState.currentPost else { return }
+        let postingVC = PostingViewController()
+        let postingReactor = PostingViewReactor(.edit(post), dorm: post.dormCategory)
+      }
   }
   
   // MARK: - HELPERS
@@ -302,7 +324,7 @@ final class DetailPostViewController: BaseViewController, View {
     
     alert.addAction(UIAlertAction(title: "취소", style: .cancel))
     alert.addAction(UIAlertAction(title: "확인", style: .default) { [weak self] _ in
-      self?.reactor?.action.onNext(.didTapSympathyButton(!nextState))
+      self?.reactor?.action.onNext(.sympathyButtonDidTap(!nextState))
     })
     
     self.present(alert, animated: true)
@@ -364,7 +386,7 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
           title: "작성",
           style: .default,
           handler: { [weak self] _ in
-            self?.reactor?.action.onNext(.didTapReplyButton(
+            self?.reactor?.action.onNext(.replyButtonDidTap(
               indexPath: indexPath.row,
               parentId: parentId
             ))
@@ -382,25 +404,22 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
       
       // 댓글 옵션 버튼 클릭
       cell.optionButtonCompletion = { [weak self] commentId in
+        guard let self = self else { return }
         let bottomSheet: BottomSheetViewController
+        bottomSheet = orderedComment.commentId == commentId ? .init(.myComment) : .init(.comment)
+        self.presentPanModal(bottomSheet)
         
-        if orderedComment.commentId == commentId {
-          bottomSheet = BottomSheetViewController(.myComment)
-        } else {
-          bottomSheet = BottomSheetViewController(.comment)
-        }
-        
-        self?.presentPanModal(bottomSheet)
-        
-        // 댓글 삭제 버튼
-        bottomSheet.deleteButtonCompletion = {
-          self?.reactor?.action.onNext(.didTapDeleteCommentButton(commentId: commentId))
-        }
-        
-        // 신고하기 버튼
-        bottomSheet.reportButtonCompletion = {
-          
-        }
+        // 바텀시트 버튼 클릭
+        bottomSheet.buttonDidTap
+          .bind {
+            switch $0 {
+            case .deleteComment:
+              self.reactor?.action.onNext(.deleteCommentButtonDidTap(commentId: commentId))
+            default:
+              break
+            }
+          }
+          .disposed(by: self.disposeBag)
       }
       
       return cell

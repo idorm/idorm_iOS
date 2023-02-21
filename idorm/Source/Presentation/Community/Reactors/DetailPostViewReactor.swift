@@ -14,15 +14,16 @@ final class DetailPostViewReactor: Reactor {
   
   enum Action {
     case viewDidLoad
-    case didChangeComment(String)
-    case didTapSendButton
-    case didTapReplyButton(indexPath: Int, parentId: Int)
-    case didTapBackground
-    case didTapAnonymousButton(Bool)
-    case didTapSympathyButton(Bool)
-    case didTapDeleteCommentButton(commentId: Int)
+    case commentDidChange(String)
+    case sendButtonDidTap
+    case replyButtonDidTap(indexPath: Int, parentId: Int)
+    case backgroundDidTap
+    case anonymousButtonDidTap(Bool)
+    case sympathyButtonDidTap(Bool)
+    case deleteCommentButtonDidTap(commentId: Int)
     case pullToRefresh
-    case didTapDeletePostButton
+    case deletePostButtonDidTap
+    case editPostButtonDidTap
   }
   
   enum Mutation {
@@ -39,6 +40,7 @@ final class DetailPostViewReactor: Reactor {
     case setEndEditing(Bool)
     case setEndRefresh(Bool)
     case setPopVC(Bool)
+    case setPostingVC(Bool)
   }
   
   struct State {
@@ -55,6 +57,7 @@ final class DetailPostViewReactor: Reactor {
     var endEditing: Bool = false
     var endRefresh: Bool = false
     var popVC: Bool = false
+    var showsPostingVC: Bool = false
   }
   
   var initialState: State = State()
@@ -71,11 +74,9 @@ final class DetailPostViewReactor: Reactor {
         .just(.setLoading(true)),
         retrievePost()
       ])
-      
-    case .didChangeComment(let comment):
+    case .commentDidChange(let comment):
       return .just(.setComment(comment))
-      
-    case .didTapSendButton:
+    case .sendButtonDidTap:
       let indexPath = currentState.currentCellBackgroundColor.1
       return .concat([
         .just(.setLoading(true)),
@@ -85,25 +86,21 @@ final class DetailPostViewReactor: Reactor {
         .just(.setEndEditing(true)),
         .just(.setEndEditing(false))
       ])
-      
-    case let .didTapReplyButton(indexPath, parentId):
+    case let .replyButtonDidTap(indexPath, parentId):
       return .concat([
         .just(.setFocusedComment(parentId)),
         .just(.setCellBackgroundColor(true, indexPath)),
       ])
-      
-    case .didTapBackground:
+    case .backgroundDidTap:
       let indexPath = currentState.currentCellBackgroundColor.1
       return .concat([
         .just(.setCellBackgroundColor(false, indexPath)),
         .just(.setFocusedComment(nil)),
       ])
       .subscribe(on: MainScheduler.asyncInstance)
-      
-    case .didTapAnonymousButton(let isSelected):
+    case .anonymousButtonDidTap(let isSelected):
       return .just(.setAnonymous(isSelected))
-      
-    case .didTapSympathyButton(let isSympathy):
+    case .sympathyButtonDidTap(let isSympathy):
       return .concat([
         .just(.setLoading(true)),
         CommunityAPI.provider.rx.request(.editPostSympathy(postId: postId, isSympathy: isSympathy))
@@ -127,8 +124,7 @@ final class DetailPostViewReactor: Reactor {
             }
           }
       ])
-      
-    case .didTapDeleteCommentButton(let commentId):
+    case .deleteCommentButtonDidTap(let commentId):
       return .concat([
         .just(.setLoading(true)),
         CommunityAPI.provider.rx.request(
@@ -151,11 +147,9 @@ final class DetailPostViewReactor: Reactor {
           }
         }
       ])
-      
     case .pullToRefresh:
       return retrievePost()
-      
-    case .didTapDeletePostButton:
+    case .deletePostButtonDidTap:
       return .concat([
         .just(.setLoading(true)),
         CommunityAPI.provider.rx.request(.deletePost(postId: postId))
@@ -169,9 +163,14 @@ final class DetailPostViewReactor: Reactor {
                 .just(.setPopVC(false))
               ])
             default:
-              return .empty()
+              return .just(.setAlert(true, "게시글이 삭제되었습니다."))
             }
           }
+      ])
+    case .editPostButtonDidTap:
+      return .concat([
+        .just(.setPostingVC(true)),
+        .just(.setPostingVC(false))
       ])
     }
   }
@@ -182,42 +181,32 @@ final class DetailPostViewReactor: Reactor {
     switch mutation {
     case .setLoading(let isLoading):
       newState.isLoading = isLoading
-      
     case .setPost(let post):
       newState.currentPost = post
-      
     case .setComment(let comment):
       newState.currentComment = comment
-      
     case .setComments(let comments):
       newState.currentComments = comments
-      
     case let .setFocusedComment(commentId):
       newState.currentFocusedComment = commentId
-      
     case let .setCellBackgroundColor(isBlocked, indexPath):
       newState.currentCellBackgroundColor = (isBlocked, indexPath)
-      
     case .setAnonymous(let isSelected):
       newState.isAnonymous = isSelected
-      
     case .setSympathy(let isSympathy):
       newState.isSympathy = isSympathy
-      
     case let .setAlert(isBlocked, title):
       newState.isPresentedAlert = (isBlocked, title)
-      
     case .setReload(let state):
       newState.reloadData = state
-      
     case .setEndEditing(let state):
       newState.endEditing = state
-      
     case .setEndRefresh(let state):
       newState.endRefresh = state
-      
     case .setPopVC(let state):
       newState.popVC = state
+    case .setPostingVC(let state):
+      newState.showsPostingVC = state
     }
     
     return newState
@@ -238,9 +227,7 @@ private extension DetailPostViewReactor {
             ResponseModel<CommunityResponseModel.Post>.self,
             data: response.data
           ).data
-          
           let orderedComments = CommentUtils.newestOrderedComments(post.comments)
-          
           return .concat([
             .just(.setEndRefresh(true)),
             .just(.setEndRefresh(false)),
@@ -251,10 +238,8 @@ private extension DetailPostViewReactor {
             .just(.setReload(true)),
             .just(.setReload(false))
           ])
-
         default:
-          // TODO: 게시글 삭제 알럿 구현
-          return .empty()
+          return .just(.setAlert(true, "게시글이 삭제되었습니다."))
         }
       }
   }
