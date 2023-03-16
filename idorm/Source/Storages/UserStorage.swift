@@ -25,10 +25,16 @@ final class UserStorage {
   private(set) var token: String
   
   private(set) var matchingInfo: MatchingInfoResponseModel.MatchingInfo?
-  private(set) var member: MemberResponseModel.Member? {
-    didSet {
-      print(member)
-    }
+  private(set) var member: MemberResponseModel.Member?
+  
+  // MARK: - COMPUTED PROPERTIES
+  
+  var hasMatchingInfo: Bool {
+    self.matchingInfo != nil ? true : false
+  }
+  
+  var isPublicMatchingInfo: Bool {
+    self.matchingInfo?.isMatchingInfoPublic ?? false
   }
   
   // MARK: - INITIALIZER

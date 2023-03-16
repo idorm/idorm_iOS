@@ -88,7 +88,8 @@ final class MatchingViewReactor: Reactor {
   let initialState: State = State()
   
   func mutate(action: Action) -> Observable<Mutation> {
-    let userStorage = MemberStorage.shared
+    let userStorage = UserStorage.shared
+    
     switch action {
     case .viewDidLoad:
       if userStorage.hasMatchingInfo {
