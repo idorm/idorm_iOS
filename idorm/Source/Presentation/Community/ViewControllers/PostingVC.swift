@@ -18,23 +18,26 @@ final class PostingViewController: BaseViewController, View {
   
   // MARK: - UI COMPONENTS
   
-  private lazy var pictsCollectionView: UICollectionView = {
+  private lazy var photoCollectionView: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
     layout.scrollDirection = .horizontal
     let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+    cv.register(
+      PostingPhotoCell.self,
+      forCellWithReuseIdentifier: PostingPhotoCell.identifier
+    )
     cv.showsHorizontalScrollIndicator = false
-    cv.register(PostingPhotoCell.self, forCellWithReuseIdentifier: PostingPhotoCell.identifier)
     cv.dataSource = self
     cv.delegate = self
     
     return cv
   }()
   
-  private lazy var completeBtn: UIButton = {
+  private lazy var doneButton: UIButton = {
     let button = UIButton()
     var config = UIButton.Configuration.plain()
     var container = AttributeContainer()
-    container.font = .init(name: MyFonts.bold.rawValue, size: 16)
+    container.font = .idormFont(.bold, size: 16)
     config.attributedTitle = AttributedString("완료", attributes: container)
     
     let handler: UIButton.ConfigurationUpdateHandler = { button in
@@ -54,22 +57,22 @@ final class PostingViewController: BaseViewController, View {
     return button
   }()
   
-  private let titleTf: UITextField = {
+  private let titleTextField: UITextField = {
     let tf = UITextField()
     tf.attributedPlaceholder = NSAttributedString(
       string: "제목",
       attributes: [
         .strokeColor: UIColor.idorm_gray_200,
-        .font: UIFont.init(name: MyFonts.bold.rawValue, size: 20)!
+        .font: UIFont.init(name: IdormFont_deprecated.bold.rawValue, size: 20)!
       ]
     )
-    tf.font = .init(name: MyFonts.bold.rawValue, size: 20)
+    tf.font = .init(name: IdormFont_deprecated.bold.rawValue, size: 20)
     tf.textColor = .black
     
     return tf
   }()
   
-  private let contentsTv: RSKPlaceholderTextView = {
+  private let contentTextView: RSKPlaceholderTextView = {
     let tv = RSKPlaceholderTextView()
     tv.attributedPlaceholder = NSAttributedString(
       string: """
@@ -78,10 +81,10 @@ final class PostingViewController: BaseViewController, View {
               """,
       attributes: [
         .strokeColor: UIColor.idorm_gray_200,
-        .font: UIFont(name: MyFonts.medium.rawValue, size: 16)!
+        .font: UIFont(name: IdormFont_deprecated.medium.rawValue, size: 16)!
       ]
     )
-    tv.font = .init(name: MyFonts.medium.rawValue, size: 16)
+    tv.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 16)
     tv.textColor = .black
     
     return tv
@@ -105,10 +108,10 @@ final class PostingViewController: BaseViewController, View {
     return view
   }()
   
-  private let currentPictsCountLb: UILabel = {
+  private let currentPictsCountLabel: UILabel = {
     let lb = UILabel()
     lb.text = "0"
-    lb.font = .init(name: MyFonts.medium.rawValue, size: 12)
+    lb.font = .idormFont(.medium, size: 12)
     lb.textColor = .black
     
     return lb
@@ -118,7 +121,7 @@ final class PostingViewController: BaseViewController, View {
     let lb = UILabel()
     lb.text = "/10"
     lb.textColor = .black
-    lb.font = .init(name: MyFonts.medium.rawValue, size: 12)
+    lb.font = .idormFont(.medium, size: 12)
     
     return lb
   }()
@@ -126,12 +129,12 @@ final class PostingViewController: BaseViewController, View {
   private let anonymousLabel: UILabel = {
     let lb = UILabel()
     lb.text = "익명"
-    lb.font = .init(name: MyFonts.medium.rawValue, size: 12)
+    lb.font = .idormFont(.medium, size: 12)
     
     return lb
   }()
   
-  private let anonymousBtn: UIButton = {
+  private let anonymousButton: UIButton = {
     let btn = UIButton()
     btn.setImage(UIImage(named: "circle_blue"), for: .selected)
     btn.setImage(UIImage(named: "circle"), for: .normal)
@@ -154,27 +157,45 @@ final class PostingViewController: BaseViewController, View {
     return indicator
   }()
   
-  private let pictIv = UIImageView(image: UIImage(named: "picture_medium"))
+  private let photoImageView = UIImageView(image: UIImage(named: "picture_medium"))
   
   // MARK: - PROPERTIES
   
   var saveCompletion: (() -> Void)?
   
-  // MARK: - Setup
+  // MARK: - LIFE CYCLE
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    self.configurePost()
+  }
+  
+  // MARK: - SETUP
+  
+  private func configurePost() {
+    guard let post = self.reactor?.post else { return }
+    self.titleTextField.text = post.title
+    self.contentTextView.text = post.content
+    self.reactor?.action.onNext(.didChangeTitle(post.title))
+    self.reactor?.action.onNext(.didChangeContent(post.content))
+    // TODO: isAnonymous 프로퍼티가 Post DTO에서 필요
+    /// Label의 "익명"이 들어있다고 실제 익명인지 판단할 수 없음 -> 닉네임이 "~익명~" 일 수도 있기 떄문에
+    // TODO: photoCollectionView 설정
+  }
   
   override func setupStyles() {
     self.navigationItem.title = "글쓰기"
-    self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: completeBtn)
+    self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: doneButton)
     self.view.backgroundColor = .white
-    self.completeBtn.isEnabled = false
+    self.doneButton.isEnabled = false
   }
   
   override func setupLayouts() {
     [
-      self.titleTf,
+      self.titleTextField,
       self.separatorLine,
-      self.pictsCollectionView,
-      self.contentsTv,
+      self.photoCollectionView,
+      self.contentTextView,
       self.bottomContainerView,
       self.bottomWhiteView,
       self.indicator
@@ -183,18 +204,18 @@ final class PostingViewController: BaseViewController, View {
     }
     
     [
-      self.pictIv,
-      self.currentPictsCountLb,
+      self.photoImageView,
+      self.currentPictsCountLabel,
       self.pictsCountLb,
       self.anonymousLabel,
-      self.anonymousBtn
+      self.anonymousButton
     ].forEach {
       self.bottomContainerView.addSubview($0)
     }
   }
   
   override func setupConstraints() {
-    self.titleTf.snp.makeConstraints { make in
+    self.titleTextField.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
       make.top.equalTo(self.view.safeAreaLayoutGuide).inset(30)
     }
@@ -202,18 +223,18 @@ final class PostingViewController: BaseViewController, View {
     self.separatorLine.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
       make.height.equalTo(0.3)
-      make.top.equalTo(self.titleTf.snp.bottom).offset(12)
+      make.top.equalTo(self.titleTextField.snp.bottom).offset(12)
     }
     
-    self.pictsCollectionView.snp.makeConstraints { make in
+    self.photoCollectionView.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
       make.top.equalTo(self.separatorLine.snp.bottom).offset(16)
       make.height.equalTo(85)
     }
     
-    self.contentsTv.snp.makeConstraints { make in
+    self.contentTextView.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(20)
-      make.top.equalTo(self.pictsCollectionView.snp.bottom).offset(16)
+      make.top.equalTo(self.photoCollectionView.snp.bottom).offset(16)
       make.bottom.equalTo(self.bottomContainerView.snp.top).offset(-16)
     }
     
@@ -223,27 +244,27 @@ final class PostingViewController: BaseViewController, View {
       make.height.equalTo(56)
     }
     
-    self.pictIv.snp.makeConstraints { make in
+    self.photoImageView.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(24)
       make.centerY.equalToSuperview()
     }
 
-    self.currentPictsCountLb.snp.makeConstraints { make in
-      make.leading.equalTo(self.pictIv.snp.trailing).offset(10)
-      make.centerY.equalTo(self.pictIv)
+    self.currentPictsCountLabel.snp.makeConstraints { make in
+      make.leading.equalTo(self.photoImageView.snp.trailing).offset(10)
+      make.centerY.equalTo(self.photoImageView)
     }
     
     self.pictsCountLb.snp.makeConstraints { make in
-      make.leading.equalTo(currentPictsCountLb.snp.trailing)
-      make.centerY.equalTo(pictIv)
+      make.leading.equalTo(currentPictsCountLabel.snp.trailing)
+      make.centerY.equalTo(photoImageView)
     }
     
     self.anonymousLabel.snp.makeConstraints { make in
       make.centerY.equalToSuperview()
-      make.trailing.equalTo(self.anonymousBtn.snp.leading).offset(-6)
+      make.trailing.equalTo(self.anonymousButton.snp.leading).offset(-6)
     }
     
-    self.anonymousBtn.snp.makeConstraints { make in
+    self.anonymousButton.snp.makeConstraints { make in
       make.trailing.equalToSuperview().inset(24)
       make.centerY.equalToSuperview()
     }
@@ -269,14 +290,14 @@ final class PostingViewController: BaseViewController, View {
     // MARK: - Action
     
     // 사진 버튼 클릭
-    pictIv.rx.tapGesture()
+    photoImageView.rx.tapGesture()
       .skip(1)
       .map { _ in PostingViewReactor.Action.didTapPictIv }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 제목 변경
-    titleTf.rx.text
+    titleTextField.rx.text
       .orEmpty
       .distinctUntilChanged()
       .map { PostingViewReactor.Action.didChangeTitle($0) }
@@ -284,7 +305,7 @@ final class PostingViewController: BaseViewController, View {
       .disposed(by: disposeBag)
     
     // 내용 변경
-    contentsTv.rx.text
+    contentTextView.rx.text
       .orEmpty
       .distinctUntilChanged()
       .map { PostingViewReactor.Action.didChangeContent($0) }
@@ -292,16 +313,16 @@ final class PostingViewController: BaseViewController, View {
       .disposed(by: disposeBag)
     
     // 익명 버튼 이벤트
-    anonymousBtn.rx.tap
+    anonymousButton.rx.tap
       .withUnretained(self)
-      .do { $0.0.anonymousBtn.isSelected.toggle() }
-      .map { $0.0.anonymousBtn.isSelected }
+      .do { $0.0.anonymousButton.isSelected.toggle() }
+      .map { $0.0.anonymousButton.isSelected }
       .map { PostingViewReactor.Action.didTapAnonymousBtn($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 완료 버튼
-    completeBtn.rx.tap
+    doneButton.rx.tap
       .map { PostingViewReactor.Action.didTapCompleteBtn }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
@@ -325,7 +346,7 @@ final class PostingViewController: BaseViewController, View {
       .observe(on: MainScheduler.asyncInstance)
       .bind {
         $0.0.updateConstraints()
-        $0.0.pictsCollectionView.reloadData()
+        $0.0.photoCollectionView.reloadData()
       }
       .disposed(by: disposeBag)
     
@@ -334,14 +355,14 @@ final class PostingViewController: BaseViewController, View {
       .map { $0.currentImages.count }
       .map { String($0) }
       .distinctUntilChanged()
-      .bind(to: currentPictsCountLb.rx.text)
+      .bind(to: currentPictsCountLabel.rx.text)
       .disposed(by: disposeBag)
     
     // 완료버튼 활성/비활성
     reactor.state
       .map { $0.isEnabledCompleteBtn }
       .distinctUntilChanged()
-      .bind(to: completeBtn.rx.isEnabled)
+      .bind(to: doneButton.rx.isEnabled)
       .disposed(by: disposeBag)
     
     // 뒤로가기
@@ -378,8 +399,20 @@ final class PostingViewController: BaseViewController, View {
   private func checkAuthorization() {
     let galleryVC = GalleryViewController(count: reactor?.currentState.currentImages.count ?? 0)
     
-    galleryVC.completion = { [weak self] images in
+    galleryVC.completion = { [weak self] assets in
       // 선택된 이미지 반응
+      let manager = PHImageManager.default()
+      var images: [UIImage] = []
+      assets.forEach {
+        manager.requestImage(
+          for: $0,
+          targetSize: CGSize(width: 80, height: 80),
+          contentMode: .aspectFit,
+          options: nil) { image, _ in
+            guard let image = image else { return }
+            images.append(image)
+          }
+      }
       self?.reactor?.action.onNext(.didPickedImages(images))
     }
     
@@ -424,19 +457,19 @@ final class PostingViewController: BaseViewController, View {
     guard let images = reactor?.currentState.currentImages else { return }
     
     if images.count > 0 {
-      pictsCollectionView.isHidden = false
+      photoCollectionView.isHidden = false
       
-      contentsTv.snp.updateConstraints { make in
+      contentTextView.snp.updateConstraints { make in
         make.leading.trailing.equalToSuperview().inset(20)
-        make.top.equalTo(pictsCollectionView.snp.bottom).offset(16)
+        make.top.equalTo(photoCollectionView.snp.bottom).offset(16)
         make.bottom.equalTo(bottomContainerView.snp.top).offset(-16)
       }
     } else {
-      pictsCollectionView.isHidden = true
+      photoCollectionView.isHidden = true      
       
-      contentsTv.snp.updateConstraints { make in
+      contentTextView.snp.updateConstraints { make in
         make.leading.trailing.equalToSuperview().inset(20)
-        make.top.equalTo(pictsCollectionView.snp.bottom).offset(-84)
+        make.top.equalTo(photoCollectionView.snp.bottom).offset(-84)
         make.bottom.equalTo(bottomContainerView.snp.top).offset(-16)
       }
     }

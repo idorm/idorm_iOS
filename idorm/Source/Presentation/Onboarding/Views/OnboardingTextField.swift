@@ -12,10 +12,10 @@ final class OnboardingTextField: UIView {
   lazy var textField = UITextField().then {
     $0.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
       NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_300,
-      NSAttributedString.Key.font: UIFont.init(name: MyFonts.medium.rawValue, size: 14.0) ?? 0
+      NSAttributedString.Key.font: UIFont.init(name: IdormFont_deprecated.medium.rawValue, size: 14.0) ?? 0
     ])
     $0.textColor = .black
-    $0.font = .init(name: MyFonts.regular.rawValue, size: 14.0)
+    $0.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 14.0)
     $0.addLeftPadding(16)
     $0.backgroundColor = .white
     $0.keyboardType = .default

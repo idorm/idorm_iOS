@@ -43,7 +43,7 @@ final class AuthNumberViewReactor: Reactor {
     
     switch action {
     case .didTapConfirmButton(let number):
-      switch Logger.shared.type {
+      switch Logger.shared.authProcess {
       case .signUp:
         return .concat([
           .just(.setLoading(true)),
@@ -63,7 +63,7 @@ final class AuthNumberViewReactor: Reactor {
                 let message = MailAPI.decode(
                   ErrorResponseModel.self,
                   data: response.data
-                ).message
+                ).responseMessage
                 return .concat([
                   .just(.setLoading(false)),
                   .just(.setPopup(true, message)),
@@ -73,7 +73,7 @@ final class AuthNumberViewReactor: Reactor {
             }
         ])
         
-      case .findPw, .modifyPw:
+      case .findPw:
         return .concat([
           .just(.setLoading(true)),
           MailAPI.provider.rx.request(
@@ -92,7 +92,7 @@ final class AuthNumberViewReactor: Reactor {
                 let message = MailAPI.decode(
                   ErrorResponseModel.self,
                   data: response.data
-                ).message
+                ).responseMessage
                 return .concat([
                   .just(.setLoading(false)),
                   .just(.setPopup(true, message)),
@@ -104,7 +104,7 @@ final class AuthNumberViewReactor: Reactor {
       }
       
     case .didTapRequestAuthButton:
-      switch Logger.shared.type {
+      switch Logger.shared.authProcess {
       case .signUp:
         return .concat([
           .just(.setLoading(true)),
@@ -121,7 +121,7 @@ final class AuthNumberViewReactor: Reactor {
             }
         ])
         
-      case .findPw, .modifyPw:
+      case .findPw:
         return .concat([
           .just(.setLoading(true)),
           MailAPI.provider.rx.request(

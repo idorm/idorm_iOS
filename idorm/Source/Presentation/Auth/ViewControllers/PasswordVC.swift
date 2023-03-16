@@ -1,5 +1,5 @@
 //
-//  ConfirmPwViewController.swift
+//  PasswordViewController.swift
 //  idorm
 //
 //  Created by 김응철 on 2022/12/23.
@@ -13,32 +13,32 @@ import RxSwift
 import RxCocoa
 import ReactorKit
 
-final class ConfirmPwViewController: BaseViewController, View {
+final class PasswordViewController: BaseViewController, View {
   
-  // MARK: - Properties
+  // MARK: - PROPERTIES
   
   private let infoLabel = UILabel().then {
     $0.text = "비밀번호"
     $0.textColor = .black
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
+    $0.font = .idormFont(.medium, size: 14)
   }
   
   private let infoLabel2 = UILabel().then {
     $0.text = "비밀번호 확인"
     $0.textColor = .black
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
+    $0.font = .idormFont(.medium, size: 14)
   }
   
   private let textCountConditionLabel = UILabel().then {
     $0.text = "•  8자 이상 입력"
     $0.textColor = .idorm_gray_400
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
+    $0.font = .idormFont(.medium, size: 12)
   }
   
   private let compoundConditionLabel = UILabel().then {
     $0.text = "•  영문 소문자/숫자/특수 문자 조합"
     $0.textColor = .idorm_gray_400
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
+    $0.font = .idormFont(.medium, size: 12)
   }
   
   private let indicator = UIActivityIndicatorView().then { $0.color = .darkGray }
@@ -46,11 +46,11 @@ final class ConfirmPwViewController: BaseViewController, View {
   private let textField1 = PasswordTextField(placeholder: "비밀번호를 입력해주세요.")
   private let textField2 = PasswordTextField(placeholder: "비밀번호를 한번 더 입력해주세요.")
   private var confirmButton: idormButton!
-  private let type: Register
+  private let type: AuthProcess
   
   // MARK: - LifeCycle
   
-  init(_ type: Register) {
+  init(_ type: AuthProcess) {
     self.type = type
     super.init(nibName: nil, bundle: nil)
     setupComponents()
@@ -62,51 +62,51 @@ final class ConfirmPwViewController: BaseViewController, View {
   
   // MARK: - Bind
   
-  func bind(reactor: ConfirmPwViewReactor) {
+  func bind(reactor: PasswordViewReactor) {
     
     // MARK: - Action
     
     // 텍스트필드1 변화 감지
     textField1.textField.rx.text
       .orEmpty
-      .map { ConfirmPwViewReactor.Action.didChangeTextField1($0) }
+      .map { PasswordViewReactor.Action.didChangeTextField1($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 텍스트필드2 변화 감지
     textField2.textField.rx.text
       .orEmpty
-      .map { ConfirmPwViewReactor.Action.didChangeTextField2($0) }
+      .map { PasswordViewReactor.Action.didChangeTextField2($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // Tf1 포커싱 이벤트
     textField1.textField.rx.controlEvent(.editingDidBegin)
-      .map { ConfirmPwViewReactor.Action.editingDidBeginTf1 }
+      .map { PasswordViewReactor.Action.editingDidBeginTf1 }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // Tf2 포커싱 이벤트
     textField2.textField.rx.controlEvent(.editingDidBegin)
-      .map { ConfirmPwViewReactor.Action.editingDidBeginTf2 }
+      .map { PasswordViewReactor.Action.editingDidBeginTf2 }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // Tf1 포커싱 해제
     textField1.textField.rx.controlEvent(.editingDidEnd)
-      .map { ConfirmPwViewReactor.Action.editingDidEndTf1 }
+      .map { PasswordViewReactor.Action.editingDidEndTf1 }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // Tf2 포커싱 해제
     textField2.textField.rx.controlEvent(.editingDidEnd)
-      .map { ConfirmPwViewReactor.Action.editingDidEndTf2 }
+      .map { PasswordViewReactor.Action.editingDidEndTf2 }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 계속하기 버튼
     confirmButton.rx.tap
-      .map { ConfirmPwViewReactor.Action.didTapConfirmButton }
+      .map { PasswordViewReactor.Action.didTapConfirmButton }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -209,8 +209,7 @@ final class ConfirmPwViewController: BaseViewController, View {
         let loginVC = LoginViewController()
         loginVC.reactor = LoginViewReactor()
         let navVC = UINavigationController(rootViewController: loginVC)
-        navVC.modalPresentationStyle = .fullScreen
-        owner.present(navVC, animated: true)
+        SceneUtils.switchRootVC(to: navVC, animated: true)
       }
       .disposed(by: disposeBag)
     
@@ -235,7 +234,7 @@ final class ConfirmPwViewController: BaseViewController, View {
     switch type {
     case .signUp:
       self.confirmButton = idormButton("계속하기")
-    case .findPw, .modifyPw:
+    case .findPw:
       self.confirmButton = idormButton("변경 완료")
     }
   }
@@ -262,7 +261,7 @@ final class ConfirmPwViewController: BaseViewController, View {
     switch type {
     case .signUp:
       navigationItem.title = "회원가입"
-    case .findPw, .modifyPw:
+    case .findPw:
       navigationItem.title = "비밀번호 변경"
     }
   }
@@ -314,7 +313,10 @@ final class ConfirmPwViewController: BaseViewController, View {
 
   // MARK: - Helpers
   
-  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+  override func touchesBegan(
+    _ touches: Set<UITouch>,
+    with event: UIEvent?
+  ) {
     view.endEditing(true)
   }
 }

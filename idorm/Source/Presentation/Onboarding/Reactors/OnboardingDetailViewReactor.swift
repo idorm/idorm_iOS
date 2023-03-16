@@ -67,12 +67,12 @@ final class OnboardingDetailViewReactor: Reactor {
         
       case .main, .initial:
         let requestModel = TransformUtils.transfer(member)
-        
         return .concat([
           .just(.setLoading(true)),
           MatchingInfoAPI.provider.rx.request(.save(requestModel))
             .asObservable()
             .retry()
+            .debug()
             .map(ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self)
             .flatMap { response -> Observable<Mutation> in
               MemberStorage.shared.saveMatchingInfo(response.data)

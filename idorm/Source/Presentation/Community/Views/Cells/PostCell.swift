@@ -17,7 +17,7 @@ final class PostCell: UICollectionViewCell {
   
   private let titleLb: UILabel = {
     let lb = UILabel()
-    lb.font = .init(name: MyFonts.medium.rawValue, size: 14)
+    lb.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 14)
     lb.textColor = .black
     
     return lb
@@ -25,7 +25,7 @@ final class PostCell: UICollectionViewCell {
   
   private let contentLb: UILabel = {
     let lb = UILabel()
-    lb.font = .init(name: MyFonts.medium.rawValue, size: 12)
+    lb.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 12)
     lb.textColor = .idorm_gray_400
     
     return lb
@@ -33,7 +33,7 @@ final class PostCell: UICollectionViewCell {
   
   private let nicknameLb: UILabel = {
     let lb = UILabel()
-    lb.font = .init(name: MyFonts.regular.rawValue, size: 12)
+    lb.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 12)
     lb.textColor = .idorm_gray_300
     
     return lb
@@ -41,7 +41,7 @@ final class PostCell: UICollectionViewCell {
   
   private let timeLb: UILabel = {
     let lb = UILabel()
-    lb.font = .init(name: MyFonts.medium.rawValue, size: 12)
+    lb.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 12)
     lb.textColor = .idorm_gray_300
     
     return lb
@@ -49,7 +49,7 @@ final class PostCell: UICollectionViewCell {
   
   private let dotLb: UILabel = {
     let lb = UILabel()
-    lb.font = .init(name: MyFonts.regular.rawValue, size: 12)
+    lb.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 12)
     lb.text = "∙"
     lb.textColor = .idorm_gray_300
     
@@ -66,7 +66,7 @@ final class PostCell: UICollectionViewCell {
   private let likeCountLb: UILabel = {
     let lb = UILabel()
     lb.textColor = .idorm_gray_300
-    lb.font = .init(name: MyFonts.regular.rawValue, size: 12)
+    lb.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 12)
     
     return lb
   }()
@@ -74,7 +74,7 @@ final class PostCell: UICollectionViewCell {
   private let commentsCountLb: UILabel = {
     let lb = UILabel()
     lb.textColor = .idorm_gray_300
-    lb.font = .init(name: MyFonts.regular.rawValue, size: 12)
+    lb.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 12)
     
     return lb
   }()
@@ -82,7 +82,7 @@ final class PostCell: UICollectionViewCell {
   private let pictureCountLb: UILabel = {
     let lb = UILabel()
     lb.textColor = .idorm_gray_300
-    lb.font = .init(name: MyFonts.regular.rawValue, size: 12)
+    lb.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 12)
     
     return lb
   }()

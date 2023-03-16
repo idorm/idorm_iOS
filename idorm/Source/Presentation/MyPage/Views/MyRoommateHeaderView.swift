@@ -70,7 +70,7 @@ extension MyRoommateHeaderView {
     let label = UILabel()
     label.textColor = .black
     label.text = title
-    label.font = .init(name: MyFonts.regular.rawValue, size: 14)
+    label.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 14)
     
     return label
   }

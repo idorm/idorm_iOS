@@ -23,12 +23,12 @@ final class ManageMyInfoView: UIView {
   // MARK: - Properties
   
   private let titleLabel = UILabel().then {
-    $0.font = .init(name: MyFonts.regular.rawValue, size: 16)
+    $0.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 16)
     $0.textColor = .idorm_gray_400
   }
   
   let descriptionLabel = UILabel().then {
-    $0.font = .init(name: MyFonts.regular.rawValue, size: 16)
+    $0.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 16)
     $0.textColor = .idorm_gray_300
   }
   

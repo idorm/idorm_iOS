@@ -52,9 +52,11 @@ final class MyPageViewReactor: Reactor {
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
+      
     case .viewWillAppear:
-      let currentNickname = MemberStorage.shared.member?.nickname ?? ""
-      let isPublic = MemberStorage.shared.isPublicMatchingInfo
+      let currentNickname = UserStorage.shared.member?.nickname ?? ""
+      let isPublic = UserStorage.shared.matchingInfo?.isMatchingInfoPublic ?? false
+      
       return .concat([
         .just(.setShareButton(isPublic)),
         .just(.setCurrentNickname(currentNickname))

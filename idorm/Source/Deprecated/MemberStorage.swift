@@ -10,23 +10,31 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+/// 로그인 된 멤버와 관련된 매칭 정보 및 
 final class MemberStorage {
+    
+  // MARK: - PROPERTIES
   
   static let shared = MemberStorage()
-  private init() {}
   
   private(set) var matchingInfo: MatchingInfoResponseModel.MatchingInfo? {
     didSet {
       guard let isPublic = matchingInfo?.isMatchingInfoPublic else { return }
-      didChangePublicState.onNext(isPublic)
+      publicStateDetector.onNext(isPublic)
     }
   }
   
   private(set) var member: MemberResponseModel.Member?
-  
-  private(set) var didChangePublicState = PublishSubject<Bool>()
   var hasMatchingInfo: Bool { matchingInfo != nil ? true : false }
   var isPublicMatchingInfo: Bool { matchingInfo?.isMatchingInfoPublic ?? false }
+  
+  private(set) var publicStateDetector = PublishSubject<Bool>()
+  
+  // MARK: - INITIALIZER
+  
+  private init() {}
+  
+  // MARK: - HELPERS
   
   func saveMatchingInfo(_ matchingInfo: MatchingInfoResponseModel.MatchingInfo) {
     self.matchingInfo = matchingInfo

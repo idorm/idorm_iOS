@@ -88,11 +88,11 @@ final class MatchingViewReactor: Reactor {
   let initialState: State = State()
   
   func mutate(action: Action) -> Observable<Mutation> {
-    let memberStorage = MemberStorage.shared
+    let userStorage = MemberStorage.shared
     switch action {
     case .viewDidLoad:
-      if memberStorage.hasMatchingInfo {
-        if memberStorage.isPublicMatchingInfo {
+      if userStorage.hasMatchingInfo {
+        if userStorage.isPublicMatchingInfo {
           return Observable.concat([
             .just(.setLoading(true)),
             fetchMatchingMembers()
@@ -116,8 +116,8 @@ final class MatchingViewReactor: Reactor {
       }
       
     case .viewWillAppear:
-      if memberStorage.hasMatchingInfo {
-        if memberStorage.isPublicMatchingInfo {
+      if userStorage.hasMatchingInfo {
+        if userStorage.isPublicMatchingInfo {
            return .just(.setCurrentTextImage(.noMatchingCardInformation))
         } else {
           return .concat([
@@ -183,8 +183,8 @@ final class MatchingViewReactor: Reactor {
       ])
       
     case .didTapFilterButton:
-      if memberStorage.hasMatchingInfo {
-        if memberStorage.isPublicMatchingInfo {
+      if userStorage.hasMatchingInfo {
+        if userStorage.isPublicMatchingInfo {
           return Observable.concat([
             .just(.setFilterVC(true)),
             .just(.setFilterVC(false))
@@ -203,8 +203,8 @@ final class MatchingViewReactor: Reactor {
       }
       
     case .didTapRefreshButton:
-      if memberStorage.hasMatchingInfo {
-        if memberStorage.isPublicMatchingInfo {
+      if userStorage.hasMatchingInfo {
+        if userStorage.isPublicMatchingInfo {
           if FilterStorage.shared.hasFilter {
             return Observable.concat([
               .just(.setLoading(true)),

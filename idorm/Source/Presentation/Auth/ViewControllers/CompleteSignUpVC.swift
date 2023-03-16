@@ -21,18 +21,18 @@ final class CompleteSignUpViewController: BaseViewController, View {
     $0.textColor = .idorm_gray_400
     $0.text = "안녕하세요! 가입을 축하드려요."
     $0.textAlignment = .center
-    $0.font = .init(name: MyFonts.bold.rawValue, size: 18.0)
+    $0.font = .idormFont(.bold, size: 18)
   }
   
   private let descriptionLabel1 = UILabel().then {
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
+    $0.font = .idormFont(.medium, size: 12)
     $0.textColor = .idorm_gray_300
     $0.textAlignment = .center
     $0.text = "로그인 후 인천대학교 기숙사 룸메이트 매칭을 위한"
   }
   
   private let descriptionLabel2 = UILabel().then {
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
+    $0.font = .idormFont(.medium, size: 12)
     $0.textColor = .idorm_gray_300
     $0.textAlignment = .center
     $0.text = "기본정보를 알려주세요."
@@ -41,7 +41,7 @@ final class CompleteSignUpViewController: BaseViewController, View {
   private let continueButton = UIButton().then {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
-    container.font = UIFont.init(name: MyFonts.medium.rawValue, size: 16)
+    container.font = .idormFont(.medium, size: 16)
     container.foregroundColor = UIColor.white
     config.attributedTitle = AttributedString("로그인 후 계속하기", attributes: container)
     config.baseBackgroundColor = .idorm_blue
@@ -104,17 +104,26 @@ final class CompleteSignUpViewController: BaseViewController, View {
   
   override func setupStyles() {
     super.setupStyles()
+    
     view.backgroundColor = .white
   }
   
   override func setupLayouts() {
     super.setupLayouts()
-    [image, signUpLabel, descriptionLabel1, descriptionLabel2, continueButton, indicator]
-      .forEach { view.addSubview($0) }
+    
+    [
+      image,
+      signUpLabel,
+      descriptionLabel1,
+      descriptionLabel2,
+      continueButton,
+      indicator
+    ].forEach { view.addSubview($0) }
   }
   
   override func setupConstraints() {
     super.setupConstraints()
+    
     image.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
       make.centerY.equalToSuperview().offset(-100)

@@ -19,7 +19,7 @@ final class PopularPostCell: UICollectionViewCell {
     let lb = UILabel()
     lb.text = "인기"
     lb.textColor = .idorm_blue
-    lb.font = .init(name: MyFonts.bold.rawValue, size: 12)
+    lb.font = .init(name: IdormFont_deprecated.bold.rawValue, size: 12)
     
     return lb
   }()
@@ -27,7 +27,7 @@ final class PopularPostCell: UICollectionViewCell {
   private let contentsLabel: UILabel = {
     let lb = UILabel()
     lb.text = "3 기숙사 카페 혜윰메뉴 올려드립니다! 제가"
-    lb.font = .init(name: MyFonts.regular.rawValue, size: 12)
+    lb.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 12)
     lb.textColor = .black
     lb.lineBreakMode = .byCharWrapping
     lb.numberOfLines = 3
@@ -38,7 +38,7 @@ final class PopularPostCell: UICollectionViewCell {
   private let messageCountLabel: UILabel = {
     let lb = UILabel()
     lb.textColor = .idorm_gray_400
-    lb.font = .init(name: MyFonts.regular.rawValue, size: 12)
+    lb.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 12)
     lb.text = "100"
     
     return lb
@@ -47,7 +47,7 @@ final class PopularPostCell: UICollectionViewCell {
   private let pictureCountLabel: UILabel = {
     let lb = UILabel()
     lb.textColor = .idorm_gray_400
-    lb.font = .init(name: MyFonts.regular.rawValue, size: 12)
+    lb.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 12)
     lb.text = "100"
     
     return lb
@@ -56,7 +56,7 @@ final class PopularPostCell: UICollectionViewCell {
   private let likeCountLabel: UILabel = {
     let lb = UILabel()
     lb.textColor = .idorm_gray_400
-    lb.font = .init(name: MyFonts.regular.rawValue, size: 12)
+    lb.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 12)
     lb.text = "100"
     
     return lb

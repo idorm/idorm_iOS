@@ -195,11 +195,6 @@ final class OnboardingViewController: BaseViewController, View {
   
   // MARK: - LifeCycle
   
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    navigationController?.isNavigationBarHidden = false
-  }
-  
   init(_ type: Onboarding) {
     self.type = type
     super.init(nibName: nil, bundle: nil)
@@ -228,11 +223,11 @@ final class OnboardingViewController: BaseViewController, View {
     // 1기숙사 버튼 클릭
     dorm1Button.rx.tap
       .withUnretained(self)
-      .do {
+      .do(onNext: {
         $0.0.dorm1Button.isSelected = true
         $0.0.dorm2Button.isSelected = false
         $0.0.dorm3Button.isSelected = false
-      }
+      })
       .map { _ in OnboardingViewReactor.Action.didTapDormButton(.no1) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
@@ -246,6 +241,7 @@ final class OnboardingViewController: BaseViewController, View {
         $0.0.dorm3Button.isSelected = false
       }
       .map { _ in OnboardingViewReactor.Action.didTapDormButton(.no2) }
+      .debug()
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     

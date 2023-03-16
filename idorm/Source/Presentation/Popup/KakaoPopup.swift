@@ -16,7 +16,7 @@ final class KakaoPopup: BaseViewController {
   
   private let mainLabel = UILabel().then {
     $0.text = "상대의 카카오톡 오픈채팅으로 이동합니다."
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
+    $0.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 14)
     $0.textColor = .black
   }
   
@@ -27,7 +27,7 @@ final class KakaoPopup: BaseViewController {
   let kakaoButton = UIButton().then {
     var container = AttributeContainer()
     container.foregroundColor = .white
-    container.font = .init(name: MyFonts.medium.rawValue, size: 14)
+    container.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 14)
 
     var config = UIButton.Configuration.filled()
     config.attributedTitle = AttributedString("카카오톡으로 이동", attributes: container)

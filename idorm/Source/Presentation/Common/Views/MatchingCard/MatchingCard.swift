@@ -17,7 +17,7 @@ final class MatchingCard: UIView {
   }
   
   private lazy var dormLabel = UILabel().then {
-    $0.font = .init(name: MyFonts.bold.rawValue, size: 20)
+    $0.font = .init(name: IdormFont_deprecated.bold.rawValue, size: 20)
     $0.text = member.dormCategory.cardString
     $0.textColor = .white
   }
@@ -25,7 +25,7 @@ final class MatchingCard: UIView {
   private lazy var periodButton = UIButton().then {
     var config = UIButton.Configuration.plain()
     var container = AttributeContainer()
-    container.font = UIFont.init(name: MyFonts.bold.rawValue, size: 12)
+    container.font = UIFont.init(name: IdormFont_deprecated.bold.rawValue, size: 12)
     container.foregroundColor = UIColor.white
     config.attributedTitle = AttributedString(member.joinPeriod.cardString, attributes: container)
     config.image = UIImage(named: "building")
@@ -85,21 +85,21 @@ final class MatchingCard: UIView {
     let genderLabel = UILabel().then {
       $0.text = member.gender == .male ? "남자," : "여자,"
       $0.textColor = .idorm_gray_400
-      $0.font = .init(name: MyFonts.bold.rawValue, size: 12)
+      $0.font = .init(name: IdormFont_deprecated.bold.rawValue, size: 12)
     }
     self.genderLabel = genderLabel
     
     let ageLabel = UILabel().then {
       $0.text = String(member.age) + " 세"
       $0.textColor = .idorm_gray_400
-      $0.font = .init(name: MyFonts.bold.rawValue, size: 12)
+      $0.font = .init(name: IdormFont_deprecated.bold.rawValue, size: 12)
     }
     self.ageLabel = ageLabel
     
     let mbtiLabel = UILabel().then {
       $0.text = member.mbti
       $0.textColor = .idorm_gray_300
-      $0.font = .init(name: MyFonts.bold.rawValue, size: 12)
+      $0.font = .init(name: IdormFont_deprecated.bold.rawValue, size: 12)
     }
     self.mbtiLabel = mbtiLabel
   }

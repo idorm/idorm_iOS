@@ -14,7 +14,6 @@ extension MailAPI {
     switch self {
     case .emailAuthentication: return "/email"
     case .pwAuthentication: return "/email/password"
-      
     case .emailVerification(let email, _):
       return "/verifyCode/\(email)"
     case .pwVerification(let email, _):

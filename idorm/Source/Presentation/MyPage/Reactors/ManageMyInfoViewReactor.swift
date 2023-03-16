@@ -44,8 +44,8 @@ final class ManageMyInfoViewReactor: Reactor {
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .viewWillAppear:
-      let nickName = MemberStorage.shared.member?.nickname ?? ""
-      let email = MemberStorage.shared.member?.email ?? ""
+      let nickName = UserStorage.shared.member?.nickname ?? ""
+      let email = UserStorage.shared.member?.email ?? ""
       
       return .concat([
         .just(.setCurrentNickname(nickName)),

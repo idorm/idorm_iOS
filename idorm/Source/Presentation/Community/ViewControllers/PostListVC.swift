@@ -170,7 +170,7 @@ final class PostListViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, string in
         var container = AttributeContainer()
-        container.font = .init(name: MyFonts.bold.rawValue, size: 20)
+        container.font = .init(name: IdormFont_deprecated.bold.rawValue, size: 20)
         owner.dormBtn.configuration?.attributedTitle = AttributedString(string, attributes: container)
       }
       .disposed(by: disposeBag)

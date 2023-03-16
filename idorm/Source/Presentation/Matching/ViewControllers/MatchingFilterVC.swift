@@ -65,8 +65,8 @@ final class MatchingFilterViewController: BaseViewController, View {
     slider.labelPadding = 6
     slider.minLabelColor = .black
     slider.maxLabelColor = .black
-    slider.minLabelFont = .init(name: MyFonts.medium.rawValue, size: 12)!
-    slider.maxLabelFont = .init(name: MyFonts.medium.rawValue, size: 12)!
+    slider.minLabelFont = .init(name: IdormFont_deprecated.medium.rawValue, size: 12)!
+    slider.maxLabelFont = .init(name: IdormFont_deprecated.medium.rawValue, size: 12)!
     slider.minValue = 20
     slider.maxValue = 40
     slider.selectedMaxValue = 30

@@ -12,7 +12,7 @@ import RxCocoa
 import RxMoya
 import ReactorKit
 
-final class ConfirmPwViewReactor: Reactor {
+final class PasswordViewReactor: Reactor {
   
   enum Action {
     case didChangeTextField1(String)
@@ -61,9 +61,9 @@ final class ConfirmPwViewReactor: Reactor {
   }
   
   var initialState: State = State()
-  private let type: Register
+  private let type: AuthProcess
   
-  init(_ type: Register) {
+  init(_ type: AuthProcess) {
     self.type = type
   }
   
@@ -177,7 +177,6 @@ final class ConfirmPwViewReactor: Reactor {
          password1.count >= 8 {
         switch type {
         case .signUp:
-          UserStorage.savePassword(from: password1)
           Logger.shared.savePassword(password1)
           return .concat([
             .just(.setNicknameVC(true)),
@@ -189,7 +188,7 @@ final class ConfirmPwViewReactor: Reactor {
           return .concat([
             .just(.setLoading(true)),
             MemberAPI.provider.rx.request(
-              .changePassword_Logout(id: email, pw: password1)
+              .changePassword_Logout(email: email, password: password1)
             )
               .asObservable()
               .retry()
@@ -206,26 +205,6 @@ final class ConfirmPwViewReactor: Reactor {
                 }
               }
               .subscribe(on: MainScheduler.asyncInstance)
-          ])
-          
-        case .modifyPw:
-          return .concat([
-            .just(.setLoading(true)),
-            MemberAPI.provider.rx.request(.changePassword_Login(pw: password1))
-              .asObservable()
-              .retry()
-              .flatMap { response -> Observable<Mutation> in
-                switch response.statusCode {
-                case 200:
-                  return .concat([
-                    .just(.setLoading(false)),
-                    .just(.setLoginVC(true)),
-                    .just(.setLoginVC(false))
-                  ])
-                default:
-                  fatalError()
-                }
-              }
           ])
         }
       } else {

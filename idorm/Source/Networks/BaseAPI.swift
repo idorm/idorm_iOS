@@ -22,14 +22,14 @@ extension BaseAPI {
   func getJsonHeader() -> [String: String] {
     return [
       "Content-Type": "application/json",
-      "X-AUTH-TOKEN": TokenStorage.loadToken() ?? ""
+      "X-AUTH-TOKEN": UserStorage.shared.token
     ]
   }
   
   func getMultipartHeader() -> [String: String] {
     return [
       "Content-Type": "multipart/form-data",
-      "X-AUTH-TOKEN": TokenStorage.loadToken() ?? ""
+      "X-AUTH-TOKEN": UserStorage.shared.token
     ]
   }
   

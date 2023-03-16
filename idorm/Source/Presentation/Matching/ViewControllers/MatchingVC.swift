@@ -31,7 +31,7 @@ final class MatchingViewController: BaseViewController, View {
   private let refreshButton = UIButton().then {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
-    container.font = .init(name: MyFonts.bold.rawValue, size: 12)
+    container.font = .init(name: IdormFont_deprecated.bold.rawValue, size: 12)
     container.foregroundColor = .idorm_blue
     config.baseBackgroundColor = .white
     config.cornerStyle = .capsule

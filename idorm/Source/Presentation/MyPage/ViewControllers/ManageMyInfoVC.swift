@@ -20,7 +20,7 @@ final class ManageMyInfoViewController: BaseViewController, View {
   
   private let withDrawLabel = UILabel().then {
     $0.text = "회원 탈퇴"
-    $0.font = .init(name: MyFonts.regular.rawValue, size: 14)
+    $0.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 14)
     $0.textColor = .idorm_gray_300
   }
   
@@ -113,8 +113,8 @@ final class ManageMyInfoViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let viewController = PutEmailViewController(.modifyPw)
-        viewController.reactor = PutEmailViewReactor()
+        let viewController = EmailViewController(.signUp)
+        viewController.reactor = EmailViewReactor()
         owner.navigationController?.pushViewController(viewController, animated: true)
       }
       .disposed(by: disposeBag)

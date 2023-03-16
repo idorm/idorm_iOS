@@ -27,27 +27,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     window?.makeKeyAndVisible()
   }
   
-  func sceneDidEnterBackground(_ scene: UIScene) {
-    let email = UserStorage.loadEmail()
-    let password = UserStorage.loadPassword()
-    
-    if TokenStorage.hasToken() {
-      // 토큰 Refresh
-      _ = MemberAPI.provider.rx.request(
-        .login(id: email, pw: password)
-      )
-        .asObservable()
-        .retry()
-        .bind { response in
-          switch response.statusCode {
-          case 200..<300:
-            MemberAPI.loginProcess(response)
-          default:
-            break
-          }
-        }
-    }
-  }
+//  func sceneDidEnterBackground(_ scene: UIScene) {
+//    let email = UserStorage.loadEmail()
+//    let password = UserStorage.loadPassword()
+//    
+//    if TokenStorage.hasToken() {
+//      // 토큰 Refresh
+//      _ = MemberAPI.provider.rx.request(
+//        .login(id: email, pw: password)
+//      )
+//        .asObservable()
+//        .retry()
+//        .bind { response in
+//          switch response.statusCode {
+//          case 200..<300:
+//            MemberAPI.loginProcess(response)
+//          default:
+//            break
+//          }
+//        }
+//    }
+//  }
   
   func sceneDidBecomeActive(_ scene: UIScene) {
     

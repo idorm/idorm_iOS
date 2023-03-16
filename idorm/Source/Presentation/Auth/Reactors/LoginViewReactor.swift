@@ -16,68 +16,76 @@ final class LoginViewReactor: Reactor {
   
   enum Action {
     case viewDidLoad
-    case didTapLoginButton(String, String)
-    case didTapForgotPwButton
-    case didTapSignupButton
+    case signIn(String, String)
+    case signUp
+    case forgotPassword
   }
   
   enum Mutation {
     case setLoading(Bool)
     case setPopup(Bool, String)
     case setMainVC(Bool)
-    case setPutEmailVC(Bool , Register)
+    case setPutEmailVC(Bool , AuthProcess)
   }
   
   struct State {
     var isLoading: Bool = false
     var isOpenedPopup: (Bool, String) = (false, "")
     var isOpenedMainVC: Bool = false
-    var isOpenedPutEmailVC: (Bool, Register) = (false, .findPw)
+    var isOpenedPutEmailVC: (Bool, AuthProcess) = (false, .findPw)
   }
   
   var initialState: State = State()
   
   func mutate(action: Action) -> Observable<Mutation> {
-    switch action {      
+    switch action {
     case .viewDidLoad:
       TokenStorage.removeToken()
       return .empty()
       
-    case let .didTapLoginButton(id, pw):
+    case let .signIn(email, password):
       return .concat([
         .just(.setLoading(true)),
-        MemberAPI.provider.rx.request(.login(id: id, pw: pw))
+        MemberAPI.provider.rx.request(
+          .login(email: email, password: password, fcmToken: "")
+        )
           .asObservable()
-          .retry()
           .withUnretained(self)
           .flatMap { owner, response -> Observable<Mutation> in
             switch response.statusCode {
-            case 200..<300:
-              UserStorage.saveEmail(from: id)
-              UserStorage.savePassword(from: pw)
-              MemberAPI.loginProcess(response)
-              return owner.retrieveMatchingInfo()
-            default:
-              let message = MemberAPI.decode(
+            case 200..<300: // 로그인 성공
+              let member = MemberAPI.decode(
+                ResponseModel<MemberResponseModel.Member>.self,
+                data: response.data
+              ).data
+              let token = response.response?.headers.value(for: "authorization")
+              UserStorage.shared.saveMember(member)
+              UserStorage.shared.saveEmail(email)
+              UserStorage.shared.savePassword(password)
+              UserStorage.shared.saveToken(token!)
+              
+              return owner.lookUpMatchingInfo()
+            default: // 로그인 실패
+              let errorMessage = MemberAPI.decode(
                 ErrorResponseModel.self,
                 data: response.data
-              ).message
+              ).responseMessage
               return .concat([
                 .just(.setLoading(false)),
-                .just(.setPopup(true, message)),
+                .just(.setPopup(true, errorMessage)),
                 .just(.setPopup(false, ""))
               ])
             }
           }
       ])
       
-    case .didTapSignupButton:
+    case .signUp:
       return .concat([
         .just(.setPutEmailVC(true, .signUp)),
         .just(.setPutEmailVC(false, .signUp))
       ])
       
-    case .didTapForgotPwButton:
+    case .forgotPassword:
       return .concat([
         .just(.setPutEmailVC(true, .findPw)),
         .just(.setPutEmailVC(false, .findPw))
@@ -107,24 +115,23 @@ final class LoginViewReactor: Reactor {
 }
 
 extension LoginViewReactor {
-  private func retrieveMatchingInfo() -> Observable<Mutation> {
+  private func lookUpMatchingInfo() -> Observable<Mutation> {
     MatchingInfoAPI.provider.rx.request(.retrieve)
       .asObservable()
-      .retry()
       .flatMap { response -> Observable<Mutation> in
         switch response.statusCode {
-        case 200..<300:
+        case 200..<300: // 조회 성공
           let matchingInfo = MatchingInfoAPI.decode(
             ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self,
             data: response.data
           ).data
-          MemberStorage.shared.saveMatchingInfo(matchingInfo)
+          UserStorage.shared.saveMatchingInfo(matchingInfo)
           return .concat([
             .just(.setLoading(false)),
             .just(.setMainVC(true)),
             .just(.setMainVC(false))
           ])
-        default:
+        default: // 조회 실패
           return .concat([
             .just(.setLoading(false)),
             .just(.setMainVC(true)),

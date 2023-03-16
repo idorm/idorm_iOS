@@ -20,14 +20,14 @@ final class PrivacyPolicyBottomSheet: BaseViewController, View {
   
   private let agreementLabel = UILabel().then {
     $0.text = "개인정보 처리방침 필수동의"
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
+    $0.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 12)
     $0.textColor = .idorm_gray_400
   }
   
   private let agreementButton = UILabel().then {
     $0.text = "보기"
     $0.textColor = .idorm_gray_200
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
+    $0.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 12)
   }
   
   private let agreementCircleButton = UIButton().then {

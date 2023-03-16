@@ -13,13 +13,13 @@ final class NoPublicStatePopUp: BaseViewController {
   private let cancelLabel = UILabel().then {
     $0.text = "취소"
     $0.textColor = .idorm_gray_300
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
+    $0.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 14)
   }
   
   let confirmLabel = UILabel().then {
     $0.text = "공개 허용"
     $0.textColor = .idorm_blue
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
+    $0.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 14)
   }
   
   private let containerView = UIView().then {
@@ -34,7 +34,7 @@ final class NoPublicStatePopUp: BaseViewController {
               매칭페이지에 공개해야 해요.
               """
     $0.textColor = .black
-    $0.font = .init(name: MyFonts.regular.rawValue, size: 14)
+    $0.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 14)
     $0.numberOfLines = 3
     $0.textAlignment = .center
   }

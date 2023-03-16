@@ -12,7 +12,7 @@ import Moya
 extension MemberAPI {
   func getTask() -> Task {
     switch self {
-    case let .login(id, pw), let .changePassword_Logout(id, pw):
+    case let .login(id, pw, _), let .changePassword_Logout(id, pw):
       return .requestParameters(parameters: [
         "email": id,
         "password": pw

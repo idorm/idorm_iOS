@@ -28,8 +28,8 @@ extension CommunityAPI {
       
       multiFormDatas = [titleData, contentsData, anonymousData, dormNumData]
       
-      for i in 0..<post.assets.count {
-        let image = post.assets[i].getImageFromPHAsset()
+      for i in 0..<post.images.count {
+        let image = post.images[i]
         let data = image.jpegData(compressionQuality: 0.1)!
         let imageData = MultipartFormData(provider: .data(data), name: "files", fileName: "\(i)", mimeType: "image/jpeg")
         multiFormDatas.append(imageData)

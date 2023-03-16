@@ -14,9 +14,9 @@ import ReactorKit
 final class AuthViewReactor: Reactor {
   
   enum Action {
-    case didTapPortalButton
-    case didTapConfirmButton
-    case didTapXmarkButton
+    case portal
+    case next
+    case dismiss
   }
   
   enum Mutation {
@@ -35,19 +35,19 @@ final class AuthViewReactor: Reactor {
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
-    case .didTapPortalButton:
+    case .portal:
       return .concat([
         .just(.setSafari(true)),
         .just(.setSafari(false))
       ])
       
-    case .didTapConfirmButton:
+    case .next:
       return .concat([
         .just(.setAuthNumberVC(true)),
         .just(.setAuthNumberVC(false))
       ])
       
-    case .didTapXmarkButton:
+    case .dismiss:
       return .concat([
         .just(.setDismiss(true)),
         .just(.setDismiss(false))

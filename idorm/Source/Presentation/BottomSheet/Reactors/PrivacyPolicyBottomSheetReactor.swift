@@ -40,7 +40,7 @@ final class PrivacyPolicyBottomSheetReactor: Reactor {
       return .concat([
         .just(.setLoading(true)),
         MemberAPI.provider.rx.request(
-          .register(id: email, pw: password, nickname: nickname)
+          .register(email: email, password: password, nickname: nickname)
         )
           .asObservable()
           .retry()
@@ -56,7 +56,7 @@ final class PrivacyPolicyBottomSheetReactor: Reactor {
               let message = MemberAPI.decode(
                 ErrorResponseModel.self,
                 data: response.data
-              ).message
+              ).responseMessage
               return .concat([
                 .just(.setLoading(false)),
                 .just(.setPopup(true, message)),

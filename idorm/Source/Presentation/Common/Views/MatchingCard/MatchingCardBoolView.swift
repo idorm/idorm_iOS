@@ -38,7 +38,7 @@ final class MatchingCardBoolView: UIView {
     let label = UILabel()
     label.text = type.queryString
     label.textColor = .black
-    label.font = .init(name: MyFonts.medium.rawValue, size: 14)
+    label.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 14)
     self.queryLabel = label
   }
   
@@ -61,7 +61,7 @@ final class MatchingCardBoolView: UIView {
       label.textColor = member.isWearEarphones ? UIColor.idorm_blue : UIColor.red
       label.text = member.isWearEarphones ? "가능" : "불가능"
     }
-    label.font = .init(name: MyFonts.bold.rawValue, size: 14)
+    label.font = .init(name: IdormFont_deprecated.bold.rawValue, size: 14)
     self.validLabel = label
   }
   

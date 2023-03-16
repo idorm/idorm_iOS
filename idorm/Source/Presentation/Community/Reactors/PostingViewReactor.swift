@@ -16,7 +16,7 @@ final class PostingViewReactor: Reactor {
   enum Action {
     case didTapPictIv
     case didTapCompleteBtn
-    case didPickedImages([PHAsset])
+    case didPickedImages([UIImage])
     case didTapDeleteBtn(Int)
     case didChangeTitle(String)
     case didChangeContent(String)
@@ -25,7 +25,7 @@ final class PostingViewReactor: Reactor {
   
   enum Mutation {
     case setGalleryVC(Bool)
-    case setImages([PHAsset])
+    case setImages([UIImage])
     case deleteImages(Int)
     case setTitle(String)
     case setContents(String)
@@ -37,7 +37,7 @@ final class PostingViewReactor: Reactor {
   
   struct State {
     var showsGalleryVC: Bool = false
-    var currentImages: [PHAsset] = []
+    var currentImages: [UIImage] = []
     var currentTitle: String = ""
     var currentContents: String = ""
     var isEnabledCompleteBtn: Bool = false
@@ -50,9 +50,9 @@ final class PostingViewReactor: Reactor {
     case new
     case edit(CommunityResponseModel.Post)
   }
-    
+  
   private let currentDorm: Dormitory
-  private var post: CommunityResponseModel.Post?
+  var post: CommunityResponseModel.Post?
   var initialState: State = State()
   
   init(
@@ -81,7 +81,7 @@ final class PostingViewReactor: Reactor {
         content: currentState.currentContents,
         title: currentState.currentTitle,
         dormCategory: currentDorm,
-        assets: currentState.currentImages,
+        images: currentState.currentImages,
         isAnonymous: currentState.isAnonymous
       )
       return .concat([

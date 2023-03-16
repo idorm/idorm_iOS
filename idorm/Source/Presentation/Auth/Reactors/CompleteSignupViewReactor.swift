@@ -39,14 +39,20 @@ final class CompleteSignupViewReactor: Reactor {
       return .concat([
         .just(.setLoading(true)),
         MemberAPI.provider.rx.request(
-          .login(id: email, pw: password)
+          .login(email: email, password: password, fcmToken: "")
         )
           .asObservable()
           .retry()
           .flatMap { response -> Observable<Mutation> in
             switch response.statusCode {
             case 200..<300:
-              MemberAPI.loginProcess(response)
+              let responseModel = MemberAPI.decode(
+                ResponseModel<MemberResponseModel.Member>.self,
+                data: response.data
+              ).data
+              let token = response.response?.headers["authorization"]
+              UserStorage.shared.saveMember(responseModel)
+              UserStorage.shared.saveToken(token)
               return .concat([
                 .just(.setLoading(false)),
                 .just(.setOnboardingVC(true)),

@@ -44,7 +44,7 @@ final class BottomSheetUtils {
     
     return button
   }
-
+  
   /// 기숙사 별 버튼을 반환합니다.
   static func dormNumberButton(_ title: String) -> UIButton {
     var config = UIButton.Configuration.filled()

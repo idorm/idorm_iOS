@@ -9,13 +9,13 @@ import UIKit
 
 extension UIFont {
   
-  enum IdormFont: String {
+  enum Font: String {
     case bold = "NotoSansCJKkr-Bold"
     case regular = "NotoSansCJKkr-Regular"
     case medium = "NotoSansCJKkr-Medium"
   }
   
-  static func idormFont(_ font: IdormFont, size: CGFloat) -> UIFont {
+  static func idormFont(_ font: Font, size: CGFloat) -> UIFont {
     let idormFont = UIFont(name: font.rawValue, size: size)!
     return idormFont
   }

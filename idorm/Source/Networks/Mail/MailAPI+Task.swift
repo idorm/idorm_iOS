@@ -22,6 +22,5 @@ extension MailAPI {
         "code": code
       ], encoding: JSONEncoding.default)
     }
-
   }
 }

@@ -17,7 +17,7 @@ final class TopProfileView: UIView {
   let nicknameLabel: UILabel = {
     let lb = UILabel()
     lb.textColor = .idorm_gray_100
-    lb.font = .init(name: MyFonts.medium.rawValue, size: 14)
+    lb.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 14)
     
     return lb
   }()

@@ -7,33 +7,65 @@
 
 import Foundation
 
+/// 이메일, 비밀번호, 토큰을 보관하는 영구적으로 보관하는 싱글톤 객체입니다.
+/// 하지만 매칭 정보와 멤버 정보는 앱이 종료되면 저장되지 않고 초기화됩니다.
 final class UserStorage {
   
-  static let userDefaults = UserDefaults.standard
+  // MARK: - PROPERTIES
   
-  private enum Keys: String {
-    case email = "EMAIL"
-    case password = "PASSWORD"
+  static let shared = UserStorage()
+  
+  @UserDefaultsWrapper<String>(key: "EMAIL", defaultValue: "")
+  private(set) var email: String
+  
+  @UserDefaultsWrapper<String>(key: "PASSWORD", defaultValue: "")
+  private(set) var password: String
+  
+  @UserDefaultsWrapper<String>(key: "TOKEN", defaultValue: "")
+  private(set) var token: String
+  
+  private(set) var matchingInfo: MatchingInfoResponseModel.MatchingInfo?
+  private(set) var member: MemberResponseModel.Member? {
+    didSet {
+      print(member)
+    }
   }
   
-  static func saveEmail(from email: String) {
-    userDefaults.set(email, forKey: Keys.email.rawValue)
+  // MARK: - INITIALIZER
+  
+  private init() {}
+  
+  // MARK: - HELPERS
+  
+  /// 이메일을 영구적으로 저장합니다.
+  func saveEmail(_ email: String) {
+    self.email = email
   }
   
-  static func savePassword(from password: String) {
-    userDefaults.set(password, forKey: Keys.password.rawValue)
+  /// 비밀번호를 영구적으로 저장합니다.
+  func savePassword(_ password: String) {
+    self.password = password
   }
   
-  static func loadEmail() -> String {
-    return userDefaults.string(forKey: Keys.email.rawValue) ?? ""
+  /// 토큰을 영구적으로 저장합니다.
+  func saveToken(_ token: String?) {
+    self.token = token ?? ""
   }
   
-  static func loadPassword() -> String {
-    return userDefaults.string(forKey: Keys.password.rawValue) ?? ""
+  /// 멤버 매칭 정보를 저장합니다.
+  func saveMatchingInfo(_ matchingInfo: MatchingInfoResponseModel.MatchingInfo) {
+    self.matchingInfo = matchingInfo
   }
   
-  static func reset() {
-    userDefaults.removeObject(forKey: Keys.email.rawValue)
-    userDefaults.removeObject(forKey: Keys.password.rawValue)
+  /// 멤버 정보를 저장합니다.
+  func saveMember(_ member: MemberResponseModel.Member) {
+    self.member = member
+  }
+  
+  /// UserDefaults에 저장된 프로퍼티를 제외한 모든 프로퍼티를 nil로 할당합니다.
+  func reset() {
+    // TODO: 이게 어디서 불려진다.
+    self.matchingInfo = nil
+    self.member = nil
   }
 }

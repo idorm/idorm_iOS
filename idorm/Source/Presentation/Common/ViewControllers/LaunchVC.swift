@@ -64,11 +64,11 @@ final class LaunchViewController: BaseViewController {
   }
   
   private func requestAPI() {
-    let email = UserStorage.loadEmail()
-    let password = UserStorage.loadPassword()
+    let email = UserStorage.shared.email
+    let password = UserStorage.shared.password
 
     MemberAPI.provider.rx.request(
-      .login(id: email, pw: password)
+      .login(email: email, password: password, fcmToken: "")
     )
       .asObservable()
       .retry()
@@ -76,7 +76,7 @@ final class LaunchViewController: BaseViewController {
       .bind { owner, response in
         switch response.statusCode {
         case 200..<300:
-          MemberAPI.loginProcess(response)
+//          MemberAPI.loginProcess(response)
           owner.retrieveMatchingInfoAPI()
         default:
           owner.loginVC()

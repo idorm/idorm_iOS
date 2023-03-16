@@ -76,17 +76,8 @@ final class PostingPhotoCell: UICollectionViewCell {
     }
   }
   
-  func setupImage(_ asset: PHAsset) {
-    let options = PHImageRequestOptions()
-    let manager = PHImageManager.default()
-    
-    manager.requestImage(
-      for: asset,
-      targetSize: CGSize(width: 80, height: 80),
-      contentMode: .aspectFit,
-      options: options) { [weak self] image, _ in
-        self?.imageView.image = image
-      }
+  func setupImage(_ image: UIImage) {
+    self.imageView.image = image
   }
   
   // MARK: - ACTIONS

@@ -5,7 +5,7 @@
 //  Created by 김응철 on 2023/01/27.
 //
 
-import Foundation
+import UIKit
 import Photos
 
 enum CommunityRequestModel {}
@@ -21,7 +21,7 @@ extension CommunityRequestModel {
     let content: String
     let title: String
     let dormCategory: Dormitory
-    let assets: [PHAsset]
+    let images: [UIImage]
     let isAnonymous: Bool
   }
 }

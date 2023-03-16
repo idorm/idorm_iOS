@@ -25,7 +25,7 @@ final class OnboardingButton: UIButton {
   private func setupConfiguration(_ title: String) {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
-    container.font = UIFont.init(name: MyFonts.medium.rawValue, size: 14)
+    container.font = UIFont.init(name: IdormFont_deprecated.medium.rawValue, size: 14)
     container.foregroundColor = UIColor.idorm_gray_300
     config.attributedTitle = AttributedString(title, attributes: container)
     config.baseBackgroundColor = .white
@@ -35,6 +35,7 @@ final class OnboardingButton: UIButton {
     config.background.strokeWidth = 1
     
     self.configuration = config
+    self.configurationUpdateHandler = getButtonUpdateHandler()
   }
 }
 

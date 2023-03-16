@@ -15,18 +15,18 @@ import ReactorKit
 
 final class LoginViewController: BaseViewController, View {
   
-  // MARK: - Properties
+  // MARK: - UI COMPONENTS
   
-  private let loginTitleLabel = UILabel().then {
-    $0.font = .init(name: MyFonts.bold.rawValue, size: 24)
+  private let loginLabel = UILabel().then {
     $0.text = "로그인"
+    $0.font = .idormFont(.bold, size: 24)
     $0.textColor = .black
   }
   
-  private let loginLabel = UILabel().then {
+  private let loginDescriptionLabel = UILabel().then {
     $0.text = "인천대학교 이메일로 로그인해주세요."
-    $0.textColor = .darkGray
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
+    $0.textColor = .idorm_gray_400
+    $0.font = .idormFont(.medium, size: 12)
   }
   
   private let idTextField = LoginTextField("이메일").then {
@@ -41,7 +41,7 @@ final class LoginViewController: BaseViewController, View {
   private let loginButton = UIButton().then {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
-    container.font = .init(name: MyFonts.medium.rawValue, size: 14)
+    container.font = .idormFont(.medium, size: 14)
     container.foregroundColor = UIColor.white
     config.attributedTitle = AttributedString("로그인", attributes: container)
     config.baseBackgroundColor = .idorm_blue
@@ -54,23 +54,22 @@ final class LoginViewController: BaseViewController, View {
     var config = UIButton.Configuration.plain()
     var container = AttributeContainer()
     container.foregroundColor = UIColor.idorm_gray_300
-    container.font = .init(name: MyFonts.medium.rawValue, size: 12)
+    container.font = .idormFont(.medium, size: 12)
     config.attributedTitle = AttributedString("비밀번호를 잊으셨나요?", attributes: container)
-    
     $0.configuration = config
   }
   
   private let signUpLabel = UILabel().then {
     $0.text = "아직 계정이 없으신가요?"
     $0.textColor = .idorm_gray_300
-    $0.font = .init(name: MyFonts.medium.rawValue, size: FontSize.largeDescription.rawValue)
+    $0.font = .idormFont(.medium, size: 12)
   }
   
   private let signUpButton = UIButton().then {
     var config = UIButton.Configuration.plain()
     var container = AttributeContainer()
     container.foregroundColor = UIColor.idorm_blue
-    container.font = .init(name: MyFonts.medium.rawValue, size: 12)
+    container.font = .idormFont(.medium, size: 12)
     config.attributedTitle = AttributedString("회원가입", attributes: container)
     config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
     
@@ -82,7 +81,7 @@ final class LoginViewController: BaseViewController, View {
   }
   
   private lazy var loginStack = UIStackView().then { stack in
-    [inuMarkImage, loginLabel]
+    [inuImageView, loginDescriptionLabel]
       .forEach { stack.addArrangedSubview($0) }
     stack.axis = .horizontal
     stack.spacing = 8
@@ -103,28 +102,16 @@ final class LoginViewController: BaseViewController, View {
     stack.spacing = 8
   }
   
-  private let idormMarkImage = UIImageView(image: #imageLiteral(resourceName: "idorm_gray"))
-  private let inuMarkImage = UIImageView(image: #imageLiteral(resourceName: "inu"))
+  private let idormimageView = UIImageView(image: #imageLiteral(resourceName: "idorm_gray"))
+  private let inuImageView = UIImageView(image: #imageLiteral(resourceName: "inu"))
   
   //MARK: - LifeCycle
   
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    self.navigationController?.isNavigationBarHidden = true
-  }
-  
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    self.navigationController?.isNavigationBarHidden = false
-  }
-  
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+    // TODO: 변화된 Storage에 따라서 초기화하기
     TokenStorage.removeToken()
-    MemberStorage.shared.resetMember()
     FilterStorage.shared.resetFilter()
-    UserStorage.reset()
   }
   
   // MARK: - Bind
@@ -143,19 +130,19 @@ final class LoginViewController: BaseViewController, View {
     loginButton.rx.tap
       .withUnretained(self)
       .map { ($0.0.idTextField.text ?? "", $0.0.pwTextField.text ?? "") }
-      .map { LoginViewReactor.Action.didTapLoginButton($0.0, $0.1) }
+      .map { LoginViewReactor.Action.signIn($0.0, $0.1) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 회원가입 버튼 클릭
     signUpButton.rx.tap
-      .map { LoginViewReactor.Action.didTapSignupButton }
+      .map { LoginViewReactor.Action.signUp }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 비밀번호 찾기 버튼 클릭
     forgotPwButton.rx.tap
-      .map { LoginViewReactor.Action.didTapForgotPwButton }
+      .map { LoginViewReactor.Action.forgotPassword }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -168,19 +155,18 @@ final class LoginViewController: BaseViewController, View {
       .withUnretained(self)
       .bind { owner, _ in
         let tabBarVC = TabBarViewController()
-        tabBarVC.modalPresentationStyle = .fullScreen
-        owner.present(tabBarVC, animated: true)
+        SceneUtils.switchRootVC(to: tabBarVC, animated: true)
       }
       .disposed(by: disposeBag)
     
-    // PutEmailVC로 이동
+    // EmailVC로 이동
     reactor.state
       .map { $0.isOpenedPutEmailVC }
       .filter { $0.0 }
       .withUnretained(self)
       .bind { owner, type in
-        let putEmailVC = PutEmailViewController(type.1)
-        putEmailVC.reactor = PutEmailViewReactor()
+        let putEmailVC = EmailViewController(type.1)
+        putEmailVC.reactor = EmailViewReactor()
         owner.navigationController?.pushViewController(putEmailVC, animated: true)
       }
       .disposed(by: disposeBag)
@@ -214,85 +200,71 @@ final class LoginViewController: BaseViewController, View {
   // MARK: - Setup
   
   override func setupLayouts() {
-    super.setupLayouts()
-    
     [
-      idormMarkImage,
-      loginTitleLabel,
-      loginTfStack,
-      loginStack,
-      loginButton,
-      forgotPwButton,
-      signUpStack,
-      indicator
-    ]
-      .forEach { view.addSubview($0) }
+      self.idormimageView,
+      self.loginLabel,
+      self.loginTfStack,
+      self.loginStack,
+      self.loginButton,
+      self.forgotPwButton,
+      self.signUpStack,
+      self.indicator
+    ].forEach { self.view.addSubview($0) }
   }
   
   override func setupStyles() {
     super.setupStyles()
-    
-    view.backgroundColor = .white
-    navigationController?.isNavigationBarHidden = true
-    navigationController?.navigationBar.tintColor = .black
-    navigationItem.title = "로그인"
+    self.view.backgroundColor = .white
+    self.navigationController?.setNavigationBarHidden(true, animated: true)
   }
   
   override func setupConstraints() {
-    super.setupConstraints()
-    
-    idTextField.snp.makeConstraints { make in
-      make.height.equalTo(54)
+    self.idormimageView.snp.makeConstraints { make in
+      make.top.leading.equalTo(self.view.safeAreaLayoutGuide).inset(36)
     }
     
-    pwTextField.snp.makeConstraints { make in
-      make.height.equalTo(54)
-    }
-    
-    idormMarkImage.snp.makeConstraints { make in
-      make.top.leading.equalTo(view.safeAreaLayoutGuide).inset(36)
-    }
-    
-    loginTitleLabel.snp.makeConstraints { make in
-      make.bottom.equalTo(loginStack.snp.top).offset(-10)
+    self.loginLabel.snp.makeConstraints { make in
+      make.bottom.equalTo(self.loginStack.snp.top).offset(-10)
       make.leading.equalToSuperview().inset(36)
     }
     
-    loginStack.snp.makeConstraints { make in
+    self.loginStack.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(36)
-      make.bottom.equalTo(loginTfStack.snp.top).offset(-54)
+      make.bottom.equalTo(self.loginTfStack.snp.top).offset(-54)
     }
     
-    loginTfStack.snp.makeConstraints { make in
+    self.loginTfStack.snp.makeConstraints { make in
       make.centerY.equalToSuperview().offset(-26)
       make.leading.trailing.equalToSuperview().inset(36)
     }
     
-    loginButton.snp.makeConstraints { make in
+    self.loginButton.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(36)
-      make.top.equalTo(loginTfStack.snp.bottom).offset(32)
+      make.top.equalTo(self.loginTfStack.snp.bottom).offset(32)
       make.height.equalTo(40)
     }
     
-    forgotPwButton.snp.makeConstraints { make in
+    self.forgotPwButton.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.top.equalTo(loginButton.snp.bottom).offset(8)
+      make.top.equalTo(self.loginButton.snp.bottom).offset(8)
     }
     
-    signUpStack.snp.makeConstraints { make in
+    self.signUpStack.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+      make.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(16)
     }
     
-    indicator.snp.makeConstraints { make in
+    self.indicator.snp.makeConstraints { make in
       make.center.equalToSuperview()
     }
   }
   
   // MARK: - Helpers
   
-  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    view.endEditing(true)
+  override func touchesBegan(
+    _ touches: Set<UITouch>,
+    with event: UIEvent?
+  ) {
+    self.view.endEditing(true)
   }
 }
-

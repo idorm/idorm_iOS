@@ -18,7 +18,7 @@ final class CommentView: UIView {
   private let anonymousLabel: UILabel = {
     let lb = UILabel()
     lb.text = "익명"
-    lb.font = .init(name: MyFonts.medium.rawValue, size: 12)
+    lb.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 12)
     lb.textColor = .black
     
     return lb

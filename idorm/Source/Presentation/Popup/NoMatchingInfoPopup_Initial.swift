@@ -24,7 +24,7 @@ final class NoMatchingInfoPopup_Initial: BaseViewController {
   let titleLabel = UILabel().then {
     $0.text = "i dorm에 처음 오셨네요!🙂"
     $0.textColor = .black
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 16)
+    $0.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 16)
   }
   
   let descriptionLabel = UILabel().then {
@@ -33,7 +33,7 @@ final class NoMatchingInfoPopup_Initial: BaseViewController {
     우선 프로필 이미지를 만들어 주세요.
     """
     $0.textColor = .black
-    $0.font = .init(name: MyFonts.regular.rawValue, size: 14)
+    $0.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 14)
     $0.textAlignment = .center
     $0.numberOfLines = 2
   }

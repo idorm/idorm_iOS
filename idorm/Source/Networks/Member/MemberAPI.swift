@@ -5,10 +5,10 @@ import RxMoya
 import Moya
 
 enum MemberAPI {
-  case login(id: String, pw: String)
-  case register(id: String, pw: String, nickname: String)
-  case changePassword_Login(pw: String)
-  case changePassword_Logout(id: String, pw: String)
+  case login(email: String, password: String, fcmToken: String)
+  case register(email: String, password: String, nickname: String)
+  case changePassword_Login(password: String)
+  case changePassword_Logout(email: String, password: String)
   case changeNickname(nickname: String)
   case retrieveMember
   case withdrawal
@@ -21,21 +21,16 @@ extension MemberAPI: TargetType, BaseAPI {
   var path: String { getPath() }
   var method: Moya.Method { getMethod() }
   var task: Task { getTask() }
-  var headers: [String : String]? { getJsonHeader() }
-}
-
-extension MemberAPI {
-  static func loginProcess(_ response: Response) {
-    guard let token = response.response?.headers.value(for: "authorization") else {
-      fatalError("Can't found Token!")
+  
+  var headers: [String : String]? {
+    switch self {
+    case .login(_, _, let fcmToken):
+      return [
+        "fcm-token": fcmToken,
+        "Content-Type": "application/json"
+      ]
+    default:
+      return getJsonHeader()
     }
-    
-    let member = MemberAPI.decode(
-      ResponseModel<MemberResponseModel.Member>.self,
-      data: response.data
-    ).data
-    
-    MemberStorage.shared.saveMember(member)
-    TokenStorage.saveToken(token: token)
   }
 }

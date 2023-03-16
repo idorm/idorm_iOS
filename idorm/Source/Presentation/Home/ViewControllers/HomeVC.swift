@@ -32,11 +32,11 @@ final class HomeViewController: BaseViewController, View {
               """
     $0.textColor = .idorm_gray_400
     $0.numberOfLines = 2
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 20)
+    $0.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 20)
     
     let attributedString = NSMutableAttributedString(string: $0.text!)
     attributedString.addAttributes([.foregroundColor: UIColor.idorm_blue,
-                                    .font: UIFont.init(name: MyFonts.bold.rawValue, size: 20)!]
+                                    .font: UIFont.init(name: IdormFont_deprecated.bold.rawValue, size: 20)!]
                                    ,range: ($0.text! as NSString).range(of: "1학기"))
     $0.attributedText = attributedString
   }
@@ -49,7 +49,7 @@ final class HomeViewController: BaseViewController, View {
     config.imagePadding = 12
     
     var titleContainer = AttributeContainer()
-    titleContainer.font = .init(name: MyFonts.medium.rawValue, size: 16)
+    titleContainer.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 16)
     titleContainer.foregroundColor = UIColor.white
     config.attributedTitle = AttributedString("룸메이트 매칭 시작하기", attributes: titleContainer)
     

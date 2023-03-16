@@ -7,8 +7,7 @@
 
 import Foundation
 
-enum Register {
+enum AuthProcess {
   case signUp
   case findPw
-  case modifyPw
 }

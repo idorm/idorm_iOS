@@ -11,10 +11,10 @@ import RxSwift
 import ReactorKit
 import RxMoya
 
-final class PutEmailViewReactor: Reactor {
+final class EmailViewReactor: Reactor {
   
   enum Action {
-    case didTapReceiveButton(String, Register)
+    case next(String, AuthProcess)
   }
   
   enum Mutation {
@@ -29,36 +29,36 @@ final class PutEmailViewReactor: Reactor {
     var isOpenedPopup: (Bool, String) = (false, "")
   }
   
+  // MARK: - PROPERTIES
+  
   var initialState: State = State()
+  
+  // MARK: - HELPERS
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
-    case let .didTapReceiveButton(email, type):
-      switch type {
-      case .signUp:
+    case let .next(email, authProcess):
+      switch authProcess {
+      case .signUp: // 회원가입
         return .concat([
           .just(.setLoading(true)),
-          MailAPI.provider.rx.request(
-            .emailAuthentication(email: email)
-          )
+          MailAPI.provider.rx.request(.emailAuthentication(email: email))
             .asObservable()
-            .retry()
             .flatMap { response -> Observable<Mutation> in
               switch response.statusCode {
-              case 200:
-                Logger.shared.saveAuthenticationType(.signUp)
+              case 200..<300: // 메일 전송 성공
+                Logger.shared.saveAuthProcess(.signUp)
                 Logger.shared.saveEmail(email)
-                UserStorage.saveEmail(from: email)
                 return .concat([
                   .just(.setLoading(false)),
                   .just(.setAuthVC(true)),
                   .just(.setAuthVC(false))
                 ])
-              default:
+              default: // 메일 전송 실패
                 let errorMessage = MailAPI.decode(
                   ErrorResponseModel.self,
                   data: response.data
-                ).message
+                ).responseMessage
                 return .concat([
                   .just(.setLoading(false)),
                   .just(.setPopup(true, errorMessage)),
@@ -67,29 +67,26 @@ final class PutEmailViewReactor: Reactor {
               }
             }
         ])
-      case .findPw, .modifyPw:
+      case .findPw: // 비밀번호 찾기
         return .concat([
           .just(.setLoading(true)),
-          MailAPI.provider.rx.request(
-            .pwAuthentication(email: email)
-          )
+          MailAPI.provider.rx.request(.pwAuthentication(email: email))
             .asObservable()
-            .retry()
             .flatMap { response -> Observable<Mutation> in
               switch response.statusCode {
-              case 200:
-                Logger.shared.saveAuthenticationType(.findPw)
+              case 200..<300: // 메일 전송 성공
+                Logger.shared.saveAuthProcess(.findPw)
                 Logger.shared.saveEmail(email)
                 return .concat([
                   .just(.setLoading(false)),
                   .just(.setAuthVC(true)),
                   .just(.setAuthVC(false))
                 ])
-              default:
+              default: // 메일 전송 실패
                 let errorMessage = MailAPI.decode(
                   ErrorResponseModel.self,
                   data: response.data
-                ).message
+                ).responseMessage
                 return .concat([
                   .just(.setLoading(false)),
                   .just(.setPopup(true, errorMessage)),

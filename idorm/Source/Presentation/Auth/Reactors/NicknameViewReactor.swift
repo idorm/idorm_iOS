@@ -179,7 +179,7 @@ final class NicknameViewReactor: Reactor {
                   let message = MemberAPI.decode(
                     ErrorResponseModel.self,
                     data: response.data
-                  ).message
+                  ).responseMessage
                   return .concat([
                     .just(.setLoading(false)),
                     .just(.setPopup(true, message)),

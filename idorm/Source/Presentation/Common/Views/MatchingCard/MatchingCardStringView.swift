@@ -36,7 +36,7 @@ final class MatchingCardStringView: UIView {
     let queryLabel = UILabel()
     queryLabel.text = type.title
     queryLabel.textColor = .black
-    queryLabel.font = .init(name: MyFonts.bold.rawValue, size: 14)
+    queryLabel.font = .init(name: IdormFont_deprecated.bold.rawValue, size: 14)
     queryLabel.setContentHuggingPriority(.init(251), for: .horizontal)
     queryLabel.setContentCompressionResistancePriority(.init(751), for: .horizontal)
     self.queryLabel = queryLabel
@@ -44,7 +44,7 @@ final class MatchingCardStringView: UIView {
   
   private func setupContentsLabel() {
     let contentsLabel = UILabel()
-    contentsLabel.font = .init(name: MyFonts.medium.rawValue, size: 14)
+    contentsLabel.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 14)
     contentsLabel.textColor = .idorm_gray_400
     switch type {
     case .wakeUp:

@@ -19,7 +19,7 @@ final class NoMatchingInfoPopup: BaseViewController {
   private let titleLabel = UILabel().then {
     $0.text = "매칭 이미지가 아직 없어요. 😅"
     $0.textColor = .black
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 16)
+    $0.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 16)
   }
   
   private let xmarkButton = UIButton().then {
@@ -34,7 +34,7 @@ final class NoMatchingInfoPopup: BaseViewController {
     $0.numberOfLines = 2
     $0.textAlignment = .center
     $0.textColor = .idorm_gray_400
-    $0.font = .init(name: MyFonts.regular.rawValue, size: 14)
+    $0.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 14)
   }
   
   private let containerView = UIView().then {

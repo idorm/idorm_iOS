@@ -16,7 +16,7 @@ final class SharedAPI {
       .retry()
       .filterSuccessfulStatusCodes()
       .map(ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self)
-      .bind { MemberStorage.shared.saveMatchingInfo($0.data) }
+      .bind { UserStorage.shared.saveMatchingInfo($0.data) }
   }
   
   static func retrieveMemberInfo() {
@@ -25,6 +25,6 @@ final class SharedAPI {
       .retry()
       .filterSuccessfulStatusCodes()
       .map(ResponseModel<MemberResponseModel.Member>.self)
-      .bind { MemberStorage.shared.saveMember($0.data) }
+      .bind { UserStorage.shared.saveMember($0.data) }
   }
 }
