@@ -355,7 +355,7 @@ final class MatchingFilterViewController: BaseViewController, View {
   // MARK: - Helpers
 
   private func updateFilteredUI(_ filter: MatchingRequestModel.Filter) {
-    toggleDromButton(filter.dormNum)
+    toggleDromButton(filter.dormCategory)
     togglePeriodButton(filter.joinPeriod)
     snoreButton.isSelected = filter.isSnoring
     grindingButton.isSelected = filter.isGrinding

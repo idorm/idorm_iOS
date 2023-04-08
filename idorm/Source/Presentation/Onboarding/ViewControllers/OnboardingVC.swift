@@ -214,7 +214,7 @@ final class OnboardingViewController: BaseViewController, View {
     rx.viewDidLoad
       .withUnretained(self)
       .filter { $0.0.type == .modify }
-      .map { _ in MemberStorage.shared.matchingInfo }
+      .map { _ in UserStorage.shared.matchingInfo }
       .filterNil()
       .map { OnboardingViewReactor.Action.viewDidLoad($0) }
       .bind(to: reactor.action)
@@ -446,7 +446,7 @@ final class OnboardingViewController: BaseViewController, View {
     rx.viewDidLoad
       .withUnretained(self)
       .filter { $0.0.type == .modify }
-      .map { _ in MemberStorage.shared.matchingInfo }
+      .map { _ in UserStorage.shared.matchingInfo }
       .filterNil()
       .withUnretained(self)
       .bind { owner, info in

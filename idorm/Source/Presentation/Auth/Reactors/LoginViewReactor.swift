@@ -40,7 +40,7 @@ final class LoginViewReactor: Reactor {
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .viewDidLoad:
-      TokenStorage.removeToken()
+//      TokenStorage.removeToken()
       return .empty()
       
     case let .signIn(email, password):

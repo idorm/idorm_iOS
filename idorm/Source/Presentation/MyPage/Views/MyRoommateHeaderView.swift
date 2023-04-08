@@ -77,9 +77,10 @@ extension MyRoommateHeaderView {
   
   private func button() -> UIButton {
     let button = UIButton()
-    button.setImage(#imageLiteral(resourceName: "circle"), for: .normal)
+    button.setImage(#imageLiteral(resourceName: "circle_gray"), for: .normal)
     button.setImage(#imageLiteral(resourceName: "circle_blue"), for: .selected)
     
     return button
   }
 }
+

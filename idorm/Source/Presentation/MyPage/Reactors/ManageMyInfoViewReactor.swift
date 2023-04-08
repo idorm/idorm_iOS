@@ -40,7 +40,7 @@ final class ManageMyInfoViewReactor: Reactor {
   }
   
   var initialState: State = State()
-  
+
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .viewWillAppear:

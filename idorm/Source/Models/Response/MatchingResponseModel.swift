@@ -28,5 +28,6 @@ extension MatchingResponseModel {
     var openKakaoLink: String = ""
     var mbti: String?
     var wishText: String?
+    var isMatchingInfoPublic: Bool = true
   }
 }

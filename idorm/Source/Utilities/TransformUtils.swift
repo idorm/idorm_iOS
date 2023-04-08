@@ -14,7 +14,7 @@ final class TransformUtils {
   ) -> MatchingResponseModel.Member {
     var newOne = MatchingResponseModel.Member()
     
-    newOne.dormCategory = from.dormNum
+    newOne.dormCategory = from.dormCategory
     newOne.gender = from.gender
     newOne.joinPeriod = from.joinPeriod
     newOne.isSmoking = from.isSmoking
@@ -62,7 +62,7 @@ final class TransformUtils {
   ) -> MatchingInfoRequestModel.MatchingInfo {
     var newOne = MatchingInfoRequestModel.MatchingInfo()
     
-    newOne.dormNum = from.dormCategory
+    newOne.dormCategory = from.dormCategory
     newOne.gender = from.gender
     newOne.joinPeriod = from.joinPeriod
     newOne.isSmoking = from.isSmoking

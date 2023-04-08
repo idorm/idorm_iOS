@@ -11,7 +11,7 @@ enum MatchingInfoRequestModel {}
 
 extension MatchingInfoRequestModel {
   struct MatchingInfo: Codable {
-    var dormNum: Dormitory = .no1
+    var dormCategory: Dormitory = .no1
     var joinPeriod: JoinPeriod = .period_16
     var gender: Gender = .female
     var age: String = ""

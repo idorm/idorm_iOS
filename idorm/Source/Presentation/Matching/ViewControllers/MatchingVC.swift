@@ -93,6 +93,7 @@ final class MatchingViewController: BaseViewController, View {
   
   override func setupLayouts() {
     super.setupLayouts()
+    
     [
       topRoundedBackgroundView,
       filterButton,

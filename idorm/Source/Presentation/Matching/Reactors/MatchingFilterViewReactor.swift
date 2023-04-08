@@ -53,7 +53,7 @@ final class MatchingFilterViewReactor: Reactor {
       
     case .didTapDormButton(let dorm):
       FilterDriver.shared.dorm.accept(true)
-      newFilter.dormNum = dorm
+      newFilter.dormCategory = dorm
       return Observable.just(.setFilter(newFilter))
 
     case .didTapJoinPeriodButton(let period):

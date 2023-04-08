@@ -77,7 +77,7 @@ final class OnboardingViewReactor: Reactor {
     case .viewDidLoad(let matchingInfo):
       newDriver.convertConditionToAllTrue()
       
-      newMatchingInfo.dormNum = matchingInfo.dormCategory
+      newMatchingInfo.dormCategory = matchingInfo.dormCategory
       newMatchingInfo.joinPeriod = matchingInfo.joinPeriod
       newMatchingInfo.gender = matchingInfo.gender
       newMatchingInfo.age = String(matchingInfo.age)
@@ -100,7 +100,7 @@ final class OnboardingViewReactor: Reactor {
       ])
       
     case .didTapDormButton(let dorm):
-      newMatchingInfo.dormNum = dorm
+      newMatchingInfo.dormCategory = dorm
       newDriver.dormConditon.accept(true)
       return .concat([
         .just(.setMatchingInfo(newMatchingInfo)),
@@ -264,10 +264,11 @@ final class OnboardingViewReactor: Reactor {
               .modify(currentState.currentMatchingInfo)
             )
               .asObservable()
+              .debug()
               .retry()
               .map(ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self)
               .flatMap { response -> Observable<Mutation> in
-                MemberStorage.shared.saveMatchingInfo(response.data)
+                UserStorage.shared.saveMatchingInfo(response.data)
                 return .concat([
                   .just(.setLoading(false)),
                   .just(.setRootVC(true)),

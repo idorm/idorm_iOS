@@ -24,7 +24,7 @@ final class LaunchViewController: BaseViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
-    if TokenStorage.hasToken() {
+    if UserStorage.shared.token != "" {
       requestAPI()
     } else {
       loginVC()
@@ -76,7 +76,12 @@ final class LaunchViewController: BaseViewController {
       .bind { owner, response in
         switch response.statusCode {
         case 200..<300:
-//          MemberAPI.loginProcess(response)
+          let token = response.response?.headers["authorization"]
+          let member = MemberAPI.decode(
+            ResponseModel<MemberResponseModel.Member>.self,
+            data: response.data).data
+          UserStorage.shared.saveMember(member)
+          UserStorage.shared.saveToken(token)
           owner.retrieveMatchingInfoAPI()
         default:
           owner.loginVC()
@@ -93,7 +98,11 @@ final class LaunchViewController: BaseViewController {
       .bind { owner, response in
         switch response.statusCode {
         case 200:
-          MatchingInfoAPI.retrieveProcess(response)
+          let matchingInfo = MatchingInfoAPI.decode(
+            ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self,
+            data: response.data
+          ).data
+          UserStorage.shared.saveMatchingInfo(matchingInfo)
           owner.mainVC()
         case 404:
           owner.mainVC()

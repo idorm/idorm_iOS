@@ -56,6 +56,19 @@ final class HomeViewController: BaseViewController, View {
     $0.configuration = config
   }
   
+  private lazy var popularPostsCollection = UICollectionView(
+    frame: .zero,
+    collectionViewLayout: self.getLayout()
+  ).then {
+    $0.register(
+      PopularPostCell.self,
+      forCellWithReuseIdentifier: PopularPostCell.identifier
+    )
+    $0.backgroundColor = .idorm_gray_100
+    $0.dataSource = self
+    $0.delegate = self
+  }
+  
   private let lionImageView = UIImageView(image: #imageLiteral(resourceName: "lion_with_circle"))
   private var scrollView: UIScrollView!
   private var contentView: UIView!
@@ -67,17 +80,24 @@ final class HomeViewController: BaseViewController, View {
     super.viewDidLoad()
   }
   
+  // MARK: - Helpers
+  
+  private func getLayout() -> UICollectionViewCompositionalLayout {
+    UICollectionViewCompositionalLayout { _, _ in
+      return PostUtils.popularPostSection()
+    }
+  }
+  
   // MARK: - Bind
   
   func bind(reactor: HomeViewReactor) {
     
     // MARK: - Action
     
+    // 매칭 시작하기
     startMatchingButton.rx.tap
       .withUnretained(self)
-      .bind {
-        $0.0.tabBarController?.selectedIndex = 1
-      }
+      .bind { $0.0.tabBarController?.selectedIndex = 1 }
       .disposed(by: disposeBag)
     
     // MARK: - State
@@ -98,8 +118,12 @@ final class HomeViewController: BaseViewController, View {
     view.addSubview(scrollView)
     scrollView.addSubview(contentView)
     
-    [mainLabel, lionImageView, startMatchingButton]
-      .forEach { contentView.addSubview($0) }
+    [
+      mainLabel,
+      lionImageView,
+      startMatchingButton,
+      popularPostsCollection
+    ].forEach { contentView.addSubview($0) }
   }
   
   override func setupConstraints() {
@@ -128,6 +152,12 @@ final class HomeViewController: BaseViewController, View {
       make.leading.trailing.equalToSuperview().inset(24)
       make.bottom.equalTo(lionImageView.snp.bottom).offset(-13.5)
       make.height.equalTo(52)
+    }
+    
+    popularPostsCollection.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview()
+      make.top.equalTo(startMatchingButton.snp.bottom).offset(50)
+      make.height.equalTo(156)
       make.bottom.equalToSuperview()
     }
   }
@@ -140,26 +170,30 @@ final class HomeViewController: BaseViewController, View {
     contentView.backgroundColor = .white
     self.contentView = contentView
   }
+}
+
+// MARK: - CollectionView Setup
+
+extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    numberOfItemsInSection section: Int
+  ) -> Int {
+    return 5
+  }
   
-  // MARK: - Bind
-  
-  override func bind() {
-    super.bind()
+  func collectionView(
+    _ collectionView: UICollectionView,
+    cellForItemAt indexPath: IndexPath
+  ) -> UICollectionViewCell {
+    guard let cell = collectionView.dequeueReusableCell(
+      withReuseIdentifier: PopularPostCell.identifier,
+      for: indexPath
+    ) as? PopularPostCell
+    else {
+      return UICollectionViewCell()
+    }
     
-    // MARK: - Input
-    
-//    // 매칭 시작 버튼 클릭 이벤트
-//    startMatchingButton.rx.tap
-//      .bind(to: viewModel.input.startMatchingButtonTapped)
-//      .disposed(by: disposeBag)
-    
-    // MARK: - Output
-    
-//    // 매칭 페이지로 전환
-//    viewModel.output.showMatchingPage
-//      .bind(onNext: { [weak self] in
-//        self?.tabBarController?.selectedIndex = 1
-//      })
-//      .disposed(by: disposeBag)
+    return cell
   }
 }

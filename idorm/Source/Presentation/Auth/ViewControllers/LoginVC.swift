@@ -110,7 +110,7 @@ final class LoginViewController: BaseViewController, View {
   override func viewDidLoad() {
     super.viewDidLoad()
     // TODO: 변화된 Storage에 따라서 초기화하기
-    TokenStorage.removeToken()
+//    TokenStorage.removeToken()
     FilterStorage.shared.resetFilter()
   }
   

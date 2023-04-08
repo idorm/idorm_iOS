@@ -55,7 +55,7 @@ final class MyPageViewReactor: Reactor {
       
     case .viewWillAppear:
       let currentNickname = UserStorage.shared.member?.nickname ?? ""
-      let isPublic = UserStorage.shared.matchingInfo?.isMatchingInfoPublic ?? false
+      let isPublic = UserStorage.shared.isPublicMatchingInfo
       
       return .concat([
         .just(.setShareButton(isPublic)),
@@ -69,7 +69,7 @@ final class MyPageViewReactor: Reactor {
       ])
       
     case .didTapMatchingImageButton:
-      if MemberStorage.shared.hasMatchingInfo {
+      if UserStorage.shared.hasMatchingInfo {
         return .concat([
           .just(.setOnboardingDetailVC(true)),
           .just(.setOnboardingDetailVC(false))
@@ -88,7 +88,7 @@ final class MyPageViewReactor: Reactor {
       ])
       
     case .didTapShareButton(let isPublic):
-      if MemberStorage.shared.hasMatchingInfo {
+      if UserStorage.shared.hasMatchingInfo {
         return .concat([
           .just(.setLoading(true)),
           MatchingInfoAPI.provider.rx.request(
@@ -137,7 +137,7 @@ final class MyPageViewReactor: Reactor {
       newState.isOpenedOnboardingVC = isOpened
       
     case let .setOnboardingDetailVC(isOpened):
-      guard let matchingInfo = MemberStorage.shared.matchingInfo else { return newState }
+      guard let matchingInfo = UserStorage.shared.matchingInfo else { return newState }
       let member = TransformUtils.transfer(matchingInfo)
       newState.isOpenedOnboardingDetailVC = (isOpened, member)
       

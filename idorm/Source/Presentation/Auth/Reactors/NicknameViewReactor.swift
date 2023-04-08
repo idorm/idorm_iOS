@@ -165,11 +165,9 @@ final class NicknameViewReactor: Reactor {
               .flatMap { response -> Observable<Mutation> in
                 switch response.statusCode {
                 case 200:
-                  let data = MemberAPI.decode(
-                    ResponseModel<MemberResponseModel.Member>.self,
-                    data: response.data
-                  ).data
-                  MemberStorage.shared.saveMember(data)
+                  var member = UserStorage.shared.member
+                  member?.nickname = nickname
+                  UserStorage.shared.saveMember(member!)
                   return .concat([
                     .just(.setLoading(false)),
                     .just(.setPopVC(true)),

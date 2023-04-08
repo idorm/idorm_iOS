@@ -208,14 +208,14 @@ final class MatchingViewReactor: Reactor {
         if userStorage.isPublicMatchingInfo {
           if FilterStorage.shared.hasFilter {
             return Observable.concat([
-              .just(.setLoading(true)),
               .just(.setMatchingMembers([])),
+              .just(.setLoading(true)),
               fetchFilteredMembers()
             ])
           } else {
             return Observable.concat([
-              .just(.setLoading(true)),
               .just(.setMatchingMembers([])),
+              .just(.setLoading(true)),
               fetchMatchingMembers()
             ])
           }
@@ -251,7 +251,6 @@ final class MatchingViewReactor: Reactor {
           .retry()
           .debug()
           .flatMap { response -> Observable<Mutation> in
-            print(response.response?.url)
             return Observable.concat([
               .just(.setLoading(false))
             ])
@@ -370,6 +369,7 @@ extension MatchingViewReactor {
     )
       .asObservable()
       .retry()
+      .debug()
       .filterSuccessfulStatusCodes()
       .flatMap { response -> Observable<Mutation> in
         switch response.statusCode {

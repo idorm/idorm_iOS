@@ -11,7 +11,7 @@ enum MatchingRequestModel {}
 
 extension MatchingRequestModel {
   struct Filter: Codable {
-    var dormNum: Dormitory = .no1
+    var dormCategory: Dormitory = .no1
     var isAllowedFood: Bool = false
     var isGrinding: Bool = false
     var isSmoking: Bool = false
