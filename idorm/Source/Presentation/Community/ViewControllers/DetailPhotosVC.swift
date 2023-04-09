@@ -62,11 +62,23 @@ final class DetailPhotosViewController: BaseViewController {
     return section
   }()
   
+  private lazy var pinchGesture: UIPinchGestureRecognizer = {
+    let pg = UIPinchGestureRecognizer(
+      target: self,
+      action: #selector(handlePinch(_:))
+    )
+    return pg
+  }()
+  
   // MARK: - PROPERTIES
   
   private let photosURL: [String]
   private var currentIndex: Int
   override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
+  
+  var recognizerScale: CGFloat = 1.0
+  var maxScale: CGFloat = 2.0
+  var minScale: CGFloat = 1.0
   
   // MARK: - INITIALIZER
   
@@ -104,6 +116,7 @@ final class DetailPhotosViewController: BaseViewController {
     ].forEach {
       self.view.addSubview($0)
     }
+    self.view.addGestureRecognizer(self.pinchGesture)
   }
   
   override func setupConstraints() {
@@ -152,6 +165,15 @@ final class DetailPhotosViewController: BaseViewController {
       self?.present(alertVC, animated: true)
     }
   }
+  
+  @objc
+  private func handlePinch(_ pinch: UIPinchGestureRecognizer) {
+    if pinch.state == .began || pinch.state == .changed {
+      if (recognizerScale < maxScale && pinch.scale > 1.0) {
+        
+      }
+    }
+  }
 }
 
 // MARK: - SETUP COLLECTIONVIEW
@@ -181,4 +203,6 @@ extension DetailPhotosViewController: UICollectionViewDataSource {
     
     return cell
   }
+  
+  
 }

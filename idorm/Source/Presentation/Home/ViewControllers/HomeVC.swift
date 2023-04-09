@@ -69,6 +69,10 @@ final class HomeViewController: BaseViewController, View {
     $0.delegate = self
   }
   
+  private let loadingView = UIActivityIndicatorView().then {
+    $0.backgroundColor = .lightGray
+  }
+  
   private let lionImageView = UIImageView(image: #imageLiteral(resourceName: "lion_with_circle"))
   private var scrollView: UIScrollView!
   private var contentView: UIView!
@@ -78,6 +82,7 @@ final class HomeViewController: BaseViewController, View {
   override func viewDidLoad() {
     setupScrollView()
     super.viewDidLoad()
+    reactor?.action.onNext(.viewDidLoad)
   }
   
   // MARK: - Helpers
@@ -101,6 +106,31 @@ final class HomeViewController: BaseViewController, View {
       .disposed(by: disposeBag)
     
     // MARK: - State
+    
+    reactor.state
+      .map { $0.popularPosts }
+      .distinctUntilChanged()
+      .bind(with: self) { owner, _ in owner.popularPostsCollection.reloadData() }
+      .disposed(by: disposeBag)
+    
+    // 로딩 인디케이터
+    reactor.state
+      .map { $0.isLoading }
+      .distinctUntilChanged()
+      .bind(to: loadingView.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
+    // PostDetailVC 화면전환
+    reactor.state
+      .map { $0.pushToPostDetailVC }
+      .filter { $0.0 }
+      .bind(with: self) { owner, postId in
+        let vc = DetailPostViewController()
+        vc.reactor = DetailPostViewReactor(postId.1)
+        vc.hidesBottomBarWhenPushed = true
+        owner.navigationController?.pushViewController(vc, animated: true)
+      }
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Setup
@@ -179,7 +209,8 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     _ collectionView: UICollectionView,
     numberOfItemsInSection section: Int
   ) -> Int {
-    return 5
+    let posts = reactor?.currentState.popularPosts ?? []
+    return posts.count
   }
   
   func collectionView(
@@ -194,6 +225,23 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
       return UICollectionViewCell()
     }
     
+    let posts = reactor?.currentState.popularPosts ?? []
+    cell.configure(posts[indexPath.row])
+    
     return cell
+  }
+  
+  func collectionView(
+    _ collectionView: UICollectionView,
+    didSelectItemAt indexPath: IndexPath
+  ) {
+    guard let reactor = reactor else { return }
+    let posts = reactor.currentState.popularPosts
+    let post = posts[indexPath.row]
+    
+    Observable.just(post.postId)
+      .map { HomeViewReactor.Action.postDidTap(postId: $0) }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
   }
 }

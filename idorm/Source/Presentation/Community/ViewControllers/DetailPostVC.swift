@@ -160,7 +160,7 @@ final class DetailPostViewController: BaseViewController, View {
     self.optionButton.rx.tap
       .bind(with: self) { owner, _ in
         guard
-          let memberId = MemberStorage.shared.member?.memberId,
+          let memberId = UserStorage.shared.member?.memberId,
           let postMemberId = reactor.currentState.currentPost?.memberId
         else { return }
         
