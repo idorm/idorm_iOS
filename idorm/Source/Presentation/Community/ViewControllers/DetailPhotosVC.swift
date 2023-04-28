@@ -38,6 +38,7 @@ final class DetailPhotosViewController: BaseViewController {
     )
     cv.backgroundColor = .black
     cv.dataSource = self
+    cv.delegate = self
     cv.isScrollEnabled = false
     cv.showsHorizontalScrollIndicator = false
     
@@ -57,17 +58,11 @@ final class DetailPhotosViewController: BaseViewController {
     section.visibleItemsInvalidationHandler = { _, offset, _ in
       let width = self.photoCollectionView.frame.width
       self.currentIndex = Int(offset.x / width)
+      
+      
     }
     
     return section
-  }()
-  
-  private lazy var pinchGesture: UIPinchGestureRecognizer = {
-    let pg = UIPinchGestureRecognizer(
-      target: self,
-      action: #selector(handlePinch(_:))
-    )
-    return pg
   }()
   
   // MARK: - PROPERTIES
@@ -75,10 +70,6 @@ final class DetailPhotosViewController: BaseViewController {
   private let photosURL: [String]
   private var currentIndex: Int
   override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
-  
-  var recognizerScale: CGFloat = 1.0
-  var maxScale: CGFloat = 2.0
-  var minScale: CGFloat = 1.0
   
   // MARK: - INITIALIZER
   
@@ -116,7 +107,6 @@ final class DetailPhotosViewController: BaseViewController {
     ].forEach {
       self.view.addSubview($0)
     }
-    self.view.addGestureRecognizer(self.pinchGesture)
   }
   
   override func setupConstraints() {
@@ -165,20 +155,11 @@ final class DetailPhotosViewController: BaseViewController {
       self?.present(alertVC, animated: true)
     }
   }
-  
-  @objc
-  private func handlePinch(_ pinch: UIPinchGestureRecognizer) {
-    if pinch.state == .began || pinch.state == .changed {
-      if (recognizerScale < maxScale && pinch.scale > 1.0) {
-        
-      }
-    }
-  }
 }
 
 // MARK: - SETUP COLLECTIONVIEW
 
-extension DetailPhotosViewController: UICollectionViewDataSource {
+extension DetailPhotosViewController: UICollectionViewDataSource, UICollectionViewDelegate {
   // 셀 갯수
   func collectionView(
     _ collectionView: UICollectionView,
@@ -203,6 +184,4 @@ extension DetailPhotosViewController: UICollectionViewDataSource {
     
     return cell
   }
-  
-  
 }
