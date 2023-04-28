@@ -18,6 +18,15 @@ extension CommunityAPI {
     case .lookupTopPosts:
       return .requestPlain
       
+    case .lookupMyComments:
+      return .requestPlain
+      
+    case .lookupMyPosts:
+      return .requestPlain
+      
+    case .lookupMyLikedPosts:
+      return .requestPlain
+      
     case .savePost(let post):
       var multiFormDatas: [MultipartFormData] = []
       
@@ -30,11 +39,11 @@ extension CommunityAPI {
       
       for i in 0..<post.images.count {
         let image = post.images[i]
-        let data = image.jpegData(compressionQuality: 0.1)!
+        let data = image.jpegData(compressionQuality: 0.9)!
         let imageData = MultipartFormData(provider: .data(data), name: "files", fileName: "\(i)", mimeType: "image/jpeg")
         multiFormDatas.append(imageData)
       }
-
+      
       return .uploadMultipart(multiFormDatas)
       
     case .lookupDetailPost:

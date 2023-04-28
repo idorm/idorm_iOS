@@ -13,6 +13,9 @@ enum CommunityAPI {
   case lookupPosts(dorm: Dormitory, page: Int)
   case lookupDetailPost(postId: Int)
   case lookupTopPosts(Dormitory)
+  case lookupMyPosts
+  case lookupMyLikedPosts
+  case lookupMyComments
   case savePost(CommunityRequestModel.Post)
   case saveComment(postId: Int, body: CommunityRequestModel.Comment)
   case deleteComment(postId: Int, commentId: Int)

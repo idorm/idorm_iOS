@@ -33,6 +33,15 @@ extension CommunityAPI {
       
     case .deletePost(let postId):
       return "/member/post/\(postId)"
+      
+    case .lookupMyPosts:
+      return "/member/posts/like"
+      
+    case .lookupMyComments:
+      return "/member/comments"
+      
+    case .lookupMyLikedPosts:
+      return "/member/posts/like"
     }
   }
 }

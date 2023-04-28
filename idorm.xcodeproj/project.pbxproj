@@ -112,7 +112,6 @@
 		E563422528784ED400E93D17 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E563422428784ED400E93D17 /* HomeVC.swift */; };
 		E5695C15295EFBD40083E48D /* LaunchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5695C14295EFBD40083E48D /* LaunchVC.swift */; };
 		E575D37529548DF900B13530 /* WithDrawalViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E575D37429548DF900B13530 /* WithDrawalViewReactor.swift */; };
-		E577E4C729FA2C3400D0DA48 /* BaseSortingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577E4C629FA2C3400D0DA48 /* BaseSortingViewController.swift */; };
 		E577E4CB29FA3A4200D0DA48 /* MyCommunityVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577E4CA29FA3A4200D0DA48 /* MyCommunityVC.swift */; };
 		E577E4CD29FA553300D0DA48 /* MyCommunityViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577E4CC29FA553300D0DA48 /* MyCommunityViewReactor.swift */; };
 		E57B3E4E2933688500B2C0F0 /* NoMatchingInfoPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B3E4D2933688500B2C0F0 /* NoMatchingInfoPopup.swift */; };
@@ -313,7 +312,6 @@
 		E563422428784ED400E93D17 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		E5695C14295EFBD40083E48D /* LaunchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchVC.swift; sourceTree = "<group>"; };
 		E575D37429548DF900B13530 /* WithDrawalViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithDrawalViewReactor.swift; sourceTree = "<group>"; };
-		E577E4C629FA2C3400D0DA48 /* BaseSortingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSortingViewController.swift; sourceTree = "<group>"; };
 		E577E4CA29FA3A4200D0DA48 /* MyCommunityVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommunityVC.swift; sourceTree = "<group>"; };
 		E577E4CC29FA553300D0DA48 /* MyCommunityViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommunityViewReactor.swift; sourceTree = "<group>"; };
 		E57B3E4D2933688500B2C0F0 /* NoMatchingInfoPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMatchingInfoPopup.swift; sourceTree = "<group>"; };
@@ -841,7 +839,6 @@
 			isa = PBXGroup;
 			children = (
 				E5909CE528D94B610083075D /* BaseViewController.swift */,
-				E577E4C629FA2C3400D0DA48 /* BaseSortingViewController.swift */,
 				E50FB5232971920B00E938B8 /* BaseView.swift */,
 				E503010128773A5E00611C62 /* LaunchScreen.storyboard */,
 				E50300FF28773A5E00611C62 /* Assets.xcassets */,
@@ -1294,7 +1291,6 @@
 				E58865112988E1F60068BEB2 /* MatchingAPI+Path.swift in Sources */,
 				E547E3EC291CFBBC000D3A47 /* MatchingCardWishTextView.swift in Sources */,
 				E5CFF6FD29826F8E00E11D9A /* DetailPostEmptyCell.swift in Sources */,
-				E577E4C729FA2C3400D0DA48 /* BaseSortingViewController.swift in Sources */,
 				E5D07087292F098500D5DF6E /* String+.swift in Sources */,
 				E5C89E4B28A9EDA70035D9C6 /* URLRequest+.swift in Sources */,
 				E52B0B5F2959E91E000CDE13 /* UINavigationController+.swift in Sources */,

@@ -10,7 +10,14 @@ import Moya
 extension CommunityAPI {
   func getMethod() -> Method {
     switch self {
-    case .lookupPosts, .lookupTopPosts, .lookupDetailPost:
+    case
+        .lookupPosts,
+        .lookupTopPosts,
+        .lookupDetailPost,
+        .lookupMyPosts,
+        .lookupMyComments,
+        .lookupMyLikedPosts
+      :
       return .get
       
     case .savePost, .saveComment:
