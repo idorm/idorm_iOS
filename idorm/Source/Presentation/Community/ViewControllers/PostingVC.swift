@@ -404,14 +404,7 @@ final class PostingViewController: BaseViewController, View {
       let manager = PHImageManager.default()
       var images: [UIImage] = []
       assets.forEach {
-        manager.requestImage(
-          for: $0,
-          targetSize: CGSize(width: 80, height: 80),
-          contentMode: .aspectFit,
-          options: nil) { image, _ in
-            guard let image = image else { return }
-            images.append(image)
-          }
+        images.append($0.getImageFromPHAsset())
       }
       self?.reactor?.action.onNext(.didPickedImages(images))
     }
