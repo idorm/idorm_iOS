@@ -101,6 +101,7 @@
 		E551032929237177001E1530 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = E551032829237177001E1530 /* Then */; };
 		E551032C292371E9001E1530 /* RxOptional in Frameworks */ = {isa = PBXBuildFile; productRef = E551032B292371E9001E1530 /* RxOptional */; };
 		E55794EE287C36F5002DB2B0 /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55794ED287C36F5002DB2B0 /* UIView+.swift */; };
+		E55AE18C29E52A6E002E6025 /* CommunityContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55AE18B29E52A6E002E6025 /* CommunityContainerView.swift */; };
 		E55DDAE929179DD900E62ECB /* NavigationAppearanceUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55DDAE829179DD900E62ECB /* NavigationAppearanceUtils.swift */; };
 		E562611129977A6800D14020 /* Sequence+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E562611029977A6800D14020 /* Sequence+.swift */; };
 		E5626113299A500800D14020 /* DetailPostPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5626112299A500800D14020 /* DetailPostPhotoCell.swift */; };
@@ -111,6 +112,9 @@
 		E563422528784ED400E93D17 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E563422428784ED400E93D17 /* HomeVC.swift */; };
 		E5695C15295EFBD40083E48D /* LaunchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5695C14295EFBD40083E48D /* LaunchVC.swift */; };
 		E575D37529548DF900B13530 /* WithDrawalViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E575D37429548DF900B13530 /* WithDrawalViewReactor.swift */; };
+		E577E4C729FA2C3400D0DA48 /* BaseSortingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577E4C629FA2C3400D0DA48 /* BaseSortingViewController.swift */; };
+		E577E4CB29FA3A4200D0DA48 /* MyCommunityVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577E4CA29FA3A4200D0DA48 /* MyCommunityVC.swift */; };
+		E577E4CD29FA553300D0DA48 /* MyCommunityViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577E4CC29FA553300D0DA48 /* MyCommunityViewReactor.swift */; };
 		E57B3E4E2933688500B2C0F0 /* NoMatchingInfoPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B3E4D2933688500B2C0F0 /* NoMatchingInfoPopup.swift */; };
 		E57FB8562886E2710050BBAE /* PhotoLibrary+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57FB8552886E2710050BBAE /* PhotoLibrary+.swift */; };
 		E58131A8288E6AC6000DB8C9 /* FloatyBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58131A7288E6AC6000DB8C9 /* FloatyBottomView.swift */; };
@@ -197,7 +201,7 @@
 		E5F35E1B298665E000211C99 /* OrderedComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F35E1A298665E000211C99 /* OrderedComment.swift */; };
 		E5F35E1D2986672F00211C99 /* ResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F35E1C2986672F00211C99 /* ResponseModel.swift */; };
 		E5F565702918FF5A0043FCB4 /* MyRoommateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5656F2918FF5A0043FCB4 /* MyRoommateVC.swift */; };
-		E5F56572291902B60043FCB4 /* MyRoommateHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F56571291902B60043FCB4 /* MyRoommateHeaderView.swift */; };
+		E5F56572291902B60043FCB4 /* MyPageSortHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F56571291902B60043FCB4 /* MyPageSortHeaderView.swift */; };
 		E5F56574291908DE0043FCB4 /* MyRoommateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F56573291908DE0043FCB4 /* MyRoommateCell.swift */; };
 		E5F5EC78288402840026DE21 /* MyPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC77288402840026DE21 /* MyPageVC.swift */; };
 		E5FD982428EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD982328EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift */; };
@@ -299,6 +303,7 @@
 		E550476D29A0F1FD0050AD1C /* DetailPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPhotoCell.swift; sourceTree = "<group>"; };
 		E550476F29A2FAC90050AD1C /* ImageSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaver.swift; sourceTree = "<group>"; };
 		E55794ED287C36F5002DB2B0 /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
+		E55AE18B29E52A6E002E6025 /* CommunityContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityContainerView.swift; sourceTree = "<group>"; };
 		E55DDAE829179DD900E62ECB /* NavigationAppearanceUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationAppearanceUtils.swift; sourceTree = "<group>"; };
 		E562611029977A6800D14020 /* Sequence+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+.swift"; sourceTree = "<group>"; };
 		E5626112299A500800D14020 /* DetailPostPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPostPhotoCell.swift; sourceTree = "<group>"; };
@@ -308,6 +313,9 @@
 		E563422428784ED400E93D17 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		E5695C14295EFBD40083E48D /* LaunchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchVC.swift; sourceTree = "<group>"; };
 		E575D37429548DF900B13530 /* WithDrawalViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithDrawalViewReactor.swift; sourceTree = "<group>"; };
+		E577E4C629FA2C3400D0DA48 /* BaseSortingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSortingViewController.swift; sourceTree = "<group>"; };
+		E577E4CA29FA3A4200D0DA48 /* MyCommunityVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommunityVC.swift; sourceTree = "<group>"; };
+		E577E4CC29FA553300D0DA48 /* MyCommunityViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommunityViewReactor.swift; sourceTree = "<group>"; };
 		E57B3E4D2933688500B2C0F0 /* NoMatchingInfoPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMatchingInfoPopup.swift; sourceTree = "<group>"; };
 		E57FB8552886E2710050BBAE /* PhotoLibrary+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotoLibrary+.swift"; sourceTree = "<group>"; };
 		E58131A7288E6AC6000DB8C9 /* FloatyBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatyBottomView.swift; sourceTree = "<group>"; };
@@ -392,7 +400,7 @@
 		E5F35E1A298665E000211C99 /* OrderedComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedComment.swift; sourceTree = "<group>"; };
 		E5F35E1C2986672F00211C99 /* ResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseModel.swift; sourceTree = "<group>"; };
 		E5F5656F2918FF5A0043FCB4 /* MyRoommateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoommateVC.swift; sourceTree = "<group>"; };
-		E5F56571291902B60043FCB4 /* MyRoommateHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoommateHeaderView.swift; sourceTree = "<group>"; };
+		E5F56571291902B60043FCB4 /* MyPageSortHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSortHeaderView.swift; sourceTree = "<group>"; };
 		E5F56573291908DE0043FCB4 /* MyRoommateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoommateCell.swift; sourceTree = "<group>"; };
 		E5F5EC77288402840026DE21 /* MyPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageVC.swift; sourceTree = "<group>"; };
 		E5FD982328EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMatchingInfoPopup_Initial.swift; sourceTree = "<group>"; };
@@ -786,6 +794,7 @@
 				E5F5EC77288402840026DE21 /* MyPageVC.swift */,
 				E5AC2A4C28BB5B250069ABB9 /* ManageMyInfoVC.swift */,
 				E5F5656F2918FF5A0043FCB4 /* MyRoommateVC.swift */,
+				E577E4CA29FA3A4200D0DA48 /* MyCommunityVC.swift */,
 				E5D7AECD292B287D00038349 /* WithdrawalVC.swift */,
 			);
 			path = ViewControllers;
@@ -832,6 +841,7 @@
 			isa = PBXGroup;
 			children = (
 				E5909CE528D94B610083075D /* BaseViewController.swift */,
+				E577E4C629FA2C3400D0DA48 /* BaseSortingViewController.swift */,
 				E50FB5232971920B00E938B8 /* BaseView.swift */,
 				E503010128773A5E00611C62 /* LaunchScreen.storyboard */,
 				E50300FF28773A5E00611C62 /* Assets.xcassets */,
@@ -1048,7 +1058,8 @@
 				E52CD85528BE371F00A262ED /* ManageMyInfoView.swift */,
 				E52E96B12915FAB6009E1773 /* MatchingContainerView.swift */,
 				E52E96B329160870009E1773 /* TopProfileView.swift */,
-				E5F56571291902B60043FCB4 /* MyRoommateHeaderView.swift */,
+				E5F56571291902B60043FCB4 /* MyPageSortHeaderView.swift */,
+				E55AE18B29E52A6E002E6025 /* CommunityContainerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1069,6 +1080,7 @@
 				E51D1C7B2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift */,
 				E51D1C7D29531B8300A7EE49 /* MyRoommateViewReactor.swift */,
 				E575D37429548DF900B13530 /* WithDrawalViewReactor.swift */,
+				E577E4CC29FA553300D0DA48 /* MyCommunityViewReactor.swift */,
 			);
 			path = Reactors;
 			sourceTree = "<group>";
@@ -1267,6 +1279,8 @@
 				E5066426296E560B00B581E1 /* PostListVC.swift in Sources */,
 				E52C27872989148B002429B5 /* Roommate.swift in Sources */,
 				E5E14982295050EC00A3827C /* FilterStorage.swift in Sources */,
+				E55AE18C29E52A6E002E6025 /* CommunityContainerView.swift in Sources */,
+				E577E4CD29FA553300D0DA48 /* MyCommunityViewReactor.swift in Sources */,
 				E52C2789298917F8002429B5 /* AuthProcess.swift in Sources */,
 				E513D9FE2955C70A002EA592 /* EmailViewReactor.swift in Sources */,
 				E575D37529548DF900B13530 /* WithDrawalViewReactor.swift in Sources */,
@@ -1280,6 +1294,7 @@
 				E58865112988E1F60068BEB2 /* MatchingAPI+Path.swift in Sources */,
 				E547E3EC291CFBBC000D3A47 /* MatchingCardWishTextView.swift in Sources */,
 				E5CFF6FD29826F8E00E11D9A /* DetailPostEmptyCell.swift in Sources */,
+				E577E4C729FA2C3400D0DA48 /* BaseSortingViewController.swift in Sources */,
 				E5D07087292F098500D5DF6E /* String+.swift in Sources */,
 				E5C89E4B28A9EDA70035D9C6 /* URLRequest+.swift in Sources */,
 				E52B0B5F2959E91E000CDE13 /* UINavigationController+.swift in Sources */,
@@ -1331,6 +1346,7 @@
 				E50F85072958494B008B7052 /* OnboardingViewReactor.swift in Sources */,
 				E5E77EC628D822FB00031010 /* idormButton.swift in Sources */,
 				E58865152988E20A0068BEB2 /* MatchingAPI+Task.swift in Sources */,
+				E577E4CB29FA3A4200D0DA48 /* MyCommunityVC.swift in Sources */,
 				E5294FF52927807A004D408C /* Encodable+.swift in Sources */,
 				E523ECAF29516A0A00E79386 /* MatchingViewReactor.swift in Sources */,
 				E5CFF7122982D42A00E11D9A /* CommunityRequestModel.swift in Sources */,
@@ -1355,7 +1371,7 @@
 				E5E77EC828D825EB00031010 /* idormTextField.swift in Sources */,
 				E529516729BD257600087AE2 /* SceneUtils.swift in Sources */,
 				E563422528784ED400E93D17 /* HomeVC.swift in Sources */,
-				E5F56572291902B60043FCB4 /* MyRoommateHeaderView.swift in Sources */,
+				E5F56572291902B60043FCB4 /* MyPageSortHeaderView.swift in Sources */,
 				E513DA022955ED0B002EA592 /* AuthViewReactor.swift in Sources */,
 				E5AD73A1287AFC5300BA2C5E /* AuthNumberVC.swift in Sources */,
 				E5CFF6F6297E8A6700E11D9A /* idormCommunityButton.swift in Sources */,
