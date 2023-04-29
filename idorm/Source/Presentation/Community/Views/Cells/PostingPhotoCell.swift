@@ -29,7 +29,6 @@ final class PostingPhotoCell: UICollectionViewCell {
     iv.layer.cornerRadius = 10
     iv.layer.masksToBounds = true
     iv.contentMode = .scaleAspectFit
-    
     return iv
   }()
   

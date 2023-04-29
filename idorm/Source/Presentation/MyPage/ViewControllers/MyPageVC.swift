@@ -36,6 +36,7 @@ final class MyPageViewController: BaseViewController, View {
   private let lionImageView = UIImageView(image: #imageLiteral(resourceName: "lion_half"))
   private let topProfileView = TopProfileView()
   private let matchingContainerView = MatchingContainerView()
+  private let communityContainerView = CommunityContainerView()
   override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
   
   // MARK: - LifeCycle
@@ -244,6 +245,7 @@ final class MyPageViewController: BaseViewController, View {
     [
       topProfileView,
       matchingContainerView,
+      communityContainerView,
       lionImageView
     ].forEach { contentView.addSubview($0) }
   }
@@ -262,7 +264,6 @@ final class MyPageViewController: BaseViewController, View {
     contentView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
       make.width.equalTo(scrollView.snp.width)
-      make.height.equalTo(scrollView.snp.height)
     }
     
     topProfileView.snp.makeConstraints { make in
@@ -275,8 +276,14 @@ final class MyPageViewController: BaseViewController, View {
       make.top.equalTo(topProfileView.snp.bottom).offset(24)
     }
     
+    communityContainerView.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview().inset(24)
+      make.top.equalTo(matchingContainerView.snp.bottom).offset(24)
+    }
+    
     lionImageView.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
+      make.top.equalTo(communityContainerView.snp.bottom).offset(24)
       make.bottom.equalToSuperview()
     }
   }
