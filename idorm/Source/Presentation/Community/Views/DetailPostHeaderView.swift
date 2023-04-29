@@ -145,7 +145,6 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
     let lb = UILabel()
     lb.textColor = .idorm_gray_300
     lb.font = .idormFont(.regular, size: 12)
-    
     return lb
   }
   
