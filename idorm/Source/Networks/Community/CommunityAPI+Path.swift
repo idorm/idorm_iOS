@@ -35,7 +35,7 @@ extension CommunityAPI {
       return "/member/post/\(postId)"
       
     case .lookupMyPosts:
-      return "/member/posts/like"
+      return "/member/posts/write"
       
     case .lookupMyComments:
       return "/member/comments"

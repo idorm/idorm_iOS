@@ -8,8 +8,11 @@
 import UIKit
 
 import SnapKit
+import ReactorKit
+import RxSwift
+import RxCocoa
 
-final class MyCommunityViewController: BaseViewController {
+final class MyCommunityViewController: BaseViewController, View {
   
   enum ViewControllerType {
     case post
@@ -20,19 +23,39 @@ final class MyCommunityViewController: BaseViewController {
   // MARK: - UI Components
   
   private lazy var tableView: UITableView = {
-    let tb = UITableView()
+    let tb = UITableView(frame: .zero, style: .grouped)
     tb.register(
       MyPageSortHeaderView.self,
       forHeaderFooterViewReuseIdentifier: MyPageSortHeaderView.identifier
     )
+    tb.register(
+      MyCommentCell.self,
+      forCellReuseIdentifier: MyCommentCell.identifier
+    )
+    tb.register(
+      MyPostCell.self,
+      forCellReuseIdentifier: MyPostCell.identifier
+    )
+    tb.backgroundColor = .idorm_gray_100
+    tb.bounces = false
     tb.delegate = self
     tb.dataSource = self
+    tb.separatorColor = .idorm_gray_100
+    tb.separatorStyle = .none
+    tb.separatorInset = .init(top: 4, left: 4, bottom: 4, right: 4)
     return tb
+  }()
+  
+  private let indicator: UIActivityIndicatorView = {
+    let indicator = UIActivityIndicatorView()
+    indicator.color = .gray
+    return indicator
   }()
   
   // MARK: - Properties
   
   private let viewControllerType: ViewControllerType
+  private var header: MyPageSortHeaderView?
   
   // MARK: - Initializer
   
@@ -50,6 +73,7 @@ final class MyCommunityViewController: BaseViewController {
   override func setupStyles() {
     super.setupStyles()
     
+    navigationController?.setNavigationBarHidden(false, animated: true)
     switch viewControllerType {
     case .comment:
       navigationItem.title = "내가 쓴 댓글"
@@ -64,7 +88,8 @@ final class MyCommunityViewController: BaseViewController {
     super.setupLayouts()
     
     [
-      tableView
+      tableView,
+      indicator
     ].forEach {
       view.addSubview($0)
     }
@@ -76,6 +101,61 @@ final class MyCommunityViewController: BaseViewController {
     tableView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
     }
+    
+    indicator.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+    }
+  }
+  
+  // MARK: - Bind
+  
+  func bindHeader() {
+    guard let header = header else { return }
+    guard let reactor = reactor else { return }
+    
+    header.isLatest
+      .distinctUntilChanged()
+      .map { MyCommunityViewReactor.Action.sortButtonDidTap($0) }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+  }
+  
+  func bind(reactor: MyCommunityViewReactor) {
+    
+    // Action
+    
+    Observable.combineLatest(
+      rx.viewDidLoad,
+      rx.viewWillAppear
+    )
+    .map { _ in MyCommunityViewReactor.Action.viewNeedsUpdate }
+    .bind(to: reactor.action)
+    .disposed(by: disposeBag)
+    
+    // State
+    
+    reactor.state.map { $0.reloadData }
+      .filter { $0 }
+      .withUnretained(self)
+      .bind { $0.0.tableView.reloadData() }
+      .disposed(by: disposeBag)
+    
+    reactor.state.map { $0.isLoading }
+      .bind(to: indicator.rx.isAnimating)
+      .disposed(by: disposeBag)
+  }
+  
+  // MARK: - Helpers
+  
+  private func showAlert(_ title: String) {
+    let alert = UIAlertController(
+      title: title,
+      message: "",
+      preferredStyle: .alert
+    )
+    let cancelAction = UIAlertAction(title: "확인", style: .cancel)
+    alert.addAction(cancelAction)
+    present(alert, animated: true)
   }
 }
 
@@ -83,36 +163,133 @@ final class MyCommunityViewController: BaseViewController {
 
 extension MyCommunityViewController: UITableViewDataSource, UITableViewDelegate {
   
+  // Initialize Cell
+  
   func tableView(
     _ tableView: UITableView,
     cellForRowAt indexPath: IndexPath
   ) -> UITableViewCell {
-    return UITableViewCell()
-//    switch viewControllerType {
-//    case .post, .recommend:
-//      guard let cell = tableView.dequeueReusableCell(
-//        withIdentifier: PostCell.identifier,
-//        for: indexPath
-//      ) as? PostCell else {
-//        return UITableViewCell()
-//      }
-//      return cell
-//
-//    case .comment:
-//      guard let cell = tableView.dequeueReusableCell(
-//        withIdentifier: CommentCell.identifier,
-//        for: indexPath
-//      ) as? CommentCell else {
-//        return UITableViewCell()
-//      }
-//      return cell
-//    }
+    guard let currentState = reactor?.currentState else {
+      return UITableViewCell()
+    }
+    
+    switch viewControllerType {
+    case .post, .recommend:
+      guard let cell = tableView.dequeueReusableCell(
+        withIdentifier: MyPostCell.identifier,
+        for: indexPath
+      ) as? MyPostCell else {
+        return UITableViewCell()
+      }
+      let post = currentState.posts[indexPath.row]
+      cell.injectData(post)
+      return cell
+      
+    case .comment:
+      guard let cell = tableView.dequeueReusableCell(
+        withIdentifier: MyCommentCell.identifier,
+        for: indexPath
+      ) as? MyCommentCell else {
+        return UITableViewCell()
+      }
+      let comment = currentState.comments[indexPath.row]
+      cell.configure(comment)
+      
+      cell.buttonCompletion = { [weak self] in
+        if $0 != nil {
+          let viewController = DetailPostViewController()
+          let reactor = DetailPostViewReactor($0!)
+          viewController.reactor = reactor
+          self?.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+          self?.showAlert("삭제된 게시글입니다.")
+        }
+      }
+      return cell
+    }
   }
+  
+  // Initialize Header
+  
+  func tableView(
+    _ tableView: UITableView,
+    viewForHeaderInSection section: Int
+  ) -> UIView? {
+    guard let header = tableView.dequeueReusableHeaderFooterView(
+      withIdentifier: MyPageSortHeaderView.identifier
+    ) as? MyPageSortHeaderView else {
+      return UIView()
+    }
+    
+    if self.header == nil {
+      self.header = header
+      bindHeader()
+    }
+    
+    return header
+  }
+  
+  // numberOfRows
   
   func tableView(
     _ tableView: UITableView,
     numberOfRowsInSection section: Int
   ) -> Int {
-    return 10
+    switch viewControllerType {
+    case .post, .recommend:
+      return reactor?.currentState.posts.count ?? 0
+    case .comment:
+      return reactor?.currentState.comments.count ?? 0
+    }
+  }
+  
+  // Header Height
+  
+  func tableView(
+    _ tableView: UITableView,
+    heightForHeaderInSection section: Int
+  ) -> CGFloat {
+    return 50
+  }
+  
+  // Cell Height
+  
+  func tableView(
+    _ tableView: UITableView,
+    heightForRowAt indexPath: IndexPath
+  ) -> CGFloat {
+    switch viewControllerType {
+    case .recommend, .post:
+      return 145.0
+    case .comment:
+      return UITableView.automaticDimension
+    }
+  }
+  
+  func tableView(
+    _ tableView: UITableView,
+    estimatedHeightForRowAt indexPath: IndexPath
+  ) -> CGFloat {
+    return UITableView.automaticDimension
+  }
+  
+  // Cell Touch
+  
+  func tableView(
+    _ tableView: UITableView,
+    didSelectRowAt indexPath: IndexPath
+  ) {
+    guard let reactor = reactor else { return }
+    
+    switch viewControllerType {
+    case .recommend, .post:
+      let viewController = DetailPostViewController()
+      let reactor = DetailPostViewReactor(reactor.currentState.posts[indexPath.row].postId)
+      viewController.reactor = reactor
+      viewController.hidesBottomBarWhenPushed = true
+      navigationController?.pushViewController(viewController, animated: true)
+    case .comment:
+      break
+    }
   }
 }

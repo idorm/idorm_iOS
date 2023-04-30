@@ -13,19 +13,24 @@ import RxMoya
 final class MyCommunityViewReactor: Reactor {
   
   enum Action {
-    case viewDidLoad
+    case viewNeedsUpdate
+    case sortButtonDidTap(Bool)
   }
   
   enum Mutation {
     case setLoading(Bool)
     case setPosts([CommunityResponseModel.Posts])
-    case setComments([CommunityResponseModel.Comment])
+    case setComments([CommunityResponseModel.SubComment])
+    case setReloadData(Bool)
+    case setSort(Bool)
   }
   
   struct State {
     var isLoading: Bool = false
     var posts: [CommunityResponseModel.Posts] = []
-    var comments: [CommunityResponseModel.Comment] = []
+    var comments: [CommunityResponseModel.SubComment] = []
+    var reloadData: Bool = false
+    var isLatest: Bool = true
   }
   
   // MARK: - Properties
@@ -43,21 +48,26 @@ final class MyCommunityViewReactor: Reactor {
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
-    case .viewDidLoad:
+    case .viewNeedsUpdate:
       switch viewControllerType {
       case .post:
         return .concat([
           .just(.setLoading(true)),
           CommunityAPI.provider.rx.request(.lookupMyPosts)
             .asObservable()
-            .flatMap { response -> Observable<Mutation> in
+            .withUnretained(self)
+            .flatMap { owner, response -> Observable<Mutation> in
               let posts = CommunityAPI.decode(
                 ResponseModel<[CommunityResponseModel.Posts]>.self,
                 data: response.data
               ).data
               return .concat([
                 .just(.setLoading(false)),
-                .just(.setPosts(posts))
+                .just(.setPosts(
+                  owner.currentState.isLatest ? posts : posts.reversed()
+                )),
+                .just(.setReloadData(true)),
+                .just(.setReloadData(false))
               ])
             }
         ])
@@ -67,15 +77,25 @@ final class MyCommunityViewReactor: Reactor {
           .just(.setLoading(true)),
           CommunityAPI.provider.rx.request(.lookupMyComments)
             .asObservable()
-            .flatMap { response -> Observable<Mutation> in
-              let comments = CommunityAPI.decode(
-                ResponseModel<[CommunityResponseModel.Comment]>.self,
-                data: response.data
-              ).data
-              return .concat([
-                .just(.setLoading(false)),
-                .just(.setComments(comments))
-              ])
+            .withUnretained(self)
+            .flatMap { owner, response -> Observable<Mutation> in
+              switch response.statusCode {
+              case 200:
+                let comments = CommunityAPI.decode(
+                  ResponseModel<[CommunityResponseModel.SubComment]>.self,
+                  data: response.data
+                ).data
+                return .concat([
+                  .just(.setLoading(false)),
+                  .just(.setComments(
+                    owner.currentState.isLatest ? comments : comments.reversed()
+                  )),
+                  .just(.setReloadData(true)),
+                  .just(.setReloadData(false))
+                ])
+              default:
+                fatalError()
+              }
             }
         ])
         
@@ -96,6 +116,17 @@ final class MyCommunityViewReactor: Reactor {
             }
         ])
       }
+      
+    case .sortButtonDidTap(let isLatest):
+      let newPosts = Array(currentState.posts.reversed())
+      let newComments = Array(currentState.comments.reversed())
+      return .concat([
+        .just(.setComments(newComments)),
+        .just(.setPosts(newPosts)),
+        .just(.setReloadData(true)),
+        .just(.setReloadData(false)),
+        .just(.setSort(isLatest))
+      ])
     }
   }
   
@@ -111,6 +142,12 @@ final class MyCommunityViewReactor: Reactor {
       
     case .setComments(let comments):
       newState.comments = comments
+      
+    case .setReloadData(let reloadData):
+      newState.reloadData = reloadData
+      
+    case .setSort(let isLatest):
+      newState.isLatest = isLatest
     }
     
     return newState

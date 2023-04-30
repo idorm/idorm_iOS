@@ -20,17 +20,17 @@ final class CommunityContainerView: UIView {
     $0.font = .idormFont(.medium, size: 16)
   }
   
-  private lazy var myPostButton = button(
+  lazy var myPostButton = button(
     image: UIImage(named: "circle_pencil_blue"),
     title: "내가 쓴 글"
   )
   
-  private lazy var myCommentButton = button(
+  lazy var myCommentButton = button(
     image: UIImage(named: "circle_speechBubble_blue"),
     title: "내가 쓴 댓글"
   )
   
-  private lazy var myRecommendButton = button(
+  lazy var myRecommendButton = button(
     image: UIImage(named: "circle_thumbs"),
     title: "추천한 글"
   )

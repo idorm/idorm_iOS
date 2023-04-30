@@ -47,22 +47,26 @@ extension CommunityResponseModel {
   struct Comment: Codable, Equatable {
     let commentId: Int
     let memberId: Int
+    let content: String
+    let createdAt: String
     let isDeleted: Bool
     let nickname: String?
     let profileUrl: String?
-    let content: String
-    let createdAt: String
+    let isAnonymous: Bool
+    let postId: Int
     let subComments: [SubComment]
   }
   
   struct SubComment: Codable, Equatable {
     let commentId: Int
-    let parentCommentId: Int
+    let parentCommentId: Int?
     let memberId: Int
     let isDeleted: Bool
-    let nickname: String?
+    let nickname: String
     let profileUrl: String?
     let content: String
     let createdAt: String
+    let isAnonymous: Bool
+    let postId: Int?
   }
 }

@@ -47,20 +47,17 @@ final class DetailPostViewController: BaseViewController, View {
   private let indicator: UIActivityIndicatorView = {
     let indicator = UIActivityIndicatorView()
     indicator.color = .darkGray
-    
     return indicator
   }()
   
   private let optionButton: UIButton = {
     let btn = UIButton()
     btn.setImage(UIImage(named: "option_gray"), for: .normal)
-    
     return btn
   }()
   
   private let refreshControl: UIRefreshControl = {
     let rc = UIRefreshControl()
-    
     return rc
   }()
   
@@ -372,7 +369,7 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
       }
       
       let orderedComment = reactor.currentState.currentComments[indexPath.row]
-      cell.injectComment(orderedComment)
+      cell.configure(orderedComment)
       
       // 답글 쓰기 버튼
       cell.replyButtonCompletion = { [weak self] parentId in

@@ -23,7 +23,7 @@ final class CommentCell: UITableViewCell {
     
     return iv
   }()
-    
+  
   private let nicknameLabel = UIFactory.label(
     "",
     textColor: .black,
@@ -91,17 +91,13 @@ final class CommentCell: UITableViewCell {
     self.replyButton.addTarget(self, action: #selector(didTapReplyButton), for: .touchUpInside)
     self.optionButton.addTarget(self, action: #selector(didTapOptionButton), for: .touchUpInside)
   }
-}
-
-// MARK: - SETUP
-
-extension CommentCell: BaseView {
-  func injectComment(_ comment: OrderedComment) {
+  
+  func configure(_ comment: OrderedComment) {
     self.comment = comment
-    self.nicknameLabel.text = comment.nickname
-    self.timeLabel.text = TimeUtils.detailPost(comment.createdAt)
-    self.contentsLabel.text = comment.content
-
+    nicknameLabel.text = comment.nickname
+    timeLabel.text = TimeUtils.detailPost(comment.createdAt)
+    contentsLabel.text = comment.content
+    
     self.setupStyles()
     self.setupLayouts()
     if !self.isInitialized {
@@ -127,6 +123,11 @@ extension CommentCell: BaseView {
       self.bottomConstarints?.update(inset: 16)
     }
   }
+}
+
+// MARK: - SETUP
+
+extension CommentCell: BaseView {
 
   func setupStyles() {
     contentView.backgroundColor = .white

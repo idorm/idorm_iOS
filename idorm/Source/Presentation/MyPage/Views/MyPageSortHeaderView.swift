@@ -1,27 +1,33 @@
 import UIKit
 
 import SnapKit
+import RxSwift
+import RxCocoa
 import Then
 
-final class MyPageSortHeaderView: UICollectionReusableView {
+final class MyPageSortHeaderView: UITableViewHeaderFooterView {
   
   // MARK: - Properties
   
   static let identifier = "MyPageSortHeaderView"
   
-  private lazy var lastestLabel = label("최신순")
+  private lazy var latestLabel = label("최신순")
   private lazy var pastLabel = label("과거순")
   
-  lazy var lastestButton = button()
+  lazy var latestButton = button()
   lazy var pastButton = button()
+  
+  var isLatest = BehaviorSubject<Bool>(value: true)
+  private let disposeBag = DisposeBag()
   
   // MARK: - LifeCycle
   
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  override init(reuseIdentifier: String?) {
+    super.init(reuseIdentifier: reuseIdentifier)
     setupStyles()
     setupLayout()
     setupConstraints()
+    bind()
   }
   
   required init?(coder: NSCoder) {
@@ -32,31 +38,31 @@ final class MyPageSortHeaderView: UICollectionReusableView {
   
   private func setupStyles() {
     backgroundColor = .idorm_gray_100
-    lastestButton.isSelected = true
+    latestButton.isSelected = true
   }
   
   private func setupLayout() {
     [
-      lastestLabel,
-      lastestButton,
+      latestLabel,
+      latestButton,
       pastLabel,
       pastButton
     ].forEach { addSubview($0) }
   }
-    
+  
   private func setupConstraints() {
-    lastestLabel.snp.makeConstraints { make in
+    latestLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(24)
       make.centerY.equalToSuperview()
     }
     
-    lastestButton.snp.makeConstraints { make in
+    latestButton.snp.makeConstraints { make in
       make.centerY.equalToSuperview()
-      make.leading.equalTo(lastestLabel.snp.trailing).offset(8)
+      make.leading.equalTo(latestLabel.snp.trailing).offset(8)
     }
     
     pastLabel.snp.makeConstraints { make in
-      make.leading.equalTo(lastestButton.snp.trailing).offset(16)
+      make.leading.equalTo(latestButton.snp.trailing).offset(16)
       make.centerY.equalToSuperview()
     }
     
@@ -64,6 +70,30 @@ final class MyPageSortHeaderView: UICollectionReusableView {
       make.leading.equalTo(pastLabel.snp.trailing).offset(8)
       make.centerY.equalToSuperview()
     }
+  }
+  
+  // MARK: - Bind
+  
+  func bind() {
+    latestButton.rx.tap
+      .withUnretained(self)
+      .do(onNext: { owner, _ in
+        owner.latestButton.isSelected = true
+        owner.pastButton.isSelected = false
+      })
+      .map { _ in true }
+      .bind(to: isLatest)
+      .disposed(by: disposeBag)
+    
+    pastButton.rx.tap
+      .withUnretained(self)
+      .do(onNext: { owner, _ in
+        owner.latestButton.isSelected = false
+        owner.pastButton.isSelected = true
+      })
+      .map { _ in false }
+      .bind(to: isLatest)
+      .disposed(by: disposeBag)
   }
 }
 

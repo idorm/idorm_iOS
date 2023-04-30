@@ -103,6 +103,37 @@ final class MyPageViewController: BaseViewController, View {
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
+    // 내가 쓴 댓글 클릭 -> 댓글 관리 창으로 이동
+    communityContainerView.myCommentButton.rx.tap
+      .withUnretained(self)
+      .bind { owner, _ in
+        let viewController = MyCommunityViewController(viewControllerType: .comment)
+        viewController.reactor = MyCommunityViewReactor(.comment)
+        viewController.hidesBottomBarWhenPushed = true
+        owner.navigationController?.pushViewController(viewController, animated: true)
+      }
+      .disposed(by: disposeBag)
+    
+    communityContainerView.myPostButton.rx.tap
+      .withUnretained(self)
+      .bind { owner, _ in
+        let viewController = MyCommunityViewController(viewControllerType: .post)
+        viewController.reactor = MyCommunityViewReactor(.post)
+        viewController.hidesBottomBarWhenPushed = true
+        owner.navigationController?.pushViewController(viewController, animated: true)
+      }
+      .disposed(by: disposeBag)
+    
+    communityContainerView.myRecommendButton.rx.tap
+      .withUnretained(self)
+      .bind { owner, _ in
+        let viewController = MyCommunityViewController(viewControllerType: .recommend)
+        viewController.reactor = MyCommunityViewReactor(.recommend)
+        viewController.hidesBottomBarWhenPushed = true
+        owner.navigationController?.pushViewController(viewController, animated: true)
+      }
+      .disposed(by: disposeBag)
+    
     // MARK: - State
     
     // 마이페이지 관리 페이지 이동
