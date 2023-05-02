@@ -24,18 +24,13 @@ final class MatchingFilterViewReactor: Reactor {
   enum Mutation {
     case setPopVC
     case setRequestCard
-<<<<<<< HEAD
-    case saveFilter
-    case setFilter(MatchingDTO.Filter)
-=======
     case setFilter(MatchingRequestModel.Filter)
->>>>>>> dev
   }
   
   struct State {
     var popVC: Bool = false
     var requestCard: Bool = false
-    var currentFilter: MatchingDTO.Filter = .init()
+    var currentFilter: MatchingRequestModel.Filter = .init()
     var isAllowedConfirmBtn: Bool = false
   }
   
@@ -69,23 +64,16 @@ final class MatchingFilterViewReactor: Reactor {
       
     case .didTapConfirmButton:
       FilterStorage.shared.hasFilter = true
+      FilterStorage.shared.saveFilter(currentState.currentFilter)
       
       return Observable.concat([
-        .just(.saveFilter),
         .just(.setRequestCard),
         .just(.setPopVC)
       ])
       
     case .didTapDormButton(let dorm):
-<<<<<<< HEAD
-      filterDriver.dorm.accept(true)
-      newFilter.dormNum = dorm
-      return .just(.setFilter(newFilter))
-=======
-      FilterDriver.shared.dorm.accept(true)
       newFilter.dormCategory = dorm
       return Observable.just(.setFilter(newFilter))
->>>>>>> dev
 
     case .didTapJoinPeriodButton(let period):
       filterDriver.joinPeriod.accept(true)
@@ -126,12 +114,6 @@ final class MatchingFilterViewReactor: Reactor {
       
     case .setFilter(let newFilter):
       newState.currentFilter = newFilter
-      
-    case .saveFilter:
-      let currentFilter = currentState.currentFilter
-      
-      print(currentFilter)
-      FilterStorage.shared.saveFilter(currentFilter)
     }
     
     return newState

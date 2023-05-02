@@ -206,20 +206,10 @@ final class PasswordViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-<<<<<<< HEAD:idorm/Source/Presentation/Register/ViewControllers/ConfirmPwVC.swift
-        owner.navigationController?.popToRootViewController(animated: true)
-//
-//        let loginVC = LoginViewController()
-//        loginVC.reactor = LoginViewReactor()
-//        let navVC = UINavigationController(rootViewController: loginVC)
-//        navVC.modalPresentationStyle = .fullScreen
-//        owner.present(navVC, animated: true)
-=======
         let loginVC = LoginViewController()
         loginVC.reactor = LoginViewReactor()
         let navVC = UINavigationController(rootViewController: loginVC)
         SceneUtils.switchRootVC(to: navVC, animated: true)
->>>>>>> dev:idorm/Source/Presentation/Auth/ViewControllers/PasswordVC.swift
       }
       .disposed(by: disposeBag)
     

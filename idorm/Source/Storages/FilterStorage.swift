@@ -20,11 +20,7 @@ final class FilterStorage {
   }
   
   func resetFilter() {
-<<<<<<< HEAD:idorm/Configuration/Storages/FilterStorage.swift
-    self.filter = MatchingDTO.Filter()
-=======
     self.filter = MatchingRequestModel.Filter()
     self.hasFilter = false
->>>>>>> dev:idorm/Source/Storages/FilterStorage.swift
   }
 }

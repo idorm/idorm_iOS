@@ -100,21 +100,12 @@ final class MatchingFilterViewController: BaseViewController, View {
   private var habitStack1: UIStackView!
   private var habitStack2: UIStackView!
   
-<<<<<<< HEAD
-  private let ageLabel = MatchingUtilities.titleLabel(text: "나이")
-  private let ageDescriptionLabel = MatchingUtilities.descriptionLabel("선택하신 연령대의 룸메이트만 나와 매칭돼요.")
-  private let slider = MatchingUtilities.slider()
-  private let filterDriver = FilterDriver()
-  
-=======
->>>>>>> dev
   // MARK: - LifeCycle
   
   override func viewDidLoad() {
     setupStackView()
     super.viewDidLoad()
     
-    reactor?.filterDriver = filterDriver
     reactor?.action.onNext(.viewDidLoad)
     
     if FilterStorage.shared.hasFilter {
@@ -226,10 +217,6 @@ final class MatchingFilterViewController: BaseViewController, View {
       .map { _ in Void() }
       .withUnretained(self)
       .bind { $0.0.navigationController?.popViewController(animated: true) }
-      .disposed(by: disposeBag)
-
-    filterDriver.isAllowed
-      .bind(to: floatyBottomView.rightButton.rx.isEnabled)
       .disposed(by: disposeBag)
   }
   

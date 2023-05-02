@@ -208,32 +208,6 @@ final class PasswordViewReactor: Reactor {
               }
               .subscribe(on: MainScheduler.asyncInstance)
           ])
-<<<<<<< HEAD:idorm/Source/Presentation/Register/Reactors/ConfirmPwViewReactor.swift
-          .subscribe(on: MainScheduler.asyncInstance)
-          
-        case .modifyPw:
-          return .concat([
-            .just(.setLoading(true)),
-            APIService.memberProvider.rx.request(.changePassword_Login(pw: password1))
-              .asObservable()
-              .retry()
-              .flatMap { response -> Observable<Mutation> in
-                switch response.statusCode {
-                case 200:
-                  UserStorage.savePassword(from: password1)
-                  
-                  return .concat([
-                    .just(.setLoading(false)),
-                    .just(.setPopVC(true)),
-                    .just(.setPopVC(false))
-                  ])
-                default:
-                  fatalError()
-                }
-              }
-          ])
-=======
->>>>>>> dev:idorm/Source/Presentation/Auth/Reactors/PasswordViewReactor.swift
         }
       } else {
         return .concat([

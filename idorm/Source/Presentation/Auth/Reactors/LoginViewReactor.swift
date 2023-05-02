@@ -53,17 +53,6 @@ final class LoginViewReactor: Reactor {
           .withUnretained(self)
           .flatMap { owner, response -> Observable<Mutation> in
             switch response.statusCode {
-<<<<<<< HEAD:idorm/Source/Presentation/Login/Reactors/LoginViewReactor.swift
-            case 200:
-              UserStorage.saveEmail(from: id)
-              UserStorage.savePassword(from: pw)
-              let data = APIService.decode(ResponseModel<MemberDTO.Retrieve>.self, data: response.data).data
-              MemberStorage.shared.saveMember(data)
-              TokenStorage.saveToken(token: data.loginToken!)
-              return owner.retrieveMatchingInfo()
-            default:
-              let message = APIService.decode(ErrorResponseModel.self, data: response.data).message
-=======
             case 200..<300: // 로그인 성공
               let member = MemberAPI.decode(
                 ResponseModel<MemberResponseModel.Member>.self,
@@ -81,7 +70,6 @@ final class LoginViewReactor: Reactor {
                 ErrorResponseModel.self,
                 data: response.data
               ).responseMessage
->>>>>>> dev:idorm/Source/Presentation/Auth/Reactors/LoginViewReactor.swift
               return .concat([
                 .just(.setLoading(false)),
                 .just(.setPopup(true, errorMessage)),
