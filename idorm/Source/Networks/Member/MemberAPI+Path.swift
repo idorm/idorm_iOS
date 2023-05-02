@@ -19,6 +19,7 @@ extension MemberAPI {
     case .changeNickname: return "/member/nickname"
     case .retrieveMember: return "/member"
     case .withdrawal: return "/member"
+    case .saveProfilePhoto: return "/member/profile-photo"
     }
   }
 }

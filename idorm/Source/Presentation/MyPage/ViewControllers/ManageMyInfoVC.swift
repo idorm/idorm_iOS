@@ -1,10 +1,13 @@
 import UIKit
+import PhotosUI
 
 import Then
 import SnapKit
 import RxSwift
 import RxCocoa
 import ReactorKit
+import RxGesture
+import Kingfisher
 
 final class ManageMyInfoViewController: BaseViewController, View {
   
@@ -25,13 +28,20 @@ final class ManageMyInfoViewController: BaseViewController, View {
   }
   
   private let logoutButton = idormButton("로그아웃")
-  
   private let nickNameView = ManageMyInfoView(.both(title: "닉네임"))
   private let changePWView = ManageMyInfoView(.onlyArrow(title: "비밀번호 변경"))
   private let emailView = ManageMyInfoView(.onlyDescription(title: "이메일"))
   private let versionView = ManageMyInfoView(.onlyDescription(description: .version ,title: "버전정보"))
   private let termsView = ManageMyInfoView(.onlyArrow(title: "서비스 약관 자세히 보기"))
-  private let profileImage = UIImageView(image: #imageLiteral(resourceName: "sqaure_human"))
+  
+  private let profileImage: UIImageView = {
+    let iv = UIImageView(image: #imageLiteral(resourceName: "sqaure_human"))
+    iv.contentMode = .scaleToFill
+    iv.layer.cornerRadius = 12
+    iv.layer.masksToBounds = true
+    return iv
+  }()
+  
   private lazy var separatorLine1 = separatorLine()
   private lazy var separatorLine2 = separatorLine()
   
@@ -76,6 +86,12 @@ final class ManageMyInfoViewController: BaseViewController, View {
     termsView.rx.tapGesture()
       .skip(1)
       .bind { _ in UIApplication.shared.open(URL(string: "https://idorm.notion.site/e5a42262cf6b4665b99bce865f08319b")!) }
+      .disposed(by: disposeBag)
+    
+    profileImage.rx.tapGesture()
+      .skip(1)
+      .withUnretained(self)
+      .bind { $0.0.presentImagePickerVC() }
       .disposed(by: disposeBag)
     
     // MARK: - State
@@ -146,6 +162,13 @@ final class ManageMyInfoViewController: BaseViewController, View {
       .distinctUntilChanged()
       .bind(to: emailView.descriptionLabel.rx.text)
       .disposed(by: disposeBag)
+    
+    reactor.state.map { $0.profileImageURL }
+      .filterNil()
+      .bind(with: self) { owner, url in
+        owner.profileImage.kf.setImage(with: URL(string: url), options: [    .processor(RoundCornerImageProcessor(cornerRadius: 20)) ])
+      }
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Setup
@@ -189,6 +212,7 @@ final class ManageMyInfoViewController: BaseViewController, View {
     
     profileImage.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
+      make.width.height.equalTo(68.0)
       make.top.equalToSuperview().inset(24)
     }
     
@@ -221,7 +245,7 @@ final class ManageMyInfoViewController: BaseViewController, View {
       make.top.equalTo(separatorLine1.snp.bottom).offset(24)
       make.height.equalTo(45)
     }
-    
+
     versionView.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview()
       make.top.equalTo(termsView.snp.bottom)
@@ -246,14 +270,22 @@ final class ManageMyInfoViewController: BaseViewController, View {
       make.bottom.equalToSuperview()
     }
   }
-}
-
-// MARK: - Helpers
-
-extension ManageMyInfoViewController {
+  
+  // MARK: - Helpers
+  
   private func separatorLine() -> UIView {
     let line = UIView()
     line.backgroundColor = .idorm_gray_100
     return line
+  }
+  
+  private func presentImagePickerVC() {
+    let cropVC = CropViewController()
+    cropVC.modalPresentationStyle = .overFullScreen
+    present(cropVC, animated: true)
+    
+    cropVC.completion = { [weak self] image in
+      self?.reactor?.action.onNext(.didPickProfileImage(image))
+    }
   }
 }

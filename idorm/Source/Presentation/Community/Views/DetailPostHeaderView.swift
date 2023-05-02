@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import Kingfisher
 
 final class DetailPostHeaderView: UITableViewHeaderFooterView {
   
@@ -198,6 +199,12 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
     self.likeCountLabel.text = "\(post.likesCount)"
     self.commentCountLabel.text = "\(post.commentsCount)"
     self.pictureCountLabel.text = "\(post.imagesCount)"
+    
+    if !post.isAnonymous,
+       let profileUrl = post.profileUrl {
+      myProfileImageView.kf.setImage(with: URL(string: profileUrl))
+    }
+    
     self.updateUI()
     self.photoCollectionView.reloadData()
   }

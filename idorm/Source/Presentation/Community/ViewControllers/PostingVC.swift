@@ -136,10 +136,9 @@ final class PostingViewController: BaseViewController, View {
   
   private let anonymousButton: UIButton = {
     let btn = UIButton()
-    btn.setImage(UIImage(named: "circle_blue"), for: .selected)
-    btn.setImage(UIImage(named: "circle"), for: .normal)
+    btn.setImage(UIImage(named: "circle_blue_gray"), for: .selected)
+    btn.setImage(UIImage(named: "circle_gray"), for: .normal)
     btn.isSelected = true
-    
     return btn
   }()
   
@@ -161,7 +160,7 @@ final class PostingViewController: BaseViewController, View {
   
   // MARK: - PROPERTIES
   
-  var saveCompletion: (() -> Void)?
+  var completion: (() -> Void)?
   
   // MARK: - LIFE CYCLE
   
@@ -176,6 +175,7 @@ final class PostingViewController: BaseViewController, View {
     guard let post = self.reactor?.post else { return }
     self.titleTextField.text = post.title
     self.contentTextView.text = post.content
+    anonymousButton.isSelected = post.isAnonymous
     self.reactor?.action.onNext(.didChangeTitle(post.title))
     self.reactor?.action.onNext(.didChangeContent(post.content))
     // TODO: isAnonymous 프로퍼티가 Post DTO에서 필요
@@ -289,6 +289,11 @@ final class PostingViewController: BaseViewController, View {
     
     // MARK: - Action
     
+    rx.viewDidLoad
+      .map { PostingViewReactor.Action.viewDidLoad }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
     // 사진 버튼 클릭
     photoImageView.rx.tapGesture()
       .skip(1)
@@ -371,7 +376,7 @@ final class PostingViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind {
-        $0.0.saveCompletion?()
+        $0.0.completion?()
         $0.0.navigationController?.popViewController(animated: true)
       }
       .disposed(by: disposeBag)
@@ -493,7 +498,7 @@ extension PostingViewController: UICollectionViewDataSource, UICollectionViewDel
       return UICollectionViewCell()
     }
     
-    let image = reactor.currentState.currentImages[indexPath.row]
+    let image = reactor.currentState.currentImages[indexPath.row].image
     cell.setupImage(image)
     
     // 특정 셀 지우기

@@ -33,6 +33,7 @@ final class MyPageViewReactor: Reactor {
     case setShareButton(Bool)
     case setCurrentNickname(String)
     case setDismissPopup(Bool)
+    case setProfileURL(String?)
   }
   
   struct State {
@@ -46,6 +47,7 @@ final class MyPageViewReactor: Reactor {
     var isSelectedShareButton: Bool = false
     var currentNickname: String = ""
     var isDismissedPopup: Bool = false
+    var currentProfileURL: String?
   }
   
   let initialState: State = State()
@@ -56,10 +58,12 @@ final class MyPageViewReactor: Reactor {
     case .viewWillAppear:
       let currentNickname = UserStorage.shared.member?.nickname ?? ""
       let isPublic = UserStorage.shared.isPublicMatchingInfo
+      let profileURL = UserStorage.shared.member?.profilePhotoUrl
       
       return .concat([
         .just(.setShareButton(isPublic)),
-        .just(.setCurrentNickname(currentNickname))
+        .just(.setCurrentNickname(currentNickname)),
+        .just(.setProfileURL(profileURL))
       ])
       
     case .didTapGearButton:
@@ -160,6 +164,9 @@ final class MyPageViewReactor: Reactor {
       
     case .setDismissPopup(let isDismissed):
       newState.isDismissedPopup = isDismissed
+      
+    case .setProfileURL(let url):
+      newState.currentProfileURL = url
     }
     
     return newState

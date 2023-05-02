@@ -15,6 +15,7 @@ import RxGesture
 import RxAppState
 import RxOptional
 import ReactorKit
+import Kingfisher
 
 final class MyPageViewController: BaseViewController, View {
   
@@ -258,6 +259,13 @@ final class MyPageViewController: BaseViewController, View {
           owner.indicator.stopAnimating()
           owner.view.isUserInteractionEnabled = true
         }
+      }
+      .disposed(by: disposeBag)
+    
+    reactor.state.map { $0.currentProfileURL }
+      .filterNil()
+      .bind(with: self) { owner, url in
+        owner.topProfileView.profileImageView.kf.setImage(with: URL(string: url))
       }
       .disposed(by: disposeBag)
   }

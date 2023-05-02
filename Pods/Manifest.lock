@@ -1,5 +1,8 @@
 PODS:
   - AEOTPTextField (1.2.6)
+  - ImageSlideshow (1.9.2):
+    - ImageSlideshow/Core (= 1.9.2)
+  - ImageSlideshow/Core (1.9.2)
   - Koloda (5.0.1):
     - pop (~> 1.0)
   - pop (1.0.12)
@@ -7,22 +10,25 @@ PODS:
 
 DEPENDENCIES:
   - AEOTPTextField
+  - ImageSlideshow (~> 1.9.0)
   - Koloda
   - RangeSeekSlider
 
 SPEC REPOS:
   trunk:
     - AEOTPTextField
+    - ImageSlideshow
     - Koloda
     - pop
     - RangeSeekSlider
 
 SPEC CHECKSUMS:
   AEOTPTextField: a275823fde05601c5da7f8fb66aaecb41289b370
+  ImageSlideshow: be305b54eaf2b2cfc7a7141c7c734605d44dc07d
   Koloda: d07b9199a383abc5898b62aa945a599f5e7c0c4b
   pop: d582054913807fd11fd50bfe6a539d91c7e1a55a
   RangeSeekSlider: 650b11fa1edcb92e1e0ede797669d98622570fb5
 
-PODFILE CHECKSUM: 6e963b55bc3fff3d3f3a3c87d3d53451b74c2c24
+PODFILE CHECKSUM: 1beb4a29e6f5cb4ef2c12056a3ea0fd3536e4d1d
 
 COCOAPODS: 1.11.2

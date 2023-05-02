@@ -34,6 +34,9 @@ extension CommunityAPI {
       
     case .deletePost:
       return .delete
+      
+    case .editPost:
+      return .post
     }
   }
 }

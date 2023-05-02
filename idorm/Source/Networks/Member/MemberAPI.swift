@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 import RxSwift
 import RxMoya
@@ -12,6 +12,7 @@ enum MemberAPI {
   case changeNickname(nickname: String)
   case retrieveMember
   case withdrawal
+  case saveProfilePhoto(image: UIImage)
 }
 
 extension MemberAPI: TargetType, BaseAPI {

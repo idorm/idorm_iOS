@@ -148,6 +148,7 @@
 		E5AD73A1287AFC5300BA2C5E /* AuthNumberVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD73A0287AFC5300BA2C5E /* AuthNumberVC.swift */; };
 		E5AD73A3287B2B5200BA2C5E /* PasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD73A2287B2B5200BA2C5E /* PasswordVC.swift */; };
 		E5AF633D29568FBD009A3865 /* AuthNumberViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AF633C29568FBD009A3865 /* AuthNumberViewReactor.swift */; };
+		E5AF9DC029FF9AC100C1001D /* CropViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AF9DBF29FF9AC100C1001D /* CropViewController.swift */; };
 		E5B15F6F287FE355004D4164 /* OnboardingDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B15F6E287FE355004D4164 /* OnboardingDetailVC.swift */; };
 		E5B249BD296266DA00081609 /* PrivacyPolicyBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B249BC296266DA00081609 /* PrivacyPolicyBottomSheet.swift */; };
 		E5B249C02962744100081609 /* PrivacyPolicyBottomSheetReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B249BF2962744100081609 /* PrivacyPolicyBottomSheetReactor.swift */; };
@@ -350,6 +351,7 @@
 		E5AD73A0287AFC5300BA2C5E /* AuthNumberVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberVC.swift; sourceTree = "<group>"; };
 		E5AD73A2287B2B5200BA2C5E /* PasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordVC.swift; sourceTree = "<group>"; };
 		E5AF633C29568FBD009A3865 /* AuthNumberViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberViewReactor.swift; sourceTree = "<group>"; };
+		E5AF9DBF29FF9AC100C1001D /* CropViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropViewController.swift; sourceTree = "<group>"; };
 		E5B15F6E287FE355004D4164 /* OnboardingDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingDetailVC.swift; sourceTree = "<group>"; };
 		E5B249BC296266DA00081609 /* PrivacyPolicyBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyBottomSheet.swift; sourceTree = "<group>"; };
 		E5B249BF2962744100081609 /* PrivacyPolicyBottomSheetReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyBottomSheetReactor.swift; sourceTree = "<group>"; };
@@ -795,6 +797,7 @@
 			children = (
 				E5F5EC77288402840026DE21 /* MyPageVC.swift */,
 				E5AC2A4C28BB5B250069ABB9 /* ManageMyInfoVC.swift */,
+				E5AF9DBF29FF9AC100C1001D /* CropViewController.swift */,
 				E5F5656F2918FF5A0043FCB4 /* MyRoommateVC.swift */,
 				E577E4CA29FA3A4200D0DA48 /* MyCommunityVC.swift */,
 				E5D7AECD292B287D00038349 /* WithdrawalVC.swift */,
@@ -1344,6 +1347,7 @@
 				E5B61F4129B481910031046C /* ErrorCode.swift in Sources */,
 				E547E3E3291CEF21000D3A47 /* MatchingCardBoolView.swift in Sources */,
 				E5B249BD296266DA00081609 /* PrivacyPolicyBottomSheet.swift in Sources */,
+				E5AF9DC029FF9AC100C1001D /* CropViewController.swift in Sources */,
 				E5C2614E2919D3AA00623C0E /* BottomSheetUtils.swift in Sources */,
 				E53D1A432988A5CA0074308B /* MemberAPI+Method.swift in Sources */,
 				E5226D65291246750065C809 /* OnboardingDriver.swift in Sources */,

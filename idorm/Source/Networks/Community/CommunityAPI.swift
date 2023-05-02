@@ -21,6 +21,11 @@ enum CommunityAPI {
   case deleteComment(postId: Int, commentId: Int)
   case deletePost(postId: Int)
   case editPostSympathy(postId: Int, isSympathy: Bool)
+  case editPost(
+    postId: Int,
+    post: CommunityRequestModel.Post,
+    deletePostPhotos: [Int]
+  )
 }
 
 extension CommunityAPI: TargetType, BaseAPI {

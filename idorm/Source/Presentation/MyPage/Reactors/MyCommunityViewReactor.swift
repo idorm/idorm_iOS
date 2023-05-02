@@ -104,14 +104,19 @@ final class MyCommunityViewReactor: Reactor {
           .just(.setLoading(true)),
           CommunityAPI.provider.rx.request(.lookupMyLikedPosts)
             .asObservable()
-            .flatMap { response -> Observable<Mutation> in
+            .withUnretained(self)
+            .flatMap { owner, response -> Observable<Mutation> in
               let posts = CommunityAPI.decode(
                 ResponseModel<[CommunityResponseModel.Posts]>.self,
                 data: response.data
               ).data
               return .concat([
                 .just(.setLoading(false)),
-                .just(.setPosts(posts))
+                .just(.setPosts(
+                  owner.currentState.isLatest ? posts : posts.reversed()
+                )),
+                .just(.setReloadData(true)),
+                .just(.setReloadData(false))
               ])
             }
         ])

@@ -14,6 +14,7 @@ import RxAppState
 import RxOptional
 import RxGesture
 import PanModal
+import ImageSlideshow
 
 final class DetailPostViewController: BaseViewController, View {
   
@@ -304,7 +305,14 @@ final class DetailPostViewController: BaseViewController, View {
         guard let post = reactor.currentState.currentPost else { return }
         let postingVC = PostingViewController()
         let postingReactor = PostingViewReactor(.edit(post), dorm: post.dormCategory)
+        postingVC.reactor = postingReactor
+        owner.navigationController?.pushViewController(postingVC, animated: true)
+        
+        postingVC.completion = {
+          owner.reactor?.action.onNext(.pullToRefresh)
+        }
       }
+      .disposed(by: disposeBag)
   }
   
   // MARK: - HELPERS
@@ -464,7 +472,6 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
     header.photoCompletion = { [weak self] in
       self?.presentDetailPhotosVC($0)
     }
-    
     return header
   }
   

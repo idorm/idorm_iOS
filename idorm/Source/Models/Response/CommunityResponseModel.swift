@@ -37,6 +37,7 @@ extension CommunityResponseModel {
     let updatedAt: String
     let postPhotos: [PostPhotos]
     let comments: [Comment]
+    let isAnonymous: Bool
   }
   
   struct PostPhotos: Codable, Equatable {

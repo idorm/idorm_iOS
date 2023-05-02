@@ -61,6 +61,12 @@ final class MyCommentCell: UITableViewCell, BaseView {
     return btn
   }()
   
+  private let lineView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .idorm_gray_200
+    return view
+  }()
+  
   // MARK: - Properties
   
   static let identifier = "MyCommentCell"
@@ -96,7 +102,8 @@ final class MyCommentCell: UITableViewCell, BaseView {
       nicknameStack,
       contentLabel,
       confirmBodyButton,
-      profileImageView
+      profileImageView,
+      lineView
     ].forEach {
       contentView.addSubview($0)
     }
@@ -124,6 +131,11 @@ final class MyCommentCell: UITableViewCell, BaseView {
       make.leading.equalTo(contentLabel.snp.leading)
       make.top.equalTo(contentLabel.snp.bottom).offset(10)
       make.bottom.equalToSuperview().inset(16)
+    }
+    
+    lineView.snp.makeConstraints { make in
+      make.bottom.leading.trailing.equalToSuperview()
+      make.height.equalTo(1)
     }
   }
   

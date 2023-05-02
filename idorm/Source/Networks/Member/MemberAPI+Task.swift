@@ -37,6 +37,15 @@ extension MemberAPI {
       
     case .retrieveMember, .withdrawal:
       return .requestPlain
+      
+    case .saveProfilePhoto(let image):
+      let multiPartData = MultipartFormData(
+        provider: .data(image.jpegData(compressionQuality: 0.9)!),
+        name: "file",
+        fileName: "MyProfile",
+        mimeType: "image/jpeg"
+      )
+      return .uploadMultipart([multiPartData])
     }
   }
 }

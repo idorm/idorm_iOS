@@ -60,6 +60,46 @@ extension CommunityAPI {
       
     case .deletePost:
       return .requestPlain
+      
+    case let .editPost(_, post, deletePostPhotos):
+      var multiFormDatas: [MultipartFormData] = []
+      
+      let titleData = MultipartFormData(
+        provider: .data(post.title.data(using: .utf8)!),
+        name: "title"
+      )
+      let contentsData = MultipartFormData(
+        provider: .data(post.content.data(using: .utf8)!),
+        name: "content"
+      )
+      let anonymousData = MultipartFormData(
+        provider: .data(post.isAnonymous.description.data(using: .utf8)!),
+        name: "isAnonymous"
+      )
+
+      multiFormDatas = [titleData, contentsData, anonymousData]
+      
+      deletePostPhotos.forEach { index in
+        let data = MultipartFormData(
+          provider: .data(index.description.data(using: .utf8)!),
+          name: "deletePostPhotoIds"
+        )
+        multiFormDatas.append(data)
+      }
+      
+      for i in 0..<post.images.count {
+        let image = post.images[i]
+        let data = image.jpegData(compressionQuality: 0.9)!
+        let imageData = MultipartFormData(
+          provider: .data(data),
+          name: "files",
+          fileName: "\(i)",
+          mimeType: "image/jpeg"
+        )
+        multiFormDatas.append(imageData)
+      }
+      
+      return .uploadMultipart(multiFormDatas)
     }
   }
 }

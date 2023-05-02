@@ -201,7 +201,7 @@ final class PostListViewController: BaseViewController, View {
         postingVC.hidesBottomBarWhenPushed = true
         postingVC.reactor = postingReactor
         owner.navigationController?.pushViewController(postingVC, animated: true)
-        postingVC.saveCompletion = { [weak self] in
+        postingVC.completion = { [weak self] in
           self?.reactor?.action.onNext(.fetchNewPosts)
         }
       }

@@ -42,6 +42,9 @@ extension CommunityAPI {
       
     case .lookupMyLikedPosts:
       return "/member/posts/like"
+      
+    case .editPost(let postId, _, _):
+      return "/member/post/\(postId)"
     }
   }
 }
