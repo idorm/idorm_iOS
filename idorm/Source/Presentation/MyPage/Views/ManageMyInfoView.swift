@@ -14,24 +14,30 @@ import Then
 
 final class ManageMyInfoView: UIView {
   
+  enum ManageMyInfoViewType {
+    case onlyArrow(title: String)
+    case onlyDescription(description: String = "", title: String)
+    case both(description: String = "", title: String)
+  }
+  
   // MARK: - Properties
   
   private let titleLabel = UILabel().then {
-    $0.font = .init(name: MyFonts.regular.rawValue, size: 16)
+    $0.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 16)
     $0.textColor = .idorm_gray_400
   }
   
   let descriptionLabel = UILabel().then {
-    $0.font = .init(name: MyFonts.regular.rawValue, size: 16)
+    $0.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 16)
     $0.textColor = .idorm_gray_300
   }
   
   private let arrowImageView = UIImageView(image: #imageLiteral(resourceName: "rightarrow_gray"))
-  private let type: MyPageEnumerations.ManageMyInfoView
+  private let type: ManageMyInfoViewType
   
   // MARK: - LifeCycle
   
-  init(_ type: MyPageEnumerations.ManageMyInfoView) {
+  init(_ type: ManageMyInfoViewType) {
     self.type = type
     super.init(frame: .zero)
     setupComponents(type)
@@ -46,7 +52,7 @@ final class ManageMyInfoView: UIView {
   
   // MARK: - Setup
   
-  private func setupComponents(_ type: MyPageEnumerations.ManageMyInfoView) {
+  private func setupComponents(_ type: ManageMyInfoViewType) {
     switch type {
     case .onlyArrow(let title):
       titleLabel.text = title

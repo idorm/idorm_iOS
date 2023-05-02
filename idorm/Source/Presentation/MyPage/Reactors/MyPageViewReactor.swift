@@ -18,7 +18,7 @@ final class MyPageViewReactor: Reactor {
     case viewWillAppear
     case didTapGearButton
     case didTapMatchingImageButton
-    case didTapRoommateButton(MyPageEnumerations.Roommate)
+    case didTapRoommateButton(Roommate)
     case didTapShareButton(Bool)
     case didTapMakeProfileButton
   }
@@ -27,18 +27,19 @@ final class MyPageViewReactor: Reactor {
     case setLoading(Bool)
     case setManageMyInfoVC(Bool)
     case setOnboardingVC(Bool)
-    case setRoommateVC(Bool, MyPageEnumerations.Roommate)
+    case setRoommateVC(Bool, Roommate)
     case setNoMatchingInfoPopup(Bool)
     case setOnboardingDetailVC(Bool)
     case setShareButton(Bool)
     case setCurrentNickname(String)
     case setDismissPopup(Bool)
+    case setProfileURL(String?)
   }
   
   struct State {
     var isOpenedManageMyInfoVC: Bool = false
     var isOpenedOnboardingVC: Bool = false
-    var isOpenedOnboardingDetailVC: (Bool, MatchingDTO.Retrieve) = (false, .init())
+    var isOpenedOnboardingDetailVC: (Bool, MatchingResponseModel.Member) = (false, .init())
     var isOpenedLikedRoommateVC: Bool = false
     var isOpenedDislikedRoommateVC: Bool = false
     var isOpenedNoMatchingInfoPopup: Bool = false
@@ -46,18 +47,23 @@ final class MyPageViewReactor: Reactor {
     var isSelectedShareButton: Bool = false
     var currentNickname: String = ""
     var isDismissedPopup: Bool = false
+    var currentProfileURL: String?
   }
   
   let initialState: State = State()
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
+      
     case .viewWillAppear:
-      let currentNickname = MemberStorage.shared.member?.nickname ?? ""
-      let isPublic = MemberStorage.shared.isPublicMatchingInfo
+      let currentNickname = UserStorage.shared.member?.nickname ?? ""
+      let isPublic = UserStorage.shared.isPublicMatchingInfo
+      let profileURL = UserStorage.shared.member?.profilePhotoUrl
+      
       return .concat([
         .just(.setShareButton(isPublic)),
-        .just(.setCurrentNickname(currentNickname))
+        .just(.setCurrentNickname(currentNickname)),
+        .just(.setProfileURL(profileURL))
       ])
       
     case .didTapGearButton:
@@ -67,7 +73,7 @@ final class MyPageViewReactor: Reactor {
       ])
       
     case .didTapMatchingImageButton:
-      if MemberStorage.shared.hasMatchingInfo {
+      if UserStorage.shared.hasMatchingInfo {
         return .concat([
           .just(.setOnboardingDetailVC(true)),
           .just(.setOnboardingDetailVC(false))
@@ -86,10 +92,12 @@ final class MyPageViewReactor: Reactor {
       ])
       
     case .didTapShareButton(let isPublic):
-      if MemberStorage.shared.hasMatchingInfo {
+      if UserStorage.shared.hasMatchingInfo {
         return .concat([
           .just(.setLoading(true)),
-          APIService.onboardingProvider.rx.request(.modifyPublic(isPublic))
+          MatchingInfoAPI.provider.rx.request(
+            .modifyPublic(isPublic)
+          )
             .asObservable()
             .retry()
             .filterSuccessfulStatusCodes()
@@ -133,8 +141,8 @@ final class MyPageViewReactor: Reactor {
       newState.isOpenedOnboardingVC = isOpened
       
     case let .setOnboardingDetailVC(isOpened):
-      guard let matchingInfo = MemberStorage.shared.matchingInfo else { return newState }
-      let member = ModelTransformationManager.transformToMatchingDTO_RETRIEVE(matchingInfo)
+      guard let matchingInfo = UserStorage.shared.matchingInfo else { return newState }
+      let member = TransformUtils.transfer(matchingInfo)
       newState.isOpenedOnboardingDetailVC = (isOpened, member)
       
     case let .setRoommateVC(isOpened, type):
@@ -156,6 +164,9 @@ final class MyPageViewReactor: Reactor {
       
     case .setDismissPopup(let isDismissed):
       newState.isDismissedPopup = isDismissed
+      
+    case .setProfileURL(let url):
+      newState.currentProfileURL = url
     }
     
     return newState

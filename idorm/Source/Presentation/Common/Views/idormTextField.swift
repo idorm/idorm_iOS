@@ -38,10 +38,10 @@ final class idormTextField: UITextField {
       string: title,
       attributes: [
         .foregroundColor: UIColor.idorm_gray_300,
-        .font: UIFont.init(name: MyFonts.medium.rawValue, size: 14) ?? 0
+        .font: UIFont.init(name: IdormFont_deprecated.medium.rawValue, size: 14) ?? 0
       ]
     )
-    font = .init(name: MyFonts.medium.rawValue, size: 14)
+    font = .init(name: IdormFont_deprecated.medium.rawValue, size: 14)
     textColor = .idorm_gray_300
     addLeftPadding(14)
     layer.borderWidth = 1

@@ -17,19 +17,18 @@ final class AuthNumberViewController: BaseViewController, View {
   
   // MARK: - Properties
   
-  private let infoLabel = UILabel().then {
+  private let descriptionLabel = UILabel().then {
     $0.text = "지금 이메일로 인증번호를 보내드렸어요!"
     $0.textColor = .darkGray
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 12.0)
+    $0.font = .idormFont(.medium, size: 12)
   }
   
   private let authOnemoreButton = UIButton().then {
     var config = UIButton.Configuration.plain()
     config.baseForegroundColor = .idorm_blue
     var container = AttributeContainer()
-    container.font = .init(name: MyFonts.medium.rawValue, size: 12)
+    container.font = .idormFont(.medium, size: 12)
     config.attributedTitle = AttributedString("인증번호 재요청", attributes: container)
-    
     let handler: UIButton.ConfigurationUpdateHandler = { button in
       switch button.state {
       case .disabled:
@@ -38,7 +37,6 @@ final class AuthNumberViewController: BaseViewController, View {
         button.configuration?.baseForegroundColor = .idorm_blue
       }
     }
-    
     $0.configurationUpdateHandler = handler
     $0.configuration = config
     $0.isEnabled = false
@@ -47,15 +45,14 @@ final class AuthNumberViewController: BaseViewController, View {
   private let timerLabel = UILabel().then {
     $0.text = "05:00"
     $0.textColor = .idorm_blue
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
+    $0.font = .idormFont(.medium, size: 14)
   }
   
   private let indicator = UIActivityIndicatorView().then {
     $0.color = .darkGray
   }
   
-  var popCompletion: (() -> Void)?
-  private let confirmButton = idormButton("인증 완료")
+  private let nextButton = idormButton("인증 완료")
   private let textField = idormTextField("인증번호를 입력해주세요.")
   private let mailTimer: MailTimerChecker
   
@@ -77,7 +74,7 @@ final class AuthNumberViewController: BaseViewController, View {
     // MARK: - Action
     
     // 인증 완료 버튼
-    confirmButton.rx.tap
+    self.nextButton.rx.tap
       .withUnretained(self)
       .map { $0.0.textField.text ?? "" }
       .map { AuthNumberViewReactor.Action.didTapConfirmButton($0) }
@@ -85,7 +82,7 @@ final class AuthNumberViewController: BaseViewController, View {
       .disposed(by: disposeBag)
     
     // 인증번호 재요청 버튼
-    authOnemoreButton.rx.tap
+    self.authOnemoreButton.rx.tap
       .map { AuthNumberViewReactor.Action.didTapRequestAuthButton }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
@@ -117,15 +114,20 @@ final class AuthNumberViewController: BaseViewController, View {
       }
       .disposed(by: disposeBag)
     
-    // 창 닫기 -> 인증완료
+    // 인증 완료
     reactor.state
       .map { $0.popVC }
       .filter { $0 }
       .distinctUntilChanged()
       .withUnretained(self)
       .bind { owner, _ in
-        owner.navigationController?.popViewController(animated: true)
-        owner.popCompletion?()
+        let emailVC = Logger.shared.emailVC!
+        owner.dismiss(animated: true) {
+          let authProcess = Logger.shared.authProcess
+          let passwordVC = PasswordViewController(authProcess)
+          passwordVC.reactor = PasswordViewReactor(authProcess)
+          emailVC.navigationController?.pushViewController(passwordVC, animated: true)
+        }
       }
       .disposed(by: disposeBag)
     
@@ -166,50 +168,54 @@ final class AuthNumberViewController: BaseViewController, View {
   // MARK: - Setup
   
   override func setupStyles() {
-    super.setupStyles()
-    
-    navigationItem.title = "인증번호 입력"
-    view.backgroundColor = .white
+    self.navigationItem.title = "인증번호 입력"
+    self.view.backgroundColor = .white
   }
   
   override func setupLayouts() {
     super.setupLayouts()
       
-    [infoLabel, authOnemoreButton, textField, confirmButton, timerLabel, indicator]
-      .forEach { view.addSubview($0) }
+    [
+      self.descriptionLabel,
+      self.authOnemoreButton,
+      self.textField,
+      self.nextButton,
+      self.timerLabel,
+      self.indicator
+    ].forEach { self.view.addSubview($0) }
   }
   
   override func setupConstraints() {
     super.setupConstraints()
     
-    infoLabel.snp.makeConstraints { make in
+    self.descriptionLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(24)
-      make.top.equalTo(view.safeAreaLayoutGuide).offset(50)
+      make.top.equalTo(self.view.safeAreaLayoutGuide).offset(50)
     }
     
-    authOnemoreButton.snp.makeConstraints { make in
+    self.authOnemoreButton.snp.makeConstraints { make in
       make.trailing.equalToSuperview().inset(20)
-      make.centerY.equalTo(infoLabel)
+      make.centerY.equalTo(self.descriptionLabel)
     }
     
-    textField.snp.makeConstraints { make in
+    self.textField.snp.makeConstraints { make in
       make.trailing.leading.equalToSuperview().inset(24)
-      make.top.equalTo(infoLabel.snp.bottom).offset(14)
+      make.top.equalTo(self.descriptionLabel.snp.bottom).offset(14)
       make.height.equalTo(50)
     }
     
-    confirmButton.snp.makeConstraints { make in
+    self.nextButton.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
-      make.bottom.equalTo(view.keyboardLayoutGuide.snp.top).offset(-20)
+      make.bottom.equalTo(self.view.keyboardLayoutGuide.snp.top).offset(-20)
       make.height.equalTo(50)
     }
     
-    timerLabel.snp.makeConstraints { make in
-      make.trailing.equalTo(textField.snp.trailing).offset(-14)
+    self.timerLabel.snp.makeConstraints { make in
+      make.trailing.equalTo(self.textField.snp.trailing).offset(-14)
       make.centerY.equalTo(textField)
     }
     
-    indicator.snp.makeConstraints { make in
+    self.indicator.snp.makeConstraints { make in
       make.center.equalToSuperview()
       make.width.height.equalTo(50)
     }
@@ -217,8 +223,10 @@ final class AuthNumberViewController: BaseViewController, View {
   
   // MARK: - Helpers
   
-  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+  override func touchesBegan(
+    _ touches: Set<UITouch>,
+    with event: UIEvent?
+  ) {
     view.endEditing(true)
   }
 }
-

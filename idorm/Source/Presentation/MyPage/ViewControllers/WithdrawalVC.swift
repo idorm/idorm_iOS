@@ -23,12 +23,12 @@ final class WithdrawalViewController: BaseViewController, View {
               너무 슬퍼요 😥
               """
     $0.numberOfLines = 0
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 20)
+    $0.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 20)
   }
   
   private let mainLabel2 = UILabel().then {
     $0.text = "idorm 탈퇴 전 알아두셔야 해요!"
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 20)
+    $0.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 20)
   }
   
   private let descriptionLabel = UILabel().then {
@@ -37,7 +37,7 @@ final class WithdrawalViewController: BaseViewController, View {
               작성하신 글과 댓글은 남아 있어요.
               """
     $0.numberOfLines = 2
-    $0.font = .init(name: MyFonts.regular.rawValue, size: 16)
+    $0.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 16)
     $0.textColor = .idorm_gray_400
   }
   
@@ -47,7 +47,7 @@ final class WithdrawalViewController: BaseViewController, View {
               다시 복구할 수 없어요.
               """
     $0.numberOfLines = 2
-    $0.font = .init(name: MyFonts.regular.rawValue, size: 16)
+    $0.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 16)
     $0.textColor = .idorm_gray_400
   }
 
@@ -55,7 +55,7 @@ final class WithdrawalViewController: BaseViewController, View {
     $0.text = """
               📌 그 밖 수정사항들
               """
-    $0.font = .init(name: MyFonts.regular.rawValue, size: 16)
+    $0.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 16)
     $0.textColor = .idorm_gray_400
   }
   

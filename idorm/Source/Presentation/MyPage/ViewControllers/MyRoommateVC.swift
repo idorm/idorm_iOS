@@ -17,20 +17,26 @@ final class MyRoommateViewController: BaseViewController, View {
   }
   
   private lazy var tableView = UITableView(frame: .zero, style: .grouped).then {
-    $0.register(MyRoommateHeaderView.self, forHeaderFooterViewReuseIdentifier: MyRoommateHeaderView.identifier)
-    $0.register(MyRoommateCell.self, forCellReuseIdentifier: MyRoommateCell.identifier)
+    $0.register(
+      MyPageSortHeaderView.self,
+      forHeaderFooterViewReuseIdentifier: MyPageSortHeaderView.identifier
+    )
+    $0.register(
+      MyRoommateCell.self,
+      forCellReuseIdentifier: MyRoommateCell.identifier
+    )
     $0.backgroundColor = .idorm_gray_100
     $0.bounces = false
     $0.dataSource = self
     $0.delegate = self
   }
   
-  private let roommate: MyPageEnumerations.Roommate
-  private var header: MyRoommateHeaderView!
+  private let roommate: Roommate
+  private var header: MyPageSortHeaderView!
   
   // MARK: - LifeCycle
   
-  init(_ roommate: MyPageEnumerations.Roommate) {
+  init(_ roommate: Roommate) {
     self.roommate = roommate
     super.init(nibName: nil, bundle: nil)
   }
@@ -49,7 +55,7 @@ final class MyRoommateViewController: BaseViewController, View {
     // MARK: - Action
     
     // 최신순 버튼 클릭
-    header.lastestButton.rx.tap
+    header.latestButton.rx.tap
       .map { MyRoommateViewReactor.Action.didTapLastestButton }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
@@ -92,10 +98,10 @@ final class MyRoommateViewController: BaseViewController, View {
       .bind { owner, sort in
         switch sort {
         case .lastest:
-          owner.header.lastestButton.isSelected = true
+          owner.header.latestButton.isSelected = true
           owner.header.pastButton.isSelected = false
         case .past:
-          owner.header.lastestButton.isSelected = false
+          owner.header.latestButton.isSelected = false
           owner.header.pastButton.isSelected = true
         }
       }
@@ -137,6 +143,8 @@ final class MyRoommateViewController: BaseViewController, View {
   // MARK: - Setup
   
   override func setupStyles() {
+    super.setupStyles()
+    
     navigationController?.setNavigationBarHidden(false, animated: true)
     view.backgroundColor = .idorm_gray_100
     switch roommate {
@@ -170,7 +178,9 @@ final class MyRoommateViewController: BaseViewController, View {
 // MARK: - TableView Setup
 
 extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
+  
   // Initialize Cell
+  
   func tableView(
     _ tableView: UITableView,
     cellForRowAt indexPath: IndexPath
@@ -201,8 +211,8 @@ extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
   // Initialize Header
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     guard let header = tableView.dequeueReusableHeaderFooterView(
-      withIdentifier: MyRoommateHeaderView.identifier
-    ) as? MyRoommateHeaderView else {
+      withIdentifier: MyPageSortHeaderView.identifier
+    ) as? MyPageSortHeaderView else {
       return UIView()
     }
 
@@ -213,13 +223,15 @@ extension MyRoommateViewController: UITableViewDataSource, UITableViewDelegate {
 
     return header
   }
-
+  
   // Header Height
+  
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     return 50
   }
   
   // didSelectCell
+  
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard let reactor = reactor else { return }
     

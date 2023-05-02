@@ -16,14 +16,14 @@ final class MatchingContainerView: UIView {
   
   private let titleLabel = UILabel().then {
     $0.text = "룸메이트 매칭 관리"
-    $0.textColor = .idorm_gray_400
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 12)
+    $0.textColor = .black
+    $0.font = .idormFont(.medium, size: 16)
   }
   
   private let shareLabel = UILabel().then {
     $0.text = "내 이미지 매칭페이지에 공유하기"
-    $0.textColor = .idorm_gray_400
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 14)
+    $0.textColor = .black
+    $0.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 14)
   }
   
   private lazy var buttonStack = UIStackView().then { stack in
@@ -78,7 +78,6 @@ final class MatchingContainerView: UIView {
     layer.shadowColor = UIColor.black.cgColor
     layer.shadowOffset = CGSize(width: 0, height: 5)
     layer.shadowOpacity = 0.1
-    layer.cornerRadius = 12
     backgroundColor = .white
   }
   
@@ -115,7 +114,7 @@ extension MatchingContainerView {
     config.imagePlacement = .top
     config.imagePadding = 8
     var container = AttributeContainer()
-    container.font = .init(name: MyFonts.regular.rawValue, size: 12)
+    container.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 12)
     container.foregroundColor = UIColor.black
     config.attributedTitle = AttributedString(title, attributes: container)
     config.titleAlignment = .center

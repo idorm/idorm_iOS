@@ -17,12 +17,17 @@ final class TopProfileView: UIView {
   let nicknameLabel: UILabel = {
     let lb = UILabel()
     lb.textColor = .idorm_gray_100
-    lb.font = .init(name: MyFonts.medium.rawValue, size: 14)
+    lb.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 14)
     
     return lb
   }()
   
-  let profileImageView = UIImageView(image: #imageLiteral(resourceName: "sqaure_human"))
+  let profileImageView: UIImageView = {
+    let iv = UIImageView(image: #imageLiteral(resourceName: "sqaure_human"))
+    iv.layer.cornerRadius = 12
+    iv.layer.masksToBounds = true
+    return iv
+  }()
   
   // MARK: - LifeCycle
   
@@ -59,6 +64,7 @@ final class TopProfileView: UIView {
   private func setupConstraints() {
     profileImageView.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
+      make.width.height.equalTo(68)
       make.bottom.equalTo(nicknameLabel.snp.top).offset(-8)
     }
     

@@ -28,7 +28,7 @@ final class BasicPopup: BaseViewController {
   lazy var contentsLabel: UILabel = {
     let label = UILabel()
     label.textColor = .black
-    label.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
+    label.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 14.0)
     label.numberOfLines = 0
     
     return label
@@ -38,7 +38,7 @@ final class BasicPopup: BaseViewController {
     let button = UIButton(type: .custom)
     button.setTitle("확인", for: .normal)
     button.setTitleColor(UIColor.idorm_blue, for: .normal)
-    button.titleLabel?.font = .init(name: MyFonts.medium.rawValue, size: 14.0)
+    button.titleLabel?.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 14.0)
     
     return button
   }()

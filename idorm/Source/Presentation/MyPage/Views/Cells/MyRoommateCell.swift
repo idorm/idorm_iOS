@@ -13,7 +13,9 @@ final class MyRoommateCell: UITableViewCell {
   
   // MARK: - Setup
   
-  func setupMatchingInfomation(from member: MatchingDTO.Retrieve) {
+  func setupMatchingInfomation(
+    from member: MatchingResponseModel.Member
+  ) {
     let matchingCard = MatchingCard(member)
     self.matchingCard = matchingCard
     setupStyles()

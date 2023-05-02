@@ -24,8 +24,12 @@ final class MatchingFilterViewReactor: Reactor {
   enum Mutation {
     case setPopVC
     case setRequestCard
+<<<<<<< HEAD
     case saveFilter
     case setFilter(MatchingDTO.Filter)
+=======
+    case setFilter(MatchingRequestModel.Filter)
+>>>>>>> dev
   }
   
   struct State {
@@ -73,9 +77,15 @@ final class MatchingFilterViewReactor: Reactor {
       ])
       
     case .didTapDormButton(let dorm):
+<<<<<<< HEAD
       filterDriver.dorm.accept(true)
       newFilter.dormNum = dorm
       return .just(.setFilter(newFilter))
+=======
+      FilterDriver.shared.dorm.accept(true)
+      newFilter.dormCategory = dorm
+      return Observable.just(.setFilter(newFilter))
+>>>>>>> dev
 
     case .didTapJoinPeriodButton(let period):
       filterDriver.joinPeriod.accept(true)

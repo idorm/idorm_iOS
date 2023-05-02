@@ -15,6 +15,23 @@ import ReactorKit
 
 final class MatchingViewReactor: Reactor {
   
+  enum MatchingTextImage {
+    /// 자신의 매칭 정보가 없을 떄
+    case noMatchingInformation
+    /// 상대방의 카드가 더이상 존재하지 않을 떄
+    case noMatchingCardInformation
+    /// 공유 버튼이 활성화가 되어 있지 않을 때
+    case noShareState
+    
+    var imageName: String {
+      switch self {
+      case .noMatchingInformation: return "text_noMatchingInfo"
+      case .noMatchingCardInformation: return "text_noMatchingCard"
+      case .noShareState: return "text_noShare"
+      }
+    }
+  }
+  
   enum Action {
     case viewDidLoad
     case viewWillAppear
@@ -34,7 +51,7 @@ final class MatchingViewReactor: Reactor {
   
   enum Mutation {
     case setLoading(Bool)
-    case setCurrentTextImage(MatchingEnumerations.TextImage)
+    case setCurrentTextImage(MatchingTextImage)
     case setNoPublicPopup(Bool)
     case setNoMatchingInfoPopup(Bool)
     case setNoMatchingInfoPopup_initial(Bool)
@@ -43,7 +60,7 @@ final class MatchingViewReactor: Reactor {
     case setKakaoPopup(Bool, String)
     case setBasicPopup(Bool)
     case setWeb(Bool)
-    case setMatchingMembers([MatchingDTO.Retrieve])
+    case setMatchingMembers([MatchingResponseModel.Member])
     case setDismissPopup(Bool)
     case setBottomSheet(Bool)
     case setGreenBackgroundColor(Bool)
@@ -51,7 +68,7 @@ final class MatchingViewReactor: Reactor {
   }
   
   struct State {
-    var matchingMembers: [MatchingDTO.Retrieve] = []
+    var matchingMembers: [MatchingResponseModel.Member] = []
     var isLoading: Bool = false
     var isOpenedNoPublicPopup: Bool = false
     var isOpenedNoMatchingInfoPopup: Bool = false
@@ -63,7 +80,7 @@ final class MatchingViewReactor: Reactor {
     var isOpenedWeb: Bool = false
     var isOpenedBottomSheet: Bool = false
     var isDismissedPopup: Bool = false
-    var currentTextImage: MatchingEnumerations.TextImage = .noMatchingCardInformation
+    var currentTextImage: MatchingTextImage = .noMatchingCardInformation
     var isGreenBackgroundColor: Bool = false
     var isRedBackgroundColor: Bool = false
   }
@@ -71,11 +88,12 @@ final class MatchingViewReactor: Reactor {
   let initialState: State = State()
   
   func mutate(action: Action) -> Observable<Mutation> {
-    let memberStorage = MemberStorage.shared
+    let userStorage = UserStorage.shared
+    
     switch action {
     case .viewDidLoad:
-      if memberStorage.hasMatchingInfo {
-        if memberStorage.isPublicMatchingInfo {
+      if userStorage.hasMatchingInfo {
+        if userStorage.isPublicMatchingInfo {
           return Observable.concat([
             .just(.setLoading(true)),
             fetchMatchingMembers()
@@ -99,8 +117,8 @@ final class MatchingViewReactor: Reactor {
       }
       
     case .viewWillAppear:
-      if memberStorage.hasMatchingInfo {
-        if memberStorage.isPublicMatchingInfo {
+      if userStorage.hasMatchingInfo {
+        if userStorage.isPublicMatchingInfo {
            return .just(.setCurrentTextImage(.noMatchingCardInformation))
         } else {
           return .concat([
@@ -136,7 +154,7 @@ final class MatchingViewReactor: Reactor {
         .just(.setDismissPopup(true)),
         .just(.setDismissPopup(false)),
         .just(.setLoading(true)),
-        APIService.onboardingProvider.rx.request(.modifyPublic(true))
+        MatchingInfoAPI.provider.rx.request(.modifyPublic(true))
           .asObservable()
           .retry()
           .filterSuccessfulStatusCodes()
@@ -166,8 +184,8 @@ final class MatchingViewReactor: Reactor {
       ])
       
     case .didTapFilterButton:
-      if memberStorage.hasMatchingInfo {
-        if memberStorage.isPublicMatchingInfo {
+      if userStorage.hasMatchingInfo {
+        if userStorage.isPublicMatchingInfo {
           return Observable.concat([
             .just(.setFilterVC(true)),
             .just(.setFilterVC(false))
@@ -186,18 +204,18 @@ final class MatchingViewReactor: Reactor {
       }
       
     case .didTapRefreshButton:
-      if memberStorage.hasMatchingInfo {
-        if memberStorage.isPublicMatchingInfo {
+      if userStorage.hasMatchingInfo {
+        if userStorage.isPublicMatchingInfo {
           if FilterStorage.shared.hasFilter {
             return Observable.concat([
-              .just(.setLoading(true)),
               .just(.setMatchingMembers([])),
+              .just(.setLoading(true)),
               fetchFilteredMembers()
             ])
           } else {
             return Observable.concat([
-              .just(.setLoading(true)),
               .just(.setMatchingMembers([])),
+              .just(.setLoading(true)),
               fetchMatchingMembers()
             ])
           }
@@ -216,7 +234,7 @@ final class MatchingViewReactor: Reactor {
       
     case .dislikeCard(let id):
       return Observable.concat([
-        APIService.matchingProvider.rx.request(.addDisliked(id))
+        MatchingAPI.provider.rx.request(.addMember(false, id))
           .asObservable()
           .retry()
           .flatMap { _ -> Observable<Mutation> in
@@ -228,10 +246,11 @@ final class MatchingViewReactor: Reactor {
       
     case .likeCard(let id):
       return Observable.concat([
-        APIService.matchingProvider.rx.request(.addLiked(id))
+        MatchingAPI.provider.rx.request(.addMember(true, id))
           .asObservable()
           .retry()
-          .flatMap { _ -> Observable<Mutation> in
+          .debug()
+          .flatMap { response -> Observable<Mutation> in
             return Observable.concat([
               .just(.setLoading(false))
             ])
@@ -325,14 +344,17 @@ final class MatchingViewReactor: Reactor {
 
 extension MatchingViewReactor {
   private func fetchMatchingMembers() -> Observable<Mutation> {
-    return APIService.matchingProvider.rx.request(.retrieve)
+    return MatchingAPI.provider.rx.request(.lookupMembers)
       .asObservable()
       .retry()
       .filterSuccessfulStatusCodes()
       .flatMap { response -> Observable<Mutation> in
         switch response.statusCode {
         case 200:
-          let members = APIService.decode(ResponseModel<[MatchingDTO.Retrieve]>.self, data: response.data).data
+          let members = MatchingAPI.decode(
+            ResponseModel<[MatchingResponseModel.Member]>.self,
+            data: response.data
+          ).data
           return .just(.setMatchingMembers(members))
         default:
           return .just(.setMatchingMembers([]))
@@ -342,14 +364,20 @@ extension MatchingViewReactor {
   
   private func fetchFilteredMembers() -> Observable<Mutation> {
     let filter = FilterStorage.shared.filter
-    return APIService.matchingProvider.rx.request(.retrieveFiltered(filter: filter))
+    return MatchingAPI.provider.rx.request(
+      .lookupFilterMembers(filter: filter)
+    )
       .asObservable()
       .retry()
+      .debug()
       .filterSuccessfulStatusCodes()
       .flatMap { response -> Observable<Mutation> in
         switch response.statusCode {
         case 200:
-          let members = APIService.decode(ResponseModel<[MatchingDTO.Retrieve]>.self, data: response.data).data
+          let members = MatchingAPI.decode(
+            ResponseModel<[MatchingResponseModel.Member]>.self,
+            data: response.data
+          ).data
           return .just(.setMatchingMembers(members))
         default:
           return .just(.setMatchingMembers([]))

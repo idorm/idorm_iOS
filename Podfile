@@ -10,5 +10,6 @@ target 'idorm' do
 pod 'RangeSeekSlider'
 pod "Koloda"
 pod 'AEOTPTextField'
+pod 'ImageSlideshow', '~> 1.9.0'
 
 end

@@ -16,7 +16,7 @@ import ReactorKit
 
 final class AuthViewController: BaseViewController, View {
   
-  // MARK: - Properties
+  // MARK: - UI COMPONENTS
   
   private let backButton = UIButton().then {
     var config = UIButton.Configuration.plain()
@@ -32,32 +32,34 @@ final class AuthViewController: BaseViewController, View {
     $0.configuration?.background.strokeColor = .idorm_gray_200
   }
   
-  var dismissCompletion: (() -> Void)?
   private let envelopeImageView = UIImageView(image: #imageLiteral(resourceName: "envelope"))
-  private let confirmButton = idormButton("인증번호 입력")
+  private let nextButton = idormButton("인증번호 입력")
+  
+  // MARK: -  PROPERTIES
+  
   private let mailTimer = MailTimerChecker()
-    
-  // MARK: - Bind
+  
+  // MARK: - BIND
   
   func bind(reactor: AuthViewReactor) {
     
     // MARK: - Action
     
     // X표시 버튼
-    backButton.rx.tap
-      .map { AuthViewReactor.Action.didTapXmarkButton }
+    self.backButton.rx.tap
+      .map { AuthViewReactor.Action.dismiss }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 메일함 바로가기 버튼
-    portalButton.rx.tap
-      .map { AuthViewReactor.Action.didTapPortalButton }
+    self.portalButton.rx.tap
+      .map { AuthViewReactor.Action.portal }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 인증번호 입력 버튼
-    confirmButton.rx.tap
-      .map { AuthViewReactor.Action.didTapConfirmButton }
+    self.nextButton.rx.tap
+      .map { AuthViewReactor.Action.next }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -67,7 +69,7 @@ final class AuthViewController: BaseViewController, View {
     reactor.state
       .map { $0.isOpenedSafari }
       .filter { $0 }
-      .bind { _ in  UIApplication.shared.open(URL(string: "https://webmail.inu.ac.kr/member/login?host_domain=inu.ac.kr")!) }
+      .bind { _ in UIApplication.shared.open(URL(string: "https://webmail.inu.ac.kr/member/login?host_domain=inu.ac.kr")!) }
       .disposed(by: disposeBag)
     
     // AuthNumberVC로 이동
@@ -79,11 +81,6 @@ final class AuthViewController: BaseViewController, View {
         let authNumberVC = AuthNumberViewController(owner.mailTimer)
         authNumberVC.reactor = AuthNumberViewReactor(owner.mailTimer)
         owner.navigationController?.pushViewController(authNumberVC, animated: true)
-        
-        authNumberVC.popCompletion = {
-          owner.dismiss(animated: true)
-          owner.dismissCompletion?()
-        }
       }
       .disposed(by: disposeBag)
     
@@ -107,7 +104,7 @@ final class AuthViewController: BaseViewController, View {
   
   override func setupLayouts() {
     super.setupLayouts()
-    [envelopeImageView, portalButton, confirmButton]
+    [envelopeImageView, portalButton, nextButton]
       .forEach { view.addSubview($0) }
   }
   
@@ -118,7 +115,7 @@ final class AuthViewController: BaseViewController, View {
       make.top.equalToSuperview().inset(150)
     }
     
-    confirmButton.snp.makeConstraints { make in
+    nextButton.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
       make.bottom.equalToSuperview().inset(85)
       make.height.equalTo(50)
@@ -126,7 +123,7 @@ final class AuthViewController: BaseViewController, View {
     
     portalButton.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
-      make.bottom.equalTo(confirmButton.snp.top).offset(-8)
+      make.bottom.equalTo(nextButton.snp.top).offset(-8)
       make.height.equalTo(50)
     }
   }

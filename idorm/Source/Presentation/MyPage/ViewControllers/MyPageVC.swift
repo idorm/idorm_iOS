@@ -15,6 +15,7 @@ import RxGesture
 import RxAppState
 import RxOptional
 import ReactorKit
+import Kingfisher
 
 final class MyPageViewController: BaseViewController, View {
   
@@ -36,6 +37,7 @@ final class MyPageViewController: BaseViewController, View {
   private let lionImageView = UIImageView(image: #imageLiteral(resourceName: "lion_half"))
   private let topProfileView = TopProfileView()
   private let matchingContainerView = MatchingContainerView()
+  private let communityContainerView = CommunityContainerView()
   override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
   
   // MARK: - LifeCycle
@@ -45,7 +47,7 @@ final class MyPageViewController: BaseViewController, View {
     navigationController?.setNavigationBarHidden(true, animated: true)
     tabBarController?.tabBar.isHidden = false
     
-    let tabBarAppearance = AppearanceManager.tabbarAppearance(from: .idorm_gray_100)
+    let tabBarAppearance = NavigationAppearanceUtils.tabbarAppearance(from: .idorm_gray_100)
     tabBarController?.tabBar.standardAppearance = tabBarAppearance
     tabBarController?.tabBar.scrollEdgeAppearance = tabBarAppearance
   }
@@ -53,7 +55,7 @@ final class MyPageViewController: BaseViewController, View {
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     
-    let tabBarAppearance = AppearanceManager.tabbarAppearance(from: .white)
+    let tabBarAppearance = NavigationAppearanceUtils.tabbarAppearance(from: .white)
     tabBarController?.tabBar.standardAppearance = tabBarAppearance
     tabBarController?.tabBar.scrollEdgeAppearance = tabBarAppearance
   }
@@ -100,6 +102,37 @@ final class MyPageViewController: BaseViewController, View {
       .map { !$0.0.matchingContainerView.shareButton.isSelected }
       .map { MyPageViewReactor.Action.didTapShareButton($0) }
       .bind(to: reactor.action)
+      .disposed(by: disposeBag)
+    
+    // 내가 쓴 댓글 클릭 -> 댓글 관리 창으로 이동
+    communityContainerView.myCommentButton.rx.tap
+      .withUnretained(self)
+      .bind { owner, _ in
+        let viewController = MyCommunityViewController(viewControllerType: .comment)
+        viewController.reactor = MyCommunityViewReactor(.comment)
+        viewController.hidesBottomBarWhenPushed = true
+        owner.navigationController?.pushViewController(viewController, animated: true)
+      }
+      .disposed(by: disposeBag)
+    
+    communityContainerView.myPostButton.rx.tap
+      .withUnretained(self)
+      .bind { owner, _ in
+        let viewController = MyCommunityViewController(viewControllerType: .post)
+        viewController.reactor = MyCommunityViewReactor(.post)
+        viewController.hidesBottomBarWhenPushed = true
+        owner.navigationController?.pushViewController(viewController, animated: true)
+      }
+      .disposed(by: disposeBag)
+    
+    communityContainerView.myRecommendButton.rx.tap
+      .withUnretained(self)
+      .bind { owner, _ in
+        let viewController = MyCommunityViewController(viewControllerType: .recommend)
+        viewController.reactor = MyCommunityViewReactor(.recommend)
+        viewController.hidesBottomBarWhenPushed = true
+        owner.navigationController?.pushViewController(viewController, animated: true)
+      }
       .disposed(by: disposeBag)
     
     // MARK: - State
@@ -228,6 +261,13 @@ final class MyPageViewController: BaseViewController, View {
         }
       }
       .disposed(by: disposeBag)
+    
+    reactor.state.map { $0.currentProfileURL }
+      .filterNil()
+      .bind(with: self) { owner, url in
+        owner.topProfileView.profileImageView.kf.setImage(with: URL(string: url))
+      }
+      .disposed(by: disposeBag)
   }
 
   // MARK: - Setup
@@ -244,6 +284,7 @@ final class MyPageViewController: BaseViewController, View {
     [
       topProfileView,
       matchingContainerView,
+      communityContainerView,
       lionImageView
     ].forEach { contentView.addSubview($0) }
   }
@@ -262,7 +303,6 @@ final class MyPageViewController: BaseViewController, View {
     contentView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
       make.width.equalTo(scrollView.snp.width)
-      make.height.equalTo(scrollView.snp.height)
     }
     
     topProfileView.snp.makeConstraints { make in
@@ -275,8 +315,14 @@ final class MyPageViewController: BaseViewController, View {
       make.top.equalTo(topProfileView.snp.bottom).offset(24)
     }
     
+    communityContainerView.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview().inset(24)
+      make.top.equalTo(matchingContainerView.snp.bottom).offset(24)
+    }
+    
     lionImageView.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
+      make.top.equalTo(communityContainerView.snp.bottom).offset(24)
       make.bottom.equalToSuperview()
     }
   }

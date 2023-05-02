@@ -32,11 +32,11 @@ final class HomeViewController: BaseViewController, View {
               """
     $0.textColor = .idorm_gray_400
     $0.numberOfLines = 2
-    $0.font = .init(name: MyFonts.medium.rawValue, size: 20)
+    $0.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 20)
     
     let attributedString = NSMutableAttributedString(string: $0.text!)
     attributedString.addAttributes([.foregroundColor: UIColor.idorm_blue,
-                                    .font: UIFont.init(name: MyFonts.bold.rawValue, size: 20)!]
+                                    .font: UIFont.init(name: IdormFont_deprecated.bold.rawValue, size: 20)!]
                                    ,range: ($0.text! as NSString).range(of: "1학기"))
     $0.attributedText = attributedString
   }
@@ -49,11 +49,28 @@ final class HomeViewController: BaseViewController, View {
     config.imagePadding = 12
     
     var titleContainer = AttributeContainer()
-    titleContainer.font = .init(name: MyFonts.medium.rawValue, size: 16)
+    titleContainer.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 16)
     titleContainer.foregroundColor = UIColor.white
     config.attributedTitle = AttributedString("룸메이트 매칭 시작하기", attributes: titleContainer)
     
     $0.configuration = config
+  }
+  
+  private lazy var popularPostsCollection = UICollectionView(
+    frame: .zero,
+    collectionViewLayout: self.getLayout()
+  ).then {
+    $0.register(
+      PopularPostCell.self,
+      forCellWithReuseIdentifier: PopularPostCell.identifier
+    )
+    $0.backgroundColor = .idorm_gray_100
+    $0.dataSource = self
+    $0.delegate = self
+  }
+  
+  private let loadingView = UIActivityIndicatorView().then {
+    $0.backgroundColor = .lightGray
   }
   
   private let lionImageView = UIImageView(image: #imageLiteral(resourceName: "lion_with_circle"))
@@ -65,6 +82,15 @@ final class HomeViewController: BaseViewController, View {
   override func viewDidLoad() {
     setupScrollView()
     super.viewDidLoad()
+    reactor?.action.onNext(.viewDidLoad)
+  }
+  
+  // MARK: - Helpers
+  
+  private func getLayout() -> UICollectionViewCompositionalLayout {
+    UICollectionViewCompositionalLayout { _, _ in
+      return PostUtils.popularPostSection()
+    }
   }
   
   // MARK: - Bind
@@ -73,14 +99,38 @@ final class HomeViewController: BaseViewController, View {
     
     // MARK: - Action
     
+    // 매칭 시작하기
     startMatchingButton.rx.tap
       .withUnretained(self)
-      .bind {
-        $0.0.tabBarController?.selectedIndex = 1
-      }
+      .bind { $0.0.tabBarController?.selectedIndex = 1 }
       .disposed(by: disposeBag)
     
     // MARK: - State
+    
+    reactor.state
+      .map { $0.popularPosts }
+      .distinctUntilChanged()
+      .bind(with: self) { owner, _ in owner.popularPostsCollection.reloadData() }
+      .disposed(by: disposeBag)
+    
+    // 로딩 인디케이터
+    reactor.state
+      .map { $0.isLoading }
+      .distinctUntilChanged()
+      .bind(to: loadingView.rx.isAnimating)
+      .disposed(by: disposeBag)
+    
+    // PostDetailVC 화면전환
+    reactor.state
+      .map { $0.pushToPostDetailVC }
+      .filter { $0.0 }
+      .bind(with: self) { owner, postId in
+        let vc = DetailPostViewController()
+        vc.reactor = DetailPostViewReactor(postId.1)
+        vc.hidesBottomBarWhenPushed = true
+        owner.navigationController?.pushViewController(vc, animated: true)
+      }
+      .disposed(by: disposeBag)
   }
   
   // MARK: - Setup
@@ -98,8 +148,12 @@ final class HomeViewController: BaseViewController, View {
     view.addSubview(scrollView)
     scrollView.addSubview(contentView)
     
-    [mainLabel, lionImageView, startMatchingButton]
-      .forEach { contentView.addSubview($0) }
+    [
+      mainLabel,
+      lionImageView,
+      startMatchingButton,
+      popularPostsCollection
+    ].forEach { contentView.addSubview($0) }
   }
   
   override func setupConstraints() {
@@ -128,6 +182,12 @@ final class HomeViewController: BaseViewController, View {
       make.leading.trailing.equalToSuperview().inset(24)
       make.bottom.equalTo(lionImageView.snp.bottom).offset(-13.5)
       make.height.equalTo(52)
+    }
+    
+    popularPostsCollection.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview()
+      make.top.equalTo(startMatchingButton.snp.bottom).offset(50)
+      make.height.equalTo(156)
       make.bottom.equalToSuperview()
     }
   }
@@ -140,26 +200,48 @@ final class HomeViewController: BaseViewController, View {
     contentView.backgroundColor = .white
     self.contentView = contentView
   }
+}
+
+// MARK: - CollectionView Setup
+
+extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    numberOfItemsInSection section: Int
+  ) -> Int {
+    let posts = reactor?.currentState.popularPosts ?? []
+    return posts.count
+  }
   
-  // MARK: - Bind
+  func collectionView(
+    _ collectionView: UICollectionView,
+    cellForItemAt indexPath: IndexPath
+  ) -> UICollectionViewCell {
+    guard let cell = collectionView.dequeueReusableCell(
+      withReuseIdentifier: PopularPostCell.identifier,
+      for: indexPath
+    ) as? PopularPostCell
+    else {
+      return UICollectionViewCell()
+    }
+    
+    let posts = reactor?.currentState.popularPosts ?? []
+    cell.configure(posts[indexPath.row])
+    
+    return cell
+  }
   
-  override func bind() {
-    super.bind()
+  func collectionView(
+    _ collectionView: UICollectionView,
+    didSelectItemAt indexPath: IndexPath
+  ) {
+    guard let reactor = reactor else { return }
+    let posts = reactor.currentState.popularPosts
+    let post = posts[indexPath.row]
     
-    // MARK: - Input
-    
-//    // 매칭 시작 버튼 클릭 이벤트
-//    startMatchingButton.rx.tap
-//      .bind(to: viewModel.input.startMatchingButtonTapped)
-//      .disposed(by: disposeBag)
-    
-    // MARK: - Output
-    
-//    // 매칭 페이지로 전환
-//    viewModel.output.showMatchingPage
-//      .bind(onNext: { [weak self] in
-//        self?.tabBarController?.selectedIndex = 1
-//      })
-//      .disposed(by: disposeBag)
+    Observable.just(post.postId)
+      .map { HomeViewReactor.Action.postDidTap(postId: $0) }
+      .bind(to: reactor.action)
+      .disposed(by: disposeBag)
   }
 }

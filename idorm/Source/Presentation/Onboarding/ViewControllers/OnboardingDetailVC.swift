@@ -24,12 +24,12 @@ final class OnboardingDetailViewController: BaseViewController, View {
   private var floatyBottomView: FloatyBottomView!
   private lazy var matchingCard = MatchingCard(member)
 
-  private let member: MatchingDTO.Retrieve
-  private let type: OnboardingEnumerations
+  private let member: MatchingResponseModel.Member
+  private let type: Onboarding
   
   // MARK: - LifeCycle
   
-  init(_ member: MatchingDTO.Retrieve, type: OnboardingEnumerations) {
+  init(_ member: MatchingResponseModel.Member, type: Onboarding) {
     self.type = type
     self.member = member
     super.init(nibName: nil, bundle: nil)

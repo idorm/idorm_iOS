@@ -15,7 +15,7 @@ import ReactorKit
 final class OnboardingViewReactor: Reactor {
   
   enum Action {
-    case viewDidLoad(MatchingInfoDTO.Retrieve)
+    case viewDidLoad(MatchingInfoResponseModel.MatchingInfo)
     case didTapDormButton(Dormitory)
     case didTapGenderButton(Gender)
     case didTapJoinPeriodButton(JoinPeriod)
@@ -34,12 +34,12 @@ final class OnboardingViewReactor: Reactor {
   
   enum Mutation {
     case setLoading(Bool)
-    case setMatchingInfo(MatchingInfoDTO.Save)
+    case setMatchingInfo(MatchingInfoRequestModel.MatchingInfo)
     case setDriver(OnboardingDriver)
     case setClear(Bool)
     case setMainVC(Bool)
     case setRootVC(Bool)
-    case setOnboardingDetailVC(Bool, MatchingDTO.Retrieve)
+    case setOnboardingDetailVC(Bool, MatchingResponseModel.Member)
     case setChatBorderColor(UIColor)
     case setChatDescriptionTextColor(UIColor)
     case setChatTfCheckmark(Bool)
@@ -48,14 +48,14 @@ final class OnboardingViewReactor: Reactor {
   }
   
   struct State {
-    var currentMatchingInfo: MatchingInfoDTO.Save = .init()
+    var currentMatchingInfo: MatchingInfoRequestModel.MatchingInfo = .init()
     var currentDriver: OnboardingDriver = .init()
     var currentWishTextCount: Int = 0
     var isLoading: Bool = false
     var isCleared: Bool = false
     var isOpenedMainVC: Bool = false
     var isOpenedRootVC: Bool = false
-    var isOpenedOnboardingDetailVC: (Bool, MatchingDTO.Retrieve) = (false, .init())
+    var isOpenedOnboardingDetailVC: (Bool, MatchingResponseModel.Member) = (false, .init())
     var currentChatBorderColor: UIColor = .idorm_gray_300
     var currentChatDescriptionTextColor: UIColor = .idorm_gray_300
     var isHiddenChatTfCheckmark: Bool = true
@@ -63,9 +63,9 @@ final class OnboardingViewReactor: Reactor {
   }
   
   var initialState: State = State()
-  private let type: OnboardingEnumerations
+  private let type: Onboarding
   
-  init(_ type: OnboardingEnumerations) {
+  init(_ type: Onboarding) {
     self.type = type
   }
   
@@ -77,7 +77,7 @@ final class OnboardingViewReactor: Reactor {
     case .viewDidLoad(let matchingInfo):
       newDriver.convertConditionToAllTrue()
       
-      newMatchingInfo.dormNum = matchingInfo.dormNum
+      newMatchingInfo.dormCategory = matchingInfo.dormCategory
       newMatchingInfo.joinPeriod = matchingInfo.joinPeriod
       newMatchingInfo.gender = matchingInfo.gender
       newMatchingInfo.age = String(matchingInfo.age)
@@ -100,7 +100,7 @@ final class OnboardingViewReactor: Reactor {
       ])
       
     case .didTapDormButton(let dorm):
-      newMatchingInfo.dormNum = dorm
+      newMatchingInfo.dormCategory = dorm
       newDriver.dormConditon.accept(true)
       return .concat([
         .just(.setMatchingInfo(newMatchingInfo)),
@@ -242,7 +242,7 @@ final class OnboardingViewReactor: Reactor {
       
       switch type {
       case .initial, .main:
-        let member = ModelTransformationManager.transformToMatchingDTO_RETRIEVE(currentState.currentMatchingInfo)
+        let member = TransformUtils.transfer(currentState.currentMatchingInfo)
         
         if kakaoLink.isValidKakaoLink {
           return .concat([
@@ -260,12 +260,15 @@ final class OnboardingViewReactor: Reactor {
         if kakaoLink.isValidKakaoLink {
           return .concat([
             .just(.setLoading(true)),
-            APIService.onboardingProvider.rx.request(.modify(currentState.currentMatchingInfo))
+            MatchingInfoAPI.provider.rx.request(
+              .modify(currentState.currentMatchingInfo)
+            )
               .asObservable()
+              .debug()
               .retry()
-              .map(ResponseModel<MatchingInfoDTO.Retrieve>.self)
+              .map(ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self)
               .flatMap { response -> Observable<Mutation> in
-                MemberStorage.shared.saveMatchingInfo(response.data)
+                UserStorage.shared.saveMatchingInfo(response.data)
                 return .concat([
                   .just(.setLoading(false)),
                   .just(.setRootVC(true)),

@@ -5,10 +5,11 @@
 //  Created by 김응철 on 2022/12/21.
 //
 
-import Foundation
+import UIKit
 
 import RxSwift
 import RxCocoa
+import RxMoya
 import ReactorKit
 
 final class ManageMyInfoViewReactor: Reactor {
@@ -19,6 +20,7 @@ final class ManageMyInfoViewReactor: Reactor {
     case didTapChangePwButton
     case didTapWithDrawalButton
     case didTapLogoutButton
+    case didPickProfileImage(UIImage)
   }
   
   enum Mutation {
@@ -28,6 +30,8 @@ final class ManageMyInfoViewReactor: Reactor {
     case setCurrentNickname(String)
     case setCurrentEmail(String)
     case setLoginVC(Bool)
+    case setLoading(Bool)
+    case setProfileImageUrl(String?)
   }
   
   struct State {
@@ -37,19 +41,23 @@ final class ManageMyInfoViewReactor: Reactor {
     var isOpenedLoginVC: Bool = false
     var currentNickname: String = ""
     var currentEmail: String = ""
+    var isLoading: Bool = false
+    var profileImageURL: String?
   }
   
   var initialState: State = State()
-  
+
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .viewWillAppear:
-      let nickName = MemberStorage.shared.member?.nickname ?? ""
-      let email = MemberStorage.shared.member?.email ?? ""
+      let nickName = UserStorage.shared.member?.nickname ?? ""
+      let email = UserStorage.shared.member?.email ?? ""
+      let profileURL = UserStorage.shared.member?.profilePhotoUrl
       
       return .concat([
         .just(.setCurrentNickname(nickName)),
-        .just(.setCurrentEmail(email))
+        .just(.setCurrentEmail(email)),
+        .just(.setProfileImageUrl(profileURL))
       ])
       
     case .didTapNicknameButton:
@@ -76,6 +84,18 @@ final class ManageMyInfoViewReactor: Reactor {
         .just(.setLoginVC(true)),
         .just(.setLoginVC(false))
       ])
+      
+    case .didPickProfileImage(let image):
+      return .concat([
+        .just(.setLoading(true)),
+        MemberAPI.provider.rx.request(.saveProfilePhoto(image: image))
+          .asObservable()
+          .filterSuccessfulStatusCodes()
+          .withUnretained(self)
+          .flatMap { owner, _ -> Observable<Mutation> in
+            return owner.retrieveMember()
+          }
+      ])
     }
   }
   
@@ -100,8 +120,32 @@ final class ManageMyInfoViewReactor: Reactor {
       
     case .setLoginVC(let isOpened):
       newState.isOpenedLoginVC = isOpened
+      
+    case .setLoading(let isLoading):
+      newState.isLoading = isLoading
+      
+    case .setProfileImageUrl(let url):
+      newState.profileImageURL = url
     }
     
     return newState
+  }
+}
+
+private extension ManageMyInfoViewReactor {
+  func retrieveMember() -> Observable<Mutation> {
+    return MemberAPI.provider.rx.request(.retrieveMember)
+      .asObservable()
+      .flatMap { response -> Observable<Mutation> in
+        let member = MemberAPI.decode(
+          ResponseModel<MemberResponseModel.Member>.self,
+          data: response.data
+        ).data
+        UserStorage.shared.saveMember(member)
+        return .concat([
+          .just(.setLoading(false)),
+          .just(.setProfileImageUrl(member.profilePhotoUrl))
+        ])
+      }
   }
 }

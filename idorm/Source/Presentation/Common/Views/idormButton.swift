@@ -26,7 +26,7 @@ final class idormButton: UIButton {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
     container.foregroundColor = .white
-    container.font = .init(name: MyFonts.medium.rawValue, size: 14)
+    container.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 14)
     config.attributedTitle = AttributedString(title, attributes: container)
     config.baseBackgroundColor = .idorm_blue
     config.background.cornerRadius = 10
