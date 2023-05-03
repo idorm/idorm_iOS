@@ -12,8 +12,9 @@ import RxCocoa
 
 final class FilterDriver {
   
+  static let shared = FilterDriver()
   private let disposeBag = DisposeBag()
-  init() {
+  private init() {
     Observable.combineLatest(dorm, joinPeriod)
       .map { $0.0 && $0.1 ? true : false }
       .bind(to: isAllowed)

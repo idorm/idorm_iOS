@@ -67,22 +67,59 @@ final class HomeViewController: BaseViewController, View {
     $0.backgroundColor = .idorm_gray_100
     $0.dataSource = self
     $0.delegate = self
+    $0.isScrollEnabled = false
+    $0.tag = 1
   }
   
+  private lazy var calendarCollection: UICollectionView = {
+    let layout = UICollectionViewFlowLayout()
+    layout.itemSize = CGSize(width: view.frame.width, height: 216)
+//    layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+    let cv = UICollectionView(
+      frame: .zero,
+      collectionViewLayout: layout
+    )
+    cv.delegate = self
+    cv.dataSource = self
+    cv.register(
+      CalendarCell.self,
+      forCellWithReuseIdentifier: CalendarCell.identifier
+    )
+    cv.isScrollEnabled = false
+    cv.backgroundColor = .white
+    cv.tag = 2
+    return cv
+  }()
+  
+  private var scrollView: UIScrollView = {
+    let sv = UIScrollView()
+    return sv
+  }()
+  
+  private let contentView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .clear
+    return view
+  }()
+  
   private let loadingView = UIActivityIndicatorView().then {
-    $0.backgroundColor = .lightGray
+    $0.color = .lightGray
   }
   
   private let lionImageView = UIImageView(image: #imageLiteral(resourceName: "lion_with_circle"))
-  private var scrollView: UIScrollView!
-  private var contentView: UIView!
+  private let homeDormImageView = UIImageView(image: UIImage(named: "text_homeDorm"))
+  private var collectionViewContentSizeObserver: NSKeyValueObservation?
+  private var calendarCollectionViewHeight: Constraint?
   
   // MARK: - LifeCycle
   
   override func viewDidLoad() {
-    setupScrollView()
     super.viewDidLoad()
     reactor?.action.onNext(.viewDidLoad)
+    
+    collectionViewContentSizeObserver = calendarCollection.observe(\.contentSize, options: [.new]) { [weak self] collectionView, change in
+      self?.updateScrollViewContentSize()
+    }
   }
   
   // MARK: - Helpers
@@ -91,6 +128,14 @@ final class HomeViewController: BaseViewController, View {
     UICollectionViewCompositionalLayout { _, _ in
       return PostUtils.popularPostSection()
     }
+  }
+  
+  private func updateScrollViewContentSize() {
+    // CollectionView의 ContentSize에 맞춰 ScrollView의 ContentSize를 업데이트합니다.
+    let contentSize = calendarCollection.collectionViewLayout.collectionViewContentSize
+    let height = contentSize.height
+    print(height)
+    calendarCollectionViewHeight?.update(offset: height)
   }
   
   // MARK: - Bind
@@ -111,6 +156,15 @@ final class HomeViewController: BaseViewController, View {
       .map { $0.popularPosts }
       .distinctUntilChanged()
       .bind(with: self) { owner, _ in owner.popularPostsCollection.reloadData() }
+      .disposed(by: disposeBag)
+    
+    reactor.state
+      .map { $0.calendars }
+      .distinctUntilChanged()
+      .filter { !$0.isEmpty }
+      .bind(with: self) { owner, _ in
+        owner.calendarCollection.reloadData()
+      }
       .disposed(by: disposeBag)
     
     // 로딩 인디케이터
@@ -146,30 +200,35 @@ final class HomeViewController: BaseViewController, View {
     super.setupLayouts()
     
     view.addSubview(scrollView)
+    view.addSubview(loadingView)
     scrollView.addSubview(contentView)
     
     [
       mainLabel,
       lionImageView,
       startMatchingButton,
-      popularPostsCollection
-    ].forEach { contentView.addSubview($0) }
+      popularPostsCollection,
+      homeDormImageView,
+      calendarCollection
+    ].forEach {
+      contentView.addSubview($0)
+    }
   }
   
   override func setupConstraints() {
     super.setupConstraints()
     
     scrollView.snp.makeConstraints { make in
-      make.edges.equalTo(view.safeAreaLayoutGuide)
+      make.edges.equalToSuperview()
     }
     
     contentView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
-      make.width.equalTo(view.frame.width)
+      make.width.equalTo(scrollView.snp.width)
     }
     
     mainLabel.snp.makeConstraints { make in
-      make.top.equalTo(view.safeAreaLayoutGuide)
+      make.top.equalToSuperview()
       make.leading.equalToSuperview().inset(24)
     }
     
@@ -180,7 +239,7 @@ final class HomeViewController: BaseViewController, View {
     
     startMatchingButton.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
-      make.bottom.equalTo(lionImageView.snp.bottom).offset(-13.5)
+      make.top.equalTo(lionImageView.snp.top).offset(158)
       make.height.equalTo(52)
     }
     
@@ -188,17 +247,23 @@ final class HomeViewController: BaseViewController, View {
       make.leading.trailing.equalToSuperview()
       make.top.equalTo(startMatchingButton.snp.bottom).offset(50)
       make.height.equalTo(156)
-      make.bottom.equalToSuperview()
     }
-  }
-  
-  private func setupScrollView() {
-    let scrollView = UIScrollView()
-    self.scrollView = scrollView
     
-    let contentView = UIView()
-    contentView.backgroundColor = .white
-    self.contentView = contentView
+    homeDormImageView.snp.makeConstraints { make in
+      make.leading.equalToSuperview().inset(24)
+      make.top.equalTo(popularPostsCollection.snp.bottom).offset(32)
+    }
+    
+    calendarCollection.snp.makeConstraints { make in
+      make.top.equalTo(homeDormImageView.snp.bottom).offset(16)
+      make.leading.trailing.equalToSuperview()
+      calendarCollectionViewHeight = make.height.equalTo(214).constraint
+      make.bottom.equalToSuperview().inset(32)
+    }
+    
+    loadingView.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+    }
   }
 }
 
@@ -209,26 +274,42 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     _ collectionView: UICollectionView,
     numberOfItemsInSection section: Int
   ) -> Int {
-    let posts = reactor?.currentState.popularPosts ?? []
-    return posts.count
+    guard let reactor = reactor else { return 0 }
+    if collectionView.tag == 1 {
+      let posts = reactor.currentState.popularPosts
+      return posts.count
+    } else {
+      let calendars = reactor.currentState.calendars
+      return calendars.count
+    }
   }
   
   func collectionView(
     _ collectionView: UICollectionView,
     cellForItemAt indexPath: IndexPath
   ) -> UICollectionViewCell {
-    guard let cell = collectionView.dequeueReusableCell(
-      withReuseIdentifier: PopularPostCell.identifier,
-      for: indexPath
-    ) as? PopularPostCell
-    else {
-      return UICollectionViewCell()
+    if collectionView.tag == 1 {
+      guard let cell = collectionView.dequeueReusableCell(
+        withReuseIdentifier: PopularPostCell.identifier,
+        for: indexPath
+      ) as? PopularPostCell
+      else {
+        return UICollectionViewCell()
+      }
+      let posts = reactor?.currentState.popularPosts ?? []
+      cell.configure(posts[indexPath.row])
+      return cell
+    } else {
+      guard let cell = collectionView.dequeueReusableCell(
+        withReuseIdentifier: CalendarCell.identifier,
+        for: indexPath
+      ) as? CalendarCell else {
+        return UICollectionViewCell()
+      }
+      let calendar = reactor?.currentState.calendars ?? []
+      cell.configure(calendar[indexPath.row])
+      return cell
     }
-    
-    let posts = reactor?.currentState.popularPosts ?? []
-    cell.configure(posts[indexPath.row])
-    
-    return cell
   }
   
   func collectionView(
@@ -236,12 +317,19 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     didSelectItemAt indexPath: IndexPath
   ) {
     guard let reactor = reactor else { return }
-    let posts = reactor.currentState.popularPosts
-    let post = posts[indexPath.row]
-    
-    Observable.just(post.postId)
-      .map { HomeViewReactor.Action.postDidTap(postId: $0) }
-      .bind(to: reactor.action)
-      .disposed(by: disposeBag)
+    if collectionView.tag == 1 {
+      let posts = reactor.currentState.popularPosts
+      let post = posts[indexPath.row]
+      
+      Observable.just(post.postId)
+        .map { HomeViewReactor.Action.postDidTap(postId: $0) }
+        .bind(to: reactor.action)
+        .disposed(by: disposeBag)
+    } else {
+      let calendar = reactor.currentState.calendars[indexPath.row]
+      if let url = URL(string: calendar.url!) {
+          UIApplication.shared.open(url)
+      }
+    }
   }
 }

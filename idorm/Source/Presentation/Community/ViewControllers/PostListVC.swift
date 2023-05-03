@@ -45,7 +45,7 @@ final class PostListViewController: BaseViewController, View {
   private let bellBtn: UIButton = {
     let btn = UIButton()
     btn.setImage(UIImage(named: "bell"), for: .normal)
-    
+    btn.isHidden = true
     return btn
   }()
   

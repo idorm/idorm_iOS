@@ -206,6 +206,9 @@
 		E5F56572291902B60043FCB4 /* MyPageSortHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F56571291902B60043FCB4 /* MyPageSortHeaderView.swift */; };
 		E5F56574291908DE0043FCB4 /* MyRoommateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F56573291908DE0043FCB4 /* MyRoommateCell.swift */; };
 		E5F5EC78288402840026DE21 /* MyPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC77288402840026DE21 /* MyPageVC.swift */; };
+		E5FA993C2A013ED60047AC0A /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FA993B2A013ED60047AC0A /* CalendarCell.swift */; };
+		E5FA993E2A016CE80047AC0A /* CalendarAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FA993D2A016CE80047AC0A /* CalendarAPI.swift */; };
+		E5FA99432A01DEE70047AC0A /* CalendarResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FA99422A01DEE70047AC0A /* CalendarResponseModel.swift */; };
 		E5FD982428EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD982328EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift */; };
 		E5FD982628EAF8F0005A29E2 /* MailTimerChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD982528EAF8F0005A29E2 /* MailTimerChecker.swift */; };
 /* End PBXBuildFile section */
@@ -407,6 +410,9 @@
 		E5F56571291902B60043FCB4 /* MyPageSortHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSortHeaderView.swift; sourceTree = "<group>"; };
 		E5F56573291908DE0043FCB4 /* MyRoommateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoommateCell.swift; sourceTree = "<group>"; };
 		E5F5EC77288402840026DE21 /* MyPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageVC.swift; sourceTree = "<group>"; };
+		E5FA993B2A013ED60047AC0A /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
+		E5FA993D2A016CE80047AC0A /* CalendarAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarAPI.swift; sourceTree = "<group>"; };
+		E5FA99422A01DEE70047AC0A /* CalendarResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarResponseModel.swift; sourceTree = "<group>"; };
 		E5FD982328EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMatchingInfoPopup_Initial.swift; sourceTree = "<group>"; };
 		E5FD982528EAF8F0005A29E2 /* MailTimerChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailTimerChecker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -750,6 +756,7 @@
 		E56DF4C2289405C000E85B10 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				E5FA99392A013EBF0047AC0A /* Views */,
 				E56DF4C7289405DF00E85B10 /* ViewControllers */,
 				E5C451CC295C799A00D49988 /* Reactors */,
 			);
@@ -904,6 +911,7 @@
 			children = (
 				E5CFF70A2982D00200E11D9A /* BaseAPI.swift */,
 				E5A47F07292508F300908E20 /* SharedAPI.swift */,
+				E5FA993F2A016CEF0047AC0A /* Calendar */,
 				E5CFF7012982CD6500E11D9A /* Community */,
 				E53D1A3D2988A5640074308B /* Member */,
 				E53D1A442988A6870074308B /* Mail */,
@@ -1032,6 +1040,7 @@
 				E5CFF71E29835DEE00E11D9A /* MatchingResponseModel.swift */,
 				E5CFF71829835D0700E11D9A /* MatchingInfoResponseModel.swift */,
 				E5CFF71A29835D4000E11D9A /* MemberResponseModel.swift */,
+				E5FA99422A01DEE70047AC0A /* CalendarResponseModel.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -1119,6 +1128,30 @@
 				E58833DA29BB530E002B2CBE /* Enums */,
 			);
 			path = Constants;
+			sourceTree = "<group>";
+		};
+		E5FA99392A013EBF0047AC0A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E5FA993A2A013EC20047AC0A /* Cells */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E5FA993A2A013EC20047AC0A /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				E5FA993B2A013ED60047AC0A /* CalendarCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		E5FA993F2A016CEF0047AC0A /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				E5FA993D2A016CE80047AC0A /* CalendarAPI.swift */,
+			);
+			path = Calendar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1292,6 +1325,7 @@
 				E575D37529548DF900B13530 /* WithDrawalViewReactor.swift in Sources */,
 				E5626113299A500800D14020 /* DetailPostPhotoCell.swift in Sources */,
 				E5CFF6EE297E3D4D00E11D9A /* CommentView.swift in Sources */,
+				E5FA993C2A013ED60047AC0A /* CalendarCell.swift in Sources */,
 				E53D1A412988A5C00074308B /* MemberAPI+Path.swift in Sources */,
 				E5AD73A3287B2B5200BA2C5E /* PasswordVC.swift in Sources */,
 				E5226D60291207AA0065C809 /* Habit.swift in Sources */,
@@ -1322,6 +1356,7 @@
 				E5290F0928881C6E0004B8E6 /* DetailPostHeaderView.swift in Sources */,
 				E50300F728773A5D00611C62 /* AppDelegate.swift in Sources */,
 				E55794EE287C36F5002DB2B0 /* UIView+.swift in Sources */,
+				E5FA99432A01DEE70047AC0A /* CalendarResponseModel.swift in Sources */,
 				E58BF48829FE8C0F0036B125 /* MyPostCell.swift in Sources */,
 				E5E149882950635500A3827C /* FilterDriver.swift in Sources */,
 				E52C278B2989195D002429B5 /* Onboarding.swift in Sources */,
@@ -1432,6 +1467,7 @@
 				E5CFF7052982CDDC00E11D9A /* CommunityAPI+Path.swift in Sources */,
 				E5F5EC78288402840026DE21 /* MyPageVC.swift in Sources */,
 				E5294FF329277A06004D408C /* MatchingAPI.swift in Sources */,
+				E5FA993E2A016CE80047AC0A /* CalendarAPI.swift in Sources */,
 				E5AB97C42895671800C0CEDF /* MatchingFilterVC.swift in Sources */,
 				E5E1498D295079F600A3827C /* MatchingFilterViewReactor.swift in Sources */,
 				E5AD7396287A8C2F00BA2C5E /* UIColor+.swift in Sources */,
@@ -1610,7 +1646,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.5;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = eungcheol.idorm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1648,7 +1684,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.5;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = eungcheol.idorm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

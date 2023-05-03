@@ -23,11 +23,13 @@ final class HomeViewReactor: Reactor {
     case setLoading(Bool)
     case setPosts([CommunityResponseModel.Posts])
     case setPostDetailVC(Bool, Int)
+    case setCalendars([CalendarResponseModel.Calendar])
   }
   
   struct State {
     var isLoading: Bool = false
     var popularPosts: [CommunityResponseModel.Posts] = []
+    var calendars: [CalendarResponseModel.Calendar] = []
     var pushToPostDetailVC: (Bool, Int) = (false, 0)
   }
   
@@ -41,12 +43,16 @@ final class HomeViewReactor: Reactor {
         .just(.setLoading(true)),
         CommunityAPI.provider.rx.request(.lookupTopPosts(dormCategory))
           .asObservable()
-          .flatMap { response -> Observable<Mutation> in
+          .withUnretained(self)
+          .flatMap { owner, response -> Observable<Mutation> in
             let responseModel = CommunityAPI.decode(
               ResponseModel<[CommunityResponseModel.Posts]>.self,
               data: response.data
             ).data
-            return .just(.setPosts(responseModel))
+            return .concat([
+              .just(.setPosts(responseModel)),
+              owner.retrieveCalendars()
+            ])
           }
       ])
       
@@ -70,9 +76,38 @@ final class HomeViewReactor: Reactor {
       
     case let .setPostDetailVC(state, postId):
       newState.pushToPostDetailVC = (state, postId)
+      
+    case .setCalendars(let calendars):
+      newState.calendars = calendars
     }
     
     return newState
   }
 }
 
+extension HomeViewReactor {
+  func retrieveCalendars() -> Observable<Mutation> {
+    let date = Date()
+    let calendar = Calendar.current
+    let year = calendar.component(.year, from: date)
+    let month = calendar.component(.month, from: date)
+    let paddedString = String(format: "%02d", month)
+    return CalendarAPI.provider.rx.request(.retrieveCalendars(
+      year: "\(year)",
+      month: paddedString
+    ))
+      .asObservable()
+      .retry()
+      .filterSuccessfulStatusCodes()
+      .flatMap { response -> Observable<Mutation> in
+        let calendars = CalendarAPI.decode(
+          ResponseModel<[CalendarResponseModel.Calendar]>.self,
+          data: response.data
+        ).data
+        return .concat([
+          .just(.setCalendars(calendars)),
+          .just(.setLoading(false))
+        ])
+      }
+  }
+}
