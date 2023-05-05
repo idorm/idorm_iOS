@@ -12,23 +12,35 @@ import Then
 import RxSwift
 import RxCocoa
 import RxMoya
+import Firebase
+import FirebaseMessaging
 
 final class LaunchViewController: BaseViewController {
   
   // MARK: - Properties
   
   private let idormImageView = UIImageView(image: UIImage(named: "idorm_white"))
+  var fcmToken: String?
   
   // MARK: - LifeCycle
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
-    if UserStorage.shared.token != "" {
-      requestAPI()
-    } else {
-      loginVC()
+    Messaging.messaging().token { [weak self] token, error in
+      if let error = error {
+        print("Error fetching FCM registration token: \(error)")
+      }
+      else if let token = token {
+        self?.fcmToken = token
+        if UserStorage.shared.token != "" {
+          self?.requestAPI()
+        } else {
+          self?.loginVC()
+        }
+      }
     }
+    
   }
   
   // MARK: - Setup
@@ -66,9 +78,8 @@ final class LaunchViewController: BaseViewController {
   private func requestAPI() {
     let email = UserStorage.shared.email
     let password = UserStorage.shared.password
-
     MemberAPI.provider.rx.request(
-      .login(email: email, password: password, fcmToken: "")
+      .login(email: email, password: password, fcmToken: fcmToken!)
     )
       .asObservable()
       .retry()

@@ -158,9 +158,10 @@ final class DetailPostViewController: BaseViewController, View {
     self.optionButton.rx.tap
       .bind(with: self) { owner, _ in
         guard
-          let memberId = UserStorage.shared.member?.memberId,
-          let postMemberId = reactor.currentState.currentPost?.memberId
+          let memberId = UserStorage.shared.member?.memberId
         else { return }
+        
+        let postMemberId = reactor.currentState.currentPost?.memberId ?? -1
         
         let bottomSheet: BottomSheetViewController
         bottomSheet = memberId == postMemberId ? .init(.myPost) : .init(.post)
@@ -174,6 +175,8 @@ final class DetailPostViewController: BaseViewController, View {
               reactor.action.onNext(.deletePostButtonDidTap)
             case .editPost:
               reactor.action.onNext(.editPostButtonDidTap)
+            case .report:
+              owner.presentCompletedReport()
             default:
               break
             }
@@ -319,7 +322,7 @@ final class DetailPostViewController: BaseViewController, View {
   
   private func presentSympathyAlert(_ nextState: Bool) {
     let title: String
-    
+
     if nextState {
       title = "공감을 취소하시겠습니까?"
     } else {
@@ -341,6 +344,16 @@ final class DetailPostViewController: BaseViewController, View {
     let detailPhotosVC = DetailPhotosViewController(photosURL, currentIndex: indexPath)
     detailPhotosVC.modalPresentationStyle = .fullScreen
     self.present(detailPhotosVC, animated: true)
+  }
+  
+  private func presentCompletedReport() {
+    let alert = UIAlertController(
+      title: "신고가 정상 처리되었습니다.",
+      message: nil,
+      preferredStyle: .alert
+    )
+    alert.addAction(.init(title: "확인", style: .cancel))
+    present(alert, animated: true)
   }
 }
 
@@ -411,7 +424,8 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
       cell.optionButtonCompletion = { [weak self] commentId in
         guard let self = self else { return }
         let bottomSheet: BottomSheetViewController
-        bottomSheet = orderedComment.commentId == commentId ? .init(.myComment) : .init(.comment)
+        let memberId = UserStorage.shared.member?.memberId ?? 0
+        bottomSheet = orderedComment.memberId == memberId ? .init(.myComment) : .init(.comment)
         self.presentPanModal(bottomSheet)
         
         // 바텀시트 버튼 클릭
@@ -420,6 +434,8 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
             switch $0 {
             case .deleteComment:
               self.reactor?.action.onNext(.deleteCommentButtonDidTap(commentId: commentId))
+            case .report:
+              self.presentCompletedReport()
             default:
               break
             }

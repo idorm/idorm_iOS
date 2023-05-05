@@ -119,7 +119,7 @@ final class HomeViewController: BaseViewController, View {
     
     collectionViewContentSizeObserver = calendarCollection.observe(\.contentSize, options: [.new]) { [weak self] collectionView, change in
       self?.updateScrollViewContentSize()
-    }
+    }    
   }
   
   // MARK: - Helpers
@@ -132,9 +132,8 @@ final class HomeViewController: BaseViewController, View {
   
   private func updateScrollViewContentSize() {
     // CollectionView의 ContentSize에 맞춰 ScrollView의 ContentSize를 업데이트합니다.
-    let contentSize = calendarCollection.collectionViewLayout.collectionViewContentSize
+    let contentSize = calendarCollection.collectionViewLayout.collectionViewContentSize    
     let height = contentSize.height
-    print(height)
     calendarCollectionViewHeight?.update(offset: height)
   }
   

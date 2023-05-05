@@ -12,7 +12,7 @@ import Moya
 extension MemberAPI {
   func getPath() -> String {
     switch self {
-    case .login: return "/login"
+    case .login: return "/v2/login"
     case .register: return "/register"
     case .changePassword_Login: return "/member/password"
     case .changePassword_Logout: return "/password"

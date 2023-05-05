@@ -22,6 +22,16 @@ final class TabBarViewController: UITabBarController {
     super.viewDidLoad()
     setupStyles()
     setupViewControllers()
+    
+    TransitionManager.shared.postPushAlarmDidTap = { [weak self] postId in
+      self?.selectedIndex = 2
+      let navVC = self?.children[2] as? UINavigationController
+      let detailPostVC = DetailPostViewController()
+      detailPostVC.hidesBottomBarWhenPushed = true
+      let reactor = DetailPostViewReactor(postId)
+      detailPostVC.reactor = reactor
+      navVC?.pushViewController(detailPostVC, animated: true)
+    }
   }
   
   // MARK: - Setup

@@ -195,12 +195,12 @@ final class PostCell: UICollectionViewCell {
   func injectData(_ post: CommunityResponseModel.Posts) {
     titleLb.text = post.title
     contentLb.text = post.content
-    nicknameLb.text = post.nickname
+    nicknameLb.text = post.nickname ?? "익명"
     likeCountLb.text = "\(post.likesCount)"
     pictureCountLb.text = "\(post.imagesCount)"
     commentsCountLb.text = "\(post.commentsCount)"
     timeLb.text = TimeUtils.postList(post.createdAt)
-
+    
     if post.imagesCount == 0 {
       pictureCountLb.isHidden = true
       pictureIv.isHidden = true

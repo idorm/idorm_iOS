@@ -15,12 +15,13 @@ enum CommentUtils {
     for comment in comments {
       var orderedComment = OrderedComment(
         content: comment.content,
-        memberId: comment.memberId,
+        memberId: comment.memberId ?? -1,
         commentId: comment.commentId,
         isDeleted: comment.isDeleted,
         nickname: comment.nickname,
         profileUrl: comment.profileUrl,
         createdAt: comment.createdAt,
+        isAnonymous: comment.isAnonymous,
         isLast: false,
         state: .normal(isRemoved: false)
       )
@@ -30,12 +31,13 @@ enum CommentUtils {
         subComments = comment.subComments.map {
           return OrderedComment(
             content: $0.content,
-            memberId: $0.memberId,
+            memberId: $0.memberId ?? -1,
             commentId: $0.commentId,
             isDeleted: $0.isDeleted,
             nickname: $0.nickname,
             profileUrl: $0.profileUrl,
             createdAt: $0.createdAt,
+            isAnonymous: $0.isAnonymous,
             isLast: false,
             state: .reply
           )

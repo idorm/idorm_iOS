@@ -159,6 +159,7 @@ final class PostListViewController: BaseViewController, View {
     reactor.state
       .map { $0.reloadData }
       .filter { $0 }
+      .debug()
       .withUnretained(self)
       .bind { $0.0.postListCV.reloadData() }
       .disposed(by: self.disposeBag)

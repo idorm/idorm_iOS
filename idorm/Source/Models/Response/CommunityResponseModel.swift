@@ -14,6 +14,8 @@ extension CommunityResponseModel {
     let postId: Int
     let title: String
     let content: String
+    let memberId: Int?
+    let isAnonymous: Bool?
     let nickname: String?
     let commentsCount: Int
     let likesCount: Int
@@ -23,9 +25,9 @@ extension CommunityResponseModel {
   
   struct Post: Codable, Equatable {
     let postId: Int
-    let title: String
-    let memberId: Int
+    let memberId: Int?
     let dormCategory: Dormitory
+    let title: String
     let content: String
     let nickname: String?
     let profileUrl: String?
@@ -47,7 +49,7 @@ extension CommunityResponseModel {
   
   struct Comment: Codable, Equatable {
     let commentId: Int
-    let memberId: Int
+    let memberId: Int?
     let content: String
     let createdAt: String
     let isDeleted: Bool
@@ -61,7 +63,7 @@ extension CommunityResponseModel {
   struct SubComment: Codable, Equatable {
     let commentId: Int
     let parentCommentId: Int?
-    let memberId: Int
+    let memberId: Int?
     let isDeleted: Bool
     let nickname: String
     let profileUrl: String?

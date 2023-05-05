@@ -40,7 +40,7 @@ final class PostListViewReactor: Reactor {
   struct State {
     var currentPosts: [CommunityResponseModel.Posts] = []
     var currentTopPosts: [CommunityResponseModel.Posts] = []
-    var currentDorm: Dormitory = .no3
+    var currentDorm: Dormitory = .no1
     var currentPage: Int = 0
     var isLoading: Bool = false
     var endRefreshing: Bool = false
@@ -66,7 +66,7 @@ final class PostListViewReactor: Reactor {
       } else {
         return .concat([
           .just(.setLoading(true)),
-          retrieveTopPosts(.no3)
+          retrieveTopPosts(.no1)
         ])
       }
       
@@ -172,7 +172,6 @@ extension PostListViewReactor {
       .map(ResponseModel<[CommunityResponseModel.Posts]>.self)
       .flatMap { responseModel -> Observable<Mutation> in
         let posts = responseModel.data
-        
         if posts.count < 10 {
           return .concat([
             .just(.setBlockRequest(true)),

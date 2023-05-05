@@ -47,7 +47,7 @@ final class LoginViewReactor: Reactor {
       return .concat([
         .just(.setLoading(true)),
         MemberAPI.provider.rx.request(
-          .login(email: email, password: password, fcmToken: "")
+          .login(email: email, password: password, fcmToken: TokenManager.shared.fcmToken!)
         )
           .asObservable()
           .withUnretained(self)

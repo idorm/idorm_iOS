@@ -69,6 +69,8 @@
 		E52E96B429160870009E1773 /* TopProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52E96B329160870009E1773 /* TopProfileView.swift */; };
 		E52EDAC3297AA75D007CC138 /* TimeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52EDAC2297AA75D007CC138 /* TimeUtils.swift */; };
 		E5359117292343A900E28C1C /* (null) in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E53B9EC92A056122004F2991 /* TransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53B9EC82A056122004F2991 /* TransitionManager.swift */; };
+		E53B9ECB2A056B98004F2991 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53B9ECA2A056B98004F2991 /* TokenManager.swift */; };
 		E53C60B0287B37CB00977909 /* CompleteSignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53C60AF287B37CB00977909 /* CompleteSignUpVC.swift */; };
 		E53D1A3F2988A5780074308B /* MemberAPI+Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53D1A3E2988A5780074308B /* MemberAPI+Task.swift */; };
 		E53D1A412988A5C00074308B /* MemberAPI+Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53D1A402988A5C00074308B /* MemberAPI+Path.swift */; };
@@ -292,6 +294,8 @@
 		E52E96B12915FAB6009E1773 /* MatchingContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingContainerView.swift; sourceTree = "<group>"; };
 		E52E96B329160870009E1773 /* TopProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopProfileView.swift; sourceTree = "<group>"; };
 		E52EDAC2297AA75D007CC138 /* TimeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeUtils.swift; sourceTree = "<group>"; };
+		E53B9EC82A056122004F2991 /* TransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionManager.swift; sourceTree = "<group>"; };
+		E53B9ECA2A056B98004F2991 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		E53C60AF287B37CB00977909 /* CompleteSignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpVC.swift; sourceTree = "<group>"; };
 		E53D1A3E2988A5780074308B /* MemberAPI+Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemberAPI+Task.swift"; sourceTree = "<group>"; };
 		E53D1A402988A5C00074308B /* MemberAPI+Path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemberAPI+Path.swift"; sourceTree = "<group>"; };
@@ -638,6 +642,8 @@
 				E58A6296289D6BEF0074F646 /* DeviceManager.swift */,
 				E5FD982528EAF8F0005A29E2 /* MailTimerChecker.swift */,
 				E550476F29A2FAC90050AD1C /* ImageSaver.swift */,
+				E53B9EC82A056122004F2991 /* TransitionManager.swift */,
+				E53B9ECA2A056B98004F2991 /* TokenManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1434,6 +1440,7 @@
 				E5D98F8F28C4863900D493FF /* NickNameVC.swift in Sources */,
 				E58F96FB2884E85B00CC3C75 /* GalleryCell.swift in Sources */,
 				E53D1A462988A6A40074308B /* MailAPI+Path.swift in Sources */,
+				E53B9EC92A056122004F2991 /* TransitionManager.swift in Sources */,
 				E5CFF71929835D0700E11D9A /* MatchingInfoResponseModel.swift in Sources */,
 				E562611A299B5B5700D14020 /* BottomSheetVC.swift in Sources */,
 				E5226D5A2911F36B0065C809 /* Gender.swift in Sources */,
@@ -1452,6 +1459,7 @@
 				E55DDAE929179DD900E62ECB /* NavigationAppearanceUtils.swift in Sources */,
 				E5E8A3DF2895208500A48A91 /* MyCommentsCollectionVIewCell.swift in Sources */,
 				E5F565702918FF5A0043FCB4 /* MyRoommateVC.swift in Sources */,
+				E53B9ECB2A056B98004F2991 /* TokenManager.swift in Sources */,
 				E58ACB8728846E050031BD86 /* GalleryVC.swift in Sources */,
 				E5CFF71F29835DEE00E11D9A /* MatchingResponseModel.swift in Sources */,
 				E50F850D29589256008B7052 /* CommentUtils.swift in Sources */,
@@ -1634,7 +1642,7 @@
 				INFOPLIST_FILE = idorm/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "아이돔";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "idorm에서 기기의 사진, 미디어, 파일에 액세스하도록 허용하시겠습니까?";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "프로필 사진 변경 및 글의 사진을 첨부하기 위해 권한을 허락해주세요.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
@@ -1646,7 +1654,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = eungcheol.idorm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1672,7 +1680,7 @@
 				INFOPLIST_FILE = idorm/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "아이돔";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "idorm에서 기기의 사진, 미디어, 파일에 액세스하도록 허용하시겠습니까?";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "프로필 사진 변경 및 글의 사진을 첨부하기 위해 권한을 허락해주세요.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
@@ -1684,7 +1692,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = eungcheol.idorm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

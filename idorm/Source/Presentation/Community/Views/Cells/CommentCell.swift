@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import Kingfisher
 
 final class CommentCell: UITableViewCell {
   
@@ -71,6 +72,13 @@ final class CommentCell: UITableViewCell {
   private var topConstraints: Constraint?
   private var bottomConstarints: Constraint?
   
+  // MARK: - LIFECYCLE
+  
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    profileImageView.image = nil
+  }
+  
   // MARK: - SELECTORS
   
   @objc
@@ -94,7 +102,7 @@ final class CommentCell: UITableViewCell {
   
   func configure(_ comment: OrderedComment) {
     self.comment = comment
-    nicknameLabel.text = comment.nickname
+    nicknameLabel.text = comment.nickname ?? "익명"
     timeLabel.text = TimeUtils.detailPost(comment.createdAt)
     contentsLabel.text = comment.content
     
@@ -121,6 +129,12 @@ final class CommentCell: UITableViewCell {
     case .firstReply:
       self.topConstraints?.update(inset: 56)
       self.bottomConstarints?.update(inset: 16)
+    }
+    
+    if !comment.isAnonymous {
+      if let url = comment.profileUrl {
+        profileImageView.kf.setImage(with: URL(string: url)!)
+      }
     }
   }
 }

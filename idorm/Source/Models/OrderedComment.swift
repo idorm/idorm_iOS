@@ -20,6 +20,7 @@ struct OrderedComment {
   let nickname: String?
   let profileUrl: String?
   let createdAt: String
+  let isAnonymous: Bool
   var isLast: Bool
   var state: CommentState
 }

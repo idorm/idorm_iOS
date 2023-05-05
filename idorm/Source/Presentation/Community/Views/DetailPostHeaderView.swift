@@ -194,7 +194,7 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
     self.isSympathy = isSympathy
     self.titleLabel.text = post.title
     self.contentsLabel.text = post.content
-    self.nicknameLabel.text = post.nickname?.isAnonymous
+    self.nicknameLabel.text = post.nickname ?? "익명"
     self.timeLabel.text = TimeUtils.detailPost(post.createdAt)
     self.likeCountLabel.text = "\(post.likesCount)"
     self.commentCountLabel.text = "\(post.commentsCount)"
@@ -222,7 +222,11 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
 extension DetailPostHeaderView: BaseView {
   
   private func setupSelectors() {
-    self.sympathyButton.addTarget(self, action: #selector(sympathyButtonDidTap), for: .touchUpInside)
+    self.sympathyButton.addTarget(
+      self,
+      action: #selector(sympathyButtonDidTap),
+      for: .touchUpInside
+    )
   }
   
   func setupStyles() {
