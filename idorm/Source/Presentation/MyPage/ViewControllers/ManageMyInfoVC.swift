@@ -91,7 +91,7 @@ final class ManageMyInfoViewController: BaseViewController, View {
     profileImage.rx.tapGesture()
       .skip(1)
       .withUnretained(self)
-      .bind { $0.0.presentImagePickerVC() }
+      .bind { $0.0.didTapProfileImageView() }
       .disposed(by: disposeBag)
     
     // MARK: - State
@@ -129,7 +129,7 @@ final class ManageMyInfoViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let viewController = EmailViewController(.signUp)
+        let viewController = EmailViewController(.findPw)
         viewController.reactor = EmailViewReactor()
         owner.navigationController?.pushViewController(viewController, animated: true)
       }
@@ -164,9 +164,15 @@ final class ManageMyInfoViewController: BaseViewController, View {
       .disposed(by: disposeBag)
     
     reactor.state.map { $0.profileImageURL }
-      .filterNil()
       .bind(with: self) { owner, url in
-        owner.profileImage.kf.setImage(with: URL(string: url), options: [    .processor(RoundCornerImageProcessor(cornerRadius: 20)) ])
+        if let url = url {
+          owner.profileImage.kf.setImage(
+            with: URL(string: url),
+            options: [.processor(RoundCornerImageProcessor(cornerRadius: 20))]
+          )
+        } else {
+          owner.profileImage.image = #imageLiteral(resourceName: "sqaure_human")
+        }
       }
       .disposed(by: disposeBag)
   }
@@ -286,6 +292,29 @@ final class ManageMyInfoViewController: BaseViewController, View {
     
     cropVC.completion = { [weak self] image in
       self?.reactor?.action.onNext(.didPickProfileImage(image))
+    }
+  }
+  
+  // 프로필 사진을 클릭했을 때의 로직입니다.
+  private func didTapProfileImageView() {
+    if UserStorage.shared.member?.profilePhotoUrl != nil {
+      let deleteAction = UIAlertAction(
+        title: "프로필 사진 삭제",
+        style: .destructive
+      ) { [weak self] _ in
+        self?.reactor?.action.onNext(.deleteProfileImage)
+      }
+      let addAction = UIAlertAction(title: "프로필 사진 변경", style: .default) { [weak self] _ in
+        self?.presentImagePickerVC()
+      }
+      let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+      let alertController = UIAlertController()
+      alertController.addAction(addAction)
+      alertController.addAction(deleteAction)
+      alertController.addAction(cancelAction)
+      present(alertController, animated: true)
+    } else {
+      presentImagePickerVC()
     }
   }
 }

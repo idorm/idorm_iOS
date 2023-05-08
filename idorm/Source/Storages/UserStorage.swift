@@ -7,6 +7,8 @@
 
 import Foundation
 
+import RxSwift
+
 /// 이메일, 비밀번호, 토큰을 보관하는 영구적으로 보관하는 싱글톤 객체입니다.
 /// 하지만 매칭 정보와 멤버 정보는 앱이 종료되면 저장되지 않고 초기화됩니다.
 final class UserStorage {
@@ -70,7 +72,6 @@ final class UserStorage {
   
   /// UserDefaults에 저장된 프로퍼티를 제외한 모든 프로퍼티를 nil로 할당합니다.
   func reset() {
-    // TODO: 이게 어디서 불려진다.
     self.matchingInfo = nil
     self.member = nil
   }

@@ -53,12 +53,12 @@ final class GalleryViewController: UIViewController {
     return indicator
   }()
   
-  var fetchResult: PHFetchResult<PHAsset>?
   let currentPhotoCount: Int
   
   /// 선택된 사진 Numbering Properties
   var photoArray: [Int] = []
   var selectedAsset: [PHAsset] = []
+  var allPhotos: PHFetchResult<PHAsset>?
 
   var completion: (([PHAsset]) -> Void)?
   
@@ -116,12 +116,33 @@ final class GalleryViewController: UIViewController {
   }
   
   private func fetchImagesFromGallery() {
-    let cameraRollCollection = PHAssetCollection.fetchAssetCollections(with: .smartAlbum, subtype: .smartAlbumUserLibrary, options: nil)
+    
+    let options = PHFetchOptions()
+    let cameraRollCollection = PHAssetCollection.fetchAssetCollections(
+      with: .smartAlbum,
+      subtype: .smartAlbumUserLibrary,
+      options: nil
+    )
+    
     guard let cameraRoll = cameraRollCollection.firstObject else { return }
     DispatchQueue.main.async {
       let fetchOptions = PHFetchOptions()
-      fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-      self.fetchResult = PHAsset.fetchAssets(in: cameraRoll, options: fetchOptions)
+      fetchOptions.sortDescriptors = [
+        NSSortDescriptor(
+          key: "creationDate",
+          ascending: false
+        )
+      ]
+      fetchOptions.predicate = NSPredicate(
+        format: "(mediaType == %d) AND NOT (mediaSubtype IN %@)",
+        PHAssetMediaType.image.rawValue,
+        [
+          PHAssetMediaSubtype.photoLive.rawValue,
+          PHAssetMediaSubtype.videoHighFrameRate.rawValue
+        ]
+      )
+       let allPhotos = PHAsset.fetchAssets(in: cameraRoll, options: fetchOptions)
+      self.allPhotos = allPhotos
       self.collectionView.reloadData()
     }
   }
@@ -137,11 +158,12 @@ extension GalleryViewController: UICollectionViewDataSource, UICollectionViewDel
   ) -> UICollectionViewCell {
     guard
       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GalleryCell.identifier, for: indexPath) as? GalleryCell,
-      let asset = fetchResult?.object(at: indexPath.row)
+      let asset = allPhotos?[indexPath.row]
     else {
       return UICollectionViewCell()
     }
     
+//    let asset = filteredPhotos[indexPath.row]
     cell.configureUI(asset: asset)
     
     countLabel.text = "\(photoArray.count)"
@@ -167,10 +189,7 @@ extension GalleryViewController: UICollectionViewDataSource, UICollectionViewDel
     _ collectionView: UICollectionView,
     numberOfItemsInSection section: Int
   ) -> Int {
-    if let count = fetchResult?.count {
-      return count
-    }
-    return 0
+    return allPhotos?.count ?? 0
   }
   
   func collectionView(

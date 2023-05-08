@@ -65,7 +65,7 @@ extension CommunityResponseModel {
     let parentCommentId: Int?
     let memberId: Int?
     let isDeleted: Bool
-    let nickname: String
+    let nickname: String?
     let profileUrl: String?
     let content: String
     let createdAt: String

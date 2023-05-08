@@ -263,13 +263,16 @@ final class MyPageViewController: BaseViewController, View {
       .disposed(by: disposeBag)
     
     reactor.state.map { $0.currentProfileURL }
-      .filterNil()
       .bind(with: self) { owner, url in
-        owner.topProfileView.profileImageView.kf.setImage(with: URL(string: url))
+        if let url = url {
+          owner.topProfileView.profileImageView.kf.setImage(with: URL(string: url))
+        } else {
+          owner.topProfileView.profileImageView.image = #imageLiteral(resourceName: "sqaure_human")
+        }
       }
       .disposed(by: disposeBag)
   }
-
+  
   // MARK: - Setup
   
   override func setupStyles() {

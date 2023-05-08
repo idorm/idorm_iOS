@@ -52,6 +52,9 @@ extension MemberAPI {
         mimeType: "image/jpeg"
       )
       return .uploadMultipart([multiPartData])
+      
+    case .deleteProfileImage:
+      return .requestPlain
     }
   }
 }

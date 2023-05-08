@@ -18,10 +18,10 @@ final class CommentCell: UITableViewCell {
   
   lazy var profileImageView: UIImageView = {
     let iv = UIImageView()
+    iv.contentMode = .scaleAspectFill
     iv.backgroundColor = .idorm_gray_300
     iv.layer.cornerRadius = 8
     iv.layer.masksToBounds = true
-    
     return iv
   }()
   
@@ -102,7 +102,7 @@ final class CommentCell: UITableViewCell {
   
   func configure(_ comment: OrderedComment) {
     self.comment = comment
-    nicknameLabel.text = comment.nickname ?? "익명"
+    nicknameLabel.text = comment.nickname ?? "탈퇴한 사용자"
     timeLabel.text = TimeUtils.detailPost(comment.createdAt)
     contentsLabel.text = comment.content
     
@@ -134,7 +134,11 @@ final class CommentCell: UITableViewCell {
     if !comment.isAnonymous {
       if let url = comment.profileUrl {
         profileImageView.kf.setImage(with: URL(string: url)!)
+      } else {
+        profileImageView.image = #imageLiteral(resourceName: "sqaure_human")
       }
+    } else {
+      profileImageView.image = #imageLiteral(resourceName: "sqaure_human")
     }
   }
 }
@@ -231,6 +235,7 @@ extension CommentCell: BaseView {
       make.top.equalTo(self.profileImageView.snp.top)
       make.trailing.equalToSuperview().inset(14)
     }
+    
     
     self.dividerLine.snp.makeConstraints { make in
       make.bottom.leading.trailing.equalToSuperview()

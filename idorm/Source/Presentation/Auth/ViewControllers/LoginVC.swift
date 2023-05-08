@@ -46,7 +46,6 @@ final class LoginViewController: BaseViewController, View {
     config.attributedTitle = AttributedString("로그인", attributes: container)
     config.baseBackgroundColor = .idorm_blue
     config.background.cornerRadius = 10
-    
     $0.configuration = config
   }
   

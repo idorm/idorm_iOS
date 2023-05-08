@@ -13,6 +13,7 @@ enum MemberAPI {
   case retrieveMember
   case withdrawal
   case saveProfilePhoto(image: UIImage)
+  case deleteProfileImage
 }
 
 extension MemberAPI: TargetType, BaseAPI {

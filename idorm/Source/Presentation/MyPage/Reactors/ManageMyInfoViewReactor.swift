@@ -21,6 +21,7 @@ final class ManageMyInfoViewReactor: Reactor {
     case didTapWithDrawalButton
     case didTapLogoutButton
     case didPickProfileImage(UIImage)
+    case deleteProfileImage
   }
   
   enum Mutation {
@@ -94,6 +95,28 @@ final class ManageMyInfoViewReactor: Reactor {
           .withUnretained(self)
           .flatMap { owner, _ -> Observable<Mutation> in
             return owner.retrieveMember()
+          }
+      ])
+      
+    case .deleteProfileImage:
+      return .concat([
+        .just(.setLoading(true)),
+        MemberAPI.provider.rx.request(.deleteProfileImage)
+          .asObservable()
+          .filterSuccessfulStatusCodes()
+          .flatMap { _ -> Observable<Mutation> in
+            guard let member = UserStorage.shared.member else { return .empty() }
+            let newMember = MemberResponseModel.Member(
+              memberId: member.memberId,
+              email: member.email,
+              nickname: member.nickname,
+              profilePhotoUrl: nil
+            )
+            UserStorage.shared.saveMember(newMember)
+            return .concat([
+              .just(.setLoading(false)),
+              .just(.setProfileImageUrl(nil))
+            ])
           }
       ])
     }

@@ -40,13 +40,18 @@ extension PHAssetCollection {
 
 extension PHAsset {
   func getAssetThumbnail(size: CGSize) -> UIImage {
-    let manager = PHImageManager.default()
     let option = PHImageRequestOptions()
+    option.isNetworkAccessAllowed = true
     var thumbnail = UIImage()
     option.isSynchronous = true
-    manager.requestImage(for: self, targetSize: size, contentMode: .aspectFill, options: option) { result, info in
-      thumbnail = result!
-    }
+    
+    PHImageManager.default().requestImage(
+      for: self,
+      targetSize: size,
+      contentMode: .aspectFill,
+      options: option) { image, _ in
+        thumbnail = image!
+      }
     return thumbnail
   }
   
@@ -54,7 +59,11 @@ extension PHAsset {
     let manager = PHImageManager.default()
     let option = PHImageRequestOptions()
     var image = UIImage()
-    manager.requestImage(for: self, targetSize: PHImageManagerMaximumSize, contentMode: .default, options: option) { result, info in
+    manager.requestImage(
+      for: self,
+      targetSize: PHImageManagerMaximumSize,
+      contentMode: .default,
+      options: option) { result, info in
       image = result!
       completion(image)
     }
@@ -63,15 +72,15 @@ extension PHAsset {
   func getImageFromPHAsset() -> UIImage {
     var image = UIImage()
     let requestOptions = PHImageRequestOptions()
-    requestOptions.resizeMode = PHImageRequestOptionsResizeMode.exact
-    requestOptions.deliveryMode = PHImageRequestOptionsDeliveryMode.highQualityFormat
+    requestOptions.deliveryMode = PHImageRequestOptionsDeliveryMode.opportunistic
+    requestOptions.isNetworkAccessAllowed = true
     requestOptions.isSynchronous = true
     
-    if self.mediaType == PHAssetMediaType.image {
-      PHImageManager.default().requestImage(for: self, targetSize: PHImageManagerMaximumSize, contentMode: .default, options: requestOptions) { pickedImage, info in
-        image = pickedImage!
+    PHImageManager.default().requestImageDataAndOrientation(
+      for: self,
+      options: requestOptions) { data, _, _, _ in
+        image = UIImage(data: data!)!
       }
-    }
     
     return image
   }
