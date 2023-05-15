@@ -135,10 +135,10 @@ final class CommentCell: UITableViewCell {
       if let url = comment.profileUrl {
         profileImageView.kf.setImage(with: URL(string: url)!)
       } else {
-        profileImageView.image = #imageLiteral(resourceName: "sqaure_human")
+        profileImageView.image = UIImage(named: "square_human_noShadow")
       }
     } else {
-      profileImageView.image = #imageLiteral(resourceName: "sqaure_human")
+      profileImageView.image = UIImage(named: "square_human_noShadow")
     }
   }
 }

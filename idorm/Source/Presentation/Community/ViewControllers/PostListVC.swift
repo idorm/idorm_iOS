@@ -20,7 +20,7 @@ final class PostListViewController: BaseViewController, View {
     case common
   }
   
-  // MARK: - Properties
+  // MARK: - UI Components
   
   private let postingBtn: UIButton = {
     let btn = UIButton()
@@ -56,7 +56,7 @@ final class PostListViewController: BaseViewController, View {
     return indicator
   }()
   
-  private lazy var postListCV: UICollectionView = {
+  lazy var postListCV: UICollectionView = {
     let cv = UICollectionView(frame: .zero, collectionViewLayout: getLayout())
     cv.backgroundColor = .idorm_gray_100
     cv.register(
@@ -78,6 +78,10 @@ final class PostListViewController: BaseViewController, View {
     return cv
   }()
   
+  // MARK: - Properties
+  
+  var isViewAppeared: Bool = false
+  
   // MARK: - LifeCycle
   
   override func viewDidLoad() {
@@ -85,6 +89,17 @@ final class PostListViewController: BaseViewController, View {
     
     // 화면 최초 접근
     reactor?.action.onNext(.viewDidLoad)
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    tabBarController?.delegate = self
+    isViewAppeared = true
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    isViewAppeared = false
   }
   
   // MARK: - Setup
@@ -132,7 +147,7 @@ final class PostListViewController: BaseViewController, View {
       .bind { owner, _ in
         let dormBS = DormBottomSheet()
         owner.presentPanModal(dormBS)
-
+        
         // 기숙사 버튼 클릭
         dormBS.didTapDormBtn
           .map { PostListViewReactor.Action.didTapDormBtn($0) }
@@ -277,12 +292,13 @@ extension PostListViewController: UICollectionViewDataSource, UICollectionViewDe
     
     let topPosts = currentState.currentTopPosts
     let posts = currentState.currentPosts
-        
+    
     switch indexPath.section {
     case Section.popular.rawValue :
       popularPostCell.configure(topPosts[indexPath.row])
       return popularPostCell
     default:
+      // FIXME: Index out of Range
       postCell.injectData(posts[indexPath.row])
       return postCell
     }
@@ -320,7 +336,7 @@ extension PostListViewController: UICollectionViewDataSource, UICollectionViewDe
 
     switch indexPath.section {
     case Section.common.rawValue:
-      if indexPath.row == reactor.currentState.currentPosts.count - 3 &&
+      if indexPath.row == reactor.currentState.currentPosts.count - 5 &&
           !reactor.currentState.isBlockedRequest &&
           !reactor.currentState.isPagination {
         reactor.action.onNext(.fetchMorePosts)
@@ -328,6 +344,23 @@ extension PostListViewController: UICollectionViewDataSource, UICollectionViewDe
       
     default:
       return
+    }
+  }
+}
+
+extension PostListViewController: UITabBarControllerDelegate {
+  // 해당 탭바 버튼을 클릭했을 때 호출
+  func tabBarController(
+    _ tabBarController: UITabBarController,
+    didSelect viewController: UIViewController
+  ) {
+    guard self.isViewAppeared else { return }
+    // 선택된 뷰컨트롤러가 UINavigationController인 경우, topViewController를 가져옵니다.
+    if let navController = viewController as? UINavigationController {
+      if let scrollView = (navController.topViewController as? PostListViewController)?.postListCV {
+        let topOffset = CGPoint(x: 0, y: -postListCV.safeAreaInsets.top)
+        scrollView.setContentOffset(topOffset, animated: true)
+      }
     }
   }
 }

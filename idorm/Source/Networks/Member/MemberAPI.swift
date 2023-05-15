@@ -14,6 +14,8 @@ enum MemberAPI {
   case withdrawal
   case saveProfilePhoto(image: UIImage)
   case deleteProfileImage
+  case logoutFCM
+  case updateFCM(String)
 }
 
 extension MemberAPI: TargetType, BaseAPI {
@@ -30,6 +32,12 @@ extension MemberAPI: TargetType, BaseAPI {
       return [
         "fcm-token": fcmToken,
         "Content-Type": "application/json"
+      ]
+    case .updateFCM(let fcm):
+      return [
+        "fcm-token": fcm,
+        "Content-Type": "application/json",
+        "X-AUTH-TOKEN": UserStorage.shared.token
       ]
     default:
       return getJsonHeader()

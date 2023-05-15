@@ -17,7 +17,7 @@ enum BottomSheet {
   var height: CGFloat {
     switch self {
     case .post: return 166
-    case .comment: return 129
+    case .comment: return 171
     case .myComment: return 171
     case .myPost: return 250
     case .selectDorm: return 182

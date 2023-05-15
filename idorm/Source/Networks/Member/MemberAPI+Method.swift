@@ -35,6 +35,12 @@ extension MemberAPI {
       
     case .deleteProfileImage:
       return .delete
+      
+    case .logoutFCM:
+      return .delete
+      
+    case .updateFCM:
+      return .patch
     }
   }
 }

@@ -19,7 +19,7 @@ import Kingfisher
 
 final class MyPageViewController: BaseViewController, View {
   
-  // MARK: - Properties
+  // MARK: - UI Components
   
   private lazy var indicator = UIActivityIndicatorView().then {
     $0.color = .gray
@@ -40,6 +40,11 @@ final class MyPageViewController: BaseViewController, View {
   private let communityContainerView = CommunityContainerView()
   override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
   
+  // MARK: - Properties
+  
+  /// 현재 뷰가 로드 되어 있는지 알 수 있는 프로퍼티
+  var isViewAppeared: Bool = false
+  
   // MARK: - LifeCycle
   
   override func viewWillAppear(_ animated: Bool) {
@@ -50,6 +55,9 @@ final class MyPageViewController: BaseViewController, View {
     let tabBarAppearance = NavigationAppearanceUtils.tabbarAppearance(from: .idorm_gray_100)
     tabBarController?.tabBar.standardAppearance = tabBarAppearance
     tabBarController?.tabBar.scrollEdgeAppearance = tabBarAppearance
+    
+    self.tabBarController?.delegate = self
+    isViewAppeared = true
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -58,6 +66,8 @@ final class MyPageViewController: BaseViewController, View {
     let tabBarAppearance = NavigationAppearanceUtils.tabbarAppearance(from: .white)
     tabBarController?.tabBar.standardAppearance = tabBarAppearance
     tabBarController?.tabBar.scrollEdgeAppearance = tabBarAppearance
+    
+    isViewAppeared = false
   }
   
   // MARK: - Bind
@@ -327,6 +337,21 @@ final class MyPageViewController: BaseViewController, View {
       make.centerX.equalToSuperview()
       make.top.equalTo(communityContainerView.snp.bottom).offset(24)
       make.bottom.equalToSuperview()
+    }
+  }
+}
+
+extension MyPageViewController: UITabBarControllerDelegate {
+  func tabBarController(
+    _ tabBarController: UITabBarController,
+    didSelect viewController: UIViewController
+  ) {
+    guard self.isViewAppeared else { return }
+    // 선택된 뷰컨트롤러가 UINavigationController인 경우, topViewController를 가져옵니다.
+    if let navController = viewController as? UINavigationController {
+      if let scrollView = (navController.topViewController as? MyPageViewController)?.scrollView{
+        scrollView.setContentOffset(.zero, animated: true)
+      }
     }
   }
 }

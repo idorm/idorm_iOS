@@ -34,6 +34,7 @@ final class BottomSheetViewController: BaseViewController {
   private let shareButton = BottomSheetUtils.basicButton("공유하기", imageName: "arrow_square")
   private let editPostButton = BottomSheetUtils.basicButton("게시글 수정", imageName: "pencil_square")
   private let exitButton = UIFactory.button("xmark_black")
+  private let blockButton = BottomSheetUtils.basicButton("사용자 차단", imageName: "circle_cancel")
   
   // MARK: - PROPERTIES
   
@@ -88,12 +89,18 @@ final class BottomSheetViewController: BaseViewController {
     case .post:
       [
         self.shareButton,
+        self.blockButton,
         self.reportButton
       ].forEach {
         self.view.addSubview($0)
       }
     case .comment:
-      self.view.addSubview(self.reportButton)
+      [
+        self.blockButton,
+        self.reportButton
+      ].forEach {
+        self.view.addSubview($0)
+      }
     }
   }
   
@@ -155,14 +162,24 @@ final class BottomSheetViewController: BaseViewController {
         make.top.equalTo(self.exitButton.snp.bottom).offset(8)
       }
       
-      self.reportButton.snp.makeConstraints { make in
+      self.blockButton.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(self.shareButton.snp.bottom)
       }
-    case .comment:
+      
       self.reportButton.snp.makeConstraints { make in
         make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(self.blockButton.snp.bottom)
+      }
+    case .comment:
+      self.blockButton.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
         make.top.equalTo(self.exitButton.snp.bottom).offset(8)
+      }
+      
+      self.reportButton.snp.makeConstraints { make in
+        make.leading.trailing.equalToSuperview().inset(24)
+        make.top.equalTo(self.blockButton.snp.bottom)
       }
     }
   }
@@ -238,6 +255,13 @@ final class BottomSheetViewController: BaseViewController {
       .map { $0.1 }
       .bind(to: self.buttonDidTap)
       .disposed(by: self.disposeBag)
+    
+    // 사용자 차단
+    self.blockButton.rx.tap
+      .bind(with: self) { owner, _ in
+        owner.dismiss(animated: true)
+      }
+      .disposed(by: disposeBag)
   }
 }
 

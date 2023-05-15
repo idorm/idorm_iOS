@@ -35,6 +35,7 @@ final class PostListViewReactor: Reactor {
     case setPostDetailVC(Bool, Int)
     case setReloadData(Bool)
     case resetPosts
+    case setScrollToTop(Bool)
   }
   
   struct State {
@@ -49,6 +50,7 @@ final class PostListViewReactor: Reactor {
     var reloadData: Bool = false
     var showsPostingVC: (Bool, Dormitory) = (false, .no3)
     var showsPostDetailVC: (Bool, Int) = (false, 0)
+    var scrollToTop: Bool = false
   }
   
   var initialState: State = State()
@@ -74,7 +76,12 @@ final class PostListViewReactor: Reactor {
       return .concat([
         .just(.setLoading(true)),
         .just(.resetPosts),
+        .just(.setPage(0)),
         .just(.setDorm(dorm)),
+        .just(.setPagination(false)),
+        .just(.setBlockRequest(false)),
+        .just(.setScrollToTop(true)),
+        .just(.setScrollToTop(false)),
         retrieveTopPosts(dorm)
       ])
       
@@ -93,14 +100,17 @@ final class PostListViewReactor: Reactor {
     case .pullToRefresh:
       return .concat([
         .just(.resetPosts),
+        .just(.setBlockRequest(false)),
+        .just(.setPagination(false)),
+        .just(.setPage(0)),
         retrieveTopPosts(currentState.currentDorm)
       ])
       
     case .fetchMorePosts:
       let nextPage = currentState.currentPage + 1
-      
       return .concat([
         .just(.setPagination(true)),
+        .just(.setPage(nextPage)),
         retrievePosts(currentState.currentDorm, page: nextPage)
       ])
       
@@ -152,6 +162,9 @@ final class PostListViewReactor: Reactor {
       
     case .resetPosts:
       newState.currentPosts = []
+      
+    case .setScrollToTop(let state):
+      newState.scrollToTop = state
     }
     
     return newState

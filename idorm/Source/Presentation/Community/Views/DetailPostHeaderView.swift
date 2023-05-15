@@ -18,6 +18,7 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
   
   private let myProfileImageView: UIImageView = {
     let iv = UIImageView()
+    iv.image = UIImage(named: "square_human_noShadow")
     iv.backgroundColor = .idorm_gray_300
     iv.layer.cornerRadius = 8
     iv.layer.masksToBounds = true
@@ -376,3 +377,4 @@ extension DetailPostHeaderView: UICollectionViewDataSource, UICollectionViewDele
     self.photoCompletion?(indexPath.row)
   }
 }
+

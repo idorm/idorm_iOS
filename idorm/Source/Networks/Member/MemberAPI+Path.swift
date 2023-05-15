@@ -21,6 +21,8 @@ extension MemberAPI {
     case .withdrawal: return "/member"
     case .saveProfilePhoto: return "/member/profile-photo"
     case .deleteProfileImage: return "/member/profile-photo"
+    case .logoutFCM: return "/member/fcm"
+    case .updateFCM: return "/member/fcm"
     }
   }
 }

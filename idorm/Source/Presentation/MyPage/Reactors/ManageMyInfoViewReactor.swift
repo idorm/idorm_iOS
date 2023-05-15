@@ -80,10 +80,19 @@ final class ManageMyInfoViewReactor: Reactor {
       ])
       
     case .didTapLogoutButton:
-      TokenStorage.removeToken()
       return .concat([
-        .just(.setLoginVC(true)),
-        .just(.setLoginVC(false))
+        .just(.setLoading(true)),
+        MemberAPI.provider.rx.request(.logoutFCM)
+          .asObservable()
+          .debug()
+          .flatMap { _ -> Observable<Mutation> in
+            TokenStorage.removeToken()
+            return .concat([
+              .just(.setLoading(false)),
+              .just(.setLoginVC(true)),
+              .just(.setLoginVC(false))
+            ])
+          }
       ])
       
     case .didPickProfileImage(let image):

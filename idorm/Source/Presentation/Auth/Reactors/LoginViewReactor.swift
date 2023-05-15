@@ -63,7 +63,6 @@ final class LoginViewReactor: Reactor {
               UserStorage.shared.saveEmail(email)
               UserStorage.shared.savePassword(password)
               UserStorage.shared.saveToken(token!)
-              
               return owner.lookUpMatchingInfo()
             default: // 로그인 실패
               let errorMessage = MemberAPI.decode(

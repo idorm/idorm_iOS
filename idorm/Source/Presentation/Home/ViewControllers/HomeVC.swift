@@ -16,7 +16,7 @@ import ReactorKit
 
 final class HomeViewController: BaseViewController, View {
   
-  // MARK: - Properties
+  // MARK: - UI Components
   
   private let bellButton = UIButton().then {
     var config = UIButton.Configuration.plain()
@@ -111,6 +111,10 @@ final class HomeViewController: BaseViewController, View {
   private var collectionViewContentSizeObserver: NSKeyValueObservation?
   private var calendarCollectionViewHeight: Constraint?
   
+  // MARK: - Properties
+  
+  var isViewAppeared: Bool = false
+  
   // MARK: - LifeCycle
   
   override func viewDidLoad() {
@@ -120,6 +124,17 @@ final class HomeViewController: BaseViewController, View {
     collectionViewContentSizeObserver = calendarCollection.observe(\.contentSize, options: [.new]) { [weak self] collectionView, change in
       self?.updateScrollViewContentSize()
     }    
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.tabBarController?.delegate = self
+    isViewAppeared = true
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    isViewAppeared = false
   }
   
   // MARK: - Helpers
@@ -328,6 +343,22 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
       let calendar = reactor.currentState.calendars[indexPath.row]
       if let url = URL(string: calendar.url!) {
           UIApplication.shared.open(url)
+      }
+    }
+  }
+}
+
+extension HomeViewController: UITabBarControllerDelegate {
+  func tabBarController(
+    _ tabBarController: UITabBarController,
+    didSelect viewController: UIViewController
+  ) {
+    guard self.isViewAppeared else { return }
+    // 선택된 뷰컨트롤러가 UINavigationController인 경우, topViewController를 가져옵니다.
+    if let navController = viewController as? UINavigationController {
+      if let scrollView = (navController.topViewController as? HomeViewController)?.scrollView {
+        let topOffset = CGPoint(x: 0, y: -scrollView.safeAreaInsets.top)
+        scrollView.setContentOffset(topOffset, animated: true)
       }
     }
   }
