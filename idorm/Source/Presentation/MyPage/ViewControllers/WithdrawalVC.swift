@@ -122,6 +122,7 @@ final class WithdrawalViewController: BaseViewController, View {
         popup.confirmButton.rx.tap
           .delay(.microseconds(10), scheduler: MainScheduler.instance)
           .bind {
+            UserStorage.shared.reset()
             let loginVC = LoginViewController()
             loginVC.reactor = LoginViewReactor()
             let navVC = UINavigationController(rootViewController: loginVC)

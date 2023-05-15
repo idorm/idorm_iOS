@@ -75,4 +75,9 @@ final class UserStorage {
     self.matchingInfo = nil
     self.member = nil
   }
+  
+  /// 토큰을 초기화 시킵니다.
+  func resetToken() {
+    self.token = ""
+  }
 }

@@ -35,6 +35,7 @@ final class PostListViewReactor: Reactor {
     case setPostDetailVC(Bool, Int)
     case setReloadData(Bool)
     case resetPosts
+    case setRefreshing(Bool)
     case setScrollToTop(Bool)
   }
   
@@ -44,6 +45,7 @@ final class PostListViewReactor: Reactor {
     var currentDorm: Dormitory = .no1
     var currentPage: Int = 0
     var isLoading: Bool = false
+    var isRefreshing: Bool = false
     var endRefreshing: Bool = false
     var isPagination: Bool = false
     var isBlockedRequest: Bool = false
@@ -162,9 +164,13 @@ final class PostListViewReactor: Reactor {
       
     case .resetPosts:
       newState.currentPosts = []
+      newState.currentTopPosts = []
       
     case .setScrollToTop(let state):
       newState.scrollToTop = state
+      
+    case .setRefreshing(let isRefreshing):
+      newState.isRefreshing = isRefreshing
     }
     
     return newState
@@ -186,23 +192,25 @@ extension PostListViewReactor {
       .flatMap { responseModel -> Observable<Mutation> in
         let posts = responseModel.data
         if posts.count < 10 {
+          print("POSTS Count: \(posts.count)")
           return .concat([
             .just(.setBlockRequest(true)),
-            .just(.appendPosts(posts))
+            .just(.appendPosts(posts)),
           ])
         } else {
+          print("POSTS Count: \(posts.count)")
           return .concat([
             .just(.setBlockRequest(false)),
             .just(.appendPosts(posts))
           ])
         }
       },
-      .just(.setEndRefreshing(true)),
-      .just(.setEndRefreshing(false)),
+      .just(.setReloadData(true)),
+      .just(.setReloadData(false)),
       .just(.setPagination(false)),
       .just(.setLoading(false)),
-      .just(.setReloadData(true)),
-      .just(.setReloadData(false))
+      .just(.setEndRefreshing(true)),
+      .just(.setEndRefreshing(false)),
     ])
   }
   

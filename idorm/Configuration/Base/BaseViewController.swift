@@ -23,7 +23,7 @@ class BaseViewController: UIViewController {
     setupConstraints()
     bind()
   }
-
+  
   /// UI 프로퍼티를 view에 할당합니다.
   ///
   /// ```

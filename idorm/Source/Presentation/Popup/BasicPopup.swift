@@ -21,7 +21,6 @@ final class BasicPopup: BaseViewController {
     view.backgroundColor = .white
     view.clipsToBounds = true
     view.layer.cornerRadius = 12
-    
     return view
   }()
   
@@ -30,7 +29,6 @@ final class BasicPopup: BaseViewController {
     label.textColor = .black
     label.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 14.0)
     label.numberOfLines = 0
-    
     return label
   }()
   
@@ -39,7 +37,6 @@ final class BasicPopup: BaseViewController {
     button.setTitle("확인", for: .normal)
     button.setTitleColor(UIColor.idorm_blue, for: .normal)
     button.titleLabel?.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 14.0)
-    
     return button
   }()
   

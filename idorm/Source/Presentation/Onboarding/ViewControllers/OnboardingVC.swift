@@ -125,7 +125,7 @@ final class OnboardingViewController: BaseViewController, View {
     textColor: .black,
     font: .idormFont(.medium, size: 16)
   )
-
+  
   private let periodLabel = UIFactory.label(
     "입사기간",
     textColor: .black,
@@ -137,7 +137,7 @@ final class OnboardingViewController: BaseViewController, View {
     textColor: .black,
     font: .idormFont(.medium, size: 16)
   )
-
+  
   private let ageLabel = UIFactory.label(
     "나이",
     textColor: .black,
@@ -155,7 +155,7 @@ final class OnboardingViewController: BaseViewController, View {
     textColor: .idorm_gray_300,
     font: .idormFont(.bold, size: 12)
   )
-
+  
   private var floatyBottomView: FloatyBottomView!
   private let contentView = UIView()
   
@@ -171,14 +171,14 @@ final class OnboardingViewController: BaseViewController, View {
   private let smokingButton = OnboardingButton("흡연")
   private let allowedFoodButton = OnboardingButton("실내 음식 섭취 함")
   private let allowedEarphoneButton = OnboardingButton("이어폰 착용 안함")
-
+  
   private let dormLine = UIFactory.view(.idorm_gray_100)
   private let genderLine = UIFactory.view(.idorm_gray_100)
   private let periodLine = UIFactory.view(.idorm_gray_100)
   private let habitLine = UIFactory.view(.idorm_gray_100)
   private let ageLine = UIFactory.view(.idorm_gray_100)
-
-
+  
+  
   private lazy var wakeUpInfoLabel = infoLabel("기상시간을 알려주세요.", isEssential: true)
   private let wakeUpTextField = OnboardingTextField(placeholder: "입력")
   private lazy var cleanUpInfoLabel = infoLabel("정리정돈은 얼마나 하시나요?", isEssential: true)
@@ -194,6 +194,11 @@ final class OnboardingViewController: BaseViewController, View {
   private let type: Onboarding
   
   // MARK: - LifeCycle
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    chatTextField.textField.delegate = self
+  }
   
   init(_ type: Onboarding) {
     self.type = type
@@ -889,11 +894,10 @@ final class OnboardingViewController: BaseViewController, View {
       make.trailing.equalTo(maxLengthLabel.snp.leading).offset(-4)
     }
   }
-}
-
-// MARK: - Helpers
-
-private extension OnboardingViewController {
+  
+  // MARK: - Helpers
+  
+  /// Description에 대한 Label을 만들어주는 메서드입니다.
   func infoLabel(_ title: String, isEssential: Bool) -> UILabel {
     let lb = UIFactory.label(
       title,
@@ -917,4 +921,54 @@ private extension OnboardingViewController {
     
     return lb
   }
+  
+  /// 클립보드에 있는 텍스트를 URL형식의 String으로 변환해주는 메서드입니다.
+  func extractLinkFromText(_ text: String) -> String? {
+    let pattern = "(?i)https?://(?:www\\.)?\\S+(?:/|\\b)"
+    
+    guard let regex = try? NSRegularExpression(
+      pattern: pattern,
+      options: []
+    ) else {
+      return nil
+    }
+    
+    if let result = regex.firstMatch(
+      in: text,
+      options: [],
+      range: NSRange(location: 0, length: text.utf16.count)
+    ) {
+      let url = (text as NSString).substring(with: result.range)
+      return url
+    }
+    return nil
+  }
 }
+
+// MARK: - Delegate
+
+extension OnboardingViewController: UITextFieldDelegate {
+  // 오픈채팅 링크 텍스트필드의 클립보드를 제어하기 위한 Delegate 메서드
+  func textField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String
+  ) -> Bool {
+    if textField == chatTextField.textField {
+      // 오픈채팅 텍스트필드인 경우 클립보드의 문자열에서 URL 추출하여 붙여넣기
+      if let clipboardText = UIPasteboard.general.string {
+        if let url = extractLinkFromText(clipboardText) {
+          textField.text = url
+          reactor?.action.onNext(.didChangeChatTextField(url))
+          return false
+        }
+        return true
+      }
+    } else {
+      // 다른 textField인 경우 그대로 붙여넣기
+      return true
+    }
+    return true
+  }
+}
+

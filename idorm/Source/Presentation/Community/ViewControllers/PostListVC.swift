@@ -74,7 +74,6 @@ final class PostListViewController: BaseViewController, View {
     cv.refreshControl = UIRefreshControl()
     cv.dataSource = self
     cv.delegate = self
-    
     return cv
   }()
   
@@ -158,6 +157,7 @@ final class PostListViewController: BaseViewController, View {
     
     // 당겨서 새로고침
     postListCV.refreshControl?.rx.controlEvent(.valueChanged)
+      .throttle(.seconds(2), scheduler: MainScheduler.asyncInstance)
       .map { PostListViewReactor.Action.pullToRefresh }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
@@ -169,14 +169,15 @@ final class PostListViewController: BaseViewController, View {
       .disposed(by: disposeBag)
     
     // MARK: - State
-
+    
     // ReloadData
     reactor.state
       .map { $0.reloadData }
       .filter { $0 }
-      .debug()
       .withUnretained(self)
-      .bind { $0.0.postListCV.reloadData() }
+      .bind {
+        $0.0.postListCV.reloadData()
+      }
       .disposed(by: self.disposeBag)
     
     // 현재 선택된 기숙사
@@ -298,7 +299,6 @@ extension PostListViewController: UICollectionViewDataSource, UICollectionViewDe
       popularPostCell.configure(topPosts[indexPath.row])
       return popularPostCell
     default:
-      // FIXME: Index out of Range
       postCell.injectData(posts[indexPath.row])
       return postCell
     }

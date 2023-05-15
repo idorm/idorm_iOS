@@ -75,7 +75,7 @@ final class OnboardingDetailViewReactor: Reactor {
             .debug()
             .map(ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self)
             .flatMap { response -> Observable<Mutation> in
-              MemberStorage.shared.saveMatchingInfo(response.data)
+              UserStorage.shared.saveMatchingInfo(response.data)
               return .concat([
                 .just(.setLoading(false)),
                 .just(.setMainVC(true)),
