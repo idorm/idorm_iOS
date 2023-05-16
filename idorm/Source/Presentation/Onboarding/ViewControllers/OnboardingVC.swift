@@ -403,18 +403,29 @@ final class OnboardingViewController: BaseViewController, View {
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
-    // MBTI 텍스트필드
-    mbtiTextField.textField.rx.text
+    let mbtiObservable = mbtiTextField.textField.rx.text
       .orEmpty
-      .skip(1)
-      .map { OnboardingViewReactor.Action.didChangeMbtiTextField($0) }
+      .scan("") { previous, new in
+        if new.count > 4 {
+          return previous
+        } else {
+          return new
+        }
+      }
+      .share()
+    
+    mbtiObservable
+      .bind(to: mbtiTextField.textField.rx.text)
+      .disposed(by: disposeBag)
+    
+    mbtiObservable
+      .debug()
+      .map { return OnboardingViewReactor.Action.didChangeMbtiTextField($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
-    // 하고싶은 말 텍스트 뷰
-    wishTextView.rx.text
+    let wishTextObservable = wishTextView.rx.text
       .orEmpty
-      .skip(1)
       .scan("") { previous, new in
         if new.count > 100 {
           return previous
@@ -422,6 +433,12 @@ final class OnboardingViewController: BaseViewController, View {
           return new
         }
       }
+    
+    wishTextObservable
+      .bind(to: wishTextView.rx.text)
+      .disposed(by: disposeBag)
+    
+    wishTextObservable
       .map { OnboardingViewReactor.Action.didChangeWishTextView($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
