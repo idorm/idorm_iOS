@@ -15,13 +15,19 @@ import ReactorKit
 
 final class EmailViewController: BaseViewController, View {
   
+  enum ViewControllerType {
+    case signUp
+    case findPw
+    case changePw
+  }
+  
   // MARK: - UI COMPONENTS
   
   private lazy var mainDescriptionLabel = UILabel().then {
     $0.textColor = .black
     $0.font = .idormFont(.medium, size: 14)
-    switch authProcess {
-    case .findPw:
+    switch viewControllerType {
+    case .findPw, .changePw:
       $0.text = "가입시 사용한 인천대학교 이메일이 필요해요."
     case .signUp:
       $0.text = "이메일"
@@ -44,10 +50,10 @@ final class EmailViewController: BaseViewController, View {
     stack.axis = .horizontal
     stack.spacing = 4
     
-    switch authProcess {
+    switch viewControllerType {
     case .signUp:
       stack.isHidden = false
-    case .findPw:
+    case .findPw, .changePw:
       stack.isHidden = true
     }
   }
@@ -58,12 +64,12 @@ final class EmailViewController: BaseViewController, View {
   
   // MARK: - PROPERTIES
   
-  let authProcess: AuthProcess
+  let viewControllerType: ViewControllerType
 
   // MARK: - LifeCycle
   
-  init(_ authProcess: AuthProcess) {
-    self.authProcess = authProcess
+  init(_ viewControllerType: ViewControllerType) {
+    self.viewControllerType = viewControllerType
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -80,7 +86,7 @@ final class EmailViewController: BaseViewController, View {
     // 인증번호 받기 버튼 클릭
     nextButton.rx.tap
       .withUnretained(self)
-      .map { ($0.0.textField.text ?? "", $0.0.authProcess) }
+      .map { ($0.0.textField.text ?? "", $0.0.viewControllerType) }
       .map { EmailViewReactor.Action.next($0.0, $0.1) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
@@ -148,11 +154,13 @@ final class EmailViewController: BaseViewController, View {
     super.setupStyles()
     
     view.backgroundColor = .white
-    switch authProcess {
+    switch viewControllerType {
     case .signUp:
       navigationItem.title = "회원가입"
     case .findPw:
       navigationItem.title = "비밀번호 찾기"
+    case .changePw:
+      navigationItem.title = "비밀번호 변경"
     }
   }
   

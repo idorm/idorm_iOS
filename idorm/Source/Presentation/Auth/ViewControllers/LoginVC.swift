@@ -164,7 +164,14 @@ final class LoginViewController: BaseViewController, View {
       .filter { $0.0 }
       .withUnretained(self)
       .bind { owner, type in
-        let putEmailVC = EmailViewController(type.1)
+        let viewControllerType: EmailViewController.ViewControllerType
+        switch type.1 {
+        case .findPw:
+          viewControllerType = .findPw
+        case .signUp:
+          viewControllerType = .signUp
+        }
+        let putEmailVC = EmailViewController(viewControllerType)
         putEmailVC.reactor = EmailViewReactor()
         owner.navigationController?.pushViewController(putEmailVC, animated: true)
       }

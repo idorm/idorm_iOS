@@ -14,7 +14,7 @@ import RxMoya
 final class EmailViewReactor: Reactor {
   
   enum Action {
-    case next(String, AuthProcess)
+    case next(String, EmailViewController.ViewControllerType)
   }
   
   enum Mutation {
@@ -67,7 +67,7 @@ final class EmailViewReactor: Reactor {
               }
             }
         ])
-      case .findPw: // 비밀번호 찾기
+      case .findPw, .changePw: // 비밀번호 찾기
         return .concat([
           .just(.setLoading(true)),
           MailAPI.provider.rx.request(.pwAuthentication(email: email))

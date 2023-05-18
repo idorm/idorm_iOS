@@ -157,7 +157,8 @@ final class PostListViewController: BaseViewController, View {
     
     // 당겨서 새로고침
     postListCV.refreshControl?.rx.controlEvent(.valueChanged)
-      .throttle(.seconds(2), scheduler: MainScheduler.asyncInstance)
+      .throttle(.seconds(2), latest: false, scheduler: MainScheduler.asyncInstance)
+      .debug()
       .map { PostListViewReactor.Action.pullToRefresh }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)

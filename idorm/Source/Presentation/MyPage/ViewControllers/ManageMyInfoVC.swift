@@ -129,7 +129,7 @@ final class ManageMyInfoViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let viewController = EmailViewController(.findPw)
+        let viewController = EmailViewController(.changePw)
         viewController.reactor = EmailViewReactor()
         owner.navigationController?.pushViewController(viewController, animated: true)
       }
