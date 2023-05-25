@@ -164,8 +164,8 @@ final class OnboardingViewController: BaseViewController, View {
   private let dorm3Button = OnboardingButton("3 기숙사")
   private let maleButton = OnboardingButton("남성")
   private let femaleButton = OnboardingButton("여성")
-  private let period16Button = OnboardingButton("16 주")
-  private let period24Button = OnboardingButton("24 주")
+  private let period16Button = OnboardingButton("짧은 기간")
+  private let period24Button = OnboardingButton("긴 기간")
   private let snoreButton = OnboardingButton("코골이")
   private let grindingButton = OnboardingButton("이갈이")
   private let smokingButton = OnboardingButton("흡연")
@@ -177,7 +177,6 @@ final class OnboardingViewController: BaseViewController, View {
   private let periodLine = UIFactory.view(.idorm_gray_100)
   private let habitLine = UIFactory.view(.idorm_gray_100)
   private let ageLine = UIFactory.view(.idorm_gray_100)
-  
   
   private lazy var wakeUpInfoLabel = infoLabel("기상시간을 알려주세요.", isEssential: true)
   private let wakeUpTextField = OnboardingTextField(placeholder: "입력")
@@ -625,7 +624,7 @@ final class OnboardingViewController: BaseViewController, View {
     
     // 오류 팝업 창
     reactor.state
-      .map { $0.isOpenedPopup }
+      .map { $0.isOpenedKakaoPopup }
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
@@ -646,6 +645,15 @@ final class OnboardingViewController: BaseViewController, View {
       .map { String($0) }
       .bind(to: currentLengthLabel.rx.text)
       .disposed(by: disposeBag)
+    
+    reactor.state.map { $0.showPopup }
+      .filter { $0.0 }
+      .bind(with: self) { owner, contents in
+        let popup = BasicPopup(contents: contents.1)
+        popup.modalPresentationStyle = .overFullScreen
+        owner.present(popup, animated: false)
+      }
+      .disposed(by: self.disposeBag)
   }
   
   // MARK: - Setup

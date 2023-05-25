@@ -13,8 +13,8 @@ enum JoinPeriod: String, Codable {
   
   var cardString: String {
     switch self {
-    case .period_16: return "16 주"
-    case .period_24: return "24 주"
+    case .period_16: return "짧은 기간"
+    case .period_24: return "긴 기간"
     }
   }
 }

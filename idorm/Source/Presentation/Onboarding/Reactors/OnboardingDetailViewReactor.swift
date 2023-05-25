@@ -24,6 +24,7 @@ final class OnboardingDetailViewReactor: Reactor {
     case setOnboardingVC(Bool)
     case setPopVC(Bool)
     case setMainVC(Bool)
+    case setPopupMessage(Bool, String)
   }
   
   struct State {
@@ -31,6 +32,7 @@ final class OnboardingDetailViewReactor: Reactor {
     var isOpenedOnboardingVC: Bool = false
     var popVC: Bool = false
     var isOpenedMainVC: Bool = false
+    var popupMessage: (Bool, String) = (false, "")
   }
   
   var initialState: State = State()
@@ -72,15 +74,30 @@ final class OnboardingDetailViewReactor: Reactor {
           MatchingInfoAPI.provider.rx.request(.save(requestModel))
             .asObservable()
             .retry()
-            .debug()
-            .map(ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self)
             .flatMap { response -> Observable<Mutation> in
-              UserStorage.shared.saveMatchingInfo(response.data)
-              return .concat([
-                .just(.setLoading(false)),
-                .just(.setMainVC(true)),
-                .just(.setMainVC(false))
-              ])
+              switch response.statusCode {
+              case 200..<300:
+                let matchingInfo = MatchingInfoAPI.decode(
+                  ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self,
+                  data: response.data
+                ).data
+                UserStorage.shared.saveMatchingInfo(matchingInfo)
+                return .concat([
+                  .just(.setLoading(false)),
+                  .just(.setMainVC(true)),
+                  .just(.setMainVC(false))
+                ])
+              default:
+                let message = MatchingInfoAPI.decode(
+                  ErrorResponseModel.self,
+                  data: response.data
+                ).responseMessage
+                return .concat([
+                  .just(.setLoading(false)),
+                  .just(.setPopupMessage(true, message)),
+                  .just(.setPopupMessage(false, ""))
+                ])
+              }
             }
         ])
       }
@@ -102,6 +119,9 @@ final class OnboardingDetailViewReactor: Reactor {
       
     case .setPopVC(let isPoped):
       newState.popVC = isPoped
+      
+    case let .setPopupMessage(state, message):
+      newState.popupMessage = (state, message)
     }
     
     return newState

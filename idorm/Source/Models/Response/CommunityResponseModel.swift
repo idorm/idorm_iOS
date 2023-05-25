@@ -10,7 +10,7 @@ import Foundation
 enum CommunityResponseModel {}
 
 extension CommunityResponseModel {
-  struct Posts: Codable, Equatable {
+  struct Posts: Codable, Hashable {
     let postId: Int
     let title: String
     let content: String

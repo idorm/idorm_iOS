@@ -37,7 +37,7 @@ final class HomeViewController: BaseViewController, View {
     let attributedString = NSMutableAttributedString(string: $0.text!)
     attributedString.addAttributes([.foregroundColor: UIColor.idorm_blue,
                                     .font: UIFont.init(name: IdormFont_deprecated.bold.rawValue, size: 20)!]
-                                   ,range: ($0.text! as NSString).range(of: "1학기"))
+                                   ,range: ($0.text! as NSString).range(of: "여름학기"))
     $0.attributedText = attributedString
   }
   

@@ -24,7 +24,7 @@ final class BottomSheetViewController: BaseViewController {
   }
   
   // MARK: - UI COMPONENTS
-    
+  
   private let dorm1Button = BottomSheetUtils.dormNumberButton("인천대 1기숙사")
   private let dorm2Button = BottomSheetUtils.dormNumberButton("인천대 2기숙사")
   private let dorm3Button = BottomSheetUtils.dormNumberButton("인천대 3기숙사")

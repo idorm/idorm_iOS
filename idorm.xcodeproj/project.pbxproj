@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		68DA89733E20C9A1392FACE9 /* Pods_idorm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99F7F00BF8500AC834F7C28 /* Pods_idorm.framework */; };
 		E50300F728773A5D00611C62 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50300F628773A5D00611C62 /* AppDelegate.swift */; };
 		E50300F928773A5D00611C62 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50300F828773A5D00611C62 /* SceneDelegate.swift */; };
 		E503010028773A5E00611C62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E50300FF28773A5E00611C62 /* Assets.xcassets */; };
@@ -37,6 +36,7 @@
 		E513D9FE2955C70A002EA592 /* EmailViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E513D9FD2955C70A002EA592 /* EmailViewReactor.swift */; };
 		E513DA002955ECB4002EA592 /* PasswordViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E513D9FF2955ECB4002EA592 /* PasswordViewReactor.swift */; };
 		E513DA022955ED0B002EA592 /* AuthViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E513DA012955ED0B002EA592 /* AuthViewReactor.swift */; };
+		E51BB9F72A1F1AE70019AC1F /* HomeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51BB9F62A1F1AE70019AC1F /* HomeSection.swift */; };
 		E51D1C7C2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51D1C7B2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift */; };
 		E51D1C7E29531B8300A7EE49 /* MyRoommateViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51D1C7D29531B8300A7EE49 /* MyRoommateViewReactor.swift */; };
 		E52233B3296CFCAD00C5DD07 /* PostingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52233B2296CFCAD00C5DD07 /* PostingVC.swift */; };
@@ -113,6 +113,7 @@
 		E56342232878353100E93D17 /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56342222878353100E93D17 /* TabBarVC.swift */; };
 		E563422528784ED400E93D17 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E563422428784ED400E93D17 /* HomeVC.swift */; };
 		E5695C15295EFBD40083E48D /* LaunchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5695C14295EFBD40083E48D /* LaunchVC.swift */; };
+		E5732D2C2A1A3A9A009EE496 /* Pods_idorm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99F7F00BF8500AC834F7C28 /* Pods_idorm.framework */; };
 		E575D37529548DF900B13530 /* WithDrawalViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E575D37429548DF900B13530 /* WithDrawalViewReactor.swift */; };
 		E577E4CB29FA3A4200D0DA48 /* MyCommunityVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577E4CA29FA3A4200D0DA48 /* MyCommunityVC.swift */; };
 		E577E4CD29FA553300D0DA48 /* MyCommunityViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577E4CC29FA553300D0DA48 /* MyCommunityViewReactor.swift */; };
@@ -263,6 +264,7 @@
 		E513D9FD2955C70A002EA592 /* EmailViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailViewReactor.swift; sourceTree = "<group>"; };
 		E513D9FF2955ECB4002EA592 /* PasswordViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewReactor.swift; sourceTree = "<group>"; };
 		E513DA012955ED0B002EA592 /* AuthViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewReactor.swift; sourceTree = "<group>"; };
+		E51BB9F62A1F1AE70019AC1F /* HomeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSection.swift; sourceTree = "<group>"; };
 		E51D1C7B2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMyInfoViewReactor.swift; sourceTree = "<group>"; };
 		E51D1C7D29531B8300A7EE49 /* MyRoommateViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoommateViewReactor.swift; sourceTree = "<group>"; };
 		E52233B2296CFCAD00C5DD07 /* PostingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingVC.swift; sourceTree = "<group>"; };
@@ -434,6 +436,7 @@
 				E5E1498B2950700B00A3827C /* ReactorKit in Frameworks */,
 				E551032929237177001E1530 /* Then in Frameworks */,
 				E551030E29236EF1001E1530 /* Alamofire in Frameworks */,
+				E5732D2C2A1A3A9A009EE496 /* Pods_idorm.framework in Frameworks */,
 				E5510323292370F2001E1530 /* RxAppState in Frameworks */,
 				E5B61F2529B3544D0031046C /* FirebaseMessaging in Frameworks */,
 				E551030929236E84001E1530 /* RxRelay in Frameworks */,
@@ -442,7 +445,6 @@
 				E551030229236E4F001E1530 /* Moya in Frameworks */,
 				E551030729236E84001E1530 /* RxCocoa in Frameworks */,
 				E5CFF6FB2981761700E11D9A /* GrowingTextView in Frameworks */,
-				68DA89733E20C9A1392FACE9 /* Pods_idorm.framework in Frameworks */,
 				E551031A2923704B001E1530 /* PanModal in Frameworks */,
 				E551031429236FE6001E1530 /* RSKGrowingTextView in Frameworks */,
 				E5510320292370B6001E1530 /* DeviceKit in Frameworks */,
@@ -765,6 +767,7 @@
 				E5FA99392A013EBF0047AC0A /* Views */,
 				E56DF4C7289405DF00E85B10 /* ViewControllers */,
 				E5C451CC295C799A00D49988 /* Reactors */,
+				E51BB9F62A1F1AE70019AC1F /* HomeSection.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -1410,6 +1413,7 @@
 				E50300F928773A5D00611C62 /* SceneDelegate.swift in Sources */,
 				E5F56574291908DE0043FCB4 /* MyRoommateCell.swift in Sources */,
 				E57B3E4E2933688500B2C0F0 /* NoMatchingInfoPopup.swift in Sources */,
+				E51BB9F72A1F1AE70019AC1F /* HomeSection.swift in Sources */,
 				E5CFF71729835CCC00E11D9A /* MatchingInfoRequestModel.swift in Sources */,
 				E5066428296E677700B581E1 /* PostUtils.swift in Sources */,
 				E5D4900B288BFA0200311493 /* MatchingVC.swift in Sources */,
@@ -1654,7 +1658,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.5;
+				MARKETING_VERSION = 2.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = eungcheol.idorm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1692,7 +1696,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.5;
+				MARKETING_VERSION = 2.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = eungcheol.idorm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

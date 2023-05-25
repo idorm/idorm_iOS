@@ -79,7 +79,7 @@ final class BasicPopup: BaseViewController {
     }
     
     contentsLabel.snp.makeConstraints { make in
-      make.leading.equalToSuperview().inset(16)
+      make.leading.trailing.equalToSuperview().inset(16)
       make.top.equalToSuperview().inset(24)
     }
     

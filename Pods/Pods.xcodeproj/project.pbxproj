@@ -169,7 +169,7 @@
 		112E02A548191FD4EA95D300B21A1995 /* KolodaView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KolodaView.swift; path = Pod/Classes/KolodaView/KolodaView.swift; sourceTree = "<group>"; };
 		159BC34B79DBF9F721B750FE1F36C8BA /* RangeSeekSlider-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RangeSeekSlider-umbrella.h"; sourceTree = "<group>"; };
 		17832DA1BEB29C0F12FE12F9C1032B0E /* AEOTPTextFieldImplementation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AEOTPTextFieldImplementation.swift; path = AEOTPTextField/Source/UIKit/Utilities/AEOTPTextFieldImplementation.swift; sourceTree = "<group>"; };
-		1827A3F8AA4AC67C878D9725DE99ED5D /* Koloda */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Koloda; path = Koloda.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1827A3F8AA4AC67C878D9725DE99ED5D /* Koloda.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Koloda.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		183360B1D8AC58FE0A7A71ECC594A54D /* POPGeometry.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = POPGeometry.h; path = pop/POPGeometry.h; sourceTree = "<group>"; };
 		19C0674F44E24FE8D39CB2D50D48DAB9 /* Bundle+Module.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Bundle+Module.swift"; path = "ImageSlideshow/Classes/Core/Bundle+Module.swift"; sourceTree = "<group>"; };
 		19D868FA4CE615FE1D8243A8FD291016 /* Koloda-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Koloda-dummy.m"; sourceTree = "<group>"; };
@@ -209,13 +209,13 @@
 		4F24A435443F518CA5E021109C6A89A8 /* ImageSlideshow-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ImageSlideshow-Info.plist"; sourceTree = "<group>"; };
 		4F2B1B1F0CE21A7C9F87C0D02D1DFD73 /* AEOTPTextFieldDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AEOTPTextFieldDelegate.swift; path = AEOTPTextField/Source/UIKit/Utilities/AEOTPTextFieldDelegate.swift; sourceTree = "<group>"; };
 		507A62CC36DC10A34BD072E538F1EEEA /* AEOTPView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AEOTPView.swift; path = AEOTPTextField/Source/SwiftUI/Core/AEOTPView.swift; sourceTree = "<group>"; };
-		51305B2D9D8DA36D89CC277D729083D2 /* pop */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = pop; path = pop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		51305B2D9D8DA36D89CC277D729083D2 /* pop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = pop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		518BF4A3E980FBC55B21803CB7DE62CD /* POPCustomAnimation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = POPCustomAnimation.h; path = pop/POPCustomAnimation.h; sourceTree = "<group>"; };
 		51AE68026129C981B66D05A25526CE8C /* ImageSlideshow.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = ImageSlideshow.modulemap; sourceTree = "<group>"; };
 		532FBEDE41CC4BB0DDCEC13A342F6C22 /* pop.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = pop.debug.xcconfig; sourceTree = "<group>"; };
 		553F02396820467C46BFBDBFD5A82BB7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		5928E411198391008CAF8D12B22794D4 /* POPDefines.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = POPDefines.h; path = pop/POPDefines.h; sourceTree = "<group>"; };
-		59813AA67B7859C3E3AF1A4686F5CF22 /* Pods_idorm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_idorm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		59813AA67B7859C3E3AF1A4686F5CF22 /* Pods-idorm */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-idorm"; path = Pods_idorm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		599AB2D427352FC354A6B5A20360F726 /* ChangeObserverModifier.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ChangeObserverModifier.swift; path = AEOTPTextField/Source/SwiftUI/Utilities/ChangeObserverModifier.swift; sourceTree = "<group>"; };
 		5D76658109BA05694E440797E5CC2FB2 /* POPAnimationRuntime.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = POPAnimationRuntime.h; path = pop/POPAnimationRuntime.h; sourceTree = "<group>"; };
 		5E8FAE6FD1A9759DFE4552DB273A29DD /* POPCGUtils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = POPCGUtils.h; path = pop/POPCGUtils.h; sourceTree = "<group>"; };
@@ -644,9 +644,9 @@
 			children = (
 				E93415738A8469A1380987A9DBCB1D06 /* AEOTPTextField */,
 				C1D78A7F43807F49FDB5B04DD9BD6AC7 /* ImageSlideshow.framework */,
-				1827A3F8AA4AC67C878D9725DE99ED5D /* Koloda */,
-				59813AA67B7859C3E3AF1A4686F5CF22 /* Pods_idorm.framework */,
-				51305B2D9D8DA36D89CC277D729083D2 /* pop */,
+				1827A3F8AA4AC67C878D9725DE99ED5D /* Koloda.framework */,
+				59813AA67B7859C3E3AF1A4686F5CF22 /* Pods-idorm */,
+				51305B2D9D8DA36D89CC277D729083D2 /* pop.framework */,
 				C027A7405E856E45431E9E1E7913015F /* RangeSeekSlider */,
 			);
 			name = Products;
@@ -755,7 +755,7 @@
 			);
 			name = pop;
 			productName = pop;
-			productReference = 51305B2D9D8DA36D89CC277D729083D2 /* pop */;
+			productReference = 51305B2D9D8DA36D89CC277D729083D2 /* pop.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		4AFB864B337D1F74C1D79F4FC8F6C67F /* RangeSeekSlider */ = {
@@ -814,7 +814,7 @@
 			);
 			name = "Pods-idorm";
 			productName = Pods_idorm;
-			productReference = 59813AA67B7859C3E3AF1A4686F5CF22 /* Pods_idorm.framework */;
+			productReference = 59813AA67B7859C3E3AF1A4686F5CF22 /* Pods-idorm */;
 			productType = "com.apple.product-type.framework";
 		};
 		B2F46A67275CC5973EE13076CD708247 /* ImageSlideshow */ = {
@@ -851,7 +851,7 @@
 			);
 			name = Koloda;
 			productName = Koloda;
-			productReference = 1827A3F8AA4AC67C878D9725DE99ED5D /* Koloda */;
+			productReference = 1827A3F8AA4AC67C878D9725DE99ED5D /* Koloda.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -1088,7 +1088,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/Koloda/Koloda-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/Koloda/Koloda-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1257,7 +1257,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/pop/pop-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/pop/pop-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1291,7 +1291,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/Koloda/Koloda-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/Koloda/Koloda-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1364,7 +1364,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/ImageSlideshow/ImageSlideshow-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/ImageSlideshow/ImageSlideshow-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1433,7 +1433,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/ImageSlideshow/ImageSlideshow-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/ImageSlideshow/ImageSlideshow-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1502,7 +1502,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/pop/pop-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/pop/pop-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

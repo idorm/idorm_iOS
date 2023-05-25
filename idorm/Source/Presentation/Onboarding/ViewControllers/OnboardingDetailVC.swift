@@ -98,6 +98,15 @@ final class OnboardingDetailViewController: BaseViewController, View {
         owner.present(mainVC, animated: true)
       }
       .disposed(by: disposeBag)
+    
+    reactor.state.map { $0.popupMessage }
+      .filter { $0.0 }
+      .bind(with: self) { owner, message in
+        let popup = BasicPopup(contents: message.1)
+        popup.modalPresentationStyle = .overFullScreen
+        owner.present(popup, animated: false)
+      }
+      .disposed(by: self.disposeBag)
   }
 
   // MARK: - Setup

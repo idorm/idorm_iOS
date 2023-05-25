@@ -8,7 +8,7 @@
 import Foundation
 
 enum CalendarResponseModel {
-  struct Calendar: Codable, Equatable {
+  struct Calendar: Codable, Hashable {
     let calendarId: Int
     let isDorm1Yn: Bool
     let isDorm2Yn: Bool

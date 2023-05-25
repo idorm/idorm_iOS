@@ -43,8 +43,9 @@ final class OnboardingViewReactor: Reactor {
     case setChatBorderColor(UIColor)
     case setChatDescriptionTextColor(UIColor)
     case setChatTfCheckmark(Bool)
-    case setPopup(Bool)
+    case setKakaoPopup(Bool)
     case setWishTextCount(Int)
+    case setPopup(Bool, String)
   }
   
   struct State {
@@ -59,7 +60,8 @@ final class OnboardingViewReactor: Reactor {
     var currentChatBorderColor: UIColor = .idorm_gray_300
     var currentChatDescriptionTextColor: UIColor = .idorm_gray_300
     var isHiddenChatTfCheckmark: Bool = true
-    var isOpenedPopup: Bool = false
+    var isOpenedKakaoPopup: Bool = false
+    var showPopup: (Bool, String) = (false, "")
   }
   
   var initialState: State = State()
@@ -251,8 +253,8 @@ final class OnboardingViewReactor: Reactor {
           ])
         } else {
           return .concat([
-            .just(.setPopup(true)),
-            .just(.setPopup(false))
+            .just(.setKakaoPopup(true)),
+            .just(.setKakaoPopup(false))
           ])
         }
         
@@ -264,22 +266,36 @@ final class OnboardingViewReactor: Reactor {
               .modify(currentState.currentMatchingInfo)
             )
               .asObservable()
-              .debug()
-              .retry()
-              .map(ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self)
               .flatMap { response -> Observable<Mutation> in
-                UserStorage.shared.saveMatchingInfo(response.data)
-                return .concat([
-                  .just(.setLoading(false)),
-                  .just(.setRootVC(true)),
-                  .just(.setRootVC(false))
-                ])
+                switch response.statusCode {
+                case 200..<300:
+                  let matchingInfo = MatchingInfoAPI.decode(
+                    ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self,
+                    data: response.data
+                  ).data
+                  UserStorage.shared.saveMatchingInfo(matchingInfo)
+                  return .concat([
+                    .just(.setLoading(false)),
+                    .just(.setRootVC(true)),
+                    .just(.setRootVC(false))
+                  ])
+                default:
+                  let message = MatchingAPI.decode(
+                    ErrorResponseModel.self,
+                    data: response.data
+                  ).responseMessage
+                  return .concat([
+                    .just(.setLoading(false)),
+                    .just(.setPopup(true, message)),
+                    .just(.setPopup(false, ""))
+                  ])
+                }
               }
           ])
         } else {
           return .concat([
-            .just(.setPopup(true)),
-            .just(.setPopup(false))
+            .just(.setKakaoPopup(true)),
+            .just(.setKakaoPopup(false))
           ])
         }
         
@@ -321,11 +337,14 @@ final class OnboardingViewReactor: Reactor {
     case .setChatDescriptionTextColor(let textColor):
       newState.currentChatDescriptionTextColor = textColor
       
-    case .setPopup(let isOpened):
-      newState.isOpenedPopup = isOpened
+    case .setKakaoPopup(let isOpened):
+      newState.isOpenedKakaoPopup = isOpened
       
     case .setWishTextCount(let count):
       newState.currentWishTextCount = count
+      
+    case let .setPopup(state, contents):
+      newState.showPopup = (state, contents)
     }
     
     return newState
