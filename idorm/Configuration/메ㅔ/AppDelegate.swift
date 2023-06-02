@@ -10,6 +10,10 @@ import UIKit
 import FirebaseCore
 import FirebaseMessaging
 
+import KakaoSDKCommon
+import KakaoSDKShare
+import KakaoSDKTemplate
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
   
@@ -18,12 +22,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     FirebaseApp.configure()
+    
+    // FCM
     let authOptions = UNAuthorizationOptions([.alert, .badge, .sound])
     UNUserNotificationCenter.current().delegate = self
     UNUserNotificationCenter.current().requestAuthorization(
       options: authOptions) { _, _ in }
     Messaging.messaging().delegate = self
     application.registerForRemoteNotifications()
+    
+    // KakaoShare
+    KakaoSDK.initSDK(appKey: "a8df1fc9d307130a9d3ee6503549c92b")
+    
+    // NaivgationBar
     self.setupNavigationBarAppearance()
     self.setupTabBarAppearance()
     return true
@@ -53,10 +64,12 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
     withCompletionHandler completionHandler: @escaping () -> Void
   ) {
     if let postId = response.notification.request.content.userInfo["contentId"] as? String {
-      TransitionManager.shared.postPushAlarmDidTap?(Int(postId)!)
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+        TransitionManager.shared.postPushAlarmDidTap?(Int(postId)!)
+      })
     }
   }
-
+  
   // APNs 토큰 설정
   func application(
     _ application: UIApplication,

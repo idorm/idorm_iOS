@@ -2,8 +2,30 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>KakaoShare</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>kakaoa8df1fc9d307130a9d3ee6503549c92b</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+	</array>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>kakaolink</string>
+		<string>kakaokompassauth</string>
+	</array>
 	<key>UIAppFonts</key>
 	<array>
 		<string>NotoSansCJKkr-Bold.otf</string>
@@ -32,6 +54,11 @@
 		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIImageName</key>
+		<string>idorm_white</string>
+	</dict>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 </dict>

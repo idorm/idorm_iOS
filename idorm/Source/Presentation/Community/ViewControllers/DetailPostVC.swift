@@ -15,6 +15,9 @@ import RxOptional
 import RxGesture
 import PanModal
 import ImageSlideshow
+import KakaoSDKCommon
+import KakaoSDKShare
+import KakaoSDKTemplate
 
 final class DetailPostViewController: BaseViewController, View {
   
@@ -177,6 +180,8 @@ final class DetailPostViewController: BaseViewController, View {
               reactor.action.onNext(.editPostButtonDidTap)
             case .report:
               owner.presentCompletedReport()
+            case .share:
+              owner.sendFeedMessage()
             default:
               break
             }
@@ -192,7 +197,7 @@ final class DetailPostViewController: BaseViewController, View {
       .disposed(by: disposeBag)
     
     // MARK: - STATE
-     
+    
     // 전송 버튼 상태 변경
     reactor.state
       .map { $0.currentComment }
@@ -322,7 +327,7 @@ final class DetailPostViewController: BaseViewController, View {
   
   private func presentSympathyAlert(_ nextState: Bool) {
     let title: String
-
+    
     if nextState {
       title = "공감을 취소하시겠습니까?"
     } else {
@@ -354,6 +359,51 @@ final class DetailPostViewController: BaseViewController, View {
     )
     alert.addAction(.init(title: "확인", style: .cancel))
     present(alert, animated: true)
+  }
+  
+  private func sendFeedMessage() {
+    guard let post = self.reactor?.currentState.currentPost else { return }
+    
+    let templateId = Int64(93479)
+    
+    let profileURL = post.profileUrl == nil ?
+    URL(string: "https://idorm-static.s3.ap-northeast-2.amazonaws.com/profileImage.png")! :
+    URL(string: post.profileUrl!)!
+    
+    let thumbnailURL = post.imagesCount == 0 ?
+    URL(string: "https://idorm-static.s3.ap-northeast-2.amazonaws.com/nadomi.png")! :
+    URL(string: post.postPhotos.first!.photoUrl)!
+    
+    let templateArgs = [
+      "title": post.title,
+      "nickname": post.nickname ?? "익명",
+      "contentId": "\(post.postId)",
+      "summarizedContent": post.content,
+      "thumbnail": thumbnailURL.absoluteString,
+      "likeCount": "\(post.likesCount)",
+      "userProfile": profileURL.absoluteString,
+      "commentCount": "\(post.commentsCount)"
+    ]
+    
+    if ShareApi.isKakaoTalkSharingAvailable() {
+      // 카카오톡 설치
+      ShareApi.shared.shareCustom(
+        templateId: templateId,
+        templateArgs: templateArgs
+      ) { sharingResult, error in
+        if let error = error {
+          print(error)
+        } else {
+          print("shareCustom() success")
+          if let sharingResult = sharingResult {
+            UIApplication.shared.open(sharingResult.url)
+          }
+        }
+      }
+    } else {
+      // 카카오톡 미설치: 웹 공유 사용 권장
+      // Custom WebView 또는 디폴트 브라우져 사용 가능
+    }
   }
 }
 
@@ -446,7 +496,7 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
       return cell
     }
   }
-
+  
   // 셀 갯수
   func tableView(
     _ tableView: UITableView,
@@ -497,7 +547,7 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
     heightForRowAt indexPath: IndexPath
   ) -> CGFloat {
     guard let post = reactor?.currentState.currentPost else { return 0 }
-
+    
     switch post.commentsCount {
     case 0:
       return 143

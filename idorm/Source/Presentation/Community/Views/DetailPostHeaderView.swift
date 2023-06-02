@@ -102,11 +102,10 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
         break
       }
     }
-    
     return btn
   }()
   
-  private let likeImageView = UIImageView(image: UIImage(named: "thumbsup_medium")?.withRenderingMode(.alwaysTemplate))
+  private let likeImageView = UIImageView(image: UIImage(named: "thumbsup_medium"))
   private lazy var likeCountLabel = countLabel()
   private let commentImageView = UIImageView(image: UIImage(named: "speechBubble_double_medium"))
   private lazy var commentCountLabel = countLabel()

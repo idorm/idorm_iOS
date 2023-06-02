@@ -40,7 +40,6 @@ final class LaunchViewController: BaseViewController {
         }
       }
     }
-    
   }
   
   // MARK: - Setup

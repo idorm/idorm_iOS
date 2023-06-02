@@ -124,6 +124,7 @@ final class CalendarCell: UICollectionViewCell, BaseView {
   
   func setupStyles() {
     contentView.backgroundColor = .white
+    locationLabel.setContentCompressionResistancePriority(.init(751), for: .horizontal)
   }
   
   func setupLayouts() {
@@ -206,6 +207,7 @@ final class CalendarCell: UICollectionViewCell, BaseView {
     
     locationDesriptionLabel.snp.makeConstraints { make in
       make.leading.equalTo(locationLabel.snp.trailing).offset(4)
+      make.trailing.equalTo(rightArrowButton.snp.trailing)
       make.centerY.equalTo(locationLabel)
     }
 

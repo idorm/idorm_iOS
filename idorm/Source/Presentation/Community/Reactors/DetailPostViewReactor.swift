@@ -5,10 +5,15 @@
 //  Created by 김응철 on 2023/01/23.
 //
 
-import Foundation
+import UIKit
 
 import ReactorKit
 import RxMoya
+import Kingfisher
+
+import KakaoSDKShare
+import KakaoSDKTemplate
+import KakaoSDKCommon
 
 final class DetailPostViewReactor: Reactor {
   
@@ -124,6 +129,7 @@ final class DetailPostViewReactor: Reactor {
             }
           }
       ])
+      
     case .deleteCommentButtonDidTap(let commentId):
       return .concat([
         .just(.setLoading(true)),
@@ -147,8 +153,10 @@ final class DetailPostViewReactor: Reactor {
           }
         }
       ])
+      
     case .pullToRefresh:
       return retrievePost()
+      
     case .deletePostButtonDidTap:
       return .concat([
         .just(.setLoading(true)),
@@ -167,6 +175,7 @@ final class DetailPostViewReactor: Reactor {
             }
           }
       ])
+      
     case .editPostButtonDidTap:
       return .concat([
         .just(.setPostingVC(true)),

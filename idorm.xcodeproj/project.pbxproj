@@ -36,9 +36,10 @@
 		E513D9FE2955C70A002EA592 /* EmailViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E513D9FD2955C70A002EA592 /* EmailViewReactor.swift */; };
 		E513DA002955ECB4002EA592 /* PasswordViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E513D9FF2955ECB4002EA592 /* PasswordViewReactor.swift */; };
 		E513DA022955ED0B002EA592 /* AuthViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E513DA012955ED0B002EA592 /* AuthViewReactor.swift */; };
-		E51BB9F72A1F1AE70019AC1F /* HomeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51BB9F62A1F1AE70019AC1F /* HomeSection.swift */; };
 		E51D1C7C2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51D1C7B2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift */; };
 		E51D1C7E29531B8300A7EE49 /* MyRoommateViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51D1C7D29531B8300A7EE49 /* MyRoommateViewReactor.swift */; };
+		E521FC262A2834E2008B2956 /* RxKakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = E521FC252A2834E2008B2956 /* RxKakaoSDK */; };
+		E521FC282A2834E2008B2956 /* RxKakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = E521FC272A2834E2008B2956 /* RxKakaoSDKShare */; };
 		E52233B3296CFCAD00C5DD07 /* PostingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52233B2296CFCAD00C5DD07 /* PostingVC.swift */; };
 		E52233B6296D04A200C5DD07 /* PostingPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52233B5296D04A200C5DD07 /* PostingPhotoCell.swift */; };
 		E5226D582911F3610065C809 /* Dormitory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5226D572911F3610065C809 /* Dormitory.swift */; };
@@ -120,6 +121,7 @@
 		E57B3E4E2933688500B2C0F0 /* NoMatchingInfoPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B3E4D2933688500B2C0F0 /* NoMatchingInfoPopup.swift */; };
 		E57FB8562886E2710050BBAE /* PhotoLibrary+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57FB8552886E2710050BBAE /* PhotoLibrary+.swift */; };
 		E58131A8288E6AC6000DB8C9 /* FloatyBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58131A7288E6AC6000DB8C9 /* FloatyBottomView.swift */; };
+		E58661F92A29F0D3009CEFE6 /* idormLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = E58661F82A29F0D3009CEFE6 /* idormLogo.png */; };
 		E58833D929BB521A002B2CBE /* IdormFont_deprecated.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58833D829BB521A002B2CBE /* IdormFont_deprecated.swift */; };
 		E588650A2988E0E20068BEB2 /* MatchingInfoAPI+Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58865092988E0E20068BEB2 /* MatchingInfoAPI+Path.swift */; };
 		E588650C2988E0EC0068BEB2 /* MatchingInfoAPI+Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588650B2988E0EC0068BEB2 /* MatchingInfoAPI+Method.swift */; };
@@ -264,7 +266,6 @@
 		E513D9FD2955C70A002EA592 /* EmailViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailViewReactor.swift; sourceTree = "<group>"; };
 		E513D9FF2955ECB4002EA592 /* PasswordViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordViewReactor.swift; sourceTree = "<group>"; };
 		E513DA012955ED0B002EA592 /* AuthViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewReactor.swift; sourceTree = "<group>"; };
-		E51BB9F62A1F1AE70019AC1F /* HomeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSection.swift; sourceTree = "<group>"; };
 		E51D1C7B2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMyInfoViewReactor.swift; sourceTree = "<group>"; };
 		E51D1C7D29531B8300A7EE49 /* MyRoommateViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoommateViewReactor.swift; sourceTree = "<group>"; };
 		E52233B2296CFCAD00C5DD07 /* PostingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingVC.swift; sourceTree = "<group>"; };
@@ -329,6 +330,7 @@
 		E57B3E4D2933688500B2C0F0 /* NoMatchingInfoPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMatchingInfoPopup.swift; sourceTree = "<group>"; };
 		E57FB8552886E2710050BBAE /* PhotoLibrary+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotoLibrary+.swift"; sourceTree = "<group>"; };
 		E58131A7288E6AC6000DB8C9 /* FloatyBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatyBottomView.swift; sourceTree = "<group>"; };
+		E58661F82A29F0D3009CEFE6 /* idormLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = idormLogo.png; sourceTree = "<group>"; };
 		E58833D829BB521A002B2CBE /* IdormFont_deprecated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdormFont_deprecated.swift; sourceTree = "<group>"; };
 		E58865092988E0E20068BEB2 /* MatchingInfoAPI+Path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MatchingInfoAPI+Path.swift"; sourceTree = "<group>"; };
 		E588650B2988E0EC0068BEB2 /* MatchingInfoAPI+Method.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MatchingInfoAPI+Method.swift"; sourceTree = "<group>"; };
@@ -444,11 +446,13 @@
 				E55103262923714A001E1530 /* RxGesture in Frameworks */,
 				E551030229236E4F001E1530 /* Moya in Frameworks */,
 				E551030729236E84001E1530 /* RxCocoa in Frameworks */,
+				E521FC282A2834E2008B2956 /* RxKakaoSDKShare in Frameworks */,
 				E5CFF6FB2981761700E11D9A /* GrowingTextView in Frameworks */,
 				E551031A2923704B001E1530 /* PanModal in Frameworks */,
 				E551031429236FE6001E1530 /* RSKGrowingTextView in Frameworks */,
 				E5510320292370B6001E1530 /* DeviceKit in Frameworks */,
 				E55103172923701B001E1530 /* SnapKit in Frameworks */,
+				E521FC262A2834E2008B2956 /* RxKakaoSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -767,7 +771,6 @@
 				E5FA99392A013EBF0047AC0A /* Views */,
 				E56DF4C7289405DF00E85B10 /* ViewControllers */,
 				E5C451CC295C799A00D49988 /* Reactors */,
-				E51BB9F62A1F1AE70019AC1F /* HomeSection.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -834,8 +837,8 @@
 		E575304328D92BE900F0B57C /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				E529515F29BD217900087AE2 /* App */,
 				E575304528D92C1200F0B57C /* Base */,
+				E529515F29BD217900087AE2 /* App */,
 				E5084367288133570047A2EC /* Extensions */,
 				E508437528813C270047A2EC /* Fonts */,
 				E5EB0D022952923D00E70573 /* Constants */,
@@ -864,6 +867,7 @@
 				E5909CE528D94B610083075D /* BaseViewController.swift */,
 				E50FB5232971920B00E938B8 /* BaseView.swift */,
 				E503010128773A5E00611C62 /* LaunchScreen.storyboard */,
+				E58661F82A29F0D3009CEFE6 /* idormLogo.png */,
 				E50300FF28773A5E00611C62 /* Assets.xcassets */,
 			);
 			path = Base;
@@ -1203,6 +1207,8 @@
 				E5CFF6FA2981761700E11D9A /* GrowingTextView */,
 				E5626115299A789100D14020 /* Kingfisher */,
 				E5B61F2429B3544D0031046C /* FirebaseMessaging */,
+				E521FC252A2834E2008B2956 /* RxKakaoSDK */,
+				E521FC272A2834E2008B2956 /* RxKakaoSDKShare */,
 			);
 			productName = idorm;
 			productReference = E50300F328773A5D00611C62 /* idorm.app */;
@@ -1250,6 +1256,7 @@
 				E5CFF6F92981761700E11D9A /* XCRemoteSwiftPackageReference "GrowingTextView" */,
 				E5626114299A789100D14020 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				E5B61F2329B3544D0031046C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				E521FC242A2834E2008B2956 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
 			);
 			productRefGroup = E50300F428773A5D00611C62 /* Products */;
 			projectDirPath = "";
@@ -1268,6 +1275,7 @@
 				E508437428813C220047A2EC /* NotoSansCJKkr-Regular.otf in Resources */,
 				E503010328773A5E00611C62 /* LaunchScreen.storyboard in Resources */,
 				E503010028773A5E00611C62 /* Assets.xcassets in Resources */,
+				E58661F92A29F0D3009CEFE6 /* idormLogo.png in Resources */,
 				E508436E28813BF40047A2EC /* NotoSansCJKkr-Bold.otf in Resources */,
 				E508437028813C030047A2EC /* NotoSansCJKkr-Medium.otf in Resources */,
 				E5B61F3F29B47E5E0031046C /* GoogleService-Info.plist in Resources */,
@@ -1413,7 +1421,6 @@
 				E50300F928773A5D00611C62 /* SceneDelegate.swift in Sources */,
 				E5F56574291908DE0043FCB4 /* MyRoommateCell.swift in Sources */,
 				E57B3E4E2933688500B2C0F0 /* NoMatchingInfoPopup.swift in Sources */,
-				E51BB9F72A1F1AE70019AC1F /* HomeSection.swift in Sources */,
 				E5CFF71729835CCC00E11D9A /* MatchingInfoRequestModel.swift in Sources */,
 				E5066428296E677700B581E1 /* PostUtils.swift in Sources */,
 				E5D4900B288BFA0200311493 /* MatchingVC.swift in Sources */,
@@ -1638,9 +1645,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CODE_SIGN_ENTITLEMENTS = idorm/idorm.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 95JTZ6AP78;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = idorm/Info.plist;
@@ -1648,7 +1657,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "프로필 사진 변경 및 글의 사진을 첨부하기 위해 권한을 허락해주세요.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -1658,7 +1667,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.7;
+				MARKETING_VERSION = 2.0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = eungcheol.idorm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1676,9 +1685,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CODE_SIGN_ENTITLEMENTS = idorm/idorm.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 95JTZ6AP78;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = idorm/Info.plist;
@@ -1686,7 +1697,7 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "프로필 사진 변경 및 글의 사진을 첨부하기 위해 권한을 허락해주세요.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDarkContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -1696,7 +1707,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.7;
+				MARKETING_VERSION = 2.0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = eungcheol.idorm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1732,6 +1743,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		E521FC242A2834E2008B2956 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk-rx";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 2.15.0;
+			};
+		};
 		E551030029236E4F001E1530 /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya.git";
@@ -1871,6 +1890,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		E521FC252A2834E2008B2956 /* RxKakaoSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E521FC242A2834E2008B2956 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDK;
+		};
+		E521FC272A2834E2008B2956 /* RxKakaoSDKShare */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E521FC242A2834E2008B2956 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
+			productName = RxKakaoSDKShare;
+		};
 		E551030129236E4F001E1530 /* Moya */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E551030029236E4F001E1530 /* XCRemoteSwiftPackageReference "Moya" */;

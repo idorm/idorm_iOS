@@ -22,16 +22,7 @@ final class TabBarViewController: UITabBarController {
     super.viewDidLoad()
     setupStyles()
     setupViewControllers()
-    
-    TransitionManager.shared.postPushAlarmDidTap = { [weak self] postId in
-      self?.selectedIndex = 2
-      let navVC = self?.children[2] as? UINavigationController
-      let detailPostVC = DetailPostViewController()
-      detailPostVC.hidesBottomBarWhenPushed = true
-      let reactor = DetailPostViewReactor(postId)
-      detailPostVC.reactor = reactor
-      navVC?.pushViewController(detailPostVC, animated: true)
-    }
+    self.pushToDetailPost()
   }
   
   // MARK: - Setup
@@ -69,6 +60,20 @@ final class TabBarViewController: UITabBarController {
     tabBar.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMaxXMinYCorner)
     tabBar.layer.borderColor = UIColor.idorm_gray_200.cgColor
     tabBar.layer.borderWidth = 1
+  }
+  
+  // MARK: - Helpers
+  
+  private func pushToDetailPost() {
+    TransitionManager.shared.postPushAlarmDidTap = { [weak self] postId in
+      self?.selectedIndex = 2
+      let navVC = self?.children[2] as? UINavigationController
+      let detailPostVC = DetailPostViewController()
+      detailPostVC.hidesBottomBarWhenPushed = true
+      let reactor = DetailPostViewReactor(postId)
+      detailPostVC.reactor = reactor
+      navVC?.pushViewController(detailPostVC, animated: true)
+    }
   }
 }
 

@@ -39,6 +39,7 @@ final class DetailPhotosViewController: BaseViewController {
     cv.backgroundColor = .black
     cv.dataSource = self
     cv.delegate = self
+    cv.bounces = false
     cv.isScrollEnabled = false
     cv.showsHorizontalScrollIndicator = false
     
@@ -58,8 +59,6 @@ final class DetailPhotosViewController: BaseViewController {
     section.visibleItemsInvalidationHandler = { _, offset, _ in
       let width = self.photoCollectionView.frame.width
       self.currentIndex = Int(offset.x / width)
-      
-      
     }
     
     return section

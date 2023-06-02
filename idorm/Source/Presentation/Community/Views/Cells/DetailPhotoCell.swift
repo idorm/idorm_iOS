@@ -82,7 +82,7 @@ final class DetailPhotoCell: UICollectionViewCell {
   /// 명시적으로 호출되어야 합니다.
   func injectImage(_ url: String) {
     mainImageView.kf.setImage(with: URL(string: url))
-    contentView.addGestureRecognizer(pinchGesture)
+//    contentView.addGestureRecognizer(pinchGesture)
   }
 }
 

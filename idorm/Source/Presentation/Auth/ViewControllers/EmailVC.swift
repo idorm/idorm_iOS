@@ -76,7 +76,7 @@ final class EmailViewController: BaseViewController, View {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-    
+  
   // MARK: - Bind
   
   func bind(reactor: EmailViewReactor) {

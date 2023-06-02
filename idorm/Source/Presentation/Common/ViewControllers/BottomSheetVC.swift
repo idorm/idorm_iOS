@@ -237,7 +237,7 @@ final class BottomSheetViewController: BaseViewController {
       .map { $0.1 }
       .bind(to: self.buttonDidTap)
       .disposed(by: self.disposeBag)
-
+    
     // 게시글 삭제
     self.deletePostButton.rx.tap
       .map { BottomSheetButtonType.deletePost }
@@ -250,6 +250,15 @@ final class BottomSheetViewController: BaseViewController {
     // 게시글 수정
     self.editPostButton.rx.tap
       .map { BottomSheetButtonType.editPost }
+      .withUnretained(self)
+      .do { $0.0.dismiss(animated: true) }
+      .map { $0.1 }
+      .bind(to: self.buttonDidTap)
+      .disposed(by: self.disposeBag)
+    
+    // 게시글 공유
+    self.shareButton.rx.tap
+      .map { BottomSheetButtonType.share }
       .withUnretained(self)
       .do { $0.0.dismiss(animated: true) }
       .map { $0.1 }

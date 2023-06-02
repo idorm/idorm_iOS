@@ -32,6 +32,12 @@ final class AuthViewController: BaseViewController, View {
     $0.configuration?.background.strokeColor = .idorm_gray_200
   }
   
+  private let spamDescriptionLabel: UILabel = UILabel().then {
+    $0.font = .idormFont(.medium, size: 14.0)
+    $0.textColor = .idorm_gray_300
+    $0.text = "메일이 오지 않았으면 스팸함을 확인해주세요."
+  }
+  
   private let envelopeImageView = UIImageView(image: #imageLiteral(resourceName: "envelope"))
   private let nextButton = idormButton("인증번호 입력")
   
@@ -104,7 +110,12 @@ final class AuthViewController: BaseViewController, View {
   
   override func setupLayouts() {
     super.setupLayouts()
-    [envelopeImageView, portalButton, nextButton]
+    [
+      envelopeImageView,
+      spamDescriptionLabel,
+      portalButton,
+      nextButton
+    ]
       .forEach { view.addSubview($0) }
   }
   
@@ -113,6 +124,11 @@ final class AuthViewController: BaseViewController, View {
     envelopeImageView.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
       make.top.equalToSuperview().inset(150)
+    }
+    
+    spamDescriptionLabel.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+      make.top.equalTo(envelopeImageView.snp.bottom).offset(4)
     }
     
     nextButton.snp.makeConstraints { make in

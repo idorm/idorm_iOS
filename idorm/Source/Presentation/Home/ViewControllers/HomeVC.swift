@@ -27,7 +27,7 @@ final class HomeViewController: BaseViewController, View {
   
   private let mainLabel = UILabel().then {
     $0.text = """
-              1학기 룸메이트 매칭
+              2학기 룸메이트 매칭
               아이돔과 함께해요.
               """
     $0.textColor = .idorm_gray_400
@@ -37,7 +37,7 @@ final class HomeViewController: BaseViewController, View {
     let attributedString = NSMutableAttributedString(string: $0.text!)
     attributedString.addAttributes([.foregroundColor: UIColor.idorm_blue,
                                     .font: UIFont.init(name: IdormFont_deprecated.bold.rawValue, size: 20)!]
-                                   ,range: ($0.text! as NSString).range(of: "여름학기"))
+                                   ,range: ($0.text! as NSString).range(of: "2학기"))
     $0.attributedText = attributedString
   }
   
@@ -74,7 +74,6 @@ final class HomeViewController: BaseViewController, View {
   private lazy var calendarCollection: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
     layout.itemSize = CGSize(width: view.frame.width, height: 216)
-//    layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
     let cv = UICollectionView(
       frame: .zero,
       collectionViewLayout: layout
@@ -283,7 +282,7 @@ final class HomeViewController: BaseViewController, View {
 
 // MARK: - CollectionView Setup
 
-extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
   func collectionView(
     _ collectionView: UICollectionView,
     numberOfItemsInSection section: Int
