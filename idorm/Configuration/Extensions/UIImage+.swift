@@ -5,4 +5,18 @@
 //  Created by 김응철 on 7/8/23.
 //
 
-import Foundation
+import UIKit
+
+enum iDormIcon: String {
+  case left
+  case right
+}
+
+extension UIImage {
+  /// UIImage 타입인 아이콘을 추출합니다.
+  /// - Parameters:
+  ///  - icon: 원하는 아이콘의 케이스
+  static func iDormIcon(_ icon: iDormIcon) -> UIImage? {
+    return UIImage(named: "ic_\(icon.rawValue)")
+  }
+}

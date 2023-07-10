@@ -7,6 +7,26 @@
 
 import UIKit
 
+enum iDormColor: Int {
+  case firstUser = 0xB336FF
+  case secondUser = 0xFECD50
+  case thirdUser = 0x2AB577
+  case fourthUser = 0xFF54B0
+  
+  case iDormGray100 = 0xF2F5FA
+  case iDormGray200 = 0xE3E1EC
+  case iDormBlue = 0x71A1FE
+}
+
+extension UIColor {
+  /// 디자인 시스템에 있는 컬러를 추출합니다.
+  /// - Parameters:
+  ///  - color: 사용할 컬러의 `case`를 주입합니다.
+  static func iDormColor(_ color: iDormColor) -> UIColor {
+    return UIColor.init(rgb: color.rawValue)
+  }
+}
+
 extension UIColor {
   convenience init(red: Int, green: Int, blue: Int, a: Int = 0xFF) {
     self.init(

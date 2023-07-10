@@ -40,6 +40,7 @@ final class iDormCalendar: UIView, BaseView {
   private lazy var calendar: FSCalendar = {
     let calendar = FSCalendar()
     // 기본 설정
+    calendar.scrollEnabled = false
     calendar.delegate = self
     calendar.dataSource = self
     calendar.register(iDormCalendarCell.self, forCellReuseIdentifier: iDormCalendarCell.identifier)
@@ -47,12 +48,10 @@ final class iDormCalendar: UIView, BaseView {
     // 일
     calendar.appearance.titleFont = .idormFont(.regular, size: 12)
     calendar.appearance.titleDefaultColor = .idorm_gray_400
-    calendar.rowHeight = 38.0
     
     // 주
     calendar.appearance.weekdayFont = .idormFont(.regular, size: 12)
     calendar.appearance.weekdayTextColor = .idorm_gray_400
-    calendar.weekdayHeight = 38.0
     calendar.locale = Locale(identifier: "ko_KR")
     
     // 달
@@ -63,7 +62,7 @@ final class iDormCalendar: UIView, BaseView {
     calendar.appearance.headerMinimumDissolvedAlpha = 0.0
     calendar.appearance.headerTitleOffset = CGPoint(x: 0, y: -4)
     calendar.placeholderType = .none
-        
+    
     // 선택
     calendar.appearance.todayColor = .idorm_gray_200
     calendar.appearance.titleTodayColor = .idorm_gray_400
@@ -71,10 +70,9 @@ final class iDormCalendar: UIView, BaseView {
     
     switch self.viewType {
     case .main:
-      break
+      calendar.isUserInteractionEnabled = false
     case .sub:
-      calendar.appearance.borderSelectionColor = .clear
-      calendar.appearance.borderDefaultColor = .clear
+      break
     }
     
     return calendar
@@ -111,6 +109,8 @@ final class iDormCalendar: UIView, BaseView {
     fatalError("init(coder:) has not been implemented")
   }
   
+  // MARK: - Life Cycle
+  
   // MARK: - Setup
   
   func setupStyles() {
@@ -144,12 +144,12 @@ final class iDormCalendar: UIView, BaseView {
     }
     
     self.leftButton.snp.makeConstraints { make in
-      make.centerY.equalTo(self.calendar.calendarHeaderView).multipliedBy(1.1)
+      make.centerY.equalTo(self.calendar.calendarHeaderView)
       make.leading.equalToSuperview().inset(16.0)
     }
     
     self.rightButton.snp.makeConstraints { make in
-      make.centerY.equalTo(self.calendar.calendarHeaderView).multipliedBy(1.1)
+      make.centerY.equalTo(self.calendar.calendarHeaderView)
       make.trailing.equalToSuperview().inset(16.0)
     }
     
@@ -177,7 +177,7 @@ final class iDormCalendar: UIView, BaseView {
       }
       .disposed(by: self.disposeBag)
   }
-
+  
   // MARK: - Functions
   
   /// 캘린더 선택 여부를 업데이트합니다.
@@ -238,5 +238,4 @@ extension iDormCalendar: FSCalendarDataSource {
 // MARK: - FSCalendar Delegate
 
 extension iDormCalendar: FSCalendarDelegate {
-  
 }

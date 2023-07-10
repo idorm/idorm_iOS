@@ -35,49 +35,34 @@ final class LoginViewReactor: Reactor {
     var isOpenedPutEmailVC: (Bool, AuthProcess) = (false, .findPw)
   }
   
+  private let memberAPIManager = APIManager<MemberAPI>()
   var initialState: State = State()
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .viewDidLoad:
-//      TokenStorage.removeToken()
       return .empty()
       
     case let .signIn(email, password):
       return .concat([
-        .just(.setLoading(true)),
-        MemberAPI.provider.rx.request(
-          .login(email: email, password: password, fcmToken: TokenManager.shared.fcmToken!)
-        )
-          .asObservable()
-          .withUnretained(self)
-          .flatMap { owner, response -> Observable<Mutation> in
-            switch response.statusCode {
-            case 200..<300: // 로그인 성공
-              let member = MemberAPI.decode(
-                ResponseModel<MemberResponseModel.Member>.self,
-                data: response.data
-              ).data
-              let token = response.response?.headers.value(for: "authorization")
-              UserStorage.shared.saveMember(member)
-              UserStorage.shared.saveEmail(email)
-              UserStorage.shared.savePassword(password)
-              UserStorage.shared.saveToken(token!)
-              return owner.lookUpMatchingInfo()
-            default: // 로그인 실패
-              let errorMessage = MemberAPI.decode(
-                ErrorResponseModel.self,
-                data: response.data
-              ).responseMessage
-              return .concat([
-                .just(.setLoading(false)),
-                .just(.setPopup(true, errorMessage)),
-                .just(.setPopup(false, ""))
-              ])
-            }
-          }
+        memberAPIManager.requestAPI(to: .login(
+          email: email,
+          password: password,
+          fcmToken: TokenManager.shared.fcmToken!
+        ))
+        .do {
+          let token = $0.response?.headers.value(for: "authorization")
+          UserStorage.shared.saveEmail(email)
+          UserStorage.shared.savePassword(password)
+          UserStorage.shared.saveToken(token!)
+        }
+        .map(ResponseModel<MemberResponseModel.Member>.self)
+        .flatMap { responseModel -> Observable<Mutation> in
+          UserStorage.shared.saveMember(responseModel.data)
+          return .empty()
+        }
       ])
-      
+
     case .signUp:
       return .concat([
         .just(.setPutEmailVC(true, .signUp)),

@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import RxGesture
 
 final class BasicPopup: BaseViewController {
   
@@ -99,5 +100,14 @@ final class BasicPopup: BaseViewController {
         self?.dismiss(animated: false)
       })
       .disposed(by: disposeBag)
+    
+    // 화면 빈 공간 터치
+    self.view.rx.tapGesture()
+      .skip(1)
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
+        owner.dismiss(animated: false)
+      }
+      .disposed(by: self.disposeBag)
   }
 }

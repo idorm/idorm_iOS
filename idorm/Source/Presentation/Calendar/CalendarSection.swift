@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+enum CalendarSection: Hashable {
+  
+}
+
+
