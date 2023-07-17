@@ -38,23 +38,24 @@ final class HomeViewReactor: Reactor {
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .viewDidLoad:
-      let dormCategory = UserStorage.shared.matchingInfo?.dormCategory ?? .no1
-      return .concat([
-        .just(.setLoading(true)),
-        CommunityAPI.provider.rx.request(.lookupTopPosts(dormCategory))
-          .asObservable()
-          .withUnretained(self)
-          .flatMap { owner, response -> Observable<Mutation> in
-            let responseModel = CommunityAPI.decode(
-              ResponseModel<[CommunityResponseModel.Posts]>.self,
-              data: response.data
-            ).data
-            return .concat([
-              .just(.setPosts(responseModel)),
-              owner.retrieveCalendars()
-            ])
-          }
-      ])
+      return .empty()
+//      let dormCategory = UserStorage.shared.matchingInfo?.dormCategory ?? .no1
+//      return .concat([
+//        .just(.setLoading(true)),
+//        CommunityAPI.provider.rx.request(.lookupTopPosts(dormCategory))
+//          .asObservable()
+//          .withUnretained(self)
+//          .flatMap { owner, response -> Observable<Mutation> in
+//            let responseModel = CommunityAPI.decode(
+//              ResponseModel<[CommunityResponseModel.Posts]>.self,
+//              data: response.data
+//            ).data
+//            return .concat([
+//              .just(.setPosts(responseModel)),
+//              owner.retrieveCalendars()
+//            ])
+//          }
+//      ])
       
     case let .postDidTap(postId):
       return .concat([

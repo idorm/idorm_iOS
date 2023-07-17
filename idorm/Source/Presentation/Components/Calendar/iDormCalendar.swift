@@ -12,6 +12,10 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
+protocol iDormCalendarDelegate: AnyObject {
+  func monthDidChage(_ nextDate: Date)
+}
+
 /// 일정을 볼 수 있는 메인 캘린더입니다.
 final class iDormCalendar: UIView, BaseView {
   
@@ -90,6 +94,8 @@ final class iDormCalendar: UIView, BaseView {
   // MARK: - Properties
   
   private var disposeBag = DisposeBag()
+  
+  weak var delegate: iDormCalendarDelegate?
   
   /// 현재 캘린더에 적용된 타입니다.
   private let viewType: ViewType
@@ -202,6 +208,20 @@ final class iDormCalendar: UIView, BaseView {
     self.calendar.setCurrentPage(nextPage, animated: true)
   }
   
+  /// 일정을 받아서 달력 UI를 업데이트합니다.
+  ///
+  /// - Parameters:
+  ///  - calendars: 서버에서 받아온 팀 일정들
+  func configure(_ calendars: [TeamCalendar]) {
+    let targetDates = Set(calendars.map { $0.startDate })
+     
+    self.calendar.visibleCells().forEach {
+      // 현재 보여지고 있는 모든 셀의 날짜
+      let date = self.calendar.date(for: $0)!
+      
+    }
+  }
+  
   /// 변화가 생기면, 셀을 업데이트 합니다.
   ///
   /// - Parameters:
@@ -229,7 +249,7 @@ extension iDormCalendar: FSCalendarDataSource {
     ) as? iDormCalendarCell else {
       fatalError("iDormCalendarCell을 참조할 수 없습니다.")
     }
-    cell.configure(self.viewType)
+    cell.configureViewType(self.viewType)
     
     return cell
   }
@@ -238,4 +258,7 @@ extension iDormCalendar: FSCalendarDataSource {
 // MARK: - FSCalendar Delegate
 
 extension iDormCalendar: FSCalendarDelegate {
+  func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
+    self.delegate?.monthDidChage(calendar.currentPage)
+  }
 }

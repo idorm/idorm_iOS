@@ -104,10 +104,6 @@ final class CalendarCell: UICollectionViewCell, BaseView {
   private lazy var dorm2Button = dormButton(dorm: .no2)
   private lazy var dorm3Button = dormButton(dorm: .no3)
   
-  // MARK: - Properties
-  
-  static let identifier = "CalendarCell"
-  
   // MARK: - Initializer
   
   override init(frame: CGRect) {

@@ -31,7 +31,7 @@ final class LoginViewReactor: Reactor {
   struct State {
     var isLoading: Bool = false
     var isOpenedPopup: (Bool, String) = (false, "")
-    var isOpenedMainVC: Bool = false
+    @Pulse var isOpenedMainVC: Bool = false
     var isOpenedPutEmailVC: (Bool, AuthProcess) = (false, .findPw)
   }
   
@@ -50,16 +50,22 @@ final class LoginViewReactor: Reactor {
           password: password,
           fcmToken: TokenManager.shared.fcmToken!
         ))
-        .do {
-          let token = $0.response?.headers.value(for: "authorization")
+        .flatMap { response -> Observable<Mutation> in
+          let member = MemberAPI.decode(
+            ResponseModel<MemberResponseModel.Member>.self,
+            data: response.data
+          ).data
+          
+          let token = response.response?.headers.value(for: "authorization")
+          UserStorage.shared.saveMember(member)
           UserStorage.shared.saveEmail(email)
           UserStorage.shared.savePassword(password)
           UserStorage.shared.saveToken(token!)
-        }
-        .map(ResponseModel<MemberResponseModel.Member>.self)
-        .flatMap { responseModel -> Observable<Mutation> in
-          UserStorage.shared.saveMember(responseModel.data)
-          return .empty()
+          
+          return .concat([
+            .just(.setMainVC(true)),
+            .just(.setMainVC(false))
+          ])
         }
       ])
 

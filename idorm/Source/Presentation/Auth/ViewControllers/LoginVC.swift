@@ -104,11 +104,6 @@ final class LoginViewController: BaseViewController, View {
   private let idormimageView = UIImageView(image: #imageLiteral(resourceName: "idorm_gray"))
   private let inuImageView = UIImageView(image: #imageLiteral(resourceName: "inu"))
   
-  private let iDormCalendar: iDormCalendar = {
-    let calendar = idorm.iDormCalendar(.main)
-    return calendar
-  }()
-  
   //MARK: - LifeCycle
   
   override func viewDidLoad() {
@@ -161,7 +156,7 @@ final class LoginViewController: BaseViewController, View {
         let tabBarVC = TabBarViewController()
         SceneUtils.switchRootVC(to: tabBarVC, animated: true)
       }
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
     
     // EmailVC로 이동
     reactor.state
@@ -220,7 +215,6 @@ final class LoginViewController: BaseViewController, View {
       self.forgotPwButton,
       self.signUpStack,
       self.indicator,
-      self.iDormCalendar
     ].forEach { self.view.addSubview($0) }
   }
   
@@ -268,11 +262,6 @@ final class LoginViewController: BaseViewController, View {
     
     self.indicator.snp.makeConstraints { make in
       make.center.equalToSuperview()
-    }
-    
-    self.iDormCalendar.snp.makeConstraints { make in
-      make.bottom.leading.trailing.equalTo(self.view.safeAreaLayoutGuide)
-      make.height.equalTo(300.0)
     }
   }
   

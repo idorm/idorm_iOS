@@ -31,8 +31,6 @@ final class DetailPhotoCell: UICollectionViewCell {
   
   // MARK: - Properties
   
-  static let identifier = "DetailPhotoCell"
-  
   var recognizerScale: CGFloat = 1.0
   var maxScale: CGFloat = 2.0
   var minScale: CGFloat = 1.0

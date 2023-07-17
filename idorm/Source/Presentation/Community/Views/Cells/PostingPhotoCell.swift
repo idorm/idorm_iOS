@@ -14,8 +14,6 @@ final class PostingPhotoCell: UICollectionViewCell {
   
   // MARK: - Properties
   
-  static let identifier = "PostingPhotoCell"
-  
   private lazy var deleteBtn: UIButton = {
     let btn = UIButton()
     btn.setImage(UIImage(named: "circle_xmark_darkgray"), for: .normal)

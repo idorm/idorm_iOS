@@ -15,6 +15,8 @@ enum iDormColor: Int {
   
   case iDormGray100 = 0xF2F5FA
   case iDormGray200 = 0xE3E1EC
+  case iDormGray300 = 0x9B9B9B
+  case iDormGray400 = 0x5B5B5B
   case iDormBlue = 0x71A1FE
 }
 

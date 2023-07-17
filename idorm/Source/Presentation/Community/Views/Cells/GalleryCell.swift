@@ -10,8 +10,9 @@ import SnapKit
 import Photos
 
 class GalleryCell: UICollectionViewCell {
+  
   // MARK: - Properties
-  static let identifier = "ImagePickerCollectionViewCell"
+  
   var asset: PHAsset = PHAsset()
   
   lazy var imageView: UIImageView = {

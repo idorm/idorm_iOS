@@ -54,8 +54,6 @@ class MyCommentsCollectionViewCell: UICollectionViewCell {
     return button
   }()
   
-  static let identifier = "MyCommentsCollectionViewCell"
-  
   // MARK: - LifeCycle
   
   // MARK: - Helpers

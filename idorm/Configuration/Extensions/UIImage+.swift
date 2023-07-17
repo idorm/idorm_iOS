@@ -10,6 +10,8 @@ import UIKit
 enum iDormIcon: String {
   case left
   case right
+  case calendar
+  case option
 }
 
 extension UIImage {

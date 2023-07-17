@@ -14,8 +14,6 @@ final class DetailPostPhotoCell: UICollectionViewCell {
   
   // MARK: - PROPERTIES
   
-  static let identifier = "DetailPostPhotoCell"
-  
   private let mainImageView: UIImageView = {
     let iv = UIImageView()
     iv.layer.cornerRadius = 8

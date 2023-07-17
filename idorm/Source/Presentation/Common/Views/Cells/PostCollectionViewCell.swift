@@ -9,8 +9,8 @@ import UIKit
 import SnapKit
 
 class PostCollectionViewCell: UICollectionViewCell {
+  
   // MARK: - Properties
-  static let identifier = "PostCollectionViewCell"
   
   let likeImg = UIImageView(image: UIImage(named: "like_medium"))
   let messageImg = UIImageView(image: UIImage(named: "message_medium"))

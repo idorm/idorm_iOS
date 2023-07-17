@@ -13,8 +13,6 @@ final class PostCell: UICollectionViewCell {
   
   // MARK: - Properties
   
-  static let identifier = "PostCell"
-  
   private let titleLb: UILabel = {
     let lb = UILabel()
     lb.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 14)

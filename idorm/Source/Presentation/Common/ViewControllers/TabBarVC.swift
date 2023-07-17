@@ -32,23 +32,27 @@ final class TabBarViewController: UITabBarController {
     let matchingVC = MatchingViewController()
     let myPageVC = MyPageViewController()
     let postListVC = PostListViewController()
+    let calendarVC = CalendarViewController()
     
     homeVC.reactor = HomeViewReactor()
     matchingVC.reactor = MatchingViewReactor()
     myPageVC.reactor = MyPageViewReactor()
     postListVC.reactor = PostListViewReactor()
+    calendarVC.reactor = CalendarViewReactor()
     
     let naviHomeVC = UINavigationController(rootViewController: homeVC)
     let naviMatchingVC = UINavigationController(rootViewController: matchingVC)
     let naviMyPageVC = UINavigationController(rootViewController: myPageVC)
     let naviPostListVC = UINavigationController(rootViewController: postListVC)
+    let naviCalendarVC = UINavigationController(rootViewController: calendarVC)
     
     naviHomeVC.tabBarItem = tabBarItem("홈", image: UIImage(named: "house"))
     naviMatchingVC.tabBarItem = tabBarItem("룸메 매칭", image: UIImage(named: "circle_heart_lightgray"))
     naviMyPageVC.tabBarItem = tabBarItem("마이페이지", image: UIImage(named: "human_lightgray"))
     naviPostListVC.tabBarItem = tabBarItem("커뮤니티", image: UIImage(named: "speechBubble_gray"))
+    naviCalendarVC.tabBarItem = tabBarItem("캘린더", image: .iDormIcon(.calendar))
     
-    viewControllers = [naviHomeVC, naviMatchingVC, naviPostListVC, naviMyPageVC]
+    viewControllers = [naviHomeVC, naviMatchingVC, naviPostListVC, naviCalendarVC, naviMyPageVC]
   }
   
   private func setupStyles() {
