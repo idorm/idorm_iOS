@@ -8,14 +8,16 @@
 import UIKit
 
 import SnapKit
+import FSCalendar
 
+/// `CalendarVC`에 사용하는 달력이 포함되어 있는 헤더입니다.
 final class CalendarHeader: UICollectionReusableView, BaseView {
   
   // MARK: - UI Components
   
-  let dormCalendar: iDormCalendar = {
-    let calendar = iDormCalendar(.main)
-    return calendar
+  lazy var calendarView: iDormCalendarView = {
+    let calendarView = iDormCalendarView(.main)
+    return calendarView
   }()
   
   // MARK: - Initializer
@@ -36,12 +38,27 @@ final class CalendarHeader: UICollectionReusableView, BaseView {
   func setupStyles() {}
   
   func setupLayouts() {
-    self.addSubview(self.dormCalendar)
+    self.addSubview(self.calendarView)
   }
   
   func setupConstraints() {
-    self.dormCalendar.snp.makeConstraints { make in
+    self.calendarView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
     }
+  }
+  
+  // MARK: - Configure
+  
+  func configure(
+    _ currentDate: String,
+    teamCalendars: [TeamCalendar],
+    dormCalendars: [DormCalendar]
+  ) {
+    let currentDate = currentDate.toDate(format: "yyyy-MM")
+    self.calendarView.configure(
+      currentDate,
+      teamCalendars: teamCalendars,
+      dormCalendars: dormCalendars
+    )
   }
 }

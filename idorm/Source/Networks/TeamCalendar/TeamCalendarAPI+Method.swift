@@ -6,3 +6,20 @@
 //
 
 import Foundation
+
+import Moya
+
+extension CalendarAPI {
+  func getMethod() -> Moya.Method {
+    switch self {
+    case .getTeamMembers:
+      return .get
+      
+    case .postTeamCalendars:
+      return .post
+      
+    case .postDormCalendars:
+      return .post
+    }
+  }
+}

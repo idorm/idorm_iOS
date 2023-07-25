@@ -20,12 +20,22 @@ final class CalendarMemberCell: UICollectionViewCell, BaseView {
   
   // MARK: - Properties
   
+  /// 프로필 이미지 테두리 색상을 변경합니다.
+  private var borderColor: CGColor? = UIColor.iDormColor(.firstUser).cgColor {
+    willSet {
+      self.profileImageView.layer.borderColor = newValue
+    }
+  }
+  
   // MARK: - UI Components
   
-  private let profileImageView: UIImageView = {
+  private lazy var profileImageView: UIImageView = {
     let iv = UIImageView()
     iv.layer.cornerRadius = Metric.imageViewSize / 2
     iv.layer.borderWidth = Metric.imageViewBorderWidth
+    iv.layer.borderColor = self.borderColor
+    iv.contentMode = .scaleAspectFit
+    iv.layer.masksToBounds = true
     iv.backgroundColor = .iDormColor(.iDormBlue)
     return iv
   }()
@@ -82,8 +92,22 @@ final class CalendarMemberCell: UICollectionViewCell, BaseView {
   /// - Parameters:
   ///   - teamMember: 팀 멤버의 기본적인 정보를 제공합니다.
   func configure(_ teamMember: TeamMember) {
-//    guard let url = URL(string: teamMember.profilePhotoUrl) else { return }
-//    self.profileImageView.kf.setImage(with: url)
+    if let urlString = teamMember.profilePhotoUrl {
+      self.profileImageView.kf.setImage(with: URL(string: urlString)!)
+    }
     self.nicknameLabel.text = teamMember.nickname
+    
+    switch teamMember.order {
+    case 0:
+      self.borderColor = UIColor.iDormColor(.firstUser).cgColor
+    case 1:
+      self.borderColor = UIColor.iDormColor(.secondUser).cgColor
+    case 2:
+      self.borderColor = UIColor.iDormColor(.thirdUser).cgColor
+    case 3:
+      self.borderColor = UIColor.iDormColor(.fourthUser).cgColor
+    default:
+      self.borderColor = UIColor.iDormColor(.firstUser).cgColor
+    }
   }
 }

@@ -12,6 +12,8 @@ import SnapKit
 import ReactorKit
 import RxSwift
 import RxCocoa
+import RxGesture
+import PanModal
 
 final class CalendarViewController: BaseViewController, View {
   
@@ -34,26 +36,36 @@ final class CalendarViewController: BaseViewController, View {
           cell.configure(member)
           return cell
           
-        case .teamCalendar:
+        case .teamCalendar(let teamCalendar):
           guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: TeamCalendarCell.identifier,
             for: indexPath
           ) as? TeamCalendarCell else {
             return UICollectionViewCell()
           }
+          cell.configure(teamCalendar)
           return cell
-        default:
-          return UICollectionViewCell()
+          
+        case .dormCalendar(let dormCalendar):
+          guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: DormCalendarCell.identifier,
+            for: indexPath
+          ) as? DormCalendarCell else {
+            return UICollectionViewCell()
+          }
+          cell.configure(with: dormCalendar)
+          return cell
         }
       }
     )
     dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
       guard
-        let section = self.dataSource.sectionIdentifier(for: indexPath.section)
+        let section = self.dataSource.sectionIdentifier(for: indexPath.section),
+        let reactor = self.reactor
       else { fatalError("❌ CalendarSection을 찾을 수 없습니다!") }
       
       switch section {
-      case .teamMembers:
+      case .teamMembers(let members):
         guard let header = collectionView.dequeueReusableSupplementaryView(
           ofKind: kind,
           withReuseIdentifier: CalendarMemberHeader.identifier,
@@ -61,8 +73,14 @@ final class CalendarViewController: BaseViewController, View {
         ) as? CalendarMemberHeader else {
           return UICollectionReusableView()
         }
+        if self.calendarMemberHeader == nil {
+          self.calendarMemberHeader = header
+        }
+        header.configure(with: members)
+        header.delegate = self
         return header
-      case .calendar:
+        
+      case let .calendar(teamCalendars, dormCalendars):
         guard let header = collectionView.dequeueReusableSupplementaryView(
           ofKind: kind,
           withReuseIdentifier: CalendarHeader.identifier,
@@ -70,7 +88,14 @@ final class CalendarViewController: BaseViewController, View {
         ) as? CalendarHeader else {
           return UICollectionReusableView()
         }
+        header.calendarView.delegate = self
+        header.configure(
+          reactor.currentState.currentDate,
+          teamCalendars: teamCalendars,
+          dormCalendars: dormCalendars
+        )
         return header
+        
       case .dormCalendar, .teamCalendar:
         guard let header = collectionView.dequeueReusableSupplementaryView(
           ofKind: kind,
@@ -89,10 +114,21 @@ final class CalendarViewController: BaseViewController, View {
   
   // MARK: - UI Components
   
+  /// `룸메이트를 초대해서 일정을 공유해보세요.`라는 문구가 적혀있는 `UIImageView`
+  private let inviteRoommateImageView: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = .iDormText(.inviteRoommate)
+    return imageView
+  }()
+  
+  /// `calendarMemberHeader`를 참조할 수 있도록 만든 프로퍼티
+  private var calendarMemberHeader: CalendarMemberHeader!
+  
+  /// 메인이 되는 `CollectionView`
   private lazy var collectionView: UICollectionView = {
     let layout = self.setupCompositionalLayout()
     let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    cv.contentInsetAdjustmentBehavior = .never
+    cv.backgroundColor = .white
     
     // Cell
     cv.register(
@@ -102,6 +138,10 @@ final class CalendarViewController: BaseViewController, View {
     cv.register(
       TeamCalendarCell.self,
       forCellWithReuseIdentifier: TeamCalendarCell.identifier
+    )
+    cv.register(
+      DormCalendarCell.self,
+      forCellWithReuseIdentifier: DormCalendarCell.identifier
     )
     
     // Header
@@ -126,6 +166,10 @@ final class CalendarViewController: BaseViewController, View {
       CalendarMemberBackgroundView.self,
       forDecorationViewOfKind: CalendarMemberBackgroundView.identifier
     )
+    layout.register(
+      TeamCalendarBackgroundView.self,
+      forDecorationViewOfKind: TeamCalendarBackgroundView.identifier
+    )
     
     return cv
   }()
@@ -142,6 +186,8 @@ final class CalendarViewController: BaseViewController, View {
   
   override func setupStyles() {
     super.setupStyles()
+    
+    self.view.backgroundColor = .iDormColor(.iDormGray100)
   }
   
   override func setupLayouts() {
@@ -154,7 +200,7 @@ final class CalendarViewController: BaseViewController, View {
     super.setupConstraints()
     
     self.collectionView.snp.makeConstraints { make in
-      make.edges.equalToSuperview()
+      make.edges.equalTo(self.view.safeAreaLayoutGuide)
     }
   }
   
@@ -163,8 +209,29 @@ final class CalendarViewController: BaseViewController, View {
   func bind(reactor: CalendarViewReactor) {
     // Action
     self.rx.viewDidLoad
-      .map { CalendarViewReactor.Action.viewDidLoad }
+      .map { _ in CalendarViewReactor.Action.requestAllData }
       .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
+    self.collectionView.rx.itemSelected
+      .withUnretained(self)
+      .map { owner, indexPath in
+        let snapshot = owner.dataSource.snapshot()
+        let sections = snapshot.sectionIdentifiers
+        let items = snapshot.itemIdentifiers(inSection: sections[indexPath.section])
+        return CalendarViewReactor.Action.itemSelected(items[indexPath.item])
+      }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
+    self.inviteRoommateImageView.rx.tapGesture()
+      .skip(1)
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut) {
+          owner.inviteRoommateImageView.alpha = 0
+        }
+      }
       .disposed(by: self.disposeBag)
     
     // State
@@ -173,10 +240,28 @@ final class CalendarViewController: BaseViewController, View {
       .drive(with: self) { owner, sectionItem in
         var snapshot = NSDiffableDataSourceSnapshot<CalendarSection, CalendarSectionItem>()
         snapshot.appendSections(sectionItem.sections)
-        sectionItem.items.enumerated().forEach { index, items in
-          snapshot.appendItems(items, toSection: sectionItem.sections[index])
+        sectionItem.items.enumerated().forEach { index, item in
+          snapshot.appendItems(item, toSection: sectionItem.sections[index])
         }
-        owner.dataSource.apply(snapshot, animatingDifferences: true)
+        DispatchQueue.main.async {
+          owner.dataSource.applySnapshotUsingReloadData(snapshot)
+        }
+      }
+      .disposed(by: self.disposeBag)
+    
+    reactor.state
+      .flatMap {
+        Observable.combineLatest(
+          Observable.just($0.isNeedToConfirmDeleted),
+          Observable.just($0.members)
+        )
+      }
+      .skip(1)
+      .filter { $0.0 == false }
+      .filter { $0.1.count == 1 }
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
+        owner.setupInviteRoommateImageView()
       }
       .disposed(by: self.disposeBag)
   }
@@ -187,7 +272,7 @@ final class CalendarViewController: BaseViewController, View {
 private extension CalendarViewController {
   /// `CollectionView`의 레이아웃을 설정합니다.
   func setupCompositionalLayout() -> UICollectionViewCompositionalLayout {
-    return UICollectionViewCompositionalLayout { section, _ in
+     return UICollectionViewCompositionalLayout { section, _ in
       guard
         let calendarSection = self.dataSource.sectionIdentifier(for: section)
       else { fatalError("CalendarSection을 찾을 수 없습니다.") }
@@ -207,7 +292,7 @@ private extension CalendarViewController {
         // Header
         let headerSize = NSCollectionLayoutSize(
           widthDimension: .fractionalWidth(1.0),
-          heightDimension: .absolute(80 + 18 + self.view.safeAreaInsets.top + 14)
+          heightDimension: .absolute(112.0)
         )
         let header = NSCollectionLayoutBoundarySupplementaryItem(
           layoutSize: headerSize,
@@ -221,7 +306,7 @@ private extension CalendarViewController {
         section.orthogonalScrollingBehavior = .paging
         section.interGroupSpacing = 20.0
         section.contentInsets = NSDirectionalEdgeInsets(
-          top: 18 + self.view.safeAreaInsets.top,
+          top: 18,
           leading: 24,
           bottom: 14,
           trailing: 14
@@ -230,12 +315,16 @@ private extension CalendarViewController {
           .background(elementKind: CalendarMemberBackgroundView.identifier)
         ]
         
+        section.visibleItemsInvalidationHandler = { _, offset, _ in
+          self.collectionView.bounces = offset.y > 30
+        }
+        
         return section
       case .calendar:
         // Item
         let itemSize = NSCollectionLayoutSize(
           widthDimension: .fractionalWidth(1),
-          heightDimension: .absolute(0)
+          heightDimension: .absolute(1)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
@@ -272,7 +361,7 @@ private extension CalendarViewController {
         // Header
         let headerSize = NSCollectionLayoutSize(
           widthDimension: .fractionalWidth(1.0),
-          heightDimension: .absolute(18)
+          heightDimension: .absolute(50)
         )
         let header = NSCollectionLayoutBoundarySupplementaryItem(
           layoutSize: headerSize,
@@ -283,11 +372,102 @@ private extension CalendarViewController {
         // Section
         let section = NSCollectionLayoutSection(group: group)
         section.boundarySupplementaryItems = [header]
+        section.interGroupSpacing = 6
+        section.contentInsets = NSDirectionalEdgeInsets(
+          top: 18,
+          leading: 24,
+          bottom: 18,
+          trailing: 24
+        )
+        section.decorationItems = [
+          .background(elementKind: TeamCalendarBackgroundView.identifier)
+        ]
         
         return section
       default:
-        fatalError()
+        // Item
+        let itemSize = NSCollectionLayoutSize(
+          widthDimension: .fractionalWidth(1.0),
+          heightDimension: .estimated(150)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        // Group
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: itemSize, subitems: [item])
+        
+        // Header
+        let headerSize = NSCollectionLayoutSize(
+          widthDimension: .fractionalWidth(1.0),
+          heightDimension: .absolute(40.0)
+        )
+        let header = NSCollectionLayoutBoundarySupplementaryItem(
+          layoutSize: headerSize,
+          elementKind: UICollectionView.elementKindSectionHeader,
+          alignment: .top
+        )
+        
+        // Section
+        let section = NSCollectionLayoutSection(group: group)
+        section.boundarySupplementaryItems = [header]
+        section.contentInsets = NSDirectionalEdgeInsets(
+          top: 0,
+          leading: 24,
+          bottom: 24,
+          trailing: 24
+        )
+        
+        return section
       }
     }
+  }
+  
+  /// `inviteRoommateImageView`의 레이아웃 및 제약조건을 생성합니다.
+  func setupInviteRoommateImageView() {
+    self.view.addSubview(self.inviteRoommateImageView)
+    
+    self.inviteRoommateImageView.snp.makeConstraints { make in
+      make.trailing.equalToSuperview().inset(44.0)
+      make.top.equalTo(self.calendarMemberHeader.inviteButton.snp.bottom)
+    }
+  }
+}
+
+// MARK: - CalendarMemberHeader
+
+extension CalendarViewController: CalendarMemberHeaderDelegate {
+  /// 룸메이트 버튼이 눌렸을 때
+  func didTapInviteRoommateButton() {}
+  
+  /// 옵션 버튼이 눌렸을 때
+  func didTapOptionButton() {
+    let bottomSheetVC = BottomSheetViewController(
+      items: [
+        .normal(title: "친구 관리"),
+        .normal(title: "일정 관리"),
+        .normal(title: "룸메이트 초대해서 일정 공유하기"),
+        .normal(title: "일정 공유 캘린더 나가기")
+        ],
+      contentHeight: 224.0
+    )
+    bottomSheetVC.delegate = self
+    self.presentPanModal(bottomSheetVC)
+  }
+}
+
+// MARK: - CalendarHeader
+
+extension CalendarViewController: iDormCalendarDelegate {
+  /// 달력의 월이 바뀔 때 호출되는 메서드입니다.
+  func monthDidChage(_ currentDateString: String) {
+    self.reactor?.action.onNext(.currentDateDidChange(currentDateString))
+  }
+}
+
+// MARK: - BottomSheet
+
+extension CalendarViewController: BottomSheetViewControllerDelegate {
+  /// 바텀 시트 버튼이 눌렸을 때
+  func didTapButton(index: Int) {
+    print(index)
   }
 }

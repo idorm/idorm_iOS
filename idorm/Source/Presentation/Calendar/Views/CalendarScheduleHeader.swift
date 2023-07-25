@@ -21,9 +21,24 @@ final class CalendarScheduleHeader: UICollectionReusableView, BaseView {
     return label
   }()
   
+  // MARK: - Initializer
+  
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    self.setupStyles()
+    self.setupLayouts()
+    self.setupConstraints()
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   // MARK: - Setup
   
-  func setupStyles() {}
+  func setupStyles() {
+    self.backgroundColor = .white
+  }
   
   func setupLayouts() {
     self.addSubview(self.contentLabel)
@@ -31,8 +46,8 @@ final class CalendarScheduleHeader: UICollectionReusableView, BaseView {
   
   func setupConstraints() {
     self.contentLabel.snp.makeConstraints { make in
-      make.centerY.equalToSuperview()
       make.leading.equalToSuperview()
+      make.centerY.equalToSuperview()
     }
   }
   

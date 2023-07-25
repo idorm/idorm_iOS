@@ -9,15 +9,22 @@ import UIKit
 
 import SnapKit
 
+protocol CalendarMemberHeaderDelegate: AnyObject {
+  func didTapInviteRoommateButton()
+  func didTapOptionButton()
+}
+  
 /// 룸메이트 초대와 설정으로 바로갈 수 있는 헤더입니다.
 final class CalendarMemberHeader: UICollectionReusableView, BaseView {
   
   // MARK: - Properties
   
+  weak var delegate: CalendarMemberHeaderDelegate?
+  
   // MARK: - UI Components
   
   /// `룸메이트 초대` 버튼
-  private let inviteButton: UIButton = {
+  lazy var inviteButton: UIButton = {
     var config = UIButton.Configuration.filled()
     config.attributedTitle = AttributedString(
       "룸메이트 초대",
@@ -30,13 +37,15 @@ final class CalendarMemberHeader: UICollectionReusableView, BaseView {
     config.background.cornerRadius = 18.0
     config.contentInsets = NSDirectionalEdgeInsets(top: 3, leading: 10, bottom: 3, trailing: 10)
     let button = UIButton(configuration: config)
+    button.addTarget(self, action: #selector(self.didTapInviteButton), for: .touchUpInside)
     return button
   }()
   
   /// `옵션` 버튼
-  private let optionButton: UIButton = {
+  private lazy var optionButton: UIButton = {
     let button = UIButton()
     button.setImage(.iDormIcon(.option), for: .normal)
+    button.addTarget(self, action: #selector(self.didTapOptionButton), for: .touchUpInside)
     return button
   }()
   
@@ -77,6 +86,30 @@ final class CalendarMemberHeader: UICollectionReusableView, BaseView {
     self.optionButton.snp.makeConstraints { make in
       make.trailing.equalToSuperview()
       make.centerY.equalTo(self.inviteButton)
+    }
+  }
+  
+  // MARK: - Selectors
+  
+  @objc
+  private func didTapOptionButton() {
+    self.delegate?.didTapOptionButton()
+  }
+  
+  @objc
+  private func didTapInviteButton() {
+    self.delegate?.didTapInviteRoommateButton()
+  }
+  
+  // MARK: - Bind
+  
+  func configure(with members: [TeamMember]) {
+    if members.count == 1 {
+      self.inviteButton.isHidden = false
+      self.optionButton.isHidden = true
+    } else {
+      self.inviteButton.isHidden = true
+      self.optionButton.isHidden = false
     }
   }
 }

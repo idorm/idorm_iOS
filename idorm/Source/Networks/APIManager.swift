@@ -42,10 +42,13 @@ final class APIManager<targetType: TargetType> {
       .catch(self.handleInternetConnection)
       .catch(self.handleTimeOut)
       .catch(self.handleREST)
+      .retry(3)
       .do(
         onSuccess: { response in
           topViewController.isLoading = false
-          os_log(.info, "🟢 요청에 성공했습니다! 성공코드: \(response.statusCode)")
+          os_log(
+            .info, "🟢 요청에 성공했습니다! API: \(targetAPI.baseURL.absoluteString + targetAPI.path)"
+          )
         },
         onError: { rawError in
           topViewController.isLoading = false

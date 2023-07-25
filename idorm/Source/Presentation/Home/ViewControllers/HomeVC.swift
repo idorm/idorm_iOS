@@ -81,8 +81,8 @@ final class HomeViewController: BaseViewController, View {
     cv.delegate = self
     cv.dataSource = self
     cv.register(
-      CalendarCell.self,
-      forCellWithReuseIdentifier: CalendarCell.identifier
+      DormCalendarCell.self,
+      forCellWithReuseIdentifier: DormCalendarCell.identifier
     )
     cv.isScrollEnabled = false
     cv.backgroundColor = .white
@@ -314,9 +314,9 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
       return cell
     } else {
       guard let cell = collectionView.dequeueReusableCell(
-        withReuseIdentifier: CalendarCell.identifier,
+        withReuseIdentifier: DormCalendarCell.identifier,
         for: indexPath
-      ) as? CalendarCell else {
+      ) as? DormCalendarCell else {
         return UICollectionViewCell()
       }
       let calendar = reactor?.currentState.calendars ?? []

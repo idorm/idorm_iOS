@@ -13,11 +13,12 @@ import RxSwift
 import RxCocoa
 
 protocol iDormCalendarDelegate: AnyObject {
-  func monthDidChage(_ nextDate: Date)
+  /// 달력의 날짜가 바뀌면 인지할 수 있는 메서드입니다.
+  func monthDidChage(_ currentDateString: String)
 }
 
 /// 일정을 볼 수 있는 메인 캘린더입니다.
-final class iDormCalendar: UIView, BaseView {
+final class iDormCalendarView: UIView, BaseView {
   
   enum ViewType {
     /// 메인이 되는 캘린더입니다.
@@ -41,13 +42,16 @@ final class iDormCalendar: UIView, BaseView {
   }()
   
   /// 메인이 되는 달력 UI입니다.
-  private lazy var calendar: FSCalendar = {
+  lazy var calendar: FSCalendar = {
     let calendar = FSCalendar()
     // 기본 설정
     calendar.scrollEnabled = false
     calendar.delegate = self
     calendar.dataSource = self
-    calendar.register(iDormCalendarCell.self, forCellReuseIdentifier: iDormCalendarCell.identifier)
+    calendar.register(
+      iDormCalendarCell.self,
+      forCellReuseIdentifier: iDormCalendarCell.identifier
+    )
     
     // 일
     calendar.appearance.titleFont = .idormFont(.regular, size: 12)
@@ -211,14 +215,24 @@ final class iDormCalendar: UIView, BaseView {
   /// 일정을 받아서 달력 UI를 업데이트합니다.
   ///
   /// - Parameters:
-  ///  - calendars: 서버에서 받아온 팀 일정들
-  func configure(_ calendars: [TeamCalendar]) {
-    let targetDates = Set(calendars.map { $0.startDate })
-     
-    self.calendar.visibleCells().forEach {
-      // 현재 보여지고 있는 모든 셀의 날짜
-      let date = self.calendar.date(for: $0)!
-      
+  ///  - teamCalendars: 팀 일정
+  ///  - dormCalendars: 기숙사 공식 일정
+  func configure(
+    _ currentDate: Date,
+    teamCalendars: [TeamCalendar],
+    dormCalendars: [DormCalendar]
+  ) {
+    self.calendar.setCurrentPage(currentDate, animated: true)
+    DispatchQueue.main.async {
+      self.calendar.visibleCells().forEach {
+        let date = self.calendar.date(for: $0)!
+        self.configureCell(
+          from: $0,
+          for: date,
+          teamCalendars: teamCalendars,
+          dormCalendars: dormCalendars
+        )
+      }
     }
   }
   
@@ -227,38 +241,61 @@ final class iDormCalendar: UIView, BaseView {
   /// - Parameters:
   ///  - cell: 다시 구성할 셀입니다.
   ///  - date: 선택된 날짜입니다.
-  ///  - position: 현재 달이 이번, 이전, 다음 달인지 알 수 있습니다.
-  func configureCell(_ cell: FSCalendarCell, date: Date, position: FSCalendarMonthPosition) {
+  ///  - teamCalendars: 팀 일정
+  ///  - dormCalendars: 기숙사 공식 일정
+  func configureCell(
+    from cell: FSCalendarCell,
+    for date: Date,
+    teamCalendars: [TeamCalendar],
+    dormCalendars: [DormCalendar]
+  ) {
+    guard let cell = cell as? iDormCalendarCell else { return }
     
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    let cellDate = dateFormatter.string(from: date)
+    
+    // 기숙사 일정
+    dormCalendars.forEach {
+      guard let startDate = $0.startDate else { return }
+      if startDate.elementsEqual(cellDate) {
+        cell.titleLabel.textColor = .iDormColor(.iDormBlue)
+        cell.titleLabel.font = .idormFont(.bold, size: 12)
+      }
+    }
+    
+    // 팀 일정
+    var orders = Set<Int>()
+    
+    // 팀 일정 배열에서 하나의 셀에 맞는 날짜를 찾습니다.
+    teamCalendars
+      .filter { $0.startDate.elementsEqual(cellDate) }
+      .map { $0.targets }
+      .forEach { $0.forEach { orders.insert($0.order) } }
+    
+    // 고유한 값을 받아서 셀을 최종 업데이트합니다.
+    orders.forEach { cell.dotViews[$0].isHidden = false }
   }
 }
 
 // MARK: - FSCalendar DataSource
 
-extension iDormCalendar: FSCalendarDataSource {
+extension iDormCalendarView: FSCalendarDataSource, FSCalendarDelegate {
   // 새로운 `CalendarCell`을 반환합니다.
   func calendar(
     _ calendar: FSCalendar,
     cellFor date: Date,
     at position: FSCalendarMonthPosition
   ) -> FSCalendarCell {
-    guard let cell = calendar.dequeueReusableCell(
+    let cell = calendar.dequeueReusableCell(
       withIdentifier: iDormCalendarCell.identifier,
       for: date,
       at: position
-    ) as? iDormCalendarCell else {
-      fatalError("iDormCalendarCell을 참조할 수 없습니다.")
-    }
-    cell.configureViewType(self.viewType)
-    
+    )
     return cell
   }
-}
-
-// MARK: - FSCalendar Delegate
-
-extension iDormCalendar: FSCalendarDelegate {
+  
   func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
-    self.delegate?.monthDidChage(calendar.currentPage)
+    self.delegate?.monthDidChage(calendar.currentPage.toString("yyyy-MM"))
   }
 }

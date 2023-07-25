@@ -12,7 +12,8 @@ import PanModal
 import RxSwift
 import RxCocoa
 
-final class BottomSheetViewController: BaseViewController {
+@available(*, deprecated, renamed: "dd", message: "안녕~")
+final class OldBottomSheetViewController: BaseViewController {
   
   enum BottomSheetButtonType {
     case dorm(Dormitory)
@@ -274,7 +275,7 @@ final class BottomSheetViewController: BaseViewController {
   }
 }
 
-extension BottomSheetViewController: PanModalPresentable {
+extension OldBottomSheetViewController: PanModalPresentable {
   var panScrollable: UIScrollView? { nil }
   
   var shortFormHeight: PanModalHeight {

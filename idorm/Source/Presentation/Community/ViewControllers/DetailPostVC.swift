@@ -166,7 +166,7 @@ final class DetailPostViewController: BaseViewController, View {
         
         let postMemberId = reactor.currentState.currentPost?.memberId ?? -1
         
-        let bottomSheet: BottomSheetViewController
+        let bottomSheet: OldBottomSheetViewController
         bottomSheet = memberId == postMemberId ? .init(.myPost) : .init(.post)
         owner.presentPanModal(bottomSheet)
         
@@ -473,7 +473,7 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
       // 댓글 옵션 버튼 클릭
       cell.optionButtonCompletion = { [weak self] commentId in
         guard let self = self else { return }
-        let bottomSheet: BottomSheetViewController
+        let bottomSheet: OldBottomSheetViewController
         let memberId = UserStorage.shared.member?.memberId ?? 0
         bottomSheet = orderedComment.memberId == memberId ? .init(.myComment) : .init(.comment)
         self.presentPanModal(bottomSheet)

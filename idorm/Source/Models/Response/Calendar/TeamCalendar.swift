@@ -8,9 +8,9 @@
 import Foundation
 
 /// 팀의 일정 월별 조회에 필요한 모델입니다.
-struct TeamCalendar: Decodable {
+struct TeamCalendar: Codable, Hashable {
   let isSleepover: Bool
-  let startDate: Date
+  let startDate: String
   let targets: [TeamMember]
   let teamCalendarId: Int
   let title: String

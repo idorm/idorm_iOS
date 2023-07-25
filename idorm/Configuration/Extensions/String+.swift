@@ -6,6 +6,9 @@
 //
 
 import Foundation
+import OSLog
+
+// MARK: - Validation
 
 extension String {
   func isValidEmailCondition() -> Bool {
@@ -67,6 +70,47 @@ extension String {
     }
     
     return []
+  }
+}
+
+// MARK: - DateString
+
+extension String {
+  /// 날짜 형식의 `String`을 다른 날짜 형식의 `String` 값으로 변환합니다.
+  ///
+  /// - Parameters:
+  ///  - from: 이전, 원래의 `dateFormat`
+  ///  - to: 변환 하려는 `dateFormat`
+  ///
+  /// - returns:
+  ///  원하는 형식의 날짜 형식을 가진 `String` 값
+  func toDateString(from: String, to: String) -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = from
+    formatter.locale = Locale(identifier: "ko_KR")
+    guard let date = formatter.date(from: self) else {
+      os_log(.error, "❌ \(from)을 \(to)으로 변환하지 못했습니다")
+      return ""
+    }
+    formatter.dateFormat = to
+    return formatter.string(from: date)
+  }
+  
+  /// 날짜 형식의 `String`을 정해진 `format`의 `Date`타입으로 변환합니다.
+  ///
+  /// - Parameters:
+  ///  - format: 원하는 날짜 형식
+  ///
+  /// - Returns:
+  /// 원하는 날짜 형식의 `Date`타입
+  func toDate(format: String) -> Date {
+    let formatter = DateFormatter()
+    formatter.dateFormat = format
+    guard let date = formatter.date(from: self) else {
+      os_log(.error, "❌ \(self)를 \(format)으로 변환하지 못했습니다")
+      return Date()
+    }
+    return date
   }
 }
 

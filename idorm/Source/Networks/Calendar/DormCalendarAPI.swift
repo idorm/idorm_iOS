@@ -9,11 +9,11 @@ import Foundation
 
 import Moya
 
-enum CalendarAPI {
+enum DormCalendarAPI {
   case retrieveCalendars(year: String, month: String)
 }
 
-extension CalendarAPI: TargetType, BaseAPI {
+extension DormCalendarAPI: TargetType, BaseAPI {
   func getPath() -> String {
     return ""
   }
@@ -26,7 +26,7 @@ extension CalendarAPI: TargetType, BaseAPI {
     return .requestPlain
   }
   
-  static let provider = MoyaProvider<CalendarAPI>()
+  static let provider = MoyaProvider<DormCalendarAPI>()
   
   var baseURL: URL { return getBaseURL() }
   

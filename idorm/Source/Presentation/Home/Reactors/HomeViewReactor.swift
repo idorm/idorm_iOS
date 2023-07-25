@@ -93,7 +93,7 @@ extension HomeViewReactor {
     let year = calendar.component(.year, from: date)
     let month = calendar.component(.month, from: date)
     let paddedString = String(format: "%02d", month)
-    return CalendarAPI.provider.rx.request(.retrieveCalendars(
+    return DormCalendarAPI.provider.rx.request(.retrieveCalendars(
       year: "\(year)",
       month: paddedString
     ))
@@ -101,7 +101,7 @@ extension HomeViewReactor {
       .retry()
       .filterSuccessfulStatusCodes()
       .flatMap { response -> Observable<Mutation> in
-        let calendars = CalendarAPI.decode(
+        let calendars = DormCalendarAPI.decode(
           ResponseModel<[CalendarResponseModel.Calendar]>.self,
           data: response.data
         ).data
