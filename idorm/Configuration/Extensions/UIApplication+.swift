@@ -31,4 +31,12 @@ extension UIApplication {
     
     return base!
   }
+  
+  /// 현재 `BottomInset`의 값을 구할 수 있도록 도와주는 메서드입니다.
+  var bottomInset: CGFloat {
+    let scenes = UIApplication.shared.connectedScenes
+    let windowScene = scenes.first as? UIWindowScene
+    let window = windowScene?.windows.first
+    return window?.safeAreaInsets.bottom ?? 0.0
+  }
 }

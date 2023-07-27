@@ -27,7 +27,7 @@ final class ManageMyInfoViewController: BaseViewController, View {
     $0.textColor = .idorm_gray_300
   }
   
-  private let logoutButton = idormButton("로그아웃")
+  private let logoutButton = OldiDormButton("로그아웃")
   private let nickNameView = ManageMyInfoView(.both(title: "닉네임"))
   private let changePWView = ManageMyInfoView(.onlyArrow(title: "비밀번호 변경"))
   private let emailView = ManageMyInfoView(.onlyDescription(title: "이메일"))

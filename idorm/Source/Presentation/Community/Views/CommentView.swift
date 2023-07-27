@@ -38,10 +38,10 @@ final class CommentView: UIView {
     tv.attributedPlaceholder = NSAttributedString(
       string: "댓글을 입력해주세요.",
       attributes: [
-        .font: UIFont.idormFont(.regular, size: 12),
+        .font: UIFont.iDormFont(.regular, size: 12),
         .foregroundColor: UIColor.idorm_gray_400
       ])
-    tv.font = .idormFont(.regular, size: 12)
+    tv.font = .iDormFont(.regular, size: 12)
     tv.layer.cornerRadius = 15
     tv.maxHeight = 100
     tv.minHeight = 32

@@ -16,21 +16,21 @@ final class MyCommentCell: UITableViewCell, BaseView {
   private let nicknameLabel: UILabel = {
     let lb = UILabel()
     lb.textColor = .black
-    lb.font = .idormFont(.medium, size: 14)
+    lb.font = .iDormFont(.medium, size: 14)
     return lb
   }()
   
   private let timeLabel: UILabel = {
     let lb = UILabel()
     lb.textColor = .idorm_gray_300
-    lb.font = .idormFont(.regular, size: 12)
+    lb.font = .iDormFont(.regular, size: 12)
     return lb
   }()
   
   private let contentLabel: UILabel = {
     let lb = UILabel()
     lb.textColor = .idorm_gray_400
-    lb.font = .idormFont(.medium, size: 14)
+    lb.font = .iDormFont(.medium, size: 14)
     lb.numberOfLines = 0
     return lb
   }()
@@ -54,8 +54,8 @@ final class MyCommentCell: UITableViewCell, BaseView {
     return sv
   }()
   
-  private let confirmBodyButton: idormButton = {
-    let btn = idormButton("본문 확인")
+  private let confirmBodyButton: OldiDormButton = {
+    let btn = OldiDormButton("본문 확인")
     btn.configuration?.baseBackgroundColor = .idorm_gray_100
     btn.configuration?.baseForegroundColor = .black
     return btn

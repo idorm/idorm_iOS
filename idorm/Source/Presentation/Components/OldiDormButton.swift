@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class idormButton: UIButton {
+final class OldiDormButton: UIButton {
   
   // MARK: - LifeCycle
   

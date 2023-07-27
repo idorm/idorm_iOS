@@ -30,7 +30,7 @@ final class MatchingCardWishTextView: UIView {
   
   private func setupContentsLabel() {
     let contentsLabel = UILabel()
-    contentsLabel.font = .idormFont(.medium, size: 14)
+    contentsLabel.font = .iDormFont(.medium, size: 14)
     contentsLabel.text = member.wishText
     contentsLabel.textColor = .idorm_gray_400
     contentsLabel.numberOfLines = 0

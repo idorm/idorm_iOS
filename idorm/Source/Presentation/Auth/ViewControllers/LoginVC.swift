@@ -19,14 +19,14 @@ final class LoginViewController: BaseViewController, View {
   
   private let loginLabel = UILabel().then {
     $0.text = "로그인"
-    $0.font = .idormFont(.bold, size: 24)
+    $0.font = .iDormFont(.bold, size: 24)
     $0.textColor = .black
   }
   
   private let loginDescriptionLabel = UILabel().then {
     $0.text = "인천대학교 이메일로 로그인해주세요."
     $0.textColor = .idorm_gray_400
-    $0.font = .idormFont(.medium, size: 12)
+    $0.font = .iDormFont(.medium, size: 12)
   }
   
   private let idTextField = LoginTextField("이메일").then {
@@ -41,7 +41,7 @@ final class LoginViewController: BaseViewController, View {
   private let loginButton = UIButton().then {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
-    container.font = .idormFont(.medium, size: 14)
+    container.font = .iDormFont(.medium, size: 14)
     container.foregroundColor = UIColor.white
     config.attributedTitle = AttributedString("로그인", attributes: container)
     config.baseBackgroundColor = .idorm_blue
@@ -53,7 +53,7 @@ final class LoginViewController: BaseViewController, View {
     var config = UIButton.Configuration.plain()
     var container = AttributeContainer()
     container.foregroundColor = UIColor.idorm_gray_300
-    container.font = .idormFont(.medium, size: 12)
+    container.font = .iDormFont(.medium, size: 12)
     config.attributedTitle = AttributedString("비밀번호를 잊으셨나요?", attributes: container)
     $0.configuration = config
   }
@@ -61,14 +61,14 @@ final class LoginViewController: BaseViewController, View {
   private let signUpLabel = UILabel().then {
     $0.text = "아직 계정이 없으신가요?"
     $0.textColor = .idorm_gray_300
-    $0.font = .idormFont(.medium, size: 12)
+    $0.font = .iDormFont(.medium, size: 12)
   }
   
   private let signUpButton = UIButton().then {
     var config = UIButton.Configuration.plain()
     var container = AttributeContainer()
     container.foregroundColor = UIColor.idorm_blue
-    container.font = .idormFont(.medium, size: 12)
+    container.font = .iDormFont(.medium, size: 12)
     config.attributedTitle = AttributedString("회원가입", attributes: container)
     config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
     

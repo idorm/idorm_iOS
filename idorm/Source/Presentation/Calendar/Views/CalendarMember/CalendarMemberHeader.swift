@@ -29,7 +29,7 @@ final class CalendarMemberHeader: UICollectionReusableView, BaseView {
     config.attributedTitle = AttributedString(
       "룸메이트 초대",
       attributes: AttributeContainer([
-        .font: UIFont.idormFont(.bold, size: 12),
+        .font: UIFont.iDormFont(.bold, size: 12),
         .foregroundColor: UIColor.iDormColor(.iDormBlue)
       ])
     )

@@ -39,7 +39,7 @@ final class PrivacyPolicyBottomSheet: BaseViewController, View {
     $0.color = .darkGray
   }
   
-  private let confirmButton = idormButton("완료")
+  private let confirmButton = OldiDormButton("완료")
   
   // MARK: - Setup
   

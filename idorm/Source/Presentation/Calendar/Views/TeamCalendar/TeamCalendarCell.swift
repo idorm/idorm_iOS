@@ -23,7 +23,7 @@ final class TeamCalendarCell: UICollectionViewCell, BaseView {
   /// 일정의 날짜를 보여주는 `UILabel`
   private let dateLabel: UILabel = {
     let label = UILabel()
-    label.font = .idormFont(.medium, size: 12)
+    label.font = .iDormFont(.medium, size: 12)
     label.text = "6월 30일"
     return label
   }()
@@ -31,7 +31,7 @@ final class TeamCalendarCell: UICollectionViewCell, BaseView {
   /// 일정의 상세 내역을 보여주는 `UILabel`
   private let contentLabel: UILabel = {
     let label = UILabel()
-    label.font = .idormFont(.regular, size: 12)
+    label.font = .iDormFont(.regular, size: 12)
     label.textColor = .iDormColor(.iDormGray300)
     label.text = "청소"
     return label

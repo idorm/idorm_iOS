@@ -20,32 +20,32 @@ final class PasswordViewController: BaseViewController, View {
   private let infoLabel = UILabel().then {
     $0.text = "비밀번호"
     $0.textColor = .black
-    $0.font = .idormFont(.medium, size: 14)
+    $0.font = .iDormFont(.medium, size: 14)
   }
   
   private let infoLabel2 = UILabel().then {
     $0.text = "비밀번호 확인"
     $0.textColor = .black
-    $0.font = .idormFont(.medium, size: 14)
+    $0.font = .iDormFont(.medium, size: 14)
   }
   
   private let textCountConditionLabel = UILabel().then {
     $0.text = "•  8자 이상 입력"
     $0.textColor = .idorm_gray_400
-    $0.font = .idormFont(.medium, size: 12)
+    $0.font = .iDormFont(.medium, size: 12)
   }
   
   private let compoundConditionLabel = UILabel().then {
     $0.text = "•  영문 소문자/숫자/특수 문자 조합"
     $0.textColor = .idorm_gray_400
-    $0.font = .idormFont(.medium, size: 12)
+    $0.font = .iDormFont(.medium, size: 12)
   }
   
   private let indicator = UIActivityIndicatorView().then { $0.color = .darkGray }
   
   private let textField1 = PasswordTextField(placeholder: "비밀번호를 입력해주세요.")
   private let textField2 = PasswordTextField(placeholder: "비밀번호를 한번 더 입력해주세요.")
-  private var confirmButton: idormButton!
+  private var confirmButton: OldiDormButton!
   private let type: AuthProcess
   
   // MARK: - LifeCycle
@@ -241,9 +241,9 @@ final class PasswordViewController: BaseViewController, View {
   private func setupComponents() {
     switch type {
     case .signUp:
-      self.confirmButton = idormButton("계속하기")
+      self.confirmButton = OldiDormButton("계속하기")
     case .findPw:
-      self.confirmButton = idormButton("변경 완료")
+      self.confirmButton = OldiDormButton("변경 완료")
     }
   }
   

@@ -15,7 +15,7 @@ extension UIFont {
     case medium = "NotoSansCJKkr-Medium"
   }
   
-  static func idormFont(_ font: Font, size: CGFloat) -> UIFont {
+  static func iDormFont(_ font: Font, size: CGFloat) -> UIFont {
     let idormFont = UIFont(name: font.rawValue, size: size)!
     return idormFont
   }

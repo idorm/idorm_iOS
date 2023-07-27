@@ -24,37 +24,37 @@ final class MatchingFilterViewController: BaseViewController, View {
   private let dormLabel = UIFactory.label(
     "기숙사",
     textColor: .black,
-    font: .idormFont(.medium, size: 16)
+    font: .iDormFont(.medium, size: 16)
   )
   
   private let periodLabel = UIFactory.label(
     "입사 기간",
     textColor: .black,
-    font: .idormFont(.medium, size: 16)
+    font: .iDormFont(.medium, size: 16)
   )
   
   private let habitLabel = UIFactory.label(
     "불호요소",
     textColor: .black,
-    font: .idormFont(.medium, size: 16)
+    font: .iDormFont(.medium, size: 16)
   )
   
   private let ageLabel = UIFactory.label(
     "나이",
     textColor: .black,
-    font: .idormFont(.medium, size: 16)
+    font: .iDormFont(.medium, size: 16)
   )
 
   private let habitDescriptionLabel = UIFactory.label(
     "선택하신 요소를 가진 룸메이트는 나와 매칭되지 않아요.",
     textColor: .idorm_gray_300,
-    font: .idormFont(.medium, size: 12)
+    font: .iDormFont(.medium, size: 12)
   )
   
   private let ageDescriptionLabel = UIFactory.label(
     "선택하신 연령대의 룸메이트만 나와 매칭돼요.",
     textColor: .idorm_gray_300,
-    font: .idormFont(.medium, size: 12)
+    font: .iDormFont(.medium, size: 12)
   )
   
   private let slider: RangeSeekSlider = {

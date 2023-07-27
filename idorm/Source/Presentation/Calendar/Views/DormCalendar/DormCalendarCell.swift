@@ -34,7 +34,7 @@ final class DormCalendarCell: UICollectionViewCell, BaseView {
   /// 시작 날짜와 종료 날짜가 포함되어 있는 `UILabel`
   private let dateLabel: UILabel = {
     let label = UILabel()
-    label.font = .idormFont(.regular, size: 14)
+    label.font = .iDormFont(.regular, size: 14)
     label.textColor = .black
     return label
   }()
@@ -42,7 +42,7 @@ final class DormCalendarCell: UICollectionViewCell, BaseView {
   /// 기숙사 공식 일정의 콘텐츠가 적혀있는 `UILabel`
   private let contentLabel: UILabel = {
     let label = UILabel()
-    label.font = .idormFont(.regular, size: 14)
+    label.font = .iDormFont(.regular, size: 14)
     label.textColor = .black
     return label
   }()
@@ -52,7 +52,7 @@ final class DormCalendarCell: UICollectionViewCell, BaseView {
     let label = UILabel()
     label.textColor = .iDormColor(.iDormGray300)
     label.text = "일정이 있는 기숙사"
-    label.font = .idormFont(.regular, size: 12)
+    label.font = .iDormFont(.regular, size: 12)
     return label
   }()
   
@@ -81,14 +81,14 @@ final class DormCalendarCell: UICollectionViewCell, BaseView {
     let label = UILabel()
     label.textColor = .iDormColor(.iDormGray300)
     label.text = "장소"
-    label.font = .idormFont(.regular, size: 12)
+    label.font = .iDormFont(.regular, size: 12)
     return label
   }()
   
   /// 기숙사 공식 일정의 구체적인 장소가 적혀있는 `UILabel`
   private let scheduleLocationLabel: UILabel = {
     let label = UILabel()
-    label.font = .idormFont(.regular, size: 12)
+    label.font = .iDormFont(.regular, size: 12)
     label.textColor = .iDormColor(.iDormGray400)
     label.setContentHuggingPriority(.init(rawValue: 200), for: .horizontal)
     return label
@@ -110,7 +110,7 @@ final class DormCalendarCell: UICollectionViewCell, BaseView {
     let label = UILabel()
     label.textColor = .iDormColor(.iDormGray300)
     label.text = "시간"
-    label.font = .idormFont(.regular, size: 12)
+    label.font = .iDormFont(.regular, size: 12)
     return label
   }()
   
@@ -118,7 +118,7 @@ final class DormCalendarCell: UICollectionViewCell, BaseView {
   private let scheduleTimeLabel: UILabel = {
     let label = UILabel()
     label.textColor = .iDormColor(.iDormGray400)
-    label.font = .idormFont(.regular, size: 12)
+    label.font = .iDormFont(.regular, size: 12)
     label.setContentHuggingPriority(.init(rawValue: 200), for: .horizontal)
     return label
   }()
@@ -138,7 +138,7 @@ final class DormCalendarCell: UICollectionViewCell, BaseView {
   /// `Cell`의 `Height`를 조절하는 프로퍼티 입니다.
   private var heightConstraint: Constraint?
   
-  private var height: CGFloat = 0 {
+  private var height: CGFloat = 150.0 {
     didSet { self.heightConstraint?.update(offset: self.height) }
   }
   
@@ -299,7 +299,7 @@ private extension DormCalendarCell {
     config.attributedTitle = AttributedString(
       title,
       attributes: .init([
-        .font: UIFont.idormFont(.regular, size: 12),
+        .font: UIFont.iDormFont(.regular, size: 12),
         .foregroundColor: UIColor.idorm_gray_400,
       ])
     )

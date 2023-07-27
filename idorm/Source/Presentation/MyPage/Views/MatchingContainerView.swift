@@ -17,7 +17,7 @@ final class MatchingContainerView: UIView {
   private let titleLabel = UILabel().then {
     $0.text = "룸메이트 매칭 관리"
     $0.textColor = .black
-    $0.font = .idormFont(.medium, size: 16)
+    $0.font = .iDormFont(.medium, size: 16)
   }
   
   private let shareLabel = UILabel().then {

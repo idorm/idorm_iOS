@@ -28,13 +28,13 @@ final class CommentCell: UITableViewCell {
   private let nicknameLabel = UIFactory.label(
     "",
     textColor: .black,
-    font: .idormFont(.medium, size: 14)
+    font: .iDormFont(.medium, size: 14)
   )
   
   private let timeLabel = UIFactory.label(
     "1시간 전",
     textColor: .idorm_gray_300,
-    font: .idormFont(.regular, size: 12)
+    font: .iDormFont(.regular, size: 12)
   )
   
   private lazy var profileStack: UIStackView = {
@@ -57,7 +57,7 @@ final class CommentCell: UITableViewCell {
   private let contentsLabel = UIFactory.label(
     "",
     textColor: .idorm_gray_400,
-    font: .idormFont(.medium, size: 14)
+    font: .iDormFont(.medium, size: 14)
   )
   
   private let replyButton = idormCommunityButton("답글 쓰기")

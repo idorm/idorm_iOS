@@ -21,18 +21,18 @@ final class CompleteSignUpViewController: BaseViewController, View {
     $0.textColor = .idorm_gray_400
     $0.text = "안녕하세요! 가입을 축하드려요."
     $0.textAlignment = .center
-    $0.font = .idormFont(.bold, size: 18)
+    $0.font = .iDormFont(.bold, size: 18)
   }
   
   private let descriptionLabel1 = UILabel().then {
-    $0.font = .idormFont(.medium, size: 12)
+    $0.font = .iDormFont(.medium, size: 12)
     $0.textColor = .idorm_gray_300
     $0.textAlignment = .center
     $0.text = "로그인 후 인천대학교 기숙사 룸메이트 매칭을 위한"
   }
   
   private let descriptionLabel2 = UILabel().then {
-    $0.font = .idormFont(.medium, size: 12)
+    $0.font = .iDormFont(.medium, size: 12)
     $0.textColor = .idorm_gray_300
     $0.textAlignment = .center
     $0.text = "기본정보를 알려주세요."
@@ -41,7 +41,7 @@ final class CompleteSignUpViewController: BaseViewController, View {
   private let continueButton = UIButton().then {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
-    container.font = .idormFont(.medium, size: 16)
+    container.font = .iDormFont(.medium, size: 16)
     container.foregroundColor = UIColor.white
     config.attributedTitle = AttributedString("로그인 후 계속하기", attributes: container)
     config.baseBackgroundColor = .idorm_blue

@@ -37,7 +37,7 @@ final class PostingViewController: BaseViewController, View {
     let button = UIButton()
     var config = UIButton.Configuration.plain()
     var container = AttributeContainer()
-    container.font = .idormFont(.bold, size: 16)
+    container.font = .iDormFont(.bold, size: 16)
     config.attributedTitle = AttributedString("완료", attributes: container)
     
     let handler: UIButton.ConfigurationUpdateHandler = { button in
@@ -111,7 +111,7 @@ final class PostingViewController: BaseViewController, View {
   private let currentPictsCountLabel: UILabel = {
     let lb = UILabel()
     lb.text = "0"
-    lb.font = .idormFont(.medium, size: 12)
+    lb.font = .iDormFont(.medium, size: 12)
     lb.textColor = .black
     
     return lb
@@ -121,7 +121,7 @@ final class PostingViewController: BaseViewController, View {
     let lb = UILabel()
     lb.text = "/10"
     lb.textColor = .black
-    lb.font = .idormFont(.medium, size: 12)
+    lb.font = .iDormFont(.medium, size: 12)
     
     return lb
   }()
@@ -129,7 +129,7 @@ final class PostingViewController: BaseViewController, View {
   private let anonymousLabel: UILabel = {
     let lb = UILabel()
     lb.text = "익명"
-    lb.font = .idormFont(.medium, size: 12)
+    lb.font = .iDormFont(.medium, size: 12)
     
     return lb
   }()

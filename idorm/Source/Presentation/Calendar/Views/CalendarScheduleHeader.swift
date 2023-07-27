@@ -16,7 +16,7 @@ final class CalendarScheduleHeader: UICollectionReusableView, BaseView {
   
   private let contentLabel: UILabel = {
     let label = UILabel()
-    label.font = .idormFont(.regular, size: 12)
+    label.font = .iDormFont(.regular, size: 12)
     label.textColor = .iDormColor(.iDormGray400)
     return label
   }()

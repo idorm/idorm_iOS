@@ -16,7 +16,7 @@ enum BottomSheetItem {
     case let .normal(title, image):
       var config = UIButton.Configuration.filled()
       var container = AttributeContainer()
-      container.font = .idormFont(.medium, size: 20)
+      container.font = .iDormFont(.medium, size: 20)
       container.foregroundColor = UIColor.black
       config.attributedTitle = AttributedString(title, attributes: container)
       config.image = image

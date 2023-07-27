@@ -63,7 +63,7 @@ final class OnboardingViewController: BaseViewController, View {
     $0.otpFilledBorderColor = .idorm_gray_200
     $0.otpFilledBorderWidth = 1
     $0.otpDefaultBorderWidth = 1
-    $0.otpFont = .idormFont(.medium, size: 14)
+    $0.otpFont = .iDormFont(.medium, size: 14)
     $0.otpTextColor = .idorm_gray_400
     $0.otpBackgroundColor = .white
     $0.otpFilledBackgroundColor = .white
@@ -74,17 +74,17 @@ final class OnboardingViewController: BaseViewController, View {
   private let chatDescriptionLabel = UIFactory.label(
     "open.kakao 카카오 오픈채팅 형식을 기입해주세요.",
     textColor: .idorm_gray_300,
-    font: .idormFont(.medium, size: 14)
+    font: .iDormFont(.medium, size: 14)
   )
   
   private let wishTextView = RSKGrowingTextView().then {
     $0.attributedPlaceholder = NSAttributedString(
       string: "입력",
       attributes: [
-        NSAttributedString.Key.font: UIFont.idormFont(.regular, size: 14),
+        NSAttributedString.Key.font: UIFont.iDormFont(.regular, size: 14),
         NSAttributedString.Key.foregroundColor: UIColor.idorm_gray_300]
     )
-    $0.font = .idormFont(.regular, size: 14)
+    $0.font = .iDormFont(.regular, size: 14)
     $0.textColor = .black
     $0.layer.cornerRadius = 10
     $0.layer.borderColor = UIColor.idorm_gray_300.cgColor
@@ -99,61 +99,61 @@ final class OnboardingViewController: BaseViewController, View {
   private let maxLengthLabel = UIFactory.label(
     "/ 100 pt",
     textColor: .idorm_gray_300,
-    font: .idormFont(.medium, size: 14)
+    font: .iDormFont(.medium, size: 14)
   )
   
   private let currentLengthLabel = UIFactory.label(
     "0",
     textColor: .idorm_blue,
-    font: .idormFont(.medium, size: 14)
+    font: .iDormFont(.medium, size: 14)
   )
   
   private let titleLabel = UIFactory.label(
     "룸메이트 매칭을 위한 기본정보를 알려주세요!",
     textColor: .idorm_gray_300,
-    font: .idormFont(.bold, size: 12)
+    font: .iDormFont(.bold, size: 12)
   )
   
   private let dormLabel = UIFactory.label(
     "기숙사",
     textColor: .black,
-    font: .idormFont(.medium, size: 16)
+    font: .iDormFont(.medium, size: 16)
   )
   
   private let genderLabel = UIFactory.label(
     "성별",
     textColor: .black,
-    font: .idormFont(.medium, size: 16)
+    font: .iDormFont(.medium, size: 16)
   )
   
   private let periodLabel = UIFactory.label(
     "입사기간",
     textColor: .black,
-    font: .idormFont(.medium, size: 16)
+    font: .iDormFont(.medium, size: 16)
   )
   
   private let habitLabel = UIFactory.label(
     "내 습관",
     textColor: .black,
-    font: .idormFont(.medium, size: 16)
+    font: .iDormFont(.medium, size: 16)
   )
   
   private let ageLabel = UIFactory.label(
     "나이",
     textColor: .black,
-    font: .idormFont(.medium, size: 16)
+    font: .iDormFont(.medium, size: 16)
   )
   
   private let habitDescriptionLabel = UIFactory.label(
     "불호요소가 있는 내 습관을 미리 알려주세요.",
     textColor: .idorm_gray_300,
-    font: .idormFont(.bold, size: 12)
+    font: .iDormFont(.bold, size: 12)
   )
   
   private let ageDescriptionLabel = UIFactory.label(
     "살",
     textColor: .idorm_gray_300,
-    font: .idormFont(.bold, size: 12)
+    font: .iDormFont(.bold, size: 12)
   )
   
   private var floatyBottomView: FloatyBottomView!
@@ -927,14 +927,14 @@ final class OnboardingViewController: BaseViewController, View {
     let lb = UIFactory.label(
       title,
       textColor: .idorm_gray_400,
-      font: .idormFont(.medium, size: 14)
+      font: .iDormFont(.medium, size: 14)
     )
     
     if isEssential {
       let trailingLb = UIFactory.label(
         "(필수)",
         textColor: .idorm_blue,
-        font: .idormFont(.medium, size: 14)
+        font: .iDormFont(.medium, size: 14)
       )
       
       lb.addSubview(trailingLb)

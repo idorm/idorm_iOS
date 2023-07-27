@@ -29,7 +29,7 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
   private let nicknameLabel: UILabel = {
     let label = UILabel()
     label.textColor = .black
-    label.font = .idormFont(.medium, size: 14)
+    label.font = .iDormFont(.medium, size: 14)
     
     return label
   }()
@@ -47,14 +47,14 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
   private let timeLabel: UILabel = {
     let label = UILabel()
     label.textColor = .idorm_gray_300
-    label.font = .idormFont(.medium, size: 12)
+    label.font = .iDormFont(.medium, size: 12)
     
     return label
   }()
   
   private let titleLabel: UILabel = {
     let label = UILabel()
-    label.font = .idormFont(.medium, size: 16)
+    label.font = .iDormFont(.medium, size: 16)
     label.textColor = .black
     label.numberOfLines = 2
     
@@ -63,7 +63,7 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
   
   private let contentsLabel: UILabel = {
     let label = UILabel()
-    label.font = .idormFont(.regular, size: 14)
+    label.font = .iDormFont(.regular, size: 14)
     label.textColor = .black
     label.numberOfLines = 0
     
@@ -145,7 +145,7 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
   private func countLabel() -> UILabel {
     let lb = UILabel()
     lb.textColor = .idorm_gray_300
-    lb.font = .idormFont(.regular, size: 12)
+    lb.font = .iDormFont(.regular, size: 12)
     return lb
   }
   
@@ -154,7 +154,7 @@ final class DetailPostHeaderView: UITableViewHeaderFooterView {
     btn.setTitle(title, for: .normal)
     btn.setTitleColor(.black, for: .selected)
     btn.setTitleColor(.idorm_gray_300, for: .normal)
-    btn.titleLabel?.font = .idormFont(.regular, size: 12)
+    btn.titleLabel?.font = .iDormFont(.regular, size: 12)
     
     return btn
   }

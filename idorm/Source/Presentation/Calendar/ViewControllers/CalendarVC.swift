@@ -33,7 +33,7 @@ final class CalendarViewController: BaseViewController, View {
           ) as? CalendarMemberCell else {
             return UICollectionViewCell()
           }
-          cell.configure(member)
+          cell.configure(with: member)
           return cell
           
         case .teamCalendar(let teamCalendar):
@@ -114,6 +114,20 @@ final class CalendarViewController: BaseViewController, View {
   
   // MARK: - UI Components
   
+  /// `일정 등록` 플로티 `UIButton`
+  private let registerScheduleButton: UIButton = {
+    let button = iDormButton("일정 등록", image: .iDormIcon(.pencil))
+    button.cornerRadius = 47.0
+    button.baseBackgroundColor = .iDormColor(.iDormBlue)
+    button.baseForegroundColor = .white
+    button.font = .iDormFont(.bold, size: 16.0)
+    button.shadowOffset = CGSize(width: 0, height: 4)
+    button.shadowOpacity = 0.21
+    button.shadowRadius = 3.0
+    button.edgeInsets = .init(top: 10.0, leading: 18.0, bottom: 10.0, trailing: 18.0)
+    return button
+  }()
+  
   /// `룸메이트를 초대해서 일정을 공유해보세요.`라는 문구가 적혀있는 `UIImageView`
   private let inviteRoommateImageView: UIImageView = {
     let imageView = UIImageView()
@@ -179,7 +193,13 @@ final class CalendarViewController: BaseViewController, View {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
-    self.navigationController?.setNavigationBarHidden(true, animated: true)
+    self.navigationController?.setNavigationBarHidden(true, animated: false)
+  }
+  
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    
+    self.navigationController?.setNavigationBarHidden(false, animated: false)
   }
   
   // MARK: - Setup
@@ -193,7 +213,10 @@ final class CalendarViewController: BaseViewController, View {
   override func setupLayouts() {
     super.setupLayouts()
     
-    self.view.addSubview(self.collectionView)
+    [
+      self.collectionView,
+      self.registerScheduleButton
+    ].forEach { self.view.addSubview($0) }
   }
   
   override func setupConstraints() {
@@ -201,6 +224,11 @@ final class CalendarViewController: BaseViewController, View {
     
     self.collectionView.snp.makeConstraints { make in
       make.edges.equalTo(self.view.safeAreaLayoutGuide)
+    }
+    
+    self.registerScheduleButton.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+      make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-24.0)
     }
   }
   
@@ -234,6 +262,17 @@ final class CalendarViewController: BaseViewController, View {
       }
       .disposed(by: self.disposeBag)
     
+    self.registerScheduleButton.rx.tap
+      .asDriver()
+      .drive(with: self) { owner, _ in
+        // 일정 등록 화면 전환
+        let calendarDimmedVC = CalendarDimmedViewController(self.view.safeAreaInsets.bottom)
+        calendarDimmedVC.delegate = owner
+        calendarDimmedVC.modalPresentationStyle = .overFullScreen
+        owner.present(calendarDimmedVC, animated: false)
+      }
+      .disposed(by: self.disposeBag)
+    
     // State
     reactor.state.map { (sections: $0.sections, items: $0.items) }
       .asDriver(onErrorRecover: { _ in return .empty() })
@@ -244,11 +283,11 @@ final class CalendarViewController: BaseViewController, View {
           snapshot.appendItems(item, toSection: sectionItem.sections[index])
         }
         DispatchQueue.main.async {
-          owner.dataSource.applySnapshotUsingReloadData(snapshot)
+          owner.dataSource.apply(snapshot)
         }
       }
       .disposed(by: self.disposeBag)
-    
+
     reactor.state
       .flatMap {
         Observable.combineLatest(
@@ -423,11 +462,11 @@ private extension CalendarViewController {
   
   /// `inviteRoommateImageView`의 레이아웃 및 제약조건을 생성합니다.
   func setupInviteRoommateImageView() {
-    self.view.addSubview(self.inviteRoommateImageView)
+    self.view.insertSubview(self.inviteRoommateImageView, aboveSubview: self.collectionView)
     
     self.inviteRoommateImageView.snp.makeConstraints { make in
       make.trailing.equalToSuperview().inset(44.0)
-      make.top.equalTo(self.calendarMemberHeader.inviteButton.snp.bottom)
+      make.top.equalTo(self.calendarMemberHeader.inviteButton.snp.bottom).offset(8.0)
     }
   }
 }
@@ -470,4 +509,19 @@ extension CalendarViewController: BottomSheetViewControllerDelegate {
   func didTapButton(index: Int) {
     print(index)
   }
+}
+
+// MARK: - CalendarDimmedVC
+
+extension CalendarViewController: CalendarDimmedViewControllerDelegate {
+  /// 우리방 일정 클릭
+  func didTapRegisterTeamScheduleButton() {
+    let calendarManagementVC = CalendarManagementViewController()
+    calendarManagementVC.reactor = CalendarManagementViewReactor()
+    calendarManagementVC.hidesBottomBarWhenPushed = true
+    self.navigationController?.pushViewController(calendarManagementVC, animated: true)
+  }
+  
+  /// 외박 일정 클릭
+  func didTapRegisterSleepOverButton() {}
 }

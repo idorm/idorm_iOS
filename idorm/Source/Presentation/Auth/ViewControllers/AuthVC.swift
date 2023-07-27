@@ -25,7 +25,7 @@ final class AuthViewController: BaseViewController, View {
     $0.configuration = config
   }
   
-  private let portalButton = idormButton("메일함 바로가기").then {
+  private let portalButton = OldiDormButton("메일함 바로가기").then {
     $0.configuration?.baseForegroundColor = .idorm_gray_400
     $0.configuration?.baseBackgroundColor = .white
     $0.configuration?.background.strokeWidth = 1
@@ -33,13 +33,13 @@ final class AuthViewController: BaseViewController, View {
   }
   
   private let spamDescriptionLabel: UILabel = UILabel().then {
-    $0.font = .idormFont(.medium, size: 14.0)
+    $0.font = .iDormFont(.medium, size: 14.0)
     $0.textColor = .idorm_gray_300
     $0.text = "메일이 오지 않았으면 스팸함을 확인해주세요."
   }
   
   private let envelopeImageView = UIImageView(image: #imageLiteral(resourceName: "envelope"))
-  private let nextButton = idormButton("인증번호 입력")
+  private let nextButton = OldiDormButton("인증번호 입력")
   
   // MARK: -  PROPERTIES
   

@@ -17,7 +17,7 @@ final class CommunityContainerView: UIView {
   private let titleLabel = UILabel().then {
     $0.text = "커뮤니티 관리"
     $0.textColor = .black
-    $0.font = .idormFont(.medium, size: 16)
+    $0.font = .iDormFont(.medium, size: 16)
   }
   
   lazy var myPostButton = button(

@@ -42,7 +42,7 @@ final class NoMatchingInfoPopup: BaseViewController {
     $0.layer.cornerRadius = 12
   }
   
-  let makeButton = idormButton("프로필 이미지 만들기")
+  let makeButton = OldiDormButton("프로필 이미지 만들기")
   
   // MARK: - Setup
   

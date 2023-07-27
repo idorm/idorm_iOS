@@ -25,7 +25,7 @@ final class EmailViewController: BaseViewController, View {
   
   private lazy var mainDescriptionLabel = UILabel().then {
     $0.textColor = .black
-    $0.font = .idormFont(.medium, size: 14)
+    $0.font = .iDormFont(.medium, size: 14)
     switch viewControllerType {
     case .findPw, .changePw:
       $0.text = "가입시 사용한 인천대학교 이메일이 필요해요."
@@ -37,7 +37,7 @@ final class EmailViewController: BaseViewController, View {
   private let emailDescriptionLabel = UILabel().then {
     $0.text = "인천대학교 이메일 (@inu.ac.kr)이 필요해요."
     $0.textColor = .idorm_gray_400
-    $0.font = .idormFont(.medium, size: 12)
+    $0.font = .iDormFont(.medium, size: 12)
   }
   
   private let indicator = UIActivityIndicatorView().then {
@@ -59,7 +59,7 @@ final class EmailViewController: BaseViewController, View {
   }
   
   private let textField = idormTextField("이메일을 입력해주세요")
-  private let nextButton = idormButton("인증번호 받기")
+  private let nextButton = OldiDormButton("인증번호 받기")
   private let inuImageView = UIImageView(image: #imageLiteral(resourceName: "inu"))
   
   // MARK: - PROPERTIES

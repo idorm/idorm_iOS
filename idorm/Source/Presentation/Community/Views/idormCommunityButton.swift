@@ -20,7 +20,7 @@ final class idormCommunityButton: UIButton {
     config.baseForegroundColor = .black
     
     var titleContainer = AttributeContainer()
-    titleContainer.font = .idormFont(.regular, size: 12)
+    titleContainer.font = .iDormFont(.regular, size: 12)
     
     config.attributedTitle = AttributedString(title, attributes: titleContainer)
     

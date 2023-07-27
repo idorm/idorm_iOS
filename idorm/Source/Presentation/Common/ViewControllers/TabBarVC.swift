@@ -58,8 +58,8 @@ final class TabBarViewController: UITabBarController {
   private func setupStyles() {
     tabBar.unselectedItemTintColor = .gray
     tabBar.tintColor = .idorm_blue
-    tabBar.barTintColor = .white
-    tabBar.backgroundColor = .white
+    tabBar.barTintColor = .clear
+    tabBar.backgroundColor = .clear
     tabBar.layer.cornerRadius = 24.0
     tabBar.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMaxXMinYCorner)
     tabBar.layer.borderColor = UIColor.idorm_gray_200.cgColor

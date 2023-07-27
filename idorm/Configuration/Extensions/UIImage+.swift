@@ -13,6 +13,12 @@ enum iDormIcon: String {
   case calendar
   case option
   case cancel
+  case pencil
+  case pencil2
+  case human
+  
+  case deselect
+  case select
 }
 
 enum iDormText: String {

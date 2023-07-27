@@ -12,10 +12,10 @@ final class BottomSheetUtils {
   static func reportButton() -> UIButton {
     var config = UIButton.Configuration.filled()
     var titleContainer = AttributeContainer()
-    titleContainer.font = .idormFont(.medium, size: 20)
+    titleContainer.font = .iDormFont(.medium, size: 20)
     titleContainer.foregroundColor = UIColor.black
     var subtitleContainer = AttributeContainer()
-    subtitleContainer.font = .idormFont(.medium, size: 14)
+    subtitleContainer.font = .iDormFont(.medium, size: 14)
     subtitleContainer.foregroundColor = UIColor.idorm_gray_400
     config.attributedTitle = AttributedString("신고하기", attributes: titleContainer)
     config.attributedSubtitle = AttributedString("idorm의 커뮤니티 가이드라인에 위배되는 댓글", attributes: subtitleContainer)
@@ -31,7 +31,7 @@ final class BottomSheetUtils {
   static func basicButton(_ title: String, imageName: String) -> UIButton {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
-    container.font = .idormFont(.medium, size: 20)
+    container.font = .iDormFont(.medium, size: 20)
     container.foregroundColor = UIColor.black
     config.attributedTitle = AttributedString(title, attributes: container)
     config.image = UIImage(named: imageName)
@@ -49,7 +49,7 @@ final class BottomSheetUtils {
   static func dormNumberButton(_ title: String) -> UIButton {
     var config = UIButton.Configuration.filled()
     var container = AttributeContainer()
-    container.font = .idormFont(.bold, size: 20)
+    container.font = .iDormFont(.bold, size: 20)
     container.foregroundColor = UIColor.black
     config.attributedTitle = AttributedString(title, attributes: container)
     let button = UIButton(configuration: config)

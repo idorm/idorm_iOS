@@ -26,7 +26,7 @@ final class NicknameViewController: BaseViewController, View {
   private let mainLabel = UILabel().then {
     $0.text = "idorm 프로필 닉네임을 입력해주세요."
     $0.textColor = .idorm_gray_400
-    $0.font = .idormFont(.regular, size: 16)
+    $0.font = .iDormFont(.regular, size: 16)
   }
   
   private let backgroundView = UIView().then {
@@ -36,13 +36,13 @@ final class NicknameViewController: BaseViewController, View {
   private let maxLengthLabel = UILabel().then {
     $0.text = "/ 8 pt"
     $0.textColor = .idorm_gray_300
-    $0.font = .idormFont(.medium, size: 14)
+    $0.font = .iDormFont(.medium, size: 14)
   }
   
   private let currentLenghtLabel = UILabel().then {
     $0.text = "0"
     $0.textColor = .idorm_blue
-    $0.font = .idormFont(.medium, size: 14)
+    $0.font = .iDormFont(.medium, size: 14)
   }
   
   private let indicator = UIActivityIndicatorView().then {
@@ -52,19 +52,19 @@ final class NicknameViewController: BaseViewController, View {
   private let countConditionLabel = UILabel().then {
     $0.text = "•  최소 2글자에서 8글자를 입력해주세요."
     $0.textColor = .idorm_gray_400
-    $0.font = .idormFont(.medium, size: 14)
+    $0.font = .iDormFont(.medium, size: 14)
   }
   
   private let spacingConditionLabel = UILabel().then {
     $0.text = "•  공백없이 입력해주세요."
     $0.textColor = .idorm_gray_400
-    $0.font = .idormFont(.medium, size: 12)
+    $0.font = .iDormFont(.medium, size: 12)
   }
 
   private let compoundConditionLabel = UILabel().then {
     $0.text = "•  영문, 한글, 숫자만 입력할 수 있어요."
     $0.textColor = .idorm_gray_400
-    $0.font = .idormFont(.medium, size: 12)
+    $0.font = .iDormFont(.medium, size: 12)
   }
   
   private lazy var conditionStackView = UIStackView().then { stack in
@@ -74,7 +74,7 @@ final class NicknameViewController: BaseViewController, View {
   }
   
   private let textField = idormTextField("변경할 닉네임을 입력해주세요.")
-  private var confirmButton: idormButton
+  private var confirmButton: OldiDormButton
   private let type: VCType
   
   // MARK: - LifeCycle
@@ -83,9 +83,9 @@ final class NicknameViewController: BaseViewController, View {
     self.type = type
     switch type {
     case .modify:
-      self.confirmButton = idormButton("변경하기")
+      self.confirmButton = OldiDormButton("변경하기")
     case .signUp:
-      self.confirmButton = idormButton("계속하기")
+      self.confirmButton = OldiDormButton("계속하기")
     }
     super.init(nibName: nil, bundle: nil)
   }

@@ -20,14 +20,14 @@ final class AuthNumberViewController: BaseViewController, View {
   private let descriptionLabel = UILabel().then {
     $0.text = "지금 이메일로 인증번호를 보내드렸어요!"
     $0.textColor = .darkGray
-    $0.font = .idormFont(.medium, size: 12)
+    $0.font = .iDormFont(.medium, size: 12)
   }
   
   private let authOnemoreButton = UIButton().then {
     var config = UIButton.Configuration.plain()
     config.baseForegroundColor = .idorm_blue
     var container = AttributeContainer()
-    container.font = .idormFont(.medium, size: 12)
+    container.font = .iDormFont(.medium, size: 12)
     config.attributedTitle = AttributedString("인증번호 재요청", attributes: container)
     let handler: UIButton.ConfigurationUpdateHandler = { button in
       switch button.state {
@@ -45,14 +45,14 @@ final class AuthNumberViewController: BaseViewController, View {
   private let timerLabel = UILabel().then {
     $0.text = "05:00"
     $0.textColor = .idorm_blue
-    $0.font = .idormFont(.medium, size: 14)
+    $0.font = .iDormFont(.medium, size: 14)
   }
   
   private let indicator = UIActivityIndicatorView().then {
     $0.color = .darkGray
   }
   
-  private let nextButton = idormButton("인증 완료")
+  private let nextButton = OldiDormButton("인증 완료")
   private let textField = idormTextField("인증번호를 입력해주세요.")
   private let mailTimer: MailTimerChecker
   

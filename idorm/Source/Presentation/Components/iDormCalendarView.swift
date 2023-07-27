@@ -54,16 +54,16 @@ final class iDormCalendarView: UIView, BaseView {
     )
     
     // 일
-    calendar.appearance.titleFont = .idormFont(.regular, size: 12)
+    calendar.appearance.titleFont = .iDormFont(.regular, size: 12)
     calendar.appearance.titleDefaultColor = .idorm_gray_400
     
     // 주
-    calendar.appearance.weekdayFont = .idormFont(.regular, size: 12)
+    calendar.appearance.weekdayFont = .iDormFont(.regular, size: 12)
     calendar.appearance.weekdayTextColor = .idorm_gray_400
     calendar.locale = Locale(identifier: "ko_KR")
     
     // 달
-    calendar.appearance.headerTitleFont = .idormFont(.medium, size: 16)
+    calendar.appearance.headerTitleFont = .iDormFont(.medium, size: 16)
     calendar.appearance.headerTitleColor = .black
     calendar.appearance.headerDateFormat = "M월"
     calendar.headerHeight = 52.0
@@ -103,6 +103,15 @@ final class iDormCalendarView: UIView, BaseView {
   
   /// 현재 캘린더에 적용된 타입니다.
   private let viewType: ViewType
+  
+  /// 현재 저장되어 있는 팀 일정입니다.
+  private var teamCalendars: [TeamCalendar]?
+  
+  /// 현재 저장되어 있는 기숙사 공식 일정입니다.
+  private var dormCalendars: [DormCalendar]?
+  
+  /// 현재 저장되어 있는 날짜입니다.
+  private var currentDate: Date?
 
   // MARK: - Initializer
   
@@ -118,8 +127,6 @@ final class iDormCalendarView: UIView, BaseView {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
-  // MARK: - Life Cycle
   
   // MARK: - Setup
   
@@ -222,66 +229,65 @@ final class iDormCalendarView: UIView, BaseView {
     teamCalendars: [TeamCalendar],
     dormCalendars: [DormCalendar]
   ) {
+    // 인자들 전역 변수에 저장
+    self.currentDate = currentDate
+    self.teamCalendars = teamCalendars
+    self.dormCalendars = dormCalendars
+    
+    // 달력 바꿔진 날짜로 설정
     self.calendar.setCurrentPage(currentDate, animated: true)
-    DispatchQueue.main.async {
-      self.calendar.visibleCells().forEach {
-        let date = self.calendar.date(for: $0)!
-        self.configureCell(
-          from: $0,
-          for: date,
-          teamCalendars: teamCalendars,
-          dormCalendars: dormCalendars
-        )
-      }
-    }
+    
+    // 셀 업데이트
+    self.updateUI()
   }
-  
-  /// 변화가 생기면, 셀을 업데이트 합니다.
-  ///
-  /// - Parameters:
-  ///  - cell: 다시 구성할 셀입니다.
-  ///  - date: 선택된 날짜입니다.
-  ///  - teamCalendars: 팀 일정
-  ///  - dormCalendars: 기숙사 공식 일정
-  func configureCell(
-    from cell: FSCalendarCell,
-    for date: Date,
-    teamCalendars: [TeamCalendar],
-    dormCalendars: [DormCalendar]
-  ) {
-    guard let cell = cell as? iDormCalendarCell else { return }
+}
+
+// MARK: - Privates
+
+private extension iDormCalendarView {
+  /// 데이터로 셀의 `UI`를 변경합니다.
+  func updateUI() {
+    guard
+      let dormCalendars = self.dormCalendars,
+      let teamCalendars = self.teamCalendars
+    else { return }
     
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd"
-    let cellDate = dateFormatter.string(from: date)
-    
-    // 기숙사 일정
-    dormCalendars.forEach {
-      guard let startDate = $0.startDate else { return }
-      if startDate.elementsEqual(cellDate) {
-        cell.titleLabel.textColor = .iDormColor(.iDormBlue)
-        cell.titleLabel.font = .idormFont(.bold, size: 12)
+    DispatchQueue.main.async {
+      // 현재 보여지고 있는 셀을 반환합니다.
+      self.calendar.visibleCells().forEach {
+        guard let cellDate = self.calendar.date(for: $0) else { return }
+        guard let cell = $0 as? iDormCalendarCell else { return }
+        let cellDateString = cellDate.toString("yyyy-MM-dd")
+        
+        // 기숙사 일정
+        dormCalendars.forEach {
+          guard let startDate = $0.startDate else { return }
+          if startDate.elementsEqual(cellDateString) {
+            cell.titleLabel.textColor = .iDormColor(.iDormBlue)
+            cell.titleLabel.font = .iDormFont(.bold, size: 12)
+          }
+        }
+        
+        // 팀 일정
+        var orders = Set<Int>()
+        
+        // 팀 일정 배열에서 하나의 셀에 맞는 날짜를 찾습니다.
+        teamCalendars
+          .filter { $0.startDate.elementsEqual(cellDateString) }
+          .map { $0.targets }
+          .forEach { $0.forEach { orders.insert($0.order) } }
+        
+        // 고유한 값을 받아서 셀을 최종 업데이트합니다.
+        orders.forEach { cell.dotViews[$0].isHidden = false }
       }
     }
-    
-    // 팀 일정
-    var orders = Set<Int>()
-    
-    // 팀 일정 배열에서 하나의 셀에 맞는 날짜를 찾습니다.
-    teamCalendars
-      .filter { $0.startDate.elementsEqual(cellDate) }
-      .map { $0.targets }
-      .forEach { $0.forEach { orders.insert($0.order) } }
-    
-    // 고유한 값을 받아서 셀을 최종 업데이트합니다.
-    orders.forEach { cell.dotViews[$0].isHidden = false }
   }
 }
 
 // MARK: - FSCalendar DataSource
 
 extension iDormCalendarView: FSCalendarDataSource, FSCalendarDelegate {
-  // 새로운 `CalendarCell`을 반환합니다.
+  /// 새로운 `CalendarCell`을 반환합니다.
   func calendar(
     _ calendar: FSCalendar,
     cellFor date: Date,
@@ -293,6 +299,16 @@ extension iDormCalendarView: FSCalendarDataSource, FSCalendarDelegate {
       at: position
     )
     return cell
+  }
+  
+  /// 캘린더가 보이기 직전에 불려지는 메서드입니다.
+  func calendar(
+    _ calendar: FSCalendar,
+    willDisplay cell: FSCalendarCell,
+    for date: Date,
+    at monthPosition: FSCalendarMonthPosition
+  ) {
+    self.updateUI()
   }
   
   func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
