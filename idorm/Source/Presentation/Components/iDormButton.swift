@@ -7,16 +7,34 @@
 
 import UIKit
 
+import SnapKit
+
 /// `UIButton.Configuration`의 `Custom`의 용이를 위한 객체
-final class iDormButton: UIButton {
+final class iDormButton: UIButton, BaseView {
+  
+  // MARK: - UI Components
+  
+  private let bottomBorderLine: UIView = {
+    let view = UIView()
+    view.backgroundColor = .black
+    view.isHidden = true
+    return view
+  }()
   
   // MARK: - Properties
   
-  /// 버튼의 타이틀 `String`
-  private let title: String
-  
   /// 버튼의 왼쪽에 위치해 있는 `UIImage?`
   private let image: UIImage?
+  
+  /// 버튼의 타이틀 `String`
+  var title: String = "" {
+    willSet {
+      self.configuration?.attributedTitle = AttributedString(
+        newValue,
+        attributes: .init([.font: self.font])
+      )
+    }
+  }
   
   /// 버튼의 `CornerRadius`
   var cornerRadius: CGFloat = 0 {
@@ -60,7 +78,15 @@ final class iDormButton: UIButton {
   
   /// 버튼의 `SubTitle`
   var subTitle: String = "" {
-    willSet { self.configuration?.attributedSubtitle = AttributedString(newValue) }
+    willSet {
+      self.configuration?.attributedSubtitle = AttributedString(
+        newValue,
+        attributes: .init([
+          .font: self.subTitleFont,
+          .foregroundColor: self.subTitleColor
+        ])
+      )
+    }
   }
   
   /// 버튼의 `SubTitleFont`
@@ -78,12 +104,31 @@ final class iDormButton: UIButton {
     willSet { self.configuration?.titlePadding = newValue }
   }
   
+  /// 버튼의 `contentInset`
+  var contentInset: NSDirectionalEdgeInsets = .zero {
+    willSet { self.configuration?.contentInsets = newValue }
+  }
+  
+  /// 버튼의 `BottomBorderLine`
+  var isHiddenBottomBorderLine: Bool = true {
+    willSet { self.bottomBorderLine.isHidden = newValue }
+  }
+  
+  override var isSelected: Bool {
+     willSet {
+       self.bottomBorderLine.backgroundColor = newValue ? .black : .iDormColor(.iDormGray200)
+    }
+  }
+  
   // MARK: - Init
   
   init(_ title: String, image: UIImage?) {
     self.title = title
     self.image = image
     super.init(frame: .zero)
+    self.setupStyles()
+    self.setupLayouts()
+    self.setupConstraints()
     self.setupConfiguration()
   }
   
@@ -92,6 +137,25 @@ final class iDormButton: UIButton {
   }
   
   // MARK: - Setup
+  
+  func setupStyles() {
+    self.baseBackgroundColor = .white
+  }
+  
+  func setupLayouts() {
+    [
+      self.bottomBorderLine
+    ].forEach {
+      self.addSubview($0)
+    }
+  }
+  
+  func setupConstraints() {
+    self.bottomBorderLine.snp.makeConstraints { make in
+      make.bottom.directionalHorizontalEdges.equalToSuperview()
+      make.height.equalTo(1.0)
+    }
+  }
   
   /// 사용자의 정보를 토대로 `Configuration`을 업데이트합니다.
   private func setupConfiguration() {

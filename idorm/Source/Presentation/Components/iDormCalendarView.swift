@@ -12,9 +12,11 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-protocol iDormCalendarDelegate: AnyObject {
+@objc protocol iDormCalendarViewDelegate: AnyObject {
   /// 달력의 날짜가 바뀌면 인지할 수 있는 메서드입니다.
-  func monthDidChage(_ currentDateString: String)
+  @objc optional func monthDidChage(_ currentDateString: String)
+  /// 특정 날짜가 선택되면 인지할 수 있는 메서드입니다.
+  @objc optional func calendarDidSelect(_ currentDateString: String)
 }
 
 /// 일정을 볼 수 있는 메인 캘린더입니다.
@@ -45,7 +47,6 @@ final class iDormCalendarView: UIView, BaseView {
   lazy var calendar: FSCalendar = {
     let calendar = FSCalendar()
     // 기본 설정
-    calendar.scrollEnabled = false
     calendar.delegate = self
     calendar.dataSource = self
     calendar.register(
@@ -56,6 +57,8 @@ final class iDormCalendarView: UIView, BaseView {
     // 일
     calendar.appearance.titleFont = .iDormFont(.regular, size: 12)
     calendar.appearance.titleDefaultColor = .idorm_gray_400
+    calendar.appearance.todayColor = .iDormColor(.iDormGray200)
+    calendar.appearance.titleTodayColor = .iDormColor(.iDormGray400)
     
     // 주
     calendar.appearance.weekdayFont = .iDormFont(.regular, size: 12)
@@ -70,17 +73,13 @@ final class iDormCalendarView: UIView, BaseView {
     calendar.appearance.headerMinimumDissolvedAlpha = 0.0
     calendar.appearance.headerTitleOffset = CGPoint(x: 0, y: -4)
     calendar.placeholderType = .none
-    
-    // 선택
-    calendar.appearance.todayColor = .idorm_gray_200
-    calendar.appearance.titleTodayColor = .idorm_gray_400
-    calendar.appearance.borderSelectionColor = .iDormColor(.iDormBlue)
-    
+        
     switch self.viewType {
     case .main:
+      calendar.scrollEnabled = false
       calendar.isUserInteractionEnabled = false
     case .sub:
-      break
+      calendar.scrollEnabled = true
     }
     
     return calendar
@@ -99,13 +98,13 @@ final class iDormCalendarView: UIView, BaseView {
   
   private var disposeBag = DisposeBag()
   
-  weak var delegate: iDormCalendarDelegate?
+  weak var delegate: iDormCalendarViewDelegate?
   
   /// 현재 캘린더에 적용된 타입니다.
   private let viewType: ViewType
   
   /// 현재 저장되어 있는 팀 일정입니다.
-  private var teamCalendars: [TeamCalendar]?
+  private var teamCalendars: [TeamCalendars]?
   
   /// 현재 저장되어 있는 기숙사 공식 일정입니다.
   private var dormCalendars: [DormCalendar]?
@@ -197,14 +196,6 @@ final class iDormCalendarView: UIView, BaseView {
   
   // MARK: - Functions
   
-  /// 캘린더 선택 여부를 업데이트합니다.
-  ///
-  /// - Parameters:
-  ///  - allowsSelection: 선택 여부
-  func updateAllowsSelection(_ allowsSelection: Bool) {
-    self.calendar.allowsSelection = allowsSelection
-  }
-  
   /// 캘린더의 달을 변경합니다.
   ///
   /// - Parameters:
@@ -226,7 +217,7 @@ final class iDormCalendarView: UIView, BaseView {
   ///  - dormCalendars: 기숙사 공식 일정
   func configure(
     _ currentDate: Date,
-    teamCalendars: [TeamCalendar],
+    teamCalendars: [TeamCalendars],
     dormCalendars: [DormCalendar]
   ) {
     // 인자들 전역 변수에 저장
@@ -239,6 +230,15 @@ final class iDormCalendarView: UIView, BaseView {
     
     // 셀 업데이트
     self.updateUI()
+  }
+  
+  /// 선택되어 있는 날짜를 변경합니다.
+  ///
+  /// - Parameters:
+  ///   - date: 업데이트할 날짜
+  func updateSelectedDate(_ date: String) {
+    let date = date.toDate(format: "yyyy-MM-dd")
+    self.calendar.select(date, scrollToDate: true)
   }
 }
 
@@ -293,11 +293,14 @@ extension iDormCalendarView: FSCalendarDataSource, FSCalendarDelegate {
     cellFor date: Date,
     at position: FSCalendarMonthPosition
   ) -> FSCalendarCell {
-    let cell = calendar.dequeueReusableCell(
+    guard let cell = calendar.dequeueReusableCell(
       withIdentifier: iDormCalendarCell.identifier,
       for: date,
       at: position
-    )
+    ) as? iDormCalendarCell else {
+      return FSCalendarCell()
+    }
+    cell.configure(with: self.viewType)
     return cell
   }
   
@@ -311,7 +314,16 @@ extension iDormCalendarView: FSCalendarDataSource, FSCalendarDelegate {
     self.updateUI()
   }
   
+  /// 캘린더의 월이 바뀌면 알 수 있는 메서드입니다.
   func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
-    self.delegate?.monthDidChage(calendar.currentPage.toString("yyyy-MM"))
+    self.delegate?.monthDidChage?(calendar.currentPage.toString("yyyy-MM"))
+  }
+  
+  func calendar(
+    _ calendar: FSCalendar,
+    didSelect date: Date,
+    at monthPosition: FSCalendarMonthPosition
+  ) {
+    self.delegate?.calendarDidSelect?(date.toString("yyyy-MM-dd"))
   }
 }

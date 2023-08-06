@@ -26,7 +26,10 @@ final class iDormBottomView: UIView, BaseView {
   
   // MARK: - Properties
   
-  private let bottomInset: CGFloat
+  /// 오른쪽 버튼의 `isEnabled`를 설정할 수 있는 프로퍼티입니다.
+  var isEnabledRightButton: Bool = false {
+    willSet { self.rightButton.isEnabled = newValue }
+  }
   
   // MARK: - Initializer
   
@@ -37,10 +40,9 @@ final class iDormBottomView: UIView, BaseView {
   ///  - leftButton: 왼쪽에 해당하는 버튼
   ///  - rightButton: 오른쪽에 해당하는 버튼
   ///  - bottomInset: 정확한 높이를 위한 VC의 `bottomInset`
-  init(leftButton: iDormButton ,rightButton: iDormButton, bottomInset: CGFloat) {
+  init(leftButton: iDormButton ,rightButton: iDormButton) {
     self.leftButton = leftButton
     self.rightButton = rightButton
-    self.bottomInset = bottomInset
     super.init(frame: .zero)
     self.setupStyles()
     self.setupLayouts()

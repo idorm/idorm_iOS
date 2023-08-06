@@ -26,6 +26,12 @@ extension CalendarAPI {
         parameters: ["yearMonth": yearMonth],
         encoding: JSONEncoding.default
       )
+      
+    case .getTeamCalendar(let teamCalendarId):
+      return .requestParameters(
+        parameters: ["teamCalendarId": teamCalendarId],
+        encoding: URLEncoding.queryString
+      )
     }
   }
 }

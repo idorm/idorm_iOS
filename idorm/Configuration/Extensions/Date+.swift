@@ -17,6 +17,7 @@ extension Date {
   /// `format`에 맞는 `String`
   func toString(_ format: String) -> String {
     let formatter = DateFormatter()
+    formatter.locale = Locale(identifier: "ko_KR")
     formatter.dateFormat = format
     return formatter.string(from: self)
   }

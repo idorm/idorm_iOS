@@ -60,6 +60,7 @@ final class BottomSheetViewController: BaseViewController {
   override func setupStyles() {
     super.setupStyles()
     
+    self.navigationController?.setNavigationBarHidden(true, animated: false)
     self.view.backgroundColor = .white
     
     self.buttons.forEach {

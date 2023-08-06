@@ -188,6 +188,7 @@ final class DormCalendarCell: UICollectionViewCell, BaseView {
     
     self.contentLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(32.0)
+      make.trailing.equalTo(self.rightArrowButton.snp.leading).offset(-16.0)
       make.top.equalTo(self.dateLabel.snp.bottom).offset(2.0)
     }
     

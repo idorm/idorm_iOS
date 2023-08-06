@@ -36,21 +36,29 @@ final class CalendarMemberView: UIView, BaseView {
     lb.textAlignment = .center
     return lb
   }()
-  
+
   /// 멤버를 선택의 유무를 알 수 있는 `UIButton`
   private let memberSelectionButton: UIButton = {
     let button = UIButton()
     button.setImage(.iDormIcon(.deselect), for: .normal)
     button.setImage(.iDormIcon(.select), for: .selected)
     button.isHidden = true
+    button.isUserInteractionEnabled = false
     return button
   }()
   
   // MARK: - Properties
   
   private var disposeBag = DisposeBag()
+  private var teamMember: TeamMember?
   
-  /// 선택 버튼의 유무를 판별해주는 `Bool`
+  /// 현재 선택 버튼이 선택 되었는지 판별해주는 `BehaviorRealy<Bool>`
+  let isSelected = BehaviorRelay<Bool>(value: false)
+  
+  /// 현재 팀 멤버에 대한 `memberId`
+  var memberId: Int { self.teamMember?.memberId ?? 0 }
+  
+  /// 선택 버튼의 숨김 처리의 유무를 판별해주는 `Bool`
   var isHiddenSelectionButton: Bool = true {
     willSet { self.memberSelectionButton.isHidden = newValue }
   }
@@ -64,6 +72,7 @@ final class CalendarMemberView: UIView, BaseView {
   ///  - teamMember: `TeamMember` Model
   convenience init(_ teamMember: TeamMember) {
     self.init(frame: .zero)
+    self.teamMember = teamMember
     self.configure(with: teamMember)
   }
   
@@ -118,12 +127,19 @@ final class CalendarMemberView: UIView, BaseView {
   // MARK: - Bind
   
   private func bind() {
+    /// `View` 터치
     self.rx.tapGesture()
-      .skip(1)
+      .when(.recognized)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with : self) { owner, _ in
-        owner.memberSelectionButton.isSelected.toggle()
+        owner.isSelected.accept(!owner.memberSelectionButton.isSelected)
       }
+      .disposed(by: self.disposeBag)
+    
+    /// 버튼의 `isSelected`상태를 변경합니다.
+    self.isSelected
+      .distinctUntilChanged()
+      .bind(to: self.memberSelectionButton.rx.isSelected)
       .disposed(by: self.disposeBag)
   }
   

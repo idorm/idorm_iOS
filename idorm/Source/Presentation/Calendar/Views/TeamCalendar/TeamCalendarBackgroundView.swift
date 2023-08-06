@@ -48,7 +48,7 @@ final class TeamCalendarBackgroundView: UICollectionReusableView, BaseView {
   
   func setupConstraints() {
     self.containerView.snp.makeConstraints { make in
-      make.top.equalToSuperview().inset(50)
+      make.top.equalToSuperview().inset(45.0)
       make.directionalHorizontalEdges.equalToSuperview().inset(24)
       make.bottom.equalToSuperview()
     }

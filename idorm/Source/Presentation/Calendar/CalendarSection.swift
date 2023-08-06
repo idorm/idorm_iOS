@@ -12,7 +12,7 @@ enum CalendarSection: Hashable {
   /// 팀 멤버들의 사진과 닉네임이 들어있는 섹션입니다.
   case teamMembers([TeamMember])
   /// 메인 달력이 있는 섹션입니다.
-  case calendar(teamCalenars: [TeamCalendar], dormCalendars: [DormCalendar])
+  case calendar(teamCalenars: [TeamCalendars], dormCalendars: [DormCalendar])
   /// 우리 방 일정
   case teamCalendar
   /// 기숙사 일정
@@ -34,6 +34,7 @@ enum CalendarSection: Hashable {
 /// `Item`을 기준으로 나누어진 섹션입니다.
 enum CalendarSectionItem: Hashable {
   case teamMember(TeamMember)
-  case teamCalendar(TeamCalendar)
+  case teamCalendar(TeamCalendars)
   case dormCalendar(DormCalendar)
+  case dormEmpty
 }

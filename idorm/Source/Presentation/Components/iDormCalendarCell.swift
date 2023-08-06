@@ -95,11 +95,23 @@ final class iDormCalendarCell: FSCalendarCell, BaseView {
   
   /// 셀을 선택했을 때 불려지는 메서드입니다.
   override func performSelecting() {
+    super.performSelecting()
+    
     self.titleLabel.textColor = .white
     self.contentView.backgroundColor = .iDormColor(.iDormBlue)
   }
   
-  /// 셀의 이벤트가 들어왔을 때 무조건적으로 불려지는 메서드입니다.
+  // MARK: - Configure
+  
+  /// 셀의 `ViewType`에 따라서
+  /// 설정 값이 달라집니다.
+  ///
+  /// - Parameters:
+  ///  - viewType: `iDormCalendarView`에서 설정한 `ViewType`
+  func configure(with viewType: iDormCalendarView.ViewType) {
+    if case .sub = viewType { self.circleView.isHidden = true }
+  }
+  
   override func configureAppearance() {
     super.configureAppearance()
     
@@ -111,6 +123,10 @@ final class iDormCalendarCell: FSCalendarCell, BaseView {
 // MARK: - Privates
 
 private extension iDormCalendarCell {
+  /// `6x6`사이즈의 작은 원 `UIView`를 생성합니다.
+  ///
+  /// - Parameters:
+  ///  - color: 원하는 원에 들어갈 색상
   func colorDotView(_ color: UIColor) -> UIView {
     let view = UIView()
     view.backgroundColor = color

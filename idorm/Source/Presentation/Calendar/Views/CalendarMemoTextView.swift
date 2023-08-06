@@ -15,6 +15,15 @@ final class CalendarMemoTextView: UITextView {
   /// `Line`사이 정해진 간격의 `CGFloat`
   private var linePadding: CGFloat = 29.0
   
+  /// `Text`를 입력할 때 적용되는 `Attributes`
+  private var paragraphStyle: NSMutableParagraphStyle {
+    let style = NSMutableParagraphStyle()
+    style.lineSpacing = 8.0
+    style.minimumLineHeight = 21.0
+    style.maximumLineHeight = 21.0
+    return style
+  }
+  
   // MARK: - Life Cycle
   
   override func layoutSubviews() {
@@ -36,20 +45,24 @@ final class CalendarMemoTextView: UITextView {
   // MARK: - Setup
   
   private func setupStyles() {
-    // ParagraphStyle
-    let style = NSMutableParagraphStyle()
-    style.lineSpacing = 8.0
-    style.minimumLineHeight = 21.0
-    style.maximumLineHeight = 21.0
-    
-    self.typingAttributes = [
-      .paragraphStyle: style,
-      .font: UIFont.iDormFont(.regular, size: 14.0)
-    ]
-    
-    // Attributes
     self.isScrollEnabled = false
     self.textContainerInset = UIEdgeInsets(top: 16.0, left: 0.0, bottom: 0.0, right: 16.0)
+    self.font = .iDormFont(.regular, size: 14.0)
+    self.typingAttributes = [
+      .paragraphStyle: self.paragraphStyle,
+      .font: UIFont.iDormFont(.regular, size: 14.0)
+    ]
+  }
+  
+  // MARK: - Functions
+  
+  func updateText(_ text: String) {
+    self.attributedText = NSAttributedString(
+      string: text,
+      attributes: [
+        .paragraphStyle: self.paragraphStyle
+      ]
+    )
   }
 }
 
@@ -66,7 +79,7 @@ private extension CalendarMemoTextView {
     
     for i in 1...numberOfLines {
       let y = CGFloat(i) * self.linePadding + 10.0
-
+      
       let line = CGMutablePath()
       line.move(to: CGPoint(x: 0, y: y))
       line.addLine(to: CGPoint(x: rect.width, y: y))

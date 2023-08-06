@@ -47,7 +47,7 @@ final class CalendarScheduleHeader: UICollectionReusableView, BaseView {
   func setupConstraints() {
     self.contentLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview()
-      make.centerY.equalToSuperview()
+      make.bottom.equalToSuperview().inset(12.0)
     }
   }
   

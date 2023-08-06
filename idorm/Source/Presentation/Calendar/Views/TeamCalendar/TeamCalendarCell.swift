@@ -101,7 +101,7 @@ final class TeamCalendarCell: UICollectionViewCell, BaseView {
     
     self.contentLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(26)
-      make.top.equalTo(self.dateLabel.snp.bottom)
+      make.top.equalTo(self.dotStackView.snp.bottom).offset(4.0)
     }
     
     self.rightButton.snp.makeConstraints { make in
@@ -116,8 +116,8 @@ final class TeamCalendarCell: UICollectionViewCell, BaseView {
     }
     
     self.dotStackView.snp.makeConstraints { make in
-      make.centerY.equalTo(self.dateLabel)
-      make.leading.equalTo(self.dateLabel.snp.trailing).offset(12.0)
+      make.leading.equalTo(self.dateLabel)
+      make.top.equalTo(self.dateLabel.snp.bottom).offset(4.0)
     }
   }
   
@@ -127,10 +127,13 @@ final class TeamCalendarCell: UICollectionViewCell, BaseView {
   ///
   /// - Parameters:
   ///  - teamCalendar: 팀 일정
-  func configure(_ teamCalendar: TeamCalendar) {
+  func configure(_ teamCalendar: TeamCalendars) {
     self.dotViews.forEach { $0.isHidden = true }
     self.contentLabel.text = teamCalendar.title
     self.dateLabel.text = teamCalendar.startDate.toDateString(from: "yyyy-MM-dd", to: "M월 d일")
+    self.dateLabel.text?.append(
+      " ~ \(teamCalendar.endDate.toDateString(from: "yyyy-MM-dd", to: "M월 d일"))"
+    )
     teamCalendar.targets.forEach {
       self.dotViews[$0.order].isHidden = false
     }

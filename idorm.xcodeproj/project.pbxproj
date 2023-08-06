@@ -11,6 +11,7 @@
 		E50300F928773A5D00611C62 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50300F828773A5D00611C62 /* SceneDelegate.swift */; };
 		E503010028773A5E00611C62 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E50300FF28773A5E00611C62 /* Assets.xcassets */; };
 		E503010328773A5E00611C62 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E503010128773A5E00611C62 /* LaunchScreen.storyboard */; };
+		E5045F5F2A7280C6005095D5 /* DormCalendarEmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5045F5E2A7280C6005095D5 /* DormCalendarEmptyCell.swift */; };
 		E5066426296E560B00B581E1 /* PostListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5066425296E560B00B581E1 /* PostListVC.swift */; };
 		E5066428296E677700B581E1 /* PostUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5066427296E677700B581E1 /* PostUtils.swift */; };
 		E506642A296E6B9B00B581E1 /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5066429296E6B9B00B581E1 /* PostCell.swift */; };
@@ -38,6 +39,9 @@
 		E513DA022955ED0B002EA592 /* AuthViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E513DA012955ED0B002EA592 /* AuthViewReactor.swift */; };
 		E51D1C7C2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51D1C7B2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift */; };
 		E51D1C7E29531B8300A7EE49 /* MyRoommateViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51D1C7D29531B8300A7EE49 /* MyRoommateViewReactor.swift */; };
+		E520207D2A6E81F70058F222 /* DormCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E520207C2A6E81F70058F222 /* DormCalendar.swift */; };
+		E520207F2A6EA2EF0058F222 /* BottomSheetVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E520207E2A6EA2EF0058F222 /* BottomSheetVC.swift */; };
+		E52020812A6EA45A0058F222 /* BottomSheetItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52020802A6EA45A0058F222 /* BottomSheetItem.swift */; };
 		E521FC262A2834E2008B2956 /* RxKakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = E521FC252A2834E2008B2956 /* RxKakaoSDK */; };
 		E521FC282A2834E2008B2956 /* RxKakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = E521FC272A2834E2008B2956 /* RxKakaoSDKShare */; };
 		E52233B3296CFCAD00C5DD07 /* PostingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52233B2296CFCAD00C5DD07 /* PostingVC.swift */; };
@@ -79,6 +83,14 @@
 		E53D1A462988A6A40074308B /* MailAPI+Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53D1A452988A6A40074308B /* MailAPI+Path.swift */; };
 		E53D1A482988A6B70074308B /* MailAPI+Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53D1A472988A6B70074308B /* MailAPI+Method.swift */; };
 		E53D1A4A2988A6C90074308B /* MailAPI+Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53D1A492988A6C90074308B /* MailAPI+Task.swift */; };
+		E5410E7C2A6FFC1F00DEB262 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5410E7B2A6FFC1F00DEB262 /* Date+.swift */; };
+		E5410E7E2A70C8DF00DEB262 /* iDormButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5410E7D2A70C8DF00DEB262 /* iDormButton.swift */; };
+		E5410E822A70E89200DEB262 /* CalendarDimmedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5410E812A70E89200DEB262 /* CalendarDimmedVC.swift */; };
+		E5410E842A71359E00DEB262 /* CalendarManagementVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5410E832A71359E00DEB262 /* CalendarManagementVC.swift */; };
+		E5410E882A71416F00DEB262 /* CalendarMemoTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5410E872A71416F00DEB262 /* CalendarMemoTextView.swift */; };
+		E5410E8A2A71487E00DEB262 /* CalendarMemberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5410E892A71487E00DEB262 /* CalendarMemberView.swift */; };
+		E5410E8C2A71775700DEB262 /* CalendarManagementViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5410E8B2A71775700DEB262 /* CalendarManagementViewReactor.swift */; };
+		E5410E8E2A7197A100DEB262 /* iDormBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5410E8D2A7197A100DEB262 /* iDormBottomView.swift */; };
 		E547E3E3291CEF21000D3A47 /* MatchingCardBoolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E547E3E2291CEF21000D3A47 /* MatchingCardBoolView.swift */; };
 		E547E3E6291CF120000D3A47 /* MatchingCardBoolList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E547E3E5291CF120000D3A47 /* MatchingCardBoolList.swift */; };
 		E547E3E8291CF61B000D3A47 /* MatchingCardStringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E547E3E7291CF61B000D3A47 /* MatchingCardStringView.swift */; };
@@ -110,25 +122,26 @@
 		E5626113299A500800D14020 /* DetailPostPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5626112299A500800D14020 /* DetailPostPhotoCell.swift */; };
 		E5626116299A789100D14020 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E5626115299A789100D14020 /* Kingfisher */; };
 		E5626118299B5A5D00D14020 /* BottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5626117299B5A5D00D14020 /* BottomSheet.swift */; };
-		E562611A299B5B5700D14020 /* BottomSheetVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5626119299B5B5700D14020 /* BottomSheetVC.swift */; };
+		E562611A299B5B5700D14020 /* OldBottomSheetVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5626119299B5B5700D14020 /* OldBottomSheetVC.swift */; };
 		E56342232878353100E93D17 /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56342222878353100E93D17 /* TabBarVC.swift */; };
 		E563422528784ED400E93D17 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E563422428784ED400E93D17 /* HomeVC.swift */; };
 		E5695C15295EFBD40083E48D /* LaunchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5695C14295EFBD40083E48D /* LaunchVC.swift */; };
 		E56AF3FE2A58289D00984DA3 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AF3FD2A58289D00984DA3 /* AlertManager.swift */; };
 		E56AF4002A5828F200984DA3 /* UIApplication+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AF3FF2A5828F200984DA3 /* UIApplication+.swift */; };
 		E56AF4022A583A5000984DA3 /* APIManager+ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AF4012A583A5000984DA3 /* APIManager+ErrorHandling.swift */; };
-		E56AF4052A583B3900984DA3 /* iDormCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AF4042A583B3900984DA3 /* iDormCalendar.swift */; };
+		E56AF4052A583B3900984DA3 /* iDormCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AF4042A583B3900984DA3 /* iDormCalendarView.swift */; };
 		E56AF4082A583CF900984DA3 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = E56AF4072A583CF900984DA3 /* FSCalendar */; };
 		E56AF40D2A595B8C00984DA3 /* iDormCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AF40C2A595B8C00984DA3 /* iDormCalendarCell.swift */; };
 		E56AF4102A59621500984DA3 /* CalendarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AF40F2A59621500984DA3 /* CalendarVC.swift */; };
 		E56AF4122A5962ED00984DA3 /* CalendarSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AF4112A5962ED00984DA3 /* CalendarSection.swift */; };
 		E56AF4162A59786200984DA3 /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AF4152A59786200984DA3 /* UIImage+.swift */; };
-		E56AF41D2A5CF00C00984DA3 /* TeamCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AF41C2A5CF00C00984DA3 /* TeamCalendar.swift */; };
-		E56AF41F2A5CF0DD00984DA3 /* TeamMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AF41E2A5CF0DD00984DA3 /* TeamMember.swift */; };
+		E56AF41D2A5CF00C00984DA3 /* TeamCalendars.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AF41C2A5CF00C00984DA3 /* TeamCalendars.swift */; };
+		E56AF41F2A5CF0DD00984DA3 /* TeamMembers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56AF41E2A5CF0DD00984DA3 /* TeamMembers.swift */; };
 		E5732D2C2A1A3A9A009EE496 /* Pods_idorm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99F7F00BF8500AC834F7C28 /* Pods_idorm.framework */; };
-		E574D4212A643D330059B0C1 /* TeamCalendarAPI+Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = E574D4202A643D330059B0C1 /* TeamCalendarAPI+Path.swift */; };
-		E574D4232A643D3D0059B0C1 /* TeamCalendarAPI+Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = E574D4222A643D3D0059B0C1 /* TeamCalendarAPI+Method.swift */; };
-		E574D4252A643D450059B0C1 /* TeamCalendarAPI+Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E574D4242A643D450059B0C1 /* TeamCalendarAPI+Task.swift */; };
+		E574D4212A643D330059B0C1 /* CalendarAPI+Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = E574D4202A643D330059B0C1 /* CalendarAPI+Path.swift */; };
+		E574D4232A643D3D0059B0C1 /* CalendarAPI+Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = E574D4222A643D3D0059B0C1 /* CalendarAPI+Method.swift */; };
+		E574D4252A643D450059B0C1 /* CalendarAPI+Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E574D4242A643D450059B0C1 /* CalendarAPI+Task.swift */; };
+		E574D4272A64F4860059B0C1 /* TeamCalendarBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E574D4262A64F4860059B0C1 /* TeamCalendarBackgroundView.swift */; };
 		E575D37529548DF900B13530 /* WithDrawalViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E575D37429548DF900B13530 /* WithDrawalViewReactor.swift */; };
 		E577E4CB29FA3A4200D0DA48 /* MyCommunityVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577E4CA29FA3A4200D0DA48 /* MyCommunityVC.swift */; };
 		E577E4CD29FA553300D0DA48 /* MyCommunityViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E577E4CC29FA553300D0DA48 /* MyCommunityViewReactor.swift */; };
@@ -217,18 +230,25 @@
 		E5E1498B2950700B00A3827C /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = E5E1498A2950700B00A3827C /* ReactorKit */; };
 		E5E1498D295079F600A3827C /* MatchingFilterViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E1498C295079F600A3827C /* MatchingFilterViewReactor.swift */; };
 		E5E77EC128D81AD400031010 /* LoginTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E77EC028D81AD400031010 /* LoginTextField.swift */; };
-		E5E77EC628D822FB00031010 /* idormButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E77EC528D822FB00031010 /* idormButton.swift */; };
+		E5E77EC628D822FB00031010 /* OldiDormButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E77EC528D822FB00031010 /* OldiDormButton.swift */; };
 		E5E77EC828D825EB00031010 /* idormTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E77EC728D825EB00031010 /* idormTextField.swift */; };
 		E5E8A3DF2895208500A48A91 /* MyCommentsCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E8A3DE2895208500A48A91 /* MyCommentsCollectionVIewCell.swift */; };
 		E5EB0D042952928F00E70573 /* MyPageViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB0D032952928F00E70573 /* MyPageViewReactor.swift */; };
 		E5F35E1B298665E000211C99 /* OrderedComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F35E1A298665E000211C99 /* OrderedComment.swift */; };
 		E5F35E1D2986672F00211C99 /* ResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F35E1C2986672F00211C99 /* ResponseModel.swift */; };
+		E5F48B7F2A7747CB00874207 /* TeamCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F48B7E2A7747CB00874207 /* TeamCalendar.swift */; };
+		E5F48B812A7747D600874207 /* TeamMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F48B802A7747D600874207 /* TeamMember.swift */; };
+		E5F48B862A77961B00874207 /* TeamCalendarRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F48B852A77961B00874207 /* TeamCalendarRequestModel.swift */; };
+		E5F48B882A7B5F7000874207 /* CalendarDateSelectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F48B872A7B5F7000874207 /* CalendarDateSelectionVC.swift */; };
+		E5F48B8A2A7B909500874207 /* CalendarDateSelectionViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F48B892A7B909500874207 /* CalendarDateSelectionViewReactor.swift */; };
+		E5F48B8F2A7BCE0F00874207 /* CalendarDateSelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F48B8E2A7BCE0F00874207 /* CalendarDateSelectionCell.swift */; };
+		E5F48B912A7BFD0B00874207 /* CalendarDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F48B902A7BFD0B00874207 /* CalendarDatePickerView.swift */; };
 		E5F565702918FF5A0043FCB4 /* MyRoommateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5656F2918FF5A0043FCB4 /* MyRoommateVC.swift */; };
 		E5F56572291902B60043FCB4 /* MyPageSortHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F56571291902B60043FCB4 /* MyPageSortHeaderView.swift */; };
 		E5F56574291908DE0043FCB4 /* MyRoommateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F56573291908DE0043FCB4 /* MyRoommateCell.swift */; };
 		E5F5EC78288402840026DE21 /* MyPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC77288402840026DE21 /* MyPageVC.swift */; };
-		E5FA993C2A013ED60047AC0A /* CalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FA993B2A013ED60047AC0A /* CalendarCell.swift */; };
-		E5FA993E2A016CE80047AC0A /* CalendarAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FA993D2A016CE80047AC0A /* CalendarAPI.swift */; };
+		E5FA993C2A013ED60047AC0A /* DormCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FA993B2A013ED60047AC0A /* DormCalendarCell.swift */; };
+		E5FA993E2A016CE80047AC0A /* DormCalendarAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FA993D2A016CE80047AC0A /* DormCalendarAPI.swift */; };
 		E5FA99432A01DEE70047AC0A /* CalendarResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FA99422A01DEE70047AC0A /* CalendarResponseModel.swift */; };
 		E5FC90532A5D90A4001C4A15 /* NetworkUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC90522A5D90A4001C4A15 /* NetworkUtility.swift */; };
 		E5FC90572A5D9701001C4A15 /* CalendarViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC90562A5D9701001C4A15 /* CalendarViewReactor.swift */; };
@@ -239,7 +259,7 @@
 		E5FC90682A63AE5F001C4A15 /* UICollectionReusableView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC90672A63AE5F001C4A15 /* UICollectionReusableView+.swift */; };
 		E5FC906B2A63FD09001C4A15 /* TeamCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC906A2A63FD09001C4A15 /* TeamCalendarCell.swift */; };
 		E5FC906D2A643404001C4A15 /* CalendarScheduleHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC906C2A643404001C4A15 /* CalendarScheduleHeader.swift */; };
-		E5FC90702A64387A001C4A15 /* TeamCalendarAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC906F2A64387A001C4A15 /* TeamCalendarAPI.swift */; };
+		E5FC90702A64387A001C4A15 /* CalendarAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC906F2A64387A001C4A15 /* CalendarAPI.swift */; };
 		E5FD982428EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD982328EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift */; };
 		E5FD982628EAF8F0005A29E2 /* MailTimerChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD982528EAF8F0005A29E2 /* MailTimerChecker.swift */; };
 /* End PBXBuildFile section */
@@ -268,6 +288,7 @@
 		E50300F828773A5D00611C62 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E50300FF28773A5E00611C62 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E503010228773A5E00611C62 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		E5045F5E2A7280C6005095D5 /* DormCalendarEmptyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DormCalendarEmptyCell.swift; sourceTree = "<group>"; };
 		E5066425296E560B00B581E1 /* PostListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListVC.swift; sourceTree = "<group>"; };
 		E5066427296E677700B581E1 /* PostUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostUtils.swift; sourceTree = "<group>"; };
 		E5066429296E6B9B00B581E1 /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
@@ -294,6 +315,9 @@
 		E513DA012955ED0B002EA592 /* AuthViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewReactor.swift; sourceTree = "<group>"; };
 		E51D1C7B2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMyInfoViewReactor.swift; sourceTree = "<group>"; };
 		E51D1C7D29531B8300A7EE49 /* MyRoommateViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoommateViewReactor.swift; sourceTree = "<group>"; };
+		E520207C2A6E81F70058F222 /* DormCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DormCalendar.swift; sourceTree = "<group>"; };
+		E520207E2A6EA2EF0058F222 /* BottomSheetVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetVC.swift; sourceTree = "<group>"; };
+		E52020802A6EA45A0058F222 /* BottomSheetItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetItem.swift; sourceTree = "<group>"; };
 		E52233B2296CFCAD00C5DD07 /* PostingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingVC.swift; sourceTree = "<group>"; };
 		E52233B5296D04A200C5DD07 /* PostingPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostingPhotoCell.swift; sourceTree = "<group>"; };
 		E5226D572911F3610065C809 /* Dormitory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dormitory.swift; sourceTree = "<group>"; };
@@ -332,6 +356,14 @@
 		E53D1A452988A6A40074308B /* MailAPI+Path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MailAPI+Path.swift"; sourceTree = "<group>"; };
 		E53D1A472988A6B70074308B /* MailAPI+Method.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MailAPI+Method.swift"; sourceTree = "<group>"; };
 		E53D1A492988A6C90074308B /* MailAPI+Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MailAPI+Task.swift"; sourceTree = "<group>"; };
+		E5410E7B2A6FFC1F00DEB262 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
+		E5410E7D2A70C8DF00DEB262 /* iDormButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iDormButton.swift; sourceTree = "<group>"; };
+		E5410E812A70E89200DEB262 /* CalendarDimmedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDimmedVC.swift; sourceTree = "<group>"; };
+		E5410E832A71359E00DEB262 /* CalendarManagementVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarManagementVC.swift; sourceTree = "<group>"; };
+		E5410E872A71416F00DEB262 /* CalendarMemoTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarMemoTextView.swift; sourceTree = "<group>"; };
+		E5410E892A71487E00DEB262 /* CalendarMemberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarMemberView.swift; sourceTree = "<group>"; };
+		E5410E8B2A71775700DEB262 /* CalendarManagementViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarManagementViewReactor.swift; sourceTree = "<group>"; };
+		E5410E8D2A7197A100DEB262 /* iDormBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iDormBottomView.swift; sourceTree = "<group>"; };
 		E547E3E2291CEF21000D3A47 /* MatchingCardBoolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCardBoolView.swift; sourceTree = "<group>"; };
 		E547E3E5291CF120000D3A47 /* MatchingCardBoolList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCardBoolList.swift; sourceTree = "<group>"; };
 		E547E3E7291CF61B000D3A47 /* MatchingCardStringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCardStringView.swift; sourceTree = "<group>"; };
@@ -346,23 +378,24 @@
 		E562611029977A6800D14020 /* Sequence+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+.swift"; sourceTree = "<group>"; };
 		E5626112299A500800D14020 /* DetailPostPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPostPhotoCell.swift; sourceTree = "<group>"; };
 		E5626117299B5A5D00D14020 /* BottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheet.swift; sourceTree = "<group>"; };
-		E5626119299B5B5700D14020 /* BottomSheetVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetVC.swift; sourceTree = "<group>"; };
+		E5626119299B5B5700D14020 /* OldBottomSheetVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldBottomSheetVC.swift; sourceTree = "<group>"; };
 		E56342222878353100E93D17 /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
 		E563422428784ED400E93D17 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		E5695C14295EFBD40083E48D /* LaunchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchVC.swift; sourceTree = "<group>"; };
 		E56AF3FD2A58289D00984DA3 /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		E56AF3FF2A5828F200984DA3 /* UIApplication+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+.swift"; sourceTree = "<group>"; };
 		E56AF4012A583A5000984DA3 /* APIManager+ErrorHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIManager+ErrorHandling.swift"; sourceTree = "<group>"; };
-		E56AF4042A583B3900984DA3 /* iDormCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iDormCalendar.swift; sourceTree = "<group>"; };
+		E56AF4042A583B3900984DA3 /* iDormCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iDormCalendarView.swift; sourceTree = "<group>"; };
 		E56AF40C2A595B8C00984DA3 /* iDormCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iDormCalendarCell.swift; sourceTree = "<group>"; };
 		E56AF40F2A59621500984DA3 /* CalendarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarVC.swift; sourceTree = "<group>"; };
 		E56AF4112A5962ED00984DA3 /* CalendarSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSection.swift; sourceTree = "<group>"; };
 		E56AF4152A59786200984DA3 /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
-		E56AF41C2A5CF00C00984DA3 /* TeamCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamCalendar.swift; sourceTree = "<group>"; };
-		E56AF41E2A5CF0DD00984DA3 /* TeamMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamMember.swift; sourceTree = "<group>"; };
-		E574D4202A643D330059B0C1 /* TeamCalendarAPI+Path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TeamCalendarAPI+Path.swift"; sourceTree = "<group>"; };
-		E574D4222A643D3D0059B0C1 /* TeamCalendarAPI+Method.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TeamCalendarAPI+Method.swift"; sourceTree = "<group>"; };
-		E574D4242A643D450059B0C1 /* TeamCalendarAPI+Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TeamCalendarAPI+Task.swift"; sourceTree = "<group>"; };
+		E56AF41C2A5CF00C00984DA3 /* TeamCalendars.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamCalendars.swift; sourceTree = "<group>"; };
+		E56AF41E2A5CF0DD00984DA3 /* TeamMembers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamMembers.swift; sourceTree = "<group>"; };
+		E574D4202A643D330059B0C1 /* CalendarAPI+Path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CalendarAPI+Path.swift"; sourceTree = "<group>"; };
+		E574D4222A643D3D0059B0C1 /* CalendarAPI+Method.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CalendarAPI+Method.swift"; sourceTree = "<group>"; };
+		E574D4242A643D450059B0C1 /* CalendarAPI+Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CalendarAPI+Task.swift"; sourceTree = "<group>"; };
+		E574D4262A64F4860059B0C1 /* TeamCalendarBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamCalendarBackgroundView.swift; sourceTree = "<group>"; };
 		E575D37429548DF900B13530 /* WithDrawalViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithDrawalViewReactor.swift; sourceTree = "<group>"; };
 		E577E4CA29FA3A4200D0DA48 /* MyCommunityVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommunityVC.swift; sourceTree = "<group>"; };
 		E577E4CC29FA553300D0DA48 /* MyCommunityViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommunityViewReactor.swift; sourceTree = "<group>"; };
@@ -449,18 +482,25 @@
 		E5E149872950635500A3827C /* FilterDriver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterDriver.swift; sourceTree = "<group>"; };
 		E5E1498C295079F600A3827C /* MatchingFilterViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilterViewReactor.swift; sourceTree = "<group>"; };
 		E5E77EC028D81AD400031010 /* LoginTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginTextField.swift; sourceTree = "<group>"; };
-		E5E77EC528D822FB00031010 /* idormButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = idormButton.swift; sourceTree = "<group>"; };
+		E5E77EC528D822FB00031010 /* OldiDormButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldiDormButton.swift; sourceTree = "<group>"; };
 		E5E77EC728D825EB00031010 /* idormTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = idormTextField.swift; sourceTree = "<group>"; };
 		E5E8A3DE2895208500A48A91 /* MyCommentsCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommentsCollectionVIewCell.swift; sourceTree = "<group>"; };
 		E5EB0D032952928F00E70573 /* MyPageViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewReactor.swift; sourceTree = "<group>"; };
 		E5F35E1A298665E000211C99 /* OrderedComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderedComment.swift; sourceTree = "<group>"; };
 		E5F35E1C2986672F00211C99 /* ResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseModel.swift; sourceTree = "<group>"; };
+		E5F48B7E2A7747CB00874207 /* TeamCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamCalendar.swift; sourceTree = "<group>"; };
+		E5F48B802A7747D600874207 /* TeamMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamMember.swift; sourceTree = "<group>"; };
+		E5F48B852A77961B00874207 /* TeamCalendarRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamCalendarRequestModel.swift; sourceTree = "<group>"; };
+		E5F48B872A7B5F7000874207 /* CalendarDateSelectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDateSelectionVC.swift; sourceTree = "<group>"; };
+		E5F48B892A7B909500874207 /* CalendarDateSelectionViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDateSelectionViewReactor.swift; sourceTree = "<group>"; };
+		E5F48B8E2A7BCE0F00874207 /* CalendarDateSelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDateSelectionCell.swift; sourceTree = "<group>"; };
+		E5F48B902A7BFD0B00874207 /* CalendarDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDatePickerView.swift; sourceTree = "<group>"; };
 		E5F5656F2918FF5A0043FCB4 /* MyRoommateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoommateVC.swift; sourceTree = "<group>"; };
 		E5F56571291902B60043FCB4 /* MyPageSortHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSortHeaderView.swift; sourceTree = "<group>"; };
 		E5F56573291908DE0043FCB4 /* MyRoommateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoommateCell.swift; sourceTree = "<group>"; };
 		E5F5EC77288402840026DE21 /* MyPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageVC.swift; sourceTree = "<group>"; };
-		E5FA993B2A013ED60047AC0A /* CalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCell.swift; sourceTree = "<group>"; };
-		E5FA993D2A016CE80047AC0A /* CalendarAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarAPI.swift; sourceTree = "<group>"; };
+		E5FA993B2A013ED60047AC0A /* DormCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DormCalendarCell.swift; sourceTree = "<group>"; };
+		E5FA993D2A016CE80047AC0A /* DormCalendarAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DormCalendarAPI.swift; sourceTree = "<group>"; };
 		E5FA99422A01DEE70047AC0A /* CalendarResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarResponseModel.swift; sourceTree = "<group>"; };
 		E5FC90522A5D90A4001C4A15 /* NetworkUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkUtility.swift; sourceTree = "<group>"; };
 		E5FC90562A5D9701001C4A15 /* CalendarViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewReactor.swift; sourceTree = "<group>"; };
@@ -471,7 +511,7 @@
 		E5FC90672A63AE5F001C4A15 /* UICollectionReusableView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionReusableView+.swift"; sourceTree = "<group>"; };
 		E5FC906A2A63FD09001C4A15 /* TeamCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamCalendarCell.swift; sourceTree = "<group>"; };
 		E5FC906C2A643404001C4A15 /* CalendarScheduleHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarScheduleHeader.swift; sourceTree = "<group>"; };
-		E5FC906F2A64387A001C4A15 /* TeamCalendarAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamCalendarAPI.swift; sourceTree = "<group>"; };
+		E5FC906F2A64387A001C4A15 /* CalendarAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarAPI.swift; sourceTree = "<group>"; };
 		E5FD982328EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMatchingInfoPopup_Initial.swift; sourceTree = "<group>"; };
 		E5FD982528EAF8F0005A29E2 /* MailTimerChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailTimerChecker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -582,6 +622,7 @@
 				E52C45E129230ED500638B68 /* Moya+.swift */,
 				E5294FF42927807A004D408C /* Encodable+.swift */,
 				E5D07086292F098500D5DF6E /* String+.swift */,
+				E5410E7B2A6FFC1F00DEB262 /* Date+.swift */,
 				E562611029977A6800D14020 /* Sequence+.swift */,
 				E509438928F8291D004D3A58 /* Preview.swift */,
 				E5FC90672A63AE5F001C4A15 /* UICollectionReusableView+.swift */,
@@ -733,7 +774,7 @@
 			children = (
 				E5695C14295EFBD40083E48D /* LaunchVC.swift */,
 				E56342222878353100E93D17 /* TabBarVC.swift */,
-				E5626119299B5B5700D14020 /* BottomSheetVC.swift */,
+				E5626119299B5B5700D14020 /* OldBottomSheetVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -741,21 +782,15 @@
 		E56AF4032A583B1300984DA3 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				E56AF4092A586BCE00984DA3 /* Calendar */,
-				E5E77EC528D822FB00031010 /* idormButton.swift */,
+				E5E77EC528D822FB00031010 /* OldiDormButton.swift */,
 				E5E77EC728D825EB00031010 /* idormTextField.swift */,
 				E58131A7288E6AC6000DB8C9 /* FloatyBottomView.swift */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		E56AF4092A586BCE00984DA3 /* Calendar */ = {
-			isa = PBXGroup;
-			children = (
-				E56AF4042A583B3900984DA3 /* iDormCalendar.swift */,
+				E5410E7D2A70C8DF00DEB262 /* iDormButton.swift */,
+				E5410E8D2A7197A100DEB262 /* iDormBottomView.swift */,
+				E56AF4042A583B3900984DA3 /* iDormCalendarView.swift */,
 				E56AF40C2A595B8C00984DA3 /* iDormCalendarCell.swift */,
 			);
-			path = Calendar;
+			path = Components;
 			sourceTree = "<group>";
 		};
 		E56AF40E2A59620600984DA3 /* Calendar */ = {
@@ -772,8 +807,11 @@
 		E56AF41B2A5C547B00984DA3 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
-				E56AF41E2A5CF0DD00984DA3 /* TeamMember.swift */,
-				E56AF41C2A5CF00C00984DA3 /* TeamCalendar.swift */,
+				E56AF41E2A5CF0DD00984DA3 /* TeamMembers.swift */,
+				E5F48B802A7747D600874207 /* TeamMember.swift */,
+				E56AF41C2A5CF00C00984DA3 /* TeamCalendars.swift */,
+				E5F48B7E2A7747CB00874207 /* TeamCalendar.swift */,
+				E520207C2A6E81F70058F222 /* DormCalendar.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -975,6 +1013,8 @@
 		E575D37129544B5200B13530 /* BottomSheet */ = {
 			isa = PBXGroup;
 			children = (
+				E52020802A6EA45A0058F222 /* BottomSheetItem.swift */,
+				E520207E2A6EA2EF0058F222 /* BottomSheetVC.swift */,
 				E50FB5292972B34300E938B8 /* ViewControllers */,
 				E5B249BE2962742E00081609 /* Reactors */,
 			);
@@ -1140,6 +1180,7 @@
 		E5CFF70D2982D2D100E11D9A /* Request */ = {
 			isa = PBXGroup;
 			children = (
+				E5F48B822A7795A600874207 /* Calendar */,
 				E5CFF71C29835DC300E11D9A /* MatchingRequestModel.swift */,
 				E5CFF71629835CCC00E11D9A /* MatchingInfoRequestModel.swift */,
 				E5CFF7112982D42A00E11D9A /* CommunityRequestModel.swift */,
@@ -1244,6 +1285,22 @@
 			path = Constants;
 			sourceTree = "<group>";
 		};
+		E5F48B822A7795A600874207 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				E5F48B852A77961B00874207 /* TeamCalendarRequestModel.swift */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		E5F48B8D2A7BCDF400874207 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				E5F48B8E2A7BCE0F00874207 /* CalendarDateSelectionCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		E5FA99392A013EBF0047AC0A /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -1255,7 +1312,6 @@
 		E5FA993A2A013EC20047AC0A /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				E5FA993B2A013ED60047AC0A /* CalendarCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1263,7 +1319,7 @@
 		E5FA993F2A016CEF0047AC0A /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
-				E5FA993D2A016CE80047AC0A /* CalendarAPI.swift */,
+				E5FA993D2A016CE80047AC0A /* DormCalendarAPI.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -1272,6 +1328,9 @@
 			isa = PBXGroup;
 			children = (
 				E56AF40F2A59621500984DA3 /* CalendarVC.swift */,
+				E5410E812A70E89200DEB262 /* CalendarDimmedVC.swift */,
+				E5410E832A71359E00DEB262 /* CalendarManagementVC.swift */,
+				E5F48B872A7B5F7000874207 /* CalendarDateSelectionVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -1280,6 +1339,8 @@
 			isa = PBXGroup;
 			children = (
 				E5FC90562A5D9701001C4A15 /* CalendarViewReactor.swift */,
+				E5410E8B2A71775700DEB262 /* CalendarManagementViewReactor.swift */,
+				E5F48B892A7B909500874207 /* CalendarDateSelectionViewReactor.swift */,
 			);
 			path = Reactors;
 			sourceTree = "<group>";
@@ -1287,7 +1348,11 @@
 		E5FC905A2A602CF5001C4A15 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E5F48B8D2A7BCDF400874207 /* Cells */,
 				E5FC906C2A643404001C4A15 /* CalendarScheduleHeader.swift */,
+				E5410E892A71487E00DEB262 /* CalendarMemberView.swift */,
+				E5410E872A71416F00DEB262 /* CalendarMemoTextView.swift */,
+				E5F48B902A7BFD0B00874207 /* CalendarDatePickerView.swift */,
 				E5FC90632A63A85C001C4A15 /* CalendarMember */,
 				E5FC90642A63A864001C4A15 /* Calendar */,
 				E5FC90662A63A870001C4A15 /* TeamCalendar */,
@@ -1317,6 +1382,8 @@
 		E5FC90652A63A869001C4A15 /* DormCalendar */ = {
 			isa = PBXGroup;
 			children = (
+				E5FA993B2A013ED60047AC0A /* DormCalendarCell.swift */,
+				E5045F5E2A7280C6005095D5 /* DormCalendarEmptyCell.swift */,
 			);
 			path = DormCalendar;
 			sourceTree = "<group>";
@@ -1325,6 +1392,7 @@
 			isa = PBXGroup;
 			children = (
 				E5FC906A2A63FD09001C4A15 /* TeamCalendarCell.swift */,
+				E574D4262A64F4860059B0C1 /* TeamCalendarBackgroundView.swift */,
 			);
 			path = TeamCalendar;
 			sourceTree = "<group>";
@@ -1332,10 +1400,10 @@
 		E5FC906E2A64385D001C4A15 /* TeamCalendar */ = {
 			isa = PBXGroup;
 			children = (
-				E5FC906F2A64387A001C4A15 /* TeamCalendarAPI.swift */,
-				E574D4202A643D330059B0C1 /* TeamCalendarAPI+Path.swift */,
-				E574D4222A643D3D0059B0C1 /* TeamCalendarAPI+Method.swift */,
-				E574D4242A643D450059B0C1 /* TeamCalendarAPI+Task.swift */,
+				E5FC906F2A64387A001C4A15 /* CalendarAPI.swift */,
+				E574D4202A643D330059B0C1 /* CalendarAPI+Path.swift */,
+				E574D4222A643D3D0059B0C1 /* CalendarAPI+Method.swift */,
+				E574D4242A643D450059B0C1 /* CalendarAPI+Task.swift */,
 			);
 			path = TeamCalendar;
 			sourceTree = "<group>";
@@ -1506,11 +1574,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5410E7C2A6FFC1F00DEB262 /* Date+.swift in Sources */,
 				E5B249C02962744100081609 /* PrivacyPolicyBottomSheetReactor.swift in Sources */,
 				E5066426296E560B00B581E1 /* PostListVC.swift in Sources */,
 				E52C27872989148B002429B5 /* Roommate.swift in Sources */,
 				E5E14982295050EC00A3827C /* FilterStorage.swift in Sources */,
-				E56AF41F2A5CF0DD00984DA3 /* TeamMember.swift in Sources */,
+				E56AF41F2A5CF0DD00984DA3 /* TeamMembers.swift in Sources */,
 				E55AE18C29E52A6E002E6025 /* CommunityContainerView.swift in Sources */,
 				E577E4CD29FA553300D0DA48 /* MyCommunityViewReactor.swift in Sources */,
 				E52C2789298917F8002429B5 /* AuthProcess.swift in Sources */,
@@ -1518,7 +1587,7 @@
 				E575D37529548DF900B13530 /* WithDrawalViewReactor.swift in Sources */,
 				E5626113299A500800D14020 /* DetailPostPhotoCell.swift in Sources */,
 				E5CFF6EE297E3D4D00E11D9A /* CommentView.swift in Sources */,
-				E5FA993C2A013ED60047AC0A /* CalendarCell.swift in Sources */,
+				E5FA993C2A013ED60047AC0A /* DormCalendarCell.swift in Sources */,
 				E53D1A412988A5C00074308B /* MemberAPI+Path.swift in Sources */,
 				E5AD73A3287B2B5200BA2C5E /* PasswordVC.swift in Sources */,
 				E5226D60291207AA0065C809 /* Habit.swift in Sources */,
@@ -1541,15 +1610,19 @@
 				E5AD739D287AE08F00BA2C5E /* BasicPopup.swift in Sources */,
 				E53C60B0287B37CB00977909 /* CompleteSignUpVC.swift in Sources */,
 				E5FC90602A62B438001C4A15 /* CalendarMemberBackgroundView.swift in Sources */,
-				E574D4232A643D3D0059B0C1 /* TeamCalendarAPI+Method.swift in Sources */,
+				E574D4232A643D3D0059B0C1 /* CalendarAPI+Method.swift in Sources */,
 				E5CFF70B2982D00200E11D9A /* BaseAPI.swift in Sources */,
 				E5A47F08292508F300908E20 /* SharedAPI.swift in Sources */,
+				E5F48B8F2A7BCE0F00874207 /* CalendarDateSelectionCell.swift in Sources */,
 				E5CFF7142982D72000E11D9A /* CommunityResponseModel.swift in Sources */,
+				E5410E7E2A70C8DF00DEB262 /* iDormButton.swift in Sources */,
 				E58BF48629FD54D30036B125 /* MyCommentCell.swift in Sources */,
 				E58865132988E1FF0068BEB2 /* MatchingAPI+Method.swift in Sources */,
+				E520207D2A6E81F70058F222 /* DormCalendar.swift in Sources */,
 				E5D7AECE292B287D00038349 /* WithdrawalVC.swift in Sources */,
 				E5290F0928881C6E0004B8E6 /* DetailPostHeaderView.swift in Sources */,
 				E50300F728773A5D00611C62 /* AppDelegate.swift in Sources */,
+				E5F48B912A7BFD0B00874207 /* CalendarDatePickerView.swift in Sources */,
 				E55794EE287C36F5002DB2B0 /* UIView+.swift in Sources */,
 				E5FA99432A01DEE70047AC0A /* CalendarResponseModel.swift in Sources */,
 				E58BF48829FE8C0F0036B125 /* MyPostCell.swift in Sources */,
@@ -1573,6 +1646,7 @@
 				E58A6297289D6BEF0074F646 /* DeviceManager.swift in Sources */,
 				E50FB5312972E41600E938B8 /* LoadingCell.swift in Sources */,
 				E562611129977A6800D14020 /* Sequence+.swift in Sources */,
+				E5045F5F2A7280C6005095D5 /* DormCalendarEmptyCell.swift in Sources */,
 				E52E96B22915FAB6009E1773 /* MatchingContainerView.swift in Sources */,
 				E5D03359294AD8B1006DD107 /* UserStorage.swift in Sources */,
 				E5B61F4129B481910031046C /* ErrorCode.swift in Sources */,
@@ -1582,24 +1656,30 @@
 				E5C2614E2919D3AA00623C0E /* BottomSheetUtils.swift in Sources */,
 				E53D1A432988A5CA0074308B /* MemberAPI+Method.swift in Sources */,
 				E5226D65291246750065C809 /* OnboardingDriver.swift in Sources */,
+				E5410E882A71416F00DEB262 /* CalendarMemoTextView.swift in Sources */,
 				E50F85072958494B008B7052 /* OnboardingViewReactor.swift in Sources */,
-				E5E77EC628D822FB00031010 /* idormButton.swift in Sources */,
+				E5E77EC628D822FB00031010 /* OldiDormButton.swift in Sources */,
+				E5410E842A71359E00DEB262 /* CalendarManagementVC.swift in Sources */,
+				E520207F2A6EA2EF0058F222 /* BottomSheetVC.swift in Sources */,
 				E58865152988E20A0068BEB2 /* MatchingAPI+Task.swift in Sources */,
 				E577E4CB29FA3A4200D0DA48 /* MyCommunityVC.swift in Sources */,
 				E5294FF52927807A004D408C /* Encodable+.swift in Sources */,
+				E5F48B812A7747D600874207 /* TeamMember.swift in Sources */,
 				E5FC90532A5D90A4001C4A15 /* NetworkUtility.swift in Sources */,
 				E523ECAF29516A0A00E79386 /* MatchingViewReactor.swift in Sources */,
-				E5FC90702A64387A001C4A15 /* TeamCalendarAPI.swift in Sources */,
+				E5FC90702A64387A001C4A15 /* CalendarAPI.swift in Sources */,
 				E5CFF7122982D42A00E11D9A /* CommunityRequestModel.swift in Sources */,
 				E547E3E6291CF120000D3A47 /* MatchingCardBoolList.swift in Sources */,
 				E56AF4122A5962ED00984DA3 /* CalendarSection.swift in Sources */,
 				E58833D929BB521A002B2CBE /* IdormFont_deprecated.swift in Sources */,
 				E53D1A3F2988A5780074308B /* MemberAPI+Task.swift in Sources */,
+				E5410E822A70E89200DEB262 /* CalendarDimmedVC.swift in Sources */,
 				E5FD982628EAF8F0005A29E2 /* MailTimerChecker.swift in Sources */,
 				E5290F0E288867E50004B8E6 /* CommentCell.swift in Sources */,
 				E5FC90682A63AE5F001C4A15 /* UICollectionReusableView+.swift in Sources */,
 				E5CFF6F0297E76F300E11D9A /* DetailPostViewReactor.swift in Sources */,
 				E5CFF6F4297E7B3D00E11D9A /* UIFont+.swift in Sources */,
+				E5F48B7F2A7747CB00874207 /* TeamCalendar.swift in Sources */,
 				E57FB8562886E2710050BBAE /* PhotoLibrary+.swift in Sources */,
 				E56AF4022A583A5000984DA3 /* APIManager+ErrorHandling.swift in Sources */,
 				E56AF40D2A595B8C00984DA3 /* iDormCalendarCell.swift in Sources */,
@@ -1607,9 +1687,11 @@
 				E5F56574291908DE0043FCB4 /* MyRoommateCell.swift in Sources */,
 				E57B3E4E2933688500B2C0F0 /* NoMatchingInfoPopup.swift in Sources */,
 				E5CFF71729835CCC00E11D9A /* MatchingInfoRequestModel.swift in Sources */,
+				E5F48B882A7B5F7000874207 /* CalendarDateSelectionVC.swift in Sources */,
 				E5066428296E677700B581E1 /* PostUtils.swift in Sources */,
 				E5D4900B288BFA0200311493 /* MatchingVC.swift in Sources */,
 				E52233B3296CFCAD00C5DD07 /* PostingVC.swift in Sources */,
+				E5F48B862A77961B00874207 /* TeamCalendarRequestModel.swift in Sources */,
 				E5FD982428EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift in Sources */,
 				E50F850329582D5E008B7052 /* CompleteSignupViewReactor.swift in Sources */,
 				E59F0D502920A47E00D3B737 /* MatchingBottomSheet.swift in Sources */,
@@ -1621,9 +1703,10 @@
 				E5FC906D2A643404001C4A15 /* CalendarScheduleHeader.swift in Sources */,
 				E513DA022955ED0B002EA592 /* AuthViewReactor.swift in Sources */,
 				E5AD73A1287AFC5300BA2C5E /* AuthNumberVC.swift in Sources */,
-				E56AF41D2A5CF00C00984DA3 /* TeamCalendar.swift in Sources */,
+				E56AF41D2A5CF00C00984DA3 /* TeamCalendars.swift in Sources */,
 				E5CFF6F6297E8A6700E11D9A /* idormCommunityButton.swift in Sources */,
 				E53D1A4A2988A6C90074308B /* MailAPI+Task.swift in Sources */,
+				E5410E8C2A71775700DEB262 /* CalendarManagementViewReactor.swift in Sources */,
 				E5CFF7032982CD8A00E11D9A /* CommunityAPI+Task.swift in Sources */,
 				E5A47F062924F25000908E20 /* MailAPI.swift in Sources */,
 				E5AC2A4D28BB5B250069ABB9 /* ManageMyInfoVC.swift in Sources */,
@@ -1635,15 +1718,17 @@
 				E50F850929587C8B008B7052 /* TransformUtils.swift in Sources */,
 				E5226D5C2911F3760065C809 /* JoinPeriod.swift in Sources */,
 				E5290F06288818E70004B8E6 /* DetailPostVC.swift in Sources */,
-				E574D4212A643D330059B0C1 /* TeamCalendarAPI+Path.swift in Sources */,
+				E574D4212A643D330059B0C1 /* CalendarAPI+Path.swift in Sources */,
 				E529515A29BD176400087AE2 /* Constant.swift in Sources */,
 				E5D98F8F28C4863900D493FF /* NickNameVC.swift in Sources */,
 				E58F96FB2884E85B00CC3C75 /* GalleryCell.swift in Sources */,
+				E52020812A6EA45A0058F222 /* BottomSheetItem.swift in Sources */,
 				E53D1A462988A6A40074308B /* MailAPI+Path.swift in Sources */,
 				E53B9EC92A056122004F2991 /* TransitionManager.swift in Sources */,
 				E5CFF71929835D0700E11D9A /* MatchingInfoResponseModel.swift in Sources */,
-				E562611A299B5B5700D14020 /* BottomSheetVC.swift in Sources */,
-				E56AF4052A583B3900984DA3 /* iDormCalendar.swift in Sources */,
+				E5410E8A2A71487E00DEB262 /* CalendarMemberView.swift in Sources */,
+				E562611A299B5B5700D14020 /* OldBottomSheetVC.swift in Sources */,
+				E56AF4052A583B3900984DA3 /* iDormCalendarView.swift in Sources */,
 				E5226D5A2911F36B0065C809 /* Gender.swift in Sources */,
 				E52233B6296D04A200C5DD07 /* PostingPhotoCell.swift in Sources */,
 				E5CFF71D29835DC300E11D9A /* MatchingRequestModel.swift in Sources */,
@@ -1663,6 +1748,7 @@
 				E5F565702918FF5A0043FCB4 /* MyRoommateVC.swift in Sources */,
 				E53B9ECB2A056B98004F2991 /* TokenManager.swift in Sources */,
 				E58ACB8728846E050031BD86 /* GalleryVC.swift in Sources */,
+				E5410E8E2A7197A100DEB262 /* iDormBottomView.swift in Sources */,
 				E5CFF71F29835DEE00E11D9A /* MatchingResponseModel.swift in Sources */,
 				E50F850D29589256008B7052 /* CommentUtils.swift in Sources */,
 				E547E3E8291CF61B000D3A47 /* MatchingCardStringView.swift in Sources */,
@@ -1676,13 +1762,14 @@
 				E50F85012957E44B008B7052 /* NicknameViewReactor.swift in Sources */,
 				E56AF3FE2A58289D00984DA3 /* AlertManager.swift in Sources */,
 				E51D1C7C2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift in Sources */,
+				E5F48B8A2A7B909500874207 /* CalendarDateSelectionViewReactor.swift in Sources */,
 				E5CFF7052982CDDC00E11D9A /* CommunityAPI+Path.swift in Sources */,
 				E5F5EC78288402840026DE21 /* MyPageVC.swift in Sources */,
 				E5FC905C2A602D24001C4A15 /* CalendarMemberCell.swift in Sources */,
 				E5294FF329277A06004D408C /* MatchingAPI.swift in Sources */,
 				E5FC90572A5D9701001C4A15 /* CalendarViewReactor.swift in Sources */,
-				E5FA993E2A016CE80047AC0A /* CalendarAPI.swift in Sources */,
-				E574D4252A643D450059B0C1 /* TeamCalendarAPI+Task.swift in Sources */,
+				E5FA993E2A016CE80047AC0A /* DormCalendarAPI.swift in Sources */,
+				E574D4252A643D450059B0C1 /* CalendarAPI+Task.swift in Sources */,
 				E5AB97C42895671800C0CEDF /* MatchingFilterVC.swift in Sources */,
 				E5E1498D295079F600A3827C /* MatchingFilterViewReactor.swift in Sources */,
 				E5AD7396287A8C2F00BA2C5E /* UIColor+.swift in Sources */,
@@ -1691,6 +1778,7 @@
 				E550476E29A0F1FD0050AD1C /* DetailPhotoCell.swift in Sources */,
 				E5AD7391287A863800BA2C5E /* LoginVC.swift in Sources */,
 				E5F35E1D2986672F00211C99 /* ResponseModel.swift in Sources */,
+				E574D4272A64F4860059B0C1 /* TeamCalendarBackgroundView.swift in Sources */,
 				E51D1C7E29531B8300A7EE49 /* MyRoommateViewReactor.swift in Sources */,
 				E5C9B1362A496BB5001BF59D /* APIManager.swift in Sources */,
 				E5AD739F287AEF2D00BA2C5E /* EmailVC.swift in Sources */,

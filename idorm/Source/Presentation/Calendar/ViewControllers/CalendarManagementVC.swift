@@ -12,9 +12,11 @@ import RxSwift
 import RxCocoa
 import ReactorKit
 import RxGesture
+import PanModal
 
 /// `일정 등록`이나 `일정 수정`을 위한 페이지입니다.
 final class CalendarManagementViewController: BaseViewController, View {
+  typealias Reactor = CalendarManagementViewReactor
   
   // MARK: - UI Components
   
@@ -70,8 +72,10 @@ final class CalendarManagementViewController: BaseViewController, View {
   private let startDateButton: iDormButton = {
     let button = iDormButton("", image: nil)
     button.font = .iDormFont(.medium, size: 14.0)
+    button.baseBackgroundColor = .white
     button.baseForegroundColor = .black
     button.titlePadding = 4.0
+    button.edgeInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
     button.subTitleFont = .iDormFont(.medium, size: 14.0)
     button.subTitleColor = .iDormColor(.iDormGray300)
     return button
@@ -81,8 +85,10 @@ final class CalendarManagementViewController: BaseViewController, View {
   private let endDateButton: iDormButton = {
     let button = iDormButton("", image: nil)
     button.font = .iDormFont(.medium, size: 14.0)
+    button.baseBackgroundColor = .white
     button.baseForegroundColor = .black
     button.titlePadding = 4.0
+    button.edgeInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
     button.subTitleFont = .iDormFont(.medium, size: 14.0)
     button.subTitleColor = .iDormColor(.iDormGray300)
     return button
@@ -128,8 +134,7 @@ final class CalendarManagementViewController: BaseViewController, View {
   private lazy var bottomView: iDormBottomView = {
     let view = iDormBottomView(
       leftButton: .init("일정 삭제", image: nil),
-      rightButton: .init("완료", image: nil),
-      bottomInset: self.view.safeAreaInsets.bottom
+      rightButton: .init("완료", image: nil)
     )
     return view
   }()
@@ -141,7 +146,21 @@ final class CalendarManagementViewController: BaseViewController, View {
     return view
   }()
   
+  private var calendarMemberViews: [CalendarMemberView] = [] {
+    willSet {
+      
+    }
+  }
+  
   // MARK: - Properties
+  
+  // MARK: - Life Cycle
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    self.navigationController?.setNavigationBarHidden(false, animated: false)
+  }
   
   // MARK: - Setup
   
@@ -259,6 +278,11 @@ final class CalendarManagementViewController: BaseViewController, View {
   
   func bind(reactor: CalendarManagementViewReactor) {
     // Action
+    self.rx.viewDidLoad
+      .map { Reactor.Action.viewDidLoad }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
     self.scrollView.rx.tapGesture()
       .when(.recognized)
       .asDriver(onErrorRecover: { _ in return .empty() })
@@ -267,6 +291,134 @@ final class CalendarManagementViewController: BaseViewController, View {
       }
       .disposed(by: self.disposeBag)
     
+    self.titleTextField.rx.text.orEmpty
+      .map { Reactor.Action.titleTextFieldDidChange($0) }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
+    self.memoTextView.rx.text.orEmpty
+      .map { Reactor.Action.memoTextViewDidChange($0) }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
+    self.startDateButton.rx.tap
+      .map { Reactor.Action.dateButtonDidTap(isStartDate: true) }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
+    self.endDateButton.rx.tap
+      .map { Reactor.Action.dateButtonDidTap(isStartDate: false) }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
     // State
+    Observable.combineLatest(
+      reactor.state.map { $0.teamMembers }.distinctUntilChanged(),
+      reactor.state.map { $0.viewState }.distinctUntilChanged()
+    )
+    .asDriver(onErrorRecover: { _ in return .empty() })
+    .drive(with: self) { owner, calendarData in
+      let teamMembers = calendarData.0
+      let viewState = calendarData.1
+      
+      owner.configureCalendarMemberViews(teamMembers)
+      owner.configureData(viewState: viewState, teamMembers: teamMembers)
+    }
+    .disposed(by: self.disposeBag)
+    
+    reactor.state.map { $0.isEnabledDoneButon }
+      .distinctUntilChanged()
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, isEnabled in
+        owner.bottomView.isEnabledRightButton = isEnabled
+      }
+      .disposed(by: self.disposeBag)
+    
+    reactor.pulse(\.$presentToCalendarDateSelectionVC)
+      .compactMap { $0 }
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, reactor in
+        let viewController = CalendarDateSelectionViewController()
+        viewController.reactor = reactor
+        owner.presentPanModal(viewController)
+      }
+      .disposed(by: self.disposeBag)
+  }
+  
+  /// `CalendarMemberViews`에 대한 `bind`함수입니다.
+  /// 데이터 주입으로 생성이 지연되어 따로 메서드를 만듭니다.
+  private func bindCalendarMemberViews() {
+    guard let reactor else { return }
+    self.calendarMemberViews.forEach {
+      $0.isSelected
+        .map { _ in
+          self.calendarMemberViews.filter { $0.isSelected.value }.map { $0.memberId }
+        }
+        .map { Reactor.Action.targetsDidChange($0) }
+        .bind(to: reactor.action)
+        .disposed(by: self.disposeBag)
+    }
+  }
+}
+
+// MARK: - Privates
+
+private extension CalendarManagementViewController {
+  /// 데이터를 가지고 `CalendarMemberView`들을 생성하고
+  /// 레이아웃과 제약조건을 설정합니다.
+  ///
+  /// - Parameters:
+  ///  - teamMembers: 현재 팀 멤버들
+  func configureCalendarMemberViews(_ teamMembers: [TeamMember]) {
+    teamMembers.forEach { self.calendarMemberViews.append(.init($0)) }
+    self.calendarMemberViews.forEach { $0.isHiddenSelectionButton = false }
+    let stackView = UIStackView(arrangedSubviews: self.calendarMemberViews)
+    stackView.spacing = 20.0
+    stackView.axis = .horizontal
+    self.view.addSubview(stackView)
+    stackView.snp.makeConstraints { make in
+      make.centerY.equalTo(self.participantImageView)
+      make.leading.equalTo(self.participantImageView.snp.trailing).offset(16.0)
+    }
+  }
+  
+  /// 데이터를 가지고 나머지 UI에 데이터를 주입합니다.
+  ///
+  /// - Parameters:
+  ///  - viewState: 현재 분기처리된 VC
+  ///  - teamMembers: 팀의 멤버들
+  func configureData(viewState: Reactor.ViewState, teamMembers: [TeamMember]) {
+    self.bindCalendarMemberViews()
+    switch viewState {
+    case .new:
+      self.startDateButton.title = Date().toString("MM월 dd일 (E)")
+      self.endDateButton.title = Date().toString("MM월 dd일 (E)")
+      self.startDateButton.subTitle = Date().toString("a h시~")
+      self.endDateButton.subTitle = Date().toString("a h시~")
+    case .edit(let teamCalendar):
+      self.titleTextField.text = teamCalendar.title
+      self.memoTextView.updateText(teamCalendar.content)
+      self.startDateButton.title = teamCalendar.startDate.toDateString(
+        from: "yyyy-MM-dd",
+        to: "MM월 dd일 (E)"
+      )
+      self.endDateButton.title = teamCalendar.endDate.toDateString(
+        from: "yyyy-MM-dd",
+        to: "MM월 dd일 (E)"
+      )
+      self.startDateButton.subTitle = teamCalendar.startTime.toDateString(
+        from: "HH:mm:ss",
+        to: "a h시~"
+      )
+      self.endDateButton.subTitle = teamCalendar.endTime.toDateString(
+        from: "HH:mm:ss",
+        to: "a h시~"
+      )
+      self.calendarMemberViews
+        .filter { member in
+          teamCalendar.targets.contains(where: { $0.memberId == member.memberId })
+        }
+        .forEach { $0.isSelected.accept(true) }
+    }
   }
 }

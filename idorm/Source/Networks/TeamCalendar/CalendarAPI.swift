@@ -34,6 +34,9 @@ enum CalendarAPI {
   /// - Parameters:
   ///  - yearMonth: Ex. `2023-04`
   case postDormCalendars(yearMonth: String)
+  
+  /// [팀 / 외박] 일정 단건 조회
+  case getTeamCalendar(teamCalendarId: Int)
 }
 
 extension CalendarAPI: TargetType, BaseAPI {

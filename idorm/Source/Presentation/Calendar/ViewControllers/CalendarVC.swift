@@ -55,6 +55,15 @@ final class CalendarViewController: BaseViewController, View {
           }
           cell.configure(with: dormCalendar)
           return cell
+          
+        case .dormEmpty:
+          guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: DormCalendarEmptyCell.identifier,
+            for: indexPath
+          ) as? DormCalendarEmptyCell else {
+            return UICollectionViewCell()
+          }
+          return cell
         }
       }
     )
@@ -157,6 +166,10 @@ final class CalendarViewController: BaseViewController, View {
       DormCalendarCell.self,
       forCellWithReuseIdentifier: DormCalendarCell.identifier
     )
+    cv.register(
+      DormCalendarEmptyCell.self,
+      forCellWithReuseIdentifier: DormCalendarEmptyCell.identifier
+    )
     
     // Header
     cv.register(
@@ -194,12 +207,6 @@ final class CalendarViewController: BaseViewController, View {
     super.viewWillAppear(animated)
     
     self.navigationController?.setNavigationBarHidden(true, animated: false)
-  }
-  
-  override func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-    
-    self.navigationController?.setNavigationBarHidden(false, animated: false)
   }
   
   // MARK: - Setup
@@ -274,6 +281,8 @@ final class CalendarViewController: BaseViewController, View {
       .disposed(by: self.disposeBag)
     
     // State
+    
+    /// 새로운 데이터로 `snapshot`을 업데이트합니다.
     reactor.state.map { (sections: $0.sections, items: $0.items) }
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, sectionItem in
@@ -301,6 +310,22 @@ final class CalendarViewController: BaseViewController, View {
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
         owner.setupInviteRoommateImageView()
+      }
+      .disposed(by: self.disposeBag)
+    
+    /// `CalendarManagement`로 이동합니다.
+    reactor.pulse(\.$navigateToCalendarMaanagementVC)
+      .compactMap { $0 }
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, calendarData in
+        let viewController = CalendarManagementViewController()
+        let reactor = CalendarManagementViewReactor(
+          with: calendarData.0,
+          teamMembers: calendarData.1
+        )
+        viewController.hidesBottomBarWhenPushed = true
+        viewController.reactor = reactor
+        owner.navigationController?.pushViewController(viewController, animated: true)
       }
       .disposed(by: self.disposeBag)
   }
@@ -390,7 +415,7 @@ private extension CalendarViewController {
         // Item
         let itemSize = NSCollectionLayoutSize(
           widthDimension: .fractionalWidth(1),
-          heightDimension: .absolute(36)
+          heightDimension: .absolute(51)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
@@ -400,7 +425,7 @@ private extension CalendarViewController {
         // Header
         let headerSize = NSCollectionLayoutSize(
           widthDimension: .fractionalWidth(1.0),
-          heightDimension: .absolute(50)
+          heightDimension: .absolute(45.0)
         )
         let header = NSCollectionLayoutBoundarySupplementaryItem(
           layoutSize: headerSize,
@@ -411,12 +436,12 @@ private extension CalendarViewController {
         // Section
         let section = NSCollectionLayoutSection(group: group)
         section.boundarySupplementaryItems = [header]
-        section.interGroupSpacing = 6
+        section.interGroupSpacing = 18.0
         section.contentInsets = NSDirectionalEdgeInsets(
-          top: 18,
-          leading: 24,
-          bottom: 18,
-          trailing: 24
+          top: 18.0,
+          leading: 24.0,
+          bottom: 18.0,
+          trailing: 24.0
         )
         section.decorationItems = [
           .background(elementKind: TeamCalendarBackgroundView.identifier)
@@ -427,7 +452,7 @@ private extension CalendarViewController {
         // Item
         let itemSize = NSCollectionLayoutSize(
           widthDimension: .fractionalWidth(1.0),
-          heightDimension: .estimated(150)
+          heightDimension: .estimated(200.0)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
@@ -437,7 +462,7 @@ private extension CalendarViewController {
         // Header
         let headerSize = NSCollectionLayoutSize(
           widthDimension: .fractionalWidth(1.0),
-          heightDimension: .absolute(40.0)
+          heightDimension: .absolute(45.0)
         )
         let header = NSCollectionLayoutBoundarySupplementaryItem(
           layoutSize: headerSize,
@@ -451,7 +476,7 @@ private extension CalendarViewController {
         section.contentInsets = NSDirectionalEdgeInsets(
           top: 0,
           leading: 24,
-          bottom: 24,
+          bottom: 44 + 48,
           trailing: 24
         )
         
@@ -495,7 +520,7 @@ extension CalendarViewController: CalendarMemberHeaderDelegate {
 
 // MARK: - CalendarHeader
 
-extension CalendarViewController: iDormCalendarDelegate {
+extension CalendarViewController: iDormCalendarViewDelegate {
   /// 달력의 월이 바뀔 때 호출되는 메서드입니다.
   func monthDidChage(_ currentDateString: String) {
     self.reactor?.action.onNext(.currentDateDidChange(currentDateString))
@@ -516,10 +541,7 @@ extension CalendarViewController: BottomSheetViewControllerDelegate {
 extension CalendarViewController: CalendarDimmedViewControllerDelegate {
   /// 우리방 일정 클릭
   func didTapRegisterTeamScheduleButton() {
-    let calendarManagementVC = CalendarManagementViewController()
-    calendarManagementVC.reactor = CalendarManagementViewReactor()
-    calendarManagementVC.hidesBottomBarWhenPushed = true
-    self.navigationController?.pushViewController(calendarManagementVC, animated: true)
+    self.reactor?.action.onNext(.registerScheduleButtonDidTap)
   }
   
   /// 외박 일정 클릭
