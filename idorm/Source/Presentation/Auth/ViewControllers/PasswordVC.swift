@@ -182,7 +182,7 @@ final class PasswordViewController: BaseViewController, View {
       .filter { $0.0 }
       .withUnretained(self)
       .bind { owner, message in
-        let popup = BasicPopup(contents: message.1)
+        let popup = iDormPopupViewController(contents: message.1)
         popup.modalPresentationStyle = .overFullScreen
         owner.present(popup, animated: false)
       }

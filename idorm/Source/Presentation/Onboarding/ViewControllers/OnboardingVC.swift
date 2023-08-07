@@ -628,7 +628,7 @@ final class OnboardingViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let popup = BasicPopup(contents:
+        let popup = iDormPopupViewController(contents:
           """
           올바른 형식의 링크가 아닙니다.
           open.kakao 형식을 포함했는지 확인해주세요.
@@ -649,7 +649,7 @@ final class OnboardingViewController: BaseViewController, View {
     reactor.state.map { $0.showPopup }
       .filter { $0.0 }
       .bind(with: self) { owner, contents in
-        let popup = BasicPopup(contents: contents.1)
+        let popup = iDormPopupViewController(contents: contents.1)
         popup.modalPresentationStyle = .overFullScreen
         owner.present(popup, animated: false)
       }

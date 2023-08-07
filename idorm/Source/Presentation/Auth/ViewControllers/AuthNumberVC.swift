@@ -108,7 +108,7 @@ final class AuthNumberViewController: BaseViewController, View {
       .filter { $0.0 }
       .withUnretained(self)
       .bind { owner, contents in
-        let popup = BasicPopup(contents: contents.1)
+        let popup = iDormPopupViewController(contents: contents.1)
         popup.modalPresentationStyle = .overFullScreen
         owner.present(popup, animated: false)
       }
@@ -140,7 +140,7 @@ final class AuthNumberViewController: BaseViewController, View {
           owner.textField.backgroundColor = .idorm_gray_200
           owner.textField.isEnabled = false
           owner.authOnemoreButton.isEnabled = true
-          let popup = BasicPopup(contents: "인증번호가 만료되었습니다.")
+          let popup = iDormPopupViewController(contents: "인증번호가 만료되었습니다.")
           popup.modalPresentationStyle = .overFullScreen
           owner.present(popup, animated: false)
         } else {

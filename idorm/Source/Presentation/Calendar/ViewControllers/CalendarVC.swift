@@ -19,6 +19,28 @@ final class CalendarViewController: BaseViewController, View {
   
   typealias DataSource = UICollectionViewDiffableDataSource<CalendarSection, CalendarSectionItem>
   
+  enum CalendarBottomSheetType: Int, CaseIterable {
+    case managingFriend
+    case managingCalendar
+    case sharingCalendar
+    case droppingCalendar
+    
+    var title: String {
+      switch self {
+      case .managingFriend:
+        return "친구 관리"
+      case .managingCalendar:
+        return "일정 관리"
+      case .sharingCalendar:
+        return "룸메이트 초대해서 일정 공유하기"
+      case .droppingCalendar:
+        return "일정 공유 캘린더 나가기"
+      }
+    }
+    
+    var identifier: String { return String(describing: self.title) }
+  }
+  
   // MARK: - Properties
   
   private lazy var dataSource: DataSource = {
@@ -325,6 +347,7 @@ final class CalendarViewController: BaseViewController, View {
         )
         viewController.hidesBottomBarWhenPushed = true
         viewController.reactor = reactor
+        viewController.delegate = owner
         owner.navigationController?.pushViewController(viewController, animated: true)
       }
       .disposed(by: self.disposeBag)
@@ -504,13 +527,9 @@ extension CalendarViewController: CalendarMemberHeaderDelegate {
   
   /// 옵션 버튼이 눌렸을 때
   func didTapOptionButton() {
+    let bottomSheetTypes = CalendarBottomSheetType.allCases
     let bottomSheetVC = BottomSheetViewController(
-      items: [
-        .normal(title: "친구 관리"),
-        .normal(title: "일정 관리"),
-        .normal(title: "룸메이트 초대해서 일정 공유하기"),
-        .normal(title: "일정 공유 캘린더 나가기")
-        ],
+      items: bottomSheetTypes.map { BottomSheetItem.normal(title: $0.title, image: nil) },
       contentHeight: 224.0
     )
     bottomSheetVC.delegate = self
@@ -532,7 +551,25 @@ extension CalendarViewController: iDormCalendarViewDelegate {
 extension CalendarViewController: BottomSheetViewControllerDelegate {
   /// 바텀 시트 버튼이 눌렸을 때
   func didTapButton(index: Int) {
-    print(index)
+    switch CalendarBottomSheetType(rawValue: index) {
+    case .managingFriend:
+      break
+    case .managingCalendar:
+      break
+    case .sharingCalendar:
+      break
+    case .droppingCalendar:
+      let iDormPopupVC = iDormPopupViewController(viewType: .twoButton(
+        contents: "일정 공유 캘린더에서 나갈 시 데이터가 모두 사라집니다.",
+        buttonTitle: "확인",
+        identifier: CalendarBottomSheetType.droppingCalendar.identifier
+      ))
+      iDormPopupVC.modalPresentationStyle = .overFullScreen
+      iDormPopupVC.delegate = self
+      self.present(iDormPopupVC, animated: false)
+    default:
+      break
+    }
   }
 }
 
@@ -546,4 +583,26 @@ extension CalendarViewController: CalendarDimmedViewControllerDelegate {
   
   /// 외박 일정 클릭
   func didTapRegisterSleepOverButton() {}
+}
+
+// MARK: - CalendarManagementViewControllerDelegate
+
+extension CalendarViewController: CalendarManagementViewControllerDelegate {
+  /// 변경된 데이터로 인해 다시 한번 요청합니다.
+  func shouldRequestData() {
+    self.reactor?.action.onNext(.requestAllData)
+  }
+}
+
+// MARK: - iDormPopupViewControllerDelegate
+
+extension CalendarViewController: iDormPopupViewControllerDelegate {
+  func confirmButtonDidTap(identifier: String) {
+    switch identifier {
+    case CalendarBottomSheetType.droppingCalendar.identifier:
+      self.reactor?.action.onNext(.exitCalendarButtonDidTap)
+    default:
+      break
+    }
+  }
 }

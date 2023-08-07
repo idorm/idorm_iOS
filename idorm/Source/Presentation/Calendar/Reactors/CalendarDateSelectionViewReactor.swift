@@ -14,6 +14,7 @@ final class CalendarDateSelectionViewReactor: Reactor {
   enum Action {
     case viewDidAppear
     case tabButtonDidTap(isStartDate: Bool)
+    case doneButtonDidTap
     case calendarDidSelect(String)
     case pickerViewDidChangeRow(String)
   }
@@ -23,6 +24,7 @@ final class CalendarDateSelectionViewReactor: Reactor {
     case setDate(String)
     case setTime(String)
     case setScrollCollectionView(Int)
+    case setDismissing
   }
   
   struct State {
@@ -35,6 +37,12 @@ final class CalendarDateSelectionViewReactor: Reactor {
     // UI
     var scrollCollectionView: Int = 0
     var items: [[String]] = []
+    @Pulse var isDismissing: (
+      startDate: String,
+      startTime: String,
+      endDate: String,
+      endTime: String
+    )?
   }
   
   // MARK: - Properties
@@ -77,6 +85,9 @@ final class CalendarDateSelectionViewReactor: Reactor {
       
     case .pickerViewDidChangeRow(let timeString):
       return .just(.setTime(timeString))
+      
+    case .doneButtonDidTap:
+      return .just(.setDismissing)
     }
   }
   
@@ -103,6 +114,9 @@ final class CalendarDateSelectionViewReactor: Reactor {
       
     case .setScrollCollectionView(let indexPath):
       newState.scrollCollectionView = indexPath
+      
+    case .setDismissing:
+      newState.isDismissing = (state.startDate, state.startTime, state.endDate, state.endTime)
     }
     
     return newState
@@ -118,4 +132,10 @@ final class CalendarDateSelectionViewReactor: Reactor {
       return newState
     }
   }
+}
+
+// MARK: - Privates
+
+private extension CalendarDateSelectionViewReactor {
+  
 }

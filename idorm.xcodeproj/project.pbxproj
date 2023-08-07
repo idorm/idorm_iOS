@@ -175,7 +175,7 @@
 		E5AD7391287A863800BA2C5E /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7390287A863800BA2C5E /* LoginVC.swift */; };
 		E5AD7396287A8C2F00BA2C5E /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7395287A8C2F00BA2C5E /* UIColor+.swift */; };
 		E5AD7398287A8D8800BA2C5E /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD7397287A8D8800BA2C5E /* UITextField+.swift */; };
-		E5AD739D287AE08F00BA2C5E /* BasicPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD739C287AE08F00BA2C5E /* BasicPopup.swift */; };
+		E5AD739D287AE08F00BA2C5E /* iDormPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD739C287AE08F00BA2C5E /* iDormPopupViewController.swift */; };
 		E5AD739F287AEF2D00BA2C5E /* EmailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD739E287AEF2D00BA2C5E /* EmailVC.swift */; };
 		E5AD73A1287AFC5300BA2C5E /* AuthNumberVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD73A0287AFC5300BA2C5E /* AuthNumberVC.swift */; };
 		E5AD73A3287B2B5200BA2C5E /* PasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AD73A2287B2B5200BA2C5E /* PasswordVC.swift */; };
@@ -429,7 +429,7 @@
 		E5AD7390287A863800BA2C5E /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		E5AD7395287A8C2F00BA2C5E /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		E5AD7397287A8D8800BA2C5E /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
-		E5AD739C287AE08F00BA2C5E /* BasicPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicPopup.swift; sourceTree = "<group>"; };
+		E5AD739C287AE08F00BA2C5E /* iDormPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iDormPopupViewController.swift; sourceTree = "<group>"; };
 		E5AD739E287AEF2D00BA2C5E /* EmailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVC.swift; sourceTree = "<group>"; };
 		E5AD73A0287AFC5300BA2C5E /* AuthNumberVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNumberVC.swift; sourceTree = "<group>"; };
 		E5AD73A2287B2B5200BA2C5E /* PasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordVC.swift; sourceTree = "<group>"; };
@@ -644,7 +644,7 @@
 		E5084957293CA74B00F79823 /* Popup */ = {
 			isa = PBXGroup;
 			children = (
-				E5AD739C287AE08F00BA2C5E /* BasicPopup.swift */,
+				E5AD739C287AE08F00BA2C5E /* iDormPopupViewController.swift */,
 				E5DDA26E292D9CC8003B46BA /* KakaoPopup.swift */,
 				E5FD982328EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift */,
 				E57B3E4D2933688500B2C0F0 /* NoMatchingInfoPopup.swift */,
@@ -1066,7 +1066,6 @@
 				E5C9B1352A496BB5001BF59D /* APIManager.swift */,
 				E56AF4012A583A5000984DA3 /* APIManager+ErrorHandling.swift */,
 				E5A47F07292508F300908E20 /* SharedAPI.swift */,
-				E5FC906E2A64385D001C4A15 /* TeamCalendar */,
 				E5FA993F2A016CEF0047AC0A /* Calendar */,
 				E5CFF7012982CD6500E11D9A /* Community */,
 				E53D1A3D2988A5640074308B /* Member */,
@@ -1320,6 +1319,10 @@
 			isa = PBXGroup;
 			children = (
 				E5FA993D2A016CE80047AC0A /* DormCalendarAPI.swift */,
+				E5FC906F2A64387A001C4A15 /* CalendarAPI.swift */,
+				E574D4202A643D330059B0C1 /* CalendarAPI+Path.swift */,
+				E574D4222A643D3D0059B0C1 /* CalendarAPI+Method.swift */,
+				E574D4242A643D450059B0C1 /* CalendarAPI+Task.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -1393,17 +1396,6 @@
 			children = (
 				E5FC906A2A63FD09001C4A15 /* TeamCalendarCell.swift */,
 				E574D4262A64F4860059B0C1 /* TeamCalendarBackgroundView.swift */,
-			);
-			path = TeamCalendar;
-			sourceTree = "<group>";
-		};
-		E5FC906E2A64385D001C4A15 /* TeamCalendar */ = {
-			isa = PBXGroup;
-			children = (
-				E5FC906F2A64387A001C4A15 /* CalendarAPI.swift */,
-				E574D4202A643D330059B0C1 /* CalendarAPI+Path.swift */,
-				E574D4222A643D3D0059B0C1 /* CalendarAPI+Method.swift */,
-				E574D4242A643D450059B0C1 /* CalendarAPI+Task.swift */,
 			);
 			path = TeamCalendar;
 			sourceTree = "<group>";
@@ -1607,7 +1599,7 @@
 				E5DDA26F292D9CC8003B46BA /* KakaoPopup.swift in Sources */,
 				E50FB52B2972B36E00E938B8 /* DormBottomSheet.swift in Sources */,
 				E509438A28F8291D004D3A58 /* Preview.swift in Sources */,
-				E5AD739D287AE08F00BA2C5E /* BasicPopup.swift in Sources */,
+				E5AD739D287AE08F00BA2C5E /* iDormPopupViewController.swift in Sources */,
 				E53C60B0287B37CB00977909 /* CompleteSignUpVC.swift in Sources */,
 				E5FC90602A62B438001C4A15 /* CalendarMemberBackgroundView.swift in Sources */,
 				E574D4232A643D3D0059B0C1 /* CalendarAPI+Method.swift in Sources */,

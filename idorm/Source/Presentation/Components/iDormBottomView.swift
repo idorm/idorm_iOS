@@ -14,8 +14,8 @@ final class iDormBottomView: UIView, BaseView {
   
   // MARK: - UI Components
   
-  private let leftButton: iDormButton
-  private let rightButton: iDormButton
+  let leftButton: iDormButton
+  let rightButton: iDormButton
   
   /// `SafeArea`를 덮을 `UIView`
   private let baseView: UIView = {

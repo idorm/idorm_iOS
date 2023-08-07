@@ -29,6 +29,11 @@ final class CalendarMemberCell: UICollectionViewCell, BaseView {
     self.setupConstraints()
   }
   
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    
+  }
+  
   // MARK: - Setup
   
   func setupStyles() {

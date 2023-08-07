@@ -109,7 +109,7 @@ final class WithdrawalViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let popup = BasicPopup(
+        let popup = iDormPopupViewController(
           contents: """
           탈퇴 처리가 성공적으로 완료되었습니다.
           언제든지 다시 돌아와 주세요!

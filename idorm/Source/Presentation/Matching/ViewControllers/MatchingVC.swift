@@ -430,7 +430,7 @@ final class MatchingViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let popup = BasicPopup(contents: "유효한 주소가 아닙니다.")
+        let popup = iDormPopupViewController(contents: "유효한 주소가 아닙니다.")
         popup.modalPresentationStyle = .overFullScreen
         owner.present(popup, animated: false)
       }

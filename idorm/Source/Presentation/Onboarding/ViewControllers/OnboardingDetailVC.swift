@@ -102,7 +102,7 @@ final class OnboardingDetailViewController: BaseViewController, View {
     reactor.state.map { $0.popupMessage }
       .filter { $0.0 }
       .bind(with: self) { owner, message in
-        let popup = BasicPopup(contents: message.1)
+        let popup = iDormPopupViewController(contents: message.1)
         popup.modalPresentationStyle = .overFullScreen
         owner.present(popup, animated: false)
       }

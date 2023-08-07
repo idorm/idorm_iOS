@@ -144,13 +144,14 @@ final class CalendarMemberView: UIView, BaseView {
   }
   
   // MARK: - Configure
-
+  
   /// 데이터를 가지고 UI를 업데이트합니다.
   ///
   /// - Parameters:
   ///  - teamMember: 업데이트할 `TeamMember` 모델
   func configure(with teamMember: TeamMember) {
     // 멤버 사진
+    self.profileImageView.image = nil
     if let urlString = teamMember.profilePhotoUrl {
       self.profileImageView.kf.setImage(with: URL(string: urlString)!)
     }

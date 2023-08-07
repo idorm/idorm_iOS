@@ -26,18 +26,48 @@ enum CalendarAPI {
   ///  - yearMonth: Ex. `2023-04`
   case postTeamCalendars(yearMonth: String)
   
-  /// 기숙사 공식 일정 월별 조회
-  ///
-  /// - 모든 기숙사의 일정을 반환합니다.
-  /// - 종료된 일정은 제거한 후, 최신 등록 순으로 응답합니다.
-  ///
-  /// - Parameters:
-  ///  - yearMonth: Ex. `2023-04`
+  /**
+   기숙사 공식 일정 월별 조회
+   
+   모든 기숙사의 일정을 반환합니다.
+   
+   종료된 일정은 제거한 후, 최신 등록 순으로 응답합니다.
+   
+   - Parameters:
+     - yearMonth: Ex. `2023-04`
+   */
   case postDormCalendars(yearMonth: String)
   
   /// [팀 / 외박] 일정 단건 조회
   case getTeamCalendar(teamCalendarId: Int)
-}
+  
+  /**
+   [팀] 일정 수정
+   
+   - targets 필드는 회원 식별자 배열을 주세요
+  */
+  case putTeamCalendar(TeamCalendarRequestModel)
+  
+  /**
+   [팀/외박] 일정 삭제
+   
+   - 팀일정은 팀에 소속된 회원이라면 누구나 삭제 가능합니다.
+   - 외박 일정은 본인의 것만 삭제 가능합니다.
+  */
+  case deleteTeamCalendar(teamCalendarId: Int)
+  
+  /**
+   [팀] 일정 생성
+   
+   - targets 필드는 회원 식별자 배열을 주세요,
+   */
+  case postTeamCalendar(TeamCalendarRequestModel)
+  
+  /**
+   팀 나가기
+   */
+  case deleteTeam
+  }
 
 extension CalendarAPI: TargetType, BaseAPI {
   var baseURL: URL { self.getBaseURL() }

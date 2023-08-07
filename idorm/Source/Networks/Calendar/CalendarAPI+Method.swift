@@ -23,6 +23,18 @@ extension CalendarAPI {
       
     case .getTeamCalendar:
       return .get
+      
+    case .putTeamCalendar:
+      return .put
+      
+    case .deleteTeamCalendar:
+      return .delete
+      
+    case .postTeamCalendar:
+      return .post
+      
+    case .deleteTeam:
+      return .delete
     }
   }
 }

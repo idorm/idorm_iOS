@@ -82,7 +82,6 @@ final class CalendarDateSelectionCell: UICollectionViewCell, BaseView {
   ///  - date: 업데이트할 날짜
   ///  - time: 업데이트할 시간
   func updateUI(date: String, time: String) {
-    print(#function)
     self.calendarView.updateSelectedDate(date)
     self.pickerView.updateSelectedRow(time)
   }

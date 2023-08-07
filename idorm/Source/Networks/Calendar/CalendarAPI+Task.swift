@@ -32,6 +32,21 @@ extension CalendarAPI {
         parameters: ["teamCalendarId": teamCalendarId],
         encoding: URLEncoding.queryString
       )
+      
+    case .putTeamCalendar(let requestModel):
+      return .requestJSONEncodable(requestModel)
+      
+    case .deleteTeamCalendar(let teamCalendarId):
+      return .requestParameters(
+        parameters: ["teamCalendarId": teamCalendarId],
+        encoding: URLEncoding.queryString
+      )
+      
+    case .postTeamCalendar(let requestModel):
+      return .requestJSONEncodable(requestModel)
+      
+    case .deleteTeam:
+      return .requestPlain
     }
   }
 }

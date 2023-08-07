@@ -21,6 +21,18 @@ extension CalendarAPI {
       
     case .getTeamCalendar:
       return "/api/v1/member/team/calendar"
+      
+    case .putTeamCalendar:
+      return "/api/v1/member/team/calendar"
+      
+    case .deleteTeamCalendar:
+      return "/api/v1/member/team/calendar"
+      
+    case .postTeamCalendar:
+      return "/api/v1/member/team/calendar"
+      
+    case .deleteTeam:
+      return "/api/v1/member/team"
     }
   }
 }

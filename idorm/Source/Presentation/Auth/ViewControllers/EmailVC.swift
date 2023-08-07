@@ -99,7 +99,7 @@ final class EmailViewController: BaseViewController, View {
       .filter { $0.0 }
       .withUnretained(self)
       .bind { owner, content in
-        let popup = BasicPopup(contents: content.1)
+        let popup = iDormPopupViewController(contents: content.1)
         popup.modalPresentationStyle = .overFullScreen
         owner.present(popup, animated: false)
       }

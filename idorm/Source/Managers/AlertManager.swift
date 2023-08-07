@@ -21,13 +21,14 @@ final class AlertManager {
   }
   
   // MARK: - Functions
-
+  
   /// 최상단 뷰의 팝업 메세지를 띄웁니다.
+  ///
   /// - Parameters:
-  ///  - message: 팝업에 사용자에게 알릴 메세지 `String`입니다.
+  ///    - message: 팝업에 사용자에게 알릴 메세지 `String`입니다.
   func showAlertPopup(_ message: String?) {
     guard let message else { return }
-    let popup = BasicPopup(contents: message)
+    let popup = iDormPopupViewController(contents: message)
     popup.modalPresentationStyle = .overFullScreen
     self.topViewController.present(popup, animated: false)
   }

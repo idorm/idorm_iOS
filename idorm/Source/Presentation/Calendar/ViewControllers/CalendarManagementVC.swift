@@ -14,6 +14,10 @@ import ReactorKit
 import RxGesture
 import PanModal
 
+protocol CalendarManagementViewControllerDelegate: AnyObject {
+  func shouldRequestData()
+}
+
 /// `일정 등록`이나 `일정 수정`을 위한 페이지입니다.
 final class CalendarManagementViewController: BaseViewController, View {
   typealias Reactor = CalendarManagementViewReactor
@@ -153,6 +157,8 @@ final class CalendarManagementViewController: BaseViewController, View {
   }
   
   // MARK: - Properties
+  
+  weak var delegate: CalendarManagementViewControllerDelegate?
   
   // MARK: - Life Cycle
   
@@ -311,6 +317,16 @@ final class CalendarManagementViewController: BaseViewController, View {
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
+    self.bottomView.rightButton.rx.tap
+      .map { Reactor.Action.doneButtonDidTap }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
+    self.bottomView.leftButton.rx.tap
+      .map { Reactor.Action.deleteButtonDidTap }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
     // State
     Observable.combineLatest(
       reactor.state.map { $0.teamMembers }.distinctUntilChanged(),
@@ -334,13 +350,54 @@ final class CalendarManagementViewController: BaseViewController, View {
       }
       .disposed(by: self.disposeBag)
     
+    reactor.state.map { $0.startDate }
+      .distinctUntilChanged()
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, date in
+        owner.startDateButton.title = date.toDateString(from: "yyyy-MM-dd", to: "MM월 dd일 (E)")
+      }
+      .disposed(by: self.disposeBag)
+    
+    reactor.state.map { $0.endDate }
+      .distinctUntilChanged()
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, date in
+        owner.endDateButton.title = date.toDateString(from: "yyyy-MM-dd", to: "MM월 dd일 (E)")
+      }
+      .disposed(by: self.disposeBag)
+    
+    reactor.state.map { $0.startTime }
+      .distinctUntilChanged()
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, date in
+        owner.startDateButton.subTitle = date.toDateString(from: "HH:mm:ss", to: "a h시~")
+      }
+      .disposed(by: self.disposeBag)
+    
+    reactor.state.map { $0.endTime }
+      .distinctUntilChanged()
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, date in
+        owner.endDateButton.subTitle = date.toDateString(from: "HH:mm:ss", to: "a h시~")
+      }
+      .disposed(by: self.disposeBag)
+    
     reactor.pulse(\.$presentToCalendarDateSelectionVC)
       .compactMap { $0 }
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, reactor in
         let viewController = CalendarDateSelectionViewController()
         viewController.reactor = reactor
+        viewController.delegate = owner
         owner.presentPanModal(viewController)
+      }
+      .disposed(by: self.disposeBag)
+    
+    reactor.pulse(\.$isPopping)
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
+        owner.navigationController?.popViewController(animated: true)
+        owner.delegate?.shouldRequestData()
       }
       .disposed(by: self.disposeBag)
   }
@@ -420,5 +477,19 @@ private extension CalendarManagementViewController {
         }
         .forEach { $0.isSelected.accept(true) }
     }
+  }
+}
+
+// MARK: - CalendarDateSelectionViewControllerDelegate
+
+extension CalendarManagementViewController: CalendarDateSelectionViewControllerDelegate {
+  /// `CalendarDateSelectionVC`에서 날짜 선택을 완료하면 불려지는 메서드입니다.
+  func dateDidChange(startDate: String, startTime: String, endDate: String, endTime: String) {
+    self.reactor?.action.onNext(.dateDidChange(
+      startDate: startDate,
+      startTime: startTime,
+      endDate: endDate,
+      endTime: endTime
+    ))
   }
 }

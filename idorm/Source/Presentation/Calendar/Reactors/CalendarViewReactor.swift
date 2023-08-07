@@ -17,6 +17,7 @@ final class CalendarViewReactor: Reactor {
     case currentDateDidChange(String)
     case itemSelected(CalendarSectionItem)
     case registerScheduleButtonDidTap
+    case exitCalendarButtonDidTap
   }
   
   enum Mutation {
@@ -83,6 +84,10 @@ final class CalendarViewReactor: Reactor {
       
     case .registerScheduleButtonDidTap: // 일정 등록 버튼 클릭
       return .just(.setCalendarManagementVC(nil))
+
+    case .exitCalendarButtonDidTap:
+      return self.apiManager.requestAPI(to: .deleteTeam)
+        .flatMap { _ in return self.requestGetTeamMembers() }
     }
   }
   

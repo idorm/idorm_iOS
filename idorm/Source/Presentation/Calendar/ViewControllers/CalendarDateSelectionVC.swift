@@ -117,13 +117,15 @@ final class CalendarDateSelectionViewController: BaseViewController, View {
         else {
           return UICollectionViewCell()
         }
-        print(item)
+        cell.delegate = self
         cell.updateUI(date: date, time: time)
         return cell
       }
     )
     return dataSource
   }()
+  
+  weak var delegate: CalendarDateSelectionViewControllerDelegate?
   
   // MARK: - Setup
   
@@ -206,6 +208,11 @@ final class CalendarDateSelectionViewController: BaseViewController, View {
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
+    self.doneButton.rx.tap
+      .map { Reactor.Action.doneButtonDidTap }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
     // State
     reactor.state.map { $0.scrollCollectionView }
       .skip(1)
@@ -216,15 +223,29 @@ final class CalendarDateSelectionViewController: BaseViewController, View {
       .disposed(by: self.disposeBag)
     
     reactor.state.map { $0.items }
-      .distinctUntilChanged()
+      .take(1)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, items in
         var snapshot = NSDiffableDataSourceSnapshot<Int, [String]>()
         snapshot.appendSections([0])
         snapshot.appendItems(items)
         DispatchQueue.main.async {
-          owner.dataSource.applySnapshotUsingReloadData(snapshot)
+          owner.dataSource.apply(snapshot)
         }
+      }
+      .disposed(by: self.disposeBag)
+    
+    reactor.pulse(\.$isDismissing)
+      .compactMap { $0 }
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, data in
+        owner.delegate?.dateDidChange(
+          startDate: data.startDate,
+          startTime: data.startTime,
+          endDate: data.endDate,
+          endTime: data.endTime
+        )
+        owner.dismiss(animated: true)
       }
       .disposed(by: self.disposeBag)
   }

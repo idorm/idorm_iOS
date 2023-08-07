@@ -105,6 +105,7 @@ final class BottomSheetViewController: BaseViewController {
   @objc
   private func didTapButton(_ button: UIButton) {
     guard let index = self.buttons.firstIndex(of: button) else { return }
+    self.dismiss(animated: true)
     self.delegate?.didTapButton(index: index)
   }
 }
