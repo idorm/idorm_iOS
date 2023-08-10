@@ -197,8 +197,8 @@ extension MyCommunityViewController: UITableViewDataSource, UITableViewDelegate 
       
       cell.buttonCompletion = { [weak self] in
         if $0 != nil {
-          let viewController = DetailPostViewController()
-          let reactor = DetailPostViewReactor($0!)
+          let viewController = CommunityPostViewController()
+          let reactor = CommunityPostViewReactor($0!)
           viewController.reactor = reactor
           self?.navigationController?.pushViewController(viewController, animated: true)
         } else {
@@ -283,8 +283,8 @@ extension MyCommunityViewController: UITableViewDataSource, UITableViewDelegate 
     
     switch viewControllerType {
     case .recommend, .post:
-      let viewController = DetailPostViewController()
-      let reactor = DetailPostViewReactor(reactor.currentState.posts[indexPath.row].postId)
+      let viewController = CommunityPostViewController()
+      let reactor = CommunityPostViewReactor(reactor.currentState.posts[indexPath.row].postId)
       viewController.reactor = reactor
       viewController.hidesBottomBarWhenPushed = true
       navigationController?.pushViewController(viewController, animated: true)

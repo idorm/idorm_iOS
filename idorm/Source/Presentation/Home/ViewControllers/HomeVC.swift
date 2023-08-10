@@ -192,8 +192,8 @@ final class HomeViewController: BaseViewController, View {
       .map { $0.pushToPostDetailVC }
       .filter { $0.0 }
       .bind(with: self) { owner, postId in
-        let vc = DetailPostViewController()
-        vc.reactor = DetailPostViewReactor(postId.1)
+        let vc = CommunityPostViewController()
+        vc.reactor = CommunityPostViewReactor(postId.1)
         vc.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(vc, animated: true)
       }

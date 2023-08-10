@@ -13,7 +13,7 @@ import RxSwift
 import RxCocoa
 import PanModal
 
-final class PostListViewController: BaseViewController, View {
+final class CommunityListViewController: BaseViewController, View {
   
   enum Section: Int, CaseIterable {
     case popular
@@ -136,7 +136,7 @@ final class PostListViewController: BaseViewController, View {
   
   // MARK: - Bind
   
-  func bind(reactor: PostListViewReactor) {
+  func bind(reactor: CommunityListViewReactor) {
     
     // MARK: - Action
     
@@ -149,7 +149,7 @@ final class PostListViewController: BaseViewController, View {
         
         // 기숙사 버튼 클릭
         dormBS.didTapDormBtn
-          .map { PostListViewReactor.Action.didTapDormBtn($0) }
+          .map { CommunityListViewReactor.Action.didTapDormBtn($0) }
           .bind(to: reactor.action)
           .disposed(by: owner.disposeBag)
       }
@@ -158,14 +158,13 @@ final class PostListViewController: BaseViewController, View {
     // 당겨서 새로고침
     postListCV.refreshControl?.rx.controlEvent(.valueChanged)
       .throttle(.seconds(2), latest: false, scheduler: MainScheduler.asyncInstance)
-      .debug()
-      .map { PostListViewReactor.Action.pullToRefresh }
+      .map { CommunityListViewReactor.Action.pullToRefresh }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 글쓰기 버튼 클릭
     postingBtn.rx.tap
-      .map { PostListViewReactor.Action.didTapPostingBtn }
+      .map { CommunityListViewReactor.Action.didTapPostingBtn }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -214,8 +213,8 @@ final class PostListViewController: BaseViewController, View {
       .filter { $0.0 }
       .withUnretained(self)
       .bind { owner, dorm in
-        let postingVC = PostingViewController()
-        let postingReactor = PostingViewReactor(.new, dorm: dorm.1)
+        let postingVC = CommunityPostingViewController()
+        let postingReactor = CommunityPostingViewReactor(.new, dorm: dorm.1)
         postingVC.hidesBottomBarWhenPushed = true
         postingVC.reactor = postingReactor
         owner.navigationController?.pushViewController(postingVC, animated: true)
@@ -230,8 +229,8 @@ final class PostListViewController: BaseViewController, View {
       .map { $0.showsPostDetailVC }
       .filter { $0.0 }
       .bind(with: self) { owner, postId in
-        let postDetailVC = DetailPostViewController()
-        postDetailVC.reactor = DetailPostViewReactor(postId.1)
+        let postDetailVC = CommunityPostViewController()
+        postDetailVC.reactor = CommunityPostViewReactor(postId.1)
         postDetailVC.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(postDetailVC, animated: true)
         postDetailVC.popCompletion = { reactor.action.onNext(.fetchNewPosts) }
@@ -255,7 +254,7 @@ final class PostListViewController: BaseViewController, View {
 
 // MARK: - CollectionView Setup
 
-extension PostListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension CommunityListViewController: UICollectionViewDataSource, UICollectionViewDelegate {
   func collectionView(
     _ collectionView: UICollectionView,
     numberOfItemsInSection section: Int
@@ -315,13 +314,13 @@ extension PostListViewController: UICollectionViewDataSource, UICollectionViewDe
     switch indexPath.section {
     case 0 :
       Observable.just(reactor.currentState.currentTopPosts[indexPath.row].postId)
-        .map { PostListViewReactor.Action.didTapPostBtn($0) }
+        .map { CommunityListViewReactor.Action.didTapPostBtn($0) }
         .bind(to: reactor.action)
         .disposed(by: disposeBag)
       
     default:
       Observable.just(reactor.currentState.currentPosts[indexPath.row].postId)
-        .map { PostListViewReactor.Action.didTapPostBtn($0) }
+        .map { CommunityListViewReactor.Action.didTapPostBtn($0) }
         .bind(to: reactor.action)
         .disposed(by: disposeBag)
     }
@@ -349,7 +348,7 @@ extension PostListViewController: UICollectionViewDataSource, UICollectionViewDe
   }
 }
 
-extension PostListViewController: UITabBarControllerDelegate {
+extension CommunityListViewController: UITabBarControllerDelegate {
   // 해당 탭바 버튼을 클릭했을 때 호출
   func tabBarController(
     _ tabBarController: UITabBarController,
@@ -358,7 +357,7 @@ extension PostListViewController: UITabBarControllerDelegate {
     guard self.isViewAppeared else { return }
     // 선택된 뷰컨트롤러가 UINavigationController인 경우, topViewController를 가져옵니다.
     if let navController = viewController as? UINavigationController {
-      if let scrollView = (navController.topViewController as? PostListViewController)?.postListCV {
+      if let scrollView = (navController.topViewController as? CommunityListViewController)?.postListCV {
         let topOffset = CGPoint(x: 0, y: -postListCV.safeAreaInsets.top)
         scrollView.setContentOffset(topOffset, animated: true)
       }

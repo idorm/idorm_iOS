@@ -15,7 +15,7 @@ import KakaoSDKShare
 import KakaoSDKTemplate
 import KakaoSDKCommon
 
-final class DetailPostViewReactor: Reactor {
+final class CommunityPostViewReactor: Reactor {
   
   enum Action {
     case viewDidLoad
@@ -222,7 +222,7 @@ final class DetailPostViewReactor: Reactor {
   }
 }
 
-private extension DetailPostViewReactor {
+private extension CommunityPostViewReactor {
   func retrievePost() -> Observable<Mutation> {
     return CommunityAPI.provider.rx.request(
       .lookupDetailPost(postId: postId)

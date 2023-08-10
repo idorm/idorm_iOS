@@ -19,40 +19,112 @@ import KakaoSDKCommon
 import KakaoSDKShare
 import KakaoSDKTemplate
 
-final class DetailPostViewController: BaseViewController, View {
+/// 사용자가 특정 게시글에 들어왔을 때 보여지는 `UIViewController`
+final class CommunityPostViewController: BaseViewController, View {
   
-  // MARK: - UI
+  typealias DataSource = UICollectionViewDiffableDataSource<CommunityPostSection, CommunityPostSectionItem>
+  typealias Reactor = CommunityPostViewReactor
   
-  private lazy var tableView: UITableView = {
-    let tableView = UITableView(frame: .zero, style: .grouped)
-    tableView.backgroundColor = .white
-    tableView.register(
-      CommentCell.self,
-      forCellReuseIdentifier: CommentCell.identifier
+  // MARK: - Properties
+  
+  private lazy var dataSource: DataSource = {
+    let dataSource = DataSource(
+      collectionView: self.collectionView,
+      cellProvider: { collectionView, indexPath, item in
+        switch item {
+        case .content:
+          guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: CommunityPostContentCell.identifier,
+            for: indexPath
+          ) as? CommunityPostContentCell else {
+            return UICollectionViewCell()
+          }
+          return cell
+          
+        case .photo:
+          guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: CommunityPostPhotoCell.identifier,
+            for: indexPath
+          ) as? CommunityPostPhotoCell else {
+            return UICollectionViewCell()
+          }
+          return cell
+          
+        case .multiBox:
+          guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: CommunityPostMultiBoxCell.identifier,
+            for: indexPath
+          ) as? CommunityPostMultiBoxCell else {
+            return UICollectionViewCell()
+          }
+          return cell
+          
+        case .comment:
+          guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: CommunityPostCommentCell.identifier,
+            for: indexPath
+          ) as? CommunityPostCommentCell else {
+            return UICollectionViewCell()
+          }
+          return cell
+          
+        case .emptyComment:
+          guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: CommunityPostEmptyCell.identifier,
+            for: indexPath
+          ) as? CommunityPostEmptyCell else {
+            return UICollectionViewCell()
+          }
+          return cell
+        }
+      }
     )
-    tableView.register(
-      DetailPostEmptyCell.self,
-      forCellReuseIdentifier: DetailPostEmptyCell.identifier
-    )
-    tableView.register(
-      DetailPostHeaderView.self,
-      forHeaderFooterViewReuseIdentifier: DetailPostHeaderView.identifier
-    )
-    tableView.refreshControl = self.refreshControl
-    tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-    tableView.allowsSelection = false
-    tableView.separatorStyle = .none
-    tableView.dataSource = self
-    tableView.delegate = self
-    
-    return tableView
+    return dataSource
   }()
   
-  private let indicator: UIActivityIndicatorView = {
-    let indicator = UIActivityIndicatorView()
-    indicator.color = .darkGray
-    return indicator
+  // MARK: - UI Components
+  
+  private lazy var collectionView: UICollectionView = {
+    let collectionView = UICollectionView(
+      frame: .zero,
+      collectionViewLayout: self.createLayout()
+    )
+    // Register
+    collectionView.register(
+      CommunityPostContentCell.self,
+      forCellWithReuseIdentifier: CommunityPostContentCell.identifier
+    )
+    collectionView.register(
+      CommunityPostPhotoCell.self,
+      forCellWithReuseIdentifier: CommunityPostPhotoCell.identifier
+    )
+    return collectionView
   }()
+  
+//  private lazy var tableView: UITableView = {
+//    let tableView = UITableView(frame: .zero, style: .grouped)
+//    tableView.backgroundColor = .white
+//    tableView.register(
+//      CommentCell.self,
+//      forCellReuseIdentifier: CommentCell.identifier
+//    )
+//    tableView.register(
+//      DetailPostEmptyCell.self,
+//      forCellReuseIdentifier: DetailPostEmptyCell.identifier
+//    )
+//    tableView.register(
+//      CommunityPostContentCell.self,
+//      forHeaderFooterViewReuseIdentifier: CommunityPostContentCell.identifier
+//    )
+//    tableView.refreshControl = self.refreshControl
+//    tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+//    tableView.allowsSelection = false
+//    tableView.separatorStyle = .none
+//    tableView.dataSource = self
+//    tableView.delegate = self
+//    
+//    return tableView
+//  }()
   
   private let optionButton: UIButton = {
     let btn = UIButton()
@@ -67,7 +139,7 @@ final class DetailPostViewController: BaseViewController, View {
   
   private let commentView = CommentView()
   private let bottomView = UIView()
-  private var header: DetailPostHeaderView!
+  private var header: CommunityPostContentCell!
   
   // MARK: - PROPERTIES
   
@@ -115,26 +187,26 @@ final class DetailPostViewController: BaseViewController, View {
   
   // MARK: - BIND
   
-  func bind(reactor: DetailPostViewReactor) {
+  func bind(reactor: CommunityPostViewReactor) {
     
     // MARK: - ACTION
     
     // 화면 최초 접속
     self.rx.viewDidLoad
-      .map { DetailPostViewReactor.Action.viewDidLoad }
+      .map { CommunityPostViewReactor.Action.viewDidLoad }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 댓글 입력 반응
     self.commentView.textView.rx.text
       .orEmpty
-      .map { DetailPostViewReactor.Action.commentDidChange($0) }
+      .map { CommunityPostViewReactor.Action.commentDidChange($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 전송 버튼 클릭
     self.commentView.sendButton.rx.tap
-      .map { DetailPostViewReactor.Action.sendButtonDidTap }
+      .map { CommunityPostViewReactor.Action.sendButtonDidTap }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -145,7 +217,7 @@ final class DetailPostViewController: BaseViewController, View {
     }.when(.recognized)
       .withUnretained(self)
       .do { $0.0.commentView.textView.resignFirstResponder() }
-      .map { _ in DetailPostViewReactor.Action.backgroundDidTap }
+      .map { _ in CommunityPostViewReactor.Action.backgroundDidTap }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -153,7 +225,7 @@ final class DetailPostViewController: BaseViewController, View {
     self.commentView.anonymousButton.rx.tap
       .withUnretained(self)
       .map { !$0.0.commentView.anonymousButton.isSelected }
-      .map { DetailPostViewReactor.Action.anonymousButtonDidTap($0) }
+      .map { CommunityPostViewReactor.Action.anonymousButtonDidTap($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -192,7 +264,7 @@ final class DetailPostViewController: BaseViewController, View {
     
     // 당겨서 새로고침
     self.refreshControl.rx.controlEvent(.valueChanged)
-      .map { DetailPostViewReactor.Action.pullToRefresh }
+      .map { CommunityPostViewReactor.Action.pullToRefresh }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -311,8 +383,8 @@ final class DetailPostViewController: BaseViewController, View {
       .filter { $0 }
       .bind(with: self) { owner, _ in
         guard let post = reactor.currentState.currentPost else { return }
-        let postingVC = PostingViewController()
-        let postingReactor = PostingViewReactor(.edit(post), dorm: post.dormCategory)
+        let postingVC = CommunityPostingViewController()
+        let postingReactor = CommunityPostingViewReactor(.edit(post), dorm: post.dormCategory)
         postingVC.reactor = postingReactor
         owner.navigationController?.pushViewController(postingVC, animated: true)
         
@@ -407,9 +479,24 @@ final class DetailPostViewController: BaseViewController, View {
   }
 }
 
+// MARK: - Privates
+
+private extension CommunityPostViewController {
+  func createLayout() -> UICollectionViewCompositionalLayout {
+    let layout = UICollectionViewCompositionalLayout { section, _ in
+      guard
+        let communityPostSection = self.dataSource.sectionIdentifier(for: section)
+      else { fatalError("❌ CommunityPostSection을 찾지 못했습니다!") }
+      let section = communityPostSection.section
+      return section
+    }
+    return layout
+  }
+}
+
 // MARK: - SETUP TABLEVIEW
 
-extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
+extension CommunityPostViewController: UITableViewDataSource, UITableViewDelegate {
   // 셀 생성
   func tableView(
     _ tableView: UITableView,
@@ -521,8 +608,8 @@ extension DetailPostViewController: UITableViewDataSource, UITableViewDelegate {
       let reactor = reactor,
       let currentPost = reactor.currentState.currentPost,
       let header = tableView.dequeueReusableHeaderFooterView(
-        withIdentifier: DetailPostHeaderView.identifier
-      ) as? DetailPostHeaderView
+        withIdentifier: CommunityPostContentCell.identifier
+      ) as? CommunityPostContentCell
     else {
       return UIView()
     }

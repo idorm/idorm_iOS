@@ -12,7 +12,7 @@ import RxMoya
 import Photos
 import Kingfisher
 
-final class PostingViewReactor: Reactor {
+final class CommunityPostingViewReactor: Reactor {
   
   struct Photo: Equatable {
     let image: UIImage
@@ -64,6 +64,9 @@ final class PostingViewReactor: Reactor {
   var post: CommunityResponseModel.Post?
   var initialState: State = State()
   let postingType: PostingType
+  
+  /// 네트워킹을 할 수 있는 `CommunityAPI`가 Warpping되어 있는 `APIManager`입니다.
+  private let apiManager = APIManager<CommunityAPI>()
   
   init(
     _ postingType: PostingType,
@@ -162,25 +165,10 @@ final class PostingViewReactor: Reactor {
           images: images,
           isAnonymous: currentState.isAnonymous
         )
-        return .concat([
-          .just(.setLoading(true)),
-          CommunityAPI.provider.rx.request(.savePost(newPost))
-            .asObservable()
-            .retry()
-            .withUnretained(self)
-            .flatMap { owner, response -> Observable<Mutation> in
-              switch response.statusCode {
-              case 200..<300:
-                return .concat([
-                  .just(.setLoading(false)),
-                  .just(.setPopVC(true))
-                ])
-              default:
-                fatalError("게시글 저장 실패")
-              }
-            }
-        ])
+        return self.apiManager.requestAPI(to: .savePost(newPost))
+          .flatMap { _ in return Observable<Mutation>.just(.setPopVC(true)) }
       }
+      
     case .didPickedImages(let images):
       var photos: [Photo] = []
       images.forEach {
@@ -266,7 +254,7 @@ final class PostingViewReactor: Reactor {
   }
 }
 
-extension PostingViewReactor {
+extension CommunityPostingViewReactor {
   // 이미지를 다운로드하고 이를 UIImage로 변환하는 함수
   func downloadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
     KingfisherManager.shared.retrieveImage(with: url) { result in

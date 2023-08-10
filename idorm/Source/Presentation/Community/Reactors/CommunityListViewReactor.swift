@@ -10,7 +10,7 @@ import Foundation
 import ReactorKit
 import RxMoya
 
-final class PostListViewReactor: Reactor {
+final class CommunityListViewReactor: Reactor {
   
   enum Action {
     case viewDidLoad
@@ -177,7 +177,7 @@ final class PostListViewReactor: Reactor {
   }
 }
 
-extension PostListViewReactor {
+extension CommunityListViewReactor {
   private func retrievePosts(
     _ dorm: Dormitory,
     page: Int
@@ -192,13 +192,11 @@ extension PostListViewReactor {
       .flatMap { responseModel -> Observable<Mutation> in
         let posts = responseModel.data
         if posts.count < 10 {
-          print("POSTS Count: \(posts.count)")
           return .concat([
             .just(.setBlockRequest(true)),
             .just(.appendPosts(posts)),
           ])
         } else {
-          print("POSTS Count: \(posts.count)")
           return .concat([
             .just(.setBlockRequest(false)),
             .just(.appendPosts(posts))

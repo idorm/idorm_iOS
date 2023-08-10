@@ -31,13 +31,13 @@ final class TabBarViewController: UITabBarController {
     let homeVC = HomeViewController()
     let matchingVC = MatchingViewController()
     let myPageVC = MyPageViewController()
-    let postListVC = PostListViewController()
+    let postListVC = CommunityListViewController()
     let calendarVC = CalendarViewController()
     
     homeVC.reactor = HomeViewReactor()
     matchingVC.reactor = MatchingViewReactor()
     myPageVC.reactor = MyPageViewReactor()
-    postListVC.reactor = PostListViewReactor()
+    postListVC.reactor = CommunityListViewReactor()
     calendarVC.reactor = CalendarViewReactor()
     
     let naviHomeVC = UINavigationController(rootViewController: homeVC)
@@ -72,9 +72,9 @@ final class TabBarViewController: UITabBarController {
     TransitionManager.shared.postPushAlarmDidTap = { [weak self] postId in
       self?.selectedIndex = 2
       let navVC = self?.children[2] as? UINavigationController
-      let detailPostVC = DetailPostViewController()
+      let detailPostVC = CommunityPostViewController()
       detailPostVC.hidesBottomBarWhenPushed = true
-      let reactor = DetailPostViewReactor(postId)
+      let reactor = CommunityPostViewReactor(postId)
       detailPostVC.reactor = reactor
       navVC?.pushViewController(detailPostVC, animated: true)
     }

@@ -1,5 +1,5 @@
 //
-//  PostVC.swift
+//  CommunityPostingViewController.swift
 //  idorm
 //
 //  Created by 김응철 on 2023/01/10.
@@ -14,7 +14,7 @@ import RxSwift
 import RxCocoa
 import Photos
 
-final class PostingViewController: BaseViewController, View {
+final class CommunityPostingViewController: BaseViewController, View {
   
   // MARK: - UI COMPONENTS
   
@@ -285,19 +285,19 @@ final class PostingViewController: BaseViewController, View {
   
   // MARK: - Bind
   
-  func bind(reactor: PostingViewReactor) {
+  func bind(reactor: CommunityPostingViewReactor) {
     
     // MARK: - Action
     
     rx.viewDidLoad
-      .map { PostingViewReactor.Action.viewDidLoad }
+      .map { CommunityPostingViewReactor.Action.viewDidLoad }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 사진 버튼 클릭
     photoImageView.rx.tapGesture()
       .skip(1)
-      .map { _ in PostingViewReactor.Action.didTapPictIv }
+      .map { _ in CommunityPostingViewReactor.Action.didTapPictIv }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -305,7 +305,7 @@ final class PostingViewController: BaseViewController, View {
     titleTextField.rx.text
       .orEmpty
       .distinctUntilChanged()
-      .map { PostingViewReactor.Action.didChangeTitle($0) }
+      .map { CommunityPostingViewReactor.Action.didChangeTitle($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -313,7 +313,7 @@ final class PostingViewController: BaseViewController, View {
     contentTextView.rx.text
       .orEmpty
       .distinctUntilChanged()
-      .map { PostingViewReactor.Action.didChangeContent($0) }
+      .map { CommunityPostingViewReactor.Action.didChangeContent($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -322,13 +322,13 @@ final class PostingViewController: BaseViewController, View {
       .withUnretained(self)
       .do { $0.0.anonymousButton.isSelected.toggle() }
       .map { $0.0.anonymousButton.isSelected }
-      .map { PostingViewReactor.Action.didTapAnonymousBtn($0) }
+      .map { CommunityPostingViewReactor.Action.didTapAnonymousBtn($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
     // 완료 버튼
     doneButton.rx.tap
-      .map { PostingViewReactor.Action.didTapCompleteBtn }
+      .map { CommunityPostingViewReactor.Action.didTapCompleteBtn }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
@@ -476,7 +476,7 @@ final class PostingViewController: BaseViewController, View {
 
 // MARK: - CollectionView Setup
 
-extension PostingViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension CommunityPostingViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
   
   func collectionView(
     _ collectionView: UICollectionView,
