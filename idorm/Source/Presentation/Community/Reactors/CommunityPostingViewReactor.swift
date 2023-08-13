@@ -57,11 +57,11 @@ final class CommunityPostingViewReactor: Reactor {
   
   enum PostingType {
     case new
-    case edit(CommunityResponseModel.Post)
+    case edit(Post)
   }
   
   private let currentDorm: Dormitory
-  var post: CommunityResponseModel.Post?
+  var post: Post?
   var initialState: State = State()
   let postingType: PostingType
   
@@ -92,14 +92,14 @@ final class CommunityPostingViewReactor: Reactor {
         guard let post = post else { return .empty() }
         var photos: [Photo] = []
         
-        post.postPhotos.forEach { [weak self] in
+        post.photos.forEach { [weak self] in
           var image: UIImage?
           self?.downloadImage(
-            from: URL(string: $0.photoUrl)!
+            from: URL(string: $0.photoURL)!
           ) {
             image = $0
           }
-          photos.append(Photo(image: image!, index: $0.photoId))
+          photos.append(Photo(image: image!, index: $0.photoID))
         }
         
         return .concat([
@@ -135,7 +135,7 @@ final class CommunityPostingViewReactor: Reactor {
         return .concat([
           .just(.setLoading(true)),
           CommunityAPI.provider.rx.request(.editPost(
-            postId: post.postId,
+            postId: post.identifier,
             post: newPost,
             deletePostPhotos: currentState.deletePostPhotoIds)
           )
@@ -183,7 +183,7 @@ final class CommunityPostingViewReactor: Reactor {
       case .edit:
         guard let post = post else { return .empty() }
         let photo = currentState.currentImages[index]
-        let deleteIndex = post.postPhotos.first(where: { $0.photoId == photo.index })?.photoId
+        let deleteIndex = post.photos.first(where: { $0.photoID == photo.index })?.photoID
         if deleteIndex != nil {
           return .concat([
             .just(.deleteImages(index)),

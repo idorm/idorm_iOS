@@ -52,4 +52,11 @@ final class CommunityPostPhotoCell: UICollectionViewCell {
       make.edges.equalToSuperview()
     }
   }
+  
+  // MARK: - Configure
+  
+  func configure(with url: String?) {
+    self.imageView.image = nil
+    if let url { self.imageView.kf.setImage(with: URL(string: url)) }
+  }
 }

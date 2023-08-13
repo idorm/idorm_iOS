@@ -68,44 +68,6 @@ final class CommunityPostContentCell: UICollectionViewCell, BaseView {
     return label
   }()
   
-//  private lazy var sympathyButton: idormCommunityButton = {
-//    let btn = idormCommunityButton("공감하기")
-//    btn.configurationUpdateHandler = {
-//      switch $0.state {
-//      case .selected:
-//        $0.configuration?.baseBackgroundColor = .idorm_blue
-//        $0.configuration?.baseForegroundColor = .white
-//      case .normal:
-//        $0.configuration?.baseBackgroundColor = .idorm_gray_100
-//        $0.configuration?.baseForegroundColor = .black
-//      default:
-//        break
-//      }
-//    }
-//    return btn
-//  }()
-  
-//  private let likeImageView = UIImageView(image: UIImage(named: "thumbsup_medium"))
-//  private lazy var likeCountLabel = countLabel()
-//  private let commentImageView = UIImageView(image: UIImage(named: "speechBubble_double_medium"))
-//  private lazy var commentCountLabel = countLabel()
-//  private let pictureImageView = UIImageView(image: UIImage(named: "picture_medium"))
-//  private lazy var pictureCountLabel = countLabel()
-//  private let separatorLine = UIFactory.view(.idorm_gray_200)
-//  private let separatorLine2 = UIFactory.view(.idorm_gray_200)
-//  lazy var orderByLastestButton = orderButton("최신순")
-//  lazy var orderByRegisterationButton = orderButton("등록순")
-  
-  // MARK: - PROPERTIES
-  
-  var sympathyButtonCompletion: ((Bool) -> Void)?
-  var optionButtonCompletion: (() -> Void)?
-  var photoCompletion: ((Int) -> Void)?
-//  private var post: CommunityResponseModel.Post!
-//  private var isSympathy: Bool = false
-//  private var bottomConstraints: Constraint?
-//  private var photoConstarints: Constraint?
-  
   // MARK: - Initializer
   
   override init(frame: CGRect) {
@@ -151,59 +113,23 @@ final class CommunityPostContentCell: UICollectionViewCell, BaseView {
     }
     
     self.contentsLabel.snp.makeConstraints { make in
-      make.directionalHorizontalEdges.equalToSuperview()
+      make.directionalHorizontalEdges.bottom.equalToSuperview()
       make.top.equalTo(self.titleLabel.snp.bottom).offset(12.0)
-      make.bottom.equalToSuperview().inset(24.0)
     }
   }
   
-  private func updateUI() {
-//    if self.post.commentsCount == 0 {
-//      self.bottomConstraints?.update(inset: 0)
-//      self.orderByLastestButton.isHidden = true
-//      self.orderByRegisterationButton.isHidden = true
-//    } else {
-//      self.bottomConstraints?.update(inset: 40)
-//      self.orderByLastestButton.isHidden = false
-//      self.orderByRegisterationButton.isHidden = false
-//    }
-//    
-//    if self.isSympathy {
-//      self.likeImageView.tintColor = .idorm_blue
-//      self.likeCountLabel.textColor = .idorm_blue
-//      self.sympathyButton.isSelected = true
-//    } else {
-//      self.likeImageView.tintColor = .idorm_gray_300
-//      self.likeCountLabel.textColor = .idorm_gray_300
-//      self.sympathyButton.isSelected = false
-//    }
-//    
-//    if self.post.postPhotos.isEmpty {
-//      self.photoCollectionView.isHidden = true
-//      self.photoConstarints?.update(offset: 24)
-//    } else {
-//      self.photoCollectionView.isHidden = false
-//      self.photoConstarints?.update(offset: 168)
-//    }
-  }
+  // MARK: - Configure
   
-  func injectData(_ post: CommunityResponseModel.Post, isSympathy: Bool) {
-//    self.post = post
-//    self.isSympathy = isSympathy
-//    self.titleLabel.text = post.title
-//    self.contentsLabel.text = post.content
-//    self.nicknameLabel.text = post.nickname ?? "익명"
-//    self.timeLabel.text = TimeUtils.detailPost(post.createdAt)
-//    self.likeCountLabel.text = "\(post.likesCount)"
-//    self.commentCountLabel.text = "\(post.commentsCount)"
-//    self.pictureCountLabel.text = "\(post.imagesCount)"
-//    
-//    if !post.isAnonymous,
-//       let profileUrl = post.profileUrl {
-//      ProfileImageView.kf.setImage(with: URL(string: profileUrl))
-//    }
-//    
-//    self.updateUI()
-//    self.photoCollectionView.reloadData()
+  /// 외부에서 주입된 `Post`타입을 가지고 UI를 구성합니다.
+  func configure(with post: Post) {
+    // Data Binding
+    self.profileImageView.image = .iDormImage(.human)
+    if !post.isAnonymous,
+       let profileURL = post.profileURL
+    { self.profileImageView.kf.setImage(with: URL(string: profileURL)) }
+    self.titleLabel.text = post.title
+    self.nicknameLabel.text = post.nickname
+    self.timeLabel.text = post.createdAt.toCommunityPostFormatString()
+    self.contentsLabel.text = post.content
   }
 }

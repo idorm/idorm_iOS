@@ -32,7 +32,7 @@ final class CommunityListViewReactor: Reactor {
     case setPagination(Bool)
     case setBlockRequest(Bool)
     case setPostingVC(Bool, Dormitory)
-    case setPostDetailVC(Bool, Int)
+    case setPostDetailVC(Bool, Post)
     case setReloadData(Bool)
     case resetPosts
     case setRefreshing(Bool)
@@ -51,11 +51,12 @@ final class CommunityListViewReactor: Reactor {
     var isBlockedRequest: Bool = false
     var reloadData: Bool = false
     var showsPostingVC: (Bool, Dormitory) = (false, .no3)
-    var showsPostDetailVC: (Bool, Int) = (false, 0)
+    var showsPostDetailVC: (Bool, Post) = (false, .init())
     var scrollToTop: Bool = false
   }
   
   var initialState: State = State()
+  private let apiManager = APIManager<CommunityAPI>()
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
@@ -94,10 +95,14 @@ final class CommunityListViewReactor: Reactor {
       ])
       
     case .didTapPostBtn(let postId):
-      return .concat([
-        .just(.setPostDetailVC(true, postId)),
-        .just(.setPostDetailVC(false, 0))
-      ])
+      return self.apiManager.requestAPI(to: .lookupDetailPost(postId: postId))
+        .map(ResponseModel<CommunitySinglePostResponseDTO>.self)
+        .flatMap {
+          return Observable<Mutation>.concat([
+            .just(.setPostDetailVC(true, $0.data.toPost())),
+            .just(.setPostDetailVC(false, .init()))
+          ])
+        }
       
     case .pullToRefresh:
       return .concat([

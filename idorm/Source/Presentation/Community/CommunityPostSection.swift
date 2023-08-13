@@ -42,30 +42,49 @@ enum CommunityPostSection: Hashable {
     }
   }
   
+  var item: NSCollectionLayoutItem {
+    return NSCollectionLayoutItem(layoutSize: self.size)
+  }
+  
+  var group: NSCollectionLayoutGroup {
+    let group: NSCollectionLayoutGroup
+    switch self {
+    case .photos:
+      group = .horizontal(layoutSize: self.size, subitems: [self.item])
+    default:
+      group = .vertical(layoutSize: self.size, subitems: [self.item])
+    }
+    return group
+  }
+  
   var section: NSCollectionLayoutSection {
-    let item = NSCollectionLayoutItem(layoutSize: self.size)
-    let group = NSCollectionLayoutGroup.vertical(layoutSize: self.size, subitems: [item])
-    let section = NSCollectionLayoutSection(group: group)
-    
+    let section = NSCollectionLayoutSection(group: self.group)
     switch self {
     case .contents:
-      break
+      section.contentInsets = NSDirectionalEdgeInsets(
+        top: 16.0,
+        leading: 24.0,
+        bottom: .zero,
+        trailing: 24.0
+      )
     case .photos:
-      break
+      section.contentInsets.top = 24.0
+      section.contentInsets.leading = 24.0
+      section.orthogonalScrollingBehavior = .continuous
+      section.interGroupSpacing = 8.0
     case .multiBox:
-      break
+      section.contentInsets.top = 24.0
     case .comments:
-      break
+      section.contentInsets.bottom = 24.0
     }
-    
     return section
   }
 }
 
 enum CommunityPostSectionItem: Hashable {
-  case content
-  case photo
-  case multiBox
-  case comment
+  case content(Post)
+  case photo(String?)
+  case multiBox(Post)
+  case comment(Comment)
   case emptyComment
 }

@@ -195,15 +195,24 @@ extension MyCommunityViewController: UITableViewDataSource, UITableViewDelegate 
       let comment = currentState.comments[indexPath.row]
       cell.configure(comment)
       
-      cell.buttonCompletion = { [weak self] in
-        if $0 != nil {
-          let viewController = CommunityPostViewController()
-          let reactor = CommunityPostViewReactor($0!)
-          viewController.reactor = reactor
-          self?.navigationController?.pushViewController(viewController, animated: true)
-        } else {
+      cell.buttonCompletion = { [weak self] postID in
+        guard let self,
+              let postID = postID
+        else {
           self?.showAlert("삭제된 게시글입니다.")
+          return
         }
+        let apiManager = APIManager<CommunityAPI>()
+        apiManager.requestAPI(to: .lookupDetailPost(postId: postID))
+          .map(ResponseModel<CommunitySinglePostResponseDTO>.self)
+          .asDriver(onErrorRecover: { _ in return .empty() })
+          .drive(with: self) { owner, post in
+            let viewController = CommunityPostViewController()
+            let reactor = CommunityPostViewReactor(post.data.toPost())
+            viewController.reactor = reactor
+            owner.navigationController?.pushViewController(viewController, animated: true)
+          }
+          .disposed(by: self.disposeBag)
       }
       return cell
     }
@@ -283,11 +292,20 @@ extension MyCommunityViewController: UITableViewDataSource, UITableViewDelegate 
     
     switch viewControllerType {
     case .recommend, .post:
-      let viewController = CommunityPostViewController()
-      let reactor = CommunityPostViewReactor(reactor.currentState.posts[indexPath.row].postId)
-      viewController.reactor = reactor
-      viewController.hidesBottomBarWhenPushed = true
-      navigationController?.pushViewController(viewController, animated: true)
+      let apiManager = APIManager<CommunityAPI>()
+      apiManager.requestAPI(to: .lookupDetailPost(
+        postId: reactor.currentState.posts[indexPath.row].postId
+      ))
+      .map(ResponseModel<CommunitySinglePostResponseDTO>.self)
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, data in
+        let viewController = CommunityPostViewController()
+        let reactor = CommunityPostViewReactor(data.data.toPost())
+        viewController.reactor = reactor
+        viewController.hidesBottomBarWhenPushed = true
+        owner.navigationController?.pushViewController(viewController, animated: true)
+      }
+      .disposed(by: self.disposeBag)
     case .comment:
       break
     }

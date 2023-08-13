@@ -112,6 +112,20 @@ extension String {
     }
     return date
   }
+  
+  /// `CommunityPostVC`에서 사용할 날짜 형식의 `String`을
+  /// 알맞은 형식의 `Format`을 가진 `String`으로 변환합니다.
+  func toCommunityPostFormatString() -> String {
+    guard !self.isEmpty else { return "" }
+    let format = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+    let formatter = DateFormatter()
+    formatter.dateFormat = format
+    formatter.timeZone = .init(abbreviation: "UTC")
+    var postDate = formatter.date(from: self)!
+    postDate.addTimeInterval(32400)
+    formatter.dateFormat = "MM'/'dd HH:mm"
+    return formatter.string(from: postDate)
+  }
 }
 
 // MARK: - CommunityDTO

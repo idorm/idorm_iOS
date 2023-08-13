@@ -22,7 +22,7 @@ final class HomeViewReactor: Reactor {
   enum Mutation {
     case setLoading(Bool)
     case setPosts([CommunityResponseModel.Posts])
-    case setPostDetailVC(Bool, Int)
+    case setPostDetailVC(Bool, Post)
     case setCalendars([CalendarResponseModel.Calendar])
   }
   
@@ -30,10 +30,11 @@ final class HomeViewReactor: Reactor {
     var isLoading: Bool = false
     var popularPosts: [CommunityResponseModel.Posts] = []
     var calendars: [CalendarResponseModel.Calendar] = []
-    var pushToPostDetailVC: (Bool, Int) = (false, 0)
+    var pushToPostDetailVC: (Bool, Post) = (false, .init())
   }
   
   var initialState: State = State()
+  private let apiManager = APIManager<CommunityAPI>()
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
@@ -58,10 +59,14 @@ final class HomeViewReactor: Reactor {
 //      ])
       
     case let .postDidTap(postId):
-      return .concat([
-        .just(.setPostDetailVC(true, postId)),
-        .just(.setPostDetailVC(false, 0))
-      ])
+      return self.apiManager.requestAPI(to: .lookupDetailPost(postId: postId))
+        .map(ResponseModel<CommunitySinglePostResponseDTO>.self)
+        .flatMap {
+          return Observable<Mutation>.concat([
+            .just(.setPostDetailVC(true, $0.data.toPost())),
+            .just(.setPostDetailVC(false, .init()))
+          ])
+        }
     }
   }
   

@@ -9,6 +9,13 @@ import UIKit
 
 import SnapKit
 import Kingfisher
+import RxSwift
+import RxCocoa
+
+protocol CommunityCommentCellDelegate: AnyObject {
+  func didTapReplyButton(_ commentID: Int, cell: CommunityCommentCell)
+  func didTapOptionButton(_ comment: Comment)
+}
 
 final class CommunityCommentCell: UICollectionViewCell, BaseView {
   
@@ -52,6 +59,7 @@ final class CommunityCommentCell: UICollectionViewCell, BaseView {
   private let optionButton: iDormButton = {
     let image = UIImage.iDormIcon(.option)
     let button = iDormButton("", image: image)
+    button.baseBackgroundColor = .white
     return button
   }()
   
@@ -70,6 +78,7 @@ final class CommunityCommentCell: UICollectionViewCell, BaseView {
     button.contentInset = .init(top: 6.0, leading: 10.0, bottom: 6.0, trailing: 10.0)
     button.baseBackgroundColor = .iDormColor(.iDormGray100)
     button.baseForegroundColor = .black
+    button.font = .iDormFont(.regular, size: 12.0)
     button.isHidden = true
     return button
   }()
@@ -91,42 +100,33 @@ final class CommunityCommentCell: UICollectionViewCell, BaseView {
     return imageView
   }()
   
+  // MARK: - Properties
+  
+  weak var delegate: CommunityCommentCellDelegate?
+  private var disposeBag = DisposeBag()
+  private var topConstraints: Constraint?
+  private var bottomConstarints: Constraint?
+  
+  /// `confiure(with:)`를 통해서 저장되어 있는 `Comment`
+  var comment: Comment?
+  
+  // MARK: - Initializer
+  
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    self.setupStyles()
+    self.setupLayouts()
+    self.setupConstraints()
+    self.bind()
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   // MARK: - Setup
   
-  func setupStyles() {
-    if self.comment.isLast {
-      self.dividerLine.isHidden = false
-    } else {
-      self.dividerLine.isHidden = true
-    }
-
-    switch self.comment.state {
-    case .firstReply:
-      self.replyImageView.isHidden = false
-      self.replyButton.isHidden = true
-      self.nicknameLabel.textColor = .idorm_gray_400
-      self.contentView.backgroundColor = .idorm_matchingScreen
-    case .reply:
-      self.replyImageView.isHidden = true
-      self.replyButton.isHidden = true
-      self.nicknameLabel.textColor = .idorm_gray_400
-      self.contentView.backgroundColor = .idorm_matchingScreen
-    case .normal(let isRemoved):
-      if isRemoved {
-        self.replyButton.isHidden = true
-        self.replyImageView.isHidden = true
-        self.nicknameLabel.text = "삭제"
-        self.nicknameLabel.textColor = .idorm_gray_300
-        self.contentsLabel.text = "삭제된 댓글입니다."
-        self.contentView.backgroundColor = .white
-      } else {
-        self.replyButton.isHidden = false
-        self.replyImageView.isHidden = true
-        self.nicknameLabel.textColor = .idorm_gray_400
-        self.contentView.backgroundColor = .white
-      }
-    }
-  }
+  func setupStyles() {}
   
   func setupLayouts() {
     [
@@ -144,121 +144,109 @@ final class CommunityCommentCell: UICollectionViewCell, BaseView {
   
   func setupConstraints() {
     self.replyImageView.snp.makeConstraints { make in
-      make.top.equalToSuperview().inset(16)
-      make.leading.equalToSuperview().inset(24)
+      make.top.equalToSuperview().inset(16.0)
+      make.leading.equalToSuperview().inset(24.0)
     }
     
     self.profileImageView.snp.makeConstraints { make in
-      make.leading.equalToSuperview().inset(24)
-      self.topConstraints = make.top.equalToSuperview().inset(56).constraint
-      make.width.height.equalTo(42)
+      make.leading.equalToSuperview().inset(24.0)
+      self.topConstraints = make.top.equalToSuperview().inset(56.0).constraint
+      make.width.height.equalTo(42.0)
     }
     
-    self.profileStack.snp.makeConstraints { make in
+    self.profileStackView.snp.makeConstraints { make in
       make.centerY.equalTo(profileImageView)
-      make.leading.equalTo(profileImageView.snp.trailing).offset(10)
-      make.trailing.equalTo(optionButton.snp.leading).offset(-10)
+      make.leading.equalTo(profileImageView.snp.trailing).offset(10.0)
+      make.trailing.equalTo(optionButton.snp.leading).offset(-10.0)
     }
     
-    self.contentsLabel.snp.makeConstraints { make in
-      make.leading.equalTo(profileStack.snp.leading)
-      make.top.equalTo(profileStack.snp.bottom).offset(8)
-      make.trailing.equalToSuperview().inset(24)
-      self.bottomConstarints = make.bottom.equalToSuperview().inset(56).constraint
+    self.contentLabel.snp.makeConstraints { make in
+      make.leading.equalTo(profileStackView.snp.leading)
+      make.top.equalTo(profileStackView.snp.bottom).offset(8.0)
+      make.trailing.equalToSuperview().inset(24.0)
+      self.bottomConstarints = make.bottom.equalToSuperview().inset(56.0).constraint
     }
     
     self.replyButton.snp.makeConstraints { make in
-      make.top.equalTo(contentsLabel.snp.bottom).offset(10)
-      make.leading.equalTo(profileStack.snp.leading)
+      make.top.equalTo(contentLabel.snp.bottom).offset(10.0)
+      make.leading.equalTo(profileStackView.snp.leading)
     }
     
     self.optionButton.snp.makeConstraints { make in
       make.top.equalTo(self.profileImageView.snp.top)
-      make.trailing.equalToSuperview().inset(14)
+      make.trailing.equalToSuperview().inset(14.0)
     }
     
-    
-    self.dividerLine.snp.makeConstraints { make in
+    self.bottomDivider.snp.makeConstraints { make in
       make.bottom.leading.trailing.equalToSuperview()
-      make.height.equalTo(1)
+      make.height.equalTo(1.0)
     }
   }
   
-  var replyButtonCompletion: ((Int) -> Void)?
-  var optionButtonCompletion: ((Int) -> Void)?
+  // MARK: - Bind
   
-  private var comment: Comment!
-  private var isInitialized: Bool = false
-  private var topConstraints: Constraint?
-  private var bottomConstarints: Constraint?
-  
-  // MARK: - LIFECYCLE
-  
-  override func prepareForReuse() {
-    super.prepareForReuse()
-    profileImageView.image = nil
-  }
-  
-  // MARK: - SELECTORS
-  
-  @objc
-  private func didTapReplyButton() {
-    guard let commentId = self.comment?.commentId else { return }
-    self.replyButtonCompletion?(commentId)
-  }
-  
-  @objc
-  private func didTapOptionButton() {
-    guard let commentId = self.comment?.commentId else { return }
-    self.optionButtonCompletion?(commentId)
-  }
-  
-  // MARK: - HELPERS
-  
-  private func registerButtonTargets() {
-    self.replyButton.addTarget(self, action: #selector(didTapReplyButton), for: .touchUpInside)
-    self.optionButton.addTarget(self, action: #selector(didTapOptionButton), for: .touchUpInside)
-  }
-  
-  func configure(_ comment: Comment) {
-    self.comment = comment
-    nicknameLabel.text = comment.nickname ?? "탈퇴한 사용자"
-    timeLabel.text = TimeUtils.detailPost(comment.createdAt)
-    contentsLabel.text = comment.content
+  private func bind() {
+    self.replyButton.rx.tap
+      .compactMap { self.comment?.commentId }
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, commentID in
+        owner.delegate?.didTapReplyButton(commentID, cell: owner)
+      }
+      .disposed(by: self.disposeBag)
     
-    self.setupStyles()
-    self.setupLayouts()
-    if !self.isInitialized {
-      self.isInitialized = true
-      self.setupConstraints()
-      self.registerButtonTargets()
-    }
+    self.optionButton.rx.tap
+      .compactMap { self.comment }
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, comment in
+        owner.delegate?.didTapOptionButton(comment)
+      }
+      .disposed(by: self.disposeBag)
+  }
+  
+  // MARK: - Configure
+  
+  /// 외부에서 주입된 `Comment`타입을 통해
+  /// `Cell`에 UI를 변경합니다.
+  ///
+  /// - Parameters:
+  ///    - comment: 데이터를 주입할 댓글
+  func configure(with comment: Comment) {
+    // Data Binding
+    self.comment = comment
+    self.profileImageView.image = .iDormImage(.human)
+    if let profileUrl = comment.profileUrl,
+       !comment.isAnonymous
+    { self.profileImageView.kf.setImage(with: URL(string: profileUrl)!) }
+    self.comment = comment
+    self.nicknameLabel.text = comment.nickname ?? "탈퇴한 사용자"
+    self.timeLabel.text = comment.createdAt.toCommunityPostFormatString()
+    self.contentLabel.text = comment.content
+    
+    // UI
+    self.replyButton.isHidden = true
+    self.replyImageView.isHidden = true
+    self.nicknameLabel.textColor = .black
+    self.contentView.backgroundColor = .white
+    self.bottomDivider.isHidden = comment.isLast ? false : true
+    self.topConstraints?.update(inset: 16.0)
+    self.bottomConstarints?.update(inset: 16.0)
     
     switch comment.state {
+    case .firstReply:
+      self.replyImageView.isHidden = false
+      self.contentView.backgroundColor = .iDormColor(.iDormMatchingScreen)
+      self.topConstraints?.update(inset: 56.0)
+    case .reply:
+      self.contentView.backgroundColor = .iDormColor(.iDormMatchingScreen)
     case .normal(let isRemoved):
       if isRemoved {
-        self.topConstraints?.update(inset: 16)
-        self.bottomConstarints?.update(inset: 16)
+        self.nicknameLabel.text = "삭제"
+        self.nicknameLabel.textColor = .iDormColor(.iDormGray300)
+        self.contentLabel.text = "삭제된 댓글입니다."
       } else {
-        self.topConstraints?.update(inset: 16)
-        self.bottomConstarints?.update(inset: 56)
+        self.replyButton.isHidden = false
+        self.bottomConstarints?.update(inset: 56.0)
       }
-    case .reply:
-      self.topConstraints?.update(inset: 16)
-      self.bottomConstarints?.update(inset: 16)
-    case .firstReply:
-      self.topConstraints?.update(inset: 56)
-      self.bottomConstarints?.update(inset: 16)
-    }
-    
-    if !comment.isAnonymous {
-      if let url = comment.profileUrl {
-        profileImageView.kf.setImage(with: URL(string: url)!)
-      } else {
-        profileImageView.image = UIImage(named: "square_human_noShadow")
-      }
-    } else {
-      profileImageView.image = UIImage(named: "square_human_noShadow")
     }
   }
 }

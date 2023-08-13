@@ -15,12 +15,11 @@ final class CommunityPostEmptyCell: UICollectionViewCell, BaseView {
   // MARK: - UI Components
   
   /// `ic_speechBubble`의 `UIImageView`
-  private let speechBubbleImageView: UIImageView = {
+  private lazy var speechBubbleImageView: UIImageView = {
     let imageView = UIImageView()
-    let image: UIImage? = .iDormIcon(.speechBubble)?
-      .resize(newSize: 45.0)?
-      .withTintColor(.iDormColor(.iDormGray300))
-    imageView.image = image
+    imageView.image = .iDormIcon(.speechBubble)?
+      .withTintColor(.iDormColor(.iDormGray200))
+      .resize(newSize: 55.0)
     return imageView
   }()
   

@@ -18,6 +18,7 @@ enum iDormColor: Int {
   case iDormGray300 = 0x9B9B9B
   case iDormGray400 = 0x5B5B5B
   case iDormBlue = 0x71A1FE
+  case iDormMatchingScreen = 0xF8FDFF
 }
 
 extension UIColor {

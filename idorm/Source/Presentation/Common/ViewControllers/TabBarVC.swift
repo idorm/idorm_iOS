@@ -70,13 +70,20 @@ final class TabBarViewController: UITabBarController {
   
   private func pushToDetailPost() {
     TransitionManager.shared.postPushAlarmDidTap = { [weak self] postId in
-      self?.selectedIndex = 2
-      let navVC = self?.children[2] as? UINavigationController
-      let detailPostVC = CommunityPostViewController()
-      detailPostVC.hidesBottomBarWhenPushed = true
-      let reactor = CommunityPostViewReactor(postId)
-      detailPostVC.reactor = reactor
-      navVC?.pushViewController(detailPostVC, animated: true)
+      guard let self else { return }
+      let apiManager = APIManager<CommunityAPI>()
+      apiManager.requestAPI(to: .lookupDetailPost(postId: postId))
+        .map(ResponseModel<CommunitySinglePostResponseDTO>.self)
+        .bind { post in
+          self.selectedIndex = 2
+          let navVC = self.children[2] as? UINavigationController
+          let detailPostVC = CommunityPostViewController()
+          detailPostVC.hidesBottomBarWhenPushed = true
+          let reactor = CommunityPostViewReactor(post.data.toPost())
+          detailPostVC.reactor = reactor
+          navVC?.pushViewController(detailPostVC, animated: true)
+        }
+        .disposed(by: self.disposeBag)
     }
   }
 }

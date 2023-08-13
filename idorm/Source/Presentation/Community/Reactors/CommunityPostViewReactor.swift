@@ -21,7 +21,7 @@ final class CommunityPostViewReactor: Reactor {
     case viewDidLoad
     case commentDidChange(String)
     case sendButtonDidTap
-    case replyButtonDidTap(indexPath: Int, parentId: Int)
+    case replyButtonDidTap(index: IndexPath, commendID: Int)
     case backgroundDidTap
     case anonymousButtonDidTap(Bool)
     case sympathyButtonDidTap(Bool)
@@ -29,73 +29,100 @@ final class CommunityPostViewReactor: Reactor {
     case pullToRefresh
     case deletePostButtonDidTap
     case editPostButtonDidTap
+    case photoCellDidTap(index: Int)
   }
   
   enum Mutation {
-    case setLoading(Bool)
+    case setPost(Post)
+    
     case setAnonymous(Bool)
     case setSympathy(Bool)
-    case setPost(CommunityResponseModel.Post)
     case setComment(String)
-    case setComments([OrderedComment])
+    case setComments([Comment])
     case setFocusedComment(Int?)
-    case setCellBackgroundColor(Bool, Int)
-    case setAlert(Bool, String)
-    case setReload(Bool)
+    case setCellBackgroundColor(Bool, IndexPath)
     case setEndEditing(Bool)
     case setEndRefresh(Bool)
-    case setPopVC(Bool)
-    case setPostingVC(Bool)
+    
+    // Presentation
+    case setPopping(Bool)
+    case setCommunityPosting
+    case setImageSlide(index: Int)
   }
   
   struct State {
-    var isLoading: Bool = false
+    // Data
+    var post: Post
+    
     var isSympathy: Bool = false
     var isPresentedAlert: (Bool, String) = (false, "")
-    var currentPost: CommunityResponseModel.Post?
     var currentComment: String = ""
-    var currentComments: [OrderedComment] = []
+    var currentComments: [Comment] = []
     var isAnonymous: Bool = true
     var currentFocusedComment: Int?
-    var currentCellBackgroundColor: (Bool, Int) = (false, 0)
-    var reloadData: Bool = false
+    var currentCellBackgroundColor: (Bool, IndexPath) = (false, IndexPath())
     var endEditing: Bool = false
     var endRefresh: Bool = false
-    var popVC: Bool = false
-    var showsPostingVC: Bool = false
+    
+    // Presentation
+    @Pulse var isPopping: Bool = false
+    @Pulse var navigateToCommunityPosting: Post?
+    @Pulse var presentImageSlide: (photosURL: [String], index: Int)?
+
+    // UI
+    var items: [[CommunityPostSectionItem]] = []
+    var sections: [CommunityPostSection] = []
   }
   
-  var initialState: State = State()
-  let postId: Int
+  // MARK: - Properties
   
-  init(_ postId: Int) {
-    self.postId = postId
+  private let apiManager = APIManager<CommunityAPI>()
+  var initialState: State
+
+  // MARK: - Initializer
+  
+  init(_ post: Post) {
+    self.initialState = State(post: post)
   }
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .viewDidLoad:
-      return .concat([
-        .just(.setLoading(true)),
-        retrievePost()
-      ])
+      return .empty()
+      
     case .commentDidChange(let comment):
       return .just(.setComment(comment))
+      
     case .sendButtonDidTap:
       let indexPath = currentState.currentCellBackgroundColor.1
+      let requestDTO = CommunityCommentRequestDTO(
+        content: self.currentState.currentComment,
+        isAnonymous: self.currentState.isAnonymous,
+        parentCommentId: self.currentState.currentFocusedComment
+      )
+      
       return .concat([
-        .just(.setLoading(true)),
         .just(.setCellBackgroundColor(false, indexPath)),
         .just(.setFocusedComment(nil)),
-        saveComment(currentState.currentFocusedComment),
-        .just(.setEndEditing(true)),
-        .just(.setEndEditing(false))
+        self.apiManager.requestAPI(to: .saveComment(
+          postId: self.currentState.post.identifier,
+          body: requestDTO
+        ))
+        .flatMap { _ in
+          return Observable<Mutation>.concat([
+            self.getSinglePost(),
+            .just(.setEndEditing(true)),
+            .just(.setEndEditing(false))
+          ])
+        }
       ])
+      
     case let .replyButtonDidTap(indexPath, parentId):
       return .concat([
         .just(.setFocusedComment(parentId)),
         .just(.setCellBackgroundColor(true, indexPath)),
       ])
+      
     case .backgroundDidTap:
       let indexPath = currentState.currentCellBackgroundColor.1
       return .concat([
@@ -103,84 +130,34 @@ final class CommunityPostViewReactor: Reactor {
         .just(.setFocusedComment(nil)),
       ])
       .subscribe(on: MainScheduler.asyncInstance)
+      
     case .anonymousButtonDidTap(let isSelected):
       return .just(.setAnonymous(isSelected))
-    case .sympathyButtonDidTap(let isSympathy):
-      return .concat([
-        .just(.setLoading(true)),
-        CommunityAPI.provider.rx.request(.editPostSympathy(postId: postId, isSympathy: isSympathy))
-          .asObservable()
-          .withUnretained(self)
-          .flatMap { owner, response -> Observable<Mutation> in
-            switch response.statusCode {
-            case 200..<300:
-              return .concat([
-                .just(.setSympathy(isSympathy)),
-                owner.retrievePost()
-              ])
-            case 409:
-              return .concat([
-                .just(.setLoading(false)),
-                .just(.setAlert(true, "내 게시글은 공감할 수 없습니다.")),
-                .just(.setAlert(false, ""))
-              ])
-            default:
-              return .empty()
-            }
-          }
-      ])
       
-    case .deleteCommentButtonDidTap(let commentId):
-      return .concat([
-        .just(.setLoading(true)),
-        CommunityAPI.provider.rx.request(
-          .deleteComment(postId: postId, commentId: commentId)
-        )
-        .asObservable()
-        .withUnretained(self)
-        .flatMap { owner, response -> Observable<Mutation> in
-          switch response.statusCode {
-          case 200..<300:
-            return owner.retrievePost()
-          case 404:
-            return .concat([
-              .just(.setLoading(false)),
-              .just(.setAlert(true, "이미 삭제된 댓글입니다.")),
-              .just(.setAlert(false, ""))
-            ])
-          default:
-            return .empty()
-          }
-        }
-      ])
+    case .sympathyButtonDidTap(let isSympathy):
+      return self.apiManager.requestAPI(to: .editPostSympathy(
+        postId: self.currentState.post.identifier,
+        isSympathy: isSympathy
+      )).flatMap { _ in self.getSinglePost() }
+      
+    case .deleteCommentButtonDidTap(let commentID):
+      return self.apiManager.requestAPI(to: .deleteComment(
+        postId: self.currentState.post.identifier,
+        commentId: commentID
+      )).flatMap { _ in return self.getSinglePost() }
       
     case .pullToRefresh:
-      return retrievePost()
+      return self.getSinglePost()
       
     case .deletePostButtonDidTap:
-      return .concat([
-        .just(.setLoading(true)),
-        CommunityAPI.provider.rx.request(.deletePost(postId: postId))
-          .asObservable()
-          .flatMap { response -> Observable<Mutation> in
-            switch response.statusCode {
-            case 200..<300:
-              return .concat([
-                .just(.setLoading(false)),
-                .just(.setPopVC(true)),
-                .just(.setPopVC(false))
-              ])
-            default:
-              return .just(.setAlert(true, "게시글이 삭제되었습니다."))
-            }
-          }
-      ])
+      return self.apiManager.requestAPI(to: .deletePost(postId: self.currentState.post.identifier))
+        .flatMap { _ in return Observable<Mutation>.just(.setPopping(true)) }
       
     case .editPostButtonDidTap:
-      return .concat([
-        .just(.setPostingVC(true)),
-        .just(.setPostingVC(false))
-      ])
+      return .just(.setCommunityPosting)
+      
+    case .photoCellDidTap(let index):
+      return .just(.setImageSlide(index: index))
     }
   }
   
@@ -188,96 +165,90 @@ final class CommunityPostViewReactor: Reactor {
     var newState = state
     
     switch mutation {
-    case .setLoading(let isLoading):
-      newState.isLoading = isLoading
     case .setPost(let post):
-      newState.currentPost = post
+      newState.post = post
+      
     case .setComment(let comment):
       newState.currentComment = comment
+      
     case .setComments(let comments):
       newState.currentComments = comments
+      
     case let .setFocusedComment(commentId):
       newState.currentFocusedComment = commentId
+      
     case let .setCellBackgroundColor(isBlocked, indexPath):
       newState.currentCellBackgroundColor = (isBlocked, indexPath)
+      
     case .setAnonymous(let isSelected):
       newState.isAnonymous = isSelected
+      
     case .setSympathy(let isSympathy):
       newState.isSympathy = isSympathy
-    case let .setAlert(isBlocked, title):
-      newState.isPresentedAlert = (isBlocked, title)
-    case .setReload(let state):
-      newState.reloadData = state
+      
     case .setEndEditing(let state):
       newState.endEditing = state
+      
     case .setEndRefresh(let state):
       newState.endRefresh = state
-    case .setPopVC(let state):
-      newState.popVC = state
-    case .setPostingVC(let state):
-      newState.showsPostingVC = state
+      
+    case .setPopping(let isPopping):
+      newState.isPopping = isPopping
+      
+    case .setCommunityPosting:
+      newState.navigateToCommunityPosting = state.post
+      
+    case .setImageSlide(let index):
+      newState.presentImageSlide = (state.post.photos.map { $0.photoURL }, index)
     }
     
     return newState
   }
+  
+  func transform(state: Observable<State>) -> Observable<State> {
+    return state.map { state in
+      var newState = state
+      
+      var items: [[CommunityPostSectionItem]] = []
+      var sections: [CommunityPostSection] = []
+      
+      // Content
+      sections.append(.contents)
+      items.append([.content(state.post)])
+      
+      // Photos
+      if state.post.photos.isNotEmpty {
+        sections.append(.photos)
+        items.append(state.post.photos.map { CommunityPostSectionItem.photo($0.photoURL) })
+      }
+      
+      // MultiBox
+      sections.append(.multiBox)
+      items.append([.multiBox(state.post)])
+      
+      // Comment
+      sections.append(.comments)
+      if state.post.comments.isEmpty {
+        items.append([.emptyComment])
+      } else {
+        items.append(state.post.comments.map { CommunityPostSectionItem.comment($0) })
+      }
+      
+      newState.sections = sections
+      newState.items = items
+      
+      return newState
+    }
+  }
 }
 
+// MARK: - Privates
+
 private extension CommunityPostViewReactor {
-  func retrievePost() -> Observable<Mutation> {
-    return CommunityAPI.provider.rx.request(
-      .lookupDetailPost(postId: postId)
-    )
-      .asObservable()
-      .retry()
-      .flatMap { response -> Observable<Mutation> in
-        switch response.statusCode {
-        case 200..<300:
-          let post = CommunityAPI.decode(
-            ResponseModel<CommunityResponseModel.Post>.self,
-            data: response.data
-          ).data
-          let orderedComments = CommentUtils.newestOrderedComments(post.comments)
-          return .concat([
-            .just(.setEndRefresh(true)),
-            .just(.setEndRefresh(false)),
-            .just(.setLoading(false)),
-            .just(.setComments(orderedComments)),
-            .just(.setPost(post)),
-            .just(.setSympathy(post.isLiked)),
-            .just(.setReload(true)),
-            .just(.setReload(false))
-          ])
-        default:
-          return .just(.setAlert(true, "게시글이 삭제되었습니다."))
-        }
-      }
-  }
-  
-  func saveComment(_ parentId: Int? = nil) -> Observable<Mutation> {
-    let comment = CommunityRequestModel.Comment(
-      content: currentState.currentComment,
-      isAnonymous: currentState.isAnonymous,
-      parentCommentId: parentId
-    )
-    
-    return CommunityAPI.provider.rx.request(
-      .saveComment(
-        postId: postId,
-        body: comment)
-    )
-      .asObservable()
-      .withUnretained(self)
-      .flatMap { owner, response -> Observable<Mutation> in
-        switch response.statusCode {
-        case 200..<300:
-          return .concat([
-            owner.retrievePost(),
-            .just(.setComment(""))
-          ])
-        default:
-          // TODO: 게시글 삭제 알럿 구현
-          return .empty()
-        }
-      }
+  /// 단일 게시글을 서버에서 불러옵니다.
+  func getSinglePost() -> Observable<Mutation> {
+    return self.apiManager.requestAPI(to: .lookupDetailPost(postId: self.currentState.post.identifier))
+      .map(ResponseModel<CommunitySinglePostResponseDTO>.self)
+      .flatMap { return Observable<Mutation>.just(.setPost($0.data.toPost())) }
   }
 }

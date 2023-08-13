@@ -11,16 +11,22 @@ import PanModal
 import SnapKit
 
 protocol BottomSheetViewControllerDelegate: AnyObject {
-  func didTapButton(index: Int)
+  func didTapButton(_ item: BottomSheetItem)
 }
 
 final class BottomSheetViewController: BaseViewController {
   
   // MARK: - Properties
   
-  private let contentHeight: CGFloat
-  private let buttons: [UIButton]
+  private let items: [BottomSheetItem]
   weak var delegate: BottomSheetViewControllerDelegate?
+  private var buttons: [iDormButton] = []
+  
+  private var bottomSheetHeight: CGFloat {
+    var height: CGFloat = 58.0
+    items.forEach { height += $0.itemHeight }
+    return height
+  }
   
   // MARK: - UI Components
   
@@ -37,16 +43,16 @@ final class BottomSheetViewController: BaseViewController {
     let stackView = UIStackView()
     self.buttons.forEach { stackView.addArrangedSubview($0) }
     stackView.axis = .vertical
+    stackView.alignment = .leading
     return stackView
   }()
   
   // MARK: - Initializer
   
   init(
-    items: [BottomSheetItem],
-    contentHeight: CGFloat
+    items: [BottomSheetItem]
   ) {
-    self.contentHeight = contentHeight
+    self.items = items
     self.buttons = items.map { $0.button }
     super.init(nibName: nil, bundle: nil)
   }
@@ -59,12 +65,10 @@ final class BottomSheetViewController: BaseViewController {
   
   override func setupStyles() {
     super.setupStyles()
-    
     self.navigationController?.setNavigationBarHidden(true, animated: false)
     self.view.backgroundColor = .white
-    
     self.buttons.forEach {
-      $0.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
+      $0.addTarget(self, action: #selector(self.didTapButton), for: .touchUpInside)
     }
   }
   
@@ -81,6 +85,12 @@ final class BottomSheetViewController: BaseViewController {
   
   override func setupConstraints() {
     super.setupConstraints()
+    
+    self.buttons.forEach {
+      $0.snp.makeConstraints { make in
+        make.width.equalTo(self.view.frame.width - 48.0)
+      }
+    }
     
     self.cancelButton.snp.makeConstraints { make in
       make.top.equalToSuperview().inset(10.0)
@@ -104,9 +114,13 @@ final class BottomSheetViewController: BaseViewController {
   /// 생성된 버튼 중 아무거나 눌렀을 때의 메서드
   @objc
   private func didTapButton(_ button: UIButton) {
-    guard let index = self.buttons.firstIndex(of: button) else { return }
+    guard
+      let button = button as? iDormButton,
+      let item = button.bottomSheetItem
+    else { return }
     self.dismiss(animated: true)
-    self.delegate?.didTapButton(index: index)
+    self.delegate?.didTapButton(item)
+    print(item)
   }
 }
 
@@ -114,8 +128,8 @@ final class BottomSheetViewController: BaseViewController {
 
 extension BottomSheetViewController: PanModalPresentable {
   var panScrollable: UIScrollView? { nil }
-  var shortFormHeight: PanModalHeight { .contentHeight(self.contentHeight) }
-  var longFormHeight: PanModalHeight { .contentHeight(self.contentHeight) }
+  var shortFormHeight: PanModalHeight { .contentHeight(self.bottomSheetHeight) }
+  var longFormHeight: PanModalHeight { .contentHeight(self.bottomSheetHeight) }
   var showDragIndicator: Bool { false }
   var cornerRadius: CGFloat { 24.0 }
 }

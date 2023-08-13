@@ -15,6 +15,7 @@ import RxOptional
 import RxGesture
 import PanModal
 import ImageSlideshow
+import Kingfisher
 import KakaoSDKCommon
 import KakaoSDKShare
 import KakaoSDKTemplate
@@ -32,40 +33,46 @@ final class CommunityPostViewController: BaseViewController, View {
       collectionView: self.collectionView,
       cellProvider: { collectionView, indexPath, item in
         switch item {
-        case .content:
+        case .content(let post):
           guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: CommunityPostContentCell.identifier,
             for: indexPath
           ) as? CommunityPostContentCell else {
             return UICollectionViewCell()
           }
+          cell.configure(with: post)
           return cell
           
-        case .photo:
+        case .photo(let url):
           guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: CommunityPostPhotoCell.identifier,
             for: indexPath
           ) as? CommunityPostPhotoCell else {
             return UICollectionViewCell()
           }
+          cell.configure(with: url)
           return cell
           
-        case .multiBox:
+        case .multiBox(let post):
           guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: CommunityPostMultiBoxCell.identifier,
             for: indexPath
           ) as? CommunityPostMultiBoxCell else {
             return UICollectionViewCell()
           }
+          cell.delegate = self
+          cell.configure(with: post)
           return cell
           
-        case .comment:
+        case .comment(let comment):
           guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: CommunityPostCommentCell.identifier,
+            withReuseIdentifier: CommunityCommentCell.identifier,
             for: indexPath
-          ) as? CommunityPostCommentCell else {
+          ) as? CommunityCommentCell else {
             return UICollectionViewCell()
           }
+          cell.delegate = self
+          cell.configure(with: comment)
           return cell
           
         case .emptyComment:
@@ -89,6 +96,7 @@ final class CommunityPostViewController: BaseViewController, View {
       frame: .zero,
       collectionViewLayout: self.createLayout()
     )
+    collectionView.refreshControl = self.refreshControl
     // Register
     collectionView.register(
       CommunityPostContentCell.self,
@@ -98,40 +106,29 @@ final class CommunityPostViewController: BaseViewController, View {
       CommunityPostPhotoCell.self,
       forCellWithReuseIdentifier: CommunityPostPhotoCell.identifier
     )
+    collectionView.register(
+      CommunityPostMultiBoxCell.self,
+      forCellWithReuseIdentifier: CommunityPostMultiBoxCell.identifier
+    )
+    collectionView.register(
+      CommunityCommentCell.self,
+      forCellWithReuseIdentifier: CommunityCommentCell.identifier
+    )
+    collectionView.register(
+      CommunityPostEmptyCell.self,
+      forCellWithReuseIdentifier: CommunityPostEmptyCell.identifier
+    )
     return collectionView
   }()
   
-//  private lazy var tableView: UITableView = {
-//    let tableView = UITableView(frame: .zero, style: .grouped)
-//    tableView.backgroundColor = .white
-//    tableView.register(
-//      CommentCell.self,
-//      forCellReuseIdentifier: CommentCell.identifier
-//    )
-//    tableView.register(
-//      DetailPostEmptyCell.self,
-//      forCellReuseIdentifier: DetailPostEmptyCell.identifier
-//    )
-//    tableView.register(
-//      CommunityPostContentCell.self,
-//      forHeaderFooterViewReuseIdentifier: CommunityPostContentCell.identifier
-//    )
-//    tableView.refreshControl = self.refreshControl
-//    tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-//    tableView.allowsSelection = false
-//    tableView.separatorStyle = .none
-//    tableView.dataSource = self
-//    tableView.delegate = self
-//    
-//    return tableView
-//  }()
-  
+  /// `옵션` 버튼
   private let optionButton: UIButton = {
     let btn = UIButton()
-    btn.setImage(UIImage(named: "option_gray"), for: .normal)
+    btn.setImage(.iDormIcon(.option), for: .normal)
     return btn
   }()
   
+  /// `새로고침` UI
   private let refreshControl: UIRefreshControl = {
     let rc = UIRefreshControl()
     return rc
@@ -141,11 +138,11 @@ final class CommunityPostViewController: BaseViewController, View {
   private let bottomView = UIView()
   private var header: CommunityPostContentCell!
   
-  // MARK: - PROPERTIES
+  // MARK: - Propeties
   
   var popCompletion: (() -> Void)?
   
-  // MARK: - SETUP
+  // MARK: - Setup
   
   override func setupStyles() {
     self.view.backgroundColor = .white
@@ -155,9 +152,8 @@ final class CommunityPostViewController: BaseViewController, View {
   
   override func setupLayouts() {
     [
-      self.tableView,
+      self.collectionView,
       self.commentView,
-      self.indicator,
       self.bottomView
     ].forEach {
       self.view.addSubview($0)
@@ -170,13 +166,9 @@ final class CommunityPostViewController: BaseViewController, View {
       make.leading.trailing.equalToSuperview()
     }
     
-    self.tableView.snp.makeConstraints { make in
+    self.collectionView.snp.makeConstraints { make in
       make.top.leading.trailing.equalToSuperview()
       make.bottom.equalTo(self.commentView.snp.top)
-    }
-    
-    self.indicator.snp.makeConstraints { make in
-      make.center.equalToSuperview()
     }
     
     self.bottomView.snp.makeConstraints { make in
@@ -185,11 +177,10 @@ final class CommunityPostViewController: BaseViewController, View {
     }
   }
   
-  // MARK: - BIND
+  // MARK: - Bind
   
   func bind(reactor: CommunityPostViewReactor) {
-    
-    // MARK: - ACTION
+    // Action
     
     // 화면 최초 접속
     self.rx.viewDidLoad
@@ -210,8 +201,15 @@ final class CommunityPostViewController: BaseViewController, View {
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
+    // 아이템 클릭
+    self.collectionView.rx.itemSelected
+      .filter { self.dataSource.sectionIdentifier(for: $0.section) == .photos }
+      .map { Reactor.Action.photoCellDidTap(index: $0.item) }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
     // 빈 화면 클릭
-    self.tableView.rx.tapGesture { gesture, delegate in
+    self.collectionView.rx.tapGesture { gesture, delegate in
       gesture.cancelsTouchesInView = false
       delegate.simultaneousRecognitionPolicy = .never
     }.when(.recognized)
@@ -231,34 +229,9 @@ final class CommunityPostViewController: BaseViewController, View {
     
     // 게시글 옵션 버튼 클릭 -> 바텀 시트 출력
     self.optionButton.rx.tap
-      .bind(with: self) { owner, _ in
-        guard
-          let memberId = UserStorage.shared.member?.memberId
-        else { return }
-        
-        let postMemberId = reactor.currentState.currentPost?.memberId ?? -1
-        
-        let bottomSheet: OldBottomSheetViewController
-        bottomSheet = memberId == postMemberId ? .init(.myPost) : .init(.post)
-        owner.presentPanModal(bottomSheet)
-        
-        // 바텀시트 버튼 클릭
-        bottomSheet.buttonDidTap
-          .bind {
-            switch $0 {
-            case .deletePost:
-              reactor.action.onNext(.deletePostButtonDidTap)
-            case .editPost:
-              reactor.action.onNext(.editPostButtonDidTap)
-            case .report:
-              owner.presentCompletedReport()
-            case .share:
-              owner.sendFeedMessage()
-            default:
-              break
-            }
-          }
-          .disposed(by: owner.disposeBag)
+      .asDriver()
+      .drive(with: self) { owner, _ in
+        owner.didTapPostOptionButton(owner.reactor?.currentState.post.memberIdentifier ?? -1)
       }
       .disposed(by: self.disposeBag)
     
@@ -268,7 +241,20 @@ final class CommunityPostViewController: BaseViewController, View {
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
     
-    // MARK: - STATE
+    // State
+    reactor.state.map { (sections: $0.sections, items: $0.items) }
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, sectionItem in
+        var snapshot = NSDiffableDataSourceSnapshot<CommunityPostSection, CommunityPostSectionItem>()
+        snapshot.appendSections(sectionItem.sections)
+        sectionItem.items.enumerated().forEach { index, items in
+          snapshot.appendItems(items, toSection: sectionItem.sections[index])
+        }
+        DispatchQueue.main.async {
+          owner.dataSource.apply(snapshot)
+        }
+      }
+      .disposed(by: self.disposeBag)
     
     // 전송 버튼 상태 변경
     reactor.state
@@ -291,34 +277,13 @@ final class CommunityPostViewController: BaseViewController, View {
       .bind(to: commentView.textView.rx.text)
       .disposed(by: disposeBag)
     
-    // 리로딩
-    reactor.state
-      .map { $0.reloadData }
-      .filter { $0 }
-      .withUnretained(self)
-      .bind { $0.0.tableView.reloadData() }
-      .disposed(by: disposeBag)
-    
-    // 로딩 인디케이터 제어
-    reactor.state
-      .map { $0.isLoading }
-      .bind(to: indicator.rx.isAnimating)
-      .disposed(by: disposeBag)
-    
-    // 현재 포커싱된 댓글 색깔
     reactor.state
       .map { $0.currentCellBackgroundColor }
-      .withUnretained(self)
-      .bind {
-        let backgroundColor: UIColor
-        if $1.0 {
-          backgroundColor = .idorm_gray_100
-        } else {
-          backgroundColor = .white
-        }
-        $0.tableView.cellForRow(
-          at: IndexPath(row: $1.1, section: 0)
-        )?.contentView.backgroundColor = backgroundColor
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, condition in
+        let indexPath = condition.1
+        let backgroundColor: UIColor = condition.0 ? .iDormColor(.iDormGray100) : .white
+        owner.collectionView.cellForItem(at: indexPath)?.contentView.backgroundColor = backgroundColor
       }
       .disposed(by: disposeBag)
     
@@ -350,41 +315,40 @@ final class CommunityPostViewController: BaseViewController, View {
       }
       .disposed(by: self.disposeBag)
     
-    // 키보드 종료
-    reactor.state
-      .map { $0.endEditing }
+    reactor.state.map { $0.endEditing }
       .filter { $0 }
-      .bind(with: self) { $0.view.endEditing($1) }
+      .debug()
+      .bind(with: self) {
+        $0.view.endEditing($1)
+        $0.commentView.textView.text = ""
+      }
       .disposed(by: self.disposeBag)
     
-    // 당겨서 새로고침 취소
     reactor.state
       .map { $0.endRefresh }
       .filter { $0 }
       .delay(.seconds(1), scheduler: MainScheduler.asyncInstance)
       .bind(with: self) { owner, _ in
-        owner.tableView.refreshControl?.endRefreshing()
+        owner.collectionView.refreshControl?.endRefreshing()
       }
       .disposed(by: disposeBag)
     
-    // 뒤로가기
-    reactor.state
-      .map { $0.popVC }
-      .filter { $0 }
-      .bind(with: self) { owner, _ in
+    // Presentation
+    
+    reactor.pulse(\.$isPopping)
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
         owner.navigationController?.popViewController(animated: true)
         owner.popCompletion?()
       }
       .disposed(by: disposeBag)
     
-    // PostingVC 이동
-    reactor.state
-      .map { $0.showsPostingVC }
-      .filter { $0 }
-      .bind(with: self) { owner, _ in
-        guard let post = reactor.currentState.currentPost else { return }
+    reactor.pulse(\.$navigateToCommunityPosting)
+      .compactMap { $0 }
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, post in
         let postingVC = CommunityPostingViewController()
-        let postingReactor = CommunityPostingViewReactor(.edit(post), dorm: post.dormCategory)
+        let postingReactor = CommunityPostingViewReactor(.edit(post), dorm: .no1)
         postingVC.reactor = postingReactor
         owner.navigationController?.pushViewController(postingVC, animated: true)
         
@@ -393,63 +357,62 @@ final class CommunityPostViewController: BaseViewController, View {
         }
       }
       .disposed(by: disposeBag)
-  }
-  
-  // MARK: - HELPERS
-  
-  private func presentSympathyAlert(_ nextState: Bool) {
-    let title: String
     
-    if nextState {
-      title = "공감을 취소하시겠습니까?"
-    } else {
-      title = "게시글을 공감하시겠습니까?"
+    reactor.pulse(\.$presentImageSlide)
+      .compactMap { $0 }
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, imageData in
+        owner.presentToImageSlideShow(imageData.index, photosURL: imageData.photosURL)
+      }
+      .disposed(by: self.disposeBag)
+  }
+}
+
+// MARK: - Privates
+
+private extension CommunityPostViewController {
+  func createLayout() -> UICollectionViewCompositionalLayout {
+    let layout = UICollectionViewCompositionalLayout { section, _ in
+      guard
+        let communityPostSection = self.dataSource.sectionIdentifier(for: section)
+      else { fatalError("❌ CommunityPostSection을 찾지 못했습니다!") }
+      let section = communityPostSection.section
+      return section
     }
-    let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-    
-    alert.addAction(UIAlertAction(title: "취소", style: .cancel))
-    alert.addAction(UIAlertAction(title: "확인", style: .default) { [weak self] _ in
-      self?.reactor?.action.onNext(.sympathyButtonDidTap(!nextState))
-    })
-    
-    self.present(alert, animated: true)
+    return layout
   }
   
-  private func presentDetailPhotosVC(_ indexPath: Int) {
-    guard let postPhotos = self.reactor?.currentState.currentPost?.postPhotos else { return }
-    let photosURL = postPhotos.map { $0.photoUrl }
-    let detailPhotosVC = DetailPhotosViewController(photosURL, currentIndex: indexPath)
-    detailPhotosVC.modalPresentationStyle = .fullScreen
-    self.present(detailPhotosVC, animated: true)
-  }
-  
-  private func presentCompletedReport() {
-    let alert = UIAlertController(
-      title: "신고가 정상 처리되었습니다.",
-      message: nil,
-      preferredStyle: .alert
-    )
-    alert.addAction(.init(title: "확인", style: .cancel))
-    present(alert, animated: true)
+  /// 게시글이 옵션 버튼을 클릭했을 때 호출되는 메서드입니다.
+  ///
+  /// - Parameters:
+  ///   - postMemberID: 게시글 작성자의 `memberID`
+  func didTapPostOptionButton(_ postMemberID: Int) {
+    guard let memberId = UserStorage.shared.member?.memberId else { return }
+    let items: [BottomSheetItem] = memberId == postMemberID ?
+    [.sharePost, .deletePost, .editPost, .reportUser] :
+    [.sharePost, .blockUser, .reportUser]
+    let bottomSheet = BottomSheetViewController(items: items)
+    bottomSheet.delegate = self
+    self.presentPanModal(bottomSheet)
   }
   
   private func sendFeedMessage() {
-    guard let post = self.reactor?.currentState.currentPost else { return }
+    guard let post = self.reactor?.currentState.post else { return }
     
     let templateId = Int64(93479)
     
-    let profileURL = post.profileUrl == nil ?
+    let profileURL = post.profileURL == nil ?
     URL(string: "https://idorm-static.s3.ap-northeast-2.amazonaws.com/profileImage.png")! :
-    URL(string: post.profileUrl!)!
+    URL(string: post.profileURL!)!
     
     let thumbnailURL = post.imagesCount == 0 ?
     URL(string: "https://idorm-static.s3.ap-northeast-2.amazonaws.com/nadomi.png")! :
-    URL(string: post.postPhotos.first!.photoUrl)!
+    URL(string: post.photos.first!.photoURL)!
     
     let templateArgs = [
       "title": post.title,
       "nickname": post.nickname ?? "익명",
-      "contentId": "\(post.postId)",
+      "contentId": "\(post.identifier)",
       "summarizedContent": post.content,
       "thumbnail": thumbnailURL.absoluteString,
       "likeCount": "\(post.likesCount)",
@@ -477,198 +440,86 @@ final class CommunityPostViewController: BaseViewController, View {
       // Custom WebView 또는 디폴트 브라우져 사용 가능
     }
   }
+  
+  /// 사진을 클릭했을 때 `ImageSlideShow`가 보여집니다.
+  ///
+  /// - Parameters:
+  ///   - index: 몇 번째 사진부터 보여질지에 대한 인덱스 값
+  ///   - photosURL: 사진 리스트 각각의 `URL`주소
+  func presentToImageSlideShow(_ index: Int, photosURL: [String]) {
+    let imageSlide = FullScreenSlideshowViewController()
+    imageSlide.inputs = photosURL.map { KingfisherSource(urlString: $0)! }
+    imageSlide.initialPage = index
+    imageSlide.zoomEnabled = true
+    imageSlide.slideshow.contentScaleMode = .scaleAspectFit
+    self.present(imageSlide, animated: true)
+  }
 }
 
-// MARK: - Privates
+// MARK: - CommunityPostMultiBoxCellDelegate
 
-private extension CommunityPostViewController {
-  func createLayout() -> UICollectionViewCompositionalLayout {
-    let layout = UICollectionViewCompositionalLayout { section, _ in
-      guard
-        let communityPostSection = self.dataSource.sectionIdentifier(for: section)
-      else { fatalError("❌ CommunityPostSection을 찾지 못했습니다!") }
-      let section = communityPostSection.section
-      return section
-    }
-    return layout
+extension CommunityPostViewController: CommunityPostMultiBoxCellDelegate {
+  /// 공감하기 버튼 클릭
+  func didTapSympathyButton(_ nextIsLiked: Bool) {
+    let title: String = nextIsLiked ? "게시글을 공감하시겠습니까?" : "공감을 취소하시겠습니까?"
+    let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+    alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+    alert.addAction(UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+      self?.reactor?.action.onNext(.sympathyButtonDidTap(nextIsLiked))
+    })
+    self.present(alert, animated: true)
   }
 }
 
-// MARK: - SETUP TABLEVIEW
+// MARK: - CommunityCommentCellDelegate
 
-extension CommunityPostViewController: UITableViewDataSource, UITableViewDelegate {
-  // 셀 생성
-  func tableView(
-    _ tableView: UITableView,
-    cellForRowAt indexPath: IndexPath
-  ) -> UITableViewCell {
-    guard let currentPost = self.reactor?.currentState.currentPost,
-          let reactor = self.reactor
-    else {
-      return UITableViewCell()
-    }
-    
-    switch currentPost.commentsCount {
-    case 0:
-      guard let cell = tableView.dequeueReusableCell(
-        withIdentifier: DetailPostEmptyCell.identifier,
-        for: indexPath
-      ) as? DetailPostEmptyCell else {
-        return UITableViewCell()
-      }
-      
-      return cell
-    default:
-      guard let cell = tableView.dequeueReusableCell(
-        withIdentifier: CommentCell.identifier,
-        for: indexPath
-      ) as? CommentCell else {
-        return UITableViewCell()
-      }
-      
-      let orderedComment = reactor.currentState.currentComments[indexPath.row]
-      cell.configure(orderedComment)
-      
-      // 답글 쓰기 버튼
-      cell.replyButtonCompletion = { [weak self] parentId in
-        let alert = UIAlertController(
-          title: "대댓글을 작성하시겠습니까?",
-          message: nil,
-          preferredStyle: .alert
-        )
-        
-        alert.addAction(UIAlertAction(
-          title: "작성",
-          style: .default,
-          handler: { [weak self] _ in
-            self?.reactor?.action.onNext(.replyButtonDidTap(
-              indexPath: indexPath.row,
-              parentId: parentId
-            ))
-            self?.commentView.textView.becomeFirstResponder()
-          }
-        ))
-        
-        alert.addAction(UIAlertAction(
-          title: "취소",
-          style: .cancel
-        ))
-        
-        self?.present(alert, animated: true)
-      }
-      
-      // 댓글 옵션 버튼 클릭
-      cell.optionButtonCompletion = { [weak self] commentId in
-        guard let self = self else { return }
-        let bottomSheet: OldBottomSheetViewController
-        let memberId = UserStorage.shared.member?.memberId ?? 0
-        bottomSheet = orderedComment.memberId == memberId ? .init(.myComment) : .init(.comment)
-        self.presentPanModal(bottomSheet)
-        
-        // 바텀시트 버튼 클릭
-        bottomSheet.buttonDidTap
-          .bind {
-            switch $0 {
-            case .deleteComment:
-              self.reactor?.action.onNext(.deleteCommentButtonDidTap(commentId: commentId))
-            case .report:
-              self.presentCompletedReport()
-            default:
-              break
-            }
-          }
-          .disposed(by: self.disposeBag)
-      }
-      
-      return cell
-    }
+extension CommunityPostViewController: CommunityCommentCellDelegate {
+  /// 답글하기 버튼 클릭
+  func didTapReplyButton(_ commentID: Int, cell:  CommunityCommentCell) {
+    let title: String = "대댓글을 작성하시겠습니까?"
+    let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+    alert.addAction(UIAlertAction(title: "작성", style: .default) { [weak self] _ in
+      guard let indexPath = self?.collectionView.indexPath(for: cell) else { return }
+      self?.commentView.textView.becomeFirstResponder()
+      self?.reactor?.action.onNext(.replyButtonDidTap(index: indexPath, commendID: commentID))
+    })
+    alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+    self.present(alert, animated: true)
   }
   
-  // 셀 갯수
-  func tableView(
-    _ tableView: UITableView,
-    numberOfRowsInSection section: Int
-  ) -> Int {
-    guard let currentState = reactor?.currentState else { return 0 }
-    
-    switch currentState.currentComments.count {
-    case 0:
-      return 1
-    default:
-      return currentState.currentComments.count
-    }
-  }
-  
-  // 헤더
-  func tableView(
-    _ tableView: UITableView,
-    viewForHeaderInSection section: Int
-  ) -> UIView? {
-    guard
-      let reactor = reactor,
-      let currentPost = reactor.currentState.currentPost,
-      let header = tableView.dequeueReusableHeaderFooterView(
-        withIdentifier: CommunityPostContentCell.identifier
-      ) as? CommunityPostContentCell
-    else {
-      return UIView()
-    }
-    
-    header.injectData(currentPost, isSympathy: reactor.currentState.isSympathy)
-    
-    // 공감 버튼 클릭
-    header.sympathyButtonCompletion = { [weak self] in
-      self?.presentSympathyAlert($0)
-    }
-    
-    // 사진 클릭
-    header.photoCompletion = { [weak self] in
-      self?.presentDetailPhotosVC($0)
-    }
-    return header
-  }
-  
-  // 셀 높이
-  func tableView(
-    _ tableView: UITableView,
-    heightForRowAt indexPath: IndexPath
-  ) -> CGFloat {
-    guard let post = reactor?.currentState.currentPost else { return 0 }
-    
-    switch post.commentsCount {
-    case 0:
-      return 143
-    default:
-      return UITableView.automaticDimension
-    }
-  }
-  
-  func tableView(
-    _ tableView: UITableView,
-    estimatedHeightForRowAt indexPath: IndexPath
-  ) -> CGFloat {
-    guard let post = reactor?.currentState.currentPost else { return 0 }
-    
-    switch post.comments.count {
-    case 0:
-      return 143
-    default:
-      return UITableView.automaticDimension
-    }
-  }
-  
-  // 헤더 높이
-  func tableView(
-    _ tableView: UITableView,
-    heightForHeaderInSection section: Int
-  ) -> CGFloat {
-    return UITableView.automaticDimension
-  }
-  
-  func tableView(
-    _ tableView: UITableView,
-    estimatedHeightForFooterInSection section: Int
-  ) -> CGFloat {
-    return UITableView.automaticDimension
+  /// 옵션 버튼 클릭
+  func didTapOptionButton(_ comment: Comment) {
+    guard let memberID = UserStorage.shared.member?.memberId else { return }
+    let items: [BottomSheetItem] = memberID == comment.memberId ?
+    [.deleteComment(commentID: comment.commentId), .blockUser, .reportUser]:
+    [.blockUser, .reportUser]
+    let bottomSheet = BottomSheetViewController(items: items)
+    bottomSheet.delegate = self
+    self.presentPanModal(bottomSheet)
   }
 }
+
+// MARK: - BottomSheetViewControllerDelegate
+
+extension CommunityPostViewController: BottomSheetViewControllerDelegate {
+  func didTapButton(_ item: BottomSheetItem) {
+    guard let reactor else { return }
+    switch item {
+    case .deleteComment(let commentID):
+      reactor.action.onNext(.deleteCommentButtonDidTap(commentId: commentID))
+    case .reportUser:
+      let title: String = "신고가 정상 처리되었습니다."
+      let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+      alert.addAction(.init(title: "확인", style: .cancel))
+      present(alert, animated: true)
+    case .deletePost:
+      reactor.action.onNext(.deletePostButtonDidTap)
+    case .editPost:
+      reactor.action.onNext(.editPostButtonDidTap)
+    case .sharePost:
+      self.sendFeedMessage()
+    default: break
+    }
+  }
+}
+

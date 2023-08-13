@@ -8,6 +8,12 @@
 import UIKit
 
 import SnapKit
+import RxSwift
+import RxCocoa
+
+protocol CommunityPostMultiBoxCellDelegate: AnyObject {
+  func didTapSympathyButton(_ nextIsLiked: Bool)
+}
 
 /// 게시글의 좋아요, 댓글, 사진 갯수와 공감하기 버튼이 포함되어 있는 `UICollectionViewCell`
 final class CommunityPostMultiBoxCell: UICollectionViewCell, BaseView {
@@ -19,14 +25,16 @@ final class CommunityPostMultiBoxCell: UICollectionViewCell, BaseView {
     let button = iDormButton("공감하기", image: nil)
     button.contentInset = .init(top: 6.0, leading: 10.0, bottom: 6.0, trailing: 10.0)
     button.cornerRadius = 4.0
+    button.font = .iDormFont(.regular, size: 12.0)
     button.configurationUpdateHandler = { button in
+      guard let button = button as? iDormButton else { return }
       switch button.state {
       case .selected:
-        button.configuration?.baseBackgroundColor = .iDormColor(.iDormBlue)
-        button.configuration?.baseForegroundColor = .white
+        button.baseBackgroundColor = .iDormColor(.iDormBlue)
+        button.baseForegroundColor = .white
       case .normal:
-        button.configuration?.baseBackgroundColor = .iDormColor(.iDormGray100)
-        button.configuration?.baseForegroundColor = .black
+        button.baseBackgroundColor = .iDormColor(.iDormGray100)
+        button.baseForegroundColor = .black
       default:
         break
       }
@@ -59,6 +67,11 @@ final class CommunityPostMultiBoxCell: UICollectionViewCell, BaseView {
   /// 하단 경계를 나타내주는 `UIView`
   private lazy var bottomDivider = self.makeDivider()
   
+  // MARK: - Properties
+  
+  weak var delegate: CommunityPostMultiBoxCellDelegate?
+  private var disposeBag = DisposeBag()
+  
   // MARK: - Initializer
   
   override init(frame: CGRect) {
@@ -66,6 +79,7 @@ final class CommunityPostMultiBoxCell: UICollectionViewCell, BaseView {
     self.setupStyles()
     self.setupLayouts()
     self.setupConstraints()
+    self.bind()
   }
   
   required init?(coder: NSCoder) {
@@ -108,6 +122,26 @@ final class CommunityPostMultiBoxCell: UICollectionViewCell, BaseView {
       make.height.equalTo(1.0)
     }
   }
+  
+  // MARK: - Bind
+  
+  private func bind() {
+    self.sympathyButton.rx.tap
+      .asDriver()
+      .drive(with: self) { owner, _ in
+        owner.delegate?.didTapSympathyButton(!owner.sympathyButton.isSelected)
+      }
+      .disposed(by: self.disposeBag)
+  }
+  
+  // MARK: - Configure
+  
+  func configure(with post: Post) {
+    self.thumbButton.title = "\(post.likesCount)"
+    self.photoButton.title = "\(post.imagesCount)"
+    self.speechBubbleButton.title = "\(post.commentsCount)"
+    self.sympathyButton.isSelected = post.isLiked
+  }
 }
 
 // MARK: - Privates
@@ -116,6 +150,11 @@ private extension CommunityPostMultiBoxCell {
   func makeCountingButton(_ icon: UIImage?) -> iDormButton {
     let button = iDormButton("", image: icon)
     button.configuration?.imagePlacement = .leading
+    button.isUserInteractionEnabled = false
+    button.baseBackgroundColor = .white
+    button.baseForegroundColor = .iDormColor(.iDormGray300)
+    button.imagePadding = 0.0
+    button.edgeInsets = .zero
     return button
   }
   

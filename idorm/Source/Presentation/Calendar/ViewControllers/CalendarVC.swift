@@ -19,28 +19,6 @@ final class CalendarViewController: BaseViewController, View {
   
   typealias DataSource = UICollectionViewDiffableDataSource<CalendarSection, CalendarSectionItem>
   
-  enum CalendarBottomSheetType: Int, CaseIterable {
-    case managingFriend
-    case managingCalendar
-    case sharingCalendar
-    case droppingCalendar
-    
-    var title: String {
-      switch self {
-      case .managingFriend:
-        return "친구 관리"
-      case .managingCalendar:
-        return "일정 관리"
-      case .sharingCalendar:
-        return "룸메이트 초대해서 일정 공유하기"
-      case .droppingCalendar:
-        return "일정 공유 캘린더 나가기"
-      }
-    }
-    
-    var identifier: String { return String(describing: self.title) }
-  }
-  
   // MARK: - Properties
   
   private lazy var dataSource: DataSource = {
@@ -527,11 +505,9 @@ extension CalendarViewController: CalendarMemberHeaderDelegate {
   
   /// 옵션 버튼이 눌렸을 때
   func didTapOptionButton() {
-    let bottomSheetTypes = CalendarBottomSheetType.allCases
-    let bottomSheetVC = BottomSheetViewController(
-      items: bottomSheetTypes.map { BottomSheetItem.normal(title: $0.title, image: nil) },
-      contentHeight: 224.0
-    )
+    let bottomSheetVC = BottomSheetViewController(items: [
+      .manageFriend, .manageCalendar, .shareCalendar, .exitCalendar
+    ])
     bottomSheetVC.delegate = self
     self.presentPanModal(bottomSheetVC)
   }
@@ -546,29 +522,28 @@ extension CalendarViewController: iDormCalendarViewDelegate {
   }
 }
 
-// MARK: - BottomSheet
+// MARK: - BottomSheetViewControllerDelegate
 
 extension CalendarViewController: BottomSheetViewControllerDelegate {
   /// 바텀 시트 버튼이 눌렸을 때
-  func didTapButton(index: Int) {
-    switch CalendarBottomSheetType(rawValue: index) {
-    case .managingFriend:
+  func didTapButton(_ item: BottomSheetItem) {
+    switch item {
+    case .manageFriend:
       break
-    case .managingCalendar:
+    case .manageCalendar:
       break
-    case .sharingCalendar:
+    case .shareCalendar:
       break
-    case .droppingCalendar:
+    case .exitCalendar:
       let iDormPopupVC = iDormPopupViewController(viewType: .twoButton(
         contents: "일정 공유 캘린더에서 나갈 시 데이터가 모두 사라집니다.",
         buttonTitle: "확인",
-        identifier: CalendarBottomSheetType.droppingCalendar.identifier
+        identifier: "ExitCalendar"
       ))
       iDormPopupVC.modalPresentationStyle = .overFullScreen
       iDormPopupVC.delegate = self
       self.present(iDormPopupVC, animated: false)
-    default:
-      break
+    default: break
     }
   }
 }
@@ -599,7 +574,7 @@ extension CalendarViewController: CalendarManagementViewControllerDelegate {
 extension CalendarViewController: iDormPopupViewControllerDelegate {
   func confirmButtonDidTap(identifier: String) {
     switch identifier {
-    case CalendarBottomSheetType.droppingCalendar.identifier:
+    case "ExitCalendar":
       self.reactor?.action.onNext(.exitCalendarButtonDidTap)
     default:
       break

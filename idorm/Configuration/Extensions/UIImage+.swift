@@ -9,19 +9,36 @@ import UIKit
 
 enum iDormIcon: String {
   case left
+  
   case right
+  
+  case block
+  
   case calendar
-  case option
   case cancel
+
+  case option
+  
   case pencil
   case pencil2
-  case human
-  case thumb
+  
   case speechBubble
+  case share
+  
   case photo
+  
   case deselect
+  
   case select
+  
   case reply
+  
+  case human
+  
+  case thumb
+  case trashcan
+  
+  case note
 }
 
 enum iDormText: String {

@@ -7,12 +7,14 @@
 
 import Foundation
 
-struct Comment {
-  enum CommentState {
+struct Comment: Hashable {
+  
+  enum CommentState: Hashable {
     case reply
     case firstReply
     case normal(isRemoved: Bool)
   }
+  
   let content: String
   let memberId: Int
   let commentId: Int

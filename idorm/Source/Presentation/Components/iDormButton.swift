@@ -104,6 +104,11 @@ final class iDormButton: UIButton, BaseView {
     willSet { self.configuration?.titlePadding = newValue }
   }
   
+  /// 버튼의 `title`과 `image`사이의 `Padding`
+  var imagePadding: CGFloat = 0 {
+    willSet { self.configuration?.imagePadding = newValue }
+  }
+  
   /// 버튼의 `contentInset`
   var contentInset: NSDirectionalEdgeInsets = .zero {
     willSet { self.configuration?.contentInsets = newValue }
@@ -113,6 +118,19 @@ final class iDormButton: UIButton, BaseView {
   var isHiddenBottomBorderLine: Bool = true {
     willSet { self.bottomBorderLine.isHidden = newValue }
   }
+  
+  /// 이미지 크기 조절 할 수 있는 `CGFloat`
+  var imageSize: CGFloat = 0 {
+    willSet { self.configuration?.image = self.configuration?.image?.resize(newSize: newValue) }
+  }
+  
+  /// 타이틀의 `Alignment`
+  var titleAlignment: UIButton.Configuration.TitleAlignment = .center {
+    willSet { self.configuration?.titleAlignment = newValue }
+  }
+  
+  /// 현재 버튼의 `BottomSheetItem` (BottomSheetVC에서만 사용가능)
+  var bottomSheetItem: BottomSheetItem?
   
   override var isSelected: Bool {
      willSet {
