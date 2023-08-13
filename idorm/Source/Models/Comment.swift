@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct OrderedComment {
+struct Comment {
   enum CommentState {
     case reply
     case firstReply

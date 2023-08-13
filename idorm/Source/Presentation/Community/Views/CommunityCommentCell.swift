@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-final class CommunityPostCommentCell: UICollectionViewCell, BaseView {
+final class CommunityCommentCell: UICollectionViewCell, BaseView {
   
   // MARK: - UI Components
   
@@ -60,6 +60,7 @@ final class CommunityPostCommentCell: UICollectionViewCell, BaseView {
     let label = UILabel()
     label.textColor = .iDormColor(.iDormGray400)
     label.font = .iDormFont(.medium, size: 14.0)
+    label.numberOfLines = 0
     return label
   }()
   
@@ -69,6 +70,7 @@ final class CommunityPostCommentCell: UICollectionViewCell, BaseView {
     button.contentInset = .init(top: 6.0, leading: 10.0, bottom: 6.0, trailing: 10.0)
     button.baseBackgroundColor = .iDormColor(.iDormGray100)
     button.baseForegroundColor = .black
+    button.isHidden = true
     return button
   }()
   
@@ -85,16 +87,13 @@ final class CommunityPostCommentCell: UICollectionViewCell, BaseView {
     let image: UIImage? = .iDormIcon(.reply)?
       .withTintColor(.iDormColor(.iDormGray200))
     imageView.image = image
+    imageView.isHidden = true
     return imageView
   }()
   
   // MARK: - Setup
   
   func setupStyles() {
-    self.replyImageView.isHidden = true
-    self.replyButton.isHidden = true
-    self.contentsLabel.numberOfLines = 0
-    
     if self.comment.isLast {
       self.dividerLine.isHidden = false
     } else {
@@ -188,7 +187,7 @@ final class CommunityPostCommentCell: UICollectionViewCell, BaseView {
   var replyButtonCompletion: ((Int) -> Void)?
   var optionButtonCompletion: ((Int) -> Void)?
   
-  private var comment: OrderedComment!
+  private var comment: Comment!
   private var isInitialized: Bool = false
   private var topConstraints: Constraint?
   private var bottomConstarints: Constraint?
@@ -221,7 +220,7 @@ final class CommunityPostCommentCell: UICollectionViewCell, BaseView {
     self.optionButton.addTarget(self, action: #selector(didTapOptionButton), for: .touchUpInside)
   }
   
-  func configure(_ comment: OrderedComment) {
+  func configure(_ comment: Comment) {
     self.comment = comment
     nicknameLabel.text = comment.nickname ?? "탈퇴한 사용자"
     timeLabel.text = TimeUtils.detailPost(comment.createdAt)
