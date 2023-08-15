@@ -120,7 +120,6 @@ final class BottomSheetViewController: BaseViewController {
     else { return }
     self.dismiss(animated: true)
     self.delegate?.didTapButton(item)
-    print(item)
   }
 }
 

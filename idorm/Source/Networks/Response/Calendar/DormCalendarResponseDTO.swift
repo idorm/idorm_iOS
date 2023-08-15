@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DormCalendar: Codable, Hashable {
+struct DormCalendarResponseDTO: Codable, Hashable {
   let calendarId: Int
   let isDorm1Yn: Bool
   let isDorm2Yn: Bool

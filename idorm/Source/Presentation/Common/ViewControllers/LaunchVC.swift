@@ -93,7 +93,7 @@ final class LaunchViewController: BaseViewController {
           os_log(.info, "🔓 로그인에 성공하였습니다. 이메일: \(email), 비밀번호: \(password)")
           let token = response.response?.headers["authorization"]
           let member = NetworkUtility.decode(
-            ResponseModel<MemberResponseModel.Member>.self,
+            ResponseDTO<MemberResponseModel.Member>.self,
             data: response.data
           ).data
           UserStorage.shared.saveMember(member)
@@ -115,7 +115,7 @@ final class LaunchViewController: BaseViewController {
         do {
           let response = try response.filterSuccessfulStatusCodes()
           let matchingInfo = NetworkUtility.decode(
-            ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self,
+            ResponseDTO<MatchingInfoResponseModel.MatchingInfo>.self,
             data: response.data
           ).data
           UserStorage.shared.saveMatchingInfo(matchingInfo)

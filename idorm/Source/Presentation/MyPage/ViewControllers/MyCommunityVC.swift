@@ -204,7 +204,7 @@ extension MyCommunityViewController: UITableViewDataSource, UITableViewDelegate 
         }
         let apiManager = APIManager<CommunityAPI>()
         apiManager.requestAPI(to: .lookupDetailPost(postId: postID))
-          .map(ResponseModel<CommunitySinglePostResponseDTO>.self)
+          .map(ResponseDTO<CommunitySinglePostResponseDTO>.self)
           .asDriver(onErrorRecover: { _ in return .empty() })
           .drive(with: self) { owner, post in
             let viewController = CommunityPostViewController()
@@ -296,7 +296,7 @@ extension MyCommunityViewController: UITableViewDataSource, UITableViewDelegate 
       apiManager.requestAPI(to: .lookupDetailPost(
         postId: reactor.currentState.posts[indexPath.row].postId
       ))
-      .map(ResponseModel<CommunitySinglePostResponseDTO>.self)
+      .map(ResponseDTO<CommunitySinglePostResponseDTO>.self)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, data in
         let viewController = CommunityPostViewController()

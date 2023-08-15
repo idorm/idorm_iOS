@@ -50,7 +50,7 @@ final class CalendarMemberView: UIView, BaseView {
   // MARK: - Properties
   
   private var disposeBag = DisposeBag()
-  private var teamMember: TeamMember?
+  private var teamMember: TeamCalendarSingleMemberResponseDTO?
   
   /// 현재 선택 버튼이 선택 되었는지 판별해주는 `BehaviorRealy<Bool>`
   let isSelected = BehaviorRelay<Bool>(value: false)
@@ -70,7 +70,7 @@ final class CalendarMemberView: UIView, BaseView {
   ///
   /// - Parameters:
   ///  - teamMember: `TeamMember` Model
-  convenience init(_ teamMember: TeamMember) {
+  convenience init(_ teamMember: TeamCalendarSingleMemberResponseDTO) {
     self.init(frame: .zero)
     self.teamMember = teamMember
     self.configure(with: teamMember)
@@ -149,9 +149,9 @@ final class CalendarMemberView: UIView, BaseView {
   ///
   /// - Parameters:
   ///  - teamMember: 업데이트할 `TeamMember` 모델
-  func configure(with teamMember: TeamMember) {
+  func configure(with teamMember: TeamCalendarSingleMemberResponseDTO) {
     // 멤버 사진
-    self.profileImageView.image = nil
+    self.profileImageView.image = .iDormImage(.human)
     if let urlString = teamMember.profilePhotoUrl {
       self.profileImageView.kf.setImage(with: URL(string: urlString)!)
     }

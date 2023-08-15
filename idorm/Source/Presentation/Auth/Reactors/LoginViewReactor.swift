@@ -52,7 +52,7 @@ final class LoginViewReactor: Reactor {
         ))
         .flatMap { response -> Observable<Mutation> in
           let member = MemberAPI.decode(
-            ResponseModel<MemberResponseModel.Member>.self,
+            ResponseDTO<MemberResponseModel.Member>.self,
             data: response.data
           ).data
           
@@ -112,7 +112,7 @@ extension LoginViewReactor {
         switch response.statusCode {
         case 200..<300: // 조회 성공
           let matchingInfo = MatchingInfoAPI.decode(
-            ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self,
+            ResponseDTO<MatchingInfoResponseModel.MatchingInfo>.self,
             data: response.data
           ).data
           UserStorage.shared.saveMatchingInfo(matchingInfo)

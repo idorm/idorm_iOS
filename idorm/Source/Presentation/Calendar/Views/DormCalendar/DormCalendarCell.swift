@@ -221,7 +221,7 @@ final class DormCalendarCell: UICollectionViewCell, BaseView {
   // MARK: - Configure
   
   /// 실 데이터를 가지고 UI를 업데이트합니다.
-  func configure(with calendar: DormCalendar) {
+  func configure(with calendar: DormCalendarResponseDTO) {
     /// 어떤 데이터가 `nil`값이 된다면 이 값이 하나씩 올라갑니다.
     /// 최종 높이 값을 계산하여 제약조건을 업데이트합니다.
     var heightCount: Int = 0

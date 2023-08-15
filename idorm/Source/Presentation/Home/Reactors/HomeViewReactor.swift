@@ -60,7 +60,7 @@ final class HomeViewReactor: Reactor {
       
     case let .postDidTap(postId):
       return self.apiManager.requestAPI(to: .lookupDetailPost(postId: postId))
-        .map(ResponseModel<CommunitySinglePostResponseDTO>.self)
+        .map(ResponseDTO<CommunitySinglePostResponseDTO>.self)
         .flatMap {
           return Observable<Mutation>.concat([
             .just(.setPostDetailVC(true, $0.data.toPost())),
@@ -107,7 +107,7 @@ extension HomeViewReactor {
       .filterSuccessfulStatusCodes()
       .flatMap { response -> Observable<Mutation> in
         let calendars = DormCalendarAPI.decode(
-          ResponseModel<[CalendarResponseModel.Calendar]>.self,
+          ResponseDTO<[CalendarResponseModel.Calendar]>.self,
           data: response.data
         ).data
         return .concat([

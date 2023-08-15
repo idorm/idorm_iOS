@@ -8,11 +8,10 @@
 import Foundation
 
 /// 팀의 일정 월별 조회에 필요한 모델입니다.
-struct TeamCalendars: Codable, Hashable {
-  let isSleepover: Bool
+struct TeamCalendarResponseDTO: Codable, Hashable {
   let startDate: String
   let endDate: String
-  let targets: [TeamMember]
+  let targets: [TeamCalendarSingleMemberResponseDTO]
   let teamCalendarId: Int
   let title: String
 }

@@ -29,7 +29,7 @@ extension MatchingInfoAPI: TargetType, BaseAPI {
 extension MatchingInfoAPI {
   static func retrieveProcess(_ respose: Response) {
     let matchingInfo = MatchingInfoAPI.decode(
-      ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self,
+      ResponseDTO<MatchingInfoResponseModel.MatchingInfo>.self,
       data: respose.data
     ).data
     

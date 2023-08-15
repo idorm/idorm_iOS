@@ -15,7 +15,7 @@ final class CalendarManagementViewReactor: Reactor {
   /// `새로운 일정 등록`과 `일정 수정`이 있습니다.
   enum ViewState: Equatable {
     case new
-    case edit(TeamCalendar)
+    case edit(TeamCalendarSingleResponseDTO)
   }
   
   enum Action {
@@ -42,7 +42,7 @@ final class CalendarManagementViewReactor: Reactor {
   
   struct State {
     var viewState: ViewState
-    var teamMembers: [TeamMember]
+    var teamMembers: [TeamCalendarSingleMemberResponseDTO]
     var isEnabledDoneButon: Bool = false
     var title: String = ""
     var targets: [Int] = []
@@ -86,7 +86,7 @@ final class CalendarManagementViewReactor: Reactor {
   ///  - viewState: 이 화면의 분기처리된 상태 값
   init(
     with viewState: ViewState,
-    teamMembers: [TeamMember]
+    teamMembers: [TeamCalendarSingleMemberResponseDTO]
   ) {
     self.initialState = State(viewState: viewState, teamMembers: teamMembers)
   }

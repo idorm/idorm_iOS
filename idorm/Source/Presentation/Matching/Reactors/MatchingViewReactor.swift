@@ -352,7 +352,7 @@ extension MatchingViewReactor {
         switch response.statusCode {
         case 200:
           let members = MatchingAPI.decode(
-            ResponseModel<[MatchingResponseModel.Member]>.self,
+            ResponseDTO<[MatchingResponseModel.Member]>.self,
             data: response.data
           ).data
           return .just(.setMatchingMembers(members))
@@ -375,7 +375,7 @@ extension MatchingViewReactor {
         switch response.statusCode {
         case 200:
           let members = MatchingAPI.decode(
-            ResponseModel<[MatchingResponseModel.Member]>.self,
+            ResponseDTO<[MatchingResponseModel.Member]>.self,
             data: response.data
           ).data
           return .just(.setMatchingMembers(members))

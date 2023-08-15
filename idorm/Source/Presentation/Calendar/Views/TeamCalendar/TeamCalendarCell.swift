@@ -127,7 +127,7 @@ final class TeamCalendarCell: UICollectionViewCell, BaseView {
   ///
   /// - Parameters:
   ///  - teamCalendar: 팀 일정
-  func configure(_ teamCalendar: TeamCalendars) {
+  func configure(_ teamCalendar: TeamCalendarResponseDTO) {
     self.dotViews.forEach { $0.isHidden = true }
     self.contentLabel.text = teamCalendar.title
     self.dateLabel.text = teamCalendar.startDate.toDateString(from: "yyyy-MM-dd", to: "M월 d일")

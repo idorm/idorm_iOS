@@ -96,7 +96,7 @@ final class CommunityListViewReactor: Reactor {
       
     case .didTapPostBtn(let postId):
       return self.apiManager.requestAPI(to: .lookupDetailPost(postId: postId))
-        .map(ResponseModel<CommunitySinglePostResponseDTO>.self)
+        .map(ResponseDTO<CommunitySinglePostResponseDTO>.self)
         .flatMap {
           return Observable<Mutation>.concat([
             .just(.setPostDetailVC(true, $0.data.toPost())),
@@ -193,7 +193,7 @@ extension CommunityListViewReactor {
       )
       .asObservable()
       .retry()
-      .map(ResponseModel<[CommunityResponseModel.Posts]>.self)
+      .map(ResponseDTO<[CommunityResponseModel.Posts]>.self)
       .flatMap { responseModel -> Observable<Mutation> in
         let posts = responseModel.data
         if posts.count < 10 {
@@ -226,7 +226,7 @@ extension CommunityListViewReactor {
         switch response.statusCode {
         case 200:
           let posts = CommunityAPI.decode(
-            ResponseModel<[CommunityResponseModel.Posts]>.self,
+            ResponseDTO<[CommunityResponseModel.Posts]>.self,
             data: response.data
           ).data
           

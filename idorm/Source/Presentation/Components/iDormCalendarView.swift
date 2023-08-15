@@ -104,10 +104,10 @@ final class iDormCalendarView: UIView, BaseView {
   private let viewType: ViewType
   
   /// 현재 저장되어 있는 팀 일정입니다.
-  private var teamCalendars: [TeamCalendars]?
+  private var teamCalendars: [TeamCalendarResponseDTO]?
   
   /// 현재 저장되어 있는 기숙사 공식 일정입니다.
-  private var dormCalendars: [DormCalendar]?
+  private var dormCalendars: [DormCalendarResponseDTO]?
   
   /// 현재 저장되어 있는 날짜입니다.
   private var currentDate: Date?
@@ -217,8 +217,8 @@ final class iDormCalendarView: UIView, BaseView {
   ///  - dormCalendars: 기숙사 공식 일정
   func configure(
     _ currentDate: Date,
-    teamCalendars: [TeamCalendars],
-    dormCalendars: [DormCalendar]
+    teamCalendars: [TeamCalendarResponseDTO],
+    dormCalendars: [DormCalendarResponseDTO]
   ) {
     // 인자들 전역 변수에 저장
     self.currentDate = currentDate

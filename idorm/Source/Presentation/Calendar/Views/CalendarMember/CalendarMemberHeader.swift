@@ -12,6 +12,7 @@ import SnapKit
 protocol CalendarMemberHeaderDelegate: AnyObject {
   func didTapInviteRoommateButton()
   func didTapOptionButton()
+  func didTapDoneButton()
 }
   
 /// 룸메이트 초대와 설정으로 바로갈 수 있는 헤더입니다.
@@ -49,6 +50,17 @@ final class CalendarMemberHeader: UICollectionReusableView, BaseView {
     return button
   }()
   
+  /// `완료` 버튼
+  private lazy var doneButton: iDormButton = {
+    let button = iDormButton("완료", image: nil)
+    button.contentInset = .init(top: 4.0, leading: 8.0, bottom: 4.0, trailing: 8.0)
+    button.baseForegroundColor = .white
+    button.baseBackgroundColor = .iDormColor(.iDormBlue)
+    button.cornerRadius = 8.0
+    button.font = .iDormFont(.bold, size: 12.0)
+    return button
+  }()
+  
   // MARK: - Initializer
   
   override init(frame: CGRect) {
@@ -71,7 +83,8 @@ final class CalendarMemberHeader: UICollectionReusableView, BaseView {
   func setupLayouts() {
     [
       self.inviteButton,
-      self.optionButton
+      self.optionButton,
+      self.doneButton
     ].forEach {
       self.addSubview($0)
     }
@@ -87,6 +100,11 @@ final class CalendarMemberHeader: UICollectionReusableView, BaseView {
       make.trailing.equalToSuperview()
       make.centerY.equalTo(self.inviteButton)
     }
+    
+    self.doneButton.snp.makeConstraints { make in
+      make.centerY.equalTo(self.optionButton)
+      make.trailing.equalToSuperview().inset(24.0)
+    }
   }
   
   // MARK: - Selectors
@@ -101,15 +119,27 @@ final class CalendarMemberHeader: UICollectionReusableView, BaseView {
     self.delegate?.didTapInviteRoommateButton()
   }
   
+  @objc
+  private func didTapDoneButton() {
+    self.delegate?.didTapDoneButton()
+  }
+  
   // MARK: - Bind
   
-  func configure(with members: [TeamMember]) {
-    if members.count == 1 {
-      self.inviteButton.isHidden = false
-      self.optionButton.isHidden = true
+  func configure(with members: [TeamCalendarSingleMemberResponseDTO], isEditing: Bool) {
+    self.doneButton.isHidden = true
+    self.inviteButton.isHidden = true
+    self.optionButton.isHidden = true
+    
+    let isMemberAlone: Bool = members.count == 1
+    if isEditing {
+      self.doneButton.isHidden = false
     } else {
-      self.inviteButton.isHidden = true
-      self.optionButton.isHidden = false
+      if isMemberAlone {
+        self.inviteButton.isHidden = false
+      } else {
+        self.optionButton.isHidden = false
+      }
     }
   }
 }

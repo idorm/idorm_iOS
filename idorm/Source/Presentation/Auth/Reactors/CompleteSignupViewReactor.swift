@@ -47,7 +47,7 @@ final class CompleteSignupViewReactor: Reactor {
             switch response.statusCode {
             case 200..<300:
               let responseModel = MemberAPI.decode(
-                ResponseModel<MemberResponseModel.Member>.self,
+                ResponseDTO<MemberResponseModel.Member>.self,
                 data: response.data
               ).data
               let token = response.response?.headers["authorization"]

@@ -248,7 +248,7 @@ private extension CommunityPostViewReactor {
   /// 단일 게시글을 서버에서 불러옵니다.
   func getSinglePost() -> Observable<Mutation> {
     return self.apiManager.requestAPI(to: .lookupDetailPost(postId: self.currentState.post.identifier))
-      .map(ResponseModel<CommunitySinglePostResponseDTO>.self)
+      .map(ResponseDTO<CommunitySinglePostResponseDTO>.self)
       .flatMap { return Observable<Mutation>.just(.setPost($0.data.toPost())) }
   }
 }

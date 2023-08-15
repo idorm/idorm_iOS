@@ -73,7 +73,7 @@ final class TabBarViewController: UITabBarController {
       guard let self else { return }
       let apiManager = APIManager<CommunityAPI>()
       apiManager.requestAPI(to: .lookupDetailPost(postId: postId))
-        .map(ResponseModel<CommunitySinglePostResponseDTO>.self)
+        .map(ResponseDTO<CommunitySinglePostResponseDTO>.self)
         .bind { post in
           self.selectedIndex = 2
           let navVC = self.children[2] as? UINavigationController

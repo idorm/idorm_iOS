@@ -15,7 +15,7 @@ final class SharedAPI {
       .asObservable()
       .retry()
       .filterSuccessfulStatusCodes()
-      .map(ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self)
+      .map(ResponseDTO<MatchingInfoResponseModel.MatchingInfo>.self)
       .bind { UserStorage.shared.saveMatchingInfo($0.data) }
   }
   
@@ -24,7 +24,7 @@ final class SharedAPI {
       .asObservable()
       .retry()
       .filterSuccessfulStatusCodes()
-      .map(ResponseModel<MemberResponseModel.Member>.self)
+      .map(ResponseDTO<MemberResponseModel.Member>.self)
       .bind { UserStorage.shared.saveMember($0.data) }
   }
 }

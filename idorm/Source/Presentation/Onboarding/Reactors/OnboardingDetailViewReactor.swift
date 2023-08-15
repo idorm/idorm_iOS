@@ -78,7 +78,7 @@ final class OnboardingDetailViewReactor: Reactor {
               switch response.statusCode {
               case 200..<300:
                 let matchingInfo = MatchingInfoAPI.decode(
-                  ResponseModel<MatchingInfoResponseModel.MatchingInfo>.self,
+                  ResponseDTO<MatchingInfoResponseModel.MatchingInfo>.self,
                   data: response.data
                 ).data
                 UserStorage.shared.saveMatchingInfo(matchingInfo)

@@ -51,8 +51,8 @@ final class CalendarHeader: UICollectionReusableView, BaseView {
   
   func configure(
     _ currentDate: String,
-    teamCalendars: [TeamCalendars],
-    dormCalendars: [DormCalendar]
+    teamCalendars: [TeamCalendarResponseDTO],
+    dormCalendars: [DormCalendarResponseDTO]
   ) {
     let currentDate = currentDate.toDate(format: "yyyy-MM")
     self.calendarView.configure(

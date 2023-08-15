@@ -426,7 +426,7 @@ private extension CalendarManagementViewController {
   ///
   /// - Parameters:
   ///  - teamMembers: 현재 팀 멤버들
-  func configureCalendarMemberViews(_ teamMembers: [TeamMember]) {
+  func configureCalendarMemberViews(_ teamMembers: [TeamCalendarSingleMemberResponseDTO]) {
     teamMembers.forEach { self.calendarMemberViews.append(.init($0)) }
     self.calendarMemberViews.forEach { $0.isHiddenSelectionButton = false }
     let stackView = UIStackView(arrangedSubviews: self.calendarMemberViews)
@@ -444,7 +444,7 @@ private extension CalendarManagementViewController {
   /// - Parameters:
   ///  - viewState: 현재 분기처리된 VC
   ///  - teamMembers: 팀의 멤버들
-  func configureData(viewState: Reactor.ViewState, teamMembers: [TeamMember]) {
+  func configureData(viewState: Reactor.ViewState, teamMembers: [TeamCalendarSingleMemberResponseDTO]) {
     self.bindCalendarMemberViews()
     switch viewState {
     case .new:

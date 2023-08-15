@@ -8,7 +8,7 @@
 import Foundation
 
 /// 공유 캘린더 각 멤버의 정보를 나타내는 모델입니다.
-struct TeamMember: Codable, Hashable {
+struct TeamCalendarSingleMemberResponseDTO: Codable, Hashable {
   let memberId: Int
   let nickname: String
   let order: Int

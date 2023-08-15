@@ -65,7 +65,7 @@ final class MyRoommateViewReactor: Reactor {
               switch response.statusCode {
               case 200:
                 let members = MatchingAPI.decode(
-                  ResponseModel<[MatchingResponseModel.Member]>.self,
+                  ResponseDTO<[MatchingResponseModel.Member]>.self,
                   data: response.data
                 ).data
                 return .concat([
@@ -91,7 +91,7 @@ final class MyRoommateViewReactor: Reactor {
               switch response.statusCode {
               case 200:
                 let members = MatchingAPI.decode(
-                  ResponseModel<[MatchingResponseModel.Member]>.self,
+                  ResponseDTO<[MatchingResponseModel.Member]>.self,
                   data: response.data
                 ).data
                 return .concat([
@@ -202,7 +202,7 @@ extension MyRoommateViewReactor {
           switch response.statusCode {
           case 200:
             let members = MatchingAPI.decode(
-              ResponseModel<[MatchingResponseModel.Member]>.self,
+              ResponseDTO<[MatchingResponseModel.Member]>.self,
               data: response.data
             ).data
             return .concat([
@@ -228,7 +228,7 @@ extension MyRoommateViewReactor {
           switch response.statusCode {
           case 200:
             let members = MatchingAPI.decode(
-              ResponseModel<[MatchingResponseModel.Member]>.self,
+              ResponseDTO<[MatchingResponseModel.Member]>.self,
               data: response.data
             ).data
             return .concat([

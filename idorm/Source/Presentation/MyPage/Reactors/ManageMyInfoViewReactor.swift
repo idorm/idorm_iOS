@@ -170,7 +170,7 @@ private extension ManageMyInfoViewReactor {
       .asObservable()
       .flatMap { response -> Observable<Mutation> in
         let member = MemberAPI.decode(
-          ResponseModel<MemberResponseModel.Member>.self,
+          ResponseDTO<MemberResponseModel.Member>.self,
           data: response.data
         ).data
         UserStorage.shared.saveMember(member)

@@ -58,7 +58,7 @@ final class MyCommunityViewReactor: Reactor {
             .withUnretained(self)
             .flatMap { owner, response -> Observable<Mutation> in
               let posts = CommunityAPI.decode(
-                ResponseModel<[CommunityResponseModel.Posts]>.self,
+                ResponseDTO<[CommunityResponseModel.Posts]>.self,
                 data: response.data
               ).data
               return .concat([
@@ -82,7 +82,7 @@ final class MyCommunityViewReactor: Reactor {
               switch response.statusCode {
               case 200:
                 let comments = CommunityAPI.decode(
-                  ResponseModel<[CommunityResponseModel.SubComment]>.self,
+                  ResponseDTO<[CommunityResponseModel.SubComment]>.self,
                   data: response.data
                 ).data
                 return .concat([
@@ -107,7 +107,7 @@ final class MyCommunityViewReactor: Reactor {
             .withUnretained(self)
             .flatMap { owner, response -> Observable<Mutation> in
               let posts = CommunityAPI.decode(
-                ResponseModel<[CommunityResponseModel.Posts]>.self,
+                ResponseDTO<[CommunityResponseModel.Posts]>.self,
                 data: response.data
               ).data
               return .concat([

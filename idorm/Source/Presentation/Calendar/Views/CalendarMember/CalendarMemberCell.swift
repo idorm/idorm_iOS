@@ -52,7 +52,7 @@ final class CalendarMemberCell: UICollectionViewCell, BaseView {
   
   // MARK: - Configure
   
-  func configure(with member: TeamMember) {
+  func configure(with member: TeamCalendarSingleMemberResponseDTO) {
     self.calendarMemberView.configure(with: member)
   }
 }

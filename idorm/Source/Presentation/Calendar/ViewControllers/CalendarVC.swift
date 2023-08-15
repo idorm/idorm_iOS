@@ -74,7 +74,7 @@ final class CalendarViewController: BaseViewController, View {
       else { fatalError("❌ CalendarSection을 찾을 수 없습니다!") }
       
       switch section {
-      case .teamMembers(let members):
+      case let .teamMembers(members, isEditing):
         guard let header = collectionView.dequeueReusableSupplementaryView(
           ofKind: kind,
           withReuseIdentifier: CalendarMemberHeader.identifier,
@@ -85,7 +85,7 @@ final class CalendarViewController: BaseViewController, View {
         if self.calendarMemberHeader == nil {
           self.calendarMemberHeader = header
         }
-        header.configure(with: members)
+        header.configure(with: members, isEditing: isEditing)
         header.delegate = self
         return header
         
@@ -511,6 +511,9 @@ extension CalendarViewController: CalendarMemberHeaderDelegate {
     bottomSheetVC.delegate = self
     self.presentPanModal(bottomSheetVC)
   }
+  
+  /// 완료 버튼이 눌렸을 때
+  func didTapDoneButton() {}
 }
 
 // MARK: - CalendarHeader
@@ -527,9 +530,10 @@ extension CalendarViewController: iDormCalendarViewDelegate {
 extension CalendarViewController: BottomSheetViewControllerDelegate {
   /// 바텀 시트 버튼이 눌렸을 때
   func didTapButton(_ item: BottomSheetItem) {
+    guard let reactor = self.reactor else { return }
     switch item {
     case .manageFriend:
-      break
+      reactor.action.onNext(.manageFriendButtonDidTap)
     case .manageCalendar:
       break
     case .shareCalendar:
