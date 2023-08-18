@@ -35,6 +35,12 @@ extension CalendarAPI {
       
     case .deleteTeam:
       return .delete
+      
+    case .deleteTeamMember:
+      return .delete
+      
+    case .postSleepoverCalendar:
+      return .post
     }
   }
 }

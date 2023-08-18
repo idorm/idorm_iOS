@@ -133,9 +133,3 @@ final class CalendarDateSelectionViewReactor: Reactor {
     }
   }
 }
-
-// MARK: - Privates
-
-private extension CalendarDateSelectionViewReactor {
-  
-}

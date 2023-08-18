@@ -9,12 +9,17 @@ import UIKit
 
 import SnapKit
 
-protocol CalendarDateSelectionCellDelegate: AnyObject {
-  func calendarDidSelect(_ currentDateString: String)
-  func pickerViewDidChangeRow(_ currentTimeString: String)
+@objc protocol CalendarDateSelectionCellDelegate: AnyObject {
+  @objc optional func calendarDidSelect(_ currentDateString: String)
+  @objc optional func pickerViewDidChangeRow(_ currentTimeString: String)
 }
 
 final class CalendarDateSelectionCell: UICollectionViewCell, BaseView {
+  
+  enum CellType {
+    case teamCalendar(date: String, time: String)
+    case sleepover(date: String)
+  }
   
   // MARK: - UI Components
   
@@ -33,6 +38,7 @@ final class CalendarDateSelectionCell: UICollectionViewCell, BaseView {
   // MARK: - Properties
   
   weak var delegate: CalendarDateSelectionCellDelegate?
+  private var bottomInset: Constraint?
   
   // MARK: - Initializer
   
@@ -69,7 +75,7 @@ final class CalendarDateSelectionCell: UICollectionViewCell, BaseView {
     self.pickerView.snp.makeConstraints { make in
       make.top.equalTo(self.calendarView.snp.bottom)
       make.directionalHorizontalEdges.equalToSuperview().inset(40.0)
-      make.bottom.equalToSuperview().inset(24.0)
+      self.bottomInset = make.bottom.equalToSuperview().inset(24.0).constraint
     }
   }
   
@@ -79,11 +85,19 @@ final class CalendarDateSelectionCell: UICollectionViewCell, BaseView {
   /// `Calendar`와 `PickerView`의 값을 업데이트합니다.
   ///
   /// - Parameters:
-  ///  - date: 업데이트할 날짜
-  ///  - time: 업데이트할 시간
-  func updateUI(date: String, time: String) {
-    self.calendarView.updateSelectedDate(date)
-    self.pickerView.updateSelectedRow(time)
+  ///  - cellType: 이 셀에 적용할 분기값
+  func configure(_ cellType: CellType) {
+    self.pickerView.isHidden = false
+    switch cellType {
+    case let .teamCalendar(date, time):
+      self.calendarView.updateSelectedDate(date)
+      self.pickerView.updateSelectedRow(time)
+      self.bottomInset?.update(inset: 24.0)
+    case .sleepover(let date):
+      self.calendarView.updateSelectedDate(date)
+      self.pickerView.isHidden = true
+      self.bottomInset?.update(inset: 0)
+    }
   }
 }
 
@@ -91,7 +105,7 @@ final class CalendarDateSelectionCell: UICollectionViewCell, BaseView {
 
 extension CalendarDateSelectionCell: iDormCalendarViewDelegate {
   func calendarDidSelect(_ currentDateString: String) {
-    self.delegate?.calendarDidSelect(currentDateString)
+    self.delegate?.calendarDidSelect?(currentDateString)
   }
 }
 
@@ -99,6 +113,6 @@ extension CalendarDateSelectionCell: iDormCalendarViewDelegate {
 
 extension CalendarDateSelectionCell: CalendarDatePickerViewDelegate {
   func pickerViewDidChangeRow(_ timeString: String) {
-    self.delegate?.pickerViewDidChangeRow(timeString)
+    self.delegate?.pickerViewDidChangeRow?(timeString)
   }
 }

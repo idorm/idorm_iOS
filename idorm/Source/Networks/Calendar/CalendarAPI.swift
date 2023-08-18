@@ -67,6 +67,22 @@ enum CalendarAPI {
    팀 나가기
    */
   case deleteTeam
+  
+  /**
+   팀원 삭제
+   
+   - 본인 혹은 팀의 다른 회원을 팀에서 삭제시킬 때 사용합니다.
+   - 로그인한 유저가 팀이 없는 경우는 404(TEAM_NOT_FOUND) 를 응답합니다.
+   - 다른 팀원을 삭제하려는 경우, 삭제하려는 팀원의 팀이 없거나 같은 팀이 아닐 경우 403(ACCESS_DENIED_TEAM) 을 응답합니다.
+   */
+  case deleteTeamMember(memberID: Int)
+  
+  /**
+   [외박] 일정 생성
+
+   - 외박일정은 본인의 것만 생성 가능합니다.
+   */
+  case postSleepoverCalendar(startDate: String, endDate: String)
   }
 
 extension CalendarAPI: TargetType, BaseAPI {

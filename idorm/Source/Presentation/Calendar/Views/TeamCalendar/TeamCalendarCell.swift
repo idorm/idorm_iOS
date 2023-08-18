@@ -17,6 +17,18 @@ final class TeamCalendarCell: UICollectionViewCell, BaseView {
   private let rightButton: UIButton = {
     let button = UIButton()
     button.setImage(.iDormIcon(.right), for: .normal)
+    button.isUserInteractionEnabled = false
+    return button
+  }()
+  
+  /// 일정을 삭제할 수 있는 휴지통 아이콘의 `UIButton`
+  private let removeButton: UIButton = {
+    let button = UIButton()
+    let image: UIImage? = .iDormIcon(.trashcan)?
+      .resize(newSize: 18.0)?
+      .withTintColor(.iDormColor(.iDormGray400))
+    button.setImage(image, for: .normal)
+    button.isUserInteractionEnabled = false
     return button
   }()
   
@@ -87,7 +99,8 @@ final class TeamCalendarCell: UICollectionViewCell, BaseView {
       self.rightButton,
       self.dateLabel,
       self.contentLabel,
-      self.dotStackView
+      self.dotStackView,
+      self.removeButton
     ].forEach {
       self.contentView.addSubview($0)
     }
@@ -119,6 +132,10 @@ final class TeamCalendarCell: UICollectionViewCell, BaseView {
       make.leading.equalTo(self.dateLabel)
       make.top.equalTo(self.dateLabel.snp.bottom).offset(4.0)
     }
+    
+    self.removeButton.snp.makeConstraints { make in
+      make.center.equalTo(self.rightButton)
+    }
   }
   
   // MARK: - Configure
@@ -127,7 +144,14 @@ final class TeamCalendarCell: UICollectionViewCell, BaseView {
   ///
   /// - Parameters:
   ///  - teamCalendar: 팀 일정
-  func configure(_ teamCalendar: TeamCalendarResponseDTO) {
+  func configure(_ teamCalendar: TeamCalendarResponseDTO, isEditing: Bool) {
+    self.removeButton.isHidden = true
+    self.rightButton.isHidden = true
+    if isEditing {
+      self.removeButton.isHidden = false
+    } else {
+      self.rightButton.isHidden = false
+    }
     self.dotViews.forEach { $0.isHidden = true }
     self.contentLabel.text = teamCalendar.title
     self.dateLabel.text = teamCalendar.startDate.toDateString(from: "yyyy-MM-dd", to: "M월 d일")

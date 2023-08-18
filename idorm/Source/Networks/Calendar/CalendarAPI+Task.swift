@@ -47,6 +47,21 @@ extension CalendarAPI {
       
     case .deleteTeam:
       return .requestPlain
+      
+    case .deleteTeamMember(let memberID):
+      return .requestParameters(
+        parameters: ["memberId": memberID],
+        encoding: URLEncoding.queryString
+      )
+      
+    case let .postSleepoverCalendar(startDate, endDate):
+      return .requestParameters(
+        parameters: [
+          "endDate": endDate,
+          "startDate": startDate
+        ],
+        encoding: JSONEncoding.default
+      )
     }
   }
 }

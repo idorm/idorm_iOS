@@ -13,7 +13,7 @@ import RxCocoa
 import RxGesture
 
 @objc protocol iDormPopupViewControllerDelegate: AnyObject {
-  @objc optional func confirmButtonDidTap(identifier: String)
+  @objc optional func confirmButtonDidTap()
 }
 
 /// 안내 문구 또는 확인 절차를 밟기 위한 `Popup`형태의 `ViewController`
@@ -21,7 +21,7 @@ final class iDormPopupViewController: BaseViewController {
   
   enum iDormPopupViewType {
     case oneButton(contents: String)
-    case twoButton(contents: String, buttonTitle: String, identifier: String)
+    case twoButton(contents: String, buttonTitle: String)
   }
   
   // MARK: - UI Components
@@ -75,13 +75,8 @@ final class iDormPopupViewController: BaseViewController {
   weak var delegate: iDormPopupViewControllerDelegate?
   private var viewType: iDormPopupViewType
   
-  private var identifier: String {
-    if case .twoButton(_, _, let identifier) = self.viewType {
-      return identifier
-    } else {
-      return ""
-    }
-  }
+  /// 확인 버튼이 눌렸을 때 실행되는 클로저입니다.
+  var confirmButtonCompletion: (() -> Void)?
   
   // MARK: - LifeCycle
   
@@ -149,7 +144,8 @@ final class iDormPopupViewController: BaseViewController {
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
         owner.dismiss(animated: false)
-        owner.delegate?.confirmButtonDidTap?(identifier: self.identifier)
+        owner.delegate?.confirmButtonDidTap?()
+        owner.confirmButtonCompletion?()
       }
       .disposed(by: disposeBag)
     
@@ -180,7 +176,7 @@ private extension iDormPopupViewController {
     case .oneButton(let contents):
       self.cancelButton.isHidden = true
       self.contentsLabel.text = contents
-    case let .twoButton(contents, buttonTitle, _):
+    case let .twoButton(contents, buttonTitle):
       self.cancelButton.isHidden = false
       self.contentsLabel.text = contents
       self.confirmButton.setTitle(buttonTitle, for: .normal)

@@ -58,6 +58,7 @@ final class CalendarMemberHeader: UICollectionReusableView, BaseView {
     button.baseBackgroundColor = .iDormColor(.iDormBlue)
     button.cornerRadius = 8.0
     button.font = .iDormFont(.bold, size: 12.0)
+    button.addTarget(self, action: #selector(self.didTapDoneButton), for: .touchUpInside)
     return button
   }()
   
@@ -92,7 +93,7 @@ final class CalendarMemberHeader: UICollectionReusableView, BaseView {
   
   func setupConstraints() {
     self.inviteButton.snp.makeConstraints { make in
-      make.trailing.equalToSuperview().inset(10)
+      make.trailing.equalToSuperview().inset(10.0)
       make.bottom.equalToSuperview().inset(54)
     }
     
@@ -103,7 +104,7 @@ final class CalendarMemberHeader: UICollectionReusableView, BaseView {
     
     self.doneButton.snp.makeConstraints { make in
       make.centerY.equalTo(self.optionButton)
-      make.trailing.equalToSuperview().inset(24.0)
+      make.trailing.equalToSuperview().inset(10.0)
     }
   }
   

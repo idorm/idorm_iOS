@@ -35,7 +35,7 @@ final class CalendarDateSelectionViewController: BaseViewController, View {
       collectionViewLayout: layout
     )
     collectionView.isScrollEnabled = false
-    collectionView.isPagingEnabled = false 
+    collectionView.isPagingEnabled = false
     // Register
     collectionView.register(
       CalendarDateSelectionCell.self,
@@ -75,7 +75,6 @@ final class CalendarDateSelectionViewController: BaseViewController, View {
     button.baseForegroundColor = .white
     button.font = .iDormFont(.medium, size: 14.0)
     button.cornerRadius = 10.0
-    
     return button
   }()
   
@@ -118,7 +117,7 @@ final class CalendarDateSelectionViewController: BaseViewController, View {
           return UICollectionViewCell()
         }
         cell.delegate = self
-        cell.updateUI(date: date, time: time)
+        cell.configure(.teamCalendar(date: date, time: time))        
         return cell
       }
     )
@@ -132,6 +131,8 @@ final class CalendarDateSelectionViewController: BaseViewController, View {
   override func setupStyles() {
     super.setupStyles()
     
+    self.startButton.isSelected = true
+    self.endButton.isSelected = false
     self.view.backgroundColor = .white
   }
   

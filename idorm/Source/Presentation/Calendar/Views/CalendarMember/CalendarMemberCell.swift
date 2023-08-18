@@ -20,24 +20,24 @@ final class CalendarMemberCell: UICollectionViewCell, BaseView {
     return view
   }()
   
-  // MARK: - Life Cycle
+  // MARK: - Initializer
   
-  override func layoutSubviews() {
-    super.layoutSubviews()
+  override init(frame: CGRect) {
+    super.init(frame: frame)
     self.setupStyles()
     self.setupLayouts()
     self.setupConstraints()
   }
   
-  override func prepareForReuse() {
-    super.prepareForReuse()
-    
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
   
   // MARK: - Setup
   
   func setupStyles() {
     self.contentView.backgroundColor = .clear
+    self.isUserInteractionEnabled = true
   }
   
   func setupLayouts() {
@@ -52,7 +52,7 @@ final class CalendarMemberCell: UICollectionViewCell, BaseView {
   
   // MARK: - Configure
   
-  func configure(with member: TeamCalendarSingleMemberResponseDTO) {
-    self.calendarMemberView.configure(with: member)
+  func configure(with member: TeamCalendarSingleMemberResponseDTO, isEditing: Bool) {
+    self.calendarMemberView.configure(with: member, isEditing: isEditing)
   }
 }

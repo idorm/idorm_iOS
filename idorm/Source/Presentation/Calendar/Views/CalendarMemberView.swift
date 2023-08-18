@@ -36,7 +36,7 @@ final class CalendarMemberView: UIView, BaseView {
     lb.textAlignment = .center
     return lb
   }()
-
+  
   /// 멤버를 선택의 유무를 알 수 있는 `UIButton`
   private let memberSelectionButton: UIButton = {
     let button = UIButton()
@@ -45,6 +45,33 @@ final class CalendarMemberView: UIView, BaseView {
     button.isHidden = true
     button.isUserInteractionEnabled = false
     return button
+  }()
+  
+  /// `ic_trashcan` 아이콘이 들어있는 `UIImageView`
+  private let trashcanImageView: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = .iDormIcon(.trashcan)?
+      .resize(newSize: 18.0)?
+      .withTintColor(.white)
+    return imageView
+  }()
+  
+  /// `외박`이 적혀있는 `UILabel`
+  private let sleepoverLabel: UILabel = {
+    let label = UILabel()
+    label.text = "외박😴"
+    label.font = .iDormFont(.medium, size: 10.0)
+    label.textColor = .white
+    label.isHidden = true
+    return label
+  }()
+  
+  /// 수정할 때의 이미지의 알파값을 주기위한 `UIView`
+  private let alphaView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .black.withAlphaComponent(0.5)
+    view.layer.cornerRadius = 22.5
+    return view
   }()
   
   // MARK: - Properties
@@ -70,10 +97,10 @@ final class CalendarMemberView: UIView, BaseView {
   ///
   /// - Parameters:
   ///  - teamMember: `TeamMember` Model
-  convenience init(_ teamMember: TeamCalendarSingleMemberResponseDTO) {
+  convenience init(_ teamMember: TeamCalendarSingleMemberResponseDTO, isEditing: Bool) {
     self.init(frame: .zero)
     self.teamMember = teamMember
-    self.configure(with: teamMember)
+    self.configure(with: teamMember, isEditing: isEditing)
   }
   
   override init(frame: CGRect) {
@@ -96,7 +123,10 @@ final class CalendarMemberView: UIView, BaseView {
     [
       self.profileImageView,
       self.nicknameLabel,
-      self.memberSelectionButton
+      self.memberSelectionButton,
+      self.alphaView,
+      self.trashcanImageView,
+      self.sleepoverLabel
     ].forEach {
       self.addSubview($0)
     }
@@ -122,13 +152,28 @@ final class CalendarMemberView: UIView, BaseView {
       make.leading.equalToSuperview().inset(32.5)
       make.top.equalToSuperview().inset(32.5)
     }
+    
+    self.trashcanImageView.snp.makeConstraints { make in
+      make.center.equalTo(self.profileImageView)
+    }
+    
+    self.alphaView.snp.makeConstraints { make in
+      make.size.equalTo(45.0)
+      make.center.equalTo(self.profileImageView)
+    }
+    
+    self.sleepoverLabel.snp.makeConstraints { make in
+      make.center.equalTo(self.alphaView)
+    }
   }
   
   // MARK: - Bind
   
   private func bind() {
     /// `View` 터치
-    self.rx.tapGesture()
+    self.rx.tapGesture { gesture, _ in
+      gesture.cancelsTouchesInView = false
+    }
       .when(.recognized)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with : self) { owner, _ in
@@ -149,7 +194,7 @@ final class CalendarMemberView: UIView, BaseView {
   ///
   /// - Parameters:
   ///  - teamMember: 업데이트할 `TeamMember` 모델
-  func configure(with teamMember: TeamCalendarSingleMemberResponseDTO) {
+  func configure(with teamMember: TeamCalendarSingleMemberResponseDTO, isEditing: Bool) {
     // 멤버 사진
     self.profileImageView.image = .iDormImage(.human)
     if let urlString = teamMember.profilePhotoUrl {
@@ -168,5 +213,21 @@ final class CalendarMemberView: UIView, BaseView {
     default: borderColor = .iDormColor(.firstUser)
     }
     self.profileImageView.layer.borderColor = borderColor.cgColor
+    
+    self.alphaView.isHidden = true
+    self.trashcanImageView.isHidden = true
+    self.sleepoverLabel.isHidden = true
+    
+    if isEditing {
+      // 수정중
+      self.alphaView.isHidden = false
+      self.trashcanImageView.isHidden = false
+    } else {
+      if teamMember.sleepoverYn {
+        // 외박 중
+        self.alphaView.isHidden = false
+        self.sleepoverLabel.isHidden = false
+      }
+    }
   }
 }

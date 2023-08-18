@@ -13,12 +13,18 @@ import ReactorKit
 final class CalendarViewReactor: Reactor {
   
   enum Action {
+    case nothing
     case requestAllData
     case currentDateDidChange(String)
     case itemSelected(CalendarSectionItem)
     case registerScheduleButtonDidTap
     case exitCalendarButtonDidTap
     case manageFriendButtonDidTap
+    case manageCalendarButtonDidTap
+    case shareCalendarButtonDidTap
+    case doneButtonDidTap
+    case removeTeamMember(memberID: Int)
+    case removeTeamCalendar(teamCalendarID: Int)
   }
   
   enum Mutation {
@@ -55,6 +61,9 @@ final class CalendarViewReactor: Reactor {
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
+    case .nothing:
+      return .empty()
+      
     case .requestAllData:
       return self.requestGetTeamMembers()
       
@@ -71,8 +80,9 @@ final class CalendarViewReactor: Reactor {
       
     case .itemSelected(let item):
       switch item {
-      case .teamCalendar(let teamCalendars):
-        return self.requestTeamCalendar(with: teamCalendars.teamCalendarId)
+      case let .teamCalendar(teamCalendars, isEditing):
+        if !isEditing { return self.requestTeamCalendar(with: teamCalendars.teamCalendarId) }
+        return .empty()
         
       case .dormCalendar(let dormCalendar):
         // 브라우저에서 해당 URL로 이동합니다.
@@ -90,7 +100,7 @@ final class CalendarViewReactor: Reactor {
       
     case .registerScheduleButtonDidTap: // 일정 등록 버튼 클릭
       return .just(.setCalendarManagementVC(nil))
-
+      
     case .exitCalendarButtonDidTap:
       return self.apiManager.requestAPI(to: .deleteTeam)
         .flatMap { _ in return self.requestGetTeamMembers() }
@@ -98,6 +108,31 @@ final class CalendarViewReactor: Reactor {
     case .manageFriendButtonDidTap:
       if self.currentState.teamId < 0 { return .empty() }
       return .just(.setEditingMode(isMemberSection: true))
+      
+    case .manageCalendarButtonDidTap:
+      if self.currentState.teamCalendars.isEmpty { return .empty() }
+      return .just(.setEditingMode(isMemberSection: false))
+      
+    case .doneButtonDidTap:
+      return .just(.setEditingMode(isMemberSection: nil))
+      
+    case .removeTeamMember(let memberID):
+      return self.apiManager.requestAPI(to: .deleteTeamMember(memberID: memberID))
+        .flatMap { _ in return self.requestGetTeamMembers() }
+      
+    case .removeTeamCalendar(let teamCalendarID):
+      return self.apiManager.requestAPI(to: .deleteTeamCalendar(teamCalendarId: teamCalendarID))
+        .flatMap { _ in return self.requestGetTeamMembers() }
+      
+    case .shareCalendarButtonDidTap:
+      let profileURL = UserStorage.shared.member?.profilePhotoUrl
+      let nickNM = UserStorage.shared.member?.nickname
+      KakaoShareManager().inviteTeamCalendar(
+        profileURL: profileURL,
+        nickname: nickNM!,
+        teamID: self.currentState.teamId
+      )
+      return .empty()
     }
   }
   
@@ -144,8 +179,13 @@ final class CalendarViewReactor: Reactor {
       var newState = state
       
       // TeamMember
-      newState.items.append(state.members.map { CalendarSectionItem.teamMember($0) })
-      newState.sections.append(.teamMembers(state.members, isEditing: state.isEditingMemberSection))
+      newState.items.append(state.members.map {
+        CalendarSectionItem.teamMember($0, isEditing: state.isEditingMemberSection)
+      })
+      let isEditingMode = state.isEditingMemberSection || state.isEditingTeamCalendarSection
+      newState.sections.append(
+        .teamMembers(state.members, isEditing: isEditingMode)
+      )
       
       // Calendar
       newState.sections.append(.calendar(
@@ -156,10 +196,12 @@ final class CalendarViewReactor: Reactor {
       
       // TeamCalendar
       if state.teamCalendars.isNotEmpty {
-        newState.sections.append(.teamCalendar(isEditing: state.isEditingTeamCalendarSection))
-        newState.items.append(state.teamCalendars.map { CalendarSectionItem.teamCalendar($0) })
+        newState.sections.append(.teamCalendar)
+        newState.items.append(state.teamCalendars.map {
+          CalendarSectionItem.teamCalendar($0, isEditing: state.isEditingTeamCalendarSection)
+        })
       }
-
+      
       // DormCalendar
       newState.sections.append(.dormCalendar)
       if state.dormCalendars.isNotEmpty {

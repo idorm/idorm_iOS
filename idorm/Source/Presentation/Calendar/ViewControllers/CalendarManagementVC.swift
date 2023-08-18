@@ -150,11 +150,7 @@ final class CalendarManagementViewController: BaseViewController, View {
     return view
   }()
   
-  private var calendarMemberViews: [CalendarMemberView] = [] {
-    willSet {
-      
-    }
-  }
+  private var calendarMemberViews: [CalendarMemberView] = []
   
   // MARK: - Properties
   
@@ -427,7 +423,7 @@ private extension CalendarManagementViewController {
   /// - Parameters:
   ///  - teamMembers: 현재 팀 멤버들
   func configureCalendarMemberViews(_ teamMembers: [TeamCalendarSingleMemberResponseDTO]) {
-    teamMembers.forEach { self.calendarMemberViews.append(.init($0)) }
+    teamMembers.forEach { self.calendarMemberViews.append(.init($0, isEditing: false)) }
     self.calendarMemberViews.forEach { $0.isHiddenSelectionButton = false }
     let stackView = UIStackView(arrangedSubviews: self.calendarMemberViews)
     stackView.spacing = 20.0

@@ -33,6 +33,12 @@ extension CalendarAPI {
       
     case .deleteTeam:
       return "/api/v1/member/team"
+      
+    case .deleteTeamMember:
+      return "/api/v1/member/team"
+      
+    case .postSleepoverCalendar:
+      return "/api/v1/member/team/calendar/sleepover"
     }
   }
 }
