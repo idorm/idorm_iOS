@@ -56,7 +56,7 @@ final class CommunityListViewReactor: Reactor {
   }
   
   var initialState: State = State()
-  private let apiManager = APIManager<CommunityAPI>()
+  private let apiManager = NetworkService<CommunityAPI>()
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {

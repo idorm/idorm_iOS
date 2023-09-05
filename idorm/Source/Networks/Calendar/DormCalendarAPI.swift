@@ -13,7 +13,7 @@ enum DormCalendarAPI {
   case retrieveCalendars(year: String, month: String)
 }
 
-extension DormCalendarAPI: TargetType, BaseAPI {
+extension DormCalendarAPI: TargetType, BaseTargetType {
   func getPath() -> String {
     return ""
   }

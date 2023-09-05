@@ -118,7 +118,7 @@ final class iDormPopupViewController: BaseViewController {
     super.setupConstraints()
     
     self.containerView.snp.makeConstraints { make in
-      make.directionalHorizontalEdges.equalToSuperview().inset(32.0)
+      make.directionalHorizontalEdges.equalToSuperview().inset(24.0)
       make.bottom.equalTo(self.buttonStack.snp.bottom).offset(16.0)
       make.centerY.equalToSuperview()
     }

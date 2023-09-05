@@ -202,7 +202,7 @@ extension MyCommunityViewController: UITableViewDataSource, UITableViewDelegate 
           self?.showAlert("삭제된 게시글입니다.")
           return
         }
-        let apiManager = APIManager<CommunityAPI>()
+        let apiManager = NetworkService<CommunityAPI>()
         apiManager.requestAPI(to: .lookupDetailPost(postId: postID))
           .map(ResponseDTO<CommunitySinglePostResponseDTO>.self)
           .asDriver(onErrorRecover: { _ in return .empty() })
@@ -292,7 +292,7 @@ extension MyCommunityViewController: UITableViewDataSource, UITableViewDelegate 
     
     switch viewControllerType {
     case .recommend, .post:
-      let apiManager = APIManager<CommunityAPI>()
+      let apiManager = NetworkService<CommunityAPI>()
       apiManager.requestAPI(to: .lookupDetailPost(
         postId: reactor.currentState.posts[indexPath.row].postId
       ))

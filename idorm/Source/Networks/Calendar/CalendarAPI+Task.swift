@@ -62,6 +62,21 @@ extension CalendarAPI {
         ],
         encoding: JSONEncoding.default
       )
+      
+    case let .postSleepoverCalendars(memberID, yearMonth):
+      return .requestParameters(
+        parameters: [
+          "memberId": memberID,
+          "yearMonth": yearMonth
+        ],
+        encoding: JSONEncoding.default
+      )
+      
+    case .postAcceptInvitation(let memberID):
+      return .requestParameters(
+        parameters: ["registerMemberId": memberID],
+        encoding: URLEncoding.queryString
+      )
     }
   }
 }

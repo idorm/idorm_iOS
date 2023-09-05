@@ -16,7 +16,7 @@ enum MatchingInfoAPI {
   case modifyPublic(Bool)
 }
 
-extension MatchingInfoAPI: TargetType, BaseAPI {
+extension MatchingInfoAPI: BaseTargetType {
   static let provider = MoyaProvider<MatchingInfoAPI>()
   
   var baseURL: URL { getBaseURL() }

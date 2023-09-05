@@ -18,7 +18,7 @@ enum MemberAPI {
   case updateFCM(String)
 }
 
-extension MemberAPI: TargetType, BaseAPI {
+extension MemberAPI: BaseTargetType {
   static let provider = MoyaProvider<MemberAPI>()
   
   var baseURL: URL { getBaseURL() }

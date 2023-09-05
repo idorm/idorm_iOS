@@ -66,7 +66,7 @@ final class CommunityPostingViewReactor: Reactor {
   let postingType: PostingType
   
   /// 네트워킹을 할 수 있는 `CommunityAPI`가 Warpping되어 있는 `APIManager`입니다.
-  private let apiManager = APIManager<CommunityAPI>()
+  private let apiManager = NetworkService<CommunityAPI>()
   
   init(
     _ postingType: PostingType,

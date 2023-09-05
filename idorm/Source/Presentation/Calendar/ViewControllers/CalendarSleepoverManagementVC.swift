@@ -127,7 +127,7 @@ final class CalendarSleepoverManagementViewController: BaseViewController, View 
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    self.navigationController?.setNavigationBarHidden(false, animated: false)
+    self.navigationController?.setNavigationBarHidden(false, animated: true)
   }
   
   // MARK: - Setup

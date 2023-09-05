@@ -38,9 +38,9 @@ final class CalendarViewController: BaseViewController, View {
           
         case let .teamCalendar(teamCalendar, isEditing):
           guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: TeamCalendarCell.identifier,
+            withReuseIdentifier: CalendarListCell.identifier,
             for: indexPath
-          ) as? TeamCalendarCell else {
+          ) as? CalendarListCell else {
             return UICollectionViewCell()
           }
           cell.configure(teamCalendar, isEditing: isEditing)
@@ -159,8 +159,8 @@ final class CalendarViewController: BaseViewController, View {
       forCellWithReuseIdentifier: CalendarMemberCell.identifier
     )
     cv.register(
-      TeamCalendarCell.self,
-      forCellWithReuseIdentifier: TeamCalendarCell.identifier
+      CalendarListCell.self,
+      forCellWithReuseIdentifier: CalendarListCell.identifier
     )
     cv.register(
       DormCalendarCell.self,
@@ -243,7 +243,7 @@ final class CalendarViewController: BaseViewController, View {
   
   func bind(reactor: CalendarViewReactor) {
     // Action
-    self.rx.viewDidLoad
+    self.rx.viewWillAppear
       .map { _ in CalendarViewReactor.Action.requestAllData }
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
@@ -342,6 +342,24 @@ final class CalendarViewController: BaseViewController, View {
         owner.navigationController?.pushViewController(viewController, animated: true)
       }
       .disposed(by: self.disposeBag)
+    
+    reactor.pulse(\.$presentToCalendarSleepoverListVC)
+      .compactMap { $0 }
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, data in
+        let viewController = CalendarSleepoverListViewController()
+        let reactor = CalendarSleepoverListViewReactor(
+          data.teamCalendars,
+          yearMonth: data.yearMonth,
+          memberID: data.memberID
+        )
+        viewController.reactor = reactor
+        viewController.delegate = self
+        let navVC = UINavigationController(rootViewController: viewController)
+        navVC.modalPresentationStyle = .overFullScreen
+        owner.present(navVC, animated: false)
+      }
+      .disposed(by: self.disposeBag)
   }
 }
 
@@ -361,10 +379,8 @@ private extension CalendarViewController {
         section.visibleItemsInvalidationHandler = { _, offset, _ in
           self.collectionView.bounces = offset.y > 30
         }
-      default:
-        break
+      default: break
       }
-      
       return section
     }
   }
@@ -497,5 +513,14 @@ extension CalendarViewController: CalendarManagementViewControllerDelegate {
   /// 변경된 데이터로 인해 다시 한번 요청합니다.
   func shouldRequestData() {
     self.reactor?.action.onNext(.requestAllData)
+  }
+}
+
+// MARK: - CalendarSleepoverListViewControllerDelegate
+
+extension CalendarViewController: CalendarSleepoverListViewControllerDelegate {
+  func didDismissedViewController() {
+    guard let reactor = self.reactor else { return }
+    reactor.action.onNext(.requestAllData)
   }
 }

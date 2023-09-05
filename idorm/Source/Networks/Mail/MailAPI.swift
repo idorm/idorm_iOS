@@ -9,7 +9,7 @@ enum MailAPI {
   case pwVerification(email: String, code: String)
 }
 
-extension MailAPI: TargetType, BaseAPI {
+extension MailAPI: BaseTargetType {
   static let provider = MoyaProvider<MailAPI>()
   
   var baseURL: URL { getBaseURL() }

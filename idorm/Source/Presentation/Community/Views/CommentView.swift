@@ -46,6 +46,7 @@ final class CommentView: UIView {
     tv.maxHeight = 100
     tv.minHeight = 32
     tv.backgroundColor = .idorm_gray_100
+    tv.trimWhiteSpaceWhenEndEditing = true
     tv.textContainerInset = UIEdgeInsets(top: 7, left: 12, bottom: 7, right: 42)
     
     return tv

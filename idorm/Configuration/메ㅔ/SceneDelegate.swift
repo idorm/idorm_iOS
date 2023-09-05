@@ -23,22 +23,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let windowScene = (scene as? UIWindowScene) else { return }
     window = UIWindow(windowScene: windowScene)
     
-    window?.rootViewController = LaunchViewController()
+    let viewController = iDormSplashViewController()
+    viewController.reactor = iDormSplashViewReactor()
+    window?.rootViewController = viewController
     window?.makeKeyAndVisible()
+    
+    let url = connectionOptions.urlContexts.first?.url
+    KakaoShareManager.shared.handleKakaoMessageDeepLink(url)
   }
-}
-
-// MARK: - URL Schemes
-
-extension SceneDelegate {
-  func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-    guard let url = URLContexts.first?.url else { return }
-    let urlStr = url.absoluteString
-    let component = urlStr.components(separatedBy: "=")
-    guard let postIdString = component.last else { return }
-    guard let postId = Int(postIdString) else { return }
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-      TransitionManager.shared.postPushAlarmDidTap?(postId)
-    })
+  
+  func scene(
+    _ scene: UIScene,
+    openURLContexts URLContexts: Set<UIOpenURLContext>
+  ) {
+    let url = URLContexts.first?.url
+    KakaoShareManager.shared.handleKakaoMessageDeepLink(url)
   }
 }

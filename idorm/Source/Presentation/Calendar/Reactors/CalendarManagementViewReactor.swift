@@ -60,7 +60,7 @@ final class CalendarManagementViewReactor: Reactor {
   // MARK: - Properties
   
   var initialState: State
-  private let apiManager = APIManager<CalendarAPI>()
+  private let apiManager = NetworkService<CalendarAPI>()
   
   /// `일정 수정` 또는 `일정 생성`에서 필요할 `RequestModel`의 계산프로퍼티 입니다.
   private var teamCalendarRequestModel: TeamCalendarRequestModel {

@@ -21,7 +21,7 @@ final class CalendarMemberView: UIView, BaseView {
     let iv = UIImageView()
     iv.layer.cornerRadius = 24.0
     iv.layer.borderWidth = 3.0
-    iv.contentMode = .scaleAspectFit
+    iv.contentMode = .scaleAspectFill
     iv.layer.masksToBounds = true
     iv.backgroundColor = .iDormColor(.iDormBlue)
     return iv
@@ -223,7 +223,7 @@ final class CalendarMemberView: UIView, BaseView {
       self.alphaView.isHidden = false
       self.trashcanImageView.isHidden = false
     } else {
-      if teamMember.sleepoverYn {
+      if teamMember.sleepoverYn ?? false {
         // 외박 중
         self.alphaView.isHidden = false
         self.sleepoverLabel.isHidden = false

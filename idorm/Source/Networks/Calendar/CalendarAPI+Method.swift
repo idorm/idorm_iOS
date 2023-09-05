@@ -41,6 +41,12 @@ extension CalendarAPI {
       
     case .postSleepoverCalendar:
       return .post
+      
+    case .postSleepoverCalendars:
+      return .post
+      
+    case .postAcceptInvitation:
+      return .post
     }
   }
 }

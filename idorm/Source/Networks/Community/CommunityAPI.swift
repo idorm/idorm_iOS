@@ -28,7 +28,7 @@ enum CommunityAPI {
   )
 }
 
-extension CommunityAPI: TargetType, BaseAPI {
+extension CommunityAPI: BaseTargetType {
   static let provider = MoyaProvider<CommunityAPI>()
   
   var baseURL: URL { return getBaseURL() }

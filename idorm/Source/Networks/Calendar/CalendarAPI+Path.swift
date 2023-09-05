@@ -11,34 +11,40 @@ extension CalendarAPI {
   func getPath() -> String {
     switch self {
     case .getTeamMembers:
-      return "/api/v1/member/team"
+      return "/member/team"
       
     case .postTeamCalendars:
-      return "/api/v1/member/team/calendars"
+      return "/member/team/calendars"
       
     case .postDormCalendars:
       return "/member/calendars"
       
     case .getTeamCalendar:
-      return "/api/v1/member/team/calendar"
+      return "/member/team/calendar"
       
     case .putTeamCalendar:
-      return "/api/v1/member/team/calendar"
+      return "/member/team/calendar"
       
     case .deleteTeamCalendar:
-      return "/api/v1/member/team/calendar"
+      return "/member/team/calendar"
       
     case .postTeamCalendar:
-      return "/api/v1/member/team/calendar"
+      return "/member/team/calendar"
       
     case .deleteTeam:
-      return "/api/v1/member/team"
+      return "/member/team"
       
     case .deleteTeamMember:
-      return "/api/v1/member/team"
+      return "/member/team"
       
     case .postSleepoverCalendar:
-      return "/api/v1/member/team/calendar/sleepover"
+      return "/member/team/calendar/sleepover"
+      
+    case .postSleepoverCalendars:
+      return "/member/team/calendars/sleepover"
+      
+    case .postAcceptInvitation:
+      return "/member/team"
     }
   }
 }

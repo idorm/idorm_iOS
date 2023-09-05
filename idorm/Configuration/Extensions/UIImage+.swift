@@ -16,6 +16,8 @@ enum iDormIcon: String {
   
   case calendar
   case cancel
+  
+  case domi
 
   case option
   
@@ -24,6 +26,7 @@ enum iDormIcon: String {
   
   case speechBubble
   case share
+  case squareRight
   
   case photo
   

@@ -71,7 +71,7 @@ final class TabBarViewController: UITabBarController {
   private func pushToDetailPost() {
     TransitionManager.shared.postPushAlarmDidTap = { [weak self] postId in
       guard let self else { return }
-      let apiManager = APIManager<CommunityAPI>()
+      let apiManager = NetworkService<CommunityAPI>()
       apiManager.requestAPI(to: .lookupDetailPost(postId: postId))
         .map(ResponseDTO<CommunitySinglePostResponseDTO>.self)
         .bind { post in

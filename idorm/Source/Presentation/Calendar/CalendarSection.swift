@@ -129,15 +129,15 @@ enum CalendarSection: Hashable {
     return section
   }
   
-  /// 헤더에 들어갈 `String` 값입니다.
-  var headerContent: String {
+  /// 헤더에 들어갈 `ViewType` 값입니다.
+  var headerContent: CalendarScheduleHeader.ViewType {
     switch self {
     case .dormCalendar:
-      return "기숙사 일정"
+      return .dormCalendar
     case .teamCalendar:
-      return "우리방 일정"
+      return .teamCalendar
     default:
-      return ""
+      return .dormCalendar
     }
   }
 }

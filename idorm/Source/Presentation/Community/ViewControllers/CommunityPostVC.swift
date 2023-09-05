@@ -28,66 +28,7 @@ final class CommunityPostViewController: BaseViewController, View {
   
   // MARK: - Properties
   
-  private lazy var dataSource: DataSource = {
-    let dataSource = DataSource(
-      collectionView: self.collectionView,
-      cellProvider: { collectionView, indexPath, item in
-        switch item {
-        case .content(let post):
-          guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: CommunityPostContentCell.identifier,
-            for: indexPath
-          ) as? CommunityPostContentCell else {
-            return UICollectionViewCell()
-          }
-          cell.configure(with: post)
-          return cell
-          
-        case .photo(let url):
-          guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: CommunityPostPhotoCell.identifier,
-            for: indexPath
-          ) as? CommunityPostPhotoCell else {
-            return UICollectionViewCell()
-          }
-          cell.configure(with: url)
-          return cell
-          
-        case .multiBox(let post):
-          guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: CommunityPostMultiBoxCell.identifier,
-            for: indexPath
-          ) as? CommunityPostMultiBoxCell else {
-            return UICollectionViewCell()
-          }
-          cell.delegate = self
-          cell.configure(with: post)
-          return cell
-          
-        case .comment(let comment):
-          guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: CommunityCommentCell.identifier,
-            for: indexPath
-          ) as? CommunityCommentCell else {
-            return UICollectionViewCell()
-          }
-          cell.delegate = self
-          cell.configure(with: comment)
-          return cell
-          
-        case .emptyComment:
-          guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: CommunityPostEmptyCell.identifier,
-            for: indexPath
-          ) as? CommunityPostEmptyCell else {
-            return UICollectionViewCell()
-          }
-          return cell
-        }
-      }
-    )
-    return dataSource
-  }()
+  private var dataSource: DataSource?
   
   // MARK: - UI Components
   
@@ -142,6 +83,13 @@ final class CommunityPostViewController: BaseViewController, View {
   
   var popCompletion: (() -> Void)?
   
+  // MARK: - Life Cycle
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    self.navigationController?.setNavigationBarHidden(false, animated: true)
+  }
+  
   // MARK: - Setup
   
   override func setupStyles() {
@@ -180,6 +128,69 @@ final class CommunityPostViewController: BaseViewController, View {
   // MARK: - Bind
   
   func bind(reactor: CommunityPostViewReactor) {
+    
+    let dataSource: DataSource = {
+      let dataSource = DataSource(
+        collectionView: self.collectionView,
+        cellProvider: { collectionView, indexPath, item in
+          switch item {
+          case .content(let post):
+            guard let cell = collectionView.dequeueReusableCell(
+              withReuseIdentifier: CommunityPostContentCell.identifier,
+              for: indexPath
+            ) as? CommunityPostContentCell else {
+              return UICollectionViewCell()
+            }
+            cell.configure(with: post)
+            return cell
+            
+          case .photo(let url):
+            guard let cell = collectionView.dequeueReusableCell(
+              withReuseIdentifier: CommunityPostPhotoCell.identifier,
+              for: indexPath
+            ) as? CommunityPostPhotoCell else {
+              return UICollectionViewCell()
+            }
+            cell.configure(with: url)
+            return cell
+            
+          case .multiBox(let post):
+            guard let cell = collectionView.dequeueReusableCell(
+              withReuseIdentifier: CommunityPostMultiBoxCell.identifier,
+              for: indexPath
+            ) as? CommunityPostMultiBoxCell else {
+              return UICollectionViewCell()
+            }
+            cell.delegate = self
+            cell.configure(with: post)
+            return cell
+            
+          case .comment(let comment):
+            guard let cell = collectionView.dequeueReusableCell(
+              withReuseIdentifier: CommunityCommentCell.identifier,
+              for: indexPath
+            ) as? CommunityCommentCell else {
+              return UICollectionViewCell()
+            }
+            cell.delegate = self
+            cell.configure(with: comment)
+            return cell
+            
+          case .emptyComment:
+            guard let cell = collectionView.dequeueReusableCell(
+              withReuseIdentifier: CommunityPostEmptyCell.identifier,
+              for: indexPath
+            ) as? CommunityPostEmptyCell else {
+              return UICollectionViewCell()
+            }
+            return cell
+          }
+        }
+      )
+      return dataSource
+    }()
+    self.dataSource = dataSource
+    
     // Action
     
     // 화면 최초 접속
@@ -203,7 +214,7 @@ final class CommunityPostViewController: BaseViewController, View {
     
     // 아이템 클릭
     self.collectionView.rx.itemSelected
-      .filter { self.dataSource.sectionIdentifier(for: $0.section) == .photos }
+      .filter { dataSource.sectionIdentifier(for: $0.section) == .photos }
       .map { Reactor.Action.photoCellDidTap(index: $0.item) }
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
@@ -226,7 +237,7 @@ final class CommunityPostViewController: BaseViewController, View {
       .map { CommunityPostViewReactor.Action.anonymousButtonDidTap($0) }
       .bind(to: reactor.action)
       .disposed(by: disposeBag)
-    
+      
     // 게시글 옵션 버튼 클릭 -> 바텀 시트 출력
     self.optionButton.rx.tap
       .asDriver()
@@ -251,7 +262,7 @@ final class CommunityPostViewController: BaseViewController, View {
           snapshot.appendItems(items, toSection: sectionItem.sections[index])
         }
         DispatchQueue.main.async {
-          owner.dataSource.apply(snapshot)
+          dataSource.apply(snapshot)
         }
       }
       .disposed(by: self.disposeBag)
@@ -317,10 +328,10 @@ final class CommunityPostViewController: BaseViewController, View {
     
     reactor.state.map { $0.endEditing }
       .filter { $0 }
-      .debug()
-      .bind(with: self) {
-        $0.view.endEditing($1)
-        $0.commentView.textView.text = ""
+      .observe(on: MainScheduler.asyncInstance )
+      .bind(with: self) { owner, state in
+        owner.view.endEditing(true)
+        owner.commentView.textView.attributedText = NSAttributedString("")
       }
       .disposed(by: self.disposeBag)
     
@@ -372,14 +383,13 @@ final class CommunityPostViewController: BaseViewController, View {
 
 private extension CommunityPostViewController {
   func createLayout() -> UICollectionViewCompositionalLayout {
-    let layout = UICollectionViewCompositionalLayout { section, _ in
+    return UICollectionViewCompositionalLayout { section, _ in
       guard
-        let communityPostSection = self.dataSource.sectionIdentifier(for: section)
+        let communityPostSection = self.dataSource?.sectionIdentifier(for: section)
       else { fatalError("❌ CommunityPostSection을 찾지 못했습니다!") }
       let section = communityPostSection.section
       return section
     }
-    return layout
   }
   
   /// 게시글이 옵션 버튼을 클릭했을 때 호출되는 메서드입니다.

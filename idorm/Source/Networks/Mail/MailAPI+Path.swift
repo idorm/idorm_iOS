@@ -12,12 +12,14 @@ import Moya
 extension MailAPI {
   func getPath() -> String {
     switch self {
-    case .emailAuthentication: return "/email"
-    case .pwAuthentication: return "/email/password"
+    case .emailAuthentication:
+      return "/auth/email"
+    case .pwAuthentication:
+      return "/auth/email/password"
     case .emailVerification(let email, _):
-      return "/verifyCode/\(email)"
+      return "/auth/verifyCode/\(email)"
     case .pwVerification(let email, _):
-      return "/verifyCode/password/\(email)"
+      return "/auth/verifyCode/password/\(email)"
     }
   }
 }

@@ -11,7 +11,7 @@ enum MatchingAPI {
   case deleteMember(Bool, Int)
 }
 
-extension MatchingAPI: TargetType, BaseAPI {
+extension MatchingAPI: BaseTargetType {
   static let provider = MoyaProvider<MatchingAPI>()
   
   var baseURL: URL { getBaseURL() }

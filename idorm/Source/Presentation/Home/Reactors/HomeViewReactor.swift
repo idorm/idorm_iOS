@@ -5,7 +5,8 @@
 //  Created by 김응철 on 2022/12/28.
 //
 
-import Foundation
+import UIKit
+import OSLog
 
 import RxSwift
 import RxCocoa
@@ -15,58 +16,55 @@ import RxMoya
 final class HomeViewReactor: Reactor {
   
   enum Action {
-    case viewDidLoad
-    case postDidTap(postId: Int)
+    case viewWillAppear
+    case itemSelected(HomeSectionItem)
   }
   
   enum Mutation {
-    case setLoading(Bool)
-    case setPosts([CommunityResponseModel.Posts])
-    case setPostDetailVC(Bool, Post)
-    case setCalendars([CalendarResponseModel.Calendar])
+    case setTopPosts([Post])
+    case setDormCalendars([DormCalendar])
+    case setCommunityPostVC(Post)
   }
   
   struct State {
-    var isLoading: Bool = false
-    var popularPosts: [CommunityResponseModel.Posts] = []
-    var calendars: [CalendarResponseModel.Calendar] = []
-    var pushToPostDetailVC: (Bool, Post) = (false, .init())
+    var topPosts: [Post] = []
+    var dormCalendars: [DormCalendar] = []
+    var sections: [HomeSection] = []
+    var items: [[HomeSectionItem]] = []
+    @Pulse var navigateToCommunityPostVC: Post = .init()
   }
-  
+    
   var initialState: State = State()
-  private let apiManager = APIManager<CommunityAPI>()
+  private let communityAPIManager = NetworkService<CommunityAPI>()
+  private let calendarAPIManger = NetworkService<CalendarAPI>()
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
-    case .viewDidLoad:
-      return .empty()
-//      let dormCategory = UserStorage.shared.matchingInfo?.dormCategory ?? .no1
-//      return .concat([
-//        .just(.setLoading(true)),
-//        CommunityAPI.provider.rx.request(.lookupTopPosts(dormCategory))
-//          .asObservable()
-//          .withUnretained(self)
-//          .flatMap { owner, response -> Observable<Mutation> in
-//            let responseModel = CommunityAPI.decode(
-//              ResponseModel<[CommunityResponseModel.Posts]>.self,
-//              data: response.data
-//            ).data
-//            return .concat([
-//              .just(.setPosts(responseModel)),
-//              owner.retrieveCalendars()
-//            ])
-//          }
-//      ])
+    case .viewWillAppear:
+      return self.requestTopPosts()
       
-    case let .postDidTap(postId):
-      return self.apiManager.requestAPI(to: .lookupDetailPost(postId: postId))
-        .map(ResponseDTO<CommunitySinglePostResponseDTO>.self)
-        .flatMap {
-          return Observable<Mutation>.concat([
-            .just(.setPostDetailVC(true, $0.data.toPost())),
-            .just(.setPostDetailVC(false, .init()))
-          ])
+    case .itemSelected(let item):
+      switch item {
+      case .dormCalendar(let calendar):
+        guard let url = calendar.url else {
+          os_log(.info, "🔗 URL주소가 존재하지 않습니다!")
+          return .empty()
         }
+        if let url = URL(string: url) {
+          UIApplication.shared.open(url)
+        } else {
+          os_log(.error, "🔴 유효한 URL주소가 아닙니다!")
+        }
+        return .empty()
+        
+      case .topPost(let post):
+        return self.communityAPIManager.requestAPI(to: .lookupDetailPost(postId: post.identifier))
+          .map(ResponseDTO<CommunitySinglePostResponseDTO>.self)
+          .flatMap { return Observable<Mutation>.just(.setCommunityPostVC(Post($0.data))) }
+        
+      default:
+        return .empty()
+      }
     }
   }
   
@@ -74,46 +72,75 @@ final class HomeViewReactor: Reactor {
     var newState = state
     
     switch mutation {
-    case .setLoading(let isLoading):
-      newState.isLoading = isLoading
+    case .setTopPosts(let topPosts):
+      newState.topPosts = topPosts
       
-    case .setPosts(let posts):
-      newState.popularPosts = posts
+    case .setDormCalendars(let dormCalendars):
+      newState.dormCalendars = dormCalendars
       
-    case let .setPostDetailVC(state, postId):
-      newState.pushToPostDetailVC = (state, postId)
-      
-    case .setCalendars(let calendars):
-      newState.calendars = calendars
+    case .setCommunityPostVC(let post):
+      newState.navigateToCommunityPostVC = post
     }
     
     return newState
   }
+  
+  func transform(state: Observable<State>) -> Observable<State> {
+    return state.map { state in
+      var newState = state
+      
+      var sections: [HomeSection] = []
+      var items: [[HomeSectionItem]] = []
+      
+      // Main
+      sections.append(.main)
+      items.append([.main])
+      
+      // TopPosts
+      if state.topPosts.isNotEmpty {
+        sections.append(.topPosts)
+        items.append(state.topPosts.map { HomeSectionItem.topPost($0) })
+      }
+      
+      // DormCalendars
+      sections.append(.dormCalendars)
+      if state.dormCalendars.isNotEmpty {
+        items.append(state.dormCalendars.map { HomeSectionItem.dormCalendar($0) })
+      } else {
+        items.append([.emptyDormCalendar])
+      }
+      
+      newState.sections = sections
+      newState.items = items
+      
+      return newState
+    }
+  }
 }
 
-extension HomeViewReactor {
-  func retrieveCalendars() -> Observable<Mutation> {
-    let date = Date()
-    let calendar = Calendar.current
-    let year = calendar.component(.year, from: date)
-    let month = calendar.component(.month, from: date)
-    let paddedString = String(format: "%02d", month)
-    return DormCalendarAPI.provider.rx.request(.retrieveCalendars(
-      year: "\(year)",
-      month: paddedString
-    ))
-      .asObservable()
-      .retry()
-      .filterSuccessfulStatusCodes()
+// MARK: - Privates
+
+private extension HomeViewReactor {
+  func requestTopPosts() -> Observable<Mutation> {
+    let domitory = UserStorage.shared.matchingInfo?.dormCategory ?? .no1
+    return self.communityAPIManager.requestAPI(to: .lookupTopPosts(domitory))
+      .map(ResponseDTO<[CommunitySingleTopPostResponseDTO]>.self)
       .flatMap { response -> Observable<Mutation> in
-        let calendars = DormCalendarAPI.decode(
-          ResponseDTO<[CalendarResponseModel.Calendar]>.self,
-          data: response.data
-        ).data
+        let topPosts = response.data.map { Post($0) }
         return .concat([
-          .just(.setCalendars(calendars)),
-          .just(.setLoading(false))
+          .just(.setTopPosts(topPosts)),
+          self.requestDormCalendars()
         ])
+      }
+  }
+  
+  func requestDormCalendars() -> Observable<Mutation> {
+    let yearMonth = Date().toString("yyyy-MM")
+    return self.calendarAPIManger.requestAPI(to: .postDormCalendars(yearMonth: yearMonth))
+      .map(ResponseDTO<[DormCalendarResponseDTO]>.self)
+      .flatMap {
+        let dormCalendars = $0.data.map { DormCalendar($0) }
+        return Observable<Mutation>.just(.setDormCalendars(dormCalendars))
       }
   }
 }

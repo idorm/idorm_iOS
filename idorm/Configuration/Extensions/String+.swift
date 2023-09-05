@@ -88,10 +88,7 @@ extension String {
     let formatter = DateFormatter()
     formatter.dateFormat = from
     formatter.locale = Locale(identifier: "ko_KR")
-    guard let date = formatter.date(from: self) else {
-      os_log(.error, "❌ \(from)을 \(to)으로 변환하지 못했습니다")
-      return ""
-    }
+    guard let date = formatter.date(from: self) else { return "" }
     formatter.dateFormat = to
     return formatter.string(from: date)
   }
@@ -106,10 +103,7 @@ extension String {
   func toDate(format: String) -> Date {
     let formatter = DateFormatter()
     formatter.dateFormat = format
-    guard let date = formatter.date(from: self) else {
-      os_log(.error, "❌ \(self)를 \(format)으로 변환하지 못했습니다")
-      return Date()
-    }
+    guard let date = formatter.date(from: self) else { return Date() }
     return date
   }
   

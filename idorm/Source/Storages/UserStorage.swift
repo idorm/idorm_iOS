@@ -29,6 +29,9 @@ final class UserStorage {
   private(set) var matchingInfo: MatchingInfoResponseModel.MatchingInfo?
   private(set) var member: MemberResponseModel.Member?
   
+  private(set) var newMember: Member?
+  private(set) var newMatchingInfo: MatchingInfo?
+  
   // MARK: - COMPUTED PROPERTIES
   
   var hasMatchingInfo: Bool {
@@ -65,9 +68,17 @@ final class UserStorage {
     self.matchingInfo = matchingInfo
   }
   
+  func saveMatchingInfo(_ model: MatchingInfo) {
+    self.newMatchingInfo = model
+  }
+  
   /// 멤버 정보를 저장합니다.
   func saveMember(_ member: MemberResponseModel.Member) {
     self.member = member
+  }
+  
+  func saveMember(_ member: Member) {
+    self.newMember = member
   }
   
   /// UserDefaults에 저장된 프로퍼티를 제외한 모든 프로퍼티를 nil로 할당합니다.

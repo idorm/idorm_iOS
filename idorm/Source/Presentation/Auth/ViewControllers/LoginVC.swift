@@ -15,19 +15,23 @@ import ReactorKit
 
 final class LoginViewController: BaseViewController, View {
   
-  // MARK: - UI COMPONENTS
+  // MARK: - UI Components
   
-  private let loginLabel = UILabel().then {
-    $0.text = "로그인"
-    $0.font = .iDormFont(.bold, size: 24)
-    $0.textColor = .black
-  }
+  private let loginLabel: UILabel = {
+    let label = UILabel()
+    label.text = "로그인"
+    label.font = .iDormFont(.bold, size: 24)
+    label.textColor = .black
+    return label
+  }()
   
-  private let loginDescriptionLabel = UILabel().then {
-    $0.text = "인천대학교 이메일로 로그인해주세요."
-    $0.textColor = .idorm_gray_400
-    $0.font = .iDormFont(.medium, size: 12)
-  }
+  private let loginDescriptionLabel: UILabel = {
+    let label = UILabel()
+    label.text = "인천대학교 이메일로 로그인해주세요."
+    label.textColor = .iDormColor(.iDormGray400)
+    label.font = .iDormFont(.medium, size: 12.0)
+    return label
+  }()
   
   private let idTextField = LoginTextField("이메일").then {
     $0.textContentType = .emailAddress

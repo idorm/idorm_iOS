@@ -9,12 +9,6 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-enum NetworkError: Error {
-  case decodingError
-  case domainError
-  case urlError
-}
-
 enum HttpMethod: String {
   case get = "GET"
   case post = "POST"

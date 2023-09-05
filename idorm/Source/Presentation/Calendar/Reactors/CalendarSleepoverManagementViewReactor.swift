@@ -40,7 +40,7 @@ final class CalendarSleepoverManagementViewReactor: Reactor {
   // MARK: - Properties
   
   var initialState: State = State()
-  private let apiManager = APIManager<CalendarAPI>()
+  private let apiManager = NetworkService<CalendarAPI>()
   
   // MARK: - Initializer
   

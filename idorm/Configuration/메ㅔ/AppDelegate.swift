@@ -83,8 +83,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
     _ messaging: Messaging,
     didReceiveRegistrationToken fcmToken: String?
   ) {
-    print("FcmToken: \(fcmToken)")
-    TokenManager.shared.fcmToken = fcmToken
+    FCMTokenManager.shared.fcmToken = fcmToken
   }
 }
 

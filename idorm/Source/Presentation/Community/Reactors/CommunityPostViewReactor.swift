@@ -76,7 +76,7 @@ final class CommunityPostViewReactor: Reactor {
   
   // MARK: - Properties
   
-  private let apiManager = APIManager<CommunityAPI>()
+  private let apiManager = NetworkService<CommunityAPI>()
   var initialState: State
 
   // MARK: - Initializer
@@ -249,6 +249,12 @@ private extension CommunityPostViewReactor {
   func getSinglePost() -> Observable<Mutation> {
     return self.apiManager.requestAPI(to: .lookupDetailPost(postId: self.currentState.post.identifier))
       .map(ResponseDTO<CommunitySinglePostResponseDTO>.self)
-      .flatMap { return Observable<Mutation>.just(.setPost($0.data.toPost())) }
+      .flatMap {
+        return Observable<Mutation>.concat([
+          .just(.setPost($0.data.toPost())),
+          .just(.setEndRefresh(true)),
+          .just(.setEndRefresh(false))
+        ])
+      }
   }
 }

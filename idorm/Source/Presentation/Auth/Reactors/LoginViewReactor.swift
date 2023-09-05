@@ -35,7 +35,7 @@ final class LoginViewReactor: Reactor {
     var isOpenedPutEmailVC: (Bool, AuthProcess) = (false, .findPw)
   }
   
-  private let memberAPIManager = APIManager<MemberAPI>()
+  private let memberAPIManager = NetworkService<MemberAPI>()
   var initialState: State = State()
   
   func mutate(action: Action) -> Observable<Mutation> {
@@ -48,7 +48,7 @@ final class LoginViewReactor: Reactor {
         memberAPIManager.requestAPI(to: .login(
           email: email,
           password: password,
-          fcmToken: TokenManager.shared.fcmToken!
+          fcmToken: FCMTokenManager.shared.fcmToken!
         ))
         .flatMap { response -> Observable<Mutation> in
           let member = MemberAPI.decode(

@@ -33,6 +33,7 @@ final class CalendarViewReactor: Reactor {
     case setDormCalendars([DormCalendarResponseDTO])
     case setCurrentDate(String)
     case setCalendarManagementVC(TeamCalendarSingleResponseDTO?)
+    case setCalendarSleepoverListVC([TeamCalendar], memberID: Int)
     case setEditingMode(isMemberSection: Bool?)
   }
   
@@ -49,13 +50,20 @@ final class CalendarViewReactor: Reactor {
     var items: [[CalendarSectionItem]] = []
     
     // Presentation
-    @Pulse var navigateToCalendarMaanagementVC: ((CalendarManagementViewReactor.ViewState, [TeamCalendarSingleMemberResponseDTO])) = (.new, [])
+    @Pulse var navigateToCalendarMaanagementVC: (
+      (CalendarManagementViewReactor.ViewState, [TeamCalendarSingleMemberResponseDTO])
+    ) = (.new, [])
+    @Pulse var presentToCalendarSleepoverListVC: (
+      teamCalendars: [TeamCalendar],
+      yearMonth: String,
+      memberID: Int
+    )?
   }
   
   // MARK: - Properties
   
   var initialState: State = State()
-  private let apiManager = APIManager<CalendarAPI>()
+  private let apiManager = NetworkService<CalendarAPI>()
   
   // MARK: - Functions
   
@@ -80,6 +88,16 @@ final class CalendarViewReactor: Reactor {
       
     case .itemSelected(let item):
       switch item {
+      case let .teamMember(teamMember, _):
+        let memberID = teamMember.memberId
+        let yearMonth = self.currentState.currentDate
+        return self.apiManager.requestAPI(to: .postSleepoverCalendars(memberID: memberID, yearMonth: yearMonth))
+          .map(ResponseDTO<[TeamCalendarSleepoverResponseDTO]>.self)
+          .flatMap {
+            let teamCalendars = $0.data.map { TeamCalendar($0) }
+            return Observable<Mutation>.just(.setCalendarSleepoverListVC(teamCalendars, memberID: memberID))
+          }
+        
       case let .teamCalendar(teamCalendars, isEditing):
         if !isEditing { return self.requestTeamCalendar(with: teamCalendars.teamCalendarId) }
         return .empty()
@@ -127,10 +145,10 @@ final class CalendarViewReactor: Reactor {
     case .shareCalendarButtonDidTap:
       let profileURL = UserStorage.shared.member?.profilePhotoUrl
       let nickNM = UserStorage.shared.member?.nickname
-      KakaoShareManager().inviteTeamCalendar(
+      KakaoShareManager.shared.inviteTeamCalendar(
         profileURL: profileURL,
         nickname: nickNM!,
-        teamID: self.currentState.teamId
+        inviter: self.currentState.teamId
       )
       return .empty()
     }
@@ -169,6 +187,9 @@ final class CalendarViewReactor: Reactor {
         newState.isEditingMemberSection = isMemberSection!
         newState.isEditingTeamCalendarSection = !isMemberSection!
       }
+      
+    case let .setCalendarSleepoverListVC(teamCalendars, memberID):
+      newState.presentToCalendarSleepoverListVC = (teamCalendars, state.currentDate, memberID)
     }
     
     return newState
@@ -214,6 +235,7 @@ final class CalendarViewReactor: Reactor {
     }
   }
 }
+
 // MARK: - Privates
 
 private extension CalendarViewReactor {

@@ -34,7 +34,7 @@ enum CalendarAPI {
    종료된 일정은 제거한 후, 최신 등록 순으로 응답합니다.
    
    - Parameters:
-     - yearMonth: Ex. `2023-04`
+   - yearMonth: Ex. `2023-04`
    */
   case postDormCalendars(yearMonth: String)
   
@@ -45,7 +45,7 @@ enum CalendarAPI {
    [팀] 일정 수정
    
    - targets 필드는 회원 식별자 배열을 주세요
-  */
+   */
   case putTeamCalendar(TeamCalendarRequestModel)
   
   /**
@@ -53,7 +53,7 @@ enum CalendarAPI {
    
    - 팀일정은 팀에 소속된 회원이라면 누구나 삭제 가능합니다.
    - 외박 일정은 본인의 것만 삭제 가능합니다.
-  */
+   */
   case deleteTeamCalendar(teamCalendarId: Int)
   
   /**
@@ -79,16 +79,33 @@ enum CalendarAPI {
   
   /**
    [외박] 일정 생성
-
+   
    - 외박일정은 본인의 것만 생성 가능합니다.
    */
   case postSleepoverCalendar(startDate: String, endDate: String)
-  }
+  
+  /**
+   [외박] 일정 월별 조회
+   
+   - 팀원 한 명의 외박 일정들을 응답합니다.
+   - 종료일이 지난 일정은 빼고 응답합니다.
+   - 예시 성공 응답이 리스트로 파바박- 담겨서 응답합니다.
+   */
+  case postSleepoverCalendars(memberID: Int, yearMonth: String)
+  
+  /**
+   룸메이트 초대 수락
+   
+   - 초대를 보낼 때가 아닌, 초대를 수락할 때 보내주세요.
+   */
+  case postAcceptInvitation(memberID: Int)
+}
 
-extension CalendarAPI: TargetType, BaseAPI {
+extension CalendarAPI: BaseTargetType {
   var baseURL: URL { self.getBaseURL() }
   var path: String { self.getPath() }
   var method: Moya.Method { self.getMethod() }
   var task: Moya.Task { self.getTask() }
   var headers: [String : String]? { self.getJsonHeader() }
 }
+

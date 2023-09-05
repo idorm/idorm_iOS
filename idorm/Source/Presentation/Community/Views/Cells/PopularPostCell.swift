@@ -13,18 +13,26 @@ final class PopularPostCell: UICollectionViewCell {
   
   // MARK: - Properties
   
+  private let containerView: UIView = {
+    let view = UIView()
+    view.layer.shadowOpacity = 0.11
+    view.layer.shadowOffset = CGSize(width: 0, height: 1)
+    view.layer.shadowRadius = 2.0
+    view.layer.cornerRadius = 8.0
+    view.backgroundColor = .white
+    return view
+  }()
+  
   private let popularLabel: UILabel = {
     let lb = UILabel()
-    lb.text = "인기"
     lb.textColor = .idorm_blue
     lb.font = .init(name: IdormFont_deprecated.bold.rawValue, size: 12)
-    
+    lb.text = "인기"
     return lb
   }()
   
   private let contentsLabel: UILabel = {
     let lb = UILabel()
-    lb.text = "3 기숙사 카페 혜윰메뉴 올려드립니다! 제가"
     lb.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 12)
     lb.textColor = .black
     lb.lineBreakMode = .byCharWrapping
@@ -37,8 +45,6 @@ final class PopularPostCell: UICollectionViewCell {
     let lb = UILabel()
     lb.textColor = .idorm_gray_400
     lb.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 12)
-    lb.text = "100"
-    
     return lb
   }()
   
@@ -46,8 +52,6 @@ final class PopularPostCell: UICollectionViewCell {
     let lb = UILabel()
     lb.textColor = .idorm_gray_400
     lb.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 12)
-    lb.text = "100"
-    
     return lb
   }()
   
@@ -55,8 +59,6 @@ final class PopularPostCell: UICollectionViewCell {
     let lb = UILabel()
     lb.textColor = .idorm_gray_400
     lb.font = .init(name: IdormFont_deprecated.regular.rawValue, size: 12)
-    lb.text = "100"
-    
     return lb
   }()
   
@@ -76,26 +78,14 @@ final class PopularPostCell: UICollectionViewCell {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-}
-
-// MARK: - Setup
-
-extension PopularPostCell: BaseView {
   
-  func configure(_ post: CommunityResponseModel.Posts) {
-    contentsLabel.text = post.content
-    likeCountLabel.text = "\(post.likesCount)"
-    pictureCountLabel.text = "\(post.imagesCount)"
-    messageCountLabel.text = "\(post.commentsCount)"
-  }
+  // MARK: - Setup
   
-  func setupStyles() {
-    contentView.layer.cornerRadius = 8
-    contentView.layer.masksToBounds = true
-    contentView.backgroundColor = .white
-  }
+  func setupStyles() {}
   
   func setupLayouts() {
+    self.contentView.addSubview(self.containerView)
+    
     [
       self.popularLabel,
       self.contentsLabel,
@@ -106,11 +96,15 @@ extension PopularPostCell: BaseView {
       self.pictureImageView,
       self.pictureCountLabel
     ].forEach {
-      self.contentView.addSubview($0)
+      self.containerView.addSubview($0)
     }
   }
   
   func setupConstraints() {
+    self.containerView.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
+    }
+    
     self.popularLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(10)
       make.top.equalToSuperview().inset(15)
@@ -150,5 +144,26 @@ extension PopularPostCell: BaseView {
       make.leading.equalTo(self.pictureImageView.snp.trailing).offset(3)
       make.centerY.equalTo(self.pictureImageView)
     }
+  }
+  
+  // MARK: - Configure
+  
+  func configure(with post: Post) {
+    contentsLabel.text = post.content
+    likeCountLabel.text = "\(post.likesCount)"
+    pictureCountLabel.text = "\(post.imagesCount)"
+    messageCountLabel.text = "\(post.commentsCount)"
+  }
+}
+
+// MARK: - Setup
+
+extension PopularPostCell: BaseView {
+  
+  func configure(_ post: CommunityResponseModel.Posts) {
+    contentsLabel.text = post.content
+    likeCountLabel.text = "\(post.likesCount)"
+    pictureCountLabel.text = "\(post.imagesCount)"
+    messageCountLabel.text = "\(post.commentsCount)"
   }
 }
