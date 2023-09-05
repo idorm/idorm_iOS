@@ -710,6 +710,16 @@
 			path = Popup;
 			sourceTree = "<group>";
 		};
+		E50E202D2AA6BFEA0049A0FD /* App */ = {
+			isa = PBXGroup;
+			children = (
+				E50300F628773A5D00611C62 /* AppDelegate.swift */,
+				E50300F828773A5D00611C62 /* SceneDelegate.swift */,
+				E529516229BD222F00087AE2 /* SceneDelegate+Switch.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
 		E50FB5292972B34300E938B8 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -799,17 +809,6 @@
 				E547E3E9291CF669000D3A47 /* MatchingCardStringList.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		E529515F29BD217900087AE2 /* App */ = {
-			isa = PBXGroup;
-			children = (
-				E50300F628773A5D00611C62 /* AppDelegate.swift */,
-				E50300F828773A5D00611C62 /* SceneDelegate.swift */,
-				E529516229BD222F00087AE2 /* SceneDelegate+Switch.swift */,
-			);
-			name = App;
-			path = "메ㅔ";
 			sourceTree = "<group>";
 		};
 		E53D1A3D2988A5640074308B /* Member */ = {
@@ -1120,8 +1119,8 @@
 		E575304328D92BE900F0B57C /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
+				E50E202D2AA6BFEA0049A0FD /* App */,
 				E575304528D92C1200F0B57C /* Base */,
-				E529515F29BD217900087AE2 /* App */,
 				E5084367288133570047A2EC /* Extensions */,
 				E508437528813C270047A2EC /* Fonts */,
 				E5EB0D022952923D00E70573 /* Constants */,
