@@ -18,13 +18,13 @@ extension String {
   }
   
   func isValidCompoundCondition() -> Bool {
-    let passwordRegEx = "^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{0,}"
+    let passwordRegEx = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]).{0,}"
     let passwordTest = NSPredicate(format: "SELF MATCHES %@", passwordRegEx)
     return passwordTest.evaluate(with: self)
   }
   
   var isValidPasswordCondition: Bool {
-    let passwordRegEx = "^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{8,20}"
+    let passwordRegEx = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]).{8,15}"
     let passwordTest = NSPredicate(format: "SELF MATCHES %@", passwordRegEx)
     return passwordTest.evaluate(with: self)
   }

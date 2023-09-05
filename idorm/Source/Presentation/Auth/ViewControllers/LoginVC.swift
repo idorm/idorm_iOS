@@ -17,6 +17,7 @@ final class LoginViewController: BaseViewController, View {
   
   // MARK: - UI Components
   
+  /// `로그인`이 적혀있는 `UILabel`
   private let loginLabel: UILabel = {
     let label = UILabel()
     label.text = "로그인"
@@ -25,6 +26,7 @@ final class LoginViewController: BaseViewController, View {
     return label
   }()
   
+  /// `인천대학교 이메일로 로그인해주세요.`이 적혀있는 `UILabel`
   private let loginDescriptionLabel: UILabel = {
     let label = UILabel()
     label.text = "인천대학교 이메일로 로그인해주세요."
