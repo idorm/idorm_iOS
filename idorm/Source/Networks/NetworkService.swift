@@ -85,7 +85,7 @@ final class NetworkService<targetType: BaseTargetType> {
             os_log(.error, "❌ 요청에 실패했습니다. 실패요인: 인터넷 연결 끊김")
             AlertManager.shared.showAlertPopup("인터넷 연결을 확인해주세요.")
           case let NetworkError.restError(errorCode, errorMessage):
-            os_log(.error, "❌ 요청에 실패했습니다. 실패요인: \(errorCode)")
+            os_log(.error, "❌ 요청에 실패했습니다. 실패요인: \(errorCode!)")
             AlertManager.shared.showAlertPopup(errorMessage)
           default:
             os_log(.error, "❌ 알수없는 에러가 발생했습니다. 실패요인: \(rawError.localizedDescription)")

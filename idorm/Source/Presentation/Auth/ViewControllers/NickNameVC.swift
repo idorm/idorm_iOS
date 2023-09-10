@@ -73,7 +73,7 @@ final class NicknameViewController: BaseViewController, View {
     stack.axis = .vertical
   }
   
-  private let textField = idormTextField("변경할 닉네임을 입력해주세요.")
+  private let textField = iDormTextField("변경할 닉네임을 입력해주세요.")
   private var confirmButton: OldiDormButton
   private let type: VCType
   

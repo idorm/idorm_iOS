@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MatchingInfoSingleReseponeDTO: Decodable {
+struct MatchingInfoSingleResponeDTO: Decodable {
   let matchingInfoId: Int
   let dormCategory: Dormitory
   let joinPeriod: JoinPeriod

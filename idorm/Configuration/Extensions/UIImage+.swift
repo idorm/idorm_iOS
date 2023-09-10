@@ -42,6 +42,11 @@ enum iDormIcon: String {
   case trashcan
   
   case note
+  
+  case inu
+  case idorm
+  
+  case mailBox
 }
 
 enum iDormText: String {

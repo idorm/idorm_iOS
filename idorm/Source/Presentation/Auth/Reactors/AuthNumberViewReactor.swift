@@ -15,145 +15,80 @@ import RxMoya
 final class AuthNumberViewReactor: Reactor {
   
   enum Action {
-    case didTapConfirmButton(String)
-    case didTapRequestAuthButton
+    case textFieldDidChange(String)
+    case requestAuthNumberButtonDidTap
+    case continueButtonDidTap
   }
   
   enum Mutation {
-    case setLoading(Bool)
-    case setPopVC(Bool)
-    case setPopup(Bool, String)
+    case setAuthenticationNumber(String)
+    case setDismiss(Bool)
   }
   
   struct State {
-    var isLoading: Bool = false
-    var isOpenedPopup: (Bool, String) = (false, "")
-    var popVC: Bool = false
+    var authenticationNumber: String = ""
+    @Pulse var shouldDismiss: Bool = false
   }
+  
+  // MARK: - Properties
   
   var initialState: State = State()
-  private let timer: MailTimerChecker
+  private let mailNetworkService = NetworkService<MailAPI>()
   
-  init(_ timer: MailTimerChecker) {
-    self.timer = timer
-  }
+  // MARK: - Functions
   
   func mutate(action: Action) -> Observable<Mutation> {
     let email = Logger.shared.email
     
     switch action {
-    case .didTapConfirmButton(let number):
+    case .textFieldDidChange(let number):
+      return .just(.setAuthenticationNumber(number))
+      
+    case .continueButtonDidTap:
       switch Logger.shared.authProcess {
-      case .signUp:
-        return .concat([
-          .just(.setLoading(true)),
-          MailAPI.provider.rx.request(
-            .emailVerification(email: email, code: number)
-          )
-            .asObservable()
-            .retry()
-            .flatMap { response -> Observable<Mutation> in
-              switch response.statusCode {
-              case 200:
-                return .concat([
-                  .just(.setLoading(false)),
-                  .just(.setPopVC(true))
-                ])
-              default:
-                let message = MailAPI.decode(
-                  ErrorResponseModel.self,
-                  data: response.data
-                ).responseMessage
-                return .concat([
-                  .just(.setLoading(false)),
-                  .just(.setPopup(true, message)),
-                  .just(.setPopup(false, ""))
-                ])
-              }
-            }
-        ])
+      case .findPw: // 비밀번호 찾기
+        return self.mailNetworkService.requestAPI(to: .pwVerification(
+          email: email,
+          code: self.currentState.authenticationNumber
+        )).flatMap { _ in return Observable<Mutation>.just(.setDismiss(true)) }
         
-      case .findPw:
-        return .concat([
-          .just(.setLoading(true)),
-          MailAPI.provider.rx.request(
-            .pwVerification(email: email, code: number)
-          )
-            .asObservable()
-            .retry()
-            .flatMap { response -> Observable<Mutation> in
-              switch response.statusCode {
-              case 200:
-                return .concat([
-                  .just(.setLoading(false)),
-                  .just(.setPopVC(true))
-                ])
-              default:
-                let message = MailAPI.decode(
-                  ErrorResponseModel.self,
-                  data: response.data
-                ).responseMessage
-                return .concat([
-                  .just(.setLoading(false)),
-                  .just(.setPopup(true, message)),
-                  .just(.setPopup(false, ""))
-                ])
-              }
-            }
-        ])
+      case .signUp: // 회원가입
+        return self.mailNetworkService.requestAPI(to: .emailVerification(
+          email: email,
+          code: self.currentState.authenticationNumber
+        )).flatMap { _ in return Observable<Mutation>.just(.setDismiss(true)) }
       }
       
-    case .didTapRequestAuthButton:
+    case .requestAuthNumberButtonDidTap:
       switch Logger.shared.authProcess {
       case .signUp:
-        return .concat([
-          .just(.setLoading(true)),
-          MailAPI.provider.rx.request(
-            .emailAuthentication(email: email)
-          )
-            .asObservable()
-            .retry()
-            .filterSuccessfulStatusCodes()
-            .withUnretained(self)
-            .flatMap { owner, _ -> Observable<Mutation> in
-              owner.timer.restart()
-              return .just(.setLoading(false))
-            }
-        ])
+        return self.mailNetworkService.requestAPI(to: .emailAuthentication(email: email))
+          .flatMap { _ in
+            MailStopWatchManager.shared.reset()
+            return Observable<Mutation>.empty()
+          }
         
       case .findPw:
-        return .concat([
-          .just(.setLoading(true)),
-          MailAPI.provider.rx.request(
-            .pwAuthentication(email: email)
-          )
-            .asObservable()
-            .retry()
-            .filterSuccessfulStatusCodes()
-            .withUnretained(self)
-            .flatMap { owner, _ -> Observable<Mutation> in
-              owner.timer.restart()
-              return .just(.setLoading(false))
-            }
-        ])
+        return self.mailNetworkService.requestAPI(to: .pwAuthentication(email: email))
+          .flatMap { _ in
+            MailStopWatchManager.shared.reset()
+            return Observable<Mutation>.empty()
+          }
       }
     }
-  }
-  
-  func reduce(state: State, mutation: Mutation) -> State {
-    var newState = state
     
-    switch mutation {
-    case .setLoading(let isLoading):
-      newState.isLoading = isLoading
+    func reduce(state: State, mutation: Mutation) -> State {
+      var newState = state
       
-    case let .setPopup(isOpened, message):
-      newState.isOpenedPopup = (isOpened, message)
+      switch mutation {
+      case .setAuthenticationNumber(let number):
+        newState.authenticationNumber = number
+        
+      case .setDismiss(let state):
+        newState.shouldDismiss = state
+      }
       
-    case .setPopVC(let isOpened):
-      newState.popVC = isOpened
+      return newState
     }
-    
-    return newState
   }
 }

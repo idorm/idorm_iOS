@@ -1,3 +1,10 @@
+//
+//  iDormTextField.swift
+//  idorm
+//
+//  Created by 김응철 on 7/26/23.
+//
+
 import UIKit
 
 import Then
@@ -5,7 +12,9 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-final class idormTextField: UITextField {
+final class iDormTextField: UITextField {
+  
+  // MARK: - UI Components
   
   // MARK: - Properties
   

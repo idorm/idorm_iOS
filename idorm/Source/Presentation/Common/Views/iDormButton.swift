@@ -26,6 +26,8 @@ final class iDormButton: UIButton, BaseView {
   /// 버튼의 왼쪽에 위치해 있는 `UIImage?`
   private let image: UIImage?
   
+  private var heightConstraint: Constraint?
+  
   /// 버튼의 타이틀 `String`
   var title: String = "" {
     willSet {
@@ -34,6 +36,11 @@ final class iDormButton: UIButton, BaseView {
         attributes: .init([.font: self.font])
       )
     }
+  }
+  
+  /// 버튼의 높이 `CGFloat`
+  var height: CGFloat = 53.0 {
+    willSet { self.heightConstraint?.update(offset: newValue) }
   }
   
   /// 버튼의 `CornerRadius`
@@ -134,6 +141,16 @@ final class iDormButton: UIButton, BaseView {
     willSet { self.configuration?.imagePlacement = newValue }
   }
   
+  /// 버튼의 `BorderWidth`
+  var borderWidth: CGFloat = 0.0 {
+    willSet { self.layer.borderWidth = newValue }
+  }
+  
+  /// 버튼의 `BorderColor`
+  var borderColor: UIColor = .white {
+    willSet { self.layer.borderColor = newValue.cgColor }
+  }
+  
   /// 현재 버튼의 `BottomSheetItem` (BottomSheetVC에서만 사용가능)
   var bottomSheetItem: BottomSheetItem?
   
@@ -163,6 +180,7 @@ final class iDormButton: UIButton, BaseView {
   
   func setupStyles() {
     self.baseBackgroundColor = .white
+    self.font = .iDormFont(.medium, size: 14.0)
   }
   
   func setupLayouts() {
@@ -177,6 +195,10 @@ final class iDormButton: UIButton, BaseView {
     self.bottomBorderLine.snp.makeConstraints { make in
       make.bottom.directionalHorizontalEdges.equalToSuperview()
       make.height.equalTo(1.0)
+    }
+    
+    self.snp.makeConstraints { make in
+      self.heightConstraint = make.height.equalTo(53.0).constraint
     }
   }
   

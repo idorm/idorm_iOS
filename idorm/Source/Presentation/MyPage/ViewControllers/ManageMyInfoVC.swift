@@ -129,8 +129,8 @@ final class ManageMyInfoViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let viewController = EmailViewController(.changePw)
-        viewController.reactor = EmailViewReactor()
+        let viewController = EmailViewController()
+        viewController.reactor = EmailViewReactor(.changePassword)
         owner.navigationController?.pushViewController(viewController, animated: true)
       }
       .disposed(by: disposeBag)

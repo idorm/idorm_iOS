@@ -5,7 +5,7 @@
 //  Created by 김응철 on 2022/12/23.
 //
 
-import Foundation
+import UIKit
 
 import RxSwift
 import RxCocoa
@@ -14,44 +14,46 @@ import ReactorKit
 final class AuthViewReactor: Reactor {
   
   enum Action {
-    case portal
-    case next
-    case dismiss
+    case viewDidLoad
+    case cancelButtonDidTap
+    case goMailBoxButtonDidTap
+    case enterNumberButtonDidTap
   }
   
   enum Mutation {
-    case setSafari(Bool)
-    case setAuthNumberVC(Bool)
     case setDismiss(Bool)
+    case setAuthNumberVC(MailTimerChecker)
   }
   
   struct State {
-    var isOpenedSafari: Bool = false
-    var isOpenedAuthNumberVC: Bool = false
-    var isDismiss: Bool = false
+    @Pulse var shouldDismiss: Bool = false
+    @Pulse var shouldNavigateToAuthNumberVC: MailTimerChecker?
   }
   
+  // MARK: - Properties
+  
   var initialState: State = State()
+  private let mailTimer = MailTimerChecker()
+  
+  // MARK: - Functions
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
-    case .portal:
-      return .concat([
-        .just(.setSafari(true)),
-        .just(.setSafari(false))
-      ])
+    case .viewDidLoad:
+      return .empty()
       
-    case .next:
-      return .concat([
-        .just(.setAuthNumberVC(true)),
-        .just(.setAuthNumberVC(false))
-      ])
+    case .cancelButtonDidTap:
+      return .just(.setDismiss(true))
       
-    case .dismiss:
-      return .concat([
-        .just(.setDismiss(true)),
-        .just(.setDismiss(false))
-      ])
+    case .goMailBoxButtonDidTap:
+      guard
+        let url = URL(string: "https://webmail.inu.ac.kr/member/login?host_domain=inu.ac.kr")
+      else { return .empty() }
+      UIApplication.shared.open(url)
+      return .empty()
+      
+    case .enterNumberButtonDidTap:
+      return .just(.setAuthNumberVC(self.mailTimer))
     }
   }
   
@@ -59,14 +61,11 @@ final class AuthViewReactor: Reactor {
     var newState = state
     
     switch mutation {
-    case .setSafari(let isOpened):
-      newState.isOpenedSafari = isOpened
+    case .setDismiss(let state):
+      newState.shouldDismiss = state
       
-    case .setAuthNumberVC(let isOpened):
-      newState.isOpenedAuthNumberVC = isOpened
-      
-    case .setDismiss(let isDismiss):
-      newState.isDismiss = isDismiss
+    case .setAuthNumberVC(let mailTimerChecker):
+      newState.shouldNavigateToAuthNumberVC = mailTimerChecker
     }
     
     return newState

@@ -7,6 +7,11 @@
 
 import Foundation
 
+enum AuthProcess {
+  case signUp
+  case findPw
+}
+
 /// 회원가입을 할 떄, 임시적으로 유저의 정보를 저장하는 싱글톤 객체입니다.
 final class Logger {
   
@@ -18,7 +23,7 @@ final class Logger {
     self.authProcess = .signUp
   }
   
-  // MARK: - PROPERTIES
+  // MARK: - Properties
   
   private(set) var email: String
   private(set) var password: String

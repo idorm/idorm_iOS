@@ -8,93 +8,72 @@
 import Foundation
 
 import RxSwift
-import ReactorKit
 import RxMoya
+import ReactorKit
 
 final class EmailViewReactor: Reactor {
   
+  enum ViewType {
+    case signUp
+    case changePassword
+    case findPassword
+  }
+  
   enum Action {
-    case next(String, EmailViewController.ViewControllerType)
+    case emailTextFieldDidChange(String)
+    case continueButtonDidTap
   }
   
   enum Mutation {
-    case setLoading(Bool)
     case setAuthVC(Bool)
-    case setPopup(Bool, String)
+    case setEmail(String)
   }
   
   struct State {
-    var isLoading: Bool = false
-    var isOpenedAuthVC: Bool = false
-    var isOpenedPopup: (Bool, String) = (false, "")
+    var viewType: ViewType
+    var email: String = ""
+    @Pulse var shouldPresentToAuthVC: Bool = false
   }
   
-  // MARK: - PROPERTIES
+  // MARK: - Properties
   
-  var initialState: State = State()
+  var initialState: State
+  private let viewType: ViewType
+  private let mailNetworkService = NetworkService<MailAPI>()
+  
+  // MARK: - Initailizer
+  
+  init(_ viewType: ViewType) {
+    self.viewType = viewType
+    self.initialState = State(viewType: viewType)
+  }
   
   // MARK: - HELPERS
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
-    case let .next(email, authProcess):
-      switch authProcess {
-      case .signUp: // 회원가입
-        return .concat([
-          .just(.setLoading(true)),
-          MailAPI.provider.rx.request(.emailAuthentication(email: email))
-            .asObservable()
-            .flatMap { response -> Observable<Mutation> in
-              switch response.statusCode {
-              case 200..<300: // 메일 전송 성공
-                Logger.shared.saveAuthProcess(.signUp)
-                Logger.shared.saveEmail(email)
-                return .concat([
-                  .just(.setLoading(false)),
-                  .just(.setAuthVC(true)),
-                  .just(.setAuthVC(false))
-                ])
-              default: // 메일 전송 실패
-                let errorMessage = MailAPI.decode(
-                  ErrorResponseModel.self,
-                  data: response.data
-                ).responseMessage
-                return .concat([
-                  .just(.setLoading(false)),
-                  .just(.setPopup(true, errorMessage)),
-                  .just(.setPopup(false, errorMessage))
-                ])
-              }
-            }
-        ])
-      case .findPw, .changePw: // 비밀번호 찾기
-        return .concat([
-          .just(.setLoading(true)),
-          MailAPI.provider.rx.request(.pwAuthentication(email: email))
-            .asObservable()
-            .flatMap { response -> Observable<Mutation> in
-              switch response.statusCode {
-              case 200..<300: // 메일 전송 성공
-                Logger.shared.saveAuthProcess(.findPw)
-                Logger.shared.saveEmail(email)
-                return .concat([
-                  .just(.setLoading(false)),
-                  .just(.setAuthVC(true)),
-                  .just(.setAuthVC(false))
-                ])
-              default: // 메일 전송 실패
-                let errorMessage = MailAPI.decode(
-                  ErrorResponseModel.self,
-                  data: response.data
-                ).responseMessage
-                return .concat([
-                  .just(.setLoading(false)),
-                  .just(.setPopup(true, errorMessage)),
-                  .just(.setPopup(false, errorMessage))
-                ])
-              }
-            }
-        ])
+    case .emailTextFieldDidChange(let email):
+      return .just(.setEmail(email))
+      
+    case .continueButtonDidTap:
+      let email = self.currentState.email
+      switch self.currentState.viewType {
+      case .changePassword:
+        return .empty()
+      case .findPassword:
+        return self.mailNetworkService.requestAPI(to: .pwAuthentication(email: email))
+          .flatMap { _ in
+            Logger.shared.saveEmail(email)
+            Logger.shared.saveAuthProcess(.findPw)
+            return Observable<Mutation>.just(.setAuthVC(true))
+          }
+      case .signUp:
+        return self.mailNetworkService.requestAPI(to: .emailAuthentication(email: email))
+          .flatMap {_ in
+            Logger.shared.saveAuthProcess(.signUp)
+            Logger.shared.saveEmail(email)
+            return Observable<Mutation>.just(.setAuthVC(true))
+          }
       }
     }
   }
@@ -103,14 +82,11 @@ final class EmailViewReactor: Reactor {
     var newState = state
     
     switch mutation {
-    case let .setPopup(isOpened, message):
-      newState.isOpenedPopup = (isOpened, message)
+    case .setEmail(let email):
+      newState.email = email
       
-    case .setLoading(let isLoading):
-      newState.isLoading = isLoading
-      
-    case .setAuthVC(let isOpened):
-      newState.isOpenedAuthVC = isOpened
+    case .setAuthVC(let state):
+      newState.shouldPresentToAuthVC = state
     }
     
     return newState

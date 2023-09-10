@@ -80,6 +80,9 @@ private extension iDormSplashViewReactor {
         os_log(.info, "🔓 로그인에 성공하였습니다. 이메일: \(email), 비밀번호: \(password)")
         return self.requestMemberMatchingInfo()
       } catch (let error) {
+        FilterStorage.shared.resetFilter()
+        UserStorage.shared.reset()
+        UserStorage.shared.resetToken()
         os_log(.error, "🔐 로그인에 실패하였습니다. 이메일: \(email), 비밀번호: \(password), 실패요인: \(error.localizedDescription)")
         return Observable<Mutation>.just(.setLoginVC)
       }
@@ -99,6 +102,9 @@ private extension iDormSplashViewReactor {
           UserStorage.shared.saveMatchingInfo(responseDTO)
           return Observable<Mutation>.just(.setTabBarVC)
         } catch (let error) {
+          FilterStorage.shared.resetFilter()
+          UserStorage.shared.reset()
+          UserStorage.shared.resetToken()
           os_log(.error, "🔴 회원의 매칭 정보르 조회를 실패했습니다. \(error.localizedDescription)")
           return Observable<Mutation>.just(.setLoginVC)
         }

@@ -46,7 +46,7 @@ struct MatchingInfo {
   let wishText: String
   
   /// `MatchingInfoSingleReseponeDTO` -> `MatchingInfo`
-  init(_ responseDTO: MatchingInfoSingleReseponeDTO) {
+  init(_ responseDTO: MatchingInfoSingleResponeDTO) {
     self.identifier = responseDTO.matchingInfoId
     self.age = responseDTO.age
     self.cleanUpStatus = responseDTO.cleanUpStatus

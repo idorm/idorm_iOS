@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OSLog
 
 import RxSwift
 import RxCocoa
@@ -15,71 +16,77 @@ import ReactorKit
 final class LoginViewReactor: Reactor {
   
   enum Action {
-    case viewDidLoad
-    case signIn(String, String)
-    case signUp
-    case forgotPassword
+    case loginButtonDidTap
+    case emailTextFieldDidChange(String)
+    case passwordTextFieldDidChange(String)
+    case signUpButtonDidTap
+    case forgotPasswordButtonDidTap
   }
   
   enum Mutation {
-    case setLoading(Bool)
-    case setPopup(Bool, String)
-    case setMainVC(Bool)
-    case setPutEmailVC(Bool , AuthProcess)
+    case setEmail(String)
+    case setPassword(String)
+    case setTabBarVC(Bool)
+    case setEmailVC(AuthProcess)
   }
   
   struct State {
-    var isLoading: Bool = false
-    var isOpenedPopup: (Bool, String) = (false, "")
-    @Pulse var isOpenedMainVC: Bool = false
-    var isOpenedPutEmailVC: (Bool, AuthProcess) = (false, .findPw)
+    var email: String = ""
+    var password: String = ""
+    @Pulse var shouldPresentToTabBarVC: Bool = false
+    @Pulse var shouldNavigateToEmailVC: AuthProcess?
   }
   
-  private let memberAPIManager = NetworkService<MemberAPI>()
+  // MARK: - Properties
+  
   var initialState: State = State()
+  private let memberNetworkService = NetworkService<MemberAPI>()
+  private let matchingInfoNetworkService = NetworkService<MatchingInfoAPI>()
+  
+  // MARK: - Functions
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
-    case .viewDidLoad:
-      return .empty()
+    case .emailTextFieldDidChange(let email):
+      return .just(.setEmail(email))
       
-    case let .signIn(email, password):
-      return .concat([
-        memberAPIManager.requestAPI(to: .login(
-          email: email,
-          password: password,
-          fcmToken: FCMTokenManager.shared.fcmToken!
-        ))
-        .flatMap { response -> Observable<Mutation> in
-          let member = MemberAPI.decode(
-            ResponseDTO<MemberResponseModel.Member>.self,
+    case .passwordTextFieldDidChange(let password):
+      return .just(.setPassword(password))
+      
+    case .loginButtonDidTap:
+      let email = self.currentState.email
+      let password = self.currentState.password
+      return self.memberNetworkService.requestAPI(to: .login(
+        email: email,
+        password: password,
+        fcmToken: FCMTokenManager.shared.fcmToken!
+      ))
+      .flatMap { response in
+        do {
+          let response = try response.filterSuccessfulStatusCodes()
+          let responseDTO = NetworkUtility.decode(
+            ResponseDTO<MemberSingleResponseDTO>.self,
             data: response.data
           ).data
-          
-          let token = response.response?.headers.value(for: "authorization")
+          let member = Member(responseDTO)
+          let token = response.response?.headers["authorization"]
+          // 멤버의 정보를 저장합니다.
           UserStorage.shared.saveMember(member)
-          UserStorage.shared.saveEmail(email)
-          UserStorage.shared.savePassword(password)
-          UserStorage.shared.saveToken(token!)
-          
-          return .concat([
-            .just(.setMainVC(true)),
-            .just(.setMainVC(false))
-          ])
+          // 멤버의 토큰을 저장합니다.
+          UserStorage.shared.saveToken(token)
+          os_log(.info, "🔓 로그인에 성공하였습니다. 이메일: \(email), 비밀번호: \(password)")
+          return self.requestMatchingInfo()
+        } catch (let error) {
+          os_log(.error, "🔐 로그인에 실패하였습니다. 이메일: \(email), 비밀번호: \(password), 실패요인: \(error.localizedDescription)")
+          return .empty()
         }
-      ])
-
-    case .signUp:
-      return .concat([
-        .just(.setPutEmailVC(true, .signUp)),
-        .just(.setPutEmailVC(false, .signUp))
-      ])
+      }
       
-    case .forgotPassword:
-      return .concat([
-        .just(.setPutEmailVC(true, .findPw)),
-        .just(.setPutEmailVC(false, .findPw))
-      ])
+    case .forgotPasswordButtonDidTap:
+      return .just(.setEmailVC(.findPw))
+      
+    case .signUpButtonDidTap:
+      return .just(.setEmailVC(.signUp))
     }
   }
   
@@ -87,47 +94,33 @@ final class LoginViewReactor: Reactor {
     var newState = state
     
     switch mutation {
-    case .setLoading(let isLoading):
-      newState.isLoading = isLoading
+    case .setEmail(let email):
+      newState.email = email
       
-    case let .setPopup(isOpened, message):
-      newState.isOpenedPopup = (isOpened, message)
+    case .setPassword(let password):
+      newState.password = password
+       
+    case .setEmailVC(let authProcess):
+      newState.shouldNavigateToEmailVC = authProcess
       
-    case .setMainVC(let isOpened):
-      newState.isOpenedMainVC = isOpened
-      
-    case let .setPutEmailVC(isOpened, type):
-      newState.isOpenedPutEmailVC = (isOpened, type)
+    case .setTabBarVC(let state):
+      newState.shouldPresentToTabBarVC = state
     }
     
     return newState
   }
 }
 
-extension LoginViewReactor {
-  private func lookUpMatchingInfo() -> Observable<Mutation> {
-    MatchingInfoAPI.provider.rx.request(.retrieve)
-      .asObservable()
-      .flatMap { response -> Observable<Mutation> in
-        switch response.statusCode {
-        case 200..<300: // 조회 성공
-          let matchingInfo = MatchingInfoAPI.decode(
-            ResponseDTO<MatchingInfoResponseModel.MatchingInfo>.self,
-            data: response.data
-          ).data
-          UserStorage.shared.saveMatchingInfo(matchingInfo)
-          return .concat([
-            .just(.setLoading(false)),
-            .just(.setMainVC(true)),
-            .just(.setMainVC(false))
-          ])
-        default: // 조회 실패
-          return .concat([
-            .just(.setLoading(false)),
-            .just(.setMainVC(true)),
-            .just(.setMainVC(false))
-          ])
-        }
+// MARK: - Privates
+
+private extension LoginViewReactor {
+  func requestMatchingInfo() -> Observable<Mutation> {
+    return self.matchingInfoNetworkService.requestAPI(to: .retrieve)
+      .map(ResponseDTO<MatchingInfoSingleResponeDTO>.self)
+      .flatMap { responseDTO in
+        // 매칭 정보 저장
+        UserStorage.shared.saveMatchingInfo(MatchingInfo(responseDTO.data))
+        return Observable<Mutation>.just(.setTabBarVC(true))
       }
   }
 }

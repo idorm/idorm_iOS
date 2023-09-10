@@ -13,114 +13,91 @@ import RxSwift
 import RxCocoa
 import ReactorKit
 
+/// 인증번호를 입력하는 페이지입니다.
 final class AuthNumberViewController: BaseViewController, View {
   
-  // MARK: - Properties
+  typealias Reactor = AuthNumberViewReactor
   
-  private let descriptionLabel = UILabel().then {
-    $0.text = "지금 이메일로 인증번호를 보내드렸어요!"
-    $0.textColor = .darkGray
-    $0.font = .iDormFont(.medium, size: 12)
-  }
+  // MARK: - UI Components
+   
+  /// 메일함에서 인증번호를 확인해주세요. 가 적혀있는 `UILabel`
+  private let shouldCheckMailBoxLabel: UILabel = {
+    let label = UILabel()
+    label.text = "메일함에서 인증번호를 확인해주세요."
+    label.font = .iDormFont(.medium, size: 12.0)
+    label.textColor = .iDormColor(.iDormGray400)
+    return label
+  }()
   
-  private let authOnemoreButton = UIButton().then {
-    var config = UIButton.Configuration.plain()
-    config.baseForegroundColor = .idorm_blue
-    var container = AttributeContainer()
-    container.font = .iDormFont(.medium, size: 12)
-    config.attributedTitle = AttributedString("인증번호 재요청", attributes: container)
+  /// 인증번호 재요청 `iDormButton`
+  private let requestAuthNumberButton: iDormButton = {
+    let button = iDormButton("인증번호 재요청", image: nil)
+    button.baseBackgroundColor = .white
+    button.baseForegroundColor = .iDormColor(.iDormGray300)
+    button.font = .iDormFont(.medium, size: 12.0)
+    button.contentInset = .zero
     let handler: UIButton.ConfigurationUpdateHandler = { button in
+      guard let button = button as? iDormButton else { return }
       switch button.state {
       case .disabled:
-        button.configuration?.baseForegroundColor = .idorm_gray_300
+        button.baseForegroundColor = .iDormColor(.iDormGray300)
       default:
-        button.configuration?.baseForegroundColor = .idorm_blue
+        button.baseForegroundColor = .iDormColor(.iDormBlue)
       }
     }
-    $0.configurationUpdateHandler = handler
-    $0.configuration = config
-    $0.isEnabled = false
-  }
+    button.configurationUpdateHandler = handler
+    return button
+  }()
   
-  private let timerLabel = UILabel().then {
-    $0.text = "05:00"
-    $0.textColor = .idorm_blue
-    $0.font = .iDormFont(.medium, size: 14)
-  }
+  /// 00:00 과 같이 시간을 알려주는 타이머 역할의 `UILabel`
+  private let timerLabel: UILabel = {
+    let label = UILabel()
+    label.textColor = .iDormColor(.iDormBlue)
+    label.font = .iDormFont(.medium, size: 14.0)
+    return label
+  }()
   
-  private let indicator = UIActivityIndicatorView().then {
-    $0.color = .darkGray
-  }
+  /// 인증번호를 입력하는 `UITextField`
+  private let textField: NewiDormTextField = {
+    let textField = NewiDormTextField(type: .withBorderLine)
+    textField.placeHolder = "인증번호를 입력해주세요."
+    return textField
+  }()
   
-  private let nextButton = OldiDormButton("인증 완료")
-  private let textField = idormTextField("인증번호를 입력해주세요.")
-  private let mailTimer: MailTimerChecker
-  
-  // MARK: - LifeCycle
-  
-  init(_ timer: MailTimerChecker) {
-    self.mailTimer = timer
-    super.init(nibName: nil, bundle: nil)
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
+  /// 계속하기 `UIButton`
+  private let continueButton: iDormButton = {
+    let button = iDormButton("계속하기", image: nil)
+    button.baseBackgroundColor = .iDormColor(.iDormBlue)
+    button.baseForegroundColor = .white
+    return button
+  }()
+
   // MARK: - Bind
   
   func bind(reactor: AuthNumberViewReactor) {
     
-    // MARK: - Action
+    // Action
     
-    // 인증 완료 버튼
-    self.nextButton.rx.tap
-      .withUnretained(self)
-      .map { $0.0.textField.text ?? "" }
-      .map { AuthNumberViewReactor.Action.didTapConfirmButton($0) }
+    self.textField.textObservable
+      .map { Reactor.Action.textFieldDidChange($0) }
       .bind(to: reactor.action)
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
     
-    // 인증번호 재요청 버튼
-    self.authOnemoreButton.rx.tap
-      .map { AuthNumberViewReactor.Action.didTapRequestAuthButton }
+    self.continueButton.rx.tap
+      .map { Reactor.Action.continueButtonDidTap }
       .bind(to: reactor.action)
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
     
-    // MARK: - State
+    self.requestAuthNumberButton.rx.tap
+      .map { Reactor.Action.requestAuthNumberButtonDidTap }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
     
-    // 인디케이터 제어
-    reactor.state
-      .map { $0.isLoading }
-      .bind(to: indicator.rx.isAnimating)
-      .disposed(by: disposeBag)
+    // State
     
-    // 화면 인터렉션 제어
-    reactor.state
-      .map { $0.isLoading }
-      .map { !$0 }
-      .bind(to: view.rx.isUserInteractionEnabled)
-      .disposed(by: disposeBag)
-    
-    // 오류 팝업
-    reactor.state
-      .map { $0.isOpenedPopup }
-      .filter { $0.0 }
-      .withUnretained(self)
-      .bind { owner, contents in
-        let popup = iDormPopupViewController(contents: contents.1)
-        popup.modalPresentationStyle = .overFullScreen
-        owner.present(popup, animated: false)
-      }
-      .disposed(by: disposeBag)
-    
-    // 인증 완료
-    reactor.state
-      .map { $0.popVC }
-      .filter { $0 }
-      .distinctUntilChanged()
-      .withUnretained(self)
-      .bind { owner, _ in
+    reactor.pulse(\.$shouldDismiss)
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
         let emailVC = Logger.shared.emailVC!
         owner.dismiss(animated: true) {
           let authProcess = Logger.shared.authProcess
@@ -129,45 +106,41 @@ final class AuthNumberViewController: BaseViewController, View {
           emailVC.navigationController?.pushViewController(passwordVC, animated: true)
         }
       }
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
     
-    // 남은 시간 경과
-    mailTimer.isPassed
+    MailStopWatchManager.shared.isFinished
       .distinctUntilChanged()
-      .withUnretained(self)
-      .bind { owner, isPassed in
-        if isPassed {
-          owner.textField.backgroundColor = .idorm_gray_200
+      .filter { $0 }
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
+        AlertManager.shared.showAlertPopup("인증번호가 만료되었습니다.")
+      }
+      .disposed(by: self.disposeBag)
+    
+    MailStopWatchManager.shared.remainingTime
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, remainingTime in
+        owner.textField.text = remainingTime
+        if remainingTime != nil {
+          // 시간이 만료되었을 때
+          owner.textField.baseBackgroundColor = .iDormColor(.iDormGray200)
           owner.textField.isEnabled = false
-          owner.authOnemoreButton.isEnabled = true
-          let popup = iDormPopupViewController(contents: "인증번호가 만료되었습니다.")
-          popup.modalPresentationStyle = .overFullScreen
-          owner.present(popup, animated: false)
+          owner.requestAuthNumberButton.isEnabled = true
         } else {
-          owner.textField.backgroundColor = .white
+          // 시간이 흐를 때
+          owner.textField.baseBackgroundColor = .white
           owner.textField.isEnabled = true
-          owner.authOnemoreButton.isEnabled = false
+          owner.requestAuthNumberButton.isEnabled = false
         }
       }
-      .disposed(by: disposeBag)
-    
-    // 남은 시간 감지
-    mailTimer.leftTime
-      .filter { $0 >= 0 }
-      .withUnretained(self)
-      .bind { owner, elapseTime in
-        let minutes = elapseTime / 60
-        let seconds = elapseTime % 60
-        let minutesString = String(format: "%02d", minutes)
-        let secondsString = String(format: "%02d", seconds)
-        owner.timerLabel.text = "\(minutesString):\(secondsString)"
-      }
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
   }
   
   // MARK: - Setup
   
   override func setupStyles() {
+    super.setupStyles()
+    
     self.navigationItem.title = "인증번호 입력"
     self.view.backgroundColor = .white
   }
@@ -176,57 +149,51 @@ final class AuthNumberViewController: BaseViewController, View {
     super.setupLayouts()
       
     [
-      self.descriptionLabel,
-      self.authOnemoreButton,
+      self.shouldCheckMailBoxLabel,
+      self.requestAuthNumberButton,
       self.textField,
-      self.nextButton,
       self.timerLabel,
-      self.indicator
-    ].forEach { self.view.addSubview($0) }
+      self.continueButton
+    ].forEach {
+      self.view.addSubview($0)
+    }
   }
   
   override func setupConstraints() {
     super.setupConstraints()
     
-    self.descriptionLabel.snp.makeConstraints { make in
+    self.shouldCheckMailBoxLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(24)
-      make.top.equalTo(self.view.safeAreaLayoutGuide).offset(50)
+      make.top.equalTo(self.view.safeAreaLayoutGuide).inset(50)
     }
     
-    self.authOnemoreButton.snp.makeConstraints { make in
+    self.requestAuthNumberButton.snp.makeConstraints { make in
       make.trailing.equalToSuperview().inset(20)
-      make.centerY.equalTo(self.descriptionLabel)
+      make.centerY.equalTo(self.shouldCheckMailBoxLabel)
     }
     
     self.textField.snp.makeConstraints { make in
-      make.trailing.leading.equalToSuperview().inset(24)
-      make.top.equalTo(self.descriptionLabel.snp.bottom).offset(14)
-      make.height.equalTo(50)
+      make.directionalHorizontalEdges.equalToSuperview().inset(24)
+      make.top.equalTo(self.shouldCheckMailBoxLabel.snp.bottom).offset(14)
     }
     
-    self.nextButton.snp.makeConstraints { make in
+    self.continueButton.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
       make.bottom.equalTo(self.view.keyboardLayoutGuide.snp.top).offset(-20)
-      make.height.equalTo(50)
     }
     
     self.timerLabel.snp.makeConstraints { make in
       make.trailing.equalTo(self.textField.snp.trailing).offset(-14)
       make.centerY.equalTo(textField)
     }
-    
-    self.indicator.snp.makeConstraints { make in
-      make.center.equalToSuperview()
-      make.width.height.equalTo(50)
-    }
   }
   
-  // MARK: - Helpers
+  // MARK: - Functions
   
   override func touchesBegan(
     _ touches: Set<UITouch>,
     with event: UIEvent?
   ) {
-    view.endEditing(true)
+    self.view.endEditing(true)
   }
 }

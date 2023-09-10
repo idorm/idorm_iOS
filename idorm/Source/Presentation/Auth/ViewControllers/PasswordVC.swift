@@ -15,51 +15,70 @@ import ReactorKit
 
 final class PasswordViewController: BaseViewController, View {
   
-  // MARK: - PROPERTIES
+  typealias Reactor = PasswordViewReactor
   
-  private let infoLabel = UILabel().then {
-    $0.text = "비밀번호"
-    $0.textColor = .black
-    $0.font = .iDormFont(.medium, size: 14)
-  }
+  // MARK: - UI Components
   
-  private let infoLabel2 = UILabel().then {
-    $0.text = "비밀번호 확인"
-    $0.textColor = .black
-    $0.font = .iDormFont(.medium, size: 14)
-  }
+  /// 비밀번호가 적혀있는 `UILabel`
+  private let passwordLabel: UILabel = {
+    let label = UILabel()
+    label.textColor = .black
+    label.text = "비밀번호"
+    label.font = .iDormFont(.medium, size: 14.0)
+    return label
+  }()
   
-  private let textCountConditionLabel = UILabel().then {
-    $0.text = "•  8자 이상 입력"
-    $0.textColor = .idorm_gray_400
-    $0.font = .iDormFont(.medium, size: 12)
-  }
+  /// 비밀번호 확인이 적혀있는 `UILabel`
+  private let verfiyPasswordLabel: UILabel = {
+    let label = UILabel()
+    label.textColor = .black
+    label.text = "비밀번호 확인"
+    label.font = .iDormFont(.medium, size: 14.0)
+    return label
+  }()
   
-  private let compoundConditionLabel = UILabel().then {
-    $0.text = "•  영문 소문자/숫자/특수 문자 조합"
-    $0.textColor = .idorm_gray_400
-    $0.font = .iDormFont(.medium, size: 12)
-  }
+  /// 비밀번호를 작성하는 `UITextField`
+  private let passwordTextField: NewiDormTextField = {
+    let textField = NewiDormTextField(type: .withBorderLine)
+    textField.placeHolder = "비밀번호를 입력해주세요."
+    return textField
+  }()
   
-  private let indicator = UIActivityIndicatorView().then { $0.color = .darkGray }
+  /// 비밀번호 확인을 작성하는 `UITextField`
+  private let verifyPasswordTextField: NewiDormTextField = {
+    let textField = NewiDormTextField(type: .withBorderLine)
+    textField.placeHolder = "비밀번호를 한번 더 입력해주세요."
+    return textField
+  }()
   
-  private let textField1 = PasswordTextField(placeholder: "비밀번호를 입력해주세요.")
-  private let textField2 = PasswordTextField(placeholder: "비밀번호를 한번 더 입력해주세요.")
-  private var confirmButton: OldiDormButton!
-  private let type: AuthProcess
+  /// 비밀번호 글자수에 대한 `UILabel`
+  private let passwordCountConditionLabel: UILabel = {
+    let label = UILabel()
+    label.textColor = .iDormColor(.iDormGray400)
+    label.font = .iDormFont(.medium, size: 12.0)
+    label.text = "•  8자 이상 입력"
+    return label
+  }()
   
-  // MARK: - LifeCycle
+  /// 비밀번호 조합에 대한 `UILabel`
+  private let passwordCompoundConditonLabel: UILabel = {
+    let label = UILabel()
+    label.textColor = .iDormColor(.iDormGray400)
+    label.font = .iDormFont(.medium, size: 12.0)
+    label.text = "•  영문 소문자/숫자/특수 문자 조합"
+    return label
+  }()
   
-  init(_ type: AuthProcess) {
-    self.type = type
-    super.init(nibName: nil, bundle: nil)
-    setupComponents()
-  }
+  /// 계속하기 `UIButton`
+  private let continueButton: iDormButton = {
+    let button = iDormButton("계속하기", image: nil)
+    button.baseBackgroundColor = .iDormColor(.iDormBlue)
+    button.baseForegroundColor = .white
+    button.cornerRadius = 10.0
+    return button
+  }()
   
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
+
   // MARK: - Bind
   
   func bind(reactor: PasswordViewReactor) {

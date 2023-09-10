@@ -14,7 +14,15 @@ import ReactorKit
 
 final class PasswordViewReactor: Reactor {
   
+  enum ViewType {
+    case findPassword
+    case signUp
+  }
+  
   enum Action {
+    case passwordTextFieldDidChange(String)
+    case verifyPasswordTextFieldDidChange(String)
+    
     case didChangeTextField1(String)
     case didChangeTextField2(String)
     case editingDidBeginTf1
