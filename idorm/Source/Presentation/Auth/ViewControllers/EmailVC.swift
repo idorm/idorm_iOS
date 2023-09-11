@@ -63,7 +63,7 @@ final class EmailViewController: BaseViewController, View {
     
     // Action
 
-    self.emailTextField.text
+    self.emailTextField.textObservable
       .map { Reactor.Action.emailTextFieldDidChange($0) }
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)

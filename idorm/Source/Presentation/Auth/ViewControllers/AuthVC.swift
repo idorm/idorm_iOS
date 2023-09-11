@@ -99,8 +99,8 @@ final class AuthViewController: BaseViewController, View {
     reactor.pulse(\.$shouldNavigateToAuthNumberVC)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, mailTimerChecker in
-        let authNumberVC = AuthNumberViewController(mailTimerChecker!)
-        authNumberVC.reactor = AuthNumberViewReactor(mailTimerChecker!)
+        let authNumberVC = AuthNumberViewController()
+        authNumberVC.reactor = AuthNumberViewReactor()
         owner.navigationController?.pushViewController(authNumberVC, animated: true)
       }
       .disposed(by: self.disposeBag)

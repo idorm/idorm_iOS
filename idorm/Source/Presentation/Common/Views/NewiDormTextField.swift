@@ -27,7 +27,31 @@ final class NewiDormTextField: UIView, BaseView {
     return textField
   }()
   
+  /// ic_openedEye인 `UIButton`
+  private let openedEyeButton: iDormButton = {
+    let button = iDormButton("", image: .iDormIcon(.openedEye))
+    button.isHidden = true
+    return button
+  }()
+  
+  /// ic_closedEye인 `UIButton`
+  private let closedEyeButton: iDormButton = {
+    let button = iDormButton("", image: .iDormIcon(.closedEye))
+    button.isHidden = true
+    return button
+  }()
+  
+  /// ic_checkCircle인 `UIImageView`
+  private let checkCircleImageView: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = .iDormIcon(.checkCircle)
+    imageView.isHidden = true
+    return imageView
+  }()
+  
   // MARK: - Properties
+  
+  private var disposeBag = DisposeBag()
   
   /// 텍스트 필드 `PlaceHolder`의 `NSAttributedString`
   private var placeHolderAttributedString: NSAttributedString {
@@ -53,7 +77,8 @@ final class NewiDormTextField: UIView, BaseView {
   
   /// 텍스트 필드의 인풋 `String`
   var text: String? {
-    willSet { self.textField.text = newValue }
+    get { return self.textField.text }
+    set { self.textField.text = newValue }
   }
   
   /// 텍스트 필드의 기본 `색상`
@@ -121,6 +146,9 @@ final class NewiDormTextField: UIView, BaseView {
     willSet { self.textField.isEnabled = newValue }
   }
   
+  /// 텍스트 필드의 `ValidationType`
+  var validationType: ValidationType?
+  
   // MARK: - Initializer
   
   init(type: iDormTextFieldType) {
@@ -129,6 +157,7 @@ final class NewiDormTextField: UIView, BaseView {
     self.setupStyles()
     self.setupLayouts()
     self.setupConstraints()
+    self.bind()
   }
   
   required init?(coder: NSCoder) {
@@ -165,7 +194,10 @@ final class NewiDormTextField: UIView, BaseView {
   
   func setupLayouts() {
     [
-      self.textField
+      self.textField,
+      self.openedEyeButton,
+      self.closedEyeButton,
+      self.checkCircleImageView
     ].forEach {
       self.addSubview($0)
     }
@@ -176,6 +208,74 @@ final class NewiDormTextField: UIView, BaseView {
       make.edges.equalToSuperview()
       self.heightOfTextFieldConstraint = make.height.equalTo(54.0).constraint
     }
+    
+    self.openedEyeButton.snp.makeConstraints { make in
+      make.centerY.equalToSuperview()
+      make.trailing.equalToSuperview().inset(8.0)
+    }
+    
+    self.openedEyeButton.snp.makeConstraints { make in
+      make.centerY.equalToSuperview()
+      make.trailing.equalToSuperview().inset(8.0)
+    }
+    
+    self.checkCircleImageView.snp.makeConstraints { make in
+      make.centerY.equalToSuperview()
+      make.trailing.equalToSuperview().inset(8.0)
+    }
+  }
+  
+  // MARK: - Bind
+  
+  private func bind() {
+    self.openedEyeButton.rx.tap
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
+        owner.isSecureTextEntry = false
+        owner.openedEyeButton.isHidden = true
+        owner.closedEyeButton.isHidden = false
+      }
+      .disposed(by: self.disposeBag)
+    
+    self.closedEyeButton.rx.tap
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
+        owner.isSecureTextEntry = true
+        owner.openedEyeButton.isHidden = false
+        owner.closedEyeButton.isHidden = true
+      }
+      .disposed(by: self.disposeBag)
+    
+    self.textField.rx.controlEvent(.editingDidBegin)
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
+        owner.borderColor = .iDormColor(.iDormBlue)
+      }
+      .disposed(by: self.disposeBag)
+    
+    self.textField.rx.controlEvent(.editingDidEnd)
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
+        if let validationType = self.validationType {
+          guard let text = self.text else { return }
+          if ValidationManager.validate(text, validationType: validationType) {
+            // 조건에 부합
+            self.borderColor = .iDormColor(.iDormBlue)
+            self.checkCircleImageView.isHidden = false
+            self.openedEyeButton.isHidden = true
+            self.closedEyeButton.isHidden = true
+          } else {
+            // 조건에 부합하지 않을 때
+            self.borderColor = .iDormColor(.iDormRed)
+            self.checkCircleImageView.isHidden = true
+            self.openedEyeButton.isHidden = true
+            self.closedEyeButton.isHidden = true
+          }
+        } else {
+          owner.borderColor = .iDormColor(.iDormGray300)
+        }
+      }
+      .disposed(by: self.disposeBag)
   }
 }
 
@@ -183,5 +283,13 @@ extension NewiDormTextField {
   /// 텍스트 필드의 변경된 텍스트 값을 `Observable<String>`으로 방출합니다.
   var textObservable: Observable<String> {
     self.textField.rx.text.orEmpty.asObservable()
+  }
+  
+  var editingDidEnd: Observable<Void> {
+    self.textField.rx.controlEvent(.editingDidEnd).asObservable()
+  }
+  
+  var editingDidBegin: Observable<Void> {
+    self.textField.rx.controlEvent(.editingDidBegin).asObservable()
   }
 }

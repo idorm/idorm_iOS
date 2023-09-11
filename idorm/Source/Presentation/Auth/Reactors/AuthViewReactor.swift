@@ -22,18 +22,17 @@ final class AuthViewReactor: Reactor {
   
   enum Mutation {
     case setDismiss(Bool)
-    case setAuthNumberVC(MailTimerChecker)
+    case setAuthNumberVC(Bool)
   }
   
   struct State {
     @Pulse var shouldDismiss: Bool = false
-    @Pulse var shouldNavigateToAuthNumberVC: MailTimerChecker?
+    @Pulse var shouldNavigateToAuthNumberVC: Bool = false
   }
   
   // MARK: - Properties
   
   var initialState: State = State()
-  private let mailTimer = MailTimerChecker()
   
   // MARK: - Functions
   
@@ -53,7 +52,7 @@ final class AuthViewReactor: Reactor {
       return .empty()
       
     case .enterNumberButtonDidTap:
-      return .just(.setAuthNumberVC(self.mailTimer))
+      return .just(.setAuthNumberVC(true))
     }
   }
   

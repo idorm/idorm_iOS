@@ -101,8 +101,15 @@ final class AuthNumberViewController: BaseViewController, View {
         let emailVC = Logger.shared.emailVC!
         owner.dismiss(animated: true) {
           let authProcess = Logger.shared.authProcess
-          let passwordVC = PasswordViewController(authProcess)
-          passwordVC.reactor = PasswordViewReactor(authProcess)
+          let reactor: PasswordViewReactor
+          let passwordVC = PasswordViewController()
+          switch authProcess {
+          case .signUp:
+            reactor = .init(.signUp)
+          case .findPw:
+            reactor = .init(.findPassword)
+          }
+          passwordVC.reactor = reactor
           emailVC.navigationController?.pushViewController(passwordVC, animated: true)
         }
       }

@@ -144,12 +144,12 @@ final class LoginViewController: BaseViewController, View {
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
-    self.emailTextField.text
+    self.emailTextField.textObservable
       .map { Reactor.Action.emailTextFieldDidChange($0) }
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
-    self.passwordTextField.text
+    self.passwordTextField.textObservable
       .map { Reactor.Action.passwordTextFieldDidChange($0) }
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)

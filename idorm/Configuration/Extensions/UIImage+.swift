@@ -16,10 +16,13 @@ enum iDormIcon: String {
   
   case calendar
   case cancel
+  case closedEye
+  case checkCircle
   
   case domi
 
   case option
+  case openedEye
   
   case pencil
   case pencil2
