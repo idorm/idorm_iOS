@@ -1,3 +1,12 @@
+//
+//  JoinPeriod.swift
+//  idorm
+//
+//  Created by 김응철 on 9/15/23.
+//
+
+import Foundation
+
 enum JoinPeriod: String, Codable {
   case period_16 = "WEEK16"
   case period_24 = "WEEK24"

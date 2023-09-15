@@ -14,7 +14,7 @@ import RxSwift
 import RxCocoa
 import ReactorKit
 
-final class PrivacyPolicyBottomSheet: BaseViewController, View {
+final class PrivacyViewController: BaseViewController, View {
   
   // MARK: - Properties
   
