@@ -63,7 +63,9 @@ final class iDormSplashViewReactor: Reactor {
 
 private extension iDormSplashViewReactor {
   func requestSingleMemberAPI(_ token: String) -> Observable<Mutation> {
-    let email = UserStorage.shared.email
+    guard let email = UserStorage.shared.email else {
+      return Observable<Mutation>.just(.setLoginVC)
+    }
     let password = UserStorage.shared.password
     return self.memberNetworkService.requestAPI(
       to: .login(email: email, password: password, fcmToken: token)

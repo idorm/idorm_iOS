@@ -60,6 +60,7 @@ final class LoginViewController: BaseViewController, View {
     button.baseForegroundColor = .white
     button.font = .iDormFont(.medium, size: 14.0)
     button.cornerRadius = 12.0
+    button.height = 40.0
     return button
   }()
   
@@ -167,6 +168,7 @@ final class LoginViewController: BaseViewController, View {
     // State
     
     reactor.pulse(\.$shouldPresentToTabBarVC)
+      .filter { $0 }
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
         let viewController = TabBarViewController()
@@ -175,9 +177,9 @@ final class LoginViewController: BaseViewController, View {
       .disposed(by: self.disposeBag)
     
     reactor.pulse(\.$shouldNavigateToEmailVC)
+      .compactMap { $0 }
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, authProcess in
-        guard let authProcess = authProcess else { return }
         let viewController = EmailViewController()
         switch authProcess {
         case .findPw:
@@ -250,7 +252,6 @@ final class LoginViewController: BaseViewController, View {
     self.loginButton.snp.makeConstraints { make in
       make.directionalHorizontalEdges.equalToSuperview().inset(36.0)
       make.top.equalTo(self.passwordTextField.snp.bottom).offset(32.0)
-      make.height.equalTo(40.0)
     }
     
     self.forgotPasswordButton.snp.makeConstraints { make in

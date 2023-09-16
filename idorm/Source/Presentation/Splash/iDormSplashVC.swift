@@ -69,6 +69,7 @@ final class iDormSplashViewController: BaseViewController, View {
     
     // State
     reactor.pulse(\.$shouldNavgiateToLoginVC)
+      .filter { $0 }
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
         let viewController = LoginViewController()
@@ -76,11 +77,14 @@ final class iDormSplashViewController: BaseViewController, View {
         viewController.reactor = reactor
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.modalPresentationStyle = .fullScreen
-        owner.present(navigationController, animated: false)
+        DispatchQueue.main.async {
+          owner.present(navigationController, animated: false)
+        }
       }
       .disposed(by: self.disposeBag)
     
     reactor.pulse(\.$shouldNavigateToTabBarVC)
+      .filter { $0 }
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
         let viewController = TabBarViewController()

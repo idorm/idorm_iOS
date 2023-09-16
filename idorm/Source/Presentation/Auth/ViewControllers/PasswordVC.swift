@@ -11,6 +11,7 @@ import SnapKit
 import Then
 import RxSwift
 import RxCocoa
+import RxGesture
 import ReactorKit
 
 final class PasswordViewController: BaseViewController, View {
@@ -29,7 +30,7 @@ final class PasswordViewController: BaseViewController, View {
   }()
   
   /// 비밀번호 확인이 적혀있는 `UILabel`
-  private let verfiyPasswordLabel: UILabel = {
+  private let verifyPasswordLabel: UILabel = {
     let label = UILabel()
     label.textColor = .black
     label.text = "비밀번호 확인"
@@ -41,6 +42,7 @@ final class PasswordViewController: BaseViewController, View {
   private let passwordTextField: NewiDormTextField = {
     let textField = NewiDormTextField(type: .withBorderLine)
     textField.validationType = .password
+    textField.isSecureTextEntry = true 
     textField.placeHolder = "비밀번호를 입력해주세요."
     return textField
   }()
@@ -48,7 +50,6 @@ final class PasswordViewController: BaseViewController, View {
   /// 비밀번호 확인을 작성하는 `UITextField`
   private let verifyPasswordTextField: NewiDormTextField = {
     let textField = NewiDormTextField(type: .withBorderLine)
-    textField.validationType = .password
     textField.placeHolder = "비밀번호를 한번 더 입력해주세요."
     return textField
   }()
@@ -80,7 +81,6 @@ final class PasswordViewController: BaseViewController, View {
     return button
   }()
   
-
   // MARK: - Bind
   
   func bind(reactor: PasswordViewReactor) {
@@ -102,6 +102,11 @@ final class PasswordViewController: BaseViewController, View {
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
+    self.verifyPasswordTextField.editingDidEnd
+      .map { Reactor.Action.verifyPasswordTextFieldEditingDidEnd }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
     // State
     
     reactor.state.map { $0.isValidatedToTextCount }
@@ -120,7 +125,19 @@ final class PasswordViewController: BaseViewController, View {
       }
       .disposed(by: self.disposeBag)
     
-    reactor.state.map { $0.validationStates }
+    reactor.pulse(\.$isSameAsPassword)
+      .skip(1)
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, isSame in
+        owner.verifyPasswordLabel.text =
+        isSame ? "비밀번호 확인" : "두 비밀번호가 일치하지 않습니다. 다시 확인해주세요."
+        owner.verifyPasswordLabel.textColor = isSame ? .black : .iDormColor(.iDormRed)
+        owner.verifyPasswordTextField.borderColor =
+        isSame ? .iDormColor(.iDormGray400) : .iDormColor(.iDormRed)
+      }
+      .disposed(by: self.disposeBag)
+    
+    reactor.pulse(\.$validationStates)
       .compactMap { $0 }
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, states in
@@ -133,6 +150,7 @@ final class PasswordViewController: BaseViewController, View {
         } else if states.compound { // 글자 조합 조건만 만족
           owner.passwordCountConditionLabel.textColor = .iDormColor(.iDormRed)
         } else { // 모두 불만족
+          owner.passwordLabel.textColor = .iDormColor(.iDormRed)
           owner.passwordCompoundConditonLabel.textColor = .iDormColor(.iDormRed)
           owner.passwordCountConditionLabel.textColor = .iDormColor(.iDormRed)
         }
@@ -143,7 +161,7 @@ final class PasswordViewController: BaseViewController, View {
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, viewType in
         switch viewType {
-        case .findPassword:
+        case .findPassword, .changePassword:
           owner.continueButton.title = "변경 완료"
           owner.navigationItem.title = "비밀번호 변경"
         case .signUp:
@@ -168,7 +186,7 @@ final class PasswordViewController: BaseViewController, View {
       self.passwordTextField,
       self.verifyPasswordTextField,
       self.passwordLabel,
-      self.verfiyPasswordLabel,
+      self.verifyPasswordLabel,
       self.passwordCountConditionLabel,
       self.passwordCompoundConditonLabel,
       self.continueButton
@@ -200,13 +218,13 @@ final class PasswordViewController: BaseViewController, View {
       make.leading.equalToSuperview().inset(24.0)
     }
     
-    self.verfiyPasswordLabel.snp.makeConstraints { make in
+    self.verifyPasswordLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(24.0)
       make.top.equalTo(self.passwordCompoundConditonLabel.snp.bottom).offset(30.0)
     }
     
     self.verifyPasswordTextField.snp.makeConstraints { make in
-      make.top.equalTo(self.verfiyPasswordLabel.snp.bottom).offset(8.0)
+      make.top.equalTo(self.verifyPasswordLabel.snp.bottom).offset(8.0)
       make.directionalHorizontalEdges.equalToSuperview().inset(24.0)
     }
     
@@ -215,13 +233,8 @@ final class PasswordViewController: BaseViewController, View {
       make.bottom.equalTo(view.keyboardLayoutGuide.snp.top).offset(-20.0)
     }
   }
-
-  // MARK: - Helpers
   
-  override func touchesBegan(
-    _ touches: Set<UITouch>,
-    with event: UIEvent?
-  ) {
-    view.endEditing(true)
-  }
+  // MARK: - Functions
+  
+  
 }

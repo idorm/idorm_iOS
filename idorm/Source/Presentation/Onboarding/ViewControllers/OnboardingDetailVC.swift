@@ -81,8 +81,8 @@ final class OnboardingDetailViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let onboardingVC = OnboardingViewController(owner.type)
-        onboardingVC.reactor = OnboardingViewReactor(owner.type)
+        let onboardingVC = OnboardingViewController()
+        onboardingVC.reactor = OnboardingViewReactor2(.theFirstTime)
         owner.navigationController?.pushViewController(onboardingVC, animated: true)
       }
       .disposed(by: disposeBag)

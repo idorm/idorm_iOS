@@ -1,70 +1,66 @@
 //
-//  PrivacyPolicyBottomSheetReactor.swift
+//  TermsOfServiceViewReactor.swift
 //  idorm
 //
 //  Created by 김응철 on 2023/01/02.
 //
 
-import RxSwift
-import RxCocoa
+import UIKit
+
 import ReactorKit
+import RxCocoa
+import RxSwift
 import RxMoya
 
-final class PrivacyPolicyBottomSheetReactor: Reactor {
+final class TermsOfServiceViewReactor: Reactor {
   
   enum Action {
-    case didTapConfirmButton
+    case continueButtonDidTap
+    case termsOfServiceButtonDidTap
+    case viewLabelDidTap
   }
   
   enum Mutation {
+    case setTermsOfServiceButton(Bool)
     case setCompleteSignUpVC(Bool)
-    case setLoading(Bool)
-    case setPopup(Bool, String)
   }
   
   struct State {
-    var isOpenedCompleteSignUpVC: Bool = false
-    var isLoading: Bool = false
-    var isOpenedPopup: (Bool, String) = (false, "")
+    @Pulse var isSelectedTermsOfServiceButton: Bool = false
+    @Pulse var navigateToCompleteSignUpVC: Bool = false
   }
   
+  // MARK: - Properties
+  
   var initialState: State = State()
+  private let memberNetworkService = NetworkService<MemberAPI>()
+  
+  // MARK: - Functions
   
   func mutate(action: Action) -> Observable<Mutation> {
     let email = Logger.shared.email
     let password = Logger.shared.password
     let nickname = Logger.shared.nickname
-
+    
     switch action {
-    case .didTapConfirmButton:
-      return .concat([
-        .just(.setLoading(true)),
-        MemberAPI.provider.rx.request(
-          .register(email: email, password: password, nickname: nickname)
-        )
-          .asObservable()
-          .retry()
-          .flatMap { response -> Observable<Mutation> in
-            switch response.statusCode {
-            case 200..<300:
-              return .concat([
-                .just(.setLoading(false)),
-                .just(.setCompleteSignUpVC(true)),
-                .just(.setCompleteSignUpVC(false))
-              ])
-            default:
-              let message = MemberAPI.decode(
-                ErrorResponseModel.self,
-                data: response.data
-              ).responseMessage
-              return .concat([
-                .just(.setLoading(false)),
-                .just(.setPopup(true, message)),
-                .just(.setPopup(false, ""))
-              ])
-            }
-          }
-      ])
+    case .termsOfServiceButtonDidTap:
+      return .just(.setTermsOfServiceButton(!self.currentState.isSelectedTermsOfServiceButton))
+      
+    case .continueButtonDidTap:
+      return self.memberNetworkService.requestAPI(
+        to: .register(email: email, password: password, nickname: nickname)
+      )
+      .map(ResponseDTO<MemberSingleResponseDTO>.self)
+      .flatMap { responseDTO in
+        UserStorage.shared.saveMember(Member(responseDTO.data))
+        return Observable<Mutation>.just(.setCompleteSignUpVC(true))
+      }
+      
+    case .viewLabelDidTap:
+      UIApplication.shared.open(
+        URL(string: "https://idorm.notion.site/e5a42262cf6b4665b99bce865f08319b")!
+      )
+      return .empty()
     }
   }
   
@@ -72,14 +68,11 @@ final class PrivacyPolicyBottomSheetReactor: Reactor {
     var newState = state
     
     switch mutation {
-    case let .setPopup(isOpened, message):
-      newState.isOpenedPopup = (isOpened, message)
+    case .setTermsOfServiceButton(let isSelected):
+      newState.isSelectedTermsOfServiceButton = isSelected
       
-    case .setLoading(let isLoading):
-      newState.isLoading = isLoading
-      
-    case .setCompleteSignUpVC(let isOpened):
-      newState.isOpenedCompleteSignUpVC = isOpened
+    case .setCompleteSignUpVC(let isNavigated):
+      newState.navigateToCompleteSignUpVC = isNavigated
     }
     
     return newState

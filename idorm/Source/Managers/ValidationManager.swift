@@ -18,11 +18,11 @@ enum ValidationType {
     case .email:
       return "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
     case .password:
-      return "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]).{8, 15}"
+      return "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,15}$"
     case .passwordOnlyCompoundCondition:
-      return "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]).{0,}"
+      return "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{0,}$"
     case .nickname:
-      return "^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9_]$"
+      return "^[a-zA-Z0-9가-힣_]+$"
     }
   }
 }
@@ -33,15 +33,7 @@ final class ValidationManager {
   /// 특정 String값이 `Validation`이 잘 되었는지 판단하는 메서드입니다.
   static func validate(_ target: String, validationType: ValidationType) -> Bool {
     let expression = validationType.expression
-    
-    switch validationType {
-    case .email, .password, .passwordOnlyCompoundCondition:
-      let emailPredicate = NSPredicate(format:"SELF MATCHES %@", expression)
-      return emailPredicate.evaluate(with: target)
-    case .nickname:
-      let regex = try? NSRegularExpression(pattern: expression, options: [])
-      let range = NSRange(location: 0, length: target.utf16.count)
-      return regex?.firstMatch(in: target, options: [], range: range) != nil
-    }
+    let emailPredicate = NSPredicate(format:"SELF MATCHES %@", expression)
+    return emailPredicate.evaluate(with: target)
   }
 }

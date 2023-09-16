@@ -18,7 +18,7 @@ final class MatchingCard: UIView {
   
   private lazy var dormLabel = UILabel().then {
     $0.font = .init(name: IdormFont_deprecated.bold.rawValue, size: 20)
-    $0.text = member.dormCategory.cardString
+    $0.text = member.dormCategory.description
     $0.textColor = .white
   }
   
@@ -27,7 +27,7 @@ final class MatchingCard: UIView {
     var container = AttributeContainer()
     container.font = UIFont.init(name: IdormFont_deprecated.bold.rawValue, size: 12)
     container.foregroundColor = UIColor.white
-    config.attributedTitle = AttributedString(member.joinPeriod.cardString, attributes: container)
+    config.attributedTitle = AttributedString(member.joinPeriod.description, attributes: container)
     config.image = UIImage(named: "building")
     config.imagePlacement = .leading
     config.imagePadding = 8

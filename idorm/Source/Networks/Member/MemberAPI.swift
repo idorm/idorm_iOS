@@ -7,8 +7,7 @@ import Moya
 enum MemberAPI {
   case login(email: String, password: String, fcmToken: String)
   case register(email: String, password: String, nickname: String)
-  case changePassword_Login(password: String)
-  case changePassword_Logout(email: String, password: String)
+  case patchPassword(email: String, password: String)
   case changeNickname(nickname: String)
   case retrieveMember
   case withdrawal

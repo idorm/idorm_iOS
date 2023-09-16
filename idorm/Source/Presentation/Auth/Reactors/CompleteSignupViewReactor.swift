@@ -15,54 +15,50 @@ import ReactorKit
 final class CompleteSignupViewReactor: Reactor {
   
   enum Action {
-    case didTapContinueButton
+    case continueButtonDidTap
   }
   
   enum Mutation {
-    case setLoading(Bool)
     case setOnboardingVC(Bool)
   }
   
   struct State {
-    var isLoading: Bool = false
-    var isOpendOnboardingVC: Bool = false
+    @Pulse var navigateToOnboardingVC: Bool = false
   }
   
+  // MARK: - Properties
+  
   var initialState: State = State()
+  private let memberNetworkService = NetworkService<MemberAPI>()
+  
+  // MARK: - Functions
   
   func mutate(action: Action) -> Observable<Mutation> {
     let email = Logger.shared.email
     let password = Logger.shared.password
-    
     switch action {
-    case .didTapContinueButton:
-      return .concat([
-        .just(.setLoading(true)),
-        MemberAPI.provider.rx.request(
-          .login(email: email, password: password, fcmToken: "")
-        )
-          .asObservable()
-          .retry()
-          .flatMap { response -> Observable<Mutation> in
-            switch response.statusCode {
-            case 200..<300:
-              let responseModel = MemberAPI.decode(
-                ResponseDTO<MemberResponseModel.Member>.self,
-                data: response.data
-              ).data
-              let token = response.response?.headers["authorization"]
-              UserStorage.shared.saveMember(responseModel)
-              UserStorage.shared.saveToken(token)
-              return .concat([
-                .just(.setLoading(false)),
-                .just(.setOnboardingVC(true)),
-                .just(.setOnboardingVC(false))
-              ])
-            default:
-              fatalError("Login is Failed!")
-            }
-          }
-      ])
+    case .continueButtonDidTap:
+      return self.memberNetworkService.requestAPI(
+        to: .login(email: email, password: password, fcmToken: FCMTokenManager.shared.fcmToken!)
+      )
+      .flatMap { response in
+        do {
+          let response = try response.filterSuccessfulStatusCodes()
+          let responseDTO = NetworkUtility.decode(
+            ResponseDTO<MemberSingleResponseDTO>.self,
+            data: response.data
+          )
+          let token = response.response?.headers["authorization"]
+          UserStorage.shared.saveMember(Member(responseDTO.data))
+          UserStorage.shared.saveEmail(email)
+          UserStorage.shared.savePassword(password)
+          UserStorage.shared.saveToken(token)
+          return Observable<Mutation>.just(.setOnboardingVC(true))
+        } catch (let error) {
+          print(error.localizedDescription)
+          return .empty()
+        }
+      }
     }
   }
   
@@ -70,11 +66,8 @@ final class CompleteSignupViewReactor: Reactor {
     var newState = state
     
     switch mutation {
-    case .setLoading(let isLoading):
-      newState.isLoading = isLoading
-      
-    case .setOnboardingVC(let isOpened):
-      newState.isOpendOnboardingVC = isOpened
+    case .setOnboardingVC(let state):
+      newState.navigateToOnboardingVC = state
     }
     
     return newState

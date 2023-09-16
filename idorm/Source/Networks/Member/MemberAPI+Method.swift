@@ -18,7 +18,7 @@ extension MemberAPI {
     case .register:
       return .post
       
-    case .changePassword_Login, .changePassword_Logout:
+    case .patchPassword:
       return .patch
       
     case .changeNickname:

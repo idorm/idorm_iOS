@@ -14,185 +14,70 @@ import ReactorKit
 
 final class NicknameViewReactor: Reactor {
   
+  enum ViewType {
+    case changeNickname
+    case signUp
+  }
+  
   enum Action {
-    case didChangeTextField(String)
-    case editingDidBeginTf
-    case editingDidEndTf
-    case didTapConfirmButton
+    case textFieldDidChange(String)
+    case textFieldEditingDidEnd
+    case continueButtonDidTap
   }
   
   enum Mutation {
-    case setBorderColorTf(UIColor)
-    case setCountLabelTextColor(UIColor)
-    case setCompoundLabelTextColor(UIColor)
-    case setSpacingLabelTextColor(UIColor)
-    case setCheckmark(Bool)
     case setNickname(String)
-    case setTextCount(Int)
-    case setPopup(Bool, String)
-    case setLoading(Bool)
-    case setPopVC(Bool)
-    case setPrivacyPolicyBottomSheet(Bool)
+    case setAllConditions
+    case setPopping(Bool)
+    case setPrivacyBottomSheet(Bool)
   }
   
   struct State {
-    var currentNickname: String = ""
-    var currentBorderColorTf: UIColor = .idorm_gray_300
-    var currentCountLabelTextColor: UIColor = .idorm_gray_400
-    var currentCompoundLabelTextColor: UIColor = .idorm_gray_400
-    var currentSpacingLabelTextColor: UIColor = .idorm_gray_400
-    var currentTextCount: Int = 0
-    var isHiddenCheckmark: Bool = true
-    var isOpenedPopup: (Bool, String) = (false, "")
-    var isOpenedPrivacyPolicyBottomSheet: Bool = false
-    var popVC: Bool = false
-    var isLoading: Bool = false
+    var viewType: ViewType
+    var nickname: String = ""
+    var isValidatedCountCondition: Bool = false
+    var isValidatedCompoundCondition: Bool = false
+    var isValidatedSpacingCondition: Bool = false
+    var isValidatedAllConditions: Bool = false
+    @Pulse var presentToPrivacyBottomSheet: Bool = false
+    @Pulse var isPopping: Bool = false
   }
   
-  var initialState: State = State()
-  private let type: NicknameViewController.VCType
+  // MARK: - Properties
   
-  init(_ type: NicknameViewController.VCType) {
-    self.type = type
+  var initialState: State
+  private let memberNetworkService = NetworkService<MemberAPI>()
+  
+  // MARK: - Initializer
+  
+  init(_ viewType: ViewType) {
+    self.initialState = State(viewType: viewType)
   }
+  
+  // MARK: - Functions
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
-    case .didChangeTextField(let text):
-      let countCondition: Observable<Mutation>
-      let compoundCondition: Observable<Mutation>
-      let spacingCondition: Observable<Mutation>
+    case .textFieldDidChange(let nickname):
+      return .just(.setNickname(nickname))
       
-      if text.count >= 2 && text.count <= 8 {
-        countCondition = .just(.setCountLabelTextColor(.idorm_blue))
-      } else {
-        countCondition = .just(.setCountLabelTextColor(.idorm_gray_400))
+    case .textFieldEditingDidEnd:
+      return .just(.setAllConditions)
+      
+    case .continueButtonDidTap:
+      guard self.currentState.isValidatedAllConditions else {
+        AlertManager.shared.showAlertPopup("조건을 다시 확인해주세요.")
+        return .empty()
       }
-      
-      if text.contains(" ") {
-        spacingCondition = .just(.setSpacingLabelTextColor(.idorm_gray_400))
-      } else {
-        spacingCondition = .just(.setSpacingLabelTextColor(.idorm_blue))
-      }
-      
-      if text.isValidNickname {
-        compoundCondition = .just(.setCompoundLabelTextColor(.idorm_blue))
-      } else {
-        compoundCondition = .just(.setCompoundLabelTextColor(.idorm_gray_400))
-      }
-      
-      return .concat([
-        countCondition,
-        compoundCondition,
-        spacingCondition,
-        .just(.setTextCount(text.count)),
-        .just(.setNickname(text))
-      ])
-      
-    case .editingDidEndTf:
-      let countCondition: Observable<Mutation>
-      let compoundCondition: Observable<Mutation>
-      let spacingCondition: Observable<Mutation>
-      let text = currentState.currentNickname
-      
-      if (text.count >= 2 && text.count <= 8) {
-        countCondition = .just(.setCountLabelTextColor(.idorm_blue))
-      } else {
-        countCondition = .just(.setCountLabelTextColor(.idorm_red))
-      }
-      
-      if text.contains(" ") {
-        spacingCondition = .just(.setSpacingLabelTextColor(.idorm_red))
-      } else {
-        spacingCondition = .just(.setSpacingLabelTextColor(.idorm_blue))
-      }
-      
-      if text.isValidNickname == false {
-        compoundCondition = .just(.setCompoundLabelTextColor(.idorm_red))
-      } else {
-        compoundCondition = .just(.setCompoundLabelTextColor(.idorm_blue))
-      }
-      
-      if text.count >= 2 && text.count <= 8,
-         text.contains(" ") == false,
-         text.isValidNickname {
-        return .concat([
-          countCondition,
-          compoundCondition,
-          spacingCondition,
-          .just(.setBorderColorTf(.idorm_gray_300)),
-          .just(.setCheckmark(false))
-        ])
-      } else {
-        return .concat([
-          countCondition,
-          compoundCondition,
-          spacingCondition,
-          .just(.setBorderColorTf(.idorm_red)),
-          .just(.setCheckmark(true))
-        ])
-      }
-      
-    case .editingDidBeginTf:
-      return .concat([
-        .just(.setBorderColorTf(.idorm_blue)),
-        .just(.setCheckmark(true))
-      ])
-      
-    case .didTapConfirmButton:
-      let nickname = currentState.currentNickname
-      
-      if nickname.isValidNickname,
-         nickname.count >= 2 && nickname.count <= 8,
-         nickname.contains(" ") == false {
-        switch type {
-        case .signUp:
-          Logger.shared.saveNickname(nickname)
-          
-          return .concat([
-            .just(.setPrivacyPolicyBottomSheet(true)),
-            .just(.setPrivacyPolicyBottomSheet(false))
-          ])
-          
-        case .modify:
-          return .concat([
-            .just(.setLoading(true)),
-            MemberAPI.provider.rx.request(
-              .changeNickname(nickname: nickname)
-            )
-              .asObservable()
-              .retry()
-              .flatMap { response -> Observable<Mutation> in
-                switch response.statusCode {
-                case 200:
-                  var member = UserStorage.shared.member
-                  member?.nickname = nickname
-                  UserStorage.shared.saveMember(member!)
-                  return .concat([
-                    .just(.setLoading(false)),
-                    .just(.setPopVC(true)),
-                    .just(.setPopVC(false))
-                  ])
-                default:
-                  let message = MemberAPI.decode(
-                    ErrorResponseModel.self,
-                    data: response.data
-                  ).responseMessage
-                  return .concat([
-                    .just(.setLoading(false)),
-                    .just(.setPopup(true, message)),
-                    .just(.setPopup(false, ""))
-                  ])
-                }
-              }
-          ])
-          .subscribe(on: MainScheduler.asyncInstance)
+      if case .changeNickname = self.currentState.viewType {
+        return self.memberNetworkService.requestAPI(
+          to: .changeNickname(nickname: self.currentState.nickname)
+        ).flatMap { _ in
+          // TODO: 변경된 닉네임으로 업데이트
+          return Observable<Mutation>.just(.setPopping(true))
         }
       } else {
-        return .concat([
-          .just(.setPopup(true, "조건을 다시 확인해주세요.")),
-          .just(.setPopup(false, ""))
-        ])
+        return .just(.setPrivacyBottomSheet(true))
       }
     }
   }
@@ -201,38 +86,28 @@ final class NicknameViewReactor: Reactor {
     var newState = state
     
     switch mutation {
-    case .setPopVC(let isPop):
-      newState.popVC = isPop
+    case .setNickname(let nickname):
+      newState.nickname = nickname
+      // 글자 수 조건
+      newState.isValidatedCountCondition =
+      nickname.count >= 2 && nickname.count <= 8 ? true : false
+      // 글자 조합 조건
+      newState.isValidatedCompoundCondition =
+      ValidationManager.validate(nickname, validationType: .nickname)
+      // 글자 공백 조건
+      newState.isValidatedSpacingCondition = !nickname.contains(" ")
       
-    case .setLoading(let isLoading):
-      newState.isLoading = isLoading
+    case .setAllConditions:
+      newState.isValidatedAllConditions =
+      state.isValidatedCountCondition &&
+      state.isValidatedCompoundCondition &&
+      state.isValidatedSpacingCondition
       
-    case let .setPopup(isOpened, message):
-      newState.isOpenedPopup = (isOpened, message)
+    case .setPopping(let isPopping):
+      newState.isPopping = isPopping
       
-    case .setPrivacyPolicyBottomSheet(let isOpened):
-      newState.isOpenedPrivacyPolicyBottomSheet = isOpened
-      
-    case .setTextCount(let count):
-      newState.currentTextCount = count
-      
-    case .setCompoundLabelTextColor(let color):
-      newState.currentCompoundLabelTextColor = color
-      
-    case .setCountLabelTextColor(let color):
-      newState.currentCountLabelTextColor = color
-      
-    case .setCheckmark(let isHidden):
-      newState.isHiddenCheckmark = isHidden
-      
-    case .setBorderColorTf(let color):
-      newState.currentBorderColorTf = color
-      
-    case .setSpacingLabelTextColor(let color):
-      newState.currentSpacingLabelTextColor = color
-      
-    case .setNickname(let text):
-      newState.currentNickname = text
+    case .setPrivacyBottomSheet(let isPresented):
+      newState.presentToPrivacyBottomSheet = isPresented
     }
     
     return newState

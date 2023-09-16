@@ -7,23 +7,21 @@
 
 import Foundation
 
-enum JoinPeriod: String, Codable {
+enum JoinPeriod: String, Codable, CaseIterable {
   case period_16 = "WEEK16"
   case period_24 = "WEEK24"
   
-  var parsingString: String {
+  var description: String {
     switch self {
-    case .period_16:
-      return "WEEK16"
-    case .period_24:
-      return "WEEK24"
+    case .period_16: "짧은 기간"
+    case .period_24: "긴 기간"
     }
   }
   
-  var cardString: String {
+  var parsingString: String {
     switch self {
-    case .period_16: return "짧은 기간"
-    case .period_24: return "긴 기간"
+    case .period_16: "WEEK16"
+    case .period_24: "WEEK24"
     }
   }
 }

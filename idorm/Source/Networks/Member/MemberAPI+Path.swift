@@ -16,9 +16,7 @@ extension MemberAPI {
       return "/auth/login"
     case .register:
       return "/auth/register"
-    case .changePassword_Login:
-      return "/auth/password"
-    case .changePassword_Logout:
+    case .patchPassword:
       return "/auth/password"
     case .changeNickname:
       return "/member/nickname"

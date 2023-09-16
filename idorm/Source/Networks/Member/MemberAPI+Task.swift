@@ -18,15 +18,10 @@ extension MemberAPI {
         "password": pw,
       ], encoding: JSONEncoding.default)
       
-    case let .changePassword_Logout(email, password):
+    case let .patchPassword(email, password):
       return .requestParameters(parameters: [
         "email": email,
         "password": password
-      ], encoding: JSONEncoding.default)
-      
-    case .changePassword_Login(let pw):
-      return .requestParameters(parameters: [
-        "password": pw
       ], encoding: JSONEncoding.default)
       
     case let .register(id, pw, nickname):

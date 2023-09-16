@@ -7,7 +7,6 @@
 
 import UIKit
 
-import Then
 import SnapKit
 import RxSwift
 import RxCocoa
@@ -15,89 +14,79 @@ import ReactorKit
 
 final class CompleteSignUpViewController: BaseViewController, View {
   
-  // MARK: - Properties
+  typealias Reactor = CompleteSignupViewReactor
   
-  private let signUpLabel = UILabel().then {
-    $0.textColor = .idorm_gray_400
-    $0.text = "안녕하세요! 가입을 축하드려요."
-    $0.textAlignment = .center
-    $0.font = .iDormFont(.bold, size: 18)
-  }
+  // MARK: - UI Components
   
-  private let descriptionLabel1 = UILabel().then {
-    $0.font = .iDormFont(.medium, size: 12)
-    $0.textColor = .idorm_gray_300
-    $0.textAlignment = .center
-    $0.text = "로그인 후 인천대학교 기숙사 룸메이트 매칭을 위한"
-  }
+  /// `안녕하세요 가입을 축하드려요.`가 적혀있는 `UILabel`
+  private let celebrateLabel: UILabel = {
+    let label = UILabel()
+    label.textColor = .iDormColor(.iDormGray400)
+    label.text = "안녕하세요! 가입을 축하드려요."
+    label.textAlignment = .center
+    label.font = .iDormFont(.bold, size: 18)
+    return label
+  }()
   
-  private let descriptionLabel2 = UILabel().then {
-    $0.font = .iDormFont(.medium, size: 12)
-    $0.textColor = .idorm_gray_300
-    $0.textAlignment = .center
-    $0.text = "기본정보를 알려주세요."
-  }
+  /// 정보성 `UILabel`
+  private let descriptionLabel: UILabel = {
+    let label = UILabel()
+    label.font = .iDormFont(.medium, size: 12)
+    label.textColor = .iDormColor(.iDormGray300)
+    label.textAlignment = .center
+    label.text = """
+    로그인 후 인천대학교 기숙사 룸메이트 매칭을 위한
+    기본정보를 알려주세요.
+    """
+    return label
+  }()
   
-  private let continueButton = UIButton().then {
-    var config = UIButton.Configuration.filled()
-    var container = AttributeContainer()
-    container.font = .iDormFont(.medium, size: 16)
-    container.foregroundColor = UIColor.white
-    config.attributedTitle = AttributedString("로그인 후 계속하기", attributes: container)
-    config.baseBackgroundColor = .idorm_blue
-    config.cornerStyle = .capsule
-    config.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 40, bottom: 10, trailing: 40)
-    
-    $0.configuration = config
-  }
+  /// `로그인 후 계속하기`가 적혀있는 `UIButton`
+  private let continueButton: iDormButton = {
+    let button = iDormButton("로그인 후 계속하기", image: nil)
+    button.baseBackgroundColor = .iDormColor(.iDormBlue)
+    button.baseForegroundColor = .white
+    button.contentInset = NSDirectionalEdgeInsets(
+      top: 10.0, leading: 40.0, bottom: 10.0, trailing: 40.0
+    )
+    button.font = .iDormFont(.medium, size: 16.0)
+    button.shadowOpacity = 0.11
+    button.shadowRadius = 2.0
+    button.shadowOffset = CGSize(width: 0, height: 2)
+    button.height = 44.0
+    return button
+  }()
   
-  private let indicator = UIActivityIndicatorView().then {
-    $0.color = .darkGray
-  }
-  
-  private let image = UIImageView(image: UIImage(named: "lion"))
+  /// `ic_domi`인 `UIImageView`
+  private let domiImageView: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = .iDormIcon(.domi)
+    return imageView
+  }()
   
   // MARK: - Bind
   
   func bind(reactor: CompleteSignupViewReactor) {
     
-    // MARK: - Action
+    // Action
     
-    // 계속하기 버튼
-    continueButton.rx.tap
-      .map { CompleteSignupViewReactor.Action.didTapContinueButton }
+    self.continueButton.rx.tap
+      .map { Reactor.Action.continueButtonDidTap }
       .bind(to: reactor.action)
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
     
-    // MARK: - State
+    // State
     
-    // 화면 인터렉션 제어
-    reactor.state
-      .map { $0.isLoading }
-      .map { !$0 }
-      .bind(to: view.rx.isUserInteractionEnabled)
-      .disposed(by: disposeBag)
-    
-    // 인디케이터 애니메이션
-    reactor.state
-      .map { $0.isLoading }
-      .distinctUntilChanged()
-      .bind(to: indicator.rx.isAnimating)
-      .disposed(by: disposeBag)
-    
-    // OnboardingVC 열기
-    reactor.state
-      .map { $0.isOpendOnboardingVC }
-      .filter { $0 }
-      .withUnretained(self)
-      .bind { owner, _ in
-        let onboardingVC = OnboardingViewController(.initial)
-        onboardingVC.reactor = OnboardingViewReactor(.initial)
+    reactor.pulse(\.$navigateToOnboardingVC).skip(1)
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
+        let onboardingVC = OnboardingViewController()
+//        onboardingVC.reactor = OnboardingViewReactor(.initial)
         let navVC = UINavigationController(rootViewController: onboardingVC)
         navVC.modalPresentationStyle = .fullScreen
         owner.present(navVC, animated: true)
       }
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
   }
   
   // MARK: - Setup
@@ -105,53 +94,43 @@ final class CompleteSignUpViewController: BaseViewController, View {
   override func setupStyles() {
     super.setupStyles()
     
-    view.backgroundColor = .white
+    self.view.backgroundColor = .white
   }
   
   override func setupLayouts() {
     super.setupLayouts()
     
     [
-      image,
-      signUpLabel,
-      descriptionLabel1,
-      descriptionLabel2,
-      continueButton,
-      indicator
-    ].forEach { view.addSubview($0) }
+      self.domiImageView,
+      self.celebrateLabel,
+      self.descriptionLabel,
+      self.continueButton
+    ].forEach {
+      self.view.addSubview($0)
+    }
   }
   
   override func setupConstraints() {
     super.setupConstraints()
     
-    image.snp.makeConstraints { make in
+    self.domiImageView.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.centerY.equalToSuperview().offset(-100)
+      make.centerY.equalTo(self.view.safeAreaLayoutGuide).offset(-60.0)
     }
     
-    signUpLabel.snp.makeConstraints { make in
-      make.top.equalTo(image.snp.bottom).offset(70)
+    self.celebrateLabel.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
+      make.top.equalTo(self.domiImageView.snp.bottom).offset(64.0)
+    }
+
+    self.descriptionLabel.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+      make.top.equalTo(self.celebrateLabel.snp.bottom).offset(8.0)
     }
     
-    descriptionLabel1.snp.makeConstraints { make in
-      make.top.equalTo(signUpLabel.snp.bottom).offset(12)
+    self.continueButton.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-    }
-    
-    descriptionLabel2.snp.makeConstraints { make in
-      make.top.equalTo(descriptionLabel1.snp.bottom).offset(4)
-      make.centerX.equalToSuperview()
-    }
-    
-    continueButton.snp.makeConstraints { make in
-      make.bottom.equalTo(view.safeAreaLayoutGuide).inset(40)
-      make.centerX.equalToSuperview()
-    }
-    
-    indicator.snp.makeConstraints { make in
-      make.center.equalToSuperview()
-      make.width.height.equalTo(20)
+      make.top.equalTo(self.descriptionLabel.snp.bottom).offset(64.0)
     }
   }
 }

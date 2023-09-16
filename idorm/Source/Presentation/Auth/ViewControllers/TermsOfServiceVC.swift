@@ -1,5 +1,5 @@
 //
-//  PrivacyPolicyBottomSheet.swift
+//  TermsOfServiceViewController.swift
 //  idorm
 //
 //  Created by 김응철 on 2023/01/02.
@@ -12,152 +12,141 @@ import Then
 import PanModal
 import RxSwift
 import RxCocoa
+import RxGesture
 import ReactorKit
 
-final class PrivacyViewController: BaseViewController, View {
+final class TermsOfServiceViewController: BaseViewController, View {
   
-  // MARK: - Properties
+  typealias Reactor = TermsOfServiceViewReactor
   
-  private let agreementLabel = UILabel().then {
-    $0.text = "개인정보 처리방침 필수동의"
-    $0.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 12)
-    $0.textColor = .idorm_gray_400
-  }
+  // MARK: - UI Components
   
-  private let agreementButton = UILabel().then {
-    $0.text = "보기"
-    $0.textColor = .idorm_gray_200
-    $0.font = .init(name: IdormFont_deprecated.medium.rawValue, size: 12)
-  }
+  /// 개인정보 처리방침 필수동의 `UIButton`
+  private let termsOfServiceButton: iDormButton = {
+    let button = iDormButton("개인정보 처리방침 필수동의", image: .iDormIcon(.deselect))
+    button.baseBackgroundColor = .white
+    button.baseForegroundColor = .iDormColor(.iDormGray400)
+    button.imagePlacement = .leading
+    button.imagePadding = 14.0
+    button.contentInset = .zero
+    let handelr: UIButton.ConfigurationUpdateHandler = { button in
+      guard let button = button as? iDormButton else { return }
+      switch button.state {
+      case .selected:
+        button.image = .iDormIcon(.select)
+      default:
+        button.image = .iDormIcon(.deselect)
+      }
+    }
+    return button
+  }()
   
-  private let agreementCircleButton = UIButton().then {
-    $0.setImage(UIImage(named: "circle_gray"), for: .normal)
-    $0.setImage(UIImage(named: "circle_blue"), for: .selected)
-  }
+  /// 보기 `UILabel`
+  private let viewLabel: UILabel = {
+    let label = UILabel()
+    label.text = "보기"
+    label.textColor = .iDormColor(.iDormGray200)
+    label.font = .iDormFont(.medium, size: 12.0)
+    return label
+  }()
   
-  private let indicator = UIActivityIndicatorView().then {
-    $0.color = .darkGray
-  }
-  
-  private let confirmButton = OldiDormButton("완료")
+  /// 완료 `UIButton`
+  private let continueButton: iDormButton = {
+    let button = iDormButton("회원가입", image: nil)
+    button.baseBackgroundColor = .iDormColor(.iDormBlue)
+    button.baseForegroundColor = .white
+    button.cornerRadius = 10.0
+    return button
+  }()
   
   // MARK: - Setup
   
   override func setupStyles() {
-    view.backgroundColor = .white
+    super.setupStyles()
+    
+    self.view.backgroundColor = .white
   }
   
   override func setupLayouts() {
+    super.setupLayouts()
+    
     [
-      confirmButton,
-      agreementCircleButton,
-      agreementLabel,
-      agreementButton,
-      indicator
-    ].forEach { view.addSubview($0) }
+      self.termsOfServiceButton,
+      self.viewLabel,
+      self.continueButton
+    ].forEach {
+      self.view.addSubview($0)
+    }
   }
   
   override func setupConstraints() {
-    
-    confirmButton.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview().inset(24)
-      make.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
-      make.height.equalTo(53)
+    super.setupConstraints()
+
+    self.termsOfServiceButton.snp.makeConstraints { make in
+      make.leading.equalToSuperview().inset(24.0)
+      make.top.equalToSuperview().inset(37.0)
     }
     
-    agreementCircleButton.snp.makeConstraints { make in
-      make.leading.equalToSuperview().inset(27.5)
-      make.bottom.equalTo(confirmButton.snp.top).offset(-33.5)
+    self.viewLabel.snp.makeConstraints { make in
+      make.leading.equalTo(self.termsOfServiceButton.snp.trailing).offset(8.0)
+      make.centerY.equalTo(self.termsOfServiceButton)
     }
     
-    agreementLabel.snp.makeConstraints { make in
-      make.centerY.equalTo(agreementCircleButton)
-      make.leading.equalTo(agreementCircleButton.snp.trailing).offset(11.5)
-    }
-    
-    agreementButton.snp.makeConstraints { make in
-      make.centerY.equalTo(agreementCircleButton)
-      make.leading.equalTo(agreementLabel.snp.trailing).offset(8)
-    }
-    
-    indicator.snp.makeConstraints { make in
-      make.center.equalToSuperview()
+    self.continueButton.snp.makeConstraints { make in
+      make.directionalHorizontalEdges.equalToSuperview().inset(24.0)
+      make.bottom.equalToSuperview().inset(20.0)
     }
   }
   
   // MARK: - Bind
   
-  func bind(reactor: PrivacyPolicyBottomSheetReactor) {
+  func bind(reactor: TermsOfServiceViewReactor) {
 
-    // MARK: -  Action
+    // Action
     
-    // 버튼 토글
-    agreementCircleButton.rx.tap
-      .withUnretained(self)
-      .map { !$0.0.agreementCircleButton.isSelected }
-      .bind(to: agreementCircleButton.rx.isSelected)
-      .disposed(by: disposeBag)
-    
-    // 완료 버튼
-    confirmButton.rx.tap
-      .withUnretained(self)
-      .filter { $0.0.agreementCircleButton.isSelected }
-      .map { _ in PrivacyPolicyBottomSheetReactor.Action.didTapConfirmButton }
+    self.termsOfServiceButton.rx.tap
+      .map { Reactor.Action.termsOfServiceButtonDidTap }
       .bind(to: reactor.action)
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
     
-    // 노션 페이지로 이동
-    agreementButton.rx.tapGesture()
+    self.continueButton.rx.tap
+      .map { Reactor.Action.continueButtonDidTap }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
+    self.viewLabel.rx.tapGesture().when(.recognized)
+      .map { _ in Reactor.Action.viewLabelDidTap }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
+    // State
+    
+    reactor.pulse(\.$isSelectedTermsOfServiceButton)
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, isSelected in
+        owner.termsOfServiceButton.isSelected = isSelected
+        owner.continueButton.isEnabled = isSelected
+      }
+      .disposed(by: self.disposeBag)
+    
+    reactor.pulse(\.$navigateToCompleteSignUpVC)
       .skip(1)
-      .bind { _ in UIApplication.shared.open(URL(string: "https://idorm.notion.site/e5a42262cf6b4665b99bce865f08319b")!) }
-      .disposed(by: disposeBag)
-    
-    // MARK: - State
-    
-    reactor.state
-      .map { $0.isLoading }
-      .bind(to: indicator.rx.isAnimating)
-      .disposed(by: disposeBag)
-    
-    reactor.state
-      .map { $0.isLoading }
-      .map { !$0 }
-      .bind(to: view.rx.isUserInteractionEnabled)
-      .disposed(by: disposeBag)
-    
-    // 오류 팝업
-    reactor.state
-      .map { $0.isOpenedPopup }
-      .filter { $0.0 }
-      .withUnretained(self)
-      .bind { owner, message in
-        let popup = iDormPopupViewController(contents: message.1)
-        popup.modalPresentationStyle = .overFullScreen
-        owner.present(popup, animated: false)
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
+        owner.dismiss(animated: true) {
+          let viewController = CompleteSignUpViewController()
+          let reactor = CompleteSignupViewReactor()
+          viewController.reactor = reactor
+          owner.navigationController?.pushViewController(viewController, animated: true)
+        }
       }
-      .disposed(by: disposeBag)
-    
-    // CompleteSignUpVC로 이동
-    reactor.state
-      .map { $0.isOpenedCompleteSignUpVC }
-      .filter { $0 }
-      .withUnretained(self)
-      .bind {
-        let completeSignUpVC = CompleteSignUpViewController()
-        completeSignUpVC.reactor = CompleteSignupViewReactor()
-        completeSignUpVC.modalPresentationStyle = .fullScreen
-        $0.0.present(completeSignUpVC, animated: true)
-      }
-      .disposed(by: disposeBag)
+      .disposed(by: self.disposeBag)
   }
 }
 
-extension PrivacyPolicyBottomSheet: PanModalPresentable {
+extension TermsOfServiceViewController: PanModalPresentable {
   var panScrollable: UIScrollView? { nil }
-  
-  var longFormHeight: PanModalHeight { .contentHeight(158) }
-  
-  var shortFormHeight: PanModalHeight { .contentHeight(158) }
-  
-  var cornerRadius: CGFloat { 24 }
+  var longFormHeight: PanModalHeight { .contentHeight(158.0) }
+  var shortFormHeight: PanModalHeight { .contentHeight(158.0) }
+  var cornerRadius: CGFloat { 24.0 }
 }

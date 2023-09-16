@@ -95,6 +95,7 @@ final class EmailViewController: BaseViewController, View {
       .disposed(by: self.disposeBag)
     
     reactor.pulse(\.$shouldPresentToAuthVC)
+      .filter { $0 }
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
         let viewController = AuthViewController()

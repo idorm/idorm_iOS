@@ -116,8 +116,8 @@ final class ManageMyInfoViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let changeNicknameVC = NicknameViewController(.modify)
-        changeNicknameVC.reactor = NicknameViewReactor(.modify)
+        let changeNicknameVC = NicknameViewController()
+        changeNicknameVC.reactor = NicknameViewReactor(.signUp)
         owner.navigationController?.pushViewController(changeNicknameVC, animated: true)
       }
       .disposed(by: disposeBag)

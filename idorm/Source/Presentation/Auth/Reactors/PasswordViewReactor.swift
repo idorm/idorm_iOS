@@ -16,6 +16,7 @@ final class PasswordViewReactor: Reactor {
   
   enum ViewType {
     case findPassword
+    case changePassword
     case signUp
   }
   
@@ -23,6 +24,8 @@ final class PasswordViewReactor: Reactor {
     case passwordTextFieldDidChange(String)
     case verifyPasswordTextFieldDidChange(String)
     case passwordTextFieldEditingDidEnd
+    case verifyPasswordTextFieldEditingDidEnd
+    case continueButtonDidTap
   }
   
   enum Mutation {
@@ -32,6 +35,9 @@ final class PasswordViewReactor: Reactor {
     case setValidateCompoundCondition(Bool)
     case setValidateAllConditions(Bool)
     case setValidationStates(count: Bool, compound: Bool)
+    case setSameAsPassword(Bool)
+    case setNicknameVC(Bool)
+    case setRootVC(Bool)
   }
   
   struct State {
@@ -41,12 +47,16 @@ final class PasswordViewReactor: Reactor {
     var isValidatedToTextCount: Bool = false
     var isValidatedToCompoundCondition: Bool = false
     var isValidatedAllConditions: Bool = false
-    var validationStates: (count: Bool, compound: Bool)?
+    @Pulse var navigateToRootVC: Bool = false
+    @Pulse var navigateToNicknameVC: Bool = false
+    @Pulse var isSameAsPassword: Bool = false
+    @Pulse var validationStates: (count: Bool, compound: Bool)?
   }
   
   // MARK: - Properties
   
   var initialState: State
+  private let memberNetworkService = NetworkService<MemberAPI>()
   
   // MARK: - Initializer
   
@@ -70,11 +80,39 @@ final class PasswordViewReactor: Reactor {
     case .verifyPasswordTextFieldDidChange(let password):
       return .just(.setVerfiyPassword(password))
       
+    case .verifyPasswordTextFieldEditingDidEnd:
+      return .just(.setSameAsPassword(
+        self.currentState.password == self.currentState.verifyPassword
+      ))
+      
     case .passwordTextFieldEditingDidEnd:
       return .just(.setValidationStates(
         count: self.currentState.isValidatedToTextCount,
         compound: self.currentState.isValidatedToCompoundCondition
       ))
+      
+    case .continueButtonDidTap:
+      guard !self.currentState.isValidatedAllConditions else {
+        AlertManager.shared.showAlertPopup("조건을 다시 확인해주세요.")
+        return .empty()
+      }
+      switch self.currentState.viewType {
+      case .findPassword:
+        return self.memberNetworkService.requestAPI(to: .patchPassword(
+          email: Logger.shared.email,
+          password: self.currentState.password
+        )).flatMap { _ in return Observable<Mutation>.just(.setRootVC(true)) }
+        
+      case .changePassword:
+        return self.memberNetworkService.requestAPI(to: .patchPassword(
+          email: UserStorage.shared.email!,
+          password: self.currentState.password
+        )).flatMap { _ in return Observable<Mutation>.just(.setRootVC(true)) }
+        
+      case .signUp:
+        Logger.shared.savePassword(self.currentState.password)
+        return .just(.setNicknameVC(true))
+      }
     }
   }
   
@@ -99,6 +137,15 @@ final class PasswordViewReactor: Reactor {
       
     case let .setValidationStates(count, compound):
       newState.validationStates = (count, compound)
+      
+    case .setSameAsPassword(let isSame):
+      newState.isSameAsPassword = isSame
+      
+    case .setNicknameVC(let state):
+      newState.navigateToNicknameVC = state
+      
+    case .setRootVC(let state):
+      newState.navigateToRootVC = state
     }
     
     return newState

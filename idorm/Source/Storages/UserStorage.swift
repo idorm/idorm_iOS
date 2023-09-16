@@ -17,8 +17,8 @@ final class UserStorage {
   
   static let shared = UserStorage()
   
-  @UserDefaultsWrapper<String>(key: "EMAIL", defaultValue: "")
-  private(set) var email: String
+  @UserDefaultsWrapper<String?>(key: "EMAIL", defaultValue: nil)
+  private(set) var email: String?
   
   @UserDefaultsWrapper<String>(key: "PASSWORD", defaultValue: "")
   private(set) var password: String
@@ -49,7 +49,7 @@ final class UserStorage {
   // MARK: - HELPERS
   
   /// 이메일을 영구적으로 저장합니다.
-  func saveEmail(_ email: String) {
+  func saveEmail(_ email: String?) {
     self.email = email
   }
   

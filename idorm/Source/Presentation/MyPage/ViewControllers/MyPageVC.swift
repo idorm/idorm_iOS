@@ -168,8 +168,8 @@ final class MyPageViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let viewController = OnboardingViewController(.main)
-        viewController.reactor = OnboardingViewReactor(.main)
+        let viewController = OnboardingViewController()
+//        viewController.reactor = OnboardingViewReactor(.main)
         viewController.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(viewController, animated: true)
       }

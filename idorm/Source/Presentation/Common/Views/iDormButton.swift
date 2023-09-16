@@ -23,9 +23,6 @@ final class iDormButton: UIButton, BaseView {
   
   // MARK: - Properties
   
-  /// 버튼의 왼쪽에 위치해 있는 `UIImage?`
-  private let image: UIImage?
-  
   private var heightConstraint: Constraint?
   
   /// 버튼의 타이틀 `String`
@@ -111,6 +108,11 @@ final class iDormButton: UIButton, BaseView {
     willSet { self.configuration?.titlePadding = newValue }
   }
   
+  /// 버튼의 `UIImage`
+  var image: UIImage? {
+    willSet { self.configuration?.image = newValue }
+  }
+  
   /// 버튼의 `title`과 `image`사이의 `Padding`
   var imagePadding: CGFloat = 0 {
     willSet { self.configuration?.imagePadding = newValue }
@@ -143,12 +145,12 @@ final class iDormButton: UIButton, BaseView {
   
   /// 버튼의 `BorderWidth`
   var borderWidth: CGFloat = 0.0 {
-    willSet { self.layer.borderWidth = newValue }
+    willSet { self.configuration?.background.strokeWidth = newValue }
   }
   
   /// 버튼의 `BorderColor`
   var borderColor: UIColor = .white {
-    willSet { self.layer.borderColor = newValue.cgColor }
+    willSet { self.configuration?.background.strokeColor = newValue }
   }
   
   /// 현재 버튼의 `BottomSheetItem` (BottomSheetVC에서만 사용가능)

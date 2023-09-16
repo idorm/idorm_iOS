@@ -20,6 +20,7 @@ enum iDormIcon: String {
   case checkCircle
   
   case domi
+  case domiWithBackgrond
 
   case option
   case openedEye

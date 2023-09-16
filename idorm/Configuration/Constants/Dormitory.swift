@@ -1,5 +1,5 @@
 //
-//  Domitory.swift
+//  Dormitory.swift
 //  idorm
 //
 //  Created by 김응철 on 9/14/23.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Dormitory: String, Codable {
+enum Dormitory: String, Codable, CaseIterable {
   case no1 = "DORM1"
   case no2 = "DORM2"
   case no3 = "DORM3"

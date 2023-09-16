@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import RxGesture
 
 final class NewiDormTextField: UIView, BaseView {
   
@@ -27,18 +28,20 @@ final class NewiDormTextField: UIView, BaseView {
     return textField
   }()
   
-  /// ic_openedEye인 `UIButton`
-  private let openedEyeButton: iDormButton = {
-    let button = iDormButton("", image: .iDormIcon(.openedEye))
-    button.isHidden = true
-    return button
+  /// ic_openedEye인 `UIImageView`
+  private let openedEyeButton: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = .iDormIcon(.openedEye)
+    imageView.isHidden = true
+    return imageView
   }()
   
-  /// ic_closedEye인 `UIButton`
-  private let closedEyeButton: iDormButton = {
-    let button = iDormButton("", image: .iDormIcon(.closedEye))
-    button.isHidden = true
-    return button
+  /// ic_closedEye인 `UIImageView`
+  private let closedEyeButton: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = .iDormIcon(.closedEye)
+    imageView.isHidden = true
+    return imageView
   }()
   
   /// ic_checkCircle인 `UIImageView`
@@ -214,7 +217,7 @@ final class NewiDormTextField: UIView, BaseView {
       make.trailing.equalToSuperview().inset(8.0)
     }
     
-    self.openedEyeButton.snp.makeConstraints { make in
+    self.closedEyeButton.snp.makeConstraints { make in
       make.centerY.equalToSuperview()
       make.trailing.equalToSuperview().inset(8.0)
     }
@@ -228,28 +231,42 @@ final class NewiDormTextField: UIView, BaseView {
   // MARK: - Bind
   
   private func bind() {
-    self.openedEyeButton.rx.tap
-      .asDriver(onErrorRecover: { _ in return .empty() })
-      .drive(with: self) { owner, _ in
-        owner.isSecureTextEntry = false
-        owner.openedEyeButton.isHidden = true
-        owner.closedEyeButton.isHidden = false
-      }
-      .disposed(by: self.disposeBag)
+    self.openedEyeButton.rx.tapGesture { _, delegate in
+      delegate.simultaneousRecognitionPolicy = .never
+    }
+    .when(.recognized)
+    .asDriver(onErrorRecover: { _ in return .empty() })
+    .drive(with: self) { owner, _ in
+      owner.isSecureTextEntry = false
+      owner.openedEyeButton.isHidden = true
+      owner.closedEyeButton.isHidden = false
+    }
+    .disposed(by: self.disposeBag)
     
-    self.closedEyeButton.rx.tap
-      .asDriver(onErrorRecover: { _ in return .empty() })
-      .drive(with: self) { owner, _ in
-        owner.isSecureTextEntry = true
-        owner.openedEyeButton.isHidden = false
-        owner.closedEyeButton.isHidden = true
-      }
-      .disposed(by: self.disposeBag)
+    self.closedEyeButton.rx.tapGesture { _, delegate in
+      delegate.simultaneousRecognitionPolicy = .never
+    }
+    .when(.recognized)
+    .asDriver(onErrorRecover: { _ in return .empty() })
+    .drive(with: self) { owner, _ in
+      owner.isSecureTextEntry = true
+      owner.openedEyeButton.isHidden = false
+      owner.closedEyeButton.isHidden = true
+    }
+    .disposed(by: self.disposeBag)
     
     self.textField.rx.controlEvent(.editingDidBegin)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
         owner.borderColor = .iDormColor(.iDormBlue)
+        guard let validationType = self.validationType else { return }
+        if case .password = validationType {
+          if self.isSecureTextEntry {
+            self.openedEyeButton.isHidden = false
+          } else {
+            self.closedEyeButton.isHidden = false
+          }
+        }
       }
       .disposed(by: self.disposeBag)
     
