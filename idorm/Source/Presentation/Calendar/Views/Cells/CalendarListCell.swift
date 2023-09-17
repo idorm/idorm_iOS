@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class CalendarListCell: UICollectionViewCell, BaseView {
+final class CalendarListCell: UICollectionViewCell, BaseViewProtocol {
   
   // MARK: - UI Components
   

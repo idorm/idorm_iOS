@@ -158,7 +158,7 @@ final class PopularPostCell: UICollectionViewCell {
 
 // MARK: - Setup
 
-extension PopularPostCell: BaseView {
+extension PopularPostCell: BaseViewProtocol {
   
   func configure(_ post: CommunityResponseModel.Posts) {
     contentsLabel.text = post.content

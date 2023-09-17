@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 /// `UIButton.Configuration`의 `Custom`의 용이를 위한 객체
-final class iDormButton: UIButton, BaseView {
+final class iDormButton: UIButton, BaseViewProtocol {
   
   // MARK: - UI Components
   

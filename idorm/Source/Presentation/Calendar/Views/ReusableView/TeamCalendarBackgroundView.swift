@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 /// `CornerRadius`가 들어가 있는 셀을 감싸는 뷰입니다.
-final class TeamCalendarBackgroundView: UICollectionReusableView, BaseView {
+final class TeamCalendarBackgroundView: UICollectionReusableView, BaseViewProtocol {
   
   // MARK: - UI Components
   

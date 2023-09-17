@@ -32,7 +32,7 @@ final class LoginTextField: UITextField {
 
 // MARK: - SETUP
 
-extension LoginTextField: BaseView {
+extension LoginTextField: BaseViewProtocol {
   func setupStyles() {
     self.attributedPlaceholder = NSAttributedString(
       string: customPlaceholder,

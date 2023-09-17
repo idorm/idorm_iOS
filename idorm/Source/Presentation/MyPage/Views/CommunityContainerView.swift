@@ -97,7 +97,7 @@ final class CommunityContainerView: UIView {
 
 // MARK: - Setup
 
-extension CommunityContainerView: BaseView {
+extension CommunityContainerView: BaseViewProtocol {
   func setupStyles() {
     layer.shadowColor = UIColor.black.cgColor
     layer.shadowOffset = CGSize(width: 0, height: 5)

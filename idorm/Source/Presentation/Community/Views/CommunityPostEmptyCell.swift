@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 /// 게시글의 댓글이 아무것도 없을 때 나타나는 `UICollectionViewCell`
-final class CommunityPostEmptyCell: UICollectionViewCell, BaseView {
+final class CommunityPostEmptyCell: UICollectionViewCell, BaseViewProtocol {
   
   // MARK: - UI Components
   

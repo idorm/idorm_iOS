@@ -74,7 +74,7 @@ final class CommentView: UIView {
   }
 }
 
-extension CommentView: BaseView {
+extension CommentView: BaseViewProtocol {
   func setupStyles() {
     backgroundColor = .white
     

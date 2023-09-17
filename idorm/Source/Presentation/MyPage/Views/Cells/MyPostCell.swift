@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class MyPostCell: UITableViewCell, BaseView {
+final class MyPostCell: UITableViewCell, BaseViewProtocol {
   
   // MARK: - Properties
   

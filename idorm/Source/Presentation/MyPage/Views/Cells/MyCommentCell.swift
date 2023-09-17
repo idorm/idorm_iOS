@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class MyCommentCell: UITableViewCell, BaseView {
+final class MyCommentCell: UITableViewCell, BaseViewProtocol {
   
   // MARK: - UI Components
   

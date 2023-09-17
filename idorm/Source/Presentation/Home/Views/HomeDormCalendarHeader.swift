@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class HomeDormCalendarHeader: UICollectionReusableView, BaseView {
+final class HomeDormCalendarHeader: UICollectionReusableView, BaseViewProtocol {
   
   // MARK: - UI Components
   

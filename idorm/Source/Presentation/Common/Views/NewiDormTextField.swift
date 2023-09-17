@@ -11,8 +11,8 @@ import SnapKit
 import RxSwift
 import RxCocoa
 import RxGesture
-
-final class NewiDormTextField: UIView, BaseView {
+ 
+final class NewiDormTextField: BaseView {
   
   enum iDormTextFieldType {
     case withBorderLine
@@ -23,7 +23,7 @@ final class NewiDormTextField: UIView, BaseView {
   // MARK: - UI Components
   
   /// 메인이 되는 `UITextField`
-  private let textField: UITextField = {
+  let textField: UITextField = {
     let textField = UITextField()
     return textField
   }()
@@ -52,9 +52,15 @@ final class NewiDormTextField: UIView, BaseView {
     return imageView
   }()
   
-  // MARK: - Properties
+  /// ic_x_circle_mono인 `UIImageView`
+  private let xCircleImageView: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = .iDormIcon(.x_circle_mono)
+    imageView.isHidden = true
+    return imageView
+  }()
   
-  private var disposeBag = DisposeBag()
+  // MARK: - Properties
   
   /// 텍스트 필드 `PlaceHolder`의 `NSAttributedString`
   private var placeHolderAttributedString: NSAttributedString {
@@ -152,15 +158,36 @@ final class NewiDormTextField: UIView, BaseView {
   /// 텍스트 필드의 `ValidationType`
   var validationType: ValidationType?
   
+  /// `OnboardingVC`에서 사용될 텍스트 필드인지 판별하는 `Bool`
+  ///
+  /// 이 값이 바뀌면 적절한 스트림들이 자동으로 구독됩니다.
+  var isOnboarding: Bool = false {
+    willSet {
+      guard newValue else { return }
+      
+      self.editingDidBegin
+        .asDriver(onErrorRecover: { _ in return .empty() })
+        .drive(with: self) { owner, _ in
+          owner.checkCircleImageView.isHidden = true
+          owner.xCircleImageView.isHidden = false
+        }
+        .disposed(by: self.disposeBag)
+      
+      self.editingDidEnd
+        .asDriver(onErrorRecover: { _ in return .empty() })
+        .drive(with: self) { owner, _ in
+          owner.xCircleImageView.isHidden = true
+          owner.checkCircleImageView.isHidden = owner.text?.isEmpty ?? false ? true : false
+        }
+        .disposed(by: self.disposeBag)
+    }
+  }
+  
   // MARK: - Initializer
   
   init(type: iDormTextFieldType) {
     self.iDormTextFieldType = type
     super.init(frame: .zero)
-    self.setupStyles()
-    self.setupLayouts()
-    self.setupConstraints()
-    self.bind()
   }
   
   required init?(coder: NSCoder) {
@@ -169,12 +196,12 @@ final class NewiDormTextField: UIView, BaseView {
   
   // MARK: - Setup
   
-  func setupStyles() {
+  override func setupStyles() {
     self.font = .iDormFont(.medium, size: 14.0)
     self.textColor = .iDormColor(.iDormGray300)
     self.placeHolderFont = .iDormFont(.medium, size: 14.0)
+    self.textField.addRightPadding(43.5)
     switch self.iDormTextFieldType {
-      
     case .login:
       self.baseBackgroundColor = .iDormColor(.iDormGray100)
       self.placeHolderColor = .iDormColor(.iDormGray300)
@@ -195,18 +222,19 @@ final class NewiDormTextField: UIView, BaseView {
     }
   }
   
-  func setupLayouts() {
+  override func setupLayouts() {
     [
       self.textField,
       self.openedEyeButton,
       self.closedEyeButton,
-      self.checkCircleImageView
+      self.checkCircleImageView,
+      self.xCircleImageView
     ].forEach {
       self.addSubview($0)
     }
   }
   
-  func setupConstraints() {
+  override func setupConstraints() {
     self.textField.snp.makeConstraints { make in
       make.edges.equalToSuperview()
       self.heightOfTextFieldConstraint = make.height.equalTo(54.0).constraint
@@ -224,13 +252,18 @@ final class NewiDormTextField: UIView, BaseView {
     
     self.checkCircleImageView.snp.makeConstraints { make in
       make.centerY.equalToSuperview()
-      make.trailing.equalToSuperview().inset(8.0)
+      make.trailing.equalToSuperview().inset(14.5)
+    }
+    
+    self.xCircleImageView.snp.makeConstraints { make in
+      make.centerY.equalToSuperview()
+      make.trailing.equalToSuperview().inset(14.5)
     }
   }
   
   // MARK: - Bind
   
-  private func bind() {
+  override func bind() {
     self.openedEyeButton.rx.tapGesture { _, delegate in
       delegate.simultaneousRecognitionPolicy = .never
     }
@@ -254,6 +287,16 @@ final class NewiDormTextField: UIView, BaseView {
       owner.closedEyeButton.isHidden = true
     }
     .disposed(by: self.disposeBag)
+    
+    self.xCircleImageView.rx.tapGesture() { _, delegate in
+      delegate.simultaneousRecognitionPolicy = .never
+    }
+      .when(.recognized)
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
+        owner.textField.text = ""
+      }
+      .disposed(by: self.disposeBag)
     
     self.textField.rx.controlEvent(.editingDidBegin)
       .asDriver(onErrorRecover: { _ in return .empty() })

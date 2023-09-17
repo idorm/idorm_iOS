@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class CalendarSleepoverListCell: UICollectionViewCell, BaseView {
+final class CalendarSleepoverListCell: UICollectionViewCell, BaseViewProtocol {
   
   // MARK: - UI Components
   

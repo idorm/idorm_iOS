@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class OnboardingFooterView: UICollectionReusableView, BaseView {
+final class OnboardingFooterView: UICollectionReusableView, BaseViewProtocol {
   
   // MARK: - UI Components
   

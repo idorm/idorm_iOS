@@ -16,7 +16,7 @@ protocol CommunityPostMultiBoxCellDelegate: AnyObject {
 }
 
 /// 게시글의 좋아요, 댓글, 사진 갯수와 공감하기 버튼이 포함되어 있는 `UICollectionViewCell`
-final class CommunityPostMultiBoxCell: UICollectionViewCell, BaseView {
+final class CommunityPostMultiBoxCell: UICollectionViewCell, BaseViewProtocol {
   
   // MARK: - UI Components
   

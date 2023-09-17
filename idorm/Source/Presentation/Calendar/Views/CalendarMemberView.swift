@@ -12,7 +12,7 @@ import RxSwift
 import RxCocoa
 import RxGesture
 
-final class CalendarMemberView: UIView, BaseView {
+final class CalendarMemberView: UIView, BaseViewProtocol {
   
   // MARK: - UI Components
   

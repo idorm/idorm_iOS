@@ -11,7 +11,7 @@ import SnapKit
 import Kingfisher
 
 /// 게시글의 유저의 정보 및 게시글 내용이 들어가는 `UICollectionViewCell`
-final class CommunityPostContentCell: UICollectionViewCell, BaseView {
+final class CommunityPostContentCell: UICollectionViewCell, BaseViewProtocol {
   
   // MARK: - UI Components
   

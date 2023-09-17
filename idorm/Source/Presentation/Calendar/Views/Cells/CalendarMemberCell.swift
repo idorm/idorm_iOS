@@ -11,7 +11,7 @@ import SnapKit
 import Kingfisher
 
 /// 멤버의 프로필사진과 닉네임이  노출되는 `Cell`입니다.
-final class CalendarMemberCell: UICollectionViewCell, BaseView {
+final class CalendarMemberCell: UICollectionViewCell, BaseViewProtocol {
   
   // MARK: - UI Components
   

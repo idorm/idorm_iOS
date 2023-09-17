@@ -14,14 +14,26 @@ final class OnboardingTextFieldCell: BaseCollectionViewCell {
   // MARK: - UI Components
   
   /// 메인이 되는 `UITextField`
-  private let textField: NewiDormTextField = {
+  private lazy var textField: NewiDormTextField = {
     let textField = NewiDormTextField(type: .withBorderLine)
     textField.placeHolder = "입력"
     textField.placeHolderColor = .iDormColor(.iDormGray400)
     textField.textColor = .black
     textField.leftPadding = 16.0
+    textField.isOnboarding = true
+    textField.textField.addTarget(
+      self,
+      action: #selector(self.textFieldDidChange(_:)),
+      for: .valueChanged
+    )
     return textField
   }()
+  
+  // MARK: - Properties
+  
+  private var isReused: Bool = false
+  private var item: OnboardingSectionItem?
+  var textFieldHandler: ((OnboardingSectionItem) -> Void)?
   
   // MARK: - Setup
   
@@ -42,5 +54,44 @@ final class OnboardingTextFieldCell: BaseCollectionViewCell {
     }
   }
   
+  // MARK: - Selectors
+  
+  @objc
+  private func textFieldDidChange(_ textField: UITextField) {
+    guard let text = textField.text else { return }
+    let item: OnboardingSectionItem
+    switch self.item {
+    case .wakeUpTime:
+      item = .wakeUpTime(text)
+    case .arrangement:
+      item = .arrangement(text)
+    case .showerTime:
+      item = .showerTime(text)
+    case .kakao:
+      item = .kakao(text)
+    case .mbti:
+      item = .mbti(text)
+    default:
+      fatalError("잘못된 OnboardingSectionItem이 Cell에 주입되었습니다.")
+    }
+    self.textFieldHandler?(item)
+  }
+  
   // MARK: - Configure
+  
+  func configure(with item: OnboardingSectionItem) {
+    guard !self.isReused else { return }
+    self.item = item
+    self.isReused = true
+    switch item {
+    case.wakeUpTime(let text),
+        .arrangement(let text),
+        .showerTime(let text),
+        .kakao(let text),
+        .mbti(let text):
+      self.textField.text = text
+      
+    default: break
+    }
+  }
 }

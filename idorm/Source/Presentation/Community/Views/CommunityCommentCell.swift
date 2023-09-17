@@ -17,7 +17,7 @@ protocol CommunityCommentCellDelegate: AnyObject {
   func didTapOptionButton(_ comment: Comment)
 }
 
-final class CommunityCommentCell: UICollectionViewCell, BaseView {
+final class CommunityCommentCell: UICollectionViewCell, BaseViewProtocol {
   
   // MARK: - UI Components
   

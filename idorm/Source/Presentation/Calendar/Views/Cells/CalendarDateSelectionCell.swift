@@ -14,7 +14,7 @@ import SnapKit
   @objc optional func pickerViewDidChangeRow(_ currentTimeString: String)
 }
 
-final class CalendarDateSelectionCell: UICollectionViewCell, BaseView {
+final class CalendarDateSelectionCell: UICollectionViewCell, BaseViewProtocol {
   
   enum CellType {
     case teamCalendar(date: String, time: String)

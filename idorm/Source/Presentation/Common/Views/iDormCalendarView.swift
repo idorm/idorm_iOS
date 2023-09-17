@@ -20,7 +20,7 @@ import RxCocoa
 }
 
 /// 일정을 볼 수 있는 메인 캘린더입니다.
-final class iDormCalendarView: UIView, BaseView {
+final class iDormCalendarView: UIView, BaseViewProtocol {
   
   enum ViewType {
     /// 메인이 되는 캘린더입니다.

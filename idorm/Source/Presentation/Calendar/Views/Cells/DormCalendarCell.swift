@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 /// 기숙사 공식 일정 리스트의 `Cell`입니다.
-final class DormCalendarCell: UICollectionViewCell, BaseView {
+final class DormCalendarCell: UICollectionViewCell, BaseViewProtocol {
   
   // MARK: - UI Components
   

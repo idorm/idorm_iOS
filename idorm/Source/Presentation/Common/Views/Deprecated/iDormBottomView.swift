@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 /// 하단에 Floaty처럼 두 개의 버튼이 공존하는 `UIView`
-final class iDormBottomView: UIView, BaseView {
+final class iDormBottomView: UIView, BaseViewProtocol {
   
   // MARK: - UI Components
   

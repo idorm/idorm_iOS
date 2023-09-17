@@ -51,6 +51,8 @@ enum iDormIcon: String {
   case idorm
   
   case mailBox
+  
+  case x_circle_mono
 }
 
 enum iDormText: String {

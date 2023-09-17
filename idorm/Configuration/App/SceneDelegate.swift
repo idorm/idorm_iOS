@@ -26,7 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //    let viewController = iDormSplashViewController()
 //    viewController.reactor = iDormSplashViewReactor()
     let viewController = OnboardingViewController()
-    viewController.reactor = OnboardingViewReactor2(.theFirstTime)
+    viewController.reactor = OnboardingViewReactor2(.signUp)
     window?.rootViewController = viewController
     window?.makeKeyAndVisible()
     

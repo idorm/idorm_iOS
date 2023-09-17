@@ -11,7 +11,7 @@ import SnapKit
 import FSCalendar
 
 /// `CalendarVC`에 사용하는 달력이 포함되어 있는 헤더입니다.
-final class CalendarHeader: UICollectionReusableView, BaseView {
+final class CalendarHeader: UICollectionReusableView, BaseViewProtocol {
   
   // MARK: - UI Components
   

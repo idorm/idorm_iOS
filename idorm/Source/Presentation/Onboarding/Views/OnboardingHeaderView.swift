@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class OnboardingHeaderView: UICollectionReusableView, BaseView {
+final class OnboardingHeaderView: UICollectionReusableView, BaseViewProtocol {
   
   // MARK: - UI Components
   
@@ -61,6 +61,26 @@ final class OnboardingHeaderView: UICollectionReusableView, BaseView {
     return view
   }()
   
+  /// 100자까지 제한이 있는 `UILabel`
+  private let maxLengthLabel: UILabel = {
+    let label = UILabel()
+    label.text = " / 100 pt"
+    label.textColor = .iDormColor(.iDormGray300)
+    label.font = .iDormFont(.medium, size: 14.0)
+    label.isHidden = true
+    return label
+  }()
+  
+  /// 현재 글자 수를 나타내는 `UILabel`
+  private let currentLengthLabel: UILabel = {
+    let label = UILabel()
+    label.text = "0"
+    label.textColor = .iDormColor(.iDormBlue)
+    label.font = .iDormFont(.medium, size: 14.0)
+    label.isHidden = true
+    return label
+  }()
+  
   // MARK: - Properties
   
   private var heightConstraint: Constraint?
@@ -90,7 +110,9 @@ final class OnboardingHeaderView: UICollectionReusableView, BaseView {
       self.letMeKnowHabitLabel,
       self.subTitleLabel,
       self.essentialLabel,
-      self.supportView
+      self.supportView,
+      self.maxLengthLabel,
+      self.currentLengthLabel
     ].forEach {
       self.addSubview($0)
     }
@@ -122,6 +144,16 @@ final class OnboardingHeaderView: UICollectionReusableView, BaseView {
       make.centerY.equalTo(self.subTitleLabel)
     }
     
+    self.maxLengthLabel.snp.makeConstraints { make in
+      make.centerY.equalTo(self.subTitleLabel)
+      make.trailing.equalToSuperview()
+    }
+    
+    self.currentLengthLabel.snp.makeConstraints { make in
+      make.centerY.equalTo(self.subTitleLabel)
+      make.trailing.equalTo(self.maxLengthLabel.snp.leading).offset(-2.0)
+    }
+    
     self.supportView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
       self.heightConstraint = make.height.equalTo(45.0).constraint
@@ -138,7 +170,9 @@ final class OnboardingHeaderView: UICollectionReusableView, BaseView {
     self.letMeKnowHabitLabel.isHidden = true
     self.titleLabel.isHidden = true
     self.subTitleLabel.isHidden = true
-    
+    self.maxLengthLabel.isHidden = true
+    self.currentLengthLabel.isHidden = true
+     
     switch section {
     case .dormitory:
       self.letMeKnowLabel.isHidden = false
@@ -164,6 +198,14 @@ final class OnboardingHeaderView: UICollectionReusableView, BaseView {
     case .wantToSay:
       self.subTitleLabel.isHidden = false
       self.heightConstraint?.update(offset: 45.0)
+      self.maxLengthLabel.isHidden = false
+      self.currentLengthLabel.isHidden = false
     }
+  }
+  
+  // MARK: - Functions
+  
+  func updateCurrentLength(_ text: String) {
+    self.currentLengthLabel.text = "\(text.count)"
   }
 }

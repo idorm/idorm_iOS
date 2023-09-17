@@ -47,8 +47,9 @@ final class OnboardingTextViewCell: BaseCollectionViewCell {
   
   // MARK: - Properties
   
+  private var isInitialized: Bool = false
   private var heightConstraint: Constraint?
-  var textViewHandler: ((OnboardingSectionItem) -> Void)?
+  var textViewHandler: ((String) -> Void)?
   
   // MARK: - Setup
   
@@ -68,14 +69,16 @@ final class OnboardingTextViewCell: BaseCollectionViewCell {
     
     self.supportView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
-      self.heightConstraint = make.height.equalTo(53.0).constraint
+      self.heightConstraint = make.height.equalTo(148.0).constraint
     }
   }
   
   // MARK: - Configure
   
   func configure(with text: String) {
+    guard !self.isInitialized else { return }
     self.textView.text = text
+    self.isInitialized = true
   }
 }
 
@@ -85,11 +88,16 @@ extension OnboardingTextViewCell: RSKGrowingTextViewDelegate {
     didChangeHeightFrom growingTextViewHeightBegin: CGFloat,
     to growingTextViewHeightEnd: CGFloat
   ) {
-    print(growingTextViewHeightEnd)
-    self.heightConstraint?.update(offset: growingTextViewHeightEnd)
+    self.heightConstraint?.update(offset: growingTextViewHeightEnd + 95.0)
   }
   
   func textViewDidChange(_ textView: UITextView) {
-    self.textViewHandler?(.wantToSay(textView.text))
+    let maxLength = 100
+    if let text = textView.text,
+       text.count > maxLength {
+        let truncatedText = String(text.prefix(maxLength))
+        textView.text = truncatedText
+    }
+    self.textViewHandler?(textView.text)
   }
 }

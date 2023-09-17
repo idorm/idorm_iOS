@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 /// 기숙사 일정이 존재하지 않을 때 보여지는 `UICollectionViewCell`
-final class DormCalendarEmptyCell: UICollectionViewCell, BaseView {
+final class DormCalendarEmptyCell: UICollectionViewCell, BaseViewProtocol {
   
   // MARK: - UI Components
   

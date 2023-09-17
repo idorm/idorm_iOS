@@ -86,7 +86,7 @@ final class DetailPhotoCell: UICollectionViewCell {
 
 // MARK: - SETUP
 
-extension DetailPhotoCell: BaseView {
+extension DetailPhotoCell: BaseViewProtocol {
   func setupStyles() {
     contentView.backgroundColor = .black
   }

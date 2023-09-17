@@ -14,7 +14,7 @@ protocol CalendarDatePickerViewDelegate: AnyObject {
 }
 
 /// `CalendarDateSelectionVC`에서 사용되는 `UIPickerView`
-final class CalendarDatePickerView: UIView, BaseView {
+final class CalendarDatePickerView: UIView, BaseViewProtocol {
   
   enum PickerViewItem: Int, CaseIterable {
     case meridians

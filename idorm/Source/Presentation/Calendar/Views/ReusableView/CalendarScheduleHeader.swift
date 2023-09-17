@@ -14,7 +14,7 @@ import SnapKit
 }
 
 /// `우리방 일정` 또는 `기숙사 일정`이 있는 헤더입니다.
-final class CalendarScheduleHeader: UICollectionReusableView, BaseView {
+final class CalendarScheduleHeader: UICollectionReusableView, BaseViewProtocol {
   
   enum ViewType: Hashable {
     case teamCalendar

@@ -31,6 +31,7 @@ final class OnboardingViewController: BaseViewController, View {
       frame: .zero,
       collectionViewLayout: self.getLayout()
     )
+    collectionView.keyboardDismissMode = .interactive
     // Cell
     collectionView.register(
       OnboardingButtonCell.self,
@@ -62,6 +63,13 @@ final class OnboardingViewController: BaseViewController, View {
     return collectionView
   }()
   
+  private lazy var bottomMenuView: iDormBottomMenuView = {
+    let view = iDormBottomMenuView()
+    return view
+  }()
+  
+  private var onboardingHeaderView: OnboardingHeaderView?
+  
   // MARK: - Properties
   
   private lazy var dataSource: DataSource = {
@@ -89,9 +97,9 @@ final class OnboardingViewController: BaseViewController, View {
           ) as? OnboardingAgeCell else {
             return UICollectionViewCell()
           }
-//          cell.ageTextFieldHandler = {
-//            self.reactor?.action.onNext(.matchingInfoDidChange($0))
-//          }
+          cell.ageTextFieldHandler = {
+            self.reactor?.action.onNext(.itemDidChange($0))
+          }
           return cell
           
         case .wantToSay(let text):
@@ -103,10 +111,11 @@ final class OnboardingViewController: BaseViewController, View {
           }
           cell.configure(with: text)
           cell.textViewHandler = {
-            self.reactor?.action.onNext(.itemDidChange($0))
+            self.reactor?.action.onNext(.itemDidChange(.wantToSay($0)))
+            self.onboardingHeaderView?.updateCurrentLength($0)
           }
           return cell
-          
+
         default:
           guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: OnboardingTextFieldCell.identifier,
@@ -114,6 +123,7 @@ final class OnboardingViewController: BaseViewController, View {
           ) as? OnboardingTextFieldCell else {
             return UICollectionViewCell()
           }
+          cell.configure(with: item)
           return cell
         }
       }
@@ -131,7 +141,11 @@ final class OnboardingViewController: BaseViewController, View {
           return UICollectionReusableView()
         }
         headerView.configure(with: section)
+        if case .wantToSay = section {
+          self.onboardingHeaderView = headerView
+        }
         return headerView
+        
       case OnboardingFooterView.identifier:
         guard let footerView = collectionView.dequeueReusableSupplementaryView(
           ofKind: kind,
@@ -160,7 +174,8 @@ final class OnboardingViewController: BaseViewController, View {
     super.setupLayouts()
     
     [
-      self.collectionView
+      self.collectionView,
+      self.bottomMenuView
     ].forEach {
       self.view.addSubview($0)
     }
@@ -171,25 +186,57 @@ final class OnboardingViewController: BaseViewController, View {
     
     self.collectionView.snp.makeConstraints { make in
       make.top.directionalHorizontalEdges.equalTo(self.view.safeAreaLayoutGuide)
-      make.bottom.equalTo(self.view.keyboardLayoutGuide.snp.top).offset(-16.0)
+      make.bottom.equalTo(self.bottomMenuView.snp.top)
+    }
+    
+    self.bottomMenuView.snp.makeConstraints { make in
+      make.directionalHorizontalEdges.equalToSuperview()
+      make.bottom.equalTo(self.view.keyboardLayoutGuide.snp.top)
     }
   }
   
   // MARK: - Bind
   
   func bind(reactor: OnboardingViewReactor2) {
-
-    
     // Action
     
-    self.collectionView.rx.tapGesture()
-      .asDriver(onErrorRecover: { _ in return .empty() })
-      .drive(with: self) { owner, _ in
-        owner.view.endEditing(true)
+    self.collectionView.rx.tapGesture() { gesture, delegate in
+      gesture.cancelsTouchesInView = false
+      delegate.beginPolicy = .custom { [weak self] gesture in
+        guard let self else { return false }
+        if self.collectionView.indexPathForItem(
+          at: gesture.location(in: self.collectionView)
+        ) != nil {
+          return false
+        } else {
+          return true
+        }
       }
-      .disposed(by: self.disposeBag)
+    }
+    .when(.recognized)
+    .asDriver(onErrorRecover: { _ in return .empty() })
+    .drive(with: self) { owner, _ in
+      owner.view.endEditing(true)
+    }
+    .disposed(by: self.disposeBag)
     
     // State
+    
+    reactor.state.map { $0.viewType }
+      .distinctUntilChanged()
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, viewType in
+        switch viewType {
+        case .signUp:
+          owner.navigationItem.title = "내 정보 입력"
+          owner.bottomMenuView.updateTitle(left: "정보 입력 건너 뛰기", right: "완료")
+        case .theFirstTime:
+          break
+        case .correction:
+          break
+        }
+      }
+      .disposed(by: self.disposeBag)
     
     reactor.state.map { (section: $0.sections, items: $0.items) }
       .asDriver(onErrorRecover: { _ in return .empty() })
@@ -204,7 +251,6 @@ final class OnboardingViewController: BaseViewController, View {
         }
       }
       .disposed(by: self.disposeBag)
-    
     
 //    rx.viewDidLoad
 //      .withUnretained(self)

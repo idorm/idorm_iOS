@@ -9,7 +9,7 @@ import UIKit
 
 import RxSwift
 
-class BaseCollectionViewCell: UICollectionViewCell, BaseView {
+class BaseCollectionViewCell: UICollectionViewCell, BaseViewProtocol {
   
   // MARK: - Properties
   

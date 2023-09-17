@@ -10,7 +10,7 @@ import UIKit
 import FSCalendar
 import SnapKit
 
-final class iDormCalendarCell: FSCalendarCell, BaseView {
+final class iDormCalendarCell: FSCalendarCell, BaseViewProtocol {
   
   private enum Metric {
     static let circleViewSize: CGFloat = 22.0

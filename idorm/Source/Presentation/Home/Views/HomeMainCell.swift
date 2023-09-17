@@ -13,7 +13,7 @@ protocol HomeMainCellDelegate: AnyObject {
   func didTapStartMatchingButton()
 }
 
-final class HomeMainCell: UICollectionViewCell, BaseView {
+final class HomeMainCell: UICollectionViewCell, BaseViewProtocol {
   
   // MARK: - UI Components
   

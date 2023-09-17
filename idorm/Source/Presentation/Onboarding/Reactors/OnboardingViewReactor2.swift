@@ -14,7 +14,11 @@ import RxSwift
 final class OnboardingViewReactor2: Reactor {
   
   enum ViewType {
+    /// 회원가입 직후
+    case signUp
+    /// 홈에 들어간 이후
     case theFirstTime
+    /// 수정
     case correction
   }
   
@@ -195,6 +199,7 @@ final class OnboardingViewReactor2: Reactor {
         // 하고싶은 말
         [.wantToSay(matchingInfo.wishText)]
       ]
+      
       newState.sections = OnboardingSection.allCases
       newState.items = items
       

@@ -55,7 +55,7 @@ enum OnboardingSection: Hashable, CaseIterable {
     case .wantToSay:
       return NSCollectionLayoutSize(
         widthDimension: .fractionalWidth(1.0),
-        heightDimension: .estimated(53.0)
+        heightDimension: .estimated(148.0)
       )
     default:
       return NSCollectionLayoutSize(
@@ -144,13 +144,4 @@ enum OnboardingSectionItem: Hashable {
   case kakao(String)
   case mbti(String)
   case wantToSay(String)
-  
-  func hash(into hasher: inout Hasher) {
-    switch self {
-    case .age:
-      hasher.combine(1)
-    default:
-      break
-    }
-  }
 }

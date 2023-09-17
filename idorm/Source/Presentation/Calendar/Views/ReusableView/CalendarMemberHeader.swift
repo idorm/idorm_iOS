@@ -16,7 +16,7 @@ protocol CalendarMemberHeaderDelegate: AnyObject {
 }
   
 /// 룸메이트 초대와 설정으로 바로갈 수 있는 헤더입니다.
-final class CalendarMemberHeader: UICollectionReusableView, BaseView {
+final class CalendarMemberHeader: UICollectionReusableView, BaseViewProtocol {
   
   // MARK: - Properties
   
