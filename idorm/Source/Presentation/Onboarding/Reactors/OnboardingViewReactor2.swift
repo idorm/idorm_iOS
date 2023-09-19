@@ -130,32 +130,46 @@ final class OnboardingViewReactor2: Reactor {
     switch mutation {
     case .setDormitory(let dormitory):
       newState.dormitory = dormitory
+      
     case .setGender(let gender):
       newState.gender = gender
+      
     case .setJoinPeriod(let joinPeriod):
       newState.joinPeriod = joinPeriod
+      
     case .setSnoring(let isSnoring):
       newState.isSnoring = isSnoring
+      
     case .setGrinding(let isGrinding):
       newState.isGrinding = isGrinding
+      
     case .setSmoking(let isSmoking):
       newState.isSmoking = isSmoking
+      
     case .setAllowedFood(let isAllowed):
       newState.isAllowedFood = isAllowed
+      
     case .setAllowedEarphones(let isAllowed):
       newState.isAllowedEarphones = isAllowed
+      
     case .setAge(let age):
       newState.age = age
+      
     case .setWakeUpTime(let wakeUpTime):
       newState.wakeUpTime = wakeUpTime
+      
     case .setShowerTime(let showerTime):
       newState.showerTime = showerTime
+      
     case .setArrangement(let arrangement):
       newState.arrangement = arrangement
+      
     case .setKakaoLink(let kakaoLink):
       newState.kakaoLink = kakaoLink
+      
     case .setMBTI(let mbti):
       newState.mbti = mbti
+      
     case .setWantToSay(let wantToSay):
       newState.wantToSay = wantToSay
     }

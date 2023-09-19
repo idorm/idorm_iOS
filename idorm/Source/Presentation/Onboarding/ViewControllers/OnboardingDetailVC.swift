@@ -14,7 +14,7 @@ import RxCocoa
 import ReactorKit
 
 final class OnboardingDetailViewController: BaseViewController, View {
-
+  
   // MARK: - Properties
   
   private let indicator = UIActivityIndicatorView().then {

@@ -21,6 +21,7 @@ enum iDormIcon: String {
   
   case domi
   case domiWithBackgrond
+  case dormitory
 
   case option
   case openedEye
@@ -41,6 +42,7 @@ enum iDormIcon: String {
   case reply
   
   case human
+  case human_fill
   
   case thumb
   case trashcan
