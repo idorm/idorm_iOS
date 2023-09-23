@@ -25,6 +25,12 @@ final class TabBarViewController: UITabBarController {
     self.pushToDetailPost()
   }
   
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    self.navigationController?.setNavigationBarHidden(true, animated: true)
+  }
+  
   // MARK: - Setup
   
   private func setupViewControllers() {

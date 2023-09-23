@@ -168,7 +168,7 @@ final class MyPageViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let viewController = OnboardingViewController()
+        let viewController = MatchingInfoSetupViewController()
 //        viewController.reactor = OnboardingViewReactor(.main)
         viewController.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(viewController, animated: true)
@@ -181,8 +181,11 @@ final class MyPageViewController: BaseViewController, View {
       .filter { $0.0 }
       .withUnretained(self)
       .bind { owner, member in
-        let onboardingDetailVC = OnboardingDetailViewController(member.1, type: .modify)
-        onboardingDetailVC.reactor = OnboardingDetailViewReactor(.modify)
+        let onboardingDetailVC = MatchingInfoCardViewController(.init())
+        onboardingDetailVC.reactor = MatchingInfoCardViewReactor(
+          .correction,
+          matchingInfo: UserStorage.shared.newMatchingInfo!
+        )
         onboardingDetailVC.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(onboardingDetailVC, animated: true)
       }

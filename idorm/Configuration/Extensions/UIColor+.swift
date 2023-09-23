@@ -13,6 +13,7 @@ enum iDormColor: Int {
   case thirdUser = 0x2AB577
   case fourthUser = 0xFF54B0
   
+  case iDormCard = 0x8EC2FF
   case iDormGray100 = 0xF2F5FA
   case iDormGray200 = 0xE3E1EC
   case iDormGray300 = 0x9B9B9B

@@ -65,6 +65,7 @@ final class EmailViewReactor: Reactor {
           .flatMap { _ in
             Logger.shared.saveEmail(email)
             Logger.shared.saveAuthProcess(.findPw)
+            MailStopWatchManager.shared.start()
             return Observable<Mutation>.just(.setAuthVC(true))
           }
       case .signUp:
@@ -72,6 +73,7 @@ final class EmailViewReactor: Reactor {
           .flatMap {_ in
             Logger.shared.saveAuthProcess(.signUp)
             Logger.shared.saveEmail(email)
+            MailStopWatchManager.shared.start()
             return Observable<Mutation>.just(.setAuthVC(true))
           }
       }

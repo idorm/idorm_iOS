@@ -37,6 +37,7 @@ final class iDormBottomMenuView: BaseView {
     button.baseForegroundColor = .iDormColor(.iDormGray400)
     button.font = .iDormFont(.medium, size: 16.0)
     button.cornerRadius = 6.0
+    button.imagePadding = 12.0
     button.addTarget(self, action: #selector(self.leftButtonDidTap), for: .touchUpInside)
     button.contentInset =
     NSDirectionalEdgeInsets(top: 14.0, leading: 26.0, bottom: 14.0, trailing: 26.0)
@@ -57,6 +58,11 @@ final class iDormBottomMenuView: BaseView {
   }()
   
   // MARK: - Properties
+  
+  /// 오른쪽 버튼의 활성화를 담당하는 `Bool`
+  var isEnabledRightButton: Bool = true {
+    willSet { self.rightButton.isEnabled = newValue }
+  }
   
   var leftButtonHandler: (() -> Void)?
   var rightButtonHandler: (() -> Void)?
@@ -112,6 +118,9 @@ final class iDormBottomMenuView: BaseView {
   // MARK: - Functions
   
   func updateTitle(left: String, right: String) {
+    if left == "입력 초기화" {
+      self.leftButton.image = .iDormIcon(.repetition)
+    }
     self.leftButton.title = left
     self.rightButton.title = right
   }

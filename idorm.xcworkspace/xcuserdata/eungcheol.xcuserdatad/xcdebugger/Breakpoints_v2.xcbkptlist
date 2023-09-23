@@ -30,8 +30,8 @@
             filePath = "idorm/Source/Networks/Member/MemberAPI.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "13"
-            endingLineNumber = "13"
+            startingLineNumber = "12"
+            endingLineNumber = "12"
             landmarkName = "MemberAPI"
             landmarkType = "13">
          </BreakpointContent>
@@ -50,6 +50,102 @@
             endingLineNumber = "76"
             landmarkName = "MailStopWatchManager"
             landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E518452E-6E54-4307-BA41-7A5D527C08D2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "idorm/Source/Presentation/MatchingInfo/Views/Cells/MatchingInfoSetupTextFieldCell.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
+            landmarkName = "MatchingInfoSetupTextFieldCell"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "82A7123E-6CA4-45F9-8A1F-1EF37101762E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "idorm/Source/Presentation/MatchingInfo/ViewControllers/MatchingInfoSetupVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "dataSource"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2DC887C1-288E-4E78-BC43-A3F5ABCCCB66"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "idorm/Source/Presentation/MatchingInfo/Views/Cells/MatchingInfoSetupTextViewCell.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
+            landmarkName = "textView(_:shouldChangeTextIn:replacementText:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "2DC887C1-288E-4E78-BC43-A3F5ABCCCB66 - a76a7bd2787b16ef"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "idorm.MatchingInfoSetupTextViewCell.textViewDidChange(__C.UITextView) -&gt; ()"
+                  moduleName = "idorm"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/eungcheol/Desktop/PROJECT/idorm/idorm/Source/Presentation/MatchingInfo/Views/Cells/MatchingInfoSetupTextViewCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "108"
+                  endingLineNumber = "108"
+                  offsetFromSymbolStart = "60">
+               </Location>
+               <Location
+                  uuid = "2DC887C1-288E-4E78-BC43-A3F5ABCCCB66 - c13d663cef8d5f09"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "idorm.MatchingInfoSetupTextViewCell.textView(_: __C.UITextView, shouldChangeTextIn: __C._NSRange, replacementText: Swift.String) -&gt; Swift.Bool"
+                  moduleName = "idorm"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/eungcheol/Desktop/PROJECT/idorm/idorm/Source/Presentation/MatchingInfo/Views/Cells/MatchingInfoSetupTextViewCell.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "111"
+                  endingLineNumber = "111"
+                  offsetFromSymbolStart = "72">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "832DCDF4-BF83-4A06-BD94-72755F5087A0"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "idorm/Source/Presentation/Common/Views/iDormMatchingCardView/iDormMatchingCardItem.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "subtitleString"
+            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

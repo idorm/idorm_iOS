@@ -34,6 +34,7 @@ final class CompleteSignUpViewController: BaseViewController, View {
     label.font = .iDormFont(.medium, size: 12)
     label.textColor = .iDormColor(.iDormGray300)
     label.textAlignment = .center
+    label.numberOfLines = 0
     label.text = """
     로그인 후 인천대학교 기숙사 룸메이트 매칭을 위한
     기본정보를 알려주세요.
@@ -64,6 +65,14 @@ final class CompleteSignUpViewController: BaseViewController, View {
     return imageView
   }()
   
+  // MARK: - LifeCycle
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    self.navigationController?.setNavigationBarHidden(true, animated: true)
+  }
+  
   // MARK: - Bind
   
   func bind(reactor: CompleteSignupViewReactor) {
@@ -80,11 +89,10 @@ final class CompleteSignUpViewController: BaseViewController, View {
     reactor.pulse(\.$navigateToOnboardingVC).skip(1)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
-        let onboardingVC = OnboardingViewController()
-//        onboardingVC.reactor = OnboardingViewReactor(.initial)
-        let navVC = UINavigationController(rootViewController: onboardingVC)
-        navVC.modalPresentationStyle = .fullScreen
-        owner.present(navVC, animated: true)
+        let viewController = MatchingInfoSetupViewController()
+        let reactor = MatchingInfoSetupViewReactor(.signUp)
+        viewController.reactor = reactor
+        owner.navigationController?.setViewControllers([viewController], animated: true)
       }
       .disposed(by: self.disposeBag)
   }

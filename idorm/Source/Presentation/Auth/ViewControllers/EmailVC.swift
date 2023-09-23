@@ -31,6 +31,7 @@ final class EmailViewController: BaseViewController, View {
   private let emailTextField: NewiDormTextField = {
     let textField = NewiDormTextField(type: .withBorderLine)
     textField.placeHolder = "이메일을 입력해주세요."
+    textField.keyboardType = .emailAddress
     return textField
   }()
   
@@ -63,7 +64,7 @@ final class EmailViewController: BaseViewController, View {
     
     // Action
 
-    self.emailTextField.textObservable
+    self.emailTextField.rx.text
       .map { Reactor.Action.emailTextFieldDidChange($0) }
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)

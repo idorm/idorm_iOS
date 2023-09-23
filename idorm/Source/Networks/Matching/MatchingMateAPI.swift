@@ -2,7 +2,7 @@ import Foundation
 
 import Moya
 
-enum MatchingAPI {
+enum MatchingMateAPI {
   case lookupMembers
   case lookupLikeMembers
   case lookupDislikeMembers
@@ -11,8 +11,8 @@ enum MatchingAPI {
   case deleteMember(Bool, Int)
 }
 
-extension MatchingAPI: BaseTargetType {
-  static let provider = MoyaProvider<MatchingAPI>()
+extension MatchingMateAPI: BaseTargetType {
+  static let provider = MoyaProvider<MatchingMateAPI>()
   
   var baseURL: URL { getBaseURL() }
   var path: String { getPath() }

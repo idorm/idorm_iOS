@@ -14,9 +14,13 @@ final class NavigationAppearanceUtils {
     appearance.titleTextAttributes = [.foregroundColor: UIColor.black]
     appearance.backgroundColor?.withAlphaComponent(0.95)
     appearance.backgroundColor = color
+    appearance.titleTextAttributes = [
+      .font: UIFont.iDormFont(.regular, size: 16.0)
+    ]
     
     if shadow {
       appearance.shadowColor = .black
+      appearance.shadowImage = UIImage()
     } else {
       appearance.shadowColor = nil
     }

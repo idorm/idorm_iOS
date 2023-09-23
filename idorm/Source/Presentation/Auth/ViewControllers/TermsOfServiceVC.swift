@@ -29,7 +29,8 @@ final class TermsOfServiceViewController: BaseViewController, View {
     button.imagePlacement = .leading
     button.imagePadding = 14.0
     button.contentInset = .zero
-    let handelr: UIButton.ConfigurationUpdateHandler = { button in
+    button.font = .iDormFont(.medium, size: 14.0)
+    let handler: UIButton.ConfigurationUpdateHandler = { button in
       guard let button = button as? iDormButton else { return }
       switch button.state {
       case .selected:
@@ -38,6 +39,7 @@ final class TermsOfServiceViewController: BaseViewController, View {
         button.image = .iDormIcon(.deselect)
       }
     }
+    button.configurationUpdateHandler = handler
     return button
   }()
   
@@ -46,7 +48,7 @@ final class TermsOfServiceViewController: BaseViewController, View {
     let label = UILabel()
     label.text = "보기"
     label.textColor = .iDormColor(.iDormGray200)
-    label.font = .iDormFont(.medium, size: 12.0)
+    label.font = .iDormFont(.medium, size: 14.0)
     return label
   }()
   
@@ -56,6 +58,7 @@ final class TermsOfServiceViewController: BaseViewController, View {
     button.baseBackgroundColor = .iDormColor(.iDormBlue)
     button.baseForegroundColor = .white
     button.cornerRadius = 10.0
+    button.font = .iDormFont(.medium, size: 14.0)
     return button
   }()
   
@@ -81,7 +84,7 @@ final class TermsOfServiceViewController: BaseViewController, View {
   
   override func setupConstraints() {
     super.setupConstraints()
-
+    
     self.termsOfServiceButton.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(24.0)
       make.top.equalToSuperview().inset(37.0)
@@ -94,7 +97,7 @@ final class TermsOfServiceViewController: BaseViewController, View {
     
     self.continueButton.snp.makeConstraints { make in
       make.directionalHorizontalEdges.equalToSuperview().inset(24.0)
-      make.bottom.equalToSuperview().inset(20.0)
+      make.bottom.equalTo(self.view.safeAreaLayoutGuide)
     }
   }
   
@@ -129,15 +132,17 @@ final class TermsOfServiceViewController: BaseViewController, View {
       }
       .disposed(by: self.disposeBag)
     
-    reactor.pulse(\.$navigateToCompleteSignUpVC)
-      .skip(1)
+    reactor.pulse(\.$navigateToCompleteSignUpVC).skip(1)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
+        guard
+          let presentingVC = owner.presentingViewController as? UINavigationController
+        else { return }
         owner.dismiss(animated: true) {
           let viewController = CompleteSignUpViewController()
           let reactor = CompleteSignupViewReactor()
           viewController.reactor = reactor
-          owner.navigationController?.pushViewController(viewController, animated: true)
+          presentingVC.pushViewController(viewController, animated: true)
         }
       }
       .disposed(by: self.disposeBag)

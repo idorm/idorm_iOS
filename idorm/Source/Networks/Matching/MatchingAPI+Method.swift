@@ -9,7 +9,7 @@ import Foundation
 
 import Moya
 
-extension MatchingAPI {
+extension MatchingMateAPI {
   func getMethod() -> Moya.Method{
     switch self {
     case .lookupMembers, .lookupLikeMembers, .lookupDislikeMembers:

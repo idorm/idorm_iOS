@@ -234,7 +234,7 @@ final class MatchingViewReactor: Reactor {
       
     case .dislikeCard(let id):
       return Observable.concat([
-        MatchingAPI.provider.rx.request(.addMember(false, id))
+        MatchingMateAPI.provider.rx.request(.addMember(false, id))
           .asObservable()
           .retry()
           .flatMap { _ -> Observable<Mutation> in
@@ -246,7 +246,7 @@ final class MatchingViewReactor: Reactor {
       
     case .likeCard(let id):
       return Observable.concat([
-        MatchingAPI.provider.rx.request(.addMember(true, id))
+        MatchingMateAPI.provider.rx.request(.addMember(true, id))
           .asObservable()
           .retry()
           .debug()
@@ -344,14 +344,14 @@ final class MatchingViewReactor: Reactor {
 
 extension MatchingViewReactor {
   private func fetchMatchingMembers() -> Observable<Mutation> {
-    return MatchingAPI.provider.rx.request(.lookupMembers)
+    return MatchingMateAPI.provider.rx.request(.lookupMembers)
       .asObservable()
       .retry()
       .filterSuccessfulStatusCodes()
       .flatMap { response -> Observable<Mutation> in
         switch response.statusCode {
         case 200:
-          let members = MatchingAPI.decode(
+          let members = MatchingMateAPI.decode(
             ResponseDTO<[MatchingResponseModel.Member]>.self,
             data: response.data
           ).data
@@ -364,7 +364,7 @@ extension MatchingViewReactor {
   
   private func fetchFilteredMembers() -> Observable<Mutation> {
     let filter = FilterStorage.shared.filter
-    return MatchingAPI.provider.rx.request(
+    return MatchingMateAPI.provider.rx.request(
       .lookupFilterMembers(filter: filter)
     )
       .asObservable()
@@ -374,7 +374,7 @@ extension MatchingViewReactor {
       .flatMap { response -> Observable<Mutation> in
         switch response.statusCode {
         case 200:
-          let members = MatchingAPI.decode(
+          let members = MatchingMateAPI.decode(
             ResponseDTO<[MatchingResponseModel.Member]>.self,
             data: response.data
           ).data

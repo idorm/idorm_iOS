@@ -30,7 +30,7 @@ final class AuthNumberViewController: BaseViewController, View {
   }()
   
   /// 인증번호 재요청 `iDormButton`
-  private let requestAuthNumberButton: iDormButton = {
+  private lazy var requestAuthNumberButton: iDormButton = {
     let button = iDormButton("인증번호 재요청", image: nil)
     button.baseBackgroundColor = .white
     button.baseForegroundColor = .iDormColor(.iDormGray300)
@@ -41,15 +41,18 @@ final class AuthNumberViewController: BaseViewController, View {
       switch button.state {
       case .disabled:
         button.baseForegroundColor = .iDormColor(.iDormGray300)
+        button.configuration?.background.backgroundColor = .white
       default:
         button.baseForegroundColor = .iDormColor(.iDormBlue)
+        button.configuration?.background.backgroundColor = .white
       }
     }
+    button.isEnabled = false
     button.configurationUpdateHandler = handler
     return button
   }()
   
-  /// 00:00 과 같이 시간을 알려주는 타이머 역할의 `UILabel`
+  /// `05:00` 과 같이 시간을 알려주는 타이머 역할의 `UILabel`
   private let timerLabel: UILabel = {
     let label = UILabel()
     label.textColor = .iDormColor(.iDormBlue)
@@ -61,16 +64,26 @@ final class AuthNumberViewController: BaseViewController, View {
   private let textField: NewiDormTextField = {
     let textField = NewiDormTextField(type: .withBorderLine)
     textField.placeHolder = "인증번호를 입력해주세요."
+    textField.textField.addRightPadding(50.0)
     return textField
   }()
   
   /// 계속하기 `UIButton`
   private let continueButton: iDormButton = {
     let button = iDormButton("계속하기", image: nil)
+    button.font = .iDormFont(.medium, size: 14.0)
     button.baseBackgroundColor = .iDormColor(.iDormBlue)
     button.baseForegroundColor = .white
     return button
   }()
+  
+  // MARK: - LifeCycle
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    self.navigationController?.setNavigationBarHidden(false, animated: true)
+  }
 
   // MARK: - Bind
   
@@ -78,7 +91,7 @@ final class AuthNumberViewController: BaseViewController, View {
     
     // Action
     
-    self.textField.textObservable
+    self.textField.rx.text
       .map { Reactor.Action.textFieldDidChange($0) }
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
@@ -98,7 +111,9 @@ final class AuthNumberViewController: BaseViewController, View {
     reactor.pulse(\.$shouldDismiss).skip(1)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
-        let emailVC = Logger.shared.emailVC!
+        guard
+          let presentingVC = owner.presentingViewController as? UINavigationController
+        else { return }
         owner.dismiss(animated: true) {
           let authProcess = Logger.shared.authProcess
           let reactor: PasswordViewReactor
@@ -110,7 +125,7 @@ final class AuthNumberViewController: BaseViewController, View {
             reactor = .init(.findPassword)
           }
           passwordVC.reactor = reactor
-          emailVC.navigationController?.pushViewController(passwordVC, animated: true)
+          presentingVC.pushViewController(passwordVC, animated: true)
         }
       }
       .disposed(by: self.disposeBag)
@@ -127,8 +142,8 @@ final class AuthNumberViewController: BaseViewController, View {
     MailStopWatchManager.shared.remainingTime
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, remainingTime in
-        owner.textField.text = remainingTime
-        if remainingTime != nil {
+        owner.timerLabel.text = remainingTime
+        if remainingTime == nil {
           // 시간이 만료되었을 때
           owner.textField.baseBackgroundColor = .iDormColor(.iDormGray200)
           owner.textField.isEnabled = false
@@ -170,12 +185,12 @@ final class AuthNumberViewController: BaseViewController, View {
     super.setupConstraints()
     
     self.shouldCheckMailBoxLabel.snp.makeConstraints { make in
-      make.leading.equalToSuperview().inset(24)
+      make.leading.equalToSuperview().inset(24.0)
       make.top.equalTo(self.view.safeAreaLayoutGuide).inset(50)
     }
     
     self.requestAuthNumberButton.snp.makeConstraints { make in
-      make.trailing.equalToSuperview().inset(20)
+      make.trailing.equalToSuperview().inset(24.0)
       make.centerY.equalTo(self.shouldCheckMailBoxLabel)
     }
     

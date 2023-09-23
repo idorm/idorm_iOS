@@ -183,6 +183,13 @@ final class NewiDormTextField: BaseView {
     }
   }
   
+  /// `ic_checkCircle`의 숨김처리를 할 수 있는 프로퍼티 입니다.
+  var isHiddenCheckCircleImageView: Bool = true {
+    willSet {
+      self.checkCircleImageView.isHidden = newValue
+    }
+  }
+  
   // MARK: - Initializer
   
   init(type: iDormTextFieldType) {
@@ -294,7 +301,7 @@ final class NewiDormTextField: BaseView {
       .when(.recognized)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
-        owner.textField.text = ""
+        owner.textField.rx.text.onNext("")
       }
       .disposed(by: self.disposeBag)
     
@@ -302,6 +309,7 @@ final class NewiDormTextField: BaseView {
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
         owner.borderColor = .iDormColor(.iDormBlue)
+        owner.checkCircleImageView.isHidden = true
         guard let validationType = self.validationType else { return }
         if case .password = validationType {
           if self.isSecureTextEntry {
@@ -339,12 +347,13 @@ final class NewiDormTextField: BaseView {
   }
 }
 
-extension NewiDormTextField {
-  /// 텍스트 필드의 변경된 텍스트 값을 `Observable<String>`으로 방출합니다.
-  var textObservable: Observable<String> {
-    self.textField.rx.text.orEmpty.asObservable()
+extension Reactive where Base: NewiDormTextField {
+  var text: ControlProperty<String> {
+    return base.textField.rx.text.orEmpty
   }
-  
+}
+
+extension NewiDormTextField {
   var editingDidEnd: Observable<Void> {
     self.textField.rx.controlEvent(.editingDidEnd).asObservable()
   }

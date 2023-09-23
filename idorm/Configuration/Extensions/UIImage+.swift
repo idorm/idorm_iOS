@@ -39,6 +39,8 @@ enum iDormIcon: String {
   
   case select
   
+  case repetition
+  
   case reply
   
   case human

@@ -11,8 +11,8 @@ import Moya
 
 enum MatchingInfoAPI {
   case retrieve
-  case modify(MatchingInfoRequestModel.MatchingInfo)
-  case save(MatchingInfoRequestModel.MatchingInfo)
+  case modify(MatchingInfoRequestDTO)
+  case createMatchingInfo(MatchingInfoRequestDTO)
   case modifyPublic(Bool)
 }
 

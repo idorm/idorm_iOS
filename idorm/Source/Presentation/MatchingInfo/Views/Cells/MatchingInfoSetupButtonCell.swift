@@ -11,7 +11,7 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-final class OnboardingButtonCell: BaseCollectionViewCell {
+final class MatchingInfoSetupButtonCell: BaseCollectionViewCell {
   
   // MARK: - UI Components
   
@@ -46,8 +46,8 @@ final class OnboardingButtonCell: BaseCollectionViewCell {
   
   // MARK: - Properties
   
-  private var item: OnboardingSectionItem?
-  var buttonTappedHandler: ((OnboardingSectionItem) -> Void)?
+  private var item: MatchingInfoSetupSectionItem?
+  var buttonTappedHandler: ((MatchingInfoSetupSectionItem) -> Void)?
 
   // MARK: - Setup
 
@@ -77,7 +77,7 @@ final class OnboardingButtonCell: BaseCollectionViewCell {
   
   // MARK: - Configure
   
-  func configure(with item: OnboardingSectionItem) {
+  func configure(with item: MatchingInfoSetupSectionItem) {
     self.item = item
     switch item {
     case let .dormitory(dormitory, isSelected):

@@ -9,7 +9,7 @@ import Foundation
 
 import Moya
 
-extension MatchingAPI {
+extension MatchingMateAPI {
   func getPath() -> String {
     switch self {
     case .lookupMembers:

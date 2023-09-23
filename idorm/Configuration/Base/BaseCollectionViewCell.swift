@@ -31,10 +31,10 @@ class BaseCollectionViewCell: UICollectionViewCell, BaseViewProtocol {
   
   // MARK: - Life Cycle
   
-  override func prepareForReuse() {
-    super.prepareForReuse()
-    self.disposeBag = DisposeBag()
-  }
+//  override func prepareForReuse() {
+//    super.prepareForReuse()
+//    self.disposeBag = DisposeBag()
+//  }
   
   // MARK: - Setup
   

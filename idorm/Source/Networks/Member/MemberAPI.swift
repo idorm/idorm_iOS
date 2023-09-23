@@ -24,7 +24,6 @@ extension MemberAPI: BaseTargetType {
   var path: String { getPath() }
   var method: Moya.Method { getMethod() }
   var task: Task { getTask() }
-  
   var headers: [String : String]? {
     switch self {
     case .login(_, _, let fcmToken):
@@ -38,8 +37,10 @@ extension MemberAPI: BaseTargetType {
         "Content-Type": "application/json",
         "X-AUTH-TOKEN": UserStorage.shared.token
       ]
+    case .register, .patchPassword:
+      return self.getJsonHeaderWithoutAuthorization()
     default:
-      return getJsonHeader()
+      return self.getJsonHeader()
     }
   }
 }

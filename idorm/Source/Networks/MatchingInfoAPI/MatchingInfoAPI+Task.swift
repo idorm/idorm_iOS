@@ -14,7 +14,10 @@ extension MatchingInfoAPI {
     switch self {
     case .retrieve: return .requestPlain
       
-    case .save(let request), .modify(let request):
+    case .createMatchingInfo(let request):
+      return .requestJSONEncodable(request)
+      
+    case .modify(let request):
       return .requestJSONEncodable(request)
       
     case .modifyPublic(let isPublic):

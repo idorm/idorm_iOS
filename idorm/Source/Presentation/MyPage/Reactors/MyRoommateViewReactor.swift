@@ -58,13 +58,13 @@ final class MyRoommateViewReactor: Reactor {
         
         return .concat([
           .just(.setLoading(true)),
-          MatchingAPI.provider.rx.request(.lookupDislikeMembers)
+          MatchingMateAPI.provider.rx.request(.lookupDislikeMembers)
             .asObservable()
             .retry()
             .flatMap { response -> Observable<Mutation> in
               switch response.statusCode {
               case 200:
-                let members = MatchingAPI.decode(
+                let members = MatchingMateAPI.decode(
                   ResponseDTO<[MatchingResponseModel.Member]>.self,
                   data: response.data
                 ).data
@@ -84,13 +84,13 @@ final class MyRoommateViewReactor: Reactor {
       case .like:
         return .concat([
           .just(.setLoading(true)),
-          MatchingAPI.provider.rx.request(.lookupLikeMembers)
+          MatchingMateAPI.provider.rx.request(.lookupLikeMembers)
             .asObservable()
             .retry()
             .flatMap { response -> Observable<Mutation> in
               switch response.statusCode {
               case 200:
-                let members = MatchingAPI.decode(
+                let members = MatchingMateAPI.decode(
                   ResponseDTO<[MatchingResponseModel.Member]>.self,
                   data: response.data
                 ).data
@@ -123,7 +123,7 @@ final class MyRoommateViewReactor: Reactor {
       case .like:
         return .concat([
           .just(.setLoading(true)),
-          MatchingAPI.provider.rx.request(.deleteMember(true, id))
+          MatchingMateAPI.provider.rx.request(.deleteMember(true, id))
             .asObservable()
             .retry()
             .filterSuccessfulStatusCodes()
@@ -133,7 +133,7 @@ final class MyRoommateViewReactor: Reactor {
       case .dislike:
         return .concat([
           .just(.setLoading(true)),
-          MatchingAPI.provider.rx.request(.deleteMember(false, id))
+          MatchingMateAPI.provider.rx.request(.deleteMember(false, id))
             .asObservable()
             .retry()
             .filterSuccessfulStatusCodes()
@@ -195,13 +195,13 @@ extension MyRoommateViewReactor {
   private func fetchMembers(_ roommate: Roommate) -> Observable<Mutation> {
     switch roommate {
     case .like:
-      return MatchingAPI.provider.rx.request(.lookupLikeMembers)
+      return MatchingMateAPI.provider.rx.request(.lookupLikeMembers)
         .asObservable()
         .retry()
         .flatMap { response -> Observable<Mutation> in
           switch response.statusCode {
           case 200:
-            let members = MatchingAPI.decode(
+            let members = MatchingMateAPI.decode(
               ResponseDTO<[MatchingResponseModel.Member]>.self,
               data: response.data
             ).data
@@ -221,13 +221,13 @@ extension MyRoommateViewReactor {
           }
         }
     case .dislike:
-      return MatchingAPI.provider.rx.request(.lookupDislikeMembers)
+      return MatchingMateAPI.provider.rx.request(.lookupDislikeMembers)
         .asObservable()
         .retry()
         .flatMap { response -> Observable<Mutation> in
           switch response.statusCode {
           case 200:
-            let members = MatchingAPI.decode(
+            let members = MatchingMateAPI.decode(
               ResponseDTO<[MatchingResponseModel.Member]>.self,
               data: response.data
             ).data

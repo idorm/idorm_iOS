@@ -8,6 +8,8 @@
 import UIKit
 
 import SnapKit
+import RxSwift
+import RxCocoa
 
 final class iDormMatchingCardView: BaseView {
   
@@ -16,7 +18,7 @@ final class iDormMatchingCardView: BaseView {
   /// 메인이 되는 콘테이너 `UIView`
   private let topContainerView: UIView = {
     let view = UIView()
-    view.backgroundColor = .iDormColor(.iDormBlue)
+    view.backgroundColor = .iDormColor(.iDormCard)
     view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
     view.layer.cornerRadius = 16.0
     return view
@@ -50,6 +52,7 @@ final class iDormMatchingCardView: BaseView {
     button.baseForegroundColor = .white
     button.contentInset = .zero
     button.isUserInteractionEnabled = false
+    button.font = .iDormFont(.bold, size: 12.0)
     return button
   }()
   
@@ -92,17 +95,8 @@ final class iDormMatchingCardView: BaseView {
     return stackView
   }()
   
-  /// 하고싶은 말이 적혀있는 `UIButton`
-  private lazy var wantToSayButton: iDormButton = {
-    let button = iDormButton(self.matchingInfo.wishText, image: nil)
-    button.baseForegroundColor = .iDormColor(.iDormGray400)
-    button.baseBackgroundColor = .white
-    button.contentInset =
-    NSDirectionalEdgeInsets(top: 10.0, leading: 10.0, bottom: 10.0, trailing: 10.0)
-    button.cornerRadius = 6.0
-    button.isUserInteractionEnabled = false
-    return button
-  }()
+  /// 하고싶은 말이 적혀있는 `UIView`
+  private lazy var wantToSayView = iDormMatchingCardTextView(self.matchingInfo.wishText)
   
   /// 성별과 나이가 적혀있는 `UIButton`
   private lazy var genderAndAgeButton: iDormButton = {
@@ -113,6 +107,8 @@ final class iDormMatchingCardView: BaseView {
     button.baseForegroundColor = .iDormColor(.iDormGray400)
     button.contentInset = .zero
     button.isUserInteractionEnabled = false
+    button.font = .iDormFont(.bold, size: 12.0)
+    button.imagePadding = 8.0
     return button
   }()
   
@@ -135,6 +131,7 @@ final class iDormMatchingCardView: BaseView {
   // MARK: - Properties
   
   private let matchingInfo: MatchingInfo
+  var optionButtonHandler: ((MatchingInfo) -> Void)?
   
   // MARK: - Initializer
   
@@ -149,10 +146,6 @@ final class iDormMatchingCardView: BaseView {
   
   // MARK: - Setup
   
-  override func setupStyles() {
-    
-  }
-  
   override func setupLayouts() {
     self.addSubview(self.topContainerView)
     self.addSubview(self.bottomContainerView)
@@ -162,7 +155,7 @@ final class iDormMatchingCardView: BaseView {
       self.habitStackView,
       self.habitStackView2,
       self.verticalStackView,
-      self.wantToSayButton
+      self.wantToSayView
     ].forEach {
       self.topContainerView.addSubview($0)
     }
@@ -179,12 +172,14 @@ final class iDormMatchingCardView: BaseView {
     self.topContainerView.snp.makeConstraints { make in
       make.top.directionalHorizontalEdges.equalToSuperview()
       make.height.equalTo(396.0)
+      make.width.equalTo(327.0)
     }
     
     self.bottomContainerView.snp.makeConstraints { make in
       make.top.equalTo(self.topContainerView.snp.bottom).offset(-1.0)
       make.bottom.directionalHorizontalEdges.equalToSuperview()
       make.height.equalTo(36.0)
+      make.width.equalTo(327.0)
     }
     
     self.dormitoryLabel.snp.makeConstraints { make in
@@ -212,9 +207,10 @@ final class iDormMatchingCardView: BaseView {
       make.top.equalTo(self.habitStackView2.snp.bottom).offset(10.0)
     }
     
-    self.wantToSayButton.snp.makeConstraints { make in
+    self.wantToSayView.snp.makeConstraints { make in
       make.directionalHorizontalEdges.equalToSuperview().inset(13.0)
       make.top.equalTo(self.verticalStackView.snp.bottom).offset(10.0)
+      make.height.equalTo(104.0)
     }
     
     self.genderAndAgeButton.snp.makeConstraints { make in
@@ -231,5 +227,15 @@ final class iDormMatchingCardView: BaseView {
       make.centerY.equalTo(self.bottomContainerView)
       make.trailing.equalTo(self.optionButton.snp.leading)
     }
+  }
+  
+  // MARK: - Bind
+  
+  override func bind() {
+    self.optionButton.rx.tap.asDriver()
+      .drive(with: self) { owner, _ in
+        owner.optionButtonHandler?(owner.matchingInfo)
+      }
+      .disposed(by: self.disposeBag)
   }
 }

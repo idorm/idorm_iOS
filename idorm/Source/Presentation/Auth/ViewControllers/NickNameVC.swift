@@ -178,7 +178,7 @@ final class NicknameViewController: BaseViewController, View {
     
     // Action
     
-    self.textField.textObservable
+    self.textField.rx.text
       .map { Reactor.Action.textFieldDidChange($0) }
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
@@ -215,8 +215,8 @@ final class NicknameViewController: BaseViewController, View {
       }
       .disposed(by: self.disposeBag)
     
-    reactor.state.map { $0.isValidatedAllConditions }
-      .skip(1)
+    reactor.pulse(\.$isValidatedAllConditions).skip(1)
+      .debug()
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, isValidated in
         owner.textField.borderColor =
@@ -224,8 +224,7 @@ final class NicknameViewController: BaseViewController, View {
       }
       .disposed(by: self.disposeBag)
     
-    reactor.state.map { $0.isValidatedCountCondition }
-      .skip(1)
+    reactor.state.map { $0.isValidatedCountCondition }.skip(1)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, isValidated in
         owner.countConditionLabel.textColor =
@@ -233,8 +232,7 @@ final class NicknameViewController: BaseViewController, View {
       }
       .disposed(by: self.disposeBag)
     
-    reactor.state.map { $0.isValidatedSpacingCondition }
-      .skip(1)
+    reactor.state.map { $0.isValidatedSpacingCondition }.skip(1)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, isValidated in
         owner.spacingConditionLabel.textColor =
@@ -242,8 +240,7 @@ final class NicknameViewController: BaseViewController, View {
       }
       .disposed(by: self.disposeBag)
     
-    reactor.state.map { $0.isValidatedCompoundCondition }
-      .skip(1)
+    reactor.state.map { $0.isValidatedCompoundCondition }.skip(1)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, isValidated in
         owner.compoundConditionLabel.textColor =
@@ -251,16 +248,14 @@ final class NicknameViewController: BaseViewController, View {
       }
       .disposed(by: self.disposeBag)
     
-    reactor.pulse(\.$isPopping)
-      .skip(1)
+    reactor.pulse(\.$isPopping).skip(1)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
         owner.navigationController?.popViewController(animated: true)
       }
       .disposed(by: self.disposeBag)
     
-    reactor.pulse(\.$presentToPrivacyBottomSheet)
-      .skip(1)
+    reactor.pulse(\.$presentToTermsOfServiceVC).skip(1)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
         let bottomSheet = TermsOfServiceViewController()

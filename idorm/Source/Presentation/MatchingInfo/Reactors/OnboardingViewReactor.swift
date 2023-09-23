@@ -259,45 +259,46 @@ final class OnboardingViewReactor: Reactor {
         }
         
       case .modify:
-        if kakaoLink.isValidKakaoLink {
-          return .concat([
-            .just(.setLoading(true)),
-            MatchingInfoAPI.provider.rx.request(
-              .modify(currentState.currentMatchingInfo)
-            )
-              .asObservable()
-              .flatMap { response -> Observable<Mutation> in
-                switch response.statusCode {
-                case 200..<300:
-                  let matchingInfo = MatchingInfoAPI.decode(
-                    ResponseDTO<MatchingInfoResponseModel.MatchingInfo>.self,
-                    data: response.data
-                  ).data
-                  UserStorage.shared.saveMatchingInfo(matchingInfo)
-                  return .concat([
-                    .just(.setLoading(false)),
-                    .just(.setRootVC(true)),
-                    .just(.setRootVC(false))
-                  ])
-                default:
-                  let message = MatchingAPI.decode(
-                    ErrorResponseModel.self,
-                    data: response.data
-                  ).responseMessage
-                  return .concat([
-                    .just(.setLoading(false)),
-                    .just(.setPopup(true, message)),
-                    .just(.setPopup(false, ""))
-                  ])
-                }
-              }
-          ])
-        } else {
-          return .concat([
-            .just(.setKakaoPopup(true)),
-            .just(.setKakaoPopup(false))
-          ])
-        }
+        return .empty()
+//        if kakaoLink.isValidKakaoLink {
+//          return .concat([
+//            .just(.setLoading(true)),
+//            MatchingInfoAPI.provider.rx.request(
+//              .modify(currentState.currentMatchingInfo)
+//            )
+//              .asObservable()
+//              .flatMap { response -> Observable<Mutation> in
+//                switch response.statusCode {
+//                case 200..<300:
+//                  let matchingInfo = MatchingInfoAPI.decode(
+//                    ResponseDTO<MatchingInfoResponseModel.MatchingInfo>.self,
+//                    data: response.data
+//                  ).data
+//                  UserStorage.shared.saveMatchingInfo(matchingInfo)
+//                  return .concat([
+//                    .just(.setLoading(false)),
+//                    .just(.setRootVC(true)),
+//                    .just(.setRootVC(false))
+//                  ])
+//                default:
+//                  let message = MatchingMateAPI.decode(
+//                    ErrorResponseModel.self,
+//                    data: response.data
+//                  ).responseMessage
+//                  return .concat([
+//                    .just(.setLoading(false)),
+//                    .just(.setPopup(true, message)),
+//                    .just(.setPopup(false, ""))
+//                  ])
+//                }
+//              }
+//          ])
+//        } else {
+//          return .concat([
+//            .just(.setKakaoPopup(true)),
+//            .just(.setKakaoPopup(false))
+//          ])
+//        }
         
       }
     }

@@ -47,9 +47,9 @@ final class PasswordViewReactor: Reactor {
     var isValidatedToTextCount: Bool = false
     var isValidatedToCompoundCondition: Bool = false
     var isValidatedAllConditions: Bool = false
+    var isSameAsPassword: Bool = false
     @Pulse var navigateToRootVC: Bool = false
     @Pulse var navigateToNicknameVC: Bool = false
-    @Pulse var isSameAsPassword: Bool = false
     @Pulse var validationStates: (count: Bool, compound: Bool)?
   }
   
@@ -92,24 +92,28 @@ final class PasswordViewReactor: Reactor {
       ))
       
     case .continueButtonDidTap:
-      guard !self.currentState.isValidatedAllConditions else {
+      guard self.currentState.isValidatedAllConditions else {
         AlertManager.shared.showAlertPopup("조건을 다시 확인해주세요.")
         return .empty()
       }
       switch self.currentState.viewType {
-      case .findPassword:
+      case .findPassword: // 비밀번호 찾기
         return self.memberNetworkService.requestAPI(to: .patchPassword(
           email: Logger.shared.email,
           password: self.currentState.password
-        )).flatMap { _ in return Observable<Mutation>.just(.setRootVC(true)) }
+        )).flatMap { _ in
+          return Observable<Mutation>.just(.setRootVC(true))
+        }
         
-      case .changePassword:
+      case .changePassword: // 비밀번호 변경
         return self.memberNetworkService.requestAPI(to: .patchPassword(
           email: UserStorage.shared.email!,
           password: self.currentState.password
-        )).flatMap { _ in return Observable<Mutation>.just(.setRootVC(true)) }
+        )).flatMap { _ in
+          return Observable<Mutation>.just(.setRootVC(true))
+        }
         
-      case .signUp:
+      case .signUp: // 회원 가입
         Logger.shared.savePassword(self.currentState.password)
         return .just(.setNicknameVC(true))
       }
@@ -149,5 +153,23 @@ final class PasswordViewReactor: Reactor {
     }
     
     return newState
+  }
+  
+  func transform(state: Observable<State>) -> Observable<State> {
+    return state.map { state in
+      var newState = state
+      
+      newState.isSameAsPassword = state.password == state.verifyPassword ? true : false
+      
+      if newState.isSameAsPassword,
+         newState.isValidatedToTextCount,
+         newState.isValidatedToCompoundCondition {
+        newState.isValidatedAllConditions = true
+      } else {
+        newState.isValidatedAllConditions = false
+      }
+      
+      return newState
+    }
   }
 }

@@ -27,9 +27,9 @@ final class NicknameViewReactor: Reactor {
   
   enum Mutation {
     case setNickname(String)
-    case setAllConditions
     case setPopping(Bool)
-    case setPrivacyBottomSheet(Bool)
+    case setTermsOfServiceVC(Bool)
+    case setAllConditions
   }
   
   struct State {
@@ -38,11 +38,10 @@ final class NicknameViewReactor: Reactor {
     var isValidatedCountCondition: Bool = false
     var isValidatedCompoundCondition: Bool = false
     var isValidatedSpacingCondition: Bool = false
-    var isValidatedAllConditions: Bool = false
-    @Pulse var presentToPrivacyBottomSheet: Bool = false
+    @Pulse var isValidatedAllConditions: Bool = false
+    @Pulse var presentToTermsOfServiceVC: Bool = false
     @Pulse var isPopping: Bool = false
   }
-  
   // MARK: - Properties
   
   var initialState: State
@@ -65,7 +64,11 @@ final class NicknameViewReactor: Reactor {
       return .just(.setAllConditions)
       
     case .continueButtonDidTap:
-      guard self.currentState.isValidatedAllConditions else {
+      guard
+        self.currentState.isValidatedCountCondition,
+        self.currentState.isValidatedSpacingCondition,
+        self.currentState.isValidatedCompoundCondition
+      else {
         AlertManager.shared.showAlertPopup("조건을 다시 확인해주세요.")
         return .empty()
       }
@@ -77,7 +80,8 @@ final class NicknameViewReactor: Reactor {
           return Observable<Mutation>.just(.setPopping(true))
         }
       } else {
-        return .just(.setPrivacyBottomSheet(true))
+        Logger.shared.saveNickname(self.currentState.nickname)
+        return .just(.setTermsOfServiceVC(true))
       }
     }
   }
@@ -97,17 +101,17 @@ final class NicknameViewReactor: Reactor {
       // 글자 공백 조건
       newState.isValidatedSpacingCondition = !nickname.contains(" ")
       
+    case .setPopping(let isPopping):
+      newState.isPopping = isPopping
+      
+    case .setTermsOfServiceVC(let isPresented):
+      newState.presentToTermsOfServiceVC = isPresented
+      
     case .setAllConditions:
       newState.isValidatedAllConditions =
       state.isValidatedCountCondition &&
       state.isValidatedCompoundCondition &&
       state.isValidatedSpacingCondition
-      
-    case .setPopping(let isPopping):
-      newState.isPopping = isPopping
-      
-    case .setPrivacyBottomSheet(let isPresented):
-      newState.presentToPrivacyBottomSheet = isPresented
     }
     
     return newState

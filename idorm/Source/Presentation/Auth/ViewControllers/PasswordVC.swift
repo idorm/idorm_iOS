@@ -51,6 +51,7 @@ final class PasswordViewController: BaseViewController, View {
   private let verifyPasswordTextField: NewiDormTextField = {
     let textField = NewiDormTextField(type: .withBorderLine)
     textField.placeHolder = "비밀번호를 한번 더 입력해주세요."
+    textField.isSecureTextEntry = true
     return textField
   }()
   
@@ -87,12 +88,12 @@ final class PasswordViewController: BaseViewController, View {
     
     // Action
     
-    self.passwordTextField.textObservable
+    self.passwordTextField.rx.text
       .map { Reactor.Action.passwordTextFieldDidChange($0) }
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
-    self.verifyPasswordTextField.textObservable
+    self.verifyPasswordTextField.rx.text
       .map { Reactor.Action.verifyPasswordTextFieldDidChange($0) }
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
@@ -104,6 +105,11 @@ final class PasswordViewController: BaseViewController, View {
     
     self.verifyPasswordTextField.editingDidEnd
       .map { Reactor.Action.verifyPasswordTextFieldEditingDidEnd }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
+    self.continueButton.rx.tap
+      .map { Reactor.Action.continueButtonDidTap }
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
@@ -125,8 +131,7 @@ final class PasswordViewController: BaseViewController, View {
       }
       .disposed(by: self.disposeBag)
     
-    reactor.pulse(\.$isSameAsPassword)
-      .skip(1)
+    reactor.state.map { $0.isSameAsPassword }.skip(1)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, isSame in
         owner.verifyPasswordLabel.text =
@@ -146,14 +151,33 @@ final class PasswordViewController: BaseViewController, View {
         owner.passwordCountConditionLabel.textColor = .iDormColor(.iDormGray400)
         if states.count && states.compound { // 조건을 모두 만족
         } else if states.count { // 글자수 조건만 만족
+          owner.passwordLabel.textColor = .iDormColor(.iDormRed)
           owner.passwordCompoundConditonLabel.textColor = .iDormColor(.iDormRed)
         } else if states.compound { // 글자 조합 조건만 만족
+          owner.passwordLabel.textColor = .iDormColor(.iDormRed)
           owner.passwordCountConditionLabel.textColor = .iDormColor(.iDormRed)
         } else { // 모두 불만족
           owner.passwordLabel.textColor = .iDormColor(.iDormRed)
           owner.passwordCompoundConditonLabel.textColor = .iDormColor(.iDormRed)
           owner.passwordCountConditionLabel.textColor = .iDormColor(.iDormRed)
         }
+      }
+      .disposed(by: self.disposeBag)
+    
+    reactor.pulse(\.$navigateToRootVC).skip(1)
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
+        owner.navigationController?.popToRootViewController(animated: true)
+      }
+      .disposed(by: self.disposeBag)
+    
+    reactor.pulse(\.$navigateToNicknameVC).skip(1)
+      .debug()
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
+        let viewController = NicknameViewController()
+        viewController.reactor = NicknameViewReactor(.signUp)
+        owner.navigationController?.pushViewController(viewController, animated: true)
       }
       .disposed(by: self.disposeBag)
     

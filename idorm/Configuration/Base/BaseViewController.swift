@@ -37,10 +37,12 @@ class BaseViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    setupStyles()
-    setupLayouts()
-    setupConstraints()
-    bind()
+    
+    self.setupStyles()
+    self.setupLayouts()
+    self.setupConstraints()
+    self.bind()
+    self.addShadowToNavigationBar()
   }
   
   // MARK: - Setup
@@ -119,5 +121,13 @@ class BaseViewController: UIViewController {
       self.indicator.stopAnimating()
       self.indicator.removeFromSuperview()
     }
+  }
+  
+  func addShadowToNavigationBar() {
+    self.navigationController?.navigationBar.layer.shadowColor = UIColor.black.cgColor
+    self.navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+    self.navigationController?.navigationBar.layer.shadowRadius = 2.0
+    self.navigationController?.navigationBar.layer.shadowOpacity = 0.11
+    self.navigationController?.navigationBar.layer.masksToBounds = false
   }
 }

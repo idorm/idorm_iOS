@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class OnboardingHeaderView: UICollectionReusableView, BaseViewProtocol {
+final class MatchingInfoSetupHeaderView: UICollectionReusableView, BaseViewProtocol {
   
   // MARK: - UI Components
   
@@ -156,48 +156,36 @@ final class OnboardingHeaderView: UICollectionReusableView, BaseViewProtocol {
     
     self.supportView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
-      self.heightConstraint = make.height.equalTo(45.0).constraint
+      self.heightConstraint = make.height.equalTo(45.0).constraint.update(priority: .high)
     }
   }
   
   // MARK: - Configure
   
-  func configure(with section: OnboardingSection) {
+  func configure(with section: MatchingInfoSetupSection) {
     self.titleLabel.text = section.title
     self.subTitleLabel.text = section.subTitle
-    self.essentialLabel.isHidden = true
-    self.letMeKnowLabel.isHidden = true
-    self.letMeKnowHabitLabel.isHidden = true
-    self.titleLabel.isHidden = true
-    self.subTitleLabel.isHidden = true
-    self.maxLengthLabel.isHidden = true
-    self.currentLengthLabel.isHidden = true
-     
+    self.subviews.forEach { $0.isHidden = true }
+    self.heightConstraint?.update(offset: section.headerHeight)
+    self.titleLabelTopInset?.update(inset: 16.0)
+    
     switch section {
     case .dormitory:
       self.letMeKnowLabel.isHidden = false
       self.titleLabel.isHidden = false
-      self.heightConstraint?.update(offset: 84.0)
       self.titleLabelTopInset?.update(inset: 50.0)
     case .habit:
       self.titleLabel.isHidden = false
       self.letMeKnowHabitLabel.isHidden = false
-      self.heightConstraint?.update(offset: 72.0)
-      self.titleLabelTopInset?.update(inset: 16.0)
     case .gender, .period, .age:
       self.titleLabel.isHidden = false
-      self.heightConstraint?.update(offset: 50.0)
-      self.titleLabelTopInset?.update(inset: 16.0)
     case .wakeUpTime, .arrangement, .showerTime, .kakao:
       self.subTitleLabel.isHidden = false
       self.essentialLabel.isHidden = false
-      self.heightConstraint?.update(offset: 45.0)
     case .mbti:
       self.subTitleLabel.isHidden = false
-      self.heightConstraint?.update(offset: 45.0)
     case .wantToSay:
       self.subTitleLabel.isHidden = false
-      self.heightConstraint?.update(offset: 45.0)
       self.maxLengthLabel.isHidden = false
       self.currentLengthLabel.isHidden = false
     }

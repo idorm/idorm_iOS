@@ -12,7 +12,7 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-final class OnboardingAgeCell: BaseCollectionViewCell {
+final class MatchingInfoSetupAgeTextFieldCell: BaseCollectionViewCell {
   
   // MARK: - UI Components
   
@@ -44,7 +44,7 @@ final class OnboardingAgeCell: BaseCollectionViewCell {
   
   // MARK: - Properties
   
-  var ageTextFieldHandler: ((OnboardingSectionItem) -> Void)?
+  var ageTextFieldHandler: ((String) -> Void)?
   
   // MARK: - Setup
   
@@ -69,7 +69,7 @@ final class OnboardingAgeCell: BaseCollectionViewCell {
     self.textField.snp.makeConstraints { make in
       make.edges.equalToSuperview()
       make.directionalVerticalEdges.leading.equalToSuperview()
-      make.width.equalTo(90.0)
+      make.width.equalTo(90.0).priority(.high)
     }
     
     self.label.snp.makeConstraints { make in
@@ -77,12 +77,22 @@ final class OnboardingAgeCell: BaseCollectionViewCell {
       make.leading.equalTo(self.textField.snp.trailing).offset(8.0)
     }
   }
+  
+  // MARK: - Configure
+  
+  func configure(with age: String) {
+    if age.isEmpty {
+      self.textField.clearOTP()
+    } else {
+      self.textField.setText(age)
+    }
+  }
 }
 
 // MARK: - AEOTPTextFieldDelegate
 
-extension OnboardingAgeCell: AEOTPTextFieldDelegate {
+extension MatchingInfoSetupAgeTextFieldCell: AEOTPTextFieldDelegate {
   func didUserFinishEnter(the code: String) {
-    self.ageTextFieldHandler?(.age(code))
+    self.ageTextFieldHandler?(code)
   }
 }

@@ -116,7 +116,7 @@ final class LoginViewReactor: Reactor {
 private extension LoginViewReactor {
   func requestMatchingInfo() -> Observable<Mutation> {
     return self.matchingInfoNetworkService.requestAPI(to: .retrieve)
-      .map(ResponseDTO<MatchingInfoSingleResponeDTO>.self)
+      .map(ResponseDTO<MatchingInfoResponseDTO>.self)
       .flatMap { responseDTO in
         // 매칭 정보 저장
         UserStorage.shared.saveMatchingInfo(MatchingInfo(responseDTO.data))

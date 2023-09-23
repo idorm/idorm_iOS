@@ -50,13 +50,18 @@ final class AuthNumberViewReactor: Reactor {
         return self.mailNetworkService.requestAPI(to: .pwVerification(
           email: email,
           code: self.currentState.authenticationNumber
-        )).flatMap { _ in return Observable<Mutation>.just(.setDismiss(true)) }
-        
+        )).flatMap { _ in
+          MailStopWatchManager.shared.stop()
+          return Observable<Mutation>.just(.setDismiss(true))
+        }
       case .signUp: // 회원가입
         return self.mailNetworkService.requestAPI(to: .emailVerification(
           email: email,
           code: self.currentState.authenticationNumber
-        )).flatMap { _ in return Observable<Mutation>.just(.setDismiss(true)) }
+        )).flatMap { _ in
+          MailStopWatchManager.shared.stop()
+          return Observable<Mutation>.just(.setDismiss(true))
+        }
       }
       
     case .requestAuthNumberButtonDidTap:
@@ -76,19 +81,19 @@ final class AuthNumberViewReactor: Reactor {
           }
       }
     }
+  }
+  
+  func reduce(state: State, mutation: Mutation) -> State {
+    var newState = state
     
-    func reduce(state: State, mutation: Mutation) -> State {
-      var newState = state
+    switch mutation {
+    case .setAuthenticationNumber(let number):
+      newState.authenticationNumber = number
       
-      switch mutation {
-      case .setAuthenticationNumber(let number):
-        newState.authenticationNumber = number
-        
-      case .setDismiss(let state):
-        newState.shouldDismiss = state
-      }
-      
-      return newState
+    case .setDismiss(let state):
+      newState.shouldDismiss = state
     }
+    
+    return newState
   }
 }

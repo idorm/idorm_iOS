@@ -26,6 +26,10 @@ extension BaseTargetType {
     ]
   }
   
+  func getJsonHeaderWithoutAuthorization() -> [String: String] {
+    return ["Content-Type": "application/json"]
+  }
+  
   func getMultipartHeader() -> [String: String] {
     return [
       "Content-Type": "multipart/form-data",

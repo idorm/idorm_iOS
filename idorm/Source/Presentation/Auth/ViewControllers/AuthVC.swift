@@ -21,8 +21,9 @@ final class AuthViewController: BaseViewController, View {
   // MARK: - UI Components
   
   /// ic_cancel 인 `UIButton`
-  private let cancelButton: iDormButton = {
-    let button = iDormButton("", image: .iDormIcon(.cancel))
+  private let cancelButton: UIButton = {
+    let button = UIButton()
+    button.setImage(.iDormIcon(.cancel), for: .normal)
     return button
   }()
   
@@ -39,6 +40,7 @@ final class AuthViewController: BaseViewController, View {
     label.font = .iDormFont(.medium, size: 14.0)
     label.textColor = .iDormColor(.iDormGray300)
     label.textAlignment = .center
+    label.numberOfLines = 2
     label.text =
     """
     지금 이메일로 인증번호를 보내드렸어요.🕊
@@ -62,11 +64,20 @@ final class AuthViewController: BaseViewController, View {
   /// 인증번호 입력 `UIButton`
   private let enterNumberButton: iDormButton = {
     let button = iDormButton("인증번호 입력", image: nil)
+    button.font = .iDormFont(.medium, size: 14.0)
     button.baseBackgroundColor = .iDormColor(.iDormBlue)
     button.baseForegroundColor = .white
     button.cornerRadius = 10.0
     return button
   }()
+  
+  // MARK: - Life Cycle
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    self.navigationController?.setNavigationBarHidden(true, animated: true)
+  }
   
   // MARK: - Bind
   

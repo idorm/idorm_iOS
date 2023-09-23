@@ -16,5 +16,9 @@ extension MailAPI: BaseTargetType {
   var path: String { getPath() }
   var method: Moya.Method { getMethod() }
   var task: Moya.Task { getTask() }
-  var headers: [String : String]? { getJsonHeader() }
+  var headers: [String : String]? {
+    return [
+      "Content-Type": "application/json"
+    ]
+  }
 }

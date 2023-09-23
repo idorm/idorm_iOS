@@ -9,7 +9,7 @@ import Foundation
 
 import Moya
 
-extension MatchingAPI {
+extension MatchingMateAPI {
   func getTask() -> Task {
     switch self {
     case .lookupFilterMembers(let filter):

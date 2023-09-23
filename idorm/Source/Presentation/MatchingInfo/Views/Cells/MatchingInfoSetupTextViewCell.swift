@@ -1,6 +1,6 @@
 //
 //  OnboardingTextViewCell.swift
-//  
+//
 //
 //  Created by 김응철 on 9/16/23.
 //
@@ -9,8 +9,10 @@ import UIKit
 
 import SnapKit
 import RSKGrowingTextView
+import RxCocoa
+import RxSwift
 
-final class OnboardingTextViewCell: BaseCollectionViewCell {
+final class MatchingInfoSetupTextViewCell: BaseCollectionViewCell {
   
   // MARK: - UI Components
   
@@ -35,6 +37,7 @@ final class OnboardingTextViewCell: BaseCollectionViewCell {
     textView.textContainerInset = UIEdgeInsets(top: 15, left: 9, bottom: 15, right: 9)
     textView.animateHeightChange = false
     textView.growingTextViewDelegate = self
+    textView.maximumNumberOfLines = 5
     return textView
   }()
   
@@ -47,8 +50,6 @@ final class OnboardingTextViewCell: BaseCollectionViewCell {
   
   // MARK: - Properties
   
-  private var isInitialized: Bool = false
-  private var heightConstraint: Constraint?
   var textViewHandler: ((String) -> Void)?
   
   // MARK: - Setup
@@ -69,35 +70,46 @@ final class OnboardingTextViewCell: BaseCollectionViewCell {
     
     self.supportView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
-      self.heightConstraint = make.height.equalTo(148.0).constraint
+      make.height.equalTo(148.0)
     }
+  }
+  
+  // MARK: - Bind
+  
+  override func bind() {
+    self.textView.rx.text.orEmpty
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, text in
+        if text.count > 100 {
+          let truncatedText = String(text.prefix(100))
+          owner.textView.text = truncatedText
+          owner.textViewHandler?(truncatedText)
+          return
+        }
+        owner.textViewHandler?(text)
+      }
+      .disposed(by: self.disposeBag)
   }
   
   // MARK: - Configure
   
   func configure(with text: String) {
-    guard !self.isInitialized else { return }
     self.textView.text = text
-    self.isInitialized = true
+    DispatchQueue.main.async {
+      self.textViewHandler?(text)
+    }
   }
 }
 
-extension OnboardingTextViewCell: RSKGrowingTextViewDelegate {
-  func growingTextView(
-    _ textView: RSKGrowingTextView,
-    didChangeHeightFrom growingTextViewHeightBegin: CGFloat,
-    to growingTextViewHeightEnd: CGFloat
-  ) {
-    self.heightConstraint?.update(offset: growingTextViewHeightEnd + 95.0)
-  }
-  
-  func textViewDidChange(_ textView: UITextView) {
-    let maxLength = 100
-    if let text = textView.text,
-       text.count > maxLength {
-        let truncatedText = String(text.prefix(maxLength))
-        textView.text = truncatedText
+extension MatchingInfoSetupTextViewCell: RSKGrowingTextViewDelegate {
+  func textView(
+    _ textView: UITextView,
+    shouldChangeTextIn range: NSRange,
+    replacementText text: String
+  ) -> Bool {
+    if text.contains("\n") {
+      return false
     }
-    self.textViewHandler?(textView.text)
+    return true
   }
 }
