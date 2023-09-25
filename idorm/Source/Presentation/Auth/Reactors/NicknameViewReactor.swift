@@ -74,7 +74,7 @@ final class NicknameViewReactor: Reactor {
       }
       if case .changeNickname = self.currentState.viewType {
         return self.memberNetworkService.requestAPI(
-          to: .changeNickname(nickname: self.currentState.nickname)
+          to: .updateNickname(nickname: self.currentState.nickname)
         ).flatMap { _ in
           // TODO: 변경된 닉네임으로 업데이트
           return Observable<Mutation>.just(.setPopping(true))

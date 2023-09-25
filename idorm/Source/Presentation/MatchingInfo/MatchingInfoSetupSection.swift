@@ -9,12 +9,12 @@ import UIKit
 
 // MARK: - Section
 
-enum MatchingInfoSetupSection: Int, Hashable, CaseIterable {
+enum MatchingInfoSetupSection: Hashable {
   case dormitory
   case gender
   case period
-  case habit
-  case age
+  case habit(isFilterSetupVC: Bool)
+  case age(isFilterSetupVC: Bool)
   case wakeUpTime
   case arrangement
   case showerTime
@@ -27,7 +27,7 @@ enum MatchingInfoSetupSection: Int, Hashable, CaseIterable {
     case .dormitory: "기숙사"
     case .gender: "성별"
     case .period: "입사 기간"
-    case .habit: "내 습관"
+    case .habit(let isFilterSetupVC): isFilterSetupVC ? "불호 요소" : "내 습관"
     case .age: "나이"
     default: nil
     }
@@ -35,6 +35,8 @@ enum MatchingInfoSetupSection: Int, Hashable, CaseIterable {
   
   var subTitle: String? {
     switch self {
+    case .habit: "선택하신 요소를 가진 룸메는 나와 매칭되지 않아요."
+    case .age: "선택하신 연령대의 룸메이트만 나와 매칭돼요."
     case .wakeUpTime: "기상시간을 알려주세요."
     case .arrangement: "정리정돈을 얼마나 하시나요?"
     case .showerTime: "샤워는 주로 언제/몇 분 동안 하시나요?"
@@ -44,33 +46,6 @@ enum MatchingInfoSetupSection: Int, Hashable, CaseIterable {
     default: nil
     }
   }
-  
-//  case .dormitory:
-//    self.letMeKnowLabel.isHidden = false
-//    self.titleLabel.isHidden = false
-//    self.heightConstraint?.update(offset: 84.0)
-//    self.titleLabelTopInset?.update(inset: 50.0)
-//  case .habit:
-//    self.titleLabel.isHidden = false
-//    self.letMeKnowHabitLabel.isHidden = false
-//    self.heightConstraint?.update(offset: 72.0)
-//    self.titleLabelTopInset?.update(inset: 16.0)
-//  case .gender, .period, .age:
-//    self.titleLabel.isHidden = false
-//    self.heightConstraint?.update(offset: 50.0)
-//    self.titleLabelTopInset?.update(inset: 16.0)
-//  case .wakeUpTime, .arrangement, .showerTime, .kakao:
-//    self.heightConstraint?.update(offset: 45.0)
-//    self.subTitleLabel.isHidden = false
-//    self.essentialLabel.isHidden = false
-//  case .mbti:
-//    self.heightConstraint?.update(offset: 45.0)
-//    self.subTitleLabel.isHidden = false
-//  case .wantToSay:
-//    self.heightConstraint?.update(offset: 45.0)
-//    self.subTitleLabel.isHidden = false
-//    self.maxLengthLabel.isHidden = false
-//    self.currentLengthLabel.isHidden = false
   
   var headerHeight: CGFloat {
     switch self {

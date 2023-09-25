@@ -142,7 +142,7 @@ final class PasswordViewController: BaseViewController, View {
       }
       .disposed(by: self.disposeBag)
     
-    reactor.pulse(\.$validationStates)
+    reactor.pulse(\.$validationStates).skip(1)
       .compactMap { $0 }
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, states in
@@ -172,7 +172,6 @@ final class PasswordViewController: BaseViewController, View {
       .disposed(by: self.disposeBag)
     
     reactor.pulse(\.$navigateToNicknameVC).skip(1)
-      .debug()
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
         let viewController = NicknameViewController()
@@ -257,8 +256,4 @@ final class PasswordViewController: BaseViewController, View {
       make.bottom.equalTo(view.keyboardLayoutGuide.snp.top).offset(-20.0)
     }
   }
-  
-  // MARK: - Functions
-  
-  
 }

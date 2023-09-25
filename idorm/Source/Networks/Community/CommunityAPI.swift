@@ -29,18 +29,20 @@ enum CommunityAPI {
 }
 
 extension CommunityAPI: BaseTargetType {
+  func getHeader() -> NetworkHeaderType {
+    switch self {
+    case .savePost:
+      return .normalMultipart
+    default:
+      return .normalJson
+    }
+  }
+  
   static let provider = MoyaProvider<CommunityAPI>()
   
   var baseURL: URL { return getBaseURL() }
   var path: String { return getPath() }
   var method: Moya.Method { return getMethod() }
   var task: Moya.Task { return getTask() }
-  var headers: [String : String]? {
-    switch self {
-    case .savePost:
-      return getMultipartHeader()
-    default:
-      return getJsonHeader()
-    }
-  }
+  var headers: [String : String]? { self.getHeader().header }
 }

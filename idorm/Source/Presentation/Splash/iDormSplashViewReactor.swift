@@ -68,48 +68,40 @@ private extension iDormSplashViewReactor {
     }
     let password = UserStorage.shared.password
     return self.memberNetworkService.requestAPI(
-      to: .login(email: email, password: password, fcmToken: token)
+      to: .login(email: email, password: password)
     ).flatMap { response in
-      do {
-        let response = try response.filterSuccessfulStatusCodes()
-        let token = response.response?.headers["authorization"]
-        let responseDTO = NetworkUtility.decode(
-          ResponseDTO<MemberResponseModel.Member>.self,
-          data: response.data
-        ).data
-        UserStorage.shared.saveMember(responseDTO)
-        UserStorage.shared.saveToken(token)
-        os_log(.info, "🔓 로그인에 성공하였습니다. 이메일: \(email), 비밀번호: \(password)")
-        return self.requestMemberMatchingInfo()
-      } catch (let error) {
-        FilterStorage.shared.resetFilter()
-        UserStorage.shared.reset()
-        UserStorage.shared.resetToken()
-        os_log(.error, "🔐 로그인에 실패하였습니다. 이메일: \(email), 비밀번호: \(password), 실패요인: \(error.localizedDescription)")
-        return Observable<Mutation>.just(.setLoginVC)
-      }
+      let responseDTO = NetworkUtility.decode(
+        ResponseDTO<MemberSingleResponseDTO>.self,
+        data: response.data
+      ).data
+      UserStorage.shared.member = Member(responseDTO)
+      UserStorage.shared.token = token
+      os_log(.info, "🔓 로그인에 성공하였습니다. 이메일: \(email), 비밀번호: \(password)")
+      return self.requestMemberMatchingInfo()
+    }
+    .catch { error in
+      FilterStorage.shared.resetFilter()
+      UserStorage.shared.reset()
+      os_log(.error, "🔐 로그인에 실패하였습니다. 이메일: \(email), 비밀번호: \(password)")
+      return Observable<Mutation>.just(.setLoginVC)
     }
   }
   
   /// 해당 회원의 매칭 정보를 가져옵니다.
   func requestMemberMatchingInfo() -> Observable<Mutation> {
-    return self.matchingInfoNetworkService.requestAPI(to: .retrieve)
+    return self.matchingInfoNetworkService.requestAPI(to: .getMatchingInfo, withAlert: false)
       .flatMap { response in
-        do {
-          let response = try response.filterSuccessfulStatusCodes()
-          let responseDTO = NetworkUtility.decode(
-            ResponseDTO<MatchingInfoResponseModel.MatchingInfo>.self,
-            data: response.data
-          ).data
-          UserStorage.shared.saveMatchingInfo(responseDTO)
-          return Observable<Mutation>.just(.setTabBarVC)
-        } catch (let error) {
-          FilterStorage.shared.resetFilter()
-          UserStorage.shared.reset()
-          UserStorage.shared.resetToken()
-          os_log(.error, "🔴 회원의 매칭 정보르 조회를 실패했습니다. \(error.localizedDescription)")
-          return Observable<Mutation>.just(.setLoginVC)
-        }
+        let responseDTO = NetworkUtility.decode(
+          ResponseDTO<MatchingInfoResponseDTO>.self,
+          data: response.data
+        ).data
+        UserStorage.shared.matchingInfo = MatchingInfo(responseDTO)
+        return Observable<Mutation>.just(.setTabBarVC)
+      }
+      .catch { error in
+        FilterStorage.shared.resetFilter()
+        UserStorage.shared.reset()
+        return Observable<Mutation>.just(.setLoginVC)
       }
   }
 }

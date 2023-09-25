@@ -12,15 +12,15 @@ import Moya
 extension MatchingInfoAPI {
   func getTask() -> Task {
     switch self {
-    case .retrieve: return .requestPlain
+    case .getMatchingInfo: return .requestPlain
       
     case .createMatchingInfo(let request):
       return .requestJSONEncodable(request)
       
-    case .modify(let request):
+    case .updateMatchingInfo(let request):
       return .requestJSONEncodable(request)
       
-    case .modifyPublic(let isPublic):
+    case .updateMatchingInfoForPublic(let isPublic):
       return .requestParameters(parameters: [
         "isMatchingInfoPublic": isPublic
       ], encoding: URLEncoding.queryString)

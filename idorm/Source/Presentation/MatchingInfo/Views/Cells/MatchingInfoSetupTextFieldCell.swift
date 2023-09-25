@@ -23,6 +23,7 @@ final class MatchingInfoSetupTextFieldCell: BaseCollectionViewCell {
     textField.textColor = .black
     textField.leftPadding = 16.0
     textField.isOnboarding = true
+    textField.textField.delegate = self
     return textField
   }()
   
@@ -80,5 +81,48 @@ final class MatchingInfoSetupTextFieldCell: BaseCollectionViewCell {
     }
     self.item = item
     self.textField.rx.text.onNext(text)
+  }
+}
+
+// MARK: - Privates
+
+private extension MatchingInfoSetupTextFieldCell {
+  /// 클립보드에 있는 텍스트를 URL형식의 String으로 변환해주는 메서드입니다.
+  func extractLinkFromText(_ text: String) -> String? {
+    let pattern = "(?i)https?://(?:www\\.)?\\S+(?:/|\\b)"
+    guard let regex = try? NSRegularExpression(
+      pattern: pattern,
+      options: []
+    ) else {
+      return nil
+    }
+    
+    if let result = regex.firstMatch(
+      in: text,
+      options: [],
+      range: NSRange(location: 0, length: text.utf16.count)
+    ) {
+      let url = (text as NSString).substring(with: result.range)
+      return url
+    }
+    return nil
+  }
+}
+
+extension MatchingInfoSetupTextFieldCell: UITextFieldDelegate {
+  func textField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String
+  ) -> Bool {
+    guard self.item == .kakao else { return true }
+    if let clipboardText = UIPasteboard.general.string {
+      if let url = self.extractLinkFromText(clipboardText) {
+        self.textField.rx.text.onNext(url)
+        return false
+      }
+      return true
+    }
+    return true
   }
 }

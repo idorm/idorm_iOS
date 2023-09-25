@@ -73,7 +73,7 @@ final class MatchingInfoCardViewReactor: Reactor {
         )
         .map(ResponseDTO<MatchingInfoResponseDTO>.self)
         .flatMap { responseDTO in
-          UserStorage.shared.saveMatchingInfo(MatchingInfo(responseDTO.data))
+          UserStorage.shared.matchingInfo = MatchingInfo(responseDTO.data)
           return Observable<Mutation>.just(.setTabBarVC(true))
         }
       case .theFirstTime:
@@ -82,7 +82,7 @@ final class MatchingInfoCardViewReactor: Reactor {
         )
         .map(ResponseDTO<MatchingInfoResponseDTO>.self)
         .flatMap { responseDTO in
-          UserStorage.shared.saveMatchingInfo(MatchingInfo(responseDTO.data))
+          UserStorage.shared.matchingInfo = MatchingInfo(responseDTO.data)
           return Observable<Mutation>.just(.setPopping(true))
         }
       case .correction:

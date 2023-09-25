@@ -25,7 +25,6 @@
 		E50E21E629235A350022CA9C /* (null) in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E50F85012957E44B008B7052 /* NicknameViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F85002957E44B008B7052 /* NicknameViewReactor.swift */; };
 		E50F850329582D5E008B7052 /* CompleteSignupViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F850229582D5E008B7052 /* CompleteSignupViewReactor.swift */; };
-		E50F85072958494B008B7052 /* OnboardingViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F85062958494B008B7052 /* OnboardingViewReactor.swift */; };
 		E50F850929587C8B008B7052 /* TransformUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F850829587C8B008B7052 /* TransformUtils.swift */; };
 		E50F850B29588878008B7052 /* MatchingInfoCardViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50F850A29588878008B7052 /* MatchingInfoCardViewReactor.swift */; };
 		E50FB5242971920B00E938B8 /* BaseViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50FB5232971920B00E938B8 /* BaseViewProtocol.swift */; };
@@ -179,15 +178,21 @@
 		E588650A2988E0E20068BEB2 /* MatchingInfoAPI+Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58865092988E0E20068BEB2 /* MatchingInfoAPI+Path.swift */; };
 		E588650C2988E0EC0068BEB2 /* MatchingInfoAPI+Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588650B2988E0EC0068BEB2 /* MatchingInfoAPI+Method.swift */; };
 		E588650E2988E1050068BEB2 /* MatchingInfoAPI+Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588650D2988E1050068BEB2 /* MatchingInfoAPI+Task.swift */; };
-		E58865112988E1F60068BEB2 /* MatchingAPI+Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58865102988E1F60068BEB2 /* MatchingAPI+Path.swift */; };
-		E58865132988E1FF0068BEB2 /* MatchingAPI+Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58865122988E1FF0068BEB2 /* MatchingAPI+Method.swift */; };
-		E58865152988E20A0068BEB2 /* MatchingAPI+Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58865142988E20A0068BEB2 /* MatchingAPI+Task.swift */; };
+		E58865112988E1F60068BEB2 /* MatchingMateAPI+Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58865102988E1F60068BEB2 /* MatchingMateAPI+Path.swift */; };
+		E58865132988E1FF0068BEB2 /* MatchingMateAPI+Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58865122988E1FF0068BEB2 /* MatchingMateAPI+Method.swift */; };
+		E58865152988E20A0068BEB2 /* MatchingMateAPI+Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58865142988E20A0068BEB2 /* MatchingMateAPI+Task.swift */; };
 		E58A6297289D6BEF0074F646 /* DeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58A6296289D6BEF0074F646 /* DeviceManager.swift */; };
 		E58ACB8728846E050031BD86 /* GalleryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58ACB8628846E050031BD86 /* GalleryVC.swift */; };
 		E58BF48629FD54D30036B125 /* MyCommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58BF48529FD54D30036B125 /* MyCommentCell.swift */; };
 		E58BF48829FE8C0F0036B125 /* MyPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58BF48729FE8C0F0036B125 /* MyPostCell.swift */; };
 		E58F96FB2884E85B00CC3C75 /* GalleryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58F96FA2884E85B00CC3C75 /* GalleryCell.swift */; };
 		E59037C829769DBD001239D1 /* CommunityPostingViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59037C729769DBD001239D1 /* CommunityPostingViewReactor.swift */; };
+		E5907B562ABF28900097FA6A /* MatchingMateResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5907B552ABF28900097FA6A /* MatchingMateResponseDTO.swift */; };
+		E5907B582ABF2CB00097FA6A /* MatchingMateFilterRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5907B572ABF2CB00097FA6A /* MatchingMateFilterRequestDTO.swift */; };
+		E5907B5A2ABF30070097FA6A /* MatchingMateQuotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5907B592ABF30070097FA6A /* MatchingMateQuotationView.swift */; };
+		E5907B5C2AC1BE7F0097FA6A /* MatchingInfoFilterSetupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5907B5B2AC1BE7F0097FA6A /* MatchingInfoFilterSetupVC.swift */; };
+		E5907B5E2AC1BF9F0097FA6A /* MatchingInfoFilterSetupViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5907B5D2AC1BF9F0097FA6A /* MatchingInfoFilterSetupViewReactor.swift */; };
+		E5907B632AC1CC810097FA6A /* MatchingInfoFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5907B622AC1CC810097FA6A /* MatchingInfoFilter.swift */; };
 		E5909CE628D94B610083075D /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5909CE528D94B610083075D /* BaseViewController.swift */; };
 		E5921A672ABD57E10086C4A7 /* MatchingInfoSetupTextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5921A662ABD57E10086C4A7 /* MatchingInfoSetupTextViewCell.swift */; };
 		E5921A692ABECF670086C4A7 /* iDormMatchingCardTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5921A682ABECF670086C4A7 /* iDormMatchingCardTextView.swift */; };
@@ -255,12 +260,12 @@
 		E5D03359294AD8B1006DD107 /* UserStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D03358294AD8B1006DD107 /* UserStorage.swift */; };
 		E5D07087292F098500D5DF6E /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D07086292F098500D5DF6E /* String+.swift */; };
 		E5D31BF1289AAE3D00510315 /* UIScrollView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D31BF0289AAE3D00510315 /* UIScrollView+.swift */; };
-		E5D4900B288BFA0200311493 /* MatchingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D4900A288BFA0200311493 /* MatchingVC.swift */; };
+		E5D4900B288BFA0200311493 /* MatchingMateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D4900A288BFA0200311493 /* MatchingMateVC.swift */; };
 		E5D49012288C003800311493 /* MatchingCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D49011288C003800311493 /* MatchingCard.swift */; };
 		E5D7AECE292B287D00038349 /* WithdrawalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D7AECD292B287D00038349 /* WithdrawalVC.swift */; };
 		E5D98F8F28C4863900D493FF /* NickNameVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D98F8E28C4863900D493FF /* NickNameVC.swift */; };
 		E5DB38E92AAE01C100BDE364 /* ValidationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DB38E82AAE01C100BDE364 /* ValidationManager.swift */; };
-		E5DDA26F292D9CC8003B46BA /* KakaoPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DDA26E292D9CC8003B46BA /* KakaoPopup.swift */; };
+		E5DDA26F292D9CC8003B46BA /* KakaoPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DDA26E292D9CC8003B46BA /* KakaoPopupViewController.swift */; };
 		E5E0BA862A9902BA0022A63B /* iDormSplashViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E0BA852A9902BA0022A63B /* iDormSplashViewReactor.swift */; };
 		E5E0BA8D2A99077B0022A63B /* FCMTokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E0BA8C2A99077B0022A63B /* FCMTokenManager.swift */; };
 		E5E1497E2950498300A3827C /* TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E1497D2950498300A3827C /* TokenStorage.swift */; };
@@ -269,6 +274,11 @@
 		E5E149882950635500A3827C /* FilterDriver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E149872950635500A3827C /* FilterDriver.swift */; };
 		E5E1498B2950700B00A3827C /* ReactorKit in Frameworks */ = {isa = PBXBuildFile; productRef = E5E1498A2950700B00A3827C /* ReactorKit */; };
 		E5E1498D295079F600A3827C /* MatchingFilterViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E1498C295079F600A3827C /* MatchingFilterViewReactor.swift */; };
+		E5E330F12ABED8CE00621149 /* NetworkHeaderType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E330F02ABED8CE00621149 /* NetworkHeaderType.swift */; };
+		E5E330F32ABED9DC00621149 /* NetworkEnviorment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E330F22ABED9DC00621149 /* NetworkEnviorment.swift */; };
+		E5E330F52ABEDD5D00621149 /* MemberAPI+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E330F42ABEDD5D00621149 /* MemberAPI+Header.swift */; };
+		E5E330F82ABF08EA00621149 /* MatchingMateButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E330F72ABF08EA00621149 /* MatchingMateButtonsView.swift */; };
+		E5E330FC2ABF183F00621149 /* MatchingMateViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E330FB2ABF183F00621149 /* MatchingMateViewReactor.swift */; };
 		E5E5341C2A9097B600CDC357 /* DormCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E5341B2A9097B600CDC357 /* DormCalendar.swift */; };
 		E5E5341E2A91116900CDC357 /* CommunitySingleTopPostResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E5341D2A91116900CDC357 /* CommunitySingleTopPostResponseDTO.swift */; };
 		E5E534202A91F87A00CDC357 /* HomeDormCalendarHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E5341F2A91F87A00CDC357 /* HomeDormCalendarHeader.swift */; };
@@ -303,7 +313,7 @@
 		E5FC906B2A63FD09001C4A15 /* CalendarListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC906A2A63FD09001C4A15 /* CalendarListCell.swift */; };
 		E5FC906D2A643404001C4A15 /* CalendarScheduleHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC906C2A643404001C4A15 /* CalendarScheduleHeader.swift */; };
 		E5FC90702A64387A001C4A15 /* CalendarAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC906F2A64387A001C4A15 /* CalendarAPI.swift */; };
-		E5FD982428EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD982328EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift */; };
+		E5FD982428EAF1AE005A29E2 /* WelcomePopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD982328EAF1AE005A29E2 /* WelcomePopupViewController.swift */; };
 		E5FD982628EAF8F0005A29E2 /* MailStopWatchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FD982528EAF8F0005A29E2 /* MailStopWatchManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -344,7 +354,6 @@
 		E50E202F2AA76B8D0049A0FD /* NewiDormTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewiDormTextField.swift; sourceTree = "<group>"; };
 		E50F85002957E44B008B7052 /* NicknameViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameViewReactor.swift; sourceTree = "<group>"; };
 		E50F850229582D5E008B7052 /* CompleteSignupViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignupViewReactor.swift; sourceTree = "<group>"; };
-		E50F85062958494B008B7052 /* OnboardingViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewReactor.swift; sourceTree = "<group>"; };
 		E50F850829587C8B008B7052 /* TransformUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformUtils.swift; sourceTree = "<group>"; };
 		E50F850A29588878008B7052 /* MatchingInfoCardViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingInfoCardViewReactor.swift; sourceTree = "<group>"; };
 		E50FB5232971920B00E938B8 /* BaseViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewProtocol.swift; sourceTree = "<group>"; };
@@ -476,15 +485,21 @@
 		E58865092988E0E20068BEB2 /* MatchingInfoAPI+Path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MatchingInfoAPI+Path.swift"; sourceTree = "<group>"; };
 		E588650B2988E0EC0068BEB2 /* MatchingInfoAPI+Method.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MatchingInfoAPI+Method.swift"; sourceTree = "<group>"; };
 		E588650D2988E1050068BEB2 /* MatchingInfoAPI+Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MatchingInfoAPI+Task.swift"; sourceTree = "<group>"; };
-		E58865102988E1F60068BEB2 /* MatchingAPI+Path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MatchingAPI+Path.swift"; sourceTree = "<group>"; };
-		E58865122988E1FF0068BEB2 /* MatchingAPI+Method.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MatchingAPI+Method.swift"; sourceTree = "<group>"; };
-		E58865142988E20A0068BEB2 /* MatchingAPI+Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MatchingAPI+Task.swift"; sourceTree = "<group>"; };
+		E58865102988E1F60068BEB2 /* MatchingMateAPI+Path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MatchingMateAPI+Path.swift"; sourceTree = "<group>"; };
+		E58865122988E1FF0068BEB2 /* MatchingMateAPI+Method.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MatchingMateAPI+Method.swift"; sourceTree = "<group>"; };
+		E58865142988E20A0068BEB2 /* MatchingMateAPI+Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MatchingMateAPI+Task.swift"; sourceTree = "<group>"; };
 		E58A6296289D6BEF0074F646 /* DeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceManager.swift; sourceTree = "<group>"; };
 		E58ACB8628846E050031BD86 /* GalleryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryVC.swift; sourceTree = "<group>"; };
 		E58BF48529FD54D30036B125 /* MyCommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommentCell.swift; sourceTree = "<group>"; };
 		E58BF48729FE8C0F0036B125 /* MyPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPostCell.swift; sourceTree = "<group>"; };
 		E58F96FA2884E85B00CC3C75 /* GalleryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryCell.swift; sourceTree = "<group>"; };
 		E59037C729769DBD001239D1 /* CommunityPostingViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPostingViewReactor.swift; sourceTree = "<group>"; };
+		E5907B552ABF28900097FA6A /* MatchingMateResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingMateResponseDTO.swift; sourceTree = "<group>"; };
+		E5907B572ABF2CB00097FA6A /* MatchingMateFilterRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingMateFilterRequestDTO.swift; sourceTree = "<group>"; };
+		E5907B592ABF30070097FA6A /* MatchingMateQuotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingMateQuotationView.swift; sourceTree = "<group>"; };
+		E5907B5B2AC1BE7F0097FA6A /* MatchingInfoFilterSetupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingInfoFilterSetupVC.swift; sourceTree = "<group>"; };
+		E5907B5D2AC1BF9F0097FA6A /* MatchingInfoFilterSetupViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingInfoFilterSetupViewReactor.swift; sourceTree = "<group>"; };
+		E5907B622AC1CC810097FA6A /* MatchingInfoFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingInfoFilter.swift; sourceTree = "<group>"; };
 		E5909CE528D94B610083075D /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		E5921A662ABD57E10086C4A7 /* MatchingInfoSetupTextViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingInfoSetupTextViewCell.swift; sourceTree = "<group>"; };
 		E5921A682ABECF670086C4A7 /* iDormMatchingCardTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iDormMatchingCardTextView.swift; sourceTree = "<group>"; };
@@ -551,12 +566,12 @@
 		E5D03358294AD8B1006DD107 /* UserStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStorage.swift; sourceTree = "<group>"; };
 		E5D07086292F098500D5DF6E /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		E5D31BF0289AAE3D00510315 /* UIScrollView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+.swift"; sourceTree = "<group>"; };
-		E5D4900A288BFA0200311493 /* MatchingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingVC.swift; sourceTree = "<group>"; };
+		E5D4900A288BFA0200311493 /* MatchingMateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingMateVC.swift; sourceTree = "<group>"; };
 		E5D49011288C003800311493 /* MatchingCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingCard.swift; sourceTree = "<group>"; };
 		E5D7AECD292B287D00038349 /* WithdrawalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalVC.swift; sourceTree = "<group>"; };
 		E5D98F8E28C4863900D493FF /* NickNameVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NickNameVC.swift; sourceTree = "<group>"; };
 		E5DB38E82AAE01C100BDE364 /* ValidationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationManager.swift; sourceTree = "<group>"; };
-		E5DDA26E292D9CC8003B46BA /* KakaoPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoPopup.swift; sourceTree = "<group>"; };
+		E5DDA26E292D9CC8003B46BA /* KakaoPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoPopupViewController.swift; sourceTree = "<group>"; };
 		E5E0BA852A9902BA0022A63B /* iDormSplashViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iDormSplashViewReactor.swift; sourceTree = "<group>"; };
 		E5E0BA8C2A99077B0022A63B /* FCMTokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMTokenManager.swift; sourceTree = "<group>"; };
 		E5E1497D2950498300A3827C /* TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStorage.swift; sourceTree = "<group>"; };
@@ -564,6 +579,11 @@
 		E5E14981295050EC00A3827C /* FilterStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterStorage.swift; sourceTree = "<group>"; };
 		E5E149872950635500A3827C /* FilterDriver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterDriver.swift; sourceTree = "<group>"; };
 		E5E1498C295079F600A3827C /* MatchingFilterViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingFilterViewReactor.swift; sourceTree = "<group>"; };
+		E5E330F02ABED8CE00621149 /* NetworkHeaderType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHeaderType.swift; sourceTree = "<group>"; };
+		E5E330F22ABED9DC00621149 /* NetworkEnviorment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkEnviorment.swift; sourceTree = "<group>"; };
+		E5E330F42ABEDD5D00621149 /* MemberAPI+Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemberAPI+Header.swift"; sourceTree = "<group>"; };
+		E5E330F72ABF08EA00621149 /* MatchingMateButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingMateButtonsView.swift; sourceTree = "<group>"; };
+		E5E330FB2ABF183F00621149 /* MatchingMateViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingMateViewReactor.swift; sourceTree = "<group>"; };
 		E5E5341B2A9097B600CDC357 /* DormCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DormCalendar.swift; sourceTree = "<group>"; };
 		E5E5341D2A91116900CDC357 /* CommunitySingleTopPostResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunitySingleTopPostResponseDTO.swift; sourceTree = "<group>"; };
 		E5E5341F2A91F87A00CDC357 /* HomeDormCalendarHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDormCalendarHeader.swift; sourceTree = "<group>"; };
@@ -598,7 +618,7 @@
 		E5FC906A2A63FD09001C4A15 /* CalendarListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarListCell.swift; sourceTree = "<group>"; };
 		E5FC906C2A643404001C4A15 /* CalendarScheduleHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarScheduleHeader.swift; sourceTree = "<group>"; };
 		E5FC906F2A64387A001C4A15 /* CalendarAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarAPI.swift; sourceTree = "<group>"; };
-		E5FD982328EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMatchingInfoPopup_Initial.swift; sourceTree = "<group>"; };
+		E5FD982328EAF1AE005A29E2 /* WelcomePopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomePopupViewController.swift; sourceTree = "<group>"; };
 		E5FD982528EAF8F0005A29E2 /* MailStopWatchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailStopWatchManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -732,8 +752,8 @@
 			isa = PBXGroup;
 			children = (
 				E5AD739C287AE08F00BA2C5E /* iDormPopupViewController.swift */,
-				E5DDA26E292D9CC8003B46BA /* KakaoPopup.swift */,
-				E5FD982328EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift */,
+				E5FD982328EAF1AE005A29E2 /* WelcomePopupViewController.swift */,
+				E5DDA26E292D9CC8003B46BA /* KakaoPopupViewController.swift */,
 				E57B3E4D2933688500B2C0F0 /* NoMatchingInfoPopup.swift */,
 				E51063C3291E250400FA0EAC /* NoPublicStatePopUp.swift */,
 			);
@@ -832,6 +852,7 @@
 			isa = PBXGroup;
 			children = (
 				E528E22A2AA629D40071C156 /* MatchingInfo.swift */,
+				E5907B622AC1CC810097FA6A /* MatchingInfoFilter.swift */,
 			);
 			path = MatchingInfo;
 			sourceTree = "<group>";
@@ -852,6 +873,7 @@
 				E53D1A402988A5C00074308B /* MemberAPI+Path.swift */,
 				E53D1A422988A5CA0074308B /* MemberAPI+Method.swift */,
 				E53D1A3E2988A5780074308B /* MemberAPI+Task.swift */,
+				E5E330F42ABEDD5D00621149 /* MemberAPI+Header.swift */,
 			);
 			path = Member;
 			sourceTree = "<group>";
@@ -904,8 +926,8 @@
 				E5E77ECC28D8293400031010 /* Auth */,
 				E56DF4B02893CE4F00E85B10 /* Community */,
 				E56DF4B6289403A400E85B10 /* MatchingInfo */,
+				E56DF4C3289405CD00E85B10 /* MatchingMate */,
 				E56DF4C2289405C000E85B10 /* Home */,
-				E56DF4C3289405CD00E85B10 /* Matching */,
 				E56DF4CA2894061000E85B10 /* MyPage */,
 			);
 			path = Presentation;
@@ -1050,6 +1072,7 @@
 			isa = PBXGroup;
 			children = (
 				E5226D5D2911F7110065C809 /* MatchingInfoSetupVC.swift */,
+				E5907B5B2AC1BE7F0097FA6A /* MatchingInfoFilterSetupVC.swift */,
 				E5B15F6E287FE355004D4164 /* MatchingInfoCardVC.swift */,
 			);
 			path = ViewControllers;
@@ -1058,8 +1081,8 @@
 		E56DF4BC289403CD00E85B10 /* Reactors */ = {
 			isa = PBXGroup;
 			children = (
-				E50F85062958494B008B7052 /* OnboardingViewReactor.swift */,
 				E58080CB2AB39F460014253C /* MatchingInfoSetupViewReactor.swift */,
+				E5907B5D2AC1BF9F0097FA6A /* MatchingInfoFilterSetupViewReactor.swift */,
 				E50F850A29588878008B7052 /* MatchingInfoCardViewReactor.swift */,
 			);
 			path = Reactors;
@@ -1076,13 +1099,14 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
-		E56DF4C3289405CD00E85B10 /* Matching */ = {
+		E56DF4C3289405CD00E85B10 /* MatchingMate */ = {
 			isa = PBXGroup;
 			children = (
 				E56DF4C92894060200E85B10 /* ViewControllers */,
 				E5AB97C22895583C00C0CEDF /* Reactors */,
+				E5E330F62ABF08CE00621149 /* Views */,
 			);
-			path = Matching;
+			path = MatchingMate;
 			sourceTree = "<group>";
 		};
 		E56DF4C7289405DF00E85B10 /* ViewControllers */ = {
@@ -1096,7 +1120,7 @@
 		E56DF4C92894060200E85B10 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				E5D4900A288BFA0200311493 /* MatchingVC.swift */,
+				E5D4900A288BFA0200311493 /* MatchingMateVC.swift */,
 				E5AB97C32895671800C0CEDF /* MatchingFilterVC.swift */,
 			);
 			path = ViewControllers;
@@ -1207,22 +1231,33 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		E588650F2988E1BB0068BEB2 /* Matching */ = {
+		E588650F2988E1BB0068BEB2 /* MatchingMate */ = {
 			isa = PBXGroup;
 			children = (
 				E5294FF229277A06004D408C /* MatchingMateAPI.swift */,
-				E58865102988E1F60068BEB2 /* MatchingAPI+Path.swift */,
-				E58865122988E1FF0068BEB2 /* MatchingAPI+Method.swift */,
-				E58865142988E20A0068BEB2 /* MatchingAPI+Task.swift */,
+				E58865102988E1F60068BEB2 /* MatchingMateAPI+Path.swift */,
+				E58865122988E1FF0068BEB2 /* MatchingMateAPI+Method.swift */,
+				E58865142988E20A0068BEB2 /* MatchingMateAPI+Task.swift */,
 			);
-			path = Matching;
+			path = MatchingMate;
+			sourceTree = "<group>";
+		};
+		E5907B542ABF28740097FA6A /* MatchingMate */ = {
+			isa = PBXGroup;
+			children = (
+				E5907B552ABF28900097FA6A /* MatchingMateResponseDTO.swift */,
+				E5907B572ABF2CB00097FA6A /* MatchingMateFilterRequestDTO.swift */,
+			);
+			path = MatchingMate;
 			sourceTree = "<group>";
 		};
 		E591B77228C6E5E300B8B581 /* Networks */ = {
 			isa = PBXGroup;
 			children = (
-				E5FC90522A5D90A4001C4A15 /* NetworkUtility.swift */,
 				E5C9B1352A496BB5001BF59D /* NetworkService.swift */,
+				E5E330F22ABED9DC00621149 /* NetworkEnviorment.swift */,
+				E5E330F02ABED8CE00621149 /* NetworkHeaderType.swift */,
+				E5FC90522A5D90A4001C4A15 /* NetworkUtility.swift */,
 				E5C9B1392A499326001BF59D /* NetworkError.swift */,
 				E5A47F07292508F300908E20 /* SharedAPI.swift */,
 				E5FA993F2A016CEF0047AC0A /* Calendar */,
@@ -1230,7 +1265,7 @@
 				E53D1A3D2988A5640074308B /* Member */,
 				E53D1A442988A6870074308B /* Mail */,
 				E53D1A4B2988A9810074308B /* MatchingInfoAPI */,
-				E588650F2988E1BB0068BEB2 /* Matching */,
+				E588650F2988E1BB0068BEB2 /* MatchingMate */,
 			);
 			path = Networks;
 			sourceTree = "<group>";
@@ -1268,8 +1303,9 @@
 		E5AB97C22895583C00C0CEDF /* Reactors */ = {
 			isa = PBXGroup;
 			children = (
-				E523ECAE29516A0A00E79386 /* MatchingViewReactor.swift */,
+				E5E330FB2ABF183F00621149 /* MatchingMateViewReactor.swift */,
 				E5E1498C295079F600A3827C /* MatchingFilterViewReactor.swift */,
+				E523ECAE29516A0A00E79386 /* MatchingViewReactor.swift */,
 			);
 			path = Reactors;
 			sourceTree = "<group>";
@@ -1340,6 +1376,7 @@
 				E5F35E1C2986672F00211C99 /* ResponseDTO.swift */,
 				E5283D5529489E28004DD34F /* ErrorResponseModel.swift */,
 				E5CFF5422ABB0E3F00186D8C /* Deprecated */,
+				E5907B542ABF28740097FA6A /* MatchingMate */,
 				E5CFF5402ABB0DF700186D8C /* MatchingInfo */,
 				E56AF41B2A5C547B00984DA3 /* Calendar */,
 				E528E21E2AA0D2FA0071C156 /* Member */,
@@ -1433,6 +1470,15 @@
 				E5AC2DCA2882F24000B82AD8 /* OnboardingTextField.swift */,
 			);
 			path = Deprecated;
+			sourceTree = "<group>";
+		};
+		E5E330F62ABF08CE00621149 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E5E330F72ABF08EA00621149 /* MatchingMateButtonsView.swift */,
+				E5907B592ABF30070097FA6A /* MatchingMateQuotationView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		E5E77ECC28D8293400031010 /* Auth */ = {
@@ -1758,6 +1804,7 @@
 				E52C27872989148B002429B5 /* Roommate.swift in Sources */,
 				E5E14982295050EC00A3827C /* FilterStorage.swift in Sources */,
 				E56AF41F2A5CF0DD00984DA3 /* TeamCalendarMemberResponseDTO.swift in Sources */,
+				E5E330F82ABF08EA00621149 /* MatchingMateButtonsView.swift in Sources */,
 				E55AE18C29E52A6E002E6025 /* CommunityContainerView.swift in Sources */,
 				E577E4CD29FA553300D0DA48 /* MyCommunityViewReactor.swift in Sources */,
 				E513D9FE2955C70A002EA592 /* EmailViewReactor.swift in Sources */,
@@ -1770,9 +1817,10 @@
 				E5AD73A3287B2B5200BA2C5E /* PasswordVC.swift in Sources */,
 				E506642C296E6BAA00B581E1 /* PopularPostCell.swift in Sources */,
 				E5E1497E2950498300A3827C /* TokenStorage.swift in Sources */,
-				E58865112988E1F60068BEB2 /* MatchingAPI+Path.swift in Sources */,
+				E58865112988E1F60068BEB2 /* MatchingMateAPI+Path.swift in Sources */,
 				E547E3EC291CFBBC000D3A47 /* MatchingCardWishTextView.swift in Sources */,
 				E5CFF6FD29826F8E00E11D9A /* CommunityPostEmptyCell.swift in Sources */,
+				E5907B632AC1CC810097FA6A /* MatchingInfoFilter.swift in Sources */,
 				E5BFED592A8BBE8F004D22E4 /* TeamCalendar.swift in Sources */,
 				E5D07087292F098500D5DF6E /* String+.swift in Sources */,
 				E5C89E4B28A9EDA70035D9C6 /* URLRequest+.swift in Sources */,
@@ -1785,27 +1833,30 @@
 				E588650A2988E0E20068BEB2 /* MatchingInfoAPI+Path.swift in Sources */,
 				E5283D5629489E28004DD34F /* ErrorResponseModel.swift in Sources */,
 				E5C261492919D15E00623C0E /* MyRoommateBottomSheet.swift in Sources */,
-				E5DDA26F292D9CC8003B46BA /* KakaoPopup.swift in Sources */,
+				E5DDA26F292D9CC8003B46BA /* KakaoPopupViewController.swift in Sources */,
 				E50FB52B2972B36E00E938B8 /* DormBottomSheet.swift in Sources */,
 				E509438A28F8291D004D3A58 /* Preview.swift in Sources */,
 				E5AD739D287AE08F00BA2C5E /* iDormPopupViewController.swift in Sources */,
 				E53C60B0287B37CB00977909 /* CompleteSignUpVC.swift in Sources */,
 				E58080C42AB355190014253C /* Dormitory.swift in Sources */,
+				E5907B582ABF2CB00097FA6A /* MatchingMateFilterRequestDTO.swift in Sources */,
 				E5FC90602A62B438001C4A15 /* CalendarMemberBackgroundView.swift in Sources */,
 				E574D4232A643D3D0059B0C1 /* CalendarAPI+Method.swift in Sources */,
 				E5CFF70B2982D00200E11D9A /* BaseTargetType.swift in Sources */,
 				E5A47F08292508F300908E20 /* SharedAPI.swift in Sources */,
 				E5F48B8F2A7BCE0F00874207 /* CalendarDateSelectionCell.swift in Sources */,
+				E5907B5C2AC1BE7F0097FA6A /* MatchingInfoFilterSetupVC.swift in Sources */,
 				E5CFF7142982D72000E11D9A /* CommunityResponseModel.swift in Sources */,
 				E5410E7E2A70C8DF00DEB262 /* iDormButton.swift in Sources */,
 				E58BF48629FD54D30036B125 /* MyCommentCell.swift in Sources */,
-				E58865132988E1FF0068BEB2 /* MatchingAPI+Method.swift in Sources */,
+				E58865132988E1FF0068BEB2 /* MatchingMateAPI+Method.swift in Sources */,
 				E520207D2A6E81F70058F222 /* DormCalendarResponseDTO.swift in Sources */,
 				E56271D72A853A010043F208 /* CommunityCommentResponseDTO.swift in Sources */,
 				E5D7AECE292B287D00038349 /* WithdrawalVC.swift in Sources */,
 				E5290F0928881C6E0004B8E6 /* CommunityPostContentCell.swift in Sources */,
 				E50300F728773A5D00611C62 /* AppDelegate.swift in Sources */,
 				E5F48B912A7BFD0B00874207 /* CalendarDatePickerView.swift in Sources */,
+				E5E330F12ABED8CE00621149 /* NetworkHeaderType.swift in Sources */,
 				E5BFED5B2A8BC21D004D22E4 /* CalendarSleepoverManagementVC.swift in Sources */,
 				E58080D62AB68DC40014253C /* iDormBottomMenuView.swift in Sources */,
 				E55794EE287C36F5002DB2B0 /* UIView+.swift in Sources */,
@@ -1837,6 +1888,7 @@
 				E5045F5F2A7280C6005095D5 /* DormCalendarEmptyCell.swift in Sources */,
 				E52E96B22915FAB6009E1773 /* MatchingContainerView.swift in Sources */,
 				E5D03359294AD8B1006DD107 /* UserStorage.swift in Sources */,
+				E5E330F52ABEDD5D00621149 /* MemberAPI+Header.swift in Sources */,
 				E5B61F4129B481910031046C /* ErrorCode.swift in Sources */,
 				E56271DB2A853ACB0043F208 /* CommunityMultiplePostResponseDTO.swift in Sources */,
 				E528E2252AA1C3490071C156 /* Member.swift in Sources */,
@@ -1845,17 +1897,17 @@
 				E5B249BD296266DA00081609 /* TermsOfServiceVC.swift in Sources */,
 				E5AF9DC029FF9AC100C1001D /* CropViewController.swift in Sources */,
 				E5C2614E2919D3AA00623C0E /* BottomSheetUtils.swift in Sources */,
+				E5E330FC2ABF183F00621149 /* MatchingMateViewReactor.swift in Sources */,
 				E53D1A432988A5CA0074308B /* MemberAPI+Method.swift in Sources */,
 				E58080C82AB35B440014253C /* Gender.swift in Sources */,
 				E5BFED612A8E6549004D22E4 /* KakaoShareManager.swift in Sources */,
 				E5226D65291246750065C809 /* OnboardingDriver.swift in Sources */,
 				E5410E882A71416F00DEB262 /* CalendarMemoTextView.swift in Sources */,
-				E50F85072958494B008B7052 /* OnboardingViewReactor.swift in Sources */,
 				E5E77EC628D822FB00031010 /* OldiDormButton.swift in Sources */,
 				E55098872A92304F00BC45AF /* CommunityTopPostDecorationView.swift in Sources */,
 				E5410E842A71359E00DEB262 /* CalendarManagementVC.swift in Sources */,
 				E520207F2A6EA2EF0058F222 /* BottomSheetVC.swift in Sources */,
-				E58865152988E20A0068BEB2 /* MatchingAPI+Task.swift in Sources */,
+				E58865152988E20A0068BEB2 /* MatchingMateAPI+Task.swift in Sources */,
 				E577E4CB29FA3A4200D0DA48 /* MyCommunityVC.swift in Sources */,
 				E5294FF52927807A004D408C /* Encodable+.swift in Sources */,
 				E56271D92A853A580043F208 /* CommunitySubCommentResponseDTO.swift in Sources */,
@@ -1886,11 +1938,11 @@
 				E5CFF71729835CCC00E11D9A /* MatchingInfoRequestModel.swift in Sources */,
 				E5F48B882A7B5F7000874207 /* CalendarDateSelectionVC.swift in Sources */,
 				E5066428296E677700B581E1 /* PostUtils.swift in Sources */,
-				E5D4900B288BFA0200311493 /* MatchingVC.swift in Sources */,
+				E5D4900B288BFA0200311493 /* MatchingMateVC.swift in Sources */,
 				E52233B3296CFCAD00C5DD07 /* CommunityPostingVC.swift in Sources */,
 				E5F48B862A77961B00874207 /* TeamCalendarRequestModel.swift in Sources */,
 				E5E5341C2A9097B600CDC357 /* DormCalendar.swift in Sources */,
-				E5FD982428EAF1AE005A29E2 /* NoMatchingInfoPopup_Initial.swift in Sources */,
+				E5FD982428EAF1AE005A29E2 /* WelcomePopupViewController.swift in Sources */,
 				E50F850329582D5E008B7052 /* CompleteSignupViewReactor.swift in Sources */,
 				E59F0D502920A47E00D3B737 /* MatchingBottomSheet.swift in Sources */,
 				E5FC90622A63A857001C4A15 /* CalendarHeader.swift in Sources */,
@@ -1914,6 +1966,7 @@
 				E52C45E229230ED500638B68 /* Moya+.swift in Sources */,
 				E5921A672ABD57E10086C4A7 /* MatchingInfoSetupTextViewCell.swift in Sources */,
 				E5290EFF2887BBB00004B8E6 /* PostCollectionViewCell.swift in Sources */,
+				E5907B562ABF28900097FA6A /* MatchingMateResponseDTO.swift in Sources */,
 				E5A15D4A2923A569001CE750 /* MemberAPI.swift in Sources */,
 				E5BFED5D2A8CCF20004D22E4 /* CalendarSleepoverManagementViewReactor.swift in Sources */,
 				E50F850929587C8B008B7052 /* TransformUtils.swift in Sources */,
@@ -1988,8 +2041,10 @@
 				E5AB97C42895671800C0CEDF /* MatchingFilterVC.swift in Sources */,
 				E5E1498D295079F600A3827C /* MatchingFilterViewReactor.swift in Sources */,
 				E5AD7396287A8C2F00BA2C5E /* UIColor+.swift in Sources */,
+				E5907B5A2ABF30070097FA6A /* MatchingMateQuotationView.swift in Sources */,
 				E5D49012288C003800311493 /* MatchingCard.swift in Sources */,
 				E5EB0D042952928F00E70573 /* MyPageViewReactor.swift in Sources */,
+				E5907B5E2AC1BF9F0097FA6A /* MatchingInfoFilterSetupViewReactor.swift in Sources */,
 				E550476E29A0F1FD0050AD1C /* DetailPhotoCell.swift in Sources */,
 				E5AD7391287A863800BA2C5E /* LoginVC.swift in Sources */,
 				E5F35E1D2986672F00211C99 /* ResponseDTO.swift in Sources */,
@@ -2005,6 +2060,7 @@
 				E5695C15295EFBD40083E48D /* iDormSplashVC.swift in Sources */,
 				E513DA002955ECB4002EA592 /* PasswordViewReactor.swift in Sources */,
 				E550988F2A930C1800BC45AF /* CalendarSleepoverListViewReactor.swift in Sources */,
+				E5E330F32ABED9DC00621149 /* NetworkEnviorment.swift in Sources */,
 				E5B15F6F287FE355004D4164 /* MatchingInfoCardVC.swift in Sources */,
 				E5B61F4329B48BB10031046C /* UserDefaultsWrapper.swift in Sources */,
 				E5E0BA8D2A99077B0022A63B /* FCMTokenManager.swift in Sources */,

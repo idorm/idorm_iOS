@@ -216,7 +216,6 @@ final class NicknameViewController: BaseViewController, View {
       .disposed(by: self.disposeBag)
     
     reactor.pulse(\.$isValidatedAllConditions).skip(1)
-      .debug()
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, isValidated in
         owner.textField.borderColor =

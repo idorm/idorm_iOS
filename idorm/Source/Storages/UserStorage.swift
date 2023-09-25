@@ -10,29 +10,37 @@ import Foundation
 import RxSwift
 
 /// 이메일, 비밀번호, 토큰을 보관하는 영구적으로 보관하는 싱글톤 객체입니다.
-/// 하지만 매칭 정보와 멤버 정보는 앱이 종료되면 저장되지 않고 초기화됩니다.
 final class UserStorage {
   
-  // MARK: - PROPERTIES
+  // MARK: - Properties
   
   static let shared = UserStorage()
   
   @UserDefaultsWrapper<String?>(key: "EMAIL", defaultValue: nil)
-  private(set) var email: String?
+  var email: String?
   
   @UserDefaultsWrapper<String>(key: "PASSWORD", defaultValue: "")
-  private(set) var password: String
+  var password: String
   
   @UserDefaultsWrapper<String>(key: "TOKEN", defaultValue: "")
-  private(set) var token: String
+  var token: String
   
-  private(set) var matchingInfo: MatchingInfoResponseModel.MatchingInfo?
-  private(set) var member: MemberResponseModel.Member?
+  @UserDefaultsWrapper<Bool>(key: "ISLAUNCHED", defaultValue: false)
+  var isLaunched: Bool
   
-  private(set) var newMember: Member?
-  private(set) var newMatchingInfo: MatchingInfo?
+  @UserDefaultsWrapper<Member?>(key: "MEMBER", defaultValue: nil)
+  var member: Member?
   
-  // MARK: - COMPUTED PROPERTIES
+  @UserDefaultsWrapper<MatchingInfo?>(key: "MATCHINGINFO", defaultValue: nil)
+  var matchingInfo: MatchingInfo?
+  
+  var matchingMateFilter: MatchingInfoFilter?
+  
+  // MARK: - Initializer
+  
+  private init() {}
+  
+  // MARK: - Functions
   
   var hasMatchingInfo: Bool {
     self.matchingInfo != nil ? true : false
@@ -41,54 +49,18 @@ final class UserStorage {
   var isPublicMatchingInfo: Bool {
     self.matchingInfo?.isMatchingInfoPublic ?? false
   }
-  
-  // MARK: - INITIALIZER
-  
-  private init() {}
-  
-  // MARK: - HELPERS
-  
-  /// 이메일을 영구적으로 저장합니다.
-  func saveEmail(_ email: String?) {
-    self.email = email
+
+  var dormCategory: Dormitory {
+    self.matchingInfo?.dormCategory ?? .no1
   }
   
-  /// 비밀번호를 영구적으로 저장합니다.
-  func savePassword(_ password: String) {
-    self.password = password
-  }
-  
-  /// 토큰을 영구적으로 저장합니다.
-  func saveToken(_ token: String?) {
-    self.token = token ?? ""
-  }
-  
-  /// 멤버 매칭 정보를 저장합니다.
-  func saveMatchingInfo(_ matchingInfo: MatchingInfoResponseModel.MatchingInfo) {
-    self.matchingInfo = matchingInfo
-  }
-  
-  func saveMatchingInfo(_ model: MatchingInfo) {
-    self.newMatchingInfo = model
-  }
-  
-  /// 멤버 정보를 저장합니다.
-  func saveMember(_ member: MemberResponseModel.Member) {
-    self.member = member
-  }
-  
-  func saveMember(_ member: Member) {
-    self.newMember = member
+  var joinPeriod: JoinPeriod {
+    self.matchingInfo?.joinPeriod ?? .period_16
   }
   
   /// UserDefaults에 저장된 프로퍼티를 제외한 모든 프로퍼티를 nil로 할당합니다.
   func reset() {
     self.matchingInfo = nil
     self.member = nil
-  }
-  
-  /// 토큰을 초기화 시킵니다.
-  func resetToken() {
-    self.token = ""
   }
 }

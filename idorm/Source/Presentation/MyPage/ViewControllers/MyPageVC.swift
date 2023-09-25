@@ -184,7 +184,7 @@ final class MyPageViewController: BaseViewController, View {
         let onboardingDetailVC = MatchingInfoCardViewController(.init())
         onboardingDetailVC.reactor = MatchingInfoCardViewReactor(
           .correction,
-          matchingInfo: UserStorage.shared.newMatchingInfo!
+          matchingInfo: UserStorage.shared.matchingInfo!
         )
         onboardingDetailVC.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(onboardingDetailVC, animated: true)

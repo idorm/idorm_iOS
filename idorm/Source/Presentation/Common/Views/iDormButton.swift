@@ -164,7 +164,7 @@ final class iDormButton: UIButton, BaseViewProtocol {
   
   // MARK: - Init
   
-  init(_ title: String, image: UIImage?) {
+  init(_ title: String = "", image: UIImage? = nil) {
     self.title = title
     self.image = image
     super.init(frame: .zero)

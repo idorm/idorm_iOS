@@ -14,6 +14,10 @@ enum DormCalendarAPI {
 }
 
 extension DormCalendarAPI: TargetType, BaseTargetType {
+  func getHeader() -> NetworkHeaderType {
+    return .normalJson
+  }
+  
   func getPath() -> String {
     return ""
   }

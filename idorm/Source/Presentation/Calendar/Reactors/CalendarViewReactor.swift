@@ -143,7 +143,7 @@ final class CalendarViewReactor: Reactor {
         .flatMap { _ in return self.requestGetTeamMembers() }
       
     case .shareCalendarButtonDidTap:
-      let profileURL = UserStorage.shared.member?.profilePhotoUrl
+      let profileURL = UserStorage.shared.member?.profilePhotoURL
       let nickNM = UserStorage.shared.member?.nickname
       KakaoShareManager.shared.inviteTeamCalendar(
         profileURL: profileURL,

@@ -16,19 +16,19 @@ extension MemberAPI {
       return "/auth/login"
     case .register:
       return "/auth/register"
-    case .patchPassword:
+    case .updatePassword:
       return "/auth/password"
-    case .changeNickname:
+    case .updateNickname:
       return "/member/nickname"
-    case .retrieveMember:
+    case .getUser:
       return "/member"
-    case .withdrawal:
+    case .deleteUser:
       return "/member"
-    case .saveProfilePhoto:
+    case .createProfilePhoto:
       return "/member/profile-photo"
-    case .deleteProfileImage:
+    case .deleteProfilePhoto:
       return "/member/profile-photo"
-    case .logoutFCM:
+    case .logout:
       return "/member/fcm"
     case .updateFCM:
       return "/member/fcm"

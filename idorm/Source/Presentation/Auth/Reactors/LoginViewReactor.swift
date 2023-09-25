@@ -58,8 +58,7 @@ final class LoginViewReactor: Reactor {
       let password = self.currentState.password
       return self.memberNetworkService.requestAPI(to: .login(
         email: email,
-        password: password,
-        fcmToken: FCMTokenManager.shared.fcmToken!
+        password: password
       ))
       .flatMap { response in
         do {
@@ -71,9 +70,9 @@ final class LoginViewReactor: Reactor {
           let member = Member(responseDTO)
           let token = response.response?.headers["authorization"]
           // 멤버의 정보를 저장합니다.
-          UserStorage.shared.saveMember(member)
+          UserStorage.shared.member = Member(responseDTO)
           // 멤버의 토큰을 저장합니다.
-          UserStorage.shared.saveToken(token)
+          UserStorage.shared.token = token!
           os_log(.info, "🔓 로그인에 성공하였습니다. 이메일: \(email), 비밀번호: \(password)")
           return self.requestMatchingInfo()
         } catch (let error) {
@@ -115,11 +114,11 @@ final class LoginViewReactor: Reactor {
 
 private extension LoginViewReactor {
   func requestMatchingInfo() -> Observable<Mutation> {
-    return self.matchingInfoNetworkService.requestAPI(to: .retrieve)
+    return self.matchingInfoNetworkService.requestAPI(to: .getMatchingInfo)
       .map(ResponseDTO<MatchingInfoResponseDTO>.self)
       .flatMap { responseDTO in
         // 매칭 정보 저장
-        UserStorage.shared.saveMatchingInfo(MatchingInfo(responseDTO.data))
+        UserStorage.shared.matchingInfo = MatchingInfo(responseDTO.data)
         return Observable<Mutation>.just(.setTabBarVC(true))
       }
   }

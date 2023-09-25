@@ -12,13 +12,13 @@ import Moya
 extension MemberAPI {
   func getTask() -> Task {
     switch self {
-    case let .login(id, pw, _):
+    case let .login(id, pw):
       return .requestParameters(parameters: [
         "email": id,
         "password": pw,
       ], encoding: JSONEncoding.default)
       
-    case let .patchPassword(email, password):
+    case let .updatePassword(email, password):
       return .requestParameters(parameters: [
         "email": email,
         "password": password
@@ -31,15 +31,15 @@ extension MemberAPI {
         "password": pw
         ], encoding: JSONEncoding.default)
       
-    case .changeNickname(let nickname):
+    case .updateNickname(let nickname):
       return .requestParameters(parameters: [
         "nickname": nickname
       ], encoding: JSONEncoding.default)
       
-    case .retrieveMember, .withdrawal:
+    case .getUser, .deleteUser:
       return .requestPlain
       
-    case .saveProfilePhoto(let image):
+    case .createProfilePhoto(let image):
       let multiPartData = MultipartFormData(
         provider: .data(image.jpegData(compressionQuality: 0.9)!),
         name: "file",
@@ -48,10 +48,10 @@ extension MemberAPI {
       )
       return .uploadMultipart([multiPartData])
       
-    case .deleteProfileImage:
+    case .deleteProfilePhoto:
       return .requestPlain
       
-    case .logoutFCM:
+    case .logout:
       return .requestPlain
       
     case .updateFCM:

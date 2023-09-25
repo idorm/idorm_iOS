@@ -12,13 +12,13 @@ import Moya
 extension MatchingInfoAPI {
   func getMethod() -> Moya.Method {
     switch self {
-    case .retrieve:
+    case .getMatchingInfo:
       return .get
-    case .modify:
+    case .updateMatchingInfo:
       return .put
     case .createMatchingInfo:
       return .post
-    case .modifyPublic:
+    case .updateMatchingInfoForPublic:
       return .patch
     }
   }

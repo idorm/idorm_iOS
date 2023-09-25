@@ -53,7 +53,7 @@ final class ManageMyInfoViewReactor: Reactor {
     case .viewWillAppear:
       let nickName = UserStorage.shared.member?.nickname ?? ""
       let email = UserStorage.shared.member?.email ?? ""
-      let profileURL = UserStorage.shared.member?.profilePhotoUrl
+      let profileURL = UserStorage.shared.member?.profilePhotoURL
       
       return .concat([
         .just(.setCurrentNickname(nickName)),
@@ -82,7 +82,7 @@ final class ManageMyInfoViewReactor: Reactor {
     case .didTapLogoutButton:
       return .concat([
         .just(.setLoading(true)),
-        MemberAPI.provider.rx.request(.logoutFCM)
+        MemberAPI.provider.rx.request(.logout)
           .asObservable()
           .debug()
           .flatMap { _ -> Observable<Mutation> in
@@ -98,7 +98,7 @@ final class ManageMyInfoViewReactor: Reactor {
     case .didPickProfileImage(let image):
       return .concat([
         .just(.setLoading(true)),
-        MemberAPI.provider.rx.request(.saveProfilePhoto(image: image))
+        MemberAPI.provider.rx.request(.createProfilePhoto(image: image))
           .asObservable()
           .filterSuccessfulStatusCodes()
           .withUnretained(self)
@@ -110,18 +110,19 @@ final class ManageMyInfoViewReactor: Reactor {
     case .deleteProfileImage:
       return .concat([
         .just(.setLoading(true)),
-        MemberAPI.provider.rx.request(.deleteProfileImage)
+        MemberAPI.provider.rx.request(.deleteProfilePhoto)
           .asObservable()
           .filterSuccessfulStatusCodes()
           .flatMap { _ -> Observable<Mutation> in
             guard let member = UserStorage.shared.member else { return .empty() }
             let newMember = MemberResponseModel.Member(
-              memberId: member.memberId,
+              memberId: member.identifier,
               email: member.email,
               nickname: member.nickname,
               profilePhotoUrl: nil
             )
-            UserStorage.shared.saveMember(newMember)
+            // TODO: 멤버 등록
+//            UserStorage.shared.member =
             return .concat([
               .just(.setLoading(false)),
               .just(.setProfileImageUrl(nil))
@@ -166,14 +167,14 @@ final class ManageMyInfoViewReactor: Reactor {
 
 private extension ManageMyInfoViewReactor {
   func retrieveMember() -> Observable<Mutation> {
-    return MemberAPI.provider.rx.request(.retrieveMember)
+    return MemberAPI.provider.rx.request(.getUser)
       .asObservable()
       .flatMap { response -> Observable<Mutation> in
         let member = MemberAPI.decode(
-          ResponseDTO<MemberResponseModel.Member>.self,
+          ResponseDTO<MemberSingleResponseDTO>.self,
           data: response.data
         ).data
-        UserStorage.shared.saveMember(member)
+        UserStorage.shared.member = Member(member)
         return .concat([
           .just(.setLoading(false)),
           .just(.setProfileImageUrl(member.profilePhotoUrl))

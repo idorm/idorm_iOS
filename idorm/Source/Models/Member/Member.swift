@@ -8,7 +8,7 @@
 import Foundation
 
 /// 멤버의 정보를 나타냅니다.
-struct Member {
+struct Member: Codable {
   /// 해당 멤버의 식별자
   let identifier: Int
   let email: String

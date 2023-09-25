@@ -80,10 +80,10 @@ final class MatchingInfoSetupViewReactor: Reactor {
         return .just(.setMatchingInfoCardVC)
       case .correction:
         return self.networkService
-          .requestAPI(to: .modify(MatchingInfoRequestDTO(self.currentState.matchingInfo)))
+          .requestAPI(to: .updateMatchingInfo(MatchingInfoRequestDTO(self.currentState.matchingInfo)))
           .map(ResponseDTO<MatchingInfoResponseDTO>.self)
           .flatMap { responseDTO in
-            UserStorage.shared.saveMatchingInfo(MatchingInfo(responseDTO.data))
+            UserStorage.shared.matchingInfo = MatchingInfo(responseDTO.data)
             return Observable<Mutation>.just(.setRootVC)
           }
       }
@@ -162,7 +162,10 @@ final class MatchingInfoSetupViewReactor: Reactor {
       var newState = state
       let matchingInfo = state.matchingInfo
       
-      newState.sections = MatchingInfoSetupSection.allCases      
+      newState.sections =
+      [
+        .dormitory, .gender, .period, .habit(isFilterSetupVC: false), .age(isFilterSetupVC: false), .wakeUpTime, .arrangement, .showerTime, .kakao, .mbti, .wantToSay
+      ]
       newState.items =
       [
         // 기숙사

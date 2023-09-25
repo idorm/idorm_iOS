@@ -98,7 +98,7 @@ final class PasswordViewReactor: Reactor {
       }
       switch self.currentState.viewType {
       case .findPassword: // 비밀번호 찾기
-        return self.memberNetworkService.requestAPI(to: .patchPassword(
+        return self.memberNetworkService.requestAPI(to: .updatePassword(
           email: Logger.shared.email,
           password: self.currentState.password
         )).flatMap { _ in
@@ -106,7 +106,7 @@ final class PasswordViewReactor: Reactor {
         }
         
       case .changePassword: // 비밀번호 변경
-        return self.memberNetworkService.requestAPI(to: .patchPassword(
+        return self.memberNetworkService.requestAPI(to: .updatePassword(
           email: UserStorage.shared.email!,
           password: self.currentState.password
         )).flatMap { _ in

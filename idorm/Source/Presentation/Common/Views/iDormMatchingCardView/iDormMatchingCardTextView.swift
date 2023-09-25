@@ -19,6 +19,7 @@ final class iDormMatchingCardTextView: BaseView {
     label.textColor = .iDormColor(.iDormGray400)
     label.font = .iDormFont(.medium, size: 14.0)
     label.textAlignment = .left
+    label.numberOfLines = 0
     return label
   }()
   

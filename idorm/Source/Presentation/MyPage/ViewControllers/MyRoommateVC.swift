@@ -120,16 +120,13 @@ final class MyRoommateViewController: BaseViewController, View {
       .filter { $0.0 }
       .withUnretained(self)
       .bind { owner, url in
-        let kakaoPopup = KakaoPopup()
+        let kakaoPopup = KakaoPopupViewController()
         kakaoPopup.modalPresentationStyle = .overFullScreen
+        kakaoPopup.kakaoButtonHandler = {
+          owner.reactor?.action.onNext(.didTapKakaoButton(url.1))
+        }
         owner.present(kakaoPopup, animated: false)
-        
-        // 카카오버튼부터 구현
-        kakaoPopup.kakaoButton.rx.tap
-          .map { MyRoommateViewReactor.Action.didTapKakaoButton(url.1) }
-          .bind(to: reactor.action)
-          .disposed(by: owner.disposeBag)
-        
+
         // 팝업창 닫기
         reactor.state
           .map { $0.isDismissed }

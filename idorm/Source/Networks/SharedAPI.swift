@@ -9,22 +9,22 @@ import RxMoya
 import RxSwift
 
 final class SharedAPI {
-  
-  static func retrieveMatchingInfo() {
-    _ = MatchingInfoAPI.provider.rx.request(.retrieve)
-      .asObservable()
-      .retry()
-      .filterSuccessfulStatusCodes()
-      .map(ResponseDTO<MatchingInfoResponseModel.MatchingInfo>.self)
-      .bind { UserStorage.shared.saveMatchingInfo($0.data) }
-  }
-  
-  static func retrieveMemberInfo() {
-    _ = MemberAPI.provider.rx.request(.retrieveMember)
-      .asObservable()
-      .retry()
-      .filterSuccessfulStatusCodes()
-      .map(ResponseDTO<MemberResponseModel.Member>.self)
-      .bind { UserStorage.shared.saveMember($0.data) }
-  }
+//  
+//  static func retrieveMatchingInfo() {
+//    _ = MatchingInfoAPI.provider.rx.request(.getMatchingInfo)
+//      .asObservable()
+//      .retry()
+//      .filterSuccessfulStatusCodes()
+//      .map(ResponseDTO<MatchingInfoResponseModel.MatchingInfo>.self)
+//      .bind { UserStorage.shared.saveMatchingInfo($0.data) }
+//  }
+//  
+//  static func retrieveMemberInfo() {
+//    _ = MemberAPI.provider.rx.request(.getUser)
+//      .asObservable()
+//      .retry()
+//      .filterSuccessfulStatusCodes()
+//      .map(ResponseDTO<MemberResponseModel.Member>.self)
+//      .bind { UserStorage.shared.saveMember($0.data) }
+//  }
 }

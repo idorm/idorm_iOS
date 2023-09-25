@@ -397,7 +397,7 @@ private extension CommunityPostViewController {
   /// - Parameters:
   ///   - postMemberID: 게시글 작성자의 `memberID`
   func didTapPostOptionButton(_ postMemberID: Int) {
-    guard let memberId = UserStorage.shared.member?.memberId else { return }
+    guard let memberId = UserStorage.shared.member?.identifier else { return }
     let items: [BottomSheetItem] = memberId == postMemberID ?
     [.sharePost, .deletePost, .editPost, .reportUser] :
     [.sharePost, .blockUser, .reportUser]
@@ -499,7 +499,7 @@ extension CommunityPostViewController: CommunityCommentCellDelegate {
   
   /// 옵션 버튼 클릭
   func didTapOptionButton(_ comment: Comment) {
-    guard let memberID = UserStorage.shared.member?.memberId else { return }
+    guard let memberID = UserStorage.shared.member?.identifier else { return }
     let items: [BottomSheetItem] = memberID == comment.memberId ?
     [.deleteComment(commentID: comment.commentId), .blockUser, .reportUser]:
     [.blockUser, .reportUser]

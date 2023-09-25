@@ -10,6 +10,10 @@ enum MailAPI {
 }
 
 extension MailAPI: BaseTargetType {
+  func getHeader() -> NetworkHeaderType {
+    return .normalJson
+  }
+  
   static let provider = MoyaProvider<MailAPI>()
   
   var baseURL: URL { getBaseURL() }

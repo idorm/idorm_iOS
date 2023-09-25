@@ -118,7 +118,8 @@ final class iDormBottomMenuView: BaseView {
   // MARK: - Functions
   
   func updateTitle(left: String, right: String) {
-    if left == "입력 초기화" {
+    if left == "입력 초기화" ||
+       left == "선택 초기화" {
       self.leftButton.image = .iDormIcon(.repetition)
     }
     self.leftButton.title = left

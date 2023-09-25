@@ -17,7 +17,7 @@ struct UserDefaultsWrapper<T: Codable> {
     self.key = key
     self.defaultValue = defaultValue
   }
-
+  
   var wrappedValue: T {
     get {
       guard let data = UserDefaults.standard.object(forKey: self.key) as? Data,

@@ -58,7 +58,7 @@ final class MyPageViewReactor: Reactor {
     case .viewWillAppear:
       let currentNickname = UserStorage.shared.member?.nickname ?? ""
       let isPublic = UserStorage.shared.isPublicMatchingInfo
-      let profileURL = UserStorage.shared.member?.profilePhotoUrl
+      let profileURL = UserStorage.shared.member?.profilePhotoURL
       
       return .concat([
         .just(.setShareButton(isPublic)),
@@ -96,13 +96,13 @@ final class MyPageViewReactor: Reactor {
         return .concat([
           .just(.setLoading(true)),
           MatchingInfoAPI.provider.rx.request(
-            .modifyPublic(isPublic)
+            .updateMatchingInfoForPublic(isPublic)
           )
             .asObservable()
             .retry()
             .filterSuccessfulStatusCodes()
             .flatMap { _ -> Observable<Mutation> in
-              SharedAPI.retrieveMatchingInfo()
+//              SharedAPI.retrieveMatchingInfo()
               return .concat([
                 .just(.setLoading(false)),
                 .just(.setShareButton(isPublic))
@@ -141,9 +141,10 @@ final class MyPageViewReactor: Reactor {
       newState.isOpenedOnboardingVC = isOpened
       
     case let .setOnboardingDetailVC(isOpened):
-      guard let matchingInfo = UserStorage.shared.matchingInfo else { return newState }
-      let member = TransformUtils.transfer(matchingInfo)
-      newState.isOpenedOnboardingDetailVC = (isOpened, member)
+      break
+//      guard let matchingInfo = UserStorage.shared.matchingInfo else { return newState }
+//      let member = TransformUtils.transfer(matchingInfo)
+//      newState.isOpenedOnboardingDetailVC = (isOpened, member)
       
     case let .setRoommateVC(isOpened, type):
       switch type {

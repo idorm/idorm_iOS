@@ -10,15 +10,15 @@ import Foundation
 import Moya
 
 protocol BaseTargetType: TargetType {
-  func getJsonHeader() -> [String: String]
-  func getMultipartHeader() -> [String: String]
   func getBaseURL() -> URL
   func getPath() -> String
   func getMethod() -> Moya.Method
   func getTask() -> Task
+  func getHeader() -> NetworkHeaderType
 }
 
 extension BaseTargetType {
+  
   func getJsonHeader() -> [String: String] {
     return [
       "Content-Type": "application/json",

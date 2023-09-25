@@ -18,25 +18,25 @@ extension MemberAPI {
     case .register:
       return .post
       
-    case .patchPassword:
+    case .updatePassword:
       return .patch
       
-    case .changeNickname:
+    case .updateNickname:
       return .patch
       
-    case .retrieveMember:
+    case .getUser:
       return .get
       
-    case .withdrawal:
+    case .deleteUser:
       return .delete
       
-    case .saveProfilePhoto:
+    case .createProfilePhoto:
       return .post
       
-    case .deleteProfileImage:
+    case .deleteProfilePhoto:
       return .delete
       
-    case .logoutFCM:
+    case .logout:
       return .delete
       
     case .updateFCM:

@@ -297,7 +297,7 @@ final class ManageMyInfoViewController: BaseViewController, View {
   
   // 프로필 사진을 클릭했을 때의 로직입니다.
   private func didTapProfileImageView() {
-    if UserStorage.shared.member?.profilePhotoUrl != nil {
+    if UserStorage.shared.member?.profilePhotoURL != nil {
       let deleteAction = UIAlertAction(
         title: "프로필 사진 삭제",
         style: .destructive

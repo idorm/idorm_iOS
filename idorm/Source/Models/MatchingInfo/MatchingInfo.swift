@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MatchingInfo {
+struct MatchingInfo: Codable {
   /// 이 매칭 정보의 식별자
   var identifier: Int
   /// 나이
@@ -45,7 +45,7 @@ struct MatchingInfo {
   /// 하고 싶은 말
   var wishText: String
   
-  /// `MatchingInfoSingleReseponeDTO` -> `MatchingInfo`
+  /// `MatchingInfoResponseDTO` -> `MatchingInfo`
   init(_ responseDTO: MatchingInfoResponseDTO) {
     self.identifier = responseDTO.matchingInfoId
     self.age = String(responseDTO.age)
@@ -61,6 +61,28 @@ struct MatchingInfo {
     self.joinPeriod = responseDTO.joinPeriod
     self.mbti = responseDTO.mbti
     self.memberEmail = responseDTO.memberEmail
+    self.openKakaoLink = responseDTO.openKakaoLink
+    self.showerTime = responseDTO.showerTime
+    self.wakeUpTime = responseDTO.wakeUpTime
+    self.wishText = responseDTO.wishText
+  }
+  
+  /// `MatchingMateResponseDTO` -> `MatchingInfo`
+  init(_ responseDTO: MatchingMateResponseDTO) {
+    self.identifier = responseDTO.matchingInfoId
+    self.age = String(responseDTO.age)
+    self.cleanUpStatus = responseDTO.cleanUpStatus
+    self.dormCategory = responseDTO.dormCategory
+    self.gender = responseDTO.gender
+    self.isAllowedFood = responseDTO.isAllowedFood
+    self.isGrinding = responseDTO.isGrinding
+    self.isMatchingInfoPublic = responseDTO.isMatchingInfoPublic
+    self.isSmoking = responseDTO.isSmoking
+    self.isSnoring = responseDTO.isSnoring
+    self.isWearEarphones = responseDTO.isWearEarphones
+    self.joinPeriod = responseDTO.joinPeriod
+    self.mbti = responseDTO.mbti
+    self.memberEmail = ""
     self.openKakaoLink = responseDTO.openKakaoLink
     self.showerTime = responseDTO.showerTime
     self.wakeUpTime = responseDTO.wakeUpTime

@@ -23,9 +23,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let windowScene = (scene as? UIWindowScene) else { return }
     window = UIWindow(windowScene: windowScene)
     
-    let viewController = MatchingInfoSetupViewController()
-    viewController.reactor = MatchingInfoSetupViewReactor(.theFirstTime)
-    window?.rootViewController = UINavigationController(rootViewController: viewController)
+//    let viewController = iDormSplashViewController()
+//    viewController.reactor = iDormSplashViewReactor()
+    let viewController = MatchingMateViewController()
+    viewController.reactor = MatchingMateViewReactor()
+    window?.rootViewController = viewController
     window?.makeKeyAndVisible()
     
     let url = connectionOptions.urlContexts.first?.url

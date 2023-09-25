@@ -40,8 +40,8 @@ enum iDormIcon: String {
   case select
   
   case repetition
-  
   case reply
+  case right_quotation_marks
   
   case human
   case human_fill
@@ -49,7 +49,13 @@ enum iDormIcon: String {
   case thumb
   case trashcan
   
+  case filter
+  
+  case kakao
+  
   case note
+  
+  case left_quotation_marks
   
   case inu
   case idorm
@@ -57,6 +63,16 @@ enum iDormIcon: String {
   case mailBox
   
   case x_circle_mono
+  
+  // MatchingMate
+  case matchingMate_like
+  case matchingMate_like_highlighted
+  case matchingMate_dislike
+  case matchingMate_dislike_highlighted
+  case matchingMate_reverse
+  case matchingMate_reverse_highlighted
+  case matchingMate_message
+  case matchingMate_message_highlighted
 }
 
 enum iDormText: String {
@@ -65,6 +81,8 @@ enum iDormText: String {
 
 enum iDormImage: String {
   case human
+  
+  case matchingMate_background
 }
 
 extension UIImage {

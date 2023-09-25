@@ -39,7 +39,7 @@ final class CompleteSignupViewReactor: Reactor {
     switch action {
     case .continueButtonDidTap:
       return self.memberNetworkService.requestAPI(
-        to: .login(email: email, password: password, fcmToken: FCMTokenManager.shared.fcmToken!)
+        to: .login(email: email, password: password)
       )
       .flatMap { response in
         do {
@@ -49,10 +49,10 @@ final class CompleteSignupViewReactor: Reactor {
             data: response.data
           )
           let token = response.response?.headers["authorization"]
-          UserStorage.shared.saveMember(Member(responseDTO.data))
-          UserStorage.shared.saveEmail(email)
-          UserStorage.shared.savePassword(password)
-          UserStorage.shared.saveToken(token)
+          UserStorage.shared.member = Member(responseDTO.data)
+          UserStorage.shared.email = email
+          UserStorage.shared.password = password
+          UserStorage.shared.token = token!
           return Observable<Mutation>.just(.setOnboardingVC(true))
         } catch (let error) {
           print(error.localizedDescription)

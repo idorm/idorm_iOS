@@ -170,16 +170,15 @@ final class iDormMatchingCardView: BaseView {
   
   override func setupConstraints() {
     self.topContainerView.snp.makeConstraints { make in
-      make.top.directionalHorizontalEdges.equalToSuperview()
-      make.height.equalTo(396.0)
+      make.top.equalToSuperview()
       make.width.equalTo(327.0)
+      make.height.equalTo(403.0)
     }
     
     self.bottomContainerView.snp.makeConstraints { make in
       make.top.equalTo(self.topContainerView.snp.bottom).offset(-1.0)
-      make.bottom.directionalHorizontalEdges.equalToSuperview()
-      make.height.equalTo(36.0)
-      make.width.equalTo(327.0)
+      make.directionalHorizontalEdges.equalToSuperview()
+      make.height.equalTo(34.0)
     }
     
     self.dormitoryLabel.snp.makeConstraints { make in

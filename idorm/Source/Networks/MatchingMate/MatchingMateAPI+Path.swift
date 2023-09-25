@@ -12,15 +12,15 @@ import Moya
 extension MatchingMateAPI {
   func getPath() -> String {
     switch self {
-    case .lookupMembers:
+    case .getMembers:
       return "/member/matching"
-    case .lookupLikeMembers:
+    case .getLikedMembers:
       return "/member/matching/like"
-    case .addMember(_, let memberId), .deleteMember(_, let memberId):
+    case .createMatchingMate(_, let memberId), .deleteMatchingMate(_, let memberId):
       return "/member/matching/\(memberId)"
-    case .lookupDislikeMembers:
+    case .getDislikedMembers:
       return "/member/matching/dislike"
-    case .lookupFilterMembers:
+    case .getFilteredMembers:
       return "/member/matching/filter"
     }
   }

@@ -52,7 +52,7 @@ final class TermsOfServiceViewReactor: Reactor {
       )
       .map(ResponseDTO<MemberSingleResponseDTO>.self)
       .flatMap { responseDTO in
-        UserStorage.shared.saveMember(Member(responseDTO.data))
+        UserStorage.shared.member = Member(responseDTO.data)
         return Observable<Mutation>.just(.setCompleteSignUpVC(true))
       }
       

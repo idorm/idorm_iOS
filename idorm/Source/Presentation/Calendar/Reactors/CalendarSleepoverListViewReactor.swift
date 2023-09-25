@@ -39,7 +39,7 @@ final class CalendarSleepoverListViewReactor: Reactor {
   private let calendarService = NetworkService<CalendarAPI>()
   
   var isMyOwnCalendars: Bool {
-    return UserStorage.shared.member?.memberId ?? 0 == self.currentState.memberID
+    return UserStorage.shared.member?.identifier ?? 0 == self.currentState.memberID
   }
   
   // MARK: - initializer

@@ -12,9 +12,9 @@ import Moya
 extension MatchingMateAPI {
   func getTask() -> Task {
     switch self {
-    case .lookupFilterMembers(let filter):
+    case .getFilteredMembers(let filter):
       return .requestJSONEncodable(filter)
-    case .addMember(let matchingType, _), .deleteMember(let matchingType, _):
+    case .createMatchingMate(let matchingType, _), .deleteMatchingMate(let matchingType, _):
       return .requestParameters(
         parameters: [
           "matchingType": String(matchingType)

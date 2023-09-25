@@ -102,6 +102,10 @@ enum CalendarAPI {
 }
 
 extension CalendarAPI: BaseTargetType {
+  func getHeader() -> NetworkHeaderType {
+    return .normalJson
+  }
+  
   var baseURL: URL { self.getBaseURL() }
   var path: String { self.getPath() }
   var method: Moya.Method { self.getMethod() }

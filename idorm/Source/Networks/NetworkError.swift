@@ -43,12 +43,12 @@ extension NetworkError {
   static func isLostConnection(error: Error) -> Bool {
     switch error {
     case let AFError.sessionTaskFailed(error: posixError as POSIXError)
-      where posixError.code == .ECONNABORTED: // eConnAboarted: Software caused connection abort.
+      where posixError.code == .ECONNABORTED:
       break
     case let MoyaError.underlying(urlError as URLError, _):
       fallthrough
     case let urlError as URLError:
-      guard urlError.code == URLError.networkConnectionLost else { fallthrough } // A client or server connection was severed in the middle of an in-progress load.
+      guard urlError.code == URLError.networkConnectionLost else { fallthrough }
       break
     default:
       return false
