@@ -23,9 +23,8 @@ final class MatchingInfoSetupHeaderView: UICollectionReusableView, BaseViewProto
   }()
   
   /// `불호요소가 있는 내 습관을 미리 알려주세요.`가 적혀있는 `UILabel`
-  private let letMeKnowHabitLabel: UILabel = {
+  private let noticeLabel: UILabel = {
     let label = UILabel()
-    label.text = "불호요소가 있는 내 습관을 미리 알려주세요."
     label.textColor = .iDormColor(.iDormGray300)
     label.font = .iDormFont(.medium, size: 12.0)
     return label
@@ -107,7 +106,7 @@ final class MatchingInfoSetupHeaderView: UICollectionReusableView, BaseViewProto
     [
       self.letMeKnowLabel,
       self.titleLabel,
-      self.letMeKnowHabitLabel,
+      self.noticeLabel,
       self.subTitleLabel,
       self.essentialLabel,
       self.supportView,
@@ -129,7 +128,7 @@ final class MatchingInfoSetupHeaderView: UICollectionReusableView, BaseViewProto
       self.titleLabelTopInset = make.top.equalToSuperview().inset(16.0).constraint
     }
     
-    self.letMeKnowHabitLabel.snp.makeConstraints { make in
+    self.noticeLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview()
       make.top.equalTo(self.titleLabel.snp.bottom).offset(2.0)
     }
@@ -164,20 +163,24 @@ final class MatchingInfoSetupHeaderView: UICollectionReusableView, BaseViewProto
   
   func configure(with section: MatchingInfoSetupSection) {
     self.titleLabel.text = section.title
+    self.noticeLabel.text = section.subTitle
     self.subTitleLabel.text = section.subTitle
     self.subviews.forEach { $0.isHidden = true }
     self.heightConstraint?.update(offset: section.headerHeight)
     self.titleLabelTopInset?.update(inset: 16.0)
     
     switch section {
-    case .dormitory:
-      self.letMeKnowLabel.isHidden = false
+    case .dormitory(let isFilterSetupVC):
+      self.letMeKnowLabel.isHidden = isFilterSetupVC ? true : false
+      if !isFilterSetupVC { self.titleLabelTopInset?.update(inset: 50.0) }
       self.titleLabel.isHidden = false
-      self.titleLabelTopInset?.update(inset: 50.0)
     case .habit:
       self.titleLabel.isHidden = false
-      self.letMeKnowHabitLabel.isHidden = false
-    case .gender, .period, .age:
+      self.noticeLabel.isHidden = false
+    case .gender, .period:
+      self.titleLabel.isHidden = false
+    case .age(let isFilterSetupVC):
+      self.noticeLabel.isHidden = !isFilterSetupVC
       self.titleLabel.isHidden = false
     case .wakeUpTime, .arrangement, .showerTime, .kakao:
       self.subTitleLabel.isHidden = false

@@ -308,9 +308,9 @@ final class MatchingInfoSetupViewController: BaseViewController, View {
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
         var snapshot = owner.dataSource.snapshot()
-        snapshot.reloadSections(
-          [.age, .wakeUpTime, .arrangement, .showerTime, .kakao, .mbti, .wantToSay]
-        )
+        snapshot.reloadSections([
+          .age(isFilterSetupVC: false), .wakeUpTime, .arrangement, .showerTime, .kakao, .mbti, .wantToSay
+        ])
         owner.dataSource.apply(snapshot)
       }
       .disposed(by: self.disposeBag)

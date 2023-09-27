@@ -147,8 +147,9 @@ final class MatchingMateViewReactor: Reactor {
 
 private extension MatchingMateViewReactor {
   func requestMatchingMates() -> Observable<Mutation> {
-    if let requestDTO = UserStorage.shared.matchingMateFilter {
-      return self.matchingMateService.requestAPI(to: .getFilteredMembers(requestDTO))
+    if let matchingInfoFilter = UserStorage.shared.matchingMateFilter {
+      return self.matchingMateService
+        .requestAPI(to: .getFilteredMembers(.init(matchingInfoFilter)))
         .map(ResponseDTO<[MatchingMateResponseDTO]>.self)
         .flatMap { responseDTO in
           return Observable<Mutation>.just(.setMates(responseDTO.data.map { MatchingInfo($0) }))

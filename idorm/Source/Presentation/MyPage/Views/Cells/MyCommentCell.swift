@@ -142,11 +142,11 @@ final class MyCommentCell: UITableViewCell, BaseViewProtocol {
   // MARK: - Helpers
   
   func configure(_ comment: CommunityResponseModel.SubComment) {
-    contentLabel.text = comment.content
-    nicknameLabel.text = comment.nickname
-    timeLabel.text = TimeUtils.detailPost(comment.createdAt)
-    self.comment = comment
-    // TODO: 사용자 프로필 이미지 설정
+//    contentLabel.text = comment.content
+//    nicknameLabel.text = comment.nickname
+//    timeLabel.text = TimeUtils.detailPost(comment.createdAt)
+//    self.comment = comment
+//    // TODO: 사용자 프로필 이미지 설정
   }
   
   // MARK: - Selectros

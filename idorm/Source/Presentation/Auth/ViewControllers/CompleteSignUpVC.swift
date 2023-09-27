@@ -54,7 +54,6 @@ final class CompleteSignUpViewController: BaseViewController, View {
     button.shadowOpacity = 0.11
     button.shadowRadius = 2.0
     button.shadowOffset = CGSize(width: 0, height: 2)
-    button.height = 44.0
     return button
   }()
   
@@ -139,6 +138,7 @@ final class CompleteSignUpViewController: BaseViewController, View {
     self.continueButton.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
       make.top.equalTo(self.descriptionLabel.snp.bottom).offset(64.0)
+      make.height.equalTo(44.0)
     }
   }
 }

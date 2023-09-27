@@ -249,9 +249,9 @@ private extension CommunityPostViewReactor {
   func getSinglePost() -> Observable<Mutation> {
     return self.apiManager.requestAPI(to: .lookupDetailPost(postId: self.currentState.post.identifier))
       .map(ResponseDTO<CommunitySinglePostResponseDTO>.self)
-      .flatMap {
+      .flatMap { _ in
         return Observable<Mutation>.concat([
-          .just(.setPost($0.data.toPost())),
+//          .just(.setPost($0.data.toPost())),
           .just(.setEndRefresh(true)),
           .just(.setEndRefresh(false))
         ])

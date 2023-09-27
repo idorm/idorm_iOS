@@ -23,8 +23,6 @@ final class iDormButton: UIButton, BaseViewProtocol {
   
   // MARK: - Properties
   
-  private var heightConstraint: Constraint?
-  
   /// 버튼의 타이틀 `String`
   var title: String = "" {
     willSet {
@@ -33,11 +31,6 @@ final class iDormButton: UIButton, BaseViewProtocol {
         attributes: .init([.font: self.font])
       )
     }
-  }
-  
-  /// 버튼의 높이 `CGFloat`
-  var height: CGFloat = 53.0 {
-    willSet { self.heightConstraint?.update(offset: newValue) }
   }
   
   /// 버튼의 `CornerRadius`
@@ -197,10 +190,6 @@ final class iDormButton: UIButton, BaseViewProtocol {
     self.bottomBorderLine.snp.makeConstraints { make in
       make.bottom.directionalHorizontalEdges.equalToSuperview()
       make.height.equalTo(1.0)
-    }
-    
-    self.snp.makeConstraints { make in
-      self.heightConstraint = make.height.equalTo(53.0).constraint
     }
   }
   

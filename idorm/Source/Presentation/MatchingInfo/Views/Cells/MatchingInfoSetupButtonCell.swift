@@ -25,7 +25,6 @@ final class MatchingInfoSetupButtonCell: BaseCollectionViewCell {
     button.contentInset =
     NSDirectionalEdgeInsets(top: 6.0, leading: 20.0, bottom: 6.0, trailing: 20.0)
     button.cornerRadius = 29.0
-    button.height = 33.0
     let handler: UIButton.ConfigurationUpdateHandler = { button in
       guard let button = button as? iDormButton else { return }
       switch button.state {
@@ -64,6 +63,7 @@ final class MatchingInfoSetupButtonCell: BaseCollectionViewCell {
     
     self.hoverButton.snp.makeConstraints { make in
       make.edges.equalToSuperview()
+      make.height.equalTo(33.0)
     }
   }
   

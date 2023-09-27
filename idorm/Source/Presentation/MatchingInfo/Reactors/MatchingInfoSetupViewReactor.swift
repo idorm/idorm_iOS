@@ -164,8 +164,19 @@ final class MatchingInfoSetupViewReactor: Reactor {
       
       newState.sections =
       [
-        .dormitory, .gender, .period, .habit(isFilterSetupVC: false), .age(isFilterSetupVC: false), .wakeUpTime, .arrangement, .showerTime, .kakao, .mbti, .wantToSay
+        .dormitory(isFilterSetupVC: false),
+        .gender,
+        .period,
+        .habit(isFilterSetupVC: false),
+        .age(isFilterSetupVC: false),
+        .wakeUpTime,
+        .arrangement,
+        .showerTime,
+        .kakao,
+        .mbti,
+        .wantToSay
       ]
+      
       newState.items =
       [
         // 기숙사

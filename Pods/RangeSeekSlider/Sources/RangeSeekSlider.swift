@@ -228,8 +228,8 @@ import UIKit
   private enum HandleTracking { case none, left, right }
   private var handleTracking: HandleTracking = .none
   
-  private let sliderLine: CALayer = CALayer()
-  private let sliderLineBetweenHandles: CALayer = CALayer()
+  public let sliderLine: CALayer = CALayer()
+  public let sliderLineBetweenHandles: CALayer = CALayer()
   
   private let leftHandle: CALayer = CALayer()
   private let rightHandle: CALayer = CALayer()

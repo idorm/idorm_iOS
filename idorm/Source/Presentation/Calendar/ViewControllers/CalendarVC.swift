@@ -400,12 +400,12 @@ private extension CalendarViewController {
   /// - Parameters:
   ///   - memberID: 멤버의 고유값
   func presentRemovalMemberAlertPopup(_ memberID: Int) {
-    let popupViewController = iDormPopupViewController(viewType: .twoButton(
+    let popupViewController = iDormPopupViewController(.alert(.twoButton(
       contents: "룸메이트 목록에서 삭제하시겠습니까?",
       buttonTitle: "삭제"
-    ))
+    )))
     popupViewController.modalPresentationStyle = .overFullScreen
-    popupViewController.confirmButtonCompletion = { [weak self] in
+    popupViewController.confirmButtonHandler = { [weak self] in
       guard let reactor = self?.reactor else { return }
       reactor.action.onNext(.removeTeamMember(memberID: memberID))
     }
@@ -417,12 +417,12 @@ private extension CalendarViewController {
   /// - Parameters:
   ///   - teamCalendarID: 특정 팀 일정의 고유값
   func presentRemovalTeamCalendarAlertPopup(_ teamCalendarID: Int) {
-    let popupViewController = iDormPopupViewController(viewType: .twoButton(
+    let popupViewController = iDormPopupViewController(.alert(.twoButton(
       contents: "일정을 삭제하시겠습니까?",
       buttonTitle: "확인"
-    ))
+    )))
     popupViewController.modalPresentationStyle = .overFullScreen
-    popupViewController.confirmButtonCompletion = { [weak self] in
+    popupViewController.confirmButtonHandler = { [weak self] in
       guard let reactor = self?.reactor else { return }
       reactor.action.onNext(.removeTeamCalendar(teamCalendarID: teamCalendarID))
     }
@@ -475,12 +475,12 @@ extension CalendarViewController: BottomSheetViewControllerDelegate {
     case .shareCalendar:
       reactor.action.onNext(.shareCalendarButtonDidTap)
     case .exitCalendar:
-      let iDormPopupVC = iDormPopupViewController(viewType: .twoButton(
+      let iDormPopupVC = iDormPopupViewController(.alert(.twoButton(
         contents: "일정 공유 캘린더에서 나갈 시 데이터가 모두 사라집니다.",
         buttonTitle: "확인"
-      ))
+      ))) 
       iDormPopupVC.modalPresentationStyle = .overFullScreen
-      iDormPopupVC.confirmButtonCompletion = { [weak self] in
+      iDormPopupVC.confirmButtonHandler = { [weak self] in
         guard let reactor = self?.reactor else { return }
         reactor.action.onNext(.exitCalendarButtonDidTap)
       }

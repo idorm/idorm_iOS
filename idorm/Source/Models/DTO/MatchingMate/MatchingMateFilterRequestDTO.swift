@@ -17,4 +17,16 @@ struct MatchingMateFilterRequestDTO: Encodable {
   let isSmoking: Bool
   let isAllowedFood: Bool
   let isWearEarphones: Bool
+  
+  init(_ matchingInfoFilter: MatchingInfoFilter) {
+    self.dormCategory = matchingInfoFilter.dormitory
+    self.joinPeriod = matchingInfoFilter.joinPeriod
+    self.minAge = matchingInfoFilter.minAge
+    self.maxAge = matchingInfoFilter.maxAge
+    self.isSnoring = matchingInfoFilter.isSnoring
+    self.isGrinding = matchingInfoFilter.isGrinding
+    self.isSmoking = matchingInfoFilter.isSmoking
+    self.isAllowedFood = matchingInfoFilter.isAllowedFood
+    self.isWearEarphones = matchingInfoFilter.isAllowedEarphones
+  }
 }

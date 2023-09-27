@@ -31,7 +31,7 @@ final class ManageMyInfoViewController: BaseViewController, View {
   private let nickNameView = ManageMyInfoView(.both(title: "닉네임"))
   private let changePWView = ManageMyInfoView(.onlyArrow(title: "비밀번호 변경"))
   private let emailView = ManageMyInfoView(.onlyDescription(title: "이메일"))
-  private let versionView = ManageMyInfoView(.onlyDescription(description: .version ,title: "버전정보"))
+  private let versionView = ManageMyInfoView(.onlyDescription(description: "" ,title: "버전정보"))
   private let termsView = ManageMyInfoView(.onlyArrow(title: "서비스 약관 자세히 보기"))
   
   private let profileImage: UIImageView = {

@@ -29,13 +29,6 @@ class BaseCollectionViewCell: UICollectionViewCell, BaseViewProtocol {
     fatalError("init(coder:) has not been implemented")
   }
   
-  // MARK: - Life Cycle
-  
-//  override func prepareForReuse() {
-//    super.prepareForReuse()
-//    self.disposeBag = DisposeBag()
-//  }
-  
   // MARK: - Setup
   
   func setupStyles() {}

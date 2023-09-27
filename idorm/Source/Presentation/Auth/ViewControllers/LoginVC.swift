@@ -60,7 +60,6 @@ final class LoginViewController: BaseViewController, View {
     button.baseForegroundColor = .white
     button.font = .iDormFont(.medium, size: 14.0)
     button.cornerRadius = 12.0
-    button.height = 40.0
     return button
   }()
   
@@ -252,6 +251,7 @@ final class LoginViewController: BaseViewController, View {
     self.loginButton.snp.makeConstraints { make in
       make.directionalHorizontalEdges.equalToSuperview().inset(36.0)
       make.top.equalTo(self.passwordTextField.snp.bottom).offset(32.0)
+      make.height.equalTo(40.0)
     }
     
     self.forgotPasswordButton.snp.makeConstraints { make in

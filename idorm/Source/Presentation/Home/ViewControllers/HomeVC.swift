@@ -41,8 +41,8 @@ final class HomeViewController: BaseViewController, View {
       forCellWithReuseIdentifier: DormCalendarEmptyCell.identifier
     )
     collectionView.register(
-      PopularPostCell.self,
-      forCellWithReuseIdentifier: PopularPostCell.identifier
+      CommunityTopPostListCell.self,
+      forCellWithReuseIdentifier: CommunityTopPostListCell.identifier
     )
     // Header
     collectionView.register(
@@ -74,17 +74,15 @@ final class HomeViewController: BaseViewController, View {
           }
           cell.delegate = self 
           return cell
-          
         case .topPost(let topPost):
           guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: PopularPostCell.identifier,
+            withReuseIdentifier: CommunityTopPostListCell.identifier,
             for: indexPath
-          ) as? PopularPostCell else {
+          ) as? CommunityTopPostListCell else {
             return UICollectionViewCell()
           }
           cell.configure(with: topPost)
           return cell
-          
         case .dormCalendar(let dormCalendar):
           guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: DormCalendarCell.identifier,
@@ -94,7 +92,6 @@ final class HomeViewController: BaseViewController, View {
           }
           cell.configure(with: dormCalendar)
           return cell
-          
         case .emptyDormCalendar:
           guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: DormCalendarEmptyCell.identifier,

@@ -10,7 +10,7 @@ import UIKit
 // MARK: - Section
 
 enum MatchingInfoSetupSection: Hashable {
-  case dormitory
+  case dormitory(isFilterSetupVC: Bool)
   case gender
   case period
   case habit(isFilterSetupVC: Bool)
@@ -35,7 +35,8 @@ enum MatchingInfoSetupSection: Hashable {
   
   var subTitle: String? {
     switch self {
-    case .habit: "선택하신 요소를 가진 룸메는 나와 매칭되지 않아요."
+    case .habit(let isFilterSetupVC):
+      isFilterSetupVC ? "선택하신 요소를 가진 룸메는 나와 매칭되지 않아요." : "불호요소가 있는 내 습관을 미리 알려주세요."
     case .age: "선택하신 연령대의 룸메이트만 나와 매칭돼요."
     case .wakeUpTime: "기상시간을 알려주세요."
     case .arrangement: "정리정돈을 얼마나 하시나요?"
@@ -49,20 +50,33 @@ enum MatchingInfoSetupSection: Hashable {
   
   var headerHeight: CGFloat {
     switch self {
-    case .dormitory: 84.0
-    case .gender, .period, .age: 50.0
+    case .dormitory(let isFilterSetupVC): isFilterSetupVC ? 50.0 : 84.0
+    case .gender, .period: 50.0
     case .habit: 72.0
+    case .age(let isFilterSetupVC): isFilterSetupVC ? 72.0 : 50.0
     default: 45.0
     }
   }
   
   var itemSize: NSCollectionLayoutSize {
     switch self {
-    case .dormitory, .gender, .period, .habit, .age:
+    case .dormitory, .gender, .period, .habit:
       return NSCollectionLayoutSize(
         widthDimension: .estimated(10.0),
         heightDimension: .absolute(33.0)
       )
+    case .age(let isFilterSetupVC):
+      if isFilterSetupVC {
+        return NSCollectionLayoutSize(
+          widthDimension: .fractionalWidth(1.0),
+          heightDimension: .estimated(50.0)
+        )
+      } else {
+        return NSCollectionLayoutSize(
+          widthDimension: .estimated(10.0),
+          heightDimension: .absolute(33.0)
+        )
+      }
     case .wantToSay:
       return NSCollectionLayoutSize(
         widthDimension: .fractionalWidth(1.0),
@@ -124,14 +138,15 @@ enum MatchingInfoSetupSection: Hashable {
       alignment: .bottom
     )
     let section = NSCollectionLayoutSection(group: self.group)
+    section.interGroupSpacing = 12.0
+    section.boundarySupplementaryItems = [header, footer]
     switch self {
-    case .dormitory, .gender, .period, .age:
-      section.boundarySupplementaryItems = [header, footer]
+    case .dormitory, .gender, .period:
       section.orthogonalScrollingBehavior = .continuous
-      section.interGroupSpacing = 12.0
     case .habit:
-      section.boundarySupplementaryItems = [header, footer]
-      section.interGroupSpacing = 12.0
+      break
+    case .age(let isFilterSetupVC):
+      section.boundarySupplementaryItems = isFilterSetupVC ? [header] : [header, footer]
     default:
       section.boundarySupplementaryItems = [header]
     }

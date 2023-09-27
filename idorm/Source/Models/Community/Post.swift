@@ -7,6 +7,11 @@
 
 import Foundation
 
+struct PostPhoto: Codable, Hashable {
+  let photoID: Int
+  let photoURL: String
+}
+
 struct Post: Hashable {
   /// `postId`와 매칭
   let identifier: Int
@@ -19,45 +24,11 @@ struct Post: Hashable {
   let commentsCount: Int
   let imagesCount: Int
   let isLiked: Bool
-  let createdAt: String
-  let updatedAt: String
+  let createdAtPostList: String
+  let createdAtPost: String
   let isAnonymous: Bool
   let comments: [Comment]
   let photos: [PostPhoto]
-
-  init(
-    identifier: Int,
-    memberIdentifier: Int,
-    title: String,
-    content: String,
-    nickname: String?,
-    profileURL: String?,
-    likesCount: Int,
-    commentsCount: Int,
-    imagesCount: Int,
-    isLiked: Bool,
-    createdAt: String,
-    updatedAt: String,
-    isAnonymous: Bool,
-    comments: [Comment],
-    photos: [PostPhoto]
-  ) {
-    self.identifier = identifier
-    self.memberIdentifier = memberIdentifier
-    self.title = title
-    self.content = content
-    self.nickname = nickname
-    self.profileURL = profileURL
-    self.likesCount = likesCount
-    self.commentsCount = commentsCount
-    self.imagesCount = imagesCount
-    self.isLiked = isLiked
-    self.createdAt = createdAt
-    self.updatedAt = updatedAt
-    self.isAnonymous = isAnonymous
-    self.comments = comments
-    self.photos = photos
-  }
 
   /// `Mock`데이터를 생성할 수 있습니다.
   init() {
@@ -71,8 +42,8 @@ struct Post: Hashable {
     self.commentsCount = 0
     self.imagesCount = 0
     self.isLiked = false
-    self.createdAt = ""
-    self.updatedAt = ""
+    self.createdAtPost = ""
+    self.createdAtPostList = ""
     self.isAnonymous = false
     self.comments = []
     self.photos = []
@@ -90,8 +61,8 @@ struct Post: Hashable {
     self.commentsCount = responseDTO.commentsCount
     self.imagesCount = responseDTO.imagesCount
     self.isLiked = false
-    self.createdAt = responseDTO.createdAt
-    self.updatedAt = responseDTO.updatedAt
+    self.createdAtPost = responseDTO.createdAt.toPostFormatString(isPostList: false)
+    self.createdAtPostList = responseDTO.createdAt.toPostFormatString(isPostList: true)
     self.isAnonymous = responseDTO.isAnonymous
     self.comments = []
     self.photos = []
@@ -109,15 +80,10 @@ struct Post: Hashable {
     self.commentsCount = responseDTO.commentsCount
     self.imagesCount = responseDTO.imagesCount
     self.isLiked = responseDTO.isLiked
-    self.createdAt = responseDTO.createdAt
-    self.updatedAt = responseDTO.updatedAt
+    self.createdAtPost = responseDTO.createdAt.toPostFormatString(isPostList: false)
+    self.createdAtPostList = responseDTO.createdAt.toPostFormatString(isPostList: true)
     self.isAnonymous = responseDTO.isAnonymous
     self.comments = responseDTO.comments.toComments()
     self.photos = responseDTO.postPhotos.toPostPhotos()
   }
-}
-
-struct PostPhoto: Codable, Hashable {
-  let photoID: Int
-  let photoURL: String
 }

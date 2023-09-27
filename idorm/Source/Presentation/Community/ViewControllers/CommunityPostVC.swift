@@ -1,5 +1,5 @@
 //
-//  PostDetail.swift
+//  CommunityPostViewController.swift
 //  idorm
 //
 //  Created by 김응철 on 2023/01/23.
@@ -87,6 +87,7 @@ final class CommunityPostViewController: BaseViewController, View {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    
     self.navigationController?.setNavigationBarHidden(false, animated: true)
   }
   

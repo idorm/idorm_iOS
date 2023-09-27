@@ -25,25 +25,3 @@ struct CommunitySinglePostResponseDTO: Codable {
   let comments: [CommunityCommentResponseDTO]
   let isAnonymous: Bool
 }
-
-extension CommunitySinglePostResponseDTO {
-  func toPost() -> Post {
-    return .init(
-      identifier: self.postId,
-      memberIdentifier: self.memberId,
-      title: self.title,
-      content: self.content,
-      nickname: self.nickname,
-      profileURL: self.profileUrl,
-      likesCount: self.likesCount,
-      commentsCount: self.commentsCount,
-      imagesCount: self.imagesCount,
-      isLiked: self.isLiked,
-      createdAt: self.createdAt,
-      updatedAt: self.updatedAt,
-      isAnonymous: self.isAnonymous,
-      comments: self.comments.toComments(),
-      photos: self.postPhotos.toPostPhotos()
-    )
-  }
-}

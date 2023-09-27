@@ -25,8 +25,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
 //    let viewController = iDormSplashViewController()
 //    viewController.reactor = iDormSplashViewReactor()
-    let viewController = MatchingMateViewController()
-    viewController.reactor = MatchingMateViewReactor()
+    let viewController = CommunityPostListViewController()
+    viewController.reactor = CommunityPostListViewReactor()
     window?.rootViewController = viewController
     window?.makeKeyAndVisible()
     

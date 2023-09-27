@@ -109,27 +109,27 @@ final class WithdrawalViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let popup = iDormPopupViewController(
-          contents: """
-          탈퇴 처리가 성공적으로 완료되었습니다.
-          언제든지 다시 돌아와 주세요!
-          """
-        )
-        popup.modalPresentationStyle = .overFullScreen
-        owner.present(popup, animated: false)
+//        let popup = iDormPopupViewController(
+//          contents: """
+//          탈퇴 처리가 성공적으로 완료되었습니다.
+//          언제든지 다시 돌아와 주세요!
+//          """
+//        )
+//        popup.modalPresentationStyle = .overFullScreen
+//        owner.present(popup, animated: false)
         
         // 로그인VC로 이동
-        popup.confirmButton.rx.tap
-          .delay(.microseconds(10), scheduler: MainScheduler.instance)
-          .bind {
-            UserStorage.shared.reset()
-            let loginVC = LoginViewController()
-            loginVC.reactor = LoginViewReactor()
-            let navVC = UINavigationController(rootViewController: loginVC)
-            navVC.modalPresentationStyle = .fullScreen
-            owner.present(navVC, animated: true)
-          }
-          .disposed(by: owner.disposeBag)
+//        popup.confirmButton.rx.tap
+//          .delay(.microseconds(10), scheduler: MainScheduler.instance)
+//          .bind {
+//            UserStorage.shared.reset()
+//            let loginVC = LoginViewController()
+//            loginVC.reactor = LoginViewReactor()
+//            let navVC = UINavigationController(rootViewController: loginVC)
+//            navVC.modalPresentationStyle = .fullScreen
+//            owner.present(navVC, animated: true)
+//          }
+//          .disposed(by: owner.disposeBag)
       }
       .disposed(by: disposeBag)
   }

@@ -208,8 +208,8 @@ extension MyCommunityViewController: UITableViewDataSource, UITableViewDelegate 
           .asDriver(onErrorRecover: { _ in return .empty() })
           .drive(with: self) { owner, post in
             let viewController = CommunityPostViewController()
-            let reactor = CommunityPostViewReactor(post.data.toPost())
-            viewController.reactor = reactor
+//            let reactor = CommunityPostViewReactor(post.data.toPost())
+//            viewController.reactor = reactor
             owner.navigationController?.pushViewController(viewController, animated: true)
           }
           .disposed(by: self.disposeBag)
@@ -300,8 +300,8 @@ extension MyCommunityViewController: UITableViewDataSource, UITableViewDelegate 
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, data in
         let viewController = CommunityPostViewController()
-        let reactor = CommunityPostViewReactor(data.data.toPost())
-        viewController.reactor = reactor
+//        let reactor = CommunityPostViewReactor(data.data.toPost())
+//        viewController.reactor = reactor
         viewController.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(viewController, animated: true)
       }

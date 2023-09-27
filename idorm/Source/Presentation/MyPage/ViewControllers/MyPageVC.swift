@@ -198,22 +198,22 @@ final class MyPageViewController: BaseViewController, View {
       .filter { $0 }
       .withUnretained(self)
       .bind { owner, _ in
-        let popup = NoMatchingInfoPopup()
-        popup.modalPresentationStyle = .overFullScreen
-        owner.present(popup, animated: false)
+//        let popup = NoMatchingInfoPopup()
+//        popup.modalPresentationStyle = .overFullScreen
+//        owner.present(popup, animated: false)
         
-        // 프로필 이미지 만들기 버튼
-        popup.makeButton.rx.tap
-          .map { MyPageViewReactor.Action.didTapMakeProfileButton }
-          .bind(to: reactor.action)
-          .disposed(by: owner.disposeBag)
-        
-        // 팝업 창 닫기
-        reactor.state
-          .map { $0.isDismissedPopup }
-          .filter { $0 }
-          .bind { _ in popup.dismiss(animated: false) }
-          .disposed(by: owner.disposeBag)
+//        // 프로필 이미지 만들기 버튼
+//        popup.makeButton.rx.tap
+//          .map { MyPageViewReactor.Action.didTapMakeProfileButton }
+//          .bind(to: reactor.action)
+//          .disposed(by: owner.disposeBag)
+//        
+//        // 팝업 창 닫기
+//        reactor.state
+//          .map { $0.isDismissedPopup }
+//          .filter { $0 }
+//          .bind { _ in popup.dismiss(animated: false) }
+//          .disposed(by: owner.disposeBag)
       }
       .disposed(by: disposeBag)
     

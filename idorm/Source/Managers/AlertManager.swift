@@ -28,7 +28,7 @@ final class AlertManager {
   ///    - message: 팝업에 사용자에게 알릴 메세지 `String`입니다.
   func showAlertPopup(_ message: String?) {
     guard let message else { return }
-    let popup = iDormPopupViewController(contents: message)
+    let popup = iDormPopupViewController(.alert(.oneButton(contents: message)))
     popup.modalPresentationStyle = .overFullScreen
     self.topViewController.present(popup, animated: false)
   }

@@ -120,9 +120,9 @@ final class MyRoommateViewController: BaseViewController, View {
       .filter { $0.0 }
       .withUnretained(self)
       .bind { owner, url in
-        let kakaoPopup = KakaoPopupViewController()
+        let kakaoPopup = iDormPopupViewController(.kakao)
         kakaoPopup.modalPresentationStyle = .overFullScreen
-        kakaoPopup.kakaoButtonHandler = {
+        kakaoPopup.confirmButtonHandler = {
           owner.reactor?.action.onNext(.didTapKakaoButton(url.1))
         }
         owner.present(kakaoPopup, animated: false)

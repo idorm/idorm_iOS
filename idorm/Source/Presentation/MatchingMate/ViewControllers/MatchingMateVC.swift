@@ -37,7 +37,6 @@ final class MatchingMateViewController: BaseViewController, View {
     button.contentInset =
     NSDirectionalEdgeInsets(top: 3.0, leading: 10.0, bottom: 3.0, trailing: 10.0)
     button.cornerRadius = 18.0
-    button.height = 24.0
     button.font = .iDormFont(.bold, size: 12.0)
     return button
   }()
@@ -82,10 +81,10 @@ final class MatchingMateViewController: BaseViewController, View {
           }
         }
       case .message:
-        let viewController = KakaoPopupViewController()
+        let viewController = iDormPopupViewController(.kakao)
         let index = self.cardStackView.currentCardIndex
         viewController.modalPresentationStyle = .overFullScreen
-        viewController.kakaoButtonHandler = {
+        viewController.confirmButtonHandler = {
           self.reactor?.action.onNext(.kakaoButtonDidTap(index: index))
         }
         self.present(viewController, animated: false)
@@ -152,6 +151,7 @@ final class MatchingMateViewController: BaseViewController, View {
     self.refreshButton.snp.makeConstraints { make in
       make.centerY.equalTo(self.filterButton)
       make.trailing.equalTo(self.filterButton.snp.leading).offset(-16.0)
+      make.height.equalTo(24.0)
     }
     
     self.cardStackView.snp.makeConstraints { make in
@@ -218,9 +218,9 @@ final class MatchingMateViewController: BaseViewController, View {
     reactor.pulse(\.$presentToWelcomePopupVC).skip(1)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
-        let viewController = WelcomePopupViewController()
+        let viewController = iDormPopupViewController(.welcome)
         viewController.modalPresentationStyle = .overFullScreen
-        viewController.buttonHandler = {
+        viewController.confirmButtonHandler = {
           owner.navigateToMatchingInfoSetupVC()
         }
         owner.present(viewController, animated: false)
@@ -230,16 +230,9 @@ final class MatchingMateViewController: BaseViewController, View {
     reactor.pulse(\.$presentToNoPublicPopupVC).skip(1)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
-        let viewController = iDormPopupViewController(viewType: .twoButton(
-          contents: """
-                    룸메이트 매칭을 위해
-                    우선 내 매칭 이미지를
-                    매칭페이지에 공개해야 해요.
-                    """,
-          buttonTitle: "공개 허용"
-        ))
+        let viewController = iDormPopupViewController(.noPublicMatchingInfo)
         viewController.modalPresentationStyle = .overFullScreen
-        viewController.confirmButtonCompletion = {
+        viewController.confirmButtonHandler = {
           owner.reactor?.action.onNext(.publicButtonDidTap)
         }
         owner.present(viewController, animated: false)

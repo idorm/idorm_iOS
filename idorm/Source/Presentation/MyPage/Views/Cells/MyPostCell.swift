@@ -204,7 +204,7 @@ final class MyPostCell: UITableViewCell, BaseViewProtocol {
     likeCountLb.text = "\(post.likesCount)"
     pictureCountLb.text = "\(post.imagesCount)"
     commentsCountLb.text = "\(post.commentsCount)"
-    timeLb.text = TimeUtils.postList(post.createdAt)
+//    timeLb.text = TimeUtils.postList(post.createdAt)
 
     if post.imagesCount == 0 {
       pictureCountLb.isHidden = true

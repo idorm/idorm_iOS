@@ -184,12 +184,12 @@ private extension CalendarSleepoverListViewController {
   
   func presentToRemovalCalendarPopupVC(_ item: CalendarSleepoverListSectionItem) {
     guard let reactor = self.reactor else { return }
-    let popupViewController = iDormPopupViewController(viewType: .twoButton(
+    let popupViewController = iDormPopupViewController(.alert(.twoButton(
       contents: "외박 일정을 삭제하시겠습니까?",
       buttonTitle: "확인"
-    ))
+    )))
     popupViewController.modalPresentationStyle = .overFullScreen
-    popupViewController.confirmButtonCompletion = {
+    popupViewController.confirmButtonHandler = {
       reactor.action.onNext(.itemSelected(item))
     }
     self.present(popupViewController, animated: false)

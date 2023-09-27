@@ -37,13 +37,13 @@ final class TabBarViewController: UITabBarController {
     let homeVC = HomeViewController()
     let matchingVC = MatchingMateViewController()
     let myPageVC = MyPageViewController()
-    let postListVC = CommunityListViewController()
+    let postListVC = CommunityPostListViewController()
     let calendarVC = CalendarViewController()
     
     homeVC.reactor = HomeViewReactor()
     matchingVC.reactor = MatchingMateViewReactor()
     myPageVC.reactor = MyPageViewReactor()
-    postListVC.reactor = CommunityListViewReactor()
+    postListVC.reactor = CommunityPostListViewReactor()
     calendarVC.reactor = CalendarViewReactor()
     
     let naviHomeVC = UINavigationController(rootViewController: homeVC)
@@ -75,22 +75,22 @@ final class TabBarViewController: UITabBarController {
   // MARK: - Helpers
   
   private func pushToDetailPost() {
-    TransitionManager.shared.postPushAlarmDidTap = { [weak self] postId in
-      guard let self else { return }
-      let apiManager = NetworkService<CommunityAPI>()
-      apiManager.requestAPI(to: .lookupDetailPost(postId: postId))
-        .map(ResponseDTO<CommunitySinglePostResponseDTO>.self)
-        .bind { post in
-          self.selectedIndex = 2
-          let navVC = self.children[2] as? UINavigationController
-          let detailPostVC = CommunityPostViewController()
-          detailPostVC.hidesBottomBarWhenPushed = true
-          let reactor = CommunityPostViewReactor(post.data.toPost())
-          detailPostVC.reactor = reactor
-          navVC?.pushViewController(detailPostVC, animated: true)
-        }
-        .disposed(by: self.disposeBag)
-    }
+//    TransitionManager.shared.postPushAlarmDidTap = { [weak self] postId in
+//      guard let self else { return }
+//      let apiManager = NetworkService<CommunityAPI>()
+//      apiManager.requestAPI(to: .lookupDetailPost(postId: postId))
+//        .map(ResponseDTO<CommunitySinglePostResponseDTO>.self)
+//        .bind { post in
+//          self.selectedIndex = 2
+//          let navVC = self.children[2] as? UINavigationController
+//          let detailPostVC = CommunityPostViewController()
+//          detailPostVC.hidesBottomBarWhenPushed = true
+//          let reactor = CommunityPostViewReactor(post.data.toPost())
+//          detailPostVC.reactor = reactor
+//          navVC?.pushViewController(detailPostVC, animated: true)
+//        }
+//        .disposed(by: self.disposeBag)
+//    }
   }
 }
 

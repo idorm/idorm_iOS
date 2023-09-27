@@ -219,7 +219,7 @@ final class CommunityCommentCell: UICollectionViewCell, BaseViewProtocol {
     { self.profileImageView.kf.setImage(with: URL(string: profileUrl)!) }
     self.comment = comment
     self.nicknameLabel.text = comment.nickname ?? "탈퇴한 사용자"
-    self.timeLabel.text = comment.createdAt.toCommunityPostFormatString()
+    self.timeLabel.text = comment.createdAt.toPostFormatString(isPostList: false)
     self.contentLabel.text = comment.content
     
     // UI

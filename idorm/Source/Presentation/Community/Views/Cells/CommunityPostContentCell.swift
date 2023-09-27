@@ -129,7 +129,7 @@ final class CommunityPostContentCell: UICollectionViewCell, BaseViewProtocol {
     { self.profileImageView.kf.setImage(with: URL(string: profileURL)) }
     self.titleLabel.text = post.title
     self.nicknameLabel.text = post.nickname
-    self.timeLabel.text = post.createdAt.toCommunityPostFormatString()
+    self.timeLabel.text = post.createdAtPost
     self.contentsLabel.text = post.content
   }
 }
