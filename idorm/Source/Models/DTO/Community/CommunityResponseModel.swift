@@ -37,11 +37,9 @@ extension CommunityResponseModel {
     let isLiked: Bool
     let createdAt: String
     let updatedAt: String
-    let postPhotos: [PostPhoto]
     let comments: [Comment]
     let isAnonymous: Bool
   }
-  
   
   struct Comment: Codable, Equatable {
     let commentId: Int

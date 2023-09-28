@@ -75,7 +75,7 @@ final class CommunityPostViewController: BaseViewController, View {
     return rc
   }()
   
-  private let commentView = CommentView()
+  private let commentView = CommunityCommentView()
   private let bottomView = UIView()
   private var header: CommunityPostContentCell!
   
@@ -360,8 +360,8 @@ final class CommunityPostViewController: BaseViewController, View {
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, post in
         let postingVC = CommunityPostingViewController()
-        let postingReactor = CommunityPostingViewReactor(.edit(post), dorm: .no1)
-        postingVC.reactor = postingReactor
+//        let postingReactor = CommunityPostingViewReactor(.edit(post), dorm: .no1)
+//        postingVC.reactor = postingReactor
         owner.navigationController?.pushViewController(postingVC, animated: true)
         
         postingVC.completion = {
@@ -406,52 +406,7 @@ private extension CommunityPostViewController {
     bottomSheet.delegate = self
     self.presentPanModal(bottomSheet)
   }
-  
-  private func sendFeedMessage() {
-    guard let post = self.reactor?.currentState.post else { return }
-    
-    let templateId = Int64(93479)
-    
-    let profileURL = post.profileURL == nil ?
-    URL(string: "https://idorm-static.s3.ap-northeast-2.amazonaws.com/profileImage.png")! :
-    URL(string: post.profileURL!)!
-    
-    let thumbnailURL = post.imagesCount == 0 ?
-    URL(string: "https://idorm-static.s3.ap-northeast-2.amazonaws.com/nadomi.png")! :
-    URL(string: post.photos.first!.photoURL)!
-    
-    let templateArgs = [
-      "title": post.title,
-      "nickname": post.nickname ?? "익명",
-      "contentId": "\(post.identifier)",
-      "summarizedContent": post.content,
-      "thumbnail": thumbnailURL.absoluteString,
-      "likeCount": "\(post.likesCount)",
-      "userProfile": profileURL.absoluteString,
-      "commentCount": "\(post.commentsCount)"
-    ]
-    
-    if ShareApi.isKakaoTalkSharingAvailable() {
-      // 카카오톡 설치
-      ShareApi.shared.shareCustom(
-        templateId: templateId,
-        templateArgs: templateArgs
-      ) { sharingResult, error in
-        if let error = error {
-          print(error)
-        } else {
-          print("shareCustom() success")
-          if let sharingResult = sharingResult {
-            UIApplication.shared.open(sharingResult.url)
-          }
-        }
-      }
-    } else {
-      // 카카오톡 미설치: 웹 공유 사용 권장
-      // Custom WebView 또는 디폴트 브라우져 사용 가능
-    }
-  }
-  
+
   /// 사진을 클릭했을 때 `ImageSlideShow`가 보여집니다.
   ///
   /// - Parameters:
@@ -528,7 +483,8 @@ extension CommunityPostViewController: BottomSheetViewControllerDelegate {
     case .editPost:
       reactor.action.onNext(.editPostButtonDidTap)
     case .sharePost:
-      self.sendFeedMessage()
+      break
+//      self.sendFeedMessage()
     default: break
     }
   }

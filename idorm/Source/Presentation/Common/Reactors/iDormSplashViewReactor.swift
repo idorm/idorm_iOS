@@ -80,7 +80,7 @@ private extension iDormSplashViewReactor {
       return self.requestMemberMatchingInfo()
     }
     .catch { error in
-      FilterStorage.shared.resetFilter()
+//      FilterStorage.shared.resetFilter()
       UserStorage.shared.reset()
       os_log(.error, "🔐 로그인에 실패하였습니다. 이메일: \(email), 비밀번호: \(password)")
       return Observable<Mutation>.just(.setLoginVC)
@@ -99,7 +99,7 @@ private extension iDormSplashViewReactor {
         return Observable<Mutation>.just(.setTabBarVC)
       }
       .catch { error in
-        FilterStorage.shared.resetFilter()
+//        FilterStorage.shared.resetFilter()
         UserStorage.shared.reset()
         return Observable<Mutation>.just(.setLoginVC)
       }

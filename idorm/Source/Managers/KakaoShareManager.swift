@@ -110,7 +110,7 @@ private extension KakaoShareManager {
     case "contentId": // 게시글 공유
       guard let postIdentifier = Int(value) else { return }
       DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-        TransitionManager.shared.postPushAlarmDidTap?(postIdentifier)
+//        TransitionManager.shared.postPushAlarmDidTap?(postIdentifier)
       })
     case "inviter": // 공유 캘린더 초대
       guard let inviterIdentifier = Int(value) else { return }

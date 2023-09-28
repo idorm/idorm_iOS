@@ -12,8 +12,8 @@ struct CommunityPostPhotoResponseDTO: Codable, Hashable {
   let photoUrl: String
 }
 
-extension Array where Element == CommunityPostPhotoResponseDTO {
-  func toPostPhotos() -> [PostPhoto] {
-    return self.map { PostPhoto(photoID: $0.photoId, photoURL: $0.photoUrl) }
-  }
-}
+//extension Array where Element == CommunityPostPhotoResponseDTO {
+//  func toPostPhotos() -> [PostPhoto] {
+//    return self.map { PostPhoto(photoID: $0.photoId, photoURL: $0.photoUrl) }
+//  }
+//}

@@ -23,6 +23,12 @@ class BaseViewController: UIViewController {
     return indicator
   }()
   
+  private let safeAreaCoverView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .white
+    return view
+  }()
+  
   // MARK: - Properties
   
   /// A dispose bag. 각 ViewController에 종속적이다.
@@ -37,12 +43,10 @@ class BaseViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
     self.setupStyles()
     self.setupLayouts()
     self.setupConstraints()
     self.bind()
-    self.addShadowToNavigationBar()
   }
   
   // MARK: - Setup
@@ -57,8 +61,10 @@ class BaseViewController: UIViewController {
   ///   // codes..
   /// }
   /// ```
-  func setupLayouts() { }
-
+  func setupLayouts() {
+    self.view.addSubview(self.safeAreaCoverView)
+  }
+  
   /// UI 프로퍼티의 제약조건을 설정합니다.
   ///
   /// ```
@@ -70,8 +76,14 @@ class BaseViewController: UIViewController {
   ///   // codes..
   /// }
   /// ```
-  func setupConstraints() { }
-
+  func setupConstraints() {
+    self.safeAreaCoverView.snp.makeConstraints { make in
+      make.directionalHorizontalEdges.equalToSuperview()
+      make.top.equalTo(self.view.keyboardLayoutGuide.snp.top)
+      make.height.equalTo(200.0)
+    }
+  }
+  
   /// View와 관련된 Style을 설정합니다.
   ///
   /// ```
@@ -81,10 +93,16 @@ class BaseViewController: UIViewController {
   ///   // codes..
   /// }
   /// ```
-  func setupStyles() { }
+  func setupStyles() {
+    self.navigationController?.navigationBar.layer.shadowColor = UIColor.black.cgColor
+    self.navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+    self.navigationController?.navigationBar.layer.shadowRadius = 2.0
+    self.navigationController?.navigationBar.layer.shadowOpacity = 0.11
+    self.navigationController?.navigationBar.layer.masksToBounds = false
+  }
   
   // MARK: - Bind
-
+  
   /// Action, State 스트림을 bind합니다.
   /// 예를들어, Button이 tap 되었을 때, 또는 tableView를 rx로 설정할 때 이용됩니다.
   ///
@@ -121,13 +139,5 @@ class BaseViewController: UIViewController {
       self.indicator.stopAnimating()
       self.indicator.removeFromSuperview()
     }
-  }
-  
-  func addShadowToNavigationBar() {
-    self.navigationController?.navigationBar.layer.shadowColor = UIColor.black.cgColor
-    self.navigationController?.navigationBar.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
-    self.navigationController?.navigationBar.layer.shadowRadius = 2.0
-    self.navigationController?.navigationBar.layer.shadowOpacity = 0.11
-    self.navigationController?.navigationBar.layer.masksToBounds = false
   }
 }

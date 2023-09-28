@@ -25,9 +25,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
 //    let viewController = iDormSplashViewController()
 //    viewController.reactor = iDormSplashViewReactor()
-    let viewController = CommunityPostListViewController()
-    viewController.reactor = CommunityPostListViewReactor()
-    window?.rootViewController = viewController
+    let viewController = CommunityPostingViewController()
+    viewController.reactor = CommunityPostingViewReactor(.new)
+    window?.rootViewController = UINavigationController(rootViewController: viewController)
     window?.makeKeyAndVisible()
     
     let url = connectionOptions.urlContexts.first?.url

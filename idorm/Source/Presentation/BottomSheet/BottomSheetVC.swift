@@ -28,6 +28,8 @@ final class BottomSheetViewController: BaseViewController {
     return height
   }
   
+  var buttonHandler: ((BottomSheetItem) -> Void)?
+  
   // MARK: - UI Components
   
   /// 취소 버튼
@@ -119,6 +121,7 @@ final class BottomSheetViewController: BaseViewController {
       let item = button.bottomSheetItem
     else { return }
     self.dismiss(animated: true)
+    self.buttonHandler?(item)
     self.delegate?.didTapButton(item)
   }
 }

@@ -65,7 +65,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
   ) {
     if let postId = response.notification.request.content.userInfo["contentId"] as? String {
       DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-        TransitionManager.shared.postPushAlarmDidTap?(Int(postId)!)
+//        TransitionManager.shared.postPushAlarmDidTap?(Int(postId)!)
       })
     }
   }

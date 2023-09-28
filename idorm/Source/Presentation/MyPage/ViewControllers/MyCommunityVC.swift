@@ -182,7 +182,7 @@ extension MyCommunityViewController: UITableViewDataSource, UITableViewDelegate 
         return UITableViewCell()
       }
       let post = currentState.posts[indexPath.row]
-      cell.injectData(post)
+//      cell.injectData(post)
       return cell
       
     case .comment:

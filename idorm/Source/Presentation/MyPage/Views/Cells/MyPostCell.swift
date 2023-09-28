@@ -197,21 +197,21 @@ final class MyPostCell: UITableViewCell, BaseViewProtocol {
   
   // MARK: - Helpers
   
-  func injectData(_ post: CommunityResponseModel.Posts) {
-    titleLb.text = post.title
-    contentLb.text = post.content
-    nicknameLb.text = post.nickname
-    likeCountLb.text = "\(post.likesCount)"
-    pictureCountLb.text = "\(post.imagesCount)"
-    commentsCountLb.text = "\(post.commentsCount)"
-//    timeLb.text = TimeUtils.postList(post.createdAt)
-
-    if post.imagesCount == 0 {
-      pictureCountLb.isHidden = true
-      pictureIv.isHidden = true
-    } else {
-      pictureCountLb.isHidden = false
-      pictureIv.isHidden = false
-    }
+  func injectData() {
+//    titleLb.text = post.title
+//    contentLb.text = post.content
+//    nicknameLb.text = post.nickname
+//    likeCountLb.text = "\(post.likesCount)"
+//    pictureCountLb.text = "\(post.imagesCount)"
+//    commentsCountLb.text = "\(post.commentsCount)"
+////    timeLb.text = TimeUtils.postList(post.createdAt)
+//
+//    if post.imagesCount == 0 {
+//      pictureCountLb.isHidden = true
+//      pictureIv.isHidden = true
+//    } else {
+//      pictureCountLb.isHidden = false
+//      pictureIv.isHidden = false
+//    }
   }
 }

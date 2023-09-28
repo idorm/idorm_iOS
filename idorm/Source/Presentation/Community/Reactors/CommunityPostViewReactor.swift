@@ -51,9 +51,7 @@ final class CommunityPostViewReactor: Reactor {
   }
   
   struct State {
-    // Data
     var post: Post
-    
     var isSympathy: Bool = false
     var isPresentedAlert: (Bool, String) = (false, "")
     var currentComment: String = ""
@@ -199,7 +197,7 @@ final class CommunityPostViewReactor: Reactor {
       newState.navigateToCommunityPosting = state.post
       
     case .setImageSlide(let index):
-      newState.presentImageSlide = (state.post.photos.map { $0.photoURL }, index)
+      newState.presentImageSlide = (state.post.imagesData.map { $0.imageURL }, index)
     }
     
     return newState
@@ -217,9 +215,9 @@ final class CommunityPostViewReactor: Reactor {
       items.append([.content(state.post)])
       
       // Photos
-      if state.post.photos.isNotEmpty {
+      if state.post.imagesData.isNotEmpty {
         sections.append(.photos)
-        items.append(state.post.photos.map { CommunityPostSectionItem.photo($0.photoURL) })
+        items.append(state.post.imagesData.map { CommunityPostSectionItem.photo($0.imageURL) })
       }
       
       // MultiBox

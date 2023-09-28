@@ -120,7 +120,7 @@ final class LoginViewController: BaseViewController, View {
   override func viewDidLoad() {
     super.viewDidLoad()
     // TODO: 변화된 Storage에 따라서 초기화하기
-    FilterStorage.shared.resetFilter()
+//    FilterStorage.shared.resetFilter()
   }
   
   override func viewWillAppear(_ animated: Bool) {

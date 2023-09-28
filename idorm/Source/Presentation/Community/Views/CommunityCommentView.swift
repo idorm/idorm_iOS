@@ -11,7 +11,7 @@ import SnapKit
 import RSKGrowingTextView
 import GrowingTextView
 
-final class CommentView: UIView {
+final class CommunityCommentView: UIView {
   
   // MARK: - Properties
   
@@ -74,7 +74,7 @@ final class CommentView: UIView {
   }
 }
 
-extension CommentView: BaseViewProtocol {
+extension CommunityCommentView: BaseViewProtocol {
   func setupStyles() {
     backgroundColor = .white
     
