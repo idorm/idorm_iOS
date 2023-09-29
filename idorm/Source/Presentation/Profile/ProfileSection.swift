@@ -130,26 +130,24 @@ enum ProfileSectionItem: Hashable {
   case recommendedPost
   case publicSetting(isPublic: Bool)
   
-  var icon: UIImage? {
-    var icon: UIImage?
+  var image: UIImage? {
     switch self {
     case .profile: 
       return .iDormImage(.human)
     case .matchingImage:
-      icon = .iDormIcon(.photo)?
+      return .iDormImage(.photo_circle)
     case .dislikedRoommate:
-      icon = .iDormIcon(.block)?
+      return .iDormImage(.dislike_circle)
     case .likedRoommate:
-      icon = .iDormIcon(.heart)?
+      return .iDormImage(.like_circle)
     case .myPost:
-      icon = .iDormIcon(.pencil2)?
+      return .iDormImage(.pencil_circle)
     case .myComment:
-      icon = .iDormIcon(.speechBubble)?
+      return .iDormImage(.speechbubble_circle)
     case .recommendedPost:
-      icon = .iDormIcon(.thumb)?
+      return .iDormImage(.thumb_circle)
     default: return nil
     }
-    return icon?.resize(newSize: 24.0)?.withTintColor(.iDormColor(.iDormBlue))
   }
   
   var title: String {

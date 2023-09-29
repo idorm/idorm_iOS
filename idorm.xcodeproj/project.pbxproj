@@ -82,6 +82,8 @@
 		E5398FCF2AC710BA009CFF39 /* ManagementMyInfoFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5398FCE2AC710BA009CFF39 /* ManagementMyInfoFooterView.swift */; };
 		E5398FD12AC711B9009CFF39 /* ManagementMyInfoMembershipCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5398FD02AC711B9009CFF39 /* ManagementMyInfoMembershipCell.swift */; };
 		E5398FD32AC714F4009CFF39 /* ManagementMyInfoViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5398FD22AC714F4009CFF39 /* ManagementMyInfoViewReactor.swift */; };
+		E5398FD52AC7239E009CFF39 /* ManagementAccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5398FD42AC7239E009CFF39 /* ManagementAccountVC.swift */; };
+		E5398FD82AC724C5009CFF39 /* ManagementAccountNotifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5398FD72AC724C5009CFF39 /* ManagementAccountNotifyView.swift */; };
 		E53C60B0287B37CB00977909 /* CompleteSignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53C60AF287B37CB00977909 /* CompleteSignUpVC.swift */; };
 		E53D1A3F2988A5780074308B /* MemberAPI+Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53D1A3E2988A5780074308B /* MemberAPI+Task.swift */; };
 		E53D1A412988A5C00074308B /* MemberAPI+Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53D1A402988A5C00074308B /* MemberAPI+Path.swift */; };
@@ -416,6 +418,8 @@
 		E5398FCE2AC710BA009CFF39 /* ManagementMyInfoFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementMyInfoFooterView.swift; sourceTree = "<group>"; };
 		E5398FD02AC711B9009CFF39 /* ManagementMyInfoMembershipCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementMyInfoMembershipCell.swift; sourceTree = "<group>"; };
 		E5398FD22AC714F4009CFF39 /* ManagementMyInfoViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementMyInfoViewReactor.swift; sourceTree = "<group>"; };
+		E5398FD42AC7239E009CFF39 /* ManagementAccountVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementAccountVC.swift; sourceTree = "<group>"; };
+		E5398FD72AC724C5009CFF39 /* ManagementAccountNotifyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementAccountNotifyView.swift; sourceTree = "<group>"; };
 		E53C60AF287B37CB00977909 /* CompleteSignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpVC.swift; sourceTree = "<group>"; };
 		E53D1A3E2988A5780074308B /* MemberAPI+Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemberAPI+Task.swift"; sourceTree = "<group>"; };
 		E53D1A402988A5C00074308B /* MemberAPI+Path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemberAPI+Path.swift"; sourceTree = "<group>"; };
@@ -889,6 +893,7 @@
 			children = (
 				E5398FBA2AC6D2F8009CFF39 /* ManagementVC.swift */,
 				E5398FC42AC6F273009CFF39 /* ManagementMyInfoVC.swift */,
+				E5398FD42AC7239E009CFF39 /* ManagementAccountVC.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -907,6 +912,7 @@
 			children = (
 				E5398FC82AC6FE5E009CFF39 /* Management */,
 				E5398FC92AC6FE6D009CFF39 /* ManagementMyInfo */,
+				E5398FD62AC72493009CFF39 /* ManagementAccount */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -929,6 +935,14 @@
 				E5398FCE2AC710BA009CFF39 /* ManagementMyInfoFooterView.swift */,
 			);
 			path = ManagementMyInfo;
+			sourceTree = "<group>";
+		};
+		E5398FD62AC72493009CFF39 /* ManagementAccount */ = {
+			isa = PBXGroup;
+			children = (
+				E5398FD72AC724C5009CFF39 /* ManagementAccountNotifyView.swift */,
+			);
+			path = ManagementAccount;
 			sourceTree = "<group>";
 		};
 		E53D1A3D2988A5640074308B /* Member */ = {
@@ -982,7 +996,6 @@
 			isa = PBXGroup;
 			children = (
 				E56DF4CC2894063100E85B10 /* Common */,
-				E5E0BA842A9902A90022A63B /* Splash */,
 				E575D37129544B5200B13530 /* BottomSheet */,
 				E5E77ECC28D8293400031010 /* Auth */,
 				E56DF4B6289403A400E85B10 /* MatchingInfo */,
@@ -1482,13 +1495,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		E5E0BA842A9902A90022A63B /* Splash */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Splash;
-			sourceTree = "<group>";
-		};
 		E5E149892950635E00A3827C /* Drivers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1525,7 +1531,6 @@
 				E5EDDF542AC5E2A900D8B57D /* ProfilePublicCell.swift */,
 				E5EDDF502AC5E15600D8B57D /* ProfileHeaderView.swift */,
 				E5398FB52AC6A769009CFF39 /* ProfileDecorationView.swift */,
-				E5EDDF4B2AC5D94300D8B57D /* Profile */,
 				E5E8A3D72894BA8600A48A91 /* Cells */,
 				E52CD85528BE371F00A262ED /* ManageMyInfoView.swift */,
 				E55AE18B29E52A6E002E6025 /* CommunityContainerView.swift */,
@@ -1634,13 +1639,6 @@
 				E5E0BA852A9902BA0022A63B /* iDormSplashViewReactor.swift */,
 			);
 			path = Reactors;
-			sourceTree = "<group>";
-		};
-		E5EDDF4B2AC5D94300D8B57D /* Profile */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Profile;
 			sourceTree = "<group>";
 		};
 		E5EDDF582AC5E69200D8B57D /* Deprecated */ = {
@@ -1952,6 +1950,7 @@
 				E50300F728773A5D00611C62 /* AppDelegate.swift in Sources */,
 				E5F48B912A7BFD0B00874207 /* CalendarDatePickerView.swift in Sources */,
 				E5E330F12ABED8CE00621149 /* NetworkHeaderType.swift in Sources */,
+				E5398FD52AC7239E009CFF39 /* ManagementAccountVC.swift in Sources */,
 				E5BFED5B2A8BC21D004D22E4 /* CalendarSleepoverManagementVC.swift in Sources */,
 				E58080D62AB68DC40014253C /* iDormBottomMenuView.swift in Sources */,
 				E55794EE287C36F5002DB2B0 /* UIView+.swift in Sources */,
@@ -2159,6 +2158,7 @@
 				E5B15F6F287FE355004D4164 /* MatchingInfoCardVC.swift in Sources */,
 				E5B61F4329B48BB10031046C /* UserDefaultsWrapper.swift in Sources */,
 				E5E0BA8D2A99077B0022A63B /* FCMTokenManager.swift in Sources */,
+				E5398FD82AC724C5009CFF39 /* ManagementAccountNotifyView.swift in Sources */,
 				E5EDDF432AC513C200D8B57D /* ImageDownloader.swift in Sources */,
 				E547E3EA291CF669000D3A47 /* MatchingCardStringList.swift in Sources */,
 				E5CFF7262983668600E11D9A /* UIFactory.swift in Sources */,

@@ -25,8 +25,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
 //    let viewController = iDormSplashViewController()
 //    viewController.reactor = iDormSplashViewReactor()
-    let viewController = ManagementMyInfoViewController()
-    viewController.reactor = ManagementMyInfoViewReactor()
+    let viewController = ManagementAccountViewController()
+//    viewController.reactor = ProfileViewReactor()
     window?.rootViewController = UINavigationController(rootViewController: viewController)
     window?.makeKeyAndVisible()
     

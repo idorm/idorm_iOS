@@ -20,6 +20,7 @@ enum iDormIcon: String {
   case checkCircle
   
   case domi
+  case domi_sad
   case domiWithBackgrond
   case dormitory
   case deselect
@@ -85,8 +86,19 @@ enum iDormText: String {
 
 enum iDormImage: String {
   case deselect
+  case dislike_circle
   
   case select
+  
+  case photo_circle
+  
+  case like_circle
+  
+  case pencil_circle
+  
+  case thumb_circle
+  
+  case speechbubble_circle
   
   case human
   
