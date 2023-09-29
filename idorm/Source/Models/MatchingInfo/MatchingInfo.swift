@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MatchingInfo: Codable {
+struct MatchingInfo: Codable, Hashable {
   /// 이 매칭 정보의 식별자
   var identifier: Int
   /// 나이

@@ -140,6 +140,11 @@ final class iDormMatchingCardView: BaseView {
     super.init(frame: .zero)
   }
   
+  init() {
+    self.matchingInfo = .init()
+    super.init(frame: .zero)
+  }
+  
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -170,8 +175,7 @@ final class iDormMatchingCardView: BaseView {
   
   override func setupConstraints() {
     self.topContainerView.snp.makeConstraints { make in
-      make.top.equalToSuperview()
-      make.width.equalTo(327.0)
+      make.directionalHorizontalEdges.top.equalToSuperview()
       make.height.equalTo(403.0)
     }
     
@@ -185,7 +189,7 @@ final class iDormMatchingCardView: BaseView {
       make.top.equalToSuperview().inset(13.0)
       make.leading.equalToSuperview().inset(21.0)
     }
-
+    
     self.joinPeriodButton.snp.makeConstraints { make in
       make.centerY.equalTo(self.dormitoryLabel)
       make.trailing.equalToSuperview().inset(20.0)

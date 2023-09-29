@@ -70,6 +70,18 @@
 		E5359117292343A900E28C1C /* (null) in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E5398FB42AC6A590009CFF39 /* Reusable in Frameworks */ = {isa = PBXBuildFile; productRef = E5398FB32AC6A590009CFF39 /* Reusable */; };
 		E5398FB62AC6A769009CFF39 /* ProfileDecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5398FB52AC6A769009CFF39 /* ProfileDecorationView.swift */; };
+		E5398FBB2AC6D2F8009CFF39 /* ManagementVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5398FBA2AC6D2F8009CFF39 /* ManagementVC.swift */; };
+		E5398FBD2AC6D537009CFF39 /* ManagementOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5398FBC2AC6D537009CFF39 /* ManagementOrderView.swift */; };
+		E5398FBF2AC6D791009CFF39 /* ManagementSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5398FBE2AC6D791009CFF39 /* ManagementSection.swift */; };
+		E5398FC12AC6DCB0009CFF39 /* ManagementViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5398FC02AC6DCB0009CFF39 /* ManagementViewReactor.swift */; };
+		E5398FC32AC6DDA2009CFF39 /* ManagementMatchingCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5398FC22AC6DDA2009CFF39 /* ManagementMatchingCardCell.swift */; };
+		E5398FC52AC6F273009CFF39 /* ManagementMyInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5398FC42AC6F273009CFF39 /* ManagementMyInfoVC.swift */; };
+		E5398FC72AC6F95D009CFF39 /* ManagementMyInfoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5398FC62AC6F95D009CFF39 /* ManagementMyInfoSection.swift */; };
+		E5398FCB2AC6FE82009CFF39 /* ManagementMyInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5398FCA2AC6FE82009CFF39 /* ManagementMyInfoCell.swift */; };
+		E5398FCD2AC707BC009CFF39 /* ManagementMyInfoProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5398FCC2AC707BC009CFF39 /* ManagementMyInfoProfileCell.swift */; };
+		E5398FCF2AC710BA009CFF39 /* ManagementMyInfoFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5398FCE2AC710BA009CFF39 /* ManagementMyInfoFooterView.swift */; };
+		E5398FD12AC711B9009CFF39 /* ManagementMyInfoMembershipCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5398FD02AC711B9009CFF39 /* ManagementMyInfoMembershipCell.swift */; };
+		E5398FD32AC714F4009CFF39 /* ManagementMyInfoViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5398FD22AC714F4009CFF39 /* ManagementMyInfoViewReactor.swift */; };
 		E53C60B0287B37CB00977909 /* CompleteSignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53C60AF287B37CB00977909 /* CompleteSignUpVC.swift */; };
 		E53D1A3F2988A5780074308B /* MemberAPI+Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53D1A3E2988A5780074308B /* MemberAPI+Task.swift */; };
 		E53D1A412988A5C00074308B /* MemberAPI+Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53D1A402988A5C00074308B /* MemberAPI+Path.swift */; };
@@ -392,6 +404,18 @@
 		E52E96B12915FAB6009E1773 /* MatchingContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingContainerView.swift; sourceTree = "<group>"; };
 		E52E96B329160870009E1773 /* TopProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopProfileView.swift; sourceTree = "<group>"; };
 		E5398FB52AC6A769009CFF39 /* ProfileDecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDecorationView.swift; sourceTree = "<group>"; };
+		E5398FBA2AC6D2F8009CFF39 /* ManagementVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementVC.swift; sourceTree = "<group>"; };
+		E5398FBC2AC6D537009CFF39 /* ManagementOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementOrderView.swift; sourceTree = "<group>"; };
+		E5398FBE2AC6D791009CFF39 /* ManagementSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementSection.swift; sourceTree = "<group>"; };
+		E5398FC02AC6DCB0009CFF39 /* ManagementViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementViewReactor.swift; sourceTree = "<group>"; };
+		E5398FC22AC6DDA2009CFF39 /* ManagementMatchingCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementMatchingCardCell.swift; sourceTree = "<group>"; };
+		E5398FC42AC6F273009CFF39 /* ManagementMyInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementMyInfoVC.swift; sourceTree = "<group>"; };
+		E5398FC62AC6F95D009CFF39 /* ManagementMyInfoSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementMyInfoSection.swift; sourceTree = "<group>"; };
+		E5398FCA2AC6FE82009CFF39 /* ManagementMyInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementMyInfoCell.swift; sourceTree = "<group>"; };
+		E5398FCC2AC707BC009CFF39 /* ManagementMyInfoProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementMyInfoProfileCell.swift; sourceTree = "<group>"; };
+		E5398FCE2AC710BA009CFF39 /* ManagementMyInfoFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementMyInfoFooterView.swift; sourceTree = "<group>"; };
+		E5398FD02AC711B9009CFF39 /* ManagementMyInfoMembershipCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementMyInfoMembershipCell.swift; sourceTree = "<group>"; };
+		E5398FD22AC714F4009CFF39 /* ManagementMyInfoViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementMyInfoViewReactor.swift; sourceTree = "<group>"; };
 		E53C60AF287B37CB00977909 /* CompleteSignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpVC.swift; sourceTree = "<group>"; };
 		E53D1A3E2988A5780074308B /* MemberAPI+Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemberAPI+Task.swift"; sourceTree = "<group>"; };
 		E53D1A402988A5C00074308B /* MemberAPI+Path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemberAPI+Path.swift"; sourceTree = "<group>"; };
@@ -851,8 +875,60 @@
 		E5398FB12AC6A4B2009CFF39 /* Management */ = {
 			isa = PBXGroup;
 			children = (
+				E5398FBE2AC6D791009CFF39 /* ManagementSection.swift */,
+				E5398FC62AC6F95D009CFF39 /* ManagementMyInfoSection.swift */,
+				E5398FB72AC6D2B7009CFF39 /* ViewControllers */,
+				E5398FB82AC6D2BE009CFF39 /* Reactors */,
+				E5398FB92AC6D2C2009CFF39 /* Views */,
 			);
 			path = Management;
+			sourceTree = "<group>";
+		};
+		E5398FB72AC6D2B7009CFF39 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E5398FBA2AC6D2F8009CFF39 /* ManagementVC.swift */,
+				E5398FC42AC6F273009CFF39 /* ManagementMyInfoVC.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		E5398FB82AC6D2BE009CFF39 /* Reactors */ = {
+			isa = PBXGroup;
+			children = (
+				E5398FC02AC6DCB0009CFF39 /* ManagementViewReactor.swift */,
+				E5398FD22AC714F4009CFF39 /* ManagementMyInfoViewReactor.swift */,
+			);
+			path = Reactors;
+			sourceTree = "<group>";
+		};
+		E5398FB92AC6D2C2009CFF39 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E5398FC82AC6FE5E009CFF39 /* Management */,
+				E5398FC92AC6FE6D009CFF39 /* ManagementMyInfo */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E5398FC82AC6FE5E009CFF39 /* Management */ = {
+			isa = PBXGroup;
+			children = (
+				E5398FBC2AC6D537009CFF39 /* ManagementOrderView.swift */,
+				E5398FC22AC6DDA2009CFF39 /* ManagementMatchingCardCell.swift */,
+			);
+			path = Management;
+			sourceTree = "<group>";
+		};
+		E5398FC92AC6FE6D009CFF39 /* ManagementMyInfo */ = {
+			isa = PBXGroup;
+			children = (
+				E5398FCA2AC6FE82009CFF39 /* ManagementMyInfoCell.swift */,
+				E5398FCC2AC707BC009CFF39 /* ManagementMyInfoProfileCell.swift */,
+				E5398FD02AC711B9009CFF39 /* ManagementMyInfoMembershipCell.swift */,
+				E5398FCE2AC710BA009CFF39 /* ManagementMyInfoFooterView.swift */,
+			);
+			path = ManagementMyInfo;
 			sourceTree = "<group>";
 		};
 		E53D1A3D2988A5640074308B /* Member */ = {
@@ -1334,8 +1410,8 @@
 		E5CFF4DC2AB880A100186D8C /* iDormMatchingCardView */ = {
 			isa = PBXGroup;
 			children = (
-				E5CFF4E12AB88BAD00186D8C /* iDormMatchingCardItem.swift */,
 				E58080D72AB7DFF30014253C /* iDormMatchingCardView.swift */,
+				E5CFF4E12AB88BAD00186D8C /* iDormMatchingCardItem.swift */,
 				E5CFF4DD2AB8810600186D8C /* iDormMatchingCardLabel.swift */,
 				E5921A682ABECF670086C4A7 /* iDormMatchingCardTextView.swift */,
 			);
@@ -1817,10 +1893,12 @@
 				E5B249C02962744100081609 /* TermsOfServiceViewReactor.swift in Sources */,
 				E5066426296E560B00B581E1 /* CommunityPostListVC.swift in Sources */,
 				E58080CC2AB39F460014253C /* MatchingInfoSetupViewReactor.swift in Sources */,
+				E5398FBB2AC6D2F8009CFF39 /* ManagementVC.swift in Sources */,
 				E52C27872989148B002429B5 /* Roommate.swift in Sources */,
 				E56AF41F2A5CF0DD00984DA3 /* TeamCalendarMemberResponseDTO.swift in Sources */,
 				E5E330F82ABF08EA00621149 /* MatchingMateButtonsView.swift in Sources */,
 				E55AE18C29E52A6E002E6025 /* CommunityContainerView.swift in Sources */,
+				E5398FC12AC6DCB0009CFF39 /* ManagementViewReactor.swift in Sources */,
 				E577E4CD29FA553300D0DA48 /* MyCommunityViewReactor.swift in Sources */,
 				E513D9FE2955C70A002EA592 /* EmailViewReactor.swift in Sources */,
 				E575D37529548DF900B13530 /* WithDrawalViewReactor.swift in Sources */,
@@ -1833,6 +1911,7 @@
 				E5AD73A3287B2B5200BA2C5E /* PasswordVC.swift in Sources */,
 				E506642C296E6BAA00B581E1 /* CommunityTopPostListCell.swift in Sources */,
 				E5E1497E2950498300A3827C /* TokenStorage.swift in Sources */,
+				E5398FD12AC711B9009CFF39 /* ManagementMyInfoMembershipCell.swift in Sources */,
 				E58865112988E1F60068BEB2 /* MatchingMateAPI+Path.swift in Sources */,
 				E547E3EC291CFBBC000D3A47 /* MatchingCardWishTextView.swift in Sources */,
 				E5CFF6FD29826F8E00E11D9A /* CommunityPostEmptyCell.swift in Sources */,
@@ -1861,6 +1940,7 @@
 				E5A47F08292508F300908E20 /* SharedAPI.swift in Sources */,
 				E5F48B8F2A7BCE0F00874207 /* CalendarDateSelectionCell.swift in Sources */,
 				E5907B5C2AC1BE7F0097FA6A /* MatchingInfoFilterSetupVC.swift in Sources */,
+				E5398FD32AC714F4009CFF39 /* ManagementMyInfoViewReactor.swift in Sources */,
 				E5CFF7142982D72000E11D9A /* CommunityResponseModel.swift in Sources */,
 				E5410E7E2A70C8DF00DEB262 /* iDormButton.swift in Sources */,
 				E58BF48629FD54D30036B125 /* MyCommentCell.swift in Sources */,
@@ -1894,6 +1974,7 @@
 				E5CFF4E22AB88BAD00186D8C /* iDormMatchingCardItem.swift in Sources */,
 				E506642A296E6B9B00B581E1 /* CommunityPostListCell.swift in Sources */,
 				E5AC2DCF288303A300B82AD8 /* PasswordTextField.swift in Sources */,
+				E5398FBF2AC6D791009CFF39 /* ManagementSection.swift in Sources */,
 				E562611129977A6800D14020 /* Sequence+.swift in Sources */,
 				E5045F5F2A7280C6005095D5 /* DormCalendarEmptyCell.swift in Sources */,
 				E52E96B22915FAB6009E1773 /* MatchingContainerView.swift in Sources */,
@@ -1949,6 +2030,7 @@
 				E5F48B882A7B5F7000874207 /* CalendarDateSelectionVC.swift in Sources */,
 				E5066428296E677700B581E1 /* PostUtils.swift in Sources */,
 				E5D4900B288BFA0200311493 /* MatchingMateVC.swift in Sources */,
+				E5398FCB2AC6FE82009CFF39 /* ManagementMyInfoCell.swift in Sources */,
 				E52233B3296CFCAD00C5DD07 /* CommunityPostingVC.swift in Sources */,
 				E5F48B862A77961B00874207 /* TeamCalendarRequestModel.swift in Sources */,
 				E5E5341C2A9097B600CDC357 /* DormCalendar.swift in Sources */,
@@ -1973,6 +2055,7 @@
 				E5AC2A4D28BB5B250069ABB9 /* ManageMyInfoVC.swift in Sources */,
 				E52E96B429160870009E1773 /* TopProfileView.swift in Sources */,
 				E5C451CE295C79A900D49988 /* HomeViewReactor.swift in Sources */,
+				E5398FCD2AC707BC009CFF39 /* ManagementMyInfoProfileCell.swift in Sources */,
 				E52C45E229230ED500638B68 /* Moya+.swift in Sources */,
 				E5921A672ABD57E10086C4A7 /* MatchingInfoSetupTextViewCell.swift in Sources */,
 				E5290EFF2887BBB00004B8E6 /* PostCollectionViewCell.swift in Sources */,
@@ -1998,6 +2081,7 @@
 				E56271D02A8535F80043F208 /* Post.swift in Sources */,
 				E550988D2A93028600BC45AF /* TeamCalendarSleepoverResponseDTO.swift in Sources */,
 				E5909CE628D94B610083075D /* BaseViewController.swift in Sources */,
+				E5398FCF2AC710BA009CFF39 /* ManagementMyInfoFooterView.swift in Sources */,
 				E5E0BA862A9902BA0022A63B /* iDormSplashViewReactor.swift in Sources */,
 				E5BFED652A906BE3004D22E4 /* HomeSection.swift in Sources */,
 				E58080B92AB324250014253C /* MatchingInfoSetupHeaderView.swift in Sources */,
@@ -2049,16 +2133,19 @@
 				E5AD7396287A8C2F00BA2C5E /* UIColor+.swift in Sources */,
 				E5907B5A2ABF30070097FA6A /* MatchingMateQuotationView.swift in Sources */,
 				E5907B652AC1D2C30097FA6A /* MatchingInfoSetupSliderCell.swift in Sources */,
+				E5398FBD2AC6D537009CFF39 /* ManagementOrderView.swift in Sources */,
 				E5D49012288C003800311493 /* MatchingCard.swift in Sources */,
 				E5EB0D042952928F00E70573 /* ProfileViewReactor.swift in Sources */,
 				E5907B5E2AC1BF9F0097FA6A /* MatchingInfoFilterSetupViewReactor.swift in Sources */,
 				E5AD7391287A863800BA2C5E /* LoginVC.swift in Sources */,
 				E5F35E1D2986672F00211C99 /* ResponseDTO.swift in Sources */,
 				E574D4272A64F4860059B0C1 /* TeamCalendarBackgroundView.swift in Sources */,
+				E5398FC72AC6F95D009CFF39 /* ManagementMyInfoSection.swift in Sources */,
 				E58080D22AB49CD00014253C /* MatchingInfoSetupAgeTextFieldCell.swift in Sources */,
 				E51D1C7E29531B8300A7EE49 /* MyRoommateViewReactor.swift in Sources */,
 				E5C9B1362A496BB5001BF59D /* NetworkService.swift in Sources */,
 				E5AD739F287AEF2D00BA2C5E /* EmailVC.swift in Sources */,
+				E5398FC32AC6DDA2009CFF39 /* ManagementMatchingCardCell.swift in Sources */,
 				E5CFF7242983658900E11D9A /* OnboardingButton.swift in Sources */,
 				E56271D52A8539D40043F208 /* CommunitySinglePostResponseDTO.swift in Sources */,
 				E58080BE2AB328A20014253C /* MatchingInfoSetupTextFieldCell.swift in Sources */,
@@ -2082,6 +2169,7 @@
 				E5D31BF1289AAE3D00510315 /* UIScrollView+.swift in Sources */,
 				E5FC905E2A6179D7001C4A15 /* CalendarMemberHeader.swift in Sources */,
 				E5EDDF4F2AC5DA0900D8B57D /* ProfileSection.swift in Sources */,
+				E5398FC52AC6F273009CFF39 /* ManagementMyInfoVC.swift in Sources */,
 				E5EDDF622AC5E69A00D8B57D /* MatchingRequestModel.swift in Sources */,
 				E5EDDF572AC5E3CA00D8B57D /* ProfileMainCell.swift in Sources */,
 			);

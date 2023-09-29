@@ -17,7 +17,7 @@ protocol CommunityCommentCellDelegate: AnyObject {
   func didTapOptionButton(_ comment: Comment)
 }
 
-final class CommunityCommentCell: UICollectionViewCell, BaseViewProtocol {
+final class CommunityCommentCell: BaseCollectionViewCell {
   
   // MARK: - UI Components
   
@@ -103,7 +103,6 @@ final class CommunityCommentCell: UICollectionViewCell, BaseViewProtocol {
   // MARK: - Properties
   
   weak var delegate: CommunityCommentCellDelegate?
-  private var disposeBag = DisposeBag()
   private var topConstraints: Constraint?
   private var bottomConstarints: Constraint?
   
@@ -126,9 +125,9 @@ final class CommunityCommentCell: UICollectionViewCell, BaseViewProtocol {
   
   // MARK: - Setup
   
-  func setupStyles() {}
+  override func setupStyles() {}
   
-  func setupLayouts() {
+  override func setupLayouts() {
     [
       self.replyImageView,
       self.profileImageView,
@@ -142,7 +141,7 @@ final class CommunityCommentCell: UICollectionViewCell, BaseViewProtocol {
     }
   }
   
-  func setupConstraints() {
+  override func setupConstraints() {
     self.replyImageView.snp.makeConstraints { make in
       make.top.equalToSuperview().inset(16.0)
       make.leading.equalToSuperview().inset(24.0)
@@ -185,7 +184,7 @@ final class CommunityCommentCell: UICollectionViewCell, BaseViewProtocol {
   
   // MARK: - Bind
   
-  private func bind() {
+  override func bind() {
     self.replyButton.rx.tap
       .compactMap { self.comment?.commentId }
       .asDriver(onErrorRecover: { _ in return .empty() })

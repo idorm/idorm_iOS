@@ -75,6 +75,7 @@ final class ProfileViewController: BaseViewController, View {
           return cell
         default:
           let cell = collectionView.dequeueReusableCell(for: indexPath) as ProfileButtonCell
+          cell.configure(with: item)
           return cell
         }
       }

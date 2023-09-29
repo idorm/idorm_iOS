@@ -16,7 +16,7 @@ class BaseCollectionViewCell: UICollectionViewCell, Reusable, BaseViewProtocol {
   
   var disposeBag = DisposeBag()
   
-  // MARK: - Initializer
+  // MARK: - Life Cycle
   
   override init(frame: CGRect) {
     super.init(frame: frame)

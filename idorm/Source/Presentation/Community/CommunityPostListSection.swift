@@ -21,7 +21,7 @@ enum CommunityPostListSection: Hashable {
     case .post:
       return NSCollectionLayoutSize(
         widthDimension: .fractionalWidth(1.0),
-        heightDimension: .absolute(136.0)
+        heightDimension: .absolute(139.0)
       )
     }
   }

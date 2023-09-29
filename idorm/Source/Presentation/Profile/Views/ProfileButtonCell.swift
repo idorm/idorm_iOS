@@ -13,7 +13,7 @@ final class ProfileButtonCell: BaseCollectionViewCell {
   
   // MARK: - UI Components
   
-  private let iconButton: iDormButton = {
+  private lazy var iconButton: iDormButton = {
     let button = iDormButton()
     button.cornerRadius = 26.0
     button.baseBackgroundColor = .white
