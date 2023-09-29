@@ -1,16 +1,17 @@
 //
-//  BaseCollectionViewCell.swift
+//  BaseReusableView.swift
 //  idorm
 //
-//  Created by 김응철 on 9/15/23.
+//  Created by 김응철 on 9/29/23.
 //
 
 import UIKit
 
 import RxSwift
+import RxCocoa
 import Reusable
 
-class BaseCollectionViewCell: UICollectionViewCell, Reusable, BaseViewProtocol {
+class BaseReusableView: UICollectionReusableView, Reusable, BaseViewProtocol {
   
   // MARK: - Properties
   

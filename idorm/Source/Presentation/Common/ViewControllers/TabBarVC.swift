@@ -36,13 +36,13 @@ final class TabBarViewController: UITabBarController {
   private func setupViewControllers() {
     let homeVC = HomeViewController()
     let matchingVC = MatchingMateViewController()
-    let myPageVC = MyPageViewController()
+    let myPageVC = ProfileViewController()
     let postListVC = CommunityPostListViewController()
     let calendarVC = CalendarViewController()
     
     homeVC.reactor = HomeViewReactor()
     matchingVC.reactor = MatchingMateViewReactor()
-    myPageVC.reactor = MyPageViewReactor()
+    myPageVC.reactor = ProfileViewReactor()
     postListVC.reactor = CommunityPostListViewReactor()
     calendarVC.reactor = CalendarViewReactor()
     

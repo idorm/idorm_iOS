@@ -12,7 +12,7 @@ import RxCocoa
 import ReactorKit
 import RxMoya
 
-final class MyPageViewReactor: Reactor {
+final class ProfileViewReactor: Reactor {
   
   enum Action {
     case viewWillAppear
@@ -37,6 +37,10 @@ final class MyPageViewReactor: Reactor {
   }
   
   struct State {
+    var sections: [ProfileSection] = []
+    var items: [[ProfileSectionItem]] = []
+    var isPublicMatchingInfo: Bool = false
+    
     var isOpenedManageMyInfoVC: Bool = false
     var isOpenedOnboardingVC: Bool = false
     var isOpenedOnboardingDetailVC: (Bool, MatchingResponseModel.Member) = (false, .init())
@@ -50,7 +54,11 @@ final class MyPageViewReactor: Reactor {
     var currentProfileURL: String?
   }
   
+  // MARK: - Properties
+  
   let initialState: State = State()
+  
+  // MARK: - Functions
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
@@ -171,5 +179,28 @@ final class MyPageViewReactor: Reactor {
     }
     
     return newState
+  }
+  
+  func transform(state: Observable<State>) -> Observable<State> {
+    return state.map { state in
+      var newState = state
+      
+//      guard let member = UserStorage.shared.member else { return newState }
+      var member = Member()
+      member.nickname = "김응철"
+      let isPublic = UserStorage.shared.isPublicMatchingInfo
+      
+      newState.sections = 
+      [.profile, .roommate, .publicSetting, .community]
+      newState.items =
+      [
+        [.profile(imageURL: member.profilePhotoURL ?? "", nickname: member.nickname)],
+        [.matchingImage, .dislikedRoommate, .likedRoommate],
+        [.publicSetting(isPublic: isPublic)],
+        [.myPost, .myComment, .recommendedPost]
+      ]
+      
+      return newState
+    }
   }
 }

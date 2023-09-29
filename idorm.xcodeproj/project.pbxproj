@@ -68,6 +68,8 @@
 		E52E96B22915FAB6009E1773 /* MatchingContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52E96B12915FAB6009E1773 /* MatchingContainerView.swift */; };
 		E52E96B429160870009E1773 /* TopProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52E96B329160870009E1773 /* TopProfileView.swift */; };
 		E5359117292343A900E28C1C /* (null) in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E5398FB42AC6A590009CFF39 /* Reusable in Frameworks */ = {isa = PBXBuildFile; productRef = E5398FB32AC6A590009CFF39 /* Reusable */; };
+		E5398FB62AC6A769009CFF39 /* ProfileDecorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5398FB52AC6A769009CFF39 /* ProfileDecorationView.swift */; };
 		E53C60B0287B37CB00977909 /* CompleteSignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53C60AF287B37CB00977909 /* CompleteSignUpVC.swift */; };
 		E53D1A3F2988A5780074308B /* MemberAPI+Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53D1A3E2988A5780074308B /* MemberAPI+Task.swift */; };
 		E53D1A412988A5C00074308B /* MemberAPI+Path.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53D1A402988A5C00074308B /* MemberAPI+Path.swift */; };
@@ -263,7 +265,7 @@
 		E5E77EC628D822FB00031010 /* OldiDormButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E77EC528D822FB00031010 /* OldiDormButton.swift */; };
 		E5E77EC828D825EB00031010 /* iDormTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E77EC728D825EB00031010 /* iDormTextField.swift */; };
 		E5E8A3DF2895208500A48A91 /* MyCommentsCollectionVIewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E8A3DE2895208500A48A91 /* MyCommentsCollectionVIewCell.swift */; };
-		E5EB0D042952928F00E70573 /* MyPageViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB0D032952928F00E70573 /* MyPageViewReactor.swift */; };
+		E5EB0D042952928F00E70573 /* ProfileViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EB0D032952928F00E70573 /* ProfileViewReactor.swift */; };
 		E5EDDF342AC3C7D400D8B57D /* iDormPopupVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDDF332AC3C7D400D8B57D /* iDormPopupVC.swift */; };
 		E5EDDF382AC3DD3C00D8B57D /* CommunityPostListSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDDF372AC3DD3C00D8B57D /* CommunityPostListSection.swift */; };
 		E5EDDF3A2AC47C5100D8B57D /* CommunityPostingSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDDF392AC47C5100D8B57D /* CommunityPostingSection.swift */; };
@@ -272,6 +274,17 @@
 		E5EDDF432AC513C200D8B57D /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDDF422AC513C200D8B57D /* ImageDownloader.swift */; };
 		E5EDDF472AC54F2900D8B57D /* iDormPHPickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDDF462AC54F2900D8B57D /* iDormPHPickerVC.swift */; };
 		E5EDDF492AC567CA00D8B57D /* PostImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDDF482AC567CA00D8B57D /* PostImageData.swift */; };
+		E5EDDF4D2AC5D9A900D8B57D /* ProfileButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDDF4C2AC5D9A900D8B57D /* ProfileButtonCell.swift */; };
+		E5EDDF4F2AC5DA0900D8B57D /* ProfileSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDDF4E2AC5DA0900D8B57D /* ProfileSection.swift */; };
+		E5EDDF512AC5E15600D8B57D /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDDF502AC5E15600D8B57D /* ProfileHeaderView.swift */; };
+		E5EDDF532AC5E1BF00D8B57D /* BaseReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDDF522AC5E1BF00D8B57D /* BaseReusableView.swift */; };
+		E5EDDF552AC5E2A900D8B57D /* ProfilePublicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDDF542AC5E2A900D8B57D /* ProfilePublicCell.swift */; };
+		E5EDDF572AC5E3CA00D8B57D /* ProfileMainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDDF562AC5E3CA00D8B57D /* ProfileMainCell.swift */; };
+		E5EDDF5E2AC5E69A00D8B57D /* MatchingResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDDF592AC5E69900D8B57D /* MatchingResponseModel.swift */; };
+		E5EDDF5F2AC5E69A00D8B57D /* MemberResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDDF5A2AC5E69A00D8B57D /* MemberResponseModel.swift */; };
+		E5EDDF602AC5E69A00D8B57D /* MatchingInfoRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDDF5B2AC5E69A00D8B57D /* MatchingInfoRequestModel.swift */; };
+		E5EDDF612AC5E69A00D8B57D /* CommunityRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDDF5C2AC5E69A00D8B57D /* CommunityRequestModel.swift */; };
+		E5EDDF622AC5E69A00D8B57D /* MatchingRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDDF5D2AC5E69A00D8B57D /* MatchingRequestModel.swift */; };
 		E5F35E1B298665E000211C99 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F35E1A298665E000211C99 /* Comment.swift */; };
 		E5F35E1D2986672F00211C99 /* ResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F35E1C2986672F00211C99 /* ResponseDTO.swift */; };
 		E5F48B7F2A7747CB00874207 /* TeamCalendarSingleResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F48B7E2A7747CB00874207 /* TeamCalendarSingleResponseDTO.swift */; };
@@ -284,7 +297,7 @@
 		E5F565702918FF5A0043FCB4 /* MyRoommateVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5656F2918FF5A0043FCB4 /* MyRoommateVC.swift */; };
 		E5F56572291902B60043FCB4 /* MyPageSortHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F56571291902B60043FCB4 /* MyPageSortHeaderView.swift */; };
 		E5F56574291908DE0043FCB4 /* MyRoommateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F56573291908DE0043FCB4 /* MyRoommateCell.swift */; };
-		E5F5EC78288402840026DE21 /* MyPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC77288402840026DE21 /* MyPageVC.swift */; };
+		E5F5EC78288402840026DE21 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5EC77288402840026DE21 /* ProfileVC.swift */; };
 		E5FA993C2A013ED60047AC0A /* DormCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FA993B2A013ED60047AC0A /* DormCalendarCell.swift */; };
 		E5FA993E2A016CE80047AC0A /* DormCalendarAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FA993D2A016CE80047AC0A /* DormCalendarAPI.swift */; };
 		E5FA99432A01DEE70047AC0A /* CalendarResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FA99422A01DEE70047AC0A /* CalendarResponseModel.swift */; };
@@ -378,6 +391,7 @@
 		E52CD85528BE371F00A262ED /* ManageMyInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageMyInfoView.swift; sourceTree = "<group>"; };
 		E52E96B12915FAB6009E1773 /* MatchingContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingContainerView.swift; sourceTree = "<group>"; };
 		E52E96B329160870009E1773 /* TopProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopProfileView.swift; sourceTree = "<group>"; };
+		E5398FB52AC6A769009CFF39 /* ProfileDecorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDecorationView.swift; sourceTree = "<group>"; };
 		E53C60AF287B37CB00977909 /* CompleteSignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteSignUpVC.swift; sourceTree = "<group>"; };
 		E53D1A3E2988A5780074308B /* MemberAPI+Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemberAPI+Task.swift"; sourceTree = "<group>"; };
 		E53D1A402988A5C00074308B /* MemberAPI+Path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MemberAPI+Path.swift"; sourceTree = "<group>"; };
@@ -552,7 +566,7 @@
 		E5E77EC528D822FB00031010 /* OldiDormButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldiDormButton.swift; sourceTree = "<group>"; };
 		E5E77EC728D825EB00031010 /* iDormTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iDormTextField.swift; sourceTree = "<group>"; };
 		E5E8A3DE2895208500A48A91 /* MyCommentsCollectionVIewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCommentsCollectionVIewCell.swift; sourceTree = "<group>"; };
-		E5EB0D032952928F00E70573 /* MyPageViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewReactor.swift; sourceTree = "<group>"; };
+		E5EB0D032952928F00E70573 /* ProfileViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewReactor.swift; sourceTree = "<group>"; };
 		E5EDDF332AC3C7D400D8B57D /* iDormPopupVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iDormPopupVC.swift; sourceTree = "<group>"; };
 		E5EDDF372AC3DD3C00D8B57D /* CommunityPostListSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPostListSection.swift; sourceTree = "<group>"; };
 		E5EDDF392AC47C5100D8B57D /* CommunityPostingSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityPostingSection.swift; sourceTree = "<group>"; };
@@ -561,6 +575,17 @@
 		E5EDDF422AC513C200D8B57D /* ImageDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
 		E5EDDF462AC54F2900D8B57D /* iDormPHPickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iDormPHPickerVC.swift; sourceTree = "<group>"; };
 		E5EDDF482AC567CA00D8B57D /* PostImageData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostImageData.swift; sourceTree = "<group>"; };
+		E5EDDF4C2AC5D9A900D8B57D /* ProfileButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileButtonCell.swift; sourceTree = "<group>"; };
+		E5EDDF4E2AC5DA0900D8B57D /* ProfileSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSection.swift; sourceTree = "<group>"; };
+		E5EDDF502AC5E15600D8B57D /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
+		E5EDDF522AC5E1BF00D8B57D /* BaseReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseReusableView.swift; sourceTree = "<group>"; };
+		E5EDDF542AC5E2A900D8B57D /* ProfilePublicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePublicCell.swift; sourceTree = "<group>"; };
+		E5EDDF562AC5E3CA00D8B57D /* ProfileMainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileMainCell.swift; sourceTree = "<group>"; };
+		E5EDDF592AC5E69900D8B57D /* MatchingResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchingResponseModel.swift; sourceTree = "<group>"; };
+		E5EDDF5A2AC5E69A00D8B57D /* MemberResponseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberResponseModel.swift; sourceTree = "<group>"; };
+		E5EDDF5B2AC5E69A00D8B57D /* MatchingInfoRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchingInfoRequestModel.swift; sourceTree = "<group>"; };
+		E5EDDF5C2AC5E69A00D8B57D /* CommunityRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityRequestModel.swift; sourceTree = "<group>"; };
+		E5EDDF5D2AC5E69A00D8B57D /* MatchingRequestModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchingRequestModel.swift; sourceTree = "<group>"; };
 		E5F35E1A298665E000211C99 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		E5F35E1C2986672F00211C99 /* ResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseDTO.swift; sourceTree = "<group>"; };
 		E5F48B7E2A7747CB00874207 /* TeamCalendarSingleResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamCalendarSingleResponseDTO.swift; sourceTree = "<group>"; };
@@ -573,7 +598,7 @@
 		E5F5656F2918FF5A0043FCB4 /* MyRoommateVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoommateVC.swift; sourceTree = "<group>"; };
 		E5F56571291902B60043FCB4 /* MyPageSortHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageSortHeaderView.swift; sourceTree = "<group>"; };
 		E5F56573291908DE0043FCB4 /* MyRoommateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRoommateCell.swift; sourceTree = "<group>"; };
-		E5F5EC77288402840026DE21 /* MyPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageVC.swift; sourceTree = "<group>"; };
+		E5F5EC77288402840026DE21 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		E5FA993B2A013ED60047AC0A /* DormCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DormCalendarCell.swift; sourceTree = "<group>"; };
 		E5FA993D2A016CE80047AC0A /* DormCalendarAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DormCalendarAPI.swift; sourceTree = "<group>"; };
 		E5FA99422A01DEE70047AC0A /* CalendarResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarResponseModel.swift; sourceTree = "<group>"; };
@@ -604,6 +629,7 @@
 				E551032929237177001E1530 /* Then in Frameworks */,
 				E551030E29236EF1001E1530 /* Alamofire in Frameworks */,
 				E5732D2C2A1A3A9A009EE496 /* Pods_idorm.framework in Frameworks */,
+				E5398FB42AC6A590009CFF39 /* Reusable in Frameworks */,
 				E5510323292370F2001E1530 /* RxAppState in Frameworks */,
 				E5B61F2529B3544D0031046C /* FirebaseMessaging in Frameworks */,
 				E551030929236E84001E1530 /* RxRelay in Frameworks */,
@@ -822,6 +848,13 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		E5398FB12AC6A4B2009CFF39 /* Management */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Management;
+			sourceTree = "<group>";
+		};
 		E53D1A3D2988A5640074308B /* Member */ = {
 			isa = PBXGroup;
 			children = (
@@ -881,7 +914,8 @@
 				E56DF4C3289405CD00E85B10 /* MatchingMate */,
 				E56DF4B02893CE4F00E85B10 /* Community */,
 				E56AF40E2A59620600984DA3 /* Calendar */,
-				E56DF4CA2894061000E85B10 /* MyPage */,
+				E56DF4CA2894061000E85B10 /* Profile */,
+				E5398FB12AC6A4B2009CFF39 /* Management */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -1063,20 +1097,21 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
-		E56DF4CA2894061000E85B10 /* MyPage */ = {
+		E56DF4CA2894061000E85B10 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				E5EDDF4E2AC5DA0900D8B57D /* ProfileSection.swift */,
 				E56DF4CB2894061800E85B10 /* ViewControllers */,
 				E5E8A3D82894BA8B00A48A91 /* Reactors */,
 				E5E8A3D62894BA8000A48A91 /* Views */,
 			);
-			path = MyPage;
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		E56DF4CB2894061800E85B10 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				E5F5EC77288402840026DE21 /* MyPageVC.swift */,
+				E5F5EC77288402840026DE21 /* ProfileVC.swift */,
 				E5AC2A4C28BB5B250069ABB9 /* ManageMyInfoVC.swift */,
 				E5AF9DBF29FF9AC100C1001D /* CropViewController.swift */,
 				E5F5656F2918FF5A0043FCB4 /* MyRoommateVC.swift */,
@@ -1129,6 +1164,7 @@
 			children = (
 				E5909CE528D94B610083075D /* BaseViewController.swift */,
 				E58080CD2AB459680014253C /* BaseCollectionViewCell.swift */,
+				E5EDDF522AC5E1BF00D8B57D /* BaseReusableView.swift */,
 				E5CFF70A2982D00200E11D9A /* BaseTargetType.swift */,
 				E50FB5232971920B00E938B8 /* BaseViewProtocol.swift */,
 				E503010128773A5E00611C62 /* LaunchScreen.storyboard */,
@@ -1309,6 +1345,7 @@
 		E5CFF53F2ABB0DE300186D8C /* DTO */ = {
 			isa = PBXGroup;
 			children = (
+				E5EDDF582AC5E69200D8B57D /* Deprecated */,
 				E5F35E1C2986672F00211C99 /* ResponseDTO.swift */,
 				E5283D5529489E28004DD34F /* ErrorResponseModel.swift */,
 				E5907B542ABF28740097FA6A /* MatchingMate */,
@@ -1407,6 +1444,12 @@
 		E5E8A3D62894BA8000A48A91 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E5EDDF562AC5E3CA00D8B57D /* ProfileMainCell.swift */,
+				E5EDDF4C2AC5D9A900D8B57D /* ProfileButtonCell.swift */,
+				E5EDDF542AC5E2A900D8B57D /* ProfilePublicCell.swift */,
+				E5EDDF502AC5E15600D8B57D /* ProfileHeaderView.swift */,
+				E5398FB52AC6A769009CFF39 /* ProfileDecorationView.swift */,
+				E5EDDF4B2AC5D94300D8B57D /* Profile */,
 				E5E8A3D72894BA8600A48A91 /* Cells */,
 				E52CD85528BE371F00A262ED /* ManageMyInfoView.swift */,
 				E55AE18B29E52A6E002E6025 /* CommunityContainerView.swift */,
@@ -1431,7 +1474,7 @@
 		E5E8A3D82894BA8B00A48A91 /* Reactors */ = {
 			isa = PBXGroup;
 			children = (
-				E5EB0D032952928F00E70573 /* MyPageViewReactor.swift */,
+				E5EB0D032952928F00E70573 /* ProfileViewReactor.swift */,
 				E51D1C7B2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift */,
 				E51D1C7D29531B8300A7EE49 /* MyRoommateViewReactor.swift */,
 				E575D37429548DF900B13530 /* WithDrawalViewReactor.swift */,
@@ -1515,6 +1558,25 @@
 				E5E0BA852A9902BA0022A63B /* iDormSplashViewReactor.swift */,
 			);
 			path = Reactors;
+			sourceTree = "<group>";
+		};
+		E5EDDF4B2AC5D94300D8B57D /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		E5EDDF582AC5E69200D8B57D /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				E5EDDF5C2AC5E69A00D8B57D /* CommunityRequestModel.swift */,
+				E5EDDF5B2AC5E69A00D8B57D /* MatchingInfoRequestModel.swift */,
+				E5EDDF5D2AC5E69A00D8B57D /* MatchingRequestModel.swift */,
+				E5EDDF592AC5E69900D8B57D /* MatchingResponseModel.swift */,
+				E5EDDF5A2AC5E69A00D8B57D /* MemberResponseModel.swift */,
+			);
+			path = Deprecated;
 			sourceTree = "<group>";
 		};
 		E5F48B822A7795A600874207 /* Calendar */ = {
@@ -1626,6 +1688,7 @@
 				E521FC252A2834E2008B2956 /* RxKakaoSDK */,
 				E521FC272A2834E2008B2956 /* RxKakaoSDKShare */,
 				E56AF4072A583CF900984DA3 /* FSCalendar */,
+				E5398FB32AC6A590009CFF39 /* Reusable */,
 			);
 			productName = idorm;
 			productReference = E50300F328773A5D00611C62 /* idorm.app */;
@@ -1675,6 +1738,7 @@
 				E5B61F2329B3544D0031046C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				E521FC242A2834E2008B2956 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
 				E56AF4062A583CF900984DA3 /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				E5398FB22AC6A590009CFF39 /* XCRemoteSwiftPackageReference "Reusable" */,
 			);
 			productRefGroup = E50300F428773A5D00611C62 /* Products */;
 			projectDirPath = "";
@@ -1765,6 +1829,7 @@
 				E5FA993C2A013ED60047AC0A /* DormCalendarCell.swift in Sources */,
 				E53D1A412988A5C00074308B /* MemberAPI+Path.swift in Sources */,
 				E528E2232AA1C1150071C156 /* MatchingInfoResponeDTO.swift in Sources */,
+				E5EDDF512AC5E15600D8B57D /* ProfileHeaderView.swift in Sources */,
 				E5AD73A3287B2B5200BA2C5E /* PasswordVC.swift in Sources */,
 				E506642C296E6BAA00B581E1 /* CommunityTopPostListCell.swift in Sources */,
 				E5E1497E2950498300A3827C /* TokenStorage.swift in Sources */,
@@ -1774,6 +1839,7 @@
 				E5907B632AC1CC810097FA6A /* MatchingInfoFilter.swift in Sources */,
 				E5BFED592A8BBE8F004D22E4 /* TeamCalendar.swift in Sources */,
 				E5D07087292F098500D5DF6E /* String+.swift in Sources */,
+				E5EDDF602AC5E69A00D8B57D /* MatchingInfoRequestModel.swift in Sources */,
 				E5C89E4B28A9EDA70035D9C6 /* URLRequest+.swift in Sources */,
 				E58080CE2AB459680014253C /* BaseCollectionViewCell.swift in Sources */,
 				E52B0B5F2959E91E000CDE13 /* UINavigationController+.swift in Sources */,
@@ -1839,6 +1905,7 @@
 				E547E3E3291CEF21000D3A47 /* MatchingCardBoolView.swift in Sources */,
 				E5EDDF3A2AC47C5100D8B57D /* CommunityPostingSection.swift in Sources */,
 				E58080BB2AB3275B0014253C /* MatchingInfoSetupSection.swift in Sources */,
+				E5EDDF5E2AC5E69A00D8B57D /* MatchingResponseModel.swift in Sources */,
 				E5B249BD296266DA00081609 /* TermsOfServiceVC.swift in Sources */,
 				E5AF9DC029FF9AC100C1001D /* CropViewController.swift in Sources */,
 				E5C2614E2919D3AA00623C0E /* BottomSheetUtils.swift in Sources */,
@@ -1858,6 +1925,7 @@
 				E56271D92A853A580043F208 /* CommunitySubCommentResponseDTO.swift in Sources */,
 				E5F48B812A7747D600874207 /* TeamCalendarSingleMemberResponseDTO.swift in Sources */,
 				E5FC90532A5D90A4001C4A15 /* NetworkUtility.swift in Sources */,
+				E5EDDF5F2AC5E69A00D8B57D /* MemberResponseModel.swift in Sources */,
 				E50E20302AA76B8D0049A0FD /* NewiDormTextField.swift in Sources */,
 				E5FC90702A64387A001C4A15 /* CalendarAPI.swift in Sources */,
 				E5921A692ABECF670086C4A7 /* iDormMatchingCardTextView.swift in Sources */,
@@ -1886,6 +1954,7 @@
 				E5E5341C2A9097B600CDC357 /* DormCalendar.swift in Sources */,
 				E50F850329582D5E008B7052 /* CompleteSignupViewReactor.swift in Sources */,
 				E59F0D502920A47E00D3B737 /* MatchingBottomSheet.swift in Sources */,
+				E5EDDF532AC5E1BF00D8B57D /* BaseReusableView.swift in Sources */,
 				E5FC90622A63A857001C4A15 /* CalendarHeader.swift in Sources */,
 				E5E77EC828D825EB00031010 /* iDormTextField.swift in Sources */,
 				E529516729BD257600087AE2 /* SceneUtils.swift in Sources */,
@@ -1924,6 +1993,7 @@
 				E562611A299B5B5700D14020 /* OldBottomSheetVC.swift in Sources */,
 				E56AF4052A583B3900984DA3 /* iDormCalendarView.swift in Sources */,
 				E52233B6296D04A200C5DD07 /* CommunityPostingImageCell.swift in Sources */,
+				E5EDDF612AC5E69A00D8B57D /* CommunityRequestModel.swift in Sources */,
 				E58080D82AB7DFF30014253C /* iDormMatchingCardView.swift in Sources */,
 				E56271D02A8535F80043F208 /* Post.swift in Sources */,
 				E550988D2A93028600BC45AF /* TeamCalendarSleepoverResponseDTO.swift in Sources */,
@@ -1945,6 +2015,7 @@
 				E5E5341E2A91116900CDC357 /* CommunitySingleTopPostResponseDTO.swift in Sources */,
 				E58080CA2AB35B940014253C /* JoinPeriod.swift in Sources */,
 				E5EDDF492AC567CA00D8B57D /* PostImageData.swift in Sources */,
+				E5EDDF552AC5E2A900D8B57D /* ProfilePublicCell.swift in Sources */,
 				E55DDAE929179DD900E62ECB /* NavigationAppearanceUtils.swift in Sources */,
 				E5E8A3DF2895208500A48A91 /* MyCommentsCollectionVIewCell.swift in Sources */,
 				E5F565702918FF5A0043FCB4 /* MyRoommateVC.swift in Sources */,
@@ -1966,18 +2037,20 @@
 				E51D1C7C2952E5F000A7EE49 /* ManageMyInfoViewReactor.swift in Sources */,
 				E5F48B8A2A7B909500874207 /* CalendarDateSelectionViewReactor.swift in Sources */,
 				E5CFF7052982CDDC00E11D9A /* CommunityAPI+Path.swift in Sources */,
-				E5F5EC78288402840026DE21 /* MyPageVC.swift in Sources */,
+				E5F5EC78288402840026DE21 /* ProfileVC.swift in Sources */,
 				E58080C02AB328C80014253C /* MatchingInfoSetupButtonCell.swift in Sources */,
 				E5FC905C2A602D24001C4A15 /* CalendarMemberCell.swift in Sources */,
 				E5294FF329277A06004D408C /* MatchingMateAPI.swift in Sources */,
 				E5FC90572A5D9701001C4A15 /* CalendarViewReactor.swift in Sources */,
 				E5FA993E2A016CE80047AC0A /* DormCalendarAPI.swift in Sources */,
 				E574D4252A643D450059B0C1 /* CalendarAPI+Task.swift in Sources */,
+				E5EDDF4D2AC5D9A900D8B57D /* ProfileButtonCell.swift in Sources */,
+				E5398FB62AC6A769009CFF39 /* ProfileDecorationView.swift in Sources */,
 				E5AD7396287A8C2F00BA2C5E /* UIColor+.swift in Sources */,
 				E5907B5A2ABF30070097FA6A /* MatchingMateQuotationView.swift in Sources */,
 				E5907B652AC1D2C30097FA6A /* MatchingInfoSetupSliderCell.swift in Sources */,
 				E5D49012288C003800311493 /* MatchingCard.swift in Sources */,
-				E5EB0D042952928F00E70573 /* MyPageViewReactor.swift in Sources */,
+				E5EB0D042952928F00E70573 /* ProfileViewReactor.swift in Sources */,
 				E5907B5E2AC1BF9F0097FA6A /* MatchingInfoFilterSetupViewReactor.swift in Sources */,
 				E5AD7391287A863800BA2C5E /* LoginVC.swift in Sources */,
 				E5F35E1D2986672F00211C99 /* ResponseDTO.swift in Sources */,
@@ -2008,6 +2081,9 @@
 				E5626118299B5A5D00D14020 /* BottomSheet.swift in Sources */,
 				E5D31BF1289AAE3D00510315 /* UIScrollView+.swift in Sources */,
 				E5FC905E2A6179D7001C4A15 /* CalendarMemberHeader.swift in Sources */,
+				E5EDDF4F2AC5DA0900D8B57D /* ProfileSection.swift in Sources */,
+				E5EDDF622AC5E69A00D8B57D /* MatchingRequestModel.swift in Sources */,
+				E5EDDF572AC5E3CA00D8B57D /* ProfileMainCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2251,6 +2327,14 @@
 				minimumVersion = 2.15.0;
 			};
 		};
+		E5398FB22AC6A590009CFF39 /* XCRemoteSwiftPackageReference "Reusable" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AliSoftware/Reusable.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 4.1.2;
+			};
+		};
 		E551030029236E4F001E1530 /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya.git";
@@ -2407,6 +2491,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E521FC242A2834E2008B2956 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */;
 			productName = RxKakaoSDKShare;
+		};
+		E5398FB32AC6A590009CFF39 /* Reusable */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E5398FB22AC6A590009CFF39 /* XCRemoteSwiftPackageReference "Reusable" */;
+			productName = Reusable;
 		};
 		E551030129236E4F001E1530 /* Moya */ = {
 			isa = XCSwiftPackageProductDependency;

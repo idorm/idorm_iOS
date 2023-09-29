@@ -16,7 +16,6 @@ enum iDormIcon: String {
   
   case calendar
   case cancel
-  case remove
   case closedEye
   case checkCircle
   
@@ -25,6 +24,8 @@ enum iDormIcon: String {
   case dormitory
   case deselect
   case down
+  
+  case gear
 
   case option
   case openedEye
@@ -40,12 +41,14 @@ enum iDormIcon: String {
   
   case select
   
+  case remove
   case repetition
   case reply
   case right_quotation_marks
   
   case human
   case human_fill
+  case heart
   
   case thumb
   case trashcan
@@ -81,6 +84,10 @@ enum iDormText: String {
 }
 
 enum iDormImage: String {
+  case deselect
+  
+  case select
+  
   case human
   
   case matchingMate_background

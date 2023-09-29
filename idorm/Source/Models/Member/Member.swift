@@ -11,12 +11,19 @@ import Foundation
 struct Member: Codable {
   /// 해당 멤버의 식별자
   let identifier: Int
-  let email: String
-  let nickname: String
-  let profilePhotoURL: String?
+  var email: String
+  var nickname: String
+  var profilePhotoURL: String?
   
   // MARK: - Initializer
   
+  init() {
+    self.identifier = -1
+    self.email = ""
+    self.nickname = ""
+    self.profilePhotoURL = nil
+  }
+
   /// `MemberSingleResponseDTO` To `Member`
   init(_ responseDTO: MemberSingleResponseDTO) {
     self.identifier = responseDTO.memberId
