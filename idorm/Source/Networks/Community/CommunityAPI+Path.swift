@@ -7,44 +7,44 @@
 
 import Foundation
 
-extension CommunityAPI {
-  func getPath() -> String {
-    switch self {
-    case .lookupPosts(let dorm, _):
-      return "/member/posts/\(dorm.rawValue)"
-      
-    case .lookupTopPosts(let dorm):
-      return "/member/posts/\(dorm.rawValue)/top"
-      
-    case .savePost:
-      return "/member/post"
-      
-    case .lookupDetailPost(let postId):
-      return "/member/post/\(postId)"
-      
-    case .saveComment(let postId, _):
-      return "/member/post/\(postId)/comment"
-      
-    case .editPostSympathy(let postId, _):
-      return "/member/post/\(postId)/like"
-      
-    case let .deleteComment(postId, commentId):
-      return "/member/post/\(postId)/comment/\(commentId)"
-      
-    case .deletePost(let postId):
-      return "/member/post/\(postId)"
-      
-    case .lookupMyPosts:
-      return "/member/posts/write"
-      
-    case .lookupMyComments:
-      return "/member/comments"
-      
-    case .lookupMyLikedPosts:
-      return "/member/posts/like"
-      
-    case .editPost(let postId, _, _):
-      return "/member/post/\(postId)"
-    }
-  }
-}
+//extension CommunityAPI {
+//  func getPath() -> String {
+//    switch self {
+//    case .lookupPosts(let dorm, _):
+//      return "/member/posts/\(dorm.rawValue)"
+//      
+//    case .lookupTopPosts(let dorm):
+//      return "/member/posts/\(dorm.rawValue)/top"
+//      
+//    case .savePost:
+//      return "/member/post"
+//      
+//    case .lookupDetailPost(let postId):
+//      return "/member/post/\(postId)"
+//      
+//    case .saveComment(let postId, _):
+//      return "/member/post/\(postId)/comment"
+//      
+//    case .editPostSympathy(let postId, _):
+//      return "/member/post/\(postId)/like"
+//      
+//    case let .deleteComment(postId, commentId):
+//      return "/member/post/\(postId)/comment/\(commentId)"
+//      
+//    case .deletePost(let postId):
+//      return "/member/post/\(postId)"
+//      
+//    case .lookupMyPosts:
+//      return "/member/posts/write"
+//      
+//    case .lookupMyComments:
+//      return "/member/comments"
+//      
+//    case .lookupMyLikedPosts:
+//      return "/member/posts/like"
+//      
+//    case .editPost(let postId, _, _):
+//      return "/member/post/\(postId)"
+//    }
+//  }
+//}

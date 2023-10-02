@@ -91,7 +91,7 @@ final class CalendarViewReactor: Reactor {
       case let .teamMember(teamMember, _):
         let memberID = teamMember.memberId
         let yearMonth = self.currentState.currentDate
-        return self.apiManager.requestAPI(to: .postSleepoverCalendars(memberID: memberID, yearMonth: yearMonth))
+        return self.apiManager.requestAPI(to: .getSleepoverCalendars(memberID: memberID, yearMonth: yearMonth))
           .map(ResponseDTO<[TeamCalendarSleepoverResponseDTO]>.self)
           .flatMap {
             let teamCalendars = $0.data.map { TeamCalendar($0) }
@@ -253,7 +253,7 @@ private extension CalendarViewReactor {
   
   /// 기숙사 공식 월별 일정을 조회합니다.
   func requestDormCalendars() -> Observable<Mutation> {
-    self.apiManager.requestAPI(to: .postDormCalendars(yearMonth: self.currentState.currentDate))
+    self.apiManager.requestAPI(to: .getDormCalendars(yearMonth: self.currentState.currentDate))
       .map(ResponseDTO<[DormCalendarResponseDTO]>.self)
       .flatMap { response -> Observable<Mutation> in
         return .concat([
@@ -266,7 +266,7 @@ private extension CalendarViewReactor {
   /// 공유 캘린더의 월별 일정을 조회합니다.
   func requestTeamCalendars() -> Observable<Mutation> {
     guard !(self.currentState.teamId == -999) else { return .empty() }
-    return self.apiManager.requestAPI(to: .postTeamCalendars(yearMonth: self.currentState.currentDate))
+    return self.apiManager.requestAPI(to: .getTeamCalendars(yearMonth: self.currentState.currentDate))
       .map(ResponseDTO<[TeamCalendarResponseDTO]>.self)
       .flatMap { response -> Observable<Mutation> in
         return .just(.setTeamCalendars(response.data))

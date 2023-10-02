@@ -135,11 +135,11 @@ final class CalendarManagementViewController: BaseViewController, View {
   }()
   
   /// `일정 삭제`, `완료` 버튼이 들어있는 `iDormBottomView`
-  private lazy var bottomView: iDormBottomView = {
-    let view = iDormBottomView(
-      leftButton: .init("일정 삭제", image: nil),
-      rightButton: .init("완료", image: nil)
-    )
+  private lazy var bottomView: iDormBottomMenuView = {
+    let view = iDormBottomMenuView()
+    view.updateTitle(left: "일정 삭제", right: "완료")
+    view.leftButtonHandler = { self.reactor?.action.onNext(.deleteButtonDidTap) }
+    view.rightButtonHandler = { self.reactor?.action.onNext(.doneButtonDidTap) }
     return view
   }()
   
@@ -310,16 +310,6 @@ final class CalendarManagementViewController: BaseViewController, View {
     
     self.endDateButton.rx.tap
       .map { Reactor.Action.dateButtonDidTap(isStartDate: false) }
-      .bind(to: reactor.action)
-      .disposed(by: self.disposeBag)
-    
-    self.bottomView.rightButton.rx.tap
-      .map { Reactor.Action.doneButtonDidTap }
-      .bind(to: reactor.action)
-      .disposed(by: self.disposeBag)
-    
-    self.bottomView.leftButton.rx.tap
-      .map { Reactor.Action.deleteButtonDidTap }
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     

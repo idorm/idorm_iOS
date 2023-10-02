@@ -14,47 +14,38 @@ extension CalendarAPI {
     switch self {
     case .getTeamMembers:
       return .requestPlain
-      
-    case .postTeamCalendars(let yearMonth):
+    case .getTeamCalendars(let yearMonth):
       return .requestParameters(
         parameters: ["yearMonth": yearMonth],
         encoding: JSONEncoding.default
       )
-      
-    case .postDormCalendars(let yearMonth):
+    case .getDormCalendars(let yearMonth):
       return .requestParameters(
         parameters: ["yearMonth": yearMonth],
         encoding: JSONEncoding.default
       )
-      
     case .getTeamCalendar(let teamCalendarId):
       return .requestParameters(
         parameters: ["teamCalendarId": teamCalendarId],
         encoding: URLEncoding.queryString
       )
-      
-    case .putTeamCalendar(let requestModel):
+    case .updateTeamCalendar(let requestModel):
       return .requestJSONEncodable(requestModel)
-      
     case .deleteTeamCalendar(let teamCalendarId):
       return .requestParameters(
         parameters: ["teamCalendarId": teamCalendarId],
         encoding: URLEncoding.queryString
       )
-      
-    case .postTeamCalendar(let requestModel):
+    case .createTeamCalendar(let requestModel):
       return .requestJSONEncodable(requestModel)
-      
     case .deleteTeam:
       return .requestPlain
-      
     case .deleteTeamMember(let memberID):
       return .requestParameters(
         parameters: ["memberId": memberID],
         encoding: URLEncoding.queryString
       )
-      
-    case let .postSleepoverCalendar(startDate, endDate):
+    case let .createSleepoverCalendar(startDate, endDate):
       return .requestParameters(
         parameters: [
           "endDate": endDate,
@@ -62,8 +53,7 @@ extension CalendarAPI {
         ],
         encoding: JSONEncoding.default
       )
-      
-    case let .postSleepoverCalendars(memberID, yearMonth):
+    case let .getSleepoverCalendars(memberID, yearMonth):
       return .requestParameters(
         parameters: [
           "memberId": memberID,
@@ -71,7 +61,6 @@ extension CalendarAPI {
         ],
         encoding: JSONEncoding.default
       )
-      
     case .postAcceptInvitation(let memberID):
       return .requestParameters(
         parameters: ["registerMemberId": memberID],

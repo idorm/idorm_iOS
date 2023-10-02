@@ -27,18 +27,6 @@ final class CommunityPostingViewReactor: Reactor {
     case imagesCountButtonDidTap
     case imagesDidPick([UIImage])
     case removeButtonDidTap(CommunityPostingSectionItem)
-    
-    
-    
-    
-    
-    case didTapPictIv
-    case didTapCompleteBtn
-    case didPickedImages([UIImage])
-    case didTapDeleteBtn(Int)
-    case didChangeTitle(String)
-    case didChangeContent(String)
-    case didTapAnonymousBtn(Bool)
   }
   
   enum Mutation {
@@ -48,14 +36,6 @@ final class CommunityPostingViewReactor: Reactor {
     case setImagePickerVC
     case setImagesData([PostImageData])
     case removeImagesData(CommunityPostingSectionItem)
-    
-    
-    case setGalleryVC(Bool)
-    case deleteImages(Int)
-    case setCompleteBtn
-    case setLoading(Bool)
-    case setPopVC(Bool)
-    case setDeletePostPhotoIds(Int)
   }
   
   struct State {
@@ -65,17 +45,13 @@ final class CommunityPostingViewReactor: Reactor {
     var isEnabledConfirmButton: Bool = false
     var isAnonymous: Bool = true
     @Pulse var presentToImagePickerVC: Int = 0
-    
-    var showsGalleryVC: Bool = false
-    var deletePostPhotoIds: [Int] = []
-    var popVC: Bool = false
   }
   
   // MARK: - Properties
   
   var initialState: State
   private let viewType: ViewType
-  private let communityService = NetworkService<CommunityAPI>()
+//  private let communityService = NetworkService<CommunityAPI>()
   
   // MARK: - Initializer
   
@@ -116,127 +92,7 @@ final class CommunityPostingViewReactor: Reactor {
       return .just(.removeImagesData(item))
     default:
       return .empty()
-      
-//    case .viewDidLoad:
-//      switch postingType {
-//      case .new:
-//        return .empty()
-//      case .edit:
-//        guard let post = post else { return .empty() }
-//        var photos: [Photo] = []
-//        
-//        post.photos.forEach { [weak self] in
-//          var image: UIImage?
-//          self?.downloadImage(
-//            from: URL(string: $0.photoURL)!
-//          ) {
-//            image = $0
-//          }
-//          photos.append(Photo(image: image!, index: $0.photoID))
-//        }
-//        
-//        return .concat([
-//          .just(.setTitle(post.title)),
-//          .just(.setContents(post.content)),
-//          .just(.setImages(photos)),
-//          .just(.setAnonymous(post.isAnonymous))
-//        ])
-//      }
-//      
-//    case .didTapPictIv:
-//      return .concat([
-//        .just(.setGalleryVC(true)),
-//        .just(.setGalleryVC(false))
-//      ])
-//      
-//    case .didTapCompleteBtn:
-//      switch postingType {
-//      case .edit:
-//        guard let post = post else { return .empty() }
-//        let photos = currentState.currentImages
-//          .filter { $0.index < 0 }
-//          .map { $0.image }
-//        
-//        let newPost = CommunityRequestModel.Post(
-//          content: currentState.currentContents,
-//          title: currentState.currentTitle,
-//          dormCategory: .no1,
-//          images: photos,
-//          isAnonymous: currentState.isAnonymous
-//        )
-//        
-//        return .concat([
-//          .just(.setLoading(true)),
-//          CommunityAPI.provider.rx.request(.editPost(
-//            postId: post.identifier,
-//            post: newPost,
-//            deletePostPhotos: currentState.deletePostPhotoIds)
-//          )
-//          .asObservable()
-//          .flatMap { response -> Observable<Mutation> in
-//            switch response.statusCode {
-//            case 200..<300:
-//              return .concat([
-//                .just(.setLoading(false)),
-//                .just(.setPopVC(true))
-//              ])
-//            default:
-//              fatalError()
-//            }
-//          }
-//        ])
-//        
-//      case .new:
-//        var images: [UIImage] = []
-//        currentState.currentImages.forEach {
-//          images.append($0.image)
-//        }
-//        let newPost = CommunityRequestModel.Post(
-//          content: currentState.currentContents,
-//          title: currentState.currentTitle,
-//          dormCategory: currentDorm,
-//          images: images,
-//          isAnonymous: currentState.isAnonymous
-//        )
-//        return self.apiManager.requestAPI(to: .savePost(newPost))
-//          .flatMap { _ in return Observable<Mutation>.just(.setPopVC(true)) }
-//      }
-//      
-//    case .didPickedImages(let images):
-//      var photos: [Photo] = []
-//      images.forEach {
-//        photos.append(Photo(image: $0, index: -1))
-//      }
-//      return .just(.setImages(photos))
-//      
-//    case .didTapDeleteBtn(let index):
-//      switch postingType {
-//      case .new:
-//        return .just(.deleteImages(index))
-//      case .edit:
-//        guard let post = post else { return .empty() }
-//        let photo = currentState.currentImages[index]
-//        let deleteIndex = post.photos.first(where: { $0.photoID == photo.index })?.photoID
-//        if deleteIndex != nil {
-//          return .concat([
-//            .just(.deleteImages(index)),
-//            .just(.setDeletePostPhotoIds(deleteIndex!))
-//          ])
-//        }
-//        return .just(.deleteImages(index))
-//      }
-//    case .didChangeTitle(let title):
-//      return .concat([
-//        .just(.setTitle(title)),
-//        .just(.setCompleteBtn)
-//      ])
-//    case .didChangeContent(let contents):
-//      return .concat([
-//        .just(.setContents(contents)),
-//        .just(.setCompleteBtn)
-//      ])
-//    case .didTapAnonymousBtn(let isSelected):
-//      return .just(.setAnonymous(isSelected))
+
     }
   }
   
@@ -265,45 +121,6 @@ final class CommunityPostingViewReactor: Reactor {
     default:
       break
     }
-    
-//    case .setGalleryVC(let isOpened):
-//      newState.showsGalleryVC = isOpened
-//      
-//    case .setImages(let images):
-//      newState.currentImages += images
-//      
-//    case .deleteImages(let index):
-//      var images = currentState.currentImages
-//      images.remove(at: index)
-//      newState.currentImages = images
-//      
-//    case .setTitle(let title):
-//      newState.currentTitle = title
-//      
-//    case .setContents(let contents):
-//      newState.currentContents = contents
-//      
-//    case .setCompleteBtn:
-//      if !currentState.currentTitle.isEmpty,
-//         !currentState.currentContents.isEmpty
-//      {
-//        newState.isEnabledCompleteBtn = true
-//      } else {
-//        newState.isEnabledCompleteBtn = false
-//      }
-//      
-//    case .setAnonymous(let isSelected):
-//      newState.isAnonymous = isSelected
-//      
-//    case .setLoading(let isLoading):
-//      newState.isLoading = isLoading
-//      
-//    case .setPopVC(let state):
-//      newState.popVC = state
-//      
-//    case .setDeletePostPhotoIds(let id):
-//      newState.deletePostPhotoIds.append(id)
-//    }
     
     return newState
   }

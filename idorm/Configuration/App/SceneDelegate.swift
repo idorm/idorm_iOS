@@ -23,10 +23,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     guard let windowScene = (scene as? UIWindowScene) else { return }
     window = UIWindow(windowScene: windowScene)
     
-//    let viewController = iDormSplashViewController()
-//    viewController.reactor = iDormSplashViewReactor()
-    let viewController = ManagementAccountViewController()
-//    viewController.reactor = ProfileViewReactor()
+    let viewController = iDormTabBarViewController()
+//    viewController.reactor = idormtabbar
     window?.rootViewController = UINavigationController(rootViewController: viewController)
     window?.makeKeyAndVisible()
     

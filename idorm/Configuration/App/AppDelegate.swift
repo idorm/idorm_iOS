@@ -32,11 +32,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     application.registerForRemoteNotifications()
     
     // KakaoShare
-    KakaoSDK.initSDK(appKey: "a8df1fc9d307130a9d3ee6503549c92b")
+    KakaoSDK.initSDK(appKey: KeyConstants.appKEY)
     
-    // NaivgationBar
-    self.setupNavigationBarAppearance()
-    self.setupTabBarAppearance()
+    // Appearance
+    AppearanceManager.navigationAppearance()
+    AppearanceManager.tabBarAppearance()
+    
     return true
   }
 }
@@ -65,7 +66,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
   ) {
     if let postId = response.notification.request.content.userInfo["contentId"] as? String {
       DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-//        TransitionManager.shared.postPushAlarmDidTap?(Int(postId)!)
+        //        TransitionManager.shared.postPushAlarmDidTap?(Int(postId)!)
       })
     }
   }
@@ -90,16 +91,10 @@ extension AppDelegate: UNUserNotificationCenterDelegate, MessagingDelegate {
 // MARK: - Setup Appearance
 
 extension AppDelegate {
-  private func setupNavigationBarAppearance() {
-    let appearance = NavigationAppearanceUtils.navigationAppearance(from: .white, shadow: false)
-    UINavigationBar.appearance().compactAppearance = appearance
-    UINavigationBar.appearance().standardAppearance = appearance
-    UINavigationBar.appearance().scrollEdgeAppearance = appearance
-  }
-  
   private func setupTabBarAppearance() {
     let tabBarAppearance = UITabBarAppearance()
     let tabBar = UITabBar()
+    tabBar.layer.masksToBounds = true
     tabBarAppearance.configureWithOpaqueBackground()
     tabBarAppearance.backgroundColor = .white
     tabBarAppearance.backgroundImage = UIImage()

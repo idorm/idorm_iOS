@@ -58,8 +58,7 @@ final class HomeDormCalendarHeader: UICollectionReusableView, BaseViewProtocol {
   
   func setupConstraints() {
     self.mainLabel.snp.makeConstraints { make in
-      make.top.equalToSuperview().inset(32.0)
-      make.leading.equalToSuperview()
+      make.top.leading.equalToSuperview()
     }
   }
 }

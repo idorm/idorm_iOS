@@ -15,8 +15,8 @@ final class CommunityPostingTitleCell: BaseCollectionViewCell {
   
   // MARK: - UI Components
   
-  private let titleTextField: NewiDormTextField = {
-    let textField = NewiDormTextField(type: .custom)
+  private let titleTextField: iDormTextField = {
+    let textField = iDormTextField(type: .custom)
     textField.backgroundColor = .white
     textField.font = .iDormFont(.bold, size: 20.0)
     textField.placeHolderFont = .iDormFont(.bold, size: 20.0)

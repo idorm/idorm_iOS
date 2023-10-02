@@ -81,13 +81,9 @@ final class MatchingMateViewController: BaseViewController, View {
           }
         }
       case .message:
-        let viewController = iDormPopupViewController(.kakao)
-        let index = self.cardStackView.currentCardIndex
-        viewController.modalPresentationStyle = .overFullScreen
-        viewController.confirmButtonHandler = {
-          self.reactor?.action.onNext(.kakaoButtonDidTap(index: index))
-        }
-        self.present(viewController, animated: false)
+        self.reactor?.action.onNext(
+          .speechBubbleButtonDidTap(index: self.cardStackView.currentCardIndex)
+        )
       case .reverse:
         self.cardStackView.revertAction(direction: .down)
       }
@@ -110,7 +106,7 @@ final class MatchingMateViewController: BaseViewController, View {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
-    navigationController?.setNavigationBarHidden(true, animated: true)
+    navigationController?.setNavigationBarHidden(true, animated: false)
   }
   
   // MARK: - Setup
@@ -157,7 +153,7 @@ final class MatchingMateViewController: BaseViewController, View {
     self.cardStackView.snp.makeConstraints { make in
       make.top.equalToSuperview().inset((self.view.frame.height - 436) / 3)
       make.centerX.equalToSuperview()
-      make.width.equalTo(327.0)
+      make.directionalHorizontalEdges.equalToSuperview().inset(24.0)
       make.height.equalTo(450.0)
     }
     
@@ -193,6 +189,11 @@ final class MatchingMateViewController: BaseViewController, View {
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
+    self.filterButton.rx.tap
+      .map { Reactor.Action.filterButtonDidTap }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
     // State
     
     reactor.pulse(\.$quotationType)
@@ -203,6 +204,7 @@ final class MatchingMateViewController: BaseViewController, View {
       .disposed(by: self.disposeBag)
     
     reactor.pulse(\.$mates).skip(1)
+      .debug()
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, mates in
         owner.cardStackView.reloadData()
@@ -215,261 +217,25 @@ final class MatchingMateViewController: BaseViewController, View {
       .drive { UIApplication.shared.open($0) }
       .disposed(by: self.disposeBag)
     
-    reactor.pulse(\.$presentToWelcomePopupVC).skip(1)
+    reactor.pulse(\.$navigateToMatchingInfoSetupVC).skip(1)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
-        let viewController = iDormPopupViewController(.welcome)
-        viewController.modalPresentationStyle = .overFullScreen
-        viewController.confirmButtonHandler = {
-          owner.navigateToMatchingInfoSetupVC()
-        }
-        owner.present(viewController, animated: false)
+        let viewController = MatchingInfoSetupViewController()
+        let reactor = MatchingInfoSetupViewReactor(.theFirstTime)
+        viewController.reactor = reactor
+        owner.navigationController?.pushViewController(viewController, animated: true)
       }
       .disposed(by: self.disposeBag)
     
-    reactor.pulse(\.$presentToNoPublicPopupVC).skip(1)
+    reactor.pulse(\.$navigateToMatchingInfoFilterSetupVC).skip(1)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
-        let viewController = iDormPopupViewController(.noPublicMatchingInfo)
-        viewController.modalPresentationStyle = .overFullScreen
-        viewController.confirmButtonHandler = {
-          owner.reactor?.action.onNext(.publicButtonDidTap)
-        }
-        owner.present(viewController, animated: false)
+        let viewController = MatchingInfoFilterSetupViewController()
+        let reactor = MatchingInfoFilterSetupViewReactor()
+        viewController.reactor = reactor
+        owner.navigationController?.pushViewController(viewController, animated: true)
       }
       .disposed(by: self.disposeBag)
-    
-
-//    // 필터VC 이동
-//    reactor.state
-//      .map { $0.isOpenedFilterVC }
-//      .filter { $0 }
-//      .withUnretained(self)
-//      .bind { owner, _ in
-//        let viewController = MatchingFilterViewController()
-//        viewController.reactor = MatchingFilterViewReactor()
-//        viewController.hidesBottomBarWhenPushed = true
-//        owner.navigationController?.pushViewController(viewController, animated: true)
-//        
-//        // 필터 변경
-//        viewController.reactor?.state
-//          .map { $0.requestCard }
-//          .distinctUntilChanged()
-//          .filter { $0 }
-//          .map { _ in MatchingViewReactor.Action.didChangeFilter }
-//          .bind(to: reactor.action)
-//          .disposed(by: owner.disposeBag)
-//      }
-//      .disposed(by: disposeBag)
-//    
-//    // 온보딩VC 이동
-//    reactor.state
-//      .map { $0.isOpenedOnboardingVC }
-//      .filter { $0 }
-//      .withUnretained(self)
-//      .bind { owner, _ in
-//        let viewController = MatchingInfoSetupViewController()
-////        viewController.reactor = OnboardingViewReactor(.main)
-//        viewController.hidesBottomBarWhenPushed = true
-//        owner.navigationController?.pushViewController(viewController, animated: true)
-//      }
-//      .disposed(by: disposeBag)
-//    
-//    // 매칭공개여부 팝업
-//    reactor.state
-//      .map { $0.isOpenedNoPublicPopup }
-//      .filter { $0 }
-//      .withUnretained(self)
-//      .bind { owner, _ in
-//        let popup = NoPublicStatePopUp()
-//        popup.modalPresentationStyle = .overFullScreen
-//        owner.present(popup, animated: false)
-//        
-//        // 공개허용 클릭
-//        popup.confirmLabel.rx.tapGesture()
-//          .skip(1)
-//          .map { _ in MatchingViewReactor.Action.didTapPublicButton }
-//          .bind(to: reactor.action)
-//          .disposed(by: owner.disposeBag)
-//        
-//        // 팝업 창 닫기
-//        reactor.state
-//          .map { $0.isDismissedPopup }
-//          .filter { $0 }
-//          .bind { _ in popup.dismiss(animated: false) }
-//          .disposed(by: owner.disposeBag)
-//      }
-//      .disposed(by: disposeBag)
-//    
-//    // 매칭정보없음 팝업
-//    reactor.state
-//      .map { $0.isOpenedNoMatchingInfoPopup }
-//      .filter { $0 }
-//      .withUnretained(self)
-//      .bind { owner, _ in
-//        let popup = NoMatchingInfoPopup()
-//        popup.modalPresentationStyle = .overFullScreen
-//        owner.present(popup, animated: false)
-//
-//        // 프로필 이미지 만들기 버튼
-//        popup.makeButton.rx.tap
-//          .map { MatchingViewReactor.Action.didTapMakeProfileButton }
-//          .bind(to: reactor.action)
-//          .disposed(by: owner.disposeBag)
-//        
-//        // 팝업 창 닫기
-//        reactor.state
-//          .map { $0.isDismissedPopup }
-//          .filter { $0 }
-//          .bind { _ in popup.dismiss(animated: false) }
-//          .disposed(by: owner.disposeBag)
-//      }
-//      .disposed(by: disposeBag)
-//    
-//    // 매칭정보없음_최초 팝업
-//    reactor.state
-//      .map { $0.isOpenedNoMatchingInfoPopup_Initial }
-//      .filter { $0 }
-//      .withUnretained(self)
-//      .bind { owner, _ in
-//        let popup = NoMatchingInfoPopup_Initial()
-//        popup.modalPresentationStyle = .overFullScreen
-//        owner.present(popup, animated: false)
-//        
-//        // 프로필 이미지 만들기 버튼
-//        popup.confirmButton.rx.tap
-//          .map { MatchingViewReactor.Action.didTapMakeProfileButton }
-//          .bind(to: reactor.action)
-//          .disposed(by: owner.disposeBag)
-//        
-//        // 팝업 창 닫기
-//        reactor.state
-//          .map { $0.isDismissedPopup }
-//          .filter { $0 }
-//          .bind { _ in popup.dismiss(animated: false) }
-//          .disposed(by: owner.disposeBag)
-//      }
-//      .disposed(by: disposeBag)
-//    
-//    // 카카오 팝업
-//    reactor.state
-//      .map { $0.isOpenedKakaoPopup }
-//      .filter { $0.0 }
-//      .withUnretained(self)
-//      .bind { owner, link in
-//        let popup = KakaoPopup()
-//        popup.modalPresentationStyle = .overFullScreen
-//        owner.present(popup, animated: false)
-//        
-//        // 링크 바로가기 버튼
-//        popup.kakaoButton.rx.tap
-//          .map { MatchingViewReactor.Action.didTapKakaoLinkButton }
-//          .bind(to: reactor.action)
-//          .disposed(by: owner.disposeBag)
-//        
-//        // 팝업 창 닫기
-//        reactor.state
-//          .map { $0.isDismissedPopup }
-//          .filter { $0 }
-//          .bind { _ in popup.dismiss(animated: false) }
-//          .disposed(by: owner.disposeBag)
-//        
-//        // 외부 브라우저 이동
-//        reactor.state
-//          .map { $0.isOpenedWeb }
-//          .filter { $0 }
-//          .bind { _ in UIApplication.shared.open(URL(string: link.1)!) }
-//          .disposed(by: owner.disposeBag)
-//      }
-//      .disposed(by: disposeBag)
-//    
-//    // 링크 오류 팝업
-//    reactor.state
-//      .map { $0.isOpenedBasicPopup }
-//      .filter { $0 }
-//      .withUnretained(self)
-//      .bind { owner, _ in
-//        let popup = iDormPopupViewController(contents: "유효한 주소가 아닙니다.")
-//        popup.modalPresentationStyle = .overFullScreen
-//        owner.present(popup, animated: false)
-//      }
-//      .disposed(by: disposeBag)
-//    
-//    // 현재 텍스트 이미지
-//    reactor.state
-//      .map { $0.currentTextImage }
-//      .map { UIImage(named: $0.imageName) }
-//      .bind(to: informationImageView.rx.image)
-//      .disposed(by: disposeBag)
-//    
-//    // 로딩중
-//    reactor.state
-//      .map { $0.isLoading }
-//      .withUnretained(self)
-//      .bind { owner, isLoading in
-//        if isLoading {
-//          owner.loadingIndicator.startAnimating()
-//          owner.view.isUserInteractionEnabled = false
-//        } else {
-//          owner.loadingIndicator.stopAnimating()
-//          owner.view.isUserInteractionEnabled = true
-//        }
-//      }
-//      .disposed(by: disposeBag)
-//    
-//    // MatchingBottomSheet Present
-//    reactor.state
-//      .map { $0.isOpenedBottomSheet }
-//      .filter { $0 }
-//      .withUnretained(self)
-//      .bind {
-//        let bottomSheet = MatchingBottomSheet()
-//        $0.0.presentPanModal(bottomSheet)
-//      }
-//      .disposed(by: disposeBag)
-//    
-//    // TopRoundedBackgroundView 좋아요 반응
-//    reactor.state
-//      .map { $0.isGreenBackgroundColor }
-//      .filter { $0 }
-//      .withUnretained(self)
-//      .bind { owner, _ in
-//        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
-//          owner.topRoundedBackgroundView.tintColor = .idorm_green
-//        }) { isFinished in
-//          UIView.animate(withDuration: 0.2, delay: 0) {
-//            owner.topRoundedBackgroundView.tintColor = .idorm_blue
-//          }
-//        }
-//      }
-//      .disposed(by: disposeBag)
-//    
-//    // TopRoundedBackgroundView 싫어요 반응
-//    reactor.state
-//      .map { $0.isRedBackgroundColor }
-//      .filter { $0 }
-//      .withUnretained(self)
-//      .bind { owner, _ in
-//        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseInOut, animations: {
-//          owner.topRoundedBackgroundView.tintColor = .idorm_red
-//        }) { isFinished in
-//          UIView.animate(withDuration: 0.2, delay: 0) {
-//            owner.topRoundedBackgroundView.tintColor = .idorm_blue
-//          }
-//        }
-//      }
-//      .disposed(by: disposeBag)
-  }
-}
-
-// MARK: - Privates
-
-private extension MatchingMateViewController {
-  func navigateToMatchingInfoSetupVC() {
-    let viewController = MatchingInfoSetupViewController()
-    let reactor = MatchingInfoSetupViewReactor(.theFirstTime)
-    viewController.reactor = reactor
-    self.navigationController?.pushViewController(viewController, animated: true)
   }
 }
 
@@ -480,7 +246,7 @@ extension MatchingMateViewController: KolodaViewDataSource, KolodaViewDelegate {
   func koloda(_ koloda: Koloda.KolodaView, viewForCardAt index: Int) -> UIView {
     guard let mates = self.reactor?.currentState.mates else { return .init() }
     let cardView = iDormMatchingCardView(mates[index])
-    cardView.optionButtonHandler = { $0 }
+    cardView.optionButtonHandler = { _ in self.reactor?.action.onNext(.optionButtonDidTap) }
     return cardView
   }
   

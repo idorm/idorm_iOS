@@ -10,7 +10,6 @@ import Foundation
 import Moya
 
 protocol BaseTargetType: TargetType {
-  func getBaseURL() -> URL
   func getPath() -> String
   func getMethod() -> Moya.Method
   func getTask() -> Task
@@ -18,32 +17,7 @@ protocol BaseTargetType: TargetType {
 }
 
 extension BaseTargetType {
-  
-  func getJsonHeader() -> [String: String] {
-    return [
-      "Content-Type": "application/json",
-      "Authorization": UserStorage.shared.token
-    ]
-  }
-  
-  func getJsonHeaderWithoutAuthorization() -> [String: String] {
-    return ["Content-Type": "application/json"]
-  }
-  
-  func getMultipartHeader() -> [String: String] {
-    return [
-      "Content-Type": "multipart/form-data",
-      "Authorization": UserStorage.shared.token
-    ]
-  }
-  
   func getBaseURL() -> URL {
-    return NetworkUtility.networkEnviornment.baseURL
-  }
-  
-  static func decode<T: Decodable>(_ t: T.Type, data: Data) -> T {
-    let decoder = JSONDecoder()
-    guard let json = try? decoder.decode(T.self, from: data) else { fatalError("Decoding Error!") }
-    return json
+    return URL(string: URLConstants.develop)!
   }
 }

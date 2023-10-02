@@ -25,6 +25,7 @@ final class BottomSheetViewController: BaseViewController {
   private var bottomSheetHeight: CGFloat {
     var height: CGFloat = 58.0
     items.forEach { height += $0.itemHeight }
+    height += CGFloat((items.count - 1) * 2)
     return height
   }
   
@@ -46,6 +47,7 @@ final class BottomSheetViewController: BaseViewController {
     self.buttons.forEach { stackView.addArrangedSubview($0) }
     stackView.axis = .vertical
     stackView.alignment = .leading
+    stackView.spacing = 2.0
     return stackView
   }()
   
@@ -70,6 +72,7 @@ final class BottomSheetViewController: BaseViewController {
     self.navigationController?.setNavigationBarHidden(true, animated: false)
     self.view.backgroundColor = .white
     self.buttons.forEach {
+      $0.contentInset = .init(top: 5.0, leading: 10.0, bottom: 5.0, trailing: .zero)
       $0.addTarget(self, action: #selector(self.didTapButton), for: .touchUpInside)
     }
   }
@@ -101,7 +104,7 @@ final class BottomSheetViewController: BaseViewController {
     
     self.buttonStackView.snp.makeConstraints { make in
       make.directionalHorizontalEdges.equalToSuperview().inset(24.0)
-      make.top.equalTo(self.cancelButton.snp.bottom).offset(4.0)
+      make.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(20.0)
     }
   }
   
@@ -127,7 +130,6 @@ final class BottomSheetViewController: BaseViewController {
 }
 
 // MARK: - PanModal
-
 extension BottomSheetViewController: PanModalPresentable {
   var panScrollable: UIScrollView? { nil }
   var shortFormHeight: PanModalHeight { .contentHeight(self.bottomSheetHeight) }

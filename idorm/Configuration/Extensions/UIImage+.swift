@@ -14,6 +14,7 @@ enum iDormIcon: String {
   
   case block
   
+  case community
   case calendar
   case cancel
   case closedEye
@@ -47,6 +48,7 @@ enum iDormIcon: String {
   case reply
   case right_quotation_marks
   
+  case home
   case human
   case human_fill
   case heart
@@ -66,6 +68,7 @@ enum iDormIcon: String {
   case idorm
   
   case mailBox
+  case matching
   
   case x_circle_mono
   
@@ -87,6 +90,9 @@ enum iDormText: String {
 enum iDormImage: String {
   case deselect
   case dislike_circle
+  case domi
+  case domi_sad
+  case domi_background
   
   case select
   

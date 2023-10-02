@@ -29,7 +29,7 @@ final class Logger {
   private(set) var password: String
   private(set) var nickname: String
   private(set) var authProcess: AuthProcess
-  private(set) var emailVC: EmailViewController?
+  private(set) var emailVC: AuthEmailViewController?
   
   // MARK: - HELPERS
   
@@ -54,7 +54,7 @@ final class Logger {
   }
   
   /// 나중에 NavigationController Push를 위한 EmailVC의 참조값을 저장합니다.
-  func saveEmailVcReference(_ vc: EmailViewController) {
+  func saveEmailVcReference(_ vc: AuthEmailViewController) {
     self.emailVC = vc
   }
 }

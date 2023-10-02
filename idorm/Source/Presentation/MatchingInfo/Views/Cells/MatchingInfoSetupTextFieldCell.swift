@@ -16,8 +16,8 @@ final class MatchingInfoSetupTextFieldCell: BaseCollectionViewCell {
   // MARK: - UI Components
   
   /// 메인이 되는 `UITextField`
-  private lazy var textField: NewiDormTextField = {
-    let textField = NewiDormTextField(type: .withBorderLine)
+  private lazy var textField: iDormTextField = {
+    let textField = iDormTextField(type: .withBorderLine)
     textField.placeHolder = "입력"
     textField.placeHolderColor = .iDormColor(.iDormGray400)
     textField.textColor = .black

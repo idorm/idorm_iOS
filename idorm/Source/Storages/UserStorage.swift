@@ -42,12 +42,19 @@ final class UserStorage {
   
   // MARK: - Functions
   
+  /// 현재 `MatchingInfo`의 존재여부
   var hasMatchingInfo: Bool {
     self.matchingInfo != nil ? true : false
   }
   
+  /// 현재 `MatchingInfo`의 공개여부
   var isPublicMatchingInfo: Bool {
     self.matchingInfo?.isMatchingInfoPublic ?? false
+  }
+  
+  /// 프로필 이미지 존재여부
+  var hasProfileImage: Bool {
+    return ((self.member?.profilePhotoURL != nil)) ? true : false
   }
 
   var dormCategory: Dormitory {

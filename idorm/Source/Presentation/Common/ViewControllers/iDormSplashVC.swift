@@ -72,8 +72,8 @@ final class iDormSplashViewController: BaseViewController, View {
       .filter { $0 }
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
-        let viewController = LoginViewController()
-        let reactor = LoginViewReactor()
+        let viewController = AuthLoginViewController()
+        let reactor = AuthLoginViewReactor()
         viewController.reactor = reactor
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.modalPresentationStyle = .fullScreen
@@ -87,7 +87,7 @@ final class iDormSplashViewController: BaseViewController, View {
       .filter { $0 }
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
-        let viewController = TabBarViewController()
+        let viewController = iDormTabBarViewController()
         viewController.modalPresentationStyle = .fullScreen
         owner.present(viewController, animated: false)
         owner.dismissCompletion?()

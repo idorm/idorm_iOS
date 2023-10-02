@@ -35,13 +35,14 @@ final class HomeViewReactor: Reactor {
   }
     
   var initialState: State = State()
-  private let communityAPIManager = NetworkService<CommunityAPI>()
+//  private let communityAPIManager = NetworkService<CommunityAPI>()
   private let calendarAPIManger = NetworkService<CalendarAPI>()
   
   func mutate(action: Action) -> Observable<Mutation> {
     switch action {
     case .viewWillAppear:
-      return self.requestTopPosts()
+      return .empty()
+//      return self.requestTopPosts()
       
     case .itemSelected(let item):
       switch item {
@@ -58,9 +59,10 @@ final class HomeViewReactor: Reactor {
         return .empty()
         
       case .topPost(let post):
-        return self.communityAPIManager.requestAPI(to: .lookupDetailPost(postId: post.identifier))
-          .map(ResponseDTO<CommunitySinglePostResponseDTO>.self)
-          .flatMap { return Observable<Mutation>.just(.setCommunityPostVC(Post($0.data))) }
+        return .empty()
+//        return self.communityAPIManager.requestAPI(to: .lookupDetailPost(postId: post.identifier))
+//          .map(ResponseDTO<CommunitySinglePostResponseDTO>.self)
+//          .flatMap { return Observable<Mutation>.just(.setCommunityPostVC(Post($0.data))) }
         
       default:
         return .empty()
@@ -119,28 +121,28 @@ final class HomeViewReactor: Reactor {
 }
 
 // MARK: - Privates
-
-private extension HomeViewReactor {
-  func requestTopPosts() -> Observable<Mutation> {
-    let domitory = UserStorage.shared.matchingInfo?.dormCategory ?? .no1
-    return self.communityAPIManager.requestAPI(to: .lookupTopPosts(domitory))
-      .map(ResponseDTO<[CommunitySingleTopPostResponseDTO]>.self)
-      .flatMap { response -> Observable<Mutation> in
-        let topPosts = response.data.map { Post($0) }
-        return .concat([
-          .just(.setTopPosts(topPosts)),
-          self.requestDormCalendars()
-        ])
-      }
-  }
-  
-  func requestDormCalendars() -> Observable<Mutation> {
-    let yearMonth = Date().toString("yyyy-MM")
-    return self.calendarAPIManger.requestAPI(to: .postDormCalendars(yearMonth: yearMonth))
-      .map(ResponseDTO<[DormCalendarResponseDTO]>.self)
-      .flatMap {
-        let dormCalendars = $0.data.map { DormCalendar($0) }
-        return Observable<Mutation>.just(.setDormCalendars(dormCalendars))
-      }
-  }
-}
+//
+//private extension HomeViewReactor {
+//  func requestTopPosts() -> Observable<Mutation> {
+//    let domitory = UserStorage.shared.matchingInfo?.dormCategory ?? .no1
+//    return self.communityAPIManager.requestAPI(to: .lookupTopPosts(domitory))
+//      .map(ResponseDTO<[CommunitySingleTopPostResponseDTO]>.self)
+//      .flatMap { response -> Observable<Mutation> in
+//        let topPosts = response.data.map { Post($0) }
+//        return .concat([
+//          .just(.setTopPosts(topPosts)),
+//          self.requestDormCalendars()
+//        ])
+//      }
+//  }
+//  
+//  func requestDormCalendars() -> Observable<Mutation> {
+//    let yearMonth = Date().toString("yyyy-MM")
+//    return self.calendarAPIManger.requestAPI(to: .getDormCalendars(yearMonth: yearMonth))
+//      .map(ResponseDTO<[DormCalendarResponseDTO]>.self)
+//      .flatMap {
+//        let dormCalendars = $0.data.map { DormCalendar($0) }
+//        return Observable<Mutation>.just(.setDormCalendars(dormCalendars))
+//      }
+//  }
+//}

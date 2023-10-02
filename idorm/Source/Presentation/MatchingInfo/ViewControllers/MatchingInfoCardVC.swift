@@ -120,7 +120,7 @@ final class MatchingInfoCardViewController: BaseViewController, View {
     reactor.pulse(\.$naviagetToTabBarVC).skip(1)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
-        let tabBarVC = TabBarViewController()
+        let tabBarVC = iDormTabBarViewController()
         owner.navigationController?.setViewControllers([tabBarVC], animated: true)
       }
       .disposed(by: self.disposeBag)

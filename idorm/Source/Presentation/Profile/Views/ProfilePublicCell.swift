@@ -8,6 +8,8 @@
 import UIKit
 
 import SnapKit
+import RxSwift
+import RxCocoa
 
 final class ProfilePublicCell: BaseCollectionViewCell {
   
@@ -28,12 +30,16 @@ final class ProfilePublicCell: BaseCollectionViewCell {
     return button
   }()
   
+  // MARK: - Properties
+  
+  var buttonHandler: (() -> Void)?
+  
   // MARK: - Setup
   
   override func setupStyles() {
     super.setupStyles()
     
-    self.backgroundColor = .white
+    self.backgroundColor = .clear
   }
   
   override func setupLayouts() {
@@ -55,5 +61,17 @@ final class ProfilePublicCell: BaseCollectionViewCell {
       make.centerY.equalTo(self.titleLabel)
       make.leading.equalTo(self.titleLabel.snp.trailing).offset(12.0)
     }
+  }
+  
+  // MARK: - Bind
+  
+  override func bind() {
+    super.bind()
+    
+    self.toggleButton.rx.tap.asDriver()
+      .drive(with: self) { owner, _ in
+        owner.buttonHandler?()
+      }
+      .disposed(by: self.disposeBag)
   }
 }

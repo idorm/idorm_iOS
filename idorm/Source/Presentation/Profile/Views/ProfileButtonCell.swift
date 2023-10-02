@@ -8,6 +8,8 @@
 import UIKit
 
 import SnapKit
+import RxSwift
+import RxCocoa
 
 final class ProfileButtonCell: BaseCollectionViewCell {
   
@@ -22,6 +24,8 @@ final class ProfileButtonCell: BaseCollectionViewCell {
     button.font = .iDormFont(.regular, size: 12.0)
     button.cornerRadius = 12.0
     button.shadowOffset = CGSize(width: .zero, height: 2.0)
+    button.titleAlignment = .center
+    button.configuration?.titleAlignment = .center
     button.shadowOpacity = 0.11
     button.shadowRadius = 2.0
     let handler: UIButton.ConfigurationUpdateHandler = { button in
@@ -36,7 +40,11 @@ final class ProfileButtonCell: BaseCollectionViewCell {
     button.configurationUpdateHandler = handler
     return button
   }()
-
+  
+  // MARK: - Properties
+  
+  var buttonHandler: (() -> Void)?
+  
   // MARK: - Setup
   
   override func setupLayouts() {
@@ -53,10 +61,21 @@ final class ProfileButtonCell: BaseCollectionViewCell {
     }
   }
   
+  override func bind() {
+    super.bind()
+    
+    self.button.rx.tap.asDriver()
+      .drive(with: self) { owner, _ in
+        owner.buttonHandler?()
+      }
+      .disposed(by: self.disposeBag)
+  }
+  
   // MARK: - Configure
   
   func configure(with item: ProfileSectionItem) {
     self.button.image = item.image
     self.button.title = item.title
+    self.button.titleAlignment = .center
   }
 }

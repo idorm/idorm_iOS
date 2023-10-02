@@ -8,6 +8,8 @@
 import UIKit
 
 import SnapKit
+import RxSwift
+import RxCocoa
 
 final class ProfileMainCell: BaseCollectionViewCell {
   
@@ -32,6 +34,10 @@ final class ProfileMainCell: BaseCollectionViewCell {
     button.setImage(.iDormIcon(.gear), for: .normal)
     return button
   }()
+  
+  // MARK: - Properties
+  
+  var gearButtonHandler: (() -> Void)?
   
   // MARK: - Setup
   
@@ -69,6 +75,18 @@ final class ProfileMainCell: BaseCollectionViewCell {
       make.top.equalToSuperview().inset(12.0)
       make.trailing.equalToSuperview().inset(24.0)
     }
+  }
+  
+  // MARK: - Bind
+  
+  override func bind() {
+    super.bind()
+    
+    self.gearButton.rx.tap.asDriver()
+      .drive(with: self) { owner, _ in
+        owner.gearButtonHandler?()
+      }
+      .disposed(by: self.disposeBag)
   }
   
   // MARK: - Configure

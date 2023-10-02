@@ -44,7 +44,8 @@ final class iDormPopupViewController: BaseViewController {
     switch self.viewType {
     case .alert:
       button.isHidden = true
-    default: break
+    default:
+      button.isHidden = false
     }
     return button
   }()
@@ -243,7 +244,7 @@ final class iDormPopupViewController: BaseViewController {
     
     self.confirmButton.snp.makeConstraints { make in
       make.directionalHorizontalEdges.equalToSuperview().inset(24.0)
-      make.bottom.equalToSuperview().inset(30.0)
+      make.bottom.equalToSuperview().inset(20.0)
       make.height.equalTo(53.0)
     }
     

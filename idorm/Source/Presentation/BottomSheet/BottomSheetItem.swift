@@ -14,6 +14,9 @@ enum BottomSheetItem {
   case blockUser
   case reportUser
   
+  // PostList
+  case dormitory(Dormitory)
+  
   // Community
   case deleteComment(commentID: Int)
   case deletePost
@@ -64,16 +67,24 @@ enum BottomSheetItem {
       button = .init("일정 공유 캘린더 나가기", image: nil)
     case .normal:
       return iDormButton("", image: nil)
+    case .dormitory(let dormitory):
+      button = .init(dormitory.postListString)
     }
+    // Configuration
     button.baseForegroundColor = .black
     button.baseBackgroundColor = .white
-    button.font = .iDormFont(.medium, size: 20.0)
     button.titleAlignment = .leading
     button.imagePadding = 8.0
     button.imageSize = 20.0
     button.configurationUpdateHandler = self.getButtonUpdateHandler()
     button.bottomSheetItem = self
     button.contentHorizontalAlignment = .leading
+    switch self {
+    case .dormitory:
+      button.font = .iDormFont(.bold, size: 20.0)
+    default:
+      button.font = .iDormFont(.medium, size: 20.0)
+    }
     return button
   }
 }

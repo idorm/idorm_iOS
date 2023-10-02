@@ -1,4 +1,4 @@
-//
+ //
 //  MyPageViewController.swift
 //  idorm
 //
@@ -57,6 +57,12 @@ final class ProfileViewController: BaseViewController, View {
     return collectionView
   }()
   
+  private let topCoverView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .iDormColor(.iDormBlue)
+    return view
+  }()
+  
   override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
   
   // MARK: - Properties
@@ -68,13 +74,16 @@ final class ProfileViewController: BaseViewController, View {
         switch item {
         case let .profile(imageURL, nickname):
           let cell = collectionView.dequeueReusableCell(for: indexPath) as ProfileMainCell
+          cell.gearButtonHandler = { self.reactor?.action.onNext(.gearButtonDidTap) }
           cell.configure(imageURL: imageURL, nickname: nickname)
           return cell
         case .publicSetting:
           let cell = collectionView.dequeueReusableCell(for: indexPath) as ProfilePublicCell
+          cell.buttonHandler = { self.reactor?.action.onNext(.publicButtonDidTap) }
           return cell
         default:
           let cell = collectionView.dequeueReusableCell(for: indexPath) as ProfileButtonCell
+          cell.buttonHandler = { self.reactor?.action.onNext(.managementButtonDidTap(item)) }
           cell.configure(with: item)
           return cell
         }
@@ -105,24 +114,13 @@ final class ProfileViewController: BaseViewController, View {
     super.viewWillAppear(animated)
     
     self.navigationController?.setNavigationBarHidden(true, animated: true)
-//    tabBarController?.tabBar.isHidden = false
-//    
-//    let tabBarAppearance = NavigationAppearanceUtils.tabbarAppearance(from: .idorm_gray_100)
-//    tabBarController?.tabBar.standardAppearance = tabBarAppearance
-//    tabBarController?.tabBar.scrollEdgeAppearance = tabBarAppearance
-//    
-//    self.tabBarController?.delegate = self
-//    isViewAppeared = true
+    self.tabBarController?.tabBar.updateBackgroundColor(.iDormColor(.iDormGray100))
   }
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     
-//    let tabBarAppearance = NavigationAppearanceUtils.tabbarAppearance(from: .white)
-//    tabBarController?.tabBar.standardAppearance = tabBarAppearance
-//    tabBarController?.tabBar.scrollEdgeAppearance = tabBarAppearance
-//    
-//    isViewAppeared = false
+    self.tabBarController?.tabBar.updateBackgroundColor(.white)
   }
   
   // MARK: - Setup
@@ -130,20 +128,26 @@ final class ProfileViewController: BaseViewController, View {
   override func setupStyles() {
     super.setupStyles()
     
-    self.view.backgroundColor = .iDormColor(.iDormBlue)
+    self.view.backgroundColor = .iDormColor(.iDormGray100)
   }
   
   override func setupLayouts() {
     super.setupLayouts()
-    
+
     self.view.addSubview(self.collectionView)
+    self.view.addSubview(self.topCoverView)
   }
   
   override func setupConstraints() {
     super.setupConstraints()
-  
+    
+    self.topCoverView.snp.makeConstraints { make in
+      make.top.directionalHorizontalEdges.equalToSuperview()
+      make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+    }
+    
     self.collectionView.snp.makeConstraints { make in
-      make.edges.equalTo(self.view.safeAreaLayoutGuide)
+      make.edges.equalToSuperview()
     }
   }
   
@@ -170,23 +174,39 @@ final class ProfileViewController: BaseViewController, View {
         }
       }
       .disposed(by: self.disposeBag)
+    
+    reactor.pulse(\.$navigateToManagementMyInfoVC).skip(1)
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
+        let viewController = ManagementMyInfoViewController()
+        let reactor = ManagementMyInfoViewReactor()
+        viewController.reactor = reactor
+        viewController.hidesBottomBarWhenPushed = true
+        owner.navigationController?.pushViewController(viewController, animated: true)
+       }
+      .disposed(by: self.disposeBag)
+    
+    reactor.pulse(\.$navigateToManagementVC).skip(1)
+      .compactMap { $0 }
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, item in
+        let viewController = ManagementViewController()
+        let reactor: ManagementViewReactor
+        switch item {
+        case .dislikedRoommate: reactor = .init(.dislikedRoommates)
+        case .likedRoommate: reactor = .init(.likedRoommates)
+        case .myPost: reactor = .init(.myPosts)
+        case .myComment: reactor = .init(.myComments)
+        case .recommendedPost: reactor = .init(.recommendedPosts)
+        default: fatalError()
+        }
+        viewController.reactor = reactor
+        viewController.hidesBottomBarWhenPushed = true
+        owner.navigationController?.pushViewController(viewController, animated: true)
+      }
+      .disposed(by: self.disposeBag)
   }
 }
-
-//extension MyPageViewController: UITabBarControllerDelegate {
-//  func tabBarController(
-//    _ tabBarController: UITabBarController,
-//    didSelect viewController: UIViewController
-//  ) {
-//    guard self.isViewAppeared else { return }
-//    // 선택된 뷰컨트롤러가 UINavigationController인 경우, topViewController를 가져옵니다.
-//    if let navController = viewController as? UINavigationController {
-//      if let scrollView = (navController.topViewController as? MyPageViewController)?.scrollView{
-//        scrollView.setContentOffset(.zero, animated: true)
-//      }
-//    }
-//  }
-//}
 
 // MARK: - Privates
 

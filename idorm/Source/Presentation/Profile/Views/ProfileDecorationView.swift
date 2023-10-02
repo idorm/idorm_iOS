@@ -16,6 +16,10 @@ final class ProfileDecorationView: BaseReusableView {
   private let containerView: UIView = {
     let view = UIView()
     view.backgroundColor = .white
+    view.layer.cornerRadius = 12.0
+    view.layer.shadowOpacity = 0.11
+    view.layer.shadowRadius = 2.0
+    view.layer.shadowOffset = CGSize(width: .zero, height: 2.0)
     return view
   }()
   
@@ -31,7 +35,7 @@ final class ProfileDecorationView: BaseReusableView {
     super.setupConstraints()
     
     self.containerView.snp.makeConstraints { make in
-      make.directionalVerticalEdges.equalToSuperview()
+      make.bottom.top.equalToSuperview()
       make.directionalHorizontalEdges.equalToSuperview().inset(24.0)
     }
   }

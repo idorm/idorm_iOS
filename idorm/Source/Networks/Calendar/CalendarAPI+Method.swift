@@ -14,37 +14,26 @@ extension CalendarAPI {
     switch self {
     case .getTeamMembers:
       return .get
-      
-    case .postTeamCalendars:
+    case .getTeamCalendars:
       return .post
-      
-    case .postDormCalendars:
+    case .getDormCalendars:
       return .post
-      
     case .getTeamCalendar:
       return .get
-      
-    case .putTeamCalendar:
+    case .updateTeamCalendar:
       return .put
-      
     case .deleteTeamCalendar:
       return .delete
-      
-    case .postTeamCalendar:
+    case .createTeamCalendar:
       return .post
-      
     case .deleteTeam:
       return .delete
-      
     case .deleteTeamMember:
       return .delete
-      
-    case .postSleepoverCalendar:
+    case .createSleepoverCalendar:
       return .post
-      
-    case .postSleepoverCalendars:
+    case .getSleepoverCalendars:
       return .post
-      
     case .postAcceptInvitation:
       return .post
     }

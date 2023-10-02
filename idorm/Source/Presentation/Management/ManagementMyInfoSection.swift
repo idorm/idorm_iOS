@@ -58,7 +58,7 @@ enum ManagementMyInfoSection: Hashable {
       )
       section.boundarySupplementaryItems = [footer]
     case .membership:
-      section.contentInsets = .init(top: .zero, leading: 24.0, bottom: .zero, trailing: 24.0)
+      section.contentInsets = .init(top: .zero, leading: 24.0, bottom: 24.0, trailing: 24.0)
     default: break
     }
     return section

@@ -44,10 +44,13 @@ final class ManagementMyInfoViewController: BaseViewController, View {
         switch item {
         case .profileImage(let imageURL):
           let cell = collectionView.dequeueReusableCell(for: indexPath) as ManagementMyInfoProfileCell
+          cell.profileTapHandler = { self.reactor?.action.onNext(.profileImageViewDidTap) }
           cell.configure(with: imageURL)
           return cell
         case .membership:
           let cell = collectionView.dequeueReusableCell(for: indexPath) as ManagementMyInfoMembershipCell
+          cell.withdrawlButtonHandler = { self.reactor?.action.onNext(.withDrawlButtonDidTap) }
+          cell.logoutButtonHandler = { self.reactor?.action.onNext(.logoutButtonDidTap) }
           return cell
         default:
           let cell = collectionView.dequeueReusableCell(for: indexPath) as ManagementMyInfoCell
@@ -70,6 +73,15 @@ final class ManagementMyInfoViewController: BaseViewController, View {
     }
     return dataSource
   }()
+  
+  // MARK: - Life Cycle
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    self.reactor?.action.onNext(.viewWillAppear)
+    self.navigationController?.setNavigationBarHidden(false, animated: true)
+  }
   
   // MARK: - Setup
   
@@ -99,6 +111,11 @@ final class ManagementMyInfoViewController: BaseViewController, View {
     
     // Action
     
+    self.collectionView.rx.itemSelected
+      .compactMap { self.dataSource.itemIdentifier(for: $0) }
+      .map { Reactor.Action.itemDidSelected($0) }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
     
     // State
     
@@ -113,6 +130,45 @@ final class ManagementMyInfoViewController: BaseViewController, View {
         DispatchQueue.main.async {
           owner.dataSource.apply(snapshot)
         }
+      }
+      .disposed(by: self.disposeBag)
+    
+    reactor.pulse(\.$navigateToAuthNicknameVC).skip(1)
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
+        let viewController = AuthNicknameViewController()
+        let reactor = AuthNicknameViewReactor(.changeNickname)
+        viewController.reactor = reactor
+        owner.navigationController?.pushViewController(viewController, animated: true)
+      }
+      .disposed(by: self.disposeBag)
+    
+    reactor.pulse(\.$navigateToAuthPasswordVC).skip(1)
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
+        let viewController = AuthPasswordViewController()
+        let reactor = AuthPasswordViewReactor(.changePassword)
+        viewController.reactor = reactor
+        owner.navigationController?.pushViewController(viewController, animated: true)
+      }
+      .disposed(by: self.disposeBag)
+    
+    reactor.pulse(\.$navigateToManagementAccountVC).skip(1)
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
+        let viewController = ManagementAccountViewController()
+        owner.navigationController?.pushViewController(viewController, animated: true)
+      }
+      .disposed(by: self.disposeBag)
+    
+    reactor.pulse(\.$navigateToAuthLoginVC).skip(1)
+      .asDriver(onErrorRecover: { _ in return .empty() })
+      .drive(with: self) { owner, _ in
+        let viewController = AuthLoginViewController()
+        let reactor = AuthLoginViewReactor()
+        viewController.reactor = reactor
+        owner.tabBarController?.navigationController?
+          .setViewControllers([viewController], animated: true)
       }
       .disposed(by: self.disposeBag)
   }

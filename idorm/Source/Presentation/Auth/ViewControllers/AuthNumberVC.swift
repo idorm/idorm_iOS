@@ -61,8 +61,8 @@ final class AuthNumberViewController: BaseViewController, View {
   }()
   
   /// 인증번호를 입력하는 `UITextField`
-  private let textField: NewiDormTextField = {
-    let textField = NewiDormTextField(type: .withBorderLine)
+  private let textField: iDormTextField = {
+    let textField = iDormTextField(type: .withBorderLine)
     textField.placeHolder = "인증번호를 입력해주세요."
     textField.textField.addRightPadding(50.0)
     return textField
@@ -116,8 +116,8 @@ final class AuthNumberViewController: BaseViewController, View {
         else { return }
         owner.dismiss(animated: true) {
           let authProcess = Logger.shared.authProcess
-          let reactor: PasswordViewReactor
-          let passwordVC = PasswordViewController()
+          let reactor: AuthPasswordViewReactor
+          let passwordVC = AuthPasswordViewController()
           switch authProcess {
           case .signUp:
             reactor = .init(.signUp)
@@ -135,7 +135,7 @@ final class AuthNumberViewController: BaseViewController, View {
       .filter { $0 }
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, _ in
-        AlertManager.shared.showAlertPopup("인증번호가 만료되었습니다.")
+        ModalManager.presentPopupVC(.alert(.oneButton(contents: "인증번호가 만료되었습니다.")))
       }
       .disposed(by: self.disposeBag)
     
@@ -202,6 +202,7 @@ final class AuthNumberViewController: BaseViewController, View {
     self.continueButton.snp.makeConstraints { make in
       make.leading.trailing.equalToSuperview().inset(24)
       make.bottom.equalTo(self.view.keyboardLayoutGuide.snp.top).offset(-20)
+      make.height.equalTo(53.0)
     }
     
     self.timerLabel.snp.makeConstraints { make in

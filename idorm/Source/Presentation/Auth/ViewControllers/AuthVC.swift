@@ -165,11 +165,13 @@ final class AuthViewController: BaseViewController, View {
     self.enterNumberButton.snp.makeConstraints { make in
       make.directionalHorizontalEdges.equalToSuperview().inset(24.0)
       make.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(54.0)
+      make.height.equalTo(53.0)
     }
     
     self.goMailBoxButton.snp.makeConstraints { make in
       make.directionalHorizontalEdges.equalToSuperview().inset(24.0)
       make.bottom.equalTo(self.enterNumberButton.snp.top).offset(-8.0)
+      make.height.equalTo(53.0)
     }
   }
 }

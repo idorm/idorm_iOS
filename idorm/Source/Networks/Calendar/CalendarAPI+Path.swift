@@ -13,22 +13,22 @@ extension CalendarAPI {
     case .getTeamMembers:
       return "/member/team"
       
-    case .postTeamCalendars:
+    case .getTeamCalendars:
       return "/member/team/calendars"
       
-    case .postDormCalendars:
+    case .getDormCalendars:
       return "/member/calendars"
       
     case .getTeamCalendar:
       return "/member/team/calendar"
       
-    case .putTeamCalendar:
+    case .updateTeamCalendar:
       return "/member/team/calendar"
       
     case .deleteTeamCalendar:
       return "/member/team/calendar"
       
-    case .postTeamCalendar:
+    case .createTeamCalendar:
       return "/member/team/calendar"
       
     case .deleteTeam:
@@ -37,10 +37,10 @@ extension CalendarAPI {
     case .deleteTeamMember:
       return "/member/team"
       
-    case .postSleepoverCalendar:
+    case .createSleepoverCalendar:
       return "/member/team/calendar/sleepover"
       
-    case .postSleepoverCalendars:
+    case .getSleepoverCalendars:
       return "/member/team/calendars/sleepover"
       
     case .postAcceptInvitation:

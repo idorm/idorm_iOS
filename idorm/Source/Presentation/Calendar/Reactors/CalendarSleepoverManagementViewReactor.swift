@@ -65,7 +65,7 @@ final class CalendarSleepoverManagementViewReactor: Reactor {
       let startDate = teamCalendar.startDate
       let endDate = teamCalendar.endDate
       return self.apiManager.requestAPI(
-        to: .postSleepoverCalendar(startDate: startDate, endDate: endDate)
+        to: .createSleepoverCalendar(startDate: startDate, endDate: endDate)
       ).flatMap { _ in return Observable<Mutation>.just(.setPopping(true)) }
       
     case .calendarDidSelect(let date):

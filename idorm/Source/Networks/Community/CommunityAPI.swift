@@ -9,40 +9,40 @@ import Foundation
 
 import Moya
 
-enum CommunityAPI {
-  case lookupPosts(dorm: Dormitory, page: Int)
-  case lookupDetailPost(postId: Int)
-  case lookupTopPosts(Dormitory)
-  case lookupMyPosts
-  case lookupMyLikedPosts
-  case lookupMyComments
-  case savePost(CommunityRequestModel.Post)
-  case saveComment(postId: Int, body: CommunityCommentRequestDTO)
-  case deleteComment(postId: Int, commentId: Int)
-  case deletePost(postId: Int)
-  case editPostSympathy(postId: Int, isSympathy: Bool)
-  case editPost(
-    postId: Int,
-    post: CommunityRequestModel.Post,
-    deletePostPhotos: [Int]
-  )
-}
-
-extension CommunityAPI: BaseTargetType {
-  func getHeader() -> NetworkHeaderType {
-    switch self {
-    case .savePost:
-      return .normalMultipart
-    default:
-      return .normalJson
-    }
-  }
-  
-  static let provider = MoyaProvider<CommunityAPI>()
-  
-  var baseURL: URL { return getBaseURL() }
-  var path: String { return getPath() }
-  var method: Moya.Method { return getMethod() }
-  var task: Moya.Task { return getTask() }
-  var headers: [String : String]? { self.getHeader().header }
-}
+//enum CommunityAPI {
+//  case lookupPosts(dorm: Dormitory, page: Int)
+//  case lookupDetailPost(postId: Int)
+//  case lookupTopPosts(Dormitory)
+//  case lookupMyPosts
+//  case lookupMyLikedPosts
+//  case lookupMyComments
+//  case savePost(CommunityRequestModel.Post)
+//  case saveComment(postId: Int, body: CommunityCommentRequestDTO)
+//  case deleteComment(postId: Int, commentId: Int)
+//  case deletePost(postId: Int)
+//  case editPostSympathy(postId: Int, isSympathy: Bool)
+//  case editPost(
+//    postId: Int,
+//    post: CommunityRequestModel.Post,
+//    deletePostPhotos: [Int]
+//  )
+//}
+//
+//extension CommunityAPI: BaseTargetType {
+//  func getHeader() -> NetworkHeaderType {
+//    switch self {
+//    case .savePost:
+//      return .normalMultipart
+//    default:
+//      return .normalJson
+//    }
+//  }
+//  
+//  static let provider = MoyaProvider<CommunityAPI>()
+//  
+//  var baseURL: URL { return getBaseURL() }
+//  var path: String { return getPath() }
+//  var method: Moya.Method { return getMethod() }
+//  var task: Moya.Task { return getTask() }
+//  var headers: [String : String]? { self.getHeader().header }
+//}

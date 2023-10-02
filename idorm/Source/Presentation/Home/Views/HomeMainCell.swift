@@ -59,7 +59,7 @@ final class HomeMainCell: UICollectionViewCell, BaseViewProtocol {
   }()
   
   /// 아이돔의 마스코트 캐릭터가 그려져 있는 `UIImageView`
-  private let domiImageView = UIImageView(image: .iDormIcon(.domi))
+  private let domiImageView = UIImageView(image: .iDormImage(.domi_background))
   
   // MARK: - Properties
   
@@ -98,14 +98,12 @@ final class HomeMainCell: UICollectionViewCell, BaseViewProtocol {
     }
     
     self.domiImageView.snp.makeConstraints { make in
-      make.trailing.equalToSuperview()
-      make.top.equalTo(self.mainLabel.snp.bottom).offset(-12.0)
+      make.bottom.trailing.equalToSuperview()
     }
     
     self.startMatchingButton.snp.makeConstraints { make in
       make.directionalHorizontalEdges.equalToSuperview()
-      make.bottom.equalTo(self.domiImageView.snp.bottom).offset(-11.0)
-      make.bottom.equalToSuperview().inset(53.0)
+      make.bottom.equalToSuperview().inset(10.14)
       make.height.equalTo(52.0)
     }
   }

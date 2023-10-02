@@ -124,10 +124,10 @@ final class CalendarManagementViewReactor: Reactor {
     case .doneButtonDidTap:
       switch self.currentState.viewState {
       case .new:
-        return self.apiManager.requestAPI(to: .postTeamCalendar(self.teamCalendarRequestModel))
+        return self.apiManager.requestAPI(to: .createTeamCalendar(self.teamCalendarRequestModel))
           .flatMap { _ in return Observable<Mutation>.just(.setPop(true)) }
       case .edit:
-        return self.apiManager.requestAPI(to: .putTeamCalendar(self.teamCalendarRequestModel))
+        return self.apiManager.requestAPI(to: .updateTeamCalendar(self.teamCalendarRequestModel))
           .flatMap { _ in return Observable<Mutation>.just(.setPop(true)) }
       }
       

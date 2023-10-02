@@ -17,7 +17,7 @@ struct TeamCalendar: Hashable {
   var endTime: String = ""
   var startDate: String = ""
   var startTime: String = ""
-  var targets: [TeamMember] = []
+  var members: [TeamMember] = []
   var title: String = ""
   
   /// 빈 `TeamCalendar`를 얻기 위한 이니셜라이저
@@ -33,18 +33,29 @@ struct TeamCalendar: Hashable {
     self.startDate = Date().toString("yyyy-MM-dd")
   }
   
-  /// `TeamCalendarSleepoverResponseDTO`를 변환합니다.
   init(_ responseDTO: TeamCalendarSleepoverResponseDTO) {
     self.identifier = responseDTO.teamCalendarId
-    self.startDate = responseDTO.startDate.toDateString(from: "yyyy-MM-dd", to: "M월 d일")
-    self.endDate = responseDTO.endDate.toDateString(from: "yyyy-MM-dd", to: "M월 d일")
+    self.startDate = responseDTO.startDate
+    self.endDate = responseDTO.endDate
+  }
+  
+  init(_ responseDTO: TeamCalendarResponseDTO) {
+    self.identifier = responseDTO.teamCalendarId
+    self.startDate = responseDTO.startDate
+    self.endDate = responseDTO.endDate
+    self.members = responseDTO.targets.map { TeamMember($0) }
+    self.title = responseDTO.title
+  }
+  
+  init(_ responseDTO: TeamCalendarSingleResponseDTO) {
+    self.identifier = responseDTO.teamCalendarId
+    self.content = responseDTO.content
+    self.endDate = responseDTO.endDate
+    self.endTime = responseDTO.endTime
+    self.startDate = responseDTO.startDate
+    self.startTime = responseDTO.startTime
+    self.members = responseDTO.targets.map { TeamMember($0) }
+    self.title = responseDTO.title
   }
 }
 
-struct TeamMember: Hashable {
-  /// 멤버의 식별자
-  let identifier: Int
-  let nickname: String
-  let order: Int
-  let profilePhotoURL: String?
-}

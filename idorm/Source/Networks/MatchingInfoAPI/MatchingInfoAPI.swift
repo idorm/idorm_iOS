@@ -49,11 +49,11 @@ extension MatchingInfoAPI: BaseTargetType {
 
 extension MatchingInfoAPI {
   static func retrieveProcess(_ respose: Response) {
-    let matchingInfo = MatchingInfoAPI.decode(
-      ResponseDTO<MatchingInfoResponseModel.MatchingInfo>.self,
-      data: respose.data
-    ).data
+//    let matchingInfo = MatchingInfoAPI.decode(
+//      ResponseDTO<MatchingInfoResponseModel.MatchingInfo>.self,
+//      data: respose.data
+//    ).data
     
-    MemberStorage.shared.saveMatchingInfo(matchingInfo)
+//    MemberStorage.shared.saveMatchingInfo(matchingInfo)
   }
 }

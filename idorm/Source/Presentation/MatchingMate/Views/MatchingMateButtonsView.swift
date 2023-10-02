@@ -19,27 +19,27 @@ enum MatchingMateButtonType: CaseIterable {
   
   var image: UIImage? {
     switch self {
-    case .like:
-      return .iDormIcon(.matchingMate_like)
+    case .dislike:
+      return .iDormIcon(.matchingMate_dislike)
     case .reverse:
       return .iDormIcon(.matchingMate_reverse)
     case .message:
       return .iDormIcon(.matchingMate_message)
-    case .dislike:
-      return .iDormIcon(.matchingMate_dislike)
+    case .like:
+      return .iDormIcon(.matchingMate_like)
     }
   }
   
   var highlightedImage: UIImage? {
     switch self {
-    case .like:
-      return .iDormIcon(.matchingMate_like_highlighted)
     case .dislike:
       return .iDormIcon(.matchingMate_dislike_highlighted)
-    case .message:
-      return .iDormIcon(.matchingMate_message_highlighted)
     case .reverse:
       return .iDormIcon(.matchingMate_reverse_highlighted)
+    case .message:
+      return .iDormIcon(.matchingMate_message_highlighted)
+    case .like:
+      return .iDormIcon(.matchingMate_like_highlighted)
     }
   }
 }
@@ -63,10 +63,10 @@ final class MatchingMateButtonsView: BaseView {
   private lazy var stackView: UIStackView = {
     let stackView = UIStackView()
     [
-      self.likeButton,
       self.dislikeButton,
+      self.reverseButton,
       self.messageButton,
-      self.reverseButton
+      self.likeButton
     ].forEach {
       stackView.addArrangedSubview($0)
     }

@@ -9,7 +9,7 @@ import UIKit
 
 import PhotosUI
 
-final class iDormPHPickerViewController: BaseViewController {
+final class iDormImagePickerViewController: BaseViewController {
   
   enum ViewType {
     case multiSelection(selectionLimit: Int)
@@ -62,7 +62,7 @@ final class iDormPHPickerViewController: BaseViewController {
 
 // MARK: - PHPickerViewControllerDelegate
 
-extension iDormPHPickerViewController: PHPickerViewControllerDelegate {
+extension iDormImagePickerViewController: PHPickerViewControllerDelegate {
   func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
     let dispatchGroup = DispatchGroup()
     var selectedImages: [UIImage] = []

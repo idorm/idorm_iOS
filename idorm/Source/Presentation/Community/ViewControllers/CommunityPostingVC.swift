@@ -225,85 +225,49 @@ final class CommunityPostingViewController: BaseViewController, View {
     
     // State
     
-    reactor.state.map { (sections: $0.sections, items: $0.items) }
-      .asDriver(onErrorRecover: { _ in return .empty() })
-      .drive(with: self) { owner, sectionData in
-        var snapshot = NSDiffableDataSourceSnapshot<CommunityPostingSection, CommunityPostingSectionItem>()
-        snapshot.appendSections(sectionData.sections)
-        sectionData.items.enumerated().forEach { index, items in
-          snapshot.appendItems(items, toSection: sectionData.sections[index])
-        }
-        DispatchQueue.main.async {
-          owner.dataSource.apply(snapshot)
-        }
-      }
-      .disposed(by: self.disposeBag)
-    
-    reactor.pulse(\.$presentToImagePickerVC).skip(1)
-      .asDriver(onErrorRecover: { _ in return .empty() })
-      .drive(with: self) { owner, selectionLimit in
-        let viewController = iDormPHPickerViewController(
-          .multiSelection(selectionLimit: selectionLimit)
-        )
-        viewController.modalPresentationStyle = .overFullScreen
-        viewController.imagesHandler = { owner.reactor?.action.onNext(.imagesDidPick($0)) }
-        owner.present(viewController, animated: false)
-      }
-      .disposed(by: self.disposeBag)
-    
-    reactor.state.map { $0.isAnonymous }
-      .distinctUntilChanged()
-      .bind(to: self.anonymousButton.rx.isSelected)
-      .disposed(by: self.disposeBag)
-    
-    reactor.state.map { $0.isEnabledConfirmButton }
-      .distinctUntilChanged()
-      .bind(to: self.confirmButton.rx.isEnabled)
-      .disposed(by: self.disposeBag)
-    
-    reactor.state.map { $0.post }
-      .distinctUntilChanged()
-      .asDriver(onErrorRecover: { _ in return .empty() })
-      .drive(with: self) { owner, post in
-        owner.imagesCountButton.title = "\(post.imagesData.count)/10"
-      }
-      .disposed(by: self.disposeBag)
-  }
-  
-  private func checkAuthorization() {
-//    let galleryVC = GalleryViewController(count: reactor?.currentState.currentImages.count ?? 0)
-//    
-//    galleryVC.completion = { [weak self] assets in
-//      // 선택된 이미지 반응
-//      let manager = PHImageManager.default()
-//      var images: [UIImage] = []
-//      assets.forEach {
-//        images.append($0.getImageFromPHAsset())
-//      }
-//      self?.reactor?.action.onNext(.didPickedImages(images))
-//    }
-//    
-//    switch PHPhotoLibrary.authorizationStatus(for: .readWrite) {
-//    case .authorized, .limited:
-//      DispatchQueue.main.async {
-//        self.navigationController?.pushViewController(galleryVC, animated: true)
-//      }
-//      
-//    case .notDetermined:
-//      PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
-//        switch status {
-//        case .authorized, .limited:
-//          DispatchQueue.main.async {
-//            self.navigationController?.pushViewController(galleryVC, animated: true)
-//          }
-//        default:
-//          break
+//    reactor.state.map { (sections: $0.sections, items: $0.items) }
+//      .asDriver(onErrorRecover: { _ in return .empty() })
+//      .drive(with: self) { owner, sectionData in
+//        var snapshot = NSDiffableDataSourceSnapshot<CommunityPostingSection, CommunityPostingSectionItem>()
+//        snapshot.appendSections(sectionData.sections)
+//        sectionData.items.enumerated().forEach { index, items in
+//          snapshot.appendItems(items, toSection: sectionData.sections[index])
+//        }
+//        DispatchQueue.main.async {
+//          owner.dataSource.apply(snapshot)
 //        }
 //      }
-//      
-//    default:
-//      presentAuthenticationAlert()
-//    }
+//      .disposed(by: self.disposeBag)
+//    
+//    reactor.pulse(\.$presentToImagePickerVC).skip(1)
+//      .asDriver(onErrorRecover: { _ in return .empty() })
+//      .drive(with: self) { owner, selectionLimit in
+//        let viewController = iDormImagePickerViewController(
+//          .multiSelection(selectionLimit: selectionLimit)
+//        )
+//        viewController.modalPresentationStyle = .overFullScreen
+//        viewController.imagesHandler = { owner.reactor?.action.onNext(.imagesDidPick($0)) }
+//        owner.present(viewController, animated: false)
+//      }
+//      .disposed(by: self.disposeBag)
+//    
+//    reactor.state.map { $0.isAnonymous }
+//      .distinctUntilChanged()
+//      .bind(to: self.anonymousButton.rx.isSelected)
+//      .disposed(by: self.disposeBag)
+//    
+//    reactor.state.map { $0.isEnabledConfirmButton }
+//      .distinctUntilChanged()
+//      .bind(to: self.confirmButton.rx.isEnabled)
+//      .disposed(by: self.disposeBag)
+//    
+//    reactor.state.map { $0.post }
+//      .distinctUntilChanged()
+//      .asDriver(onErrorRecover: { _ in return .empty() })
+//      .drive(with: self) { owner, post in
+//        owner.imagesCountButton.title = "\(post.imagesData.count)/10"
+//      }
+//      .disposed(by: self.disposeBag)
   }
   
   private func presentAuthenticationAlert() {

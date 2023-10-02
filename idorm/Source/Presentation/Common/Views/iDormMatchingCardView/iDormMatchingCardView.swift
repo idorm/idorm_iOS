@@ -176,13 +176,13 @@ final class iDormMatchingCardView: BaseView {
   override func setupConstraints() {
     self.topContainerView.snp.makeConstraints { make in
       make.directionalHorizontalEdges.top.equalToSuperview()
-      make.height.equalTo(403.0)
+      make.bottom.equalTo(self.wantToSayView.snp.bottom).offset(20.0)
     }
     
     self.bottomContainerView.snp.makeConstraints { make in
       make.top.equalTo(self.topContainerView.snp.bottom).offset(-1.0)
       make.directionalHorizontalEdges.equalToSuperview()
-      make.height.equalTo(34.0)
+      make.bottom.equalTo(self.genderAndAgeButton.snp.bottom).offset(8.0)
     }
     
     self.dormitoryLabel.snp.makeConstraints { make in
@@ -217,8 +217,8 @@ final class iDormMatchingCardView: BaseView {
     }
     
     self.genderAndAgeButton.snp.makeConstraints { make in
-      make.centerY.equalTo(self.bottomContainerView)
-      make.leading.equalToSuperview().inset(10.0)
+      make.top.equalTo(self.topContainerView.snp.bottom).offset(8.0)
+      make.leading.equalToSuperview().inset(12.0)
     }
     
     self.optionButton.snp.makeConstraints { make in

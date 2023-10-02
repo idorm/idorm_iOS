@@ -13,6 +13,16 @@ final class ManagementAccountViewController: BaseViewController {
   
   // MARK: - UI Components
   
+  private let scrollView: UIScrollView = {
+    let scrollView = UIScrollView()
+    return scrollView
+  }()
+  
+  private let containerView: UIView = {
+    let view = UIView()
+    return view
+  }()
+  
   private let bottomMenuView: iDormBottomMenuView = {
     let view = iDormBottomMenuView()
     view.updateTitle(left: "다시 생각해볼래요❤", right: "탈퇴")
@@ -21,7 +31,7 @@ final class ManagementAccountViewController: BaseViewController {
   
   private let domiImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = .iDormIcon(.domi_sad)
+    imageView.image = .iDormImage(.domi_sad)
     return imageView
   }()
   
@@ -48,22 +58,34 @@ final class ManagementAccountViewController: BaseViewController {
   override func setupLayouts() {
     super.setupLayouts()
     
+    self.view.addSubview(self.scrollView)
+    self.view.addSubview(self.bottomMenuView)
+    self.scrollView.addSubview(self.containerView)
     [
       self.titleLabel,
       self.domiImageView,
       self.notifiyView,
-      self.bottomMenuView
     ].forEach {
-      self.view.addSubview($0)
+      self.containerView.addSubview($0)
     }
   }
   
   override func setupConstraints() {
     super.setupConstraints()
     
+    self.scrollView.snp.makeConstraints { make in
+      make.top.directionalHorizontalEdges.equalToSuperview()
+      make.bottom.equalTo(self.bottomMenuView.snp.top)
+    }
+    
+    self.containerView.snp.makeConstraints { make in
+      make.edges.equalToSuperview()
+      make.width.equalTo(self.view.frame.width)
+    }
+    
     self.titleLabel.snp.makeConstraints { make in
       make.leading.equalToSuperview().inset(24.0)
-      make.top.equalTo(self.view.safeAreaLayoutGuide).inset(36.0)
+      make.top.equalToSuperview().inset(36.0)
     }
     
     self.domiImageView.snp.makeConstraints { make in
@@ -74,6 +96,7 @@ final class ManagementAccountViewController: BaseViewController {
     self.notifiyView.snp.makeConstraints { make in
       make.top.equalTo(self.domiImageView.snp.bottom).offset(36.0)
       make.directionalHorizontalEdges.equalToSuperview()
+      make.bottom.equalToSuperview().inset(24.0)
     }
     
     self.bottomMenuView.snp.makeConstraints { make in

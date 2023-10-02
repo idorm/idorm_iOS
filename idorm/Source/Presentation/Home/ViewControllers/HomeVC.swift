@@ -124,7 +124,8 @@ final class HomeViewController: BaseViewController, View {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    self.navigationController?.setNavigationBarHidden(true, animated: true)
+    
+    self.navigationController?.setNavigationBarHidden(true, animated: false)
   }
   
   // MARK: - Bind
@@ -162,8 +163,8 @@ final class HomeViewController: BaseViewController, View {
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, post in
         let viewController = CommunityPostViewController()
-        let reactor = CommunityPostViewReactor(post)
-        viewController.reactor = reactor
+//        let reactor = CommunityPostViewReactor(post)
+//        viewController.reactor = reactor
         viewController.hidesBottomBarWhenPushed = true
         owner.navigationController?.pushViewController(viewController, animated: true)
       }
@@ -198,12 +199,17 @@ final class HomeViewController: BaseViewController, View {
 
 private extension HomeViewController {
   func getLayout() -> UICollectionViewCompositionalLayout {
-    return UICollectionViewCompositionalLayout { section, _ in
-      guard let section = self.dataSource.sectionIdentifier(for: section) else {
-        fatalError("🔴 HomeSection을 발견하지 못했습니다!")
-      }
-      return section.section
-    }
+    var configuration = UICollectionViewCompositionalLayoutConfiguration()
+    configuration.interSectionSpacing = 32.0
+    return UICollectionViewCompositionalLayout(
+      sectionProvider: { section, _ in
+        guard let section = self.dataSource.sectionIdentifier(for: section) else {
+          fatalError("🔴 HomeSection을 발견하지 못했습니다!")
+        }
+        return section.section
+      },
+      configuration: configuration
+    )
   }
 }
 

@@ -98,12 +98,27 @@ enum ProfileSection: Hashable {
         elementKind: ProfileHeaderView.reuseIdentifier,
         alignment: .topLeading
       )
+      let decorationItem = NSCollectionLayoutDecorationItem.background(
+        elementKind: ProfileDecorationView.reuseIdentifier
+      )
+      decorationItem.contentInsets = self.decorationItemContentInsets
+      decorationItem.zIndex = -2
       section.boundarySupplementaryItems = [headerItem]
-      section.decorationItems = [.background(elementKind: ProfileDecorationView.reuseIdentifier)]
+      section.decorationItems = [decorationItem]
       section.interGroupSpacing = 16.0
     default: break
     }
     return section
+  }
+  
+  var decorationItemContentInsets: NSDirectionalEdgeInsets {
+    switch self {
+    case .roommate:
+      return .init(top: .zero, leading: .zero, bottom: -53.0, trailing: .zero)
+    case .community:
+      return .init(top: .zero, leading: .zero, bottom: 24.0, trailing: .zero)
+    default: return .zero
+    }
   }
   
   var contentInsets: NSDirectionalEdgeInsets {
@@ -113,7 +128,7 @@ enum ProfileSection: Hashable {
     case .roommate:
       return NSDirectionalEdgeInsets(top: .zero, leading: 48.0, bottom: .zero, trailing: 48.0)
     case .community:
-      return NSDirectionalEdgeInsets(top: .zero, leading: 48.0, bottom: 24.0, trailing: 48.0)
+      return NSDirectionalEdgeInsets(top: .zero, leading: 48.0, bottom: 48.0, trailing: 48.0)
     case .publicSetting:
       return NSDirectionalEdgeInsets(top: .zero, leading: 24.0, bottom: 24.0, trailing: 24.0)
     }

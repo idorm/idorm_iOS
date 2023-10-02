@@ -125,7 +125,7 @@ final class CalendarSleepoverListViewReactor: Reactor {
 
 private extension CalendarSleepoverListViewReactor {
   func requestSleepoverCalendars() -> Observable<Mutation> {
-    return self.calendarService.requestAPI(to: .postSleepoverCalendars(
+    return self.calendarService.requestAPI(to: .getSleepoverCalendars(
       memberID: self.currentState.memberID,
       yearMonth: self.currentState.yearMonth
     ))

@@ -30,6 +30,7 @@ final class ManagementMyInfoCell: BaseCollectionViewCell {
   private let rightButton: UIButton = {
     let button = UIButton()
     button.setImage(.iDormIcon(.right), for: .normal)
+    button.isUserInteractionEnabled = false
     return button
   }()
   

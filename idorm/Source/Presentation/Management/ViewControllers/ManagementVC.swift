@@ -64,6 +64,14 @@ final class ManagementViewController: BaseViewController, View {
     return dataSource
   }()
   
+  // MARK: - Life Cycle
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    self.navigationController?.setNavigationBarHidden(false, animated: true)
+  }
+  
   // MARK: - Setup
 
   override func setupLayouts() {

@@ -324,9 +324,6 @@ final class DormCalendarCell: UICollectionViewCell, BaseViewProtocol {
       self.height = 150.0
     }
   }
-  
-  @available(*, deprecated, renamed: "configure", message: "BYE")
-  func configure(_ calendar: CalendarResponseModel.Calendar) {}
 }
 
 // MARK: - Privates

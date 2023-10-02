@@ -7,12 +7,39 @@
 
 import Foundation
 
+enum NetworkHeaderType {
+  case normalJson
+  case normalJsonWithoutToken
+  case fcmJson
+  case normalMultipart
+  
+  var header: [String: String]? {
+    switch self {
+    case .normalJson:
+      return [
+        "Content-Type": "application/json",
+        "Authorization": UserStorage.shared.token
+      ]
+    case .normalJsonWithoutToken:
+      return ["Content-Type": "application/json"]
+    case .fcmJson:
+      return [
+        "fcm-token": FCMTokenManager.shared.fcmToken!,
+        "Content-Type": "application/json",
+        "X-AUTH-TOKEN": UserStorage.shared.token
+      ]
+    case .normalMultipart:
+      return [
+        "Content-Type": "multipart/form-data",
+        "Authorization": UserStorage.shared.token
+      ]
+    }
+  }
+}
+
 enum NetworkUtility {
   
   // MARK: - Static
-  
-  /// 현재 테스트할 서버입니다.
-  static var networkEnviornment: NetworkEnviornment = .develop
   
   /// 서버의 응답을 원하는 구조체로 변환하는 메서드입니다.
   ///

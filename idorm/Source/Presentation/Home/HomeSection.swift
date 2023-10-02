@@ -17,7 +17,7 @@ enum HomeSection: Hashable {
     case .main:
       return .init(
         widthDimension: .fractionalWidth(1.0),
-        heightDimension: .estimated(300.0)
+        heightDimension: .absolute(265.0)
       )
       
     case .topPosts:
@@ -51,37 +51,20 @@ enum HomeSection: Hashable {
   
   var section: NSCollectionLayoutSection {
     let section = NSCollectionLayoutSection(group: self.group)
+    section.contentInsets = self.contentInsets
     switch self {
-    case .main:
-      section.contentInsets = NSDirectionalEdgeInsets(
-        top: 24.0,
-        leading: 24.0,
-        bottom: .zero,
-        trailing: 24.0
-      )
+    case .main: break
     case .topPosts:
-      section.contentInsets = NSDirectionalEdgeInsets(
-        top: 12.0,
-        leading: 24.0,
-        bottom: 12.0,
-        trailing: 24.0
-      )
       section.interGroupSpacing = 8.0
       section.orthogonalScrollingBehavior = .continuous
       section.decorationItems = [
         .background(elementKind: CommunityTopPostsBackgroundView.identifier)
       ]
     case .dormCalendars:
-      section.contentInsets = NSDirectionalEdgeInsets(
-        top: .zero,
-        leading: 24.0,
-        bottom: 24.0,
-        trailing: 24.0
-      )
       // Header
       let headerSize = NSCollectionLayoutSize(
         widthDimension: .fractionalWidth(1.0),
-        heightDimension: .absolute(108.0)
+        heightDimension: .absolute(60.0)
       )
       let header = NSCollectionLayoutBoundarySupplementaryItem(
         layoutSize: headerSize,
@@ -91,6 +74,17 @@ enum HomeSection: Hashable {
       section.boundarySupplementaryItems = [header]
     }
     return section
+  }
+  
+  var contentInsets: NSDirectionalEdgeInsets {
+    switch self {
+    case .main: 
+      return .init(top: 24.0, leading: 24.0, bottom: 24.0, trailing: 24.0)
+    case .topPosts:
+      return .init(top: 12.0, leading: 24.0, bottom: 12.0, trailing: 24.0)
+    case .dormCalendars:
+      return .init(top: 16.0, leading: 24.0, bottom: 24.0, trailing: 24.0)
+    }
   }
 }
 

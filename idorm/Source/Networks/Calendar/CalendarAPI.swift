@@ -24,7 +24,7 @@ enum CalendarAPI {
   ///
   /// - Parameters:
   ///  - yearMonth: Ex. `2023-04`
-  case postTeamCalendars(yearMonth: String)
+  case getTeamCalendars(yearMonth: String)
   
   /**
    기숙사 공식 일정 월별 조회
@@ -36,7 +36,7 @@ enum CalendarAPI {
    - Parameters:
    - yearMonth: Ex. `2023-04`
    */
-  case postDormCalendars(yearMonth: String)
+  case getDormCalendars(yearMonth: String)
   
   /// [팀 / 외박] 일정 단건 조회
   case getTeamCalendar(teamCalendarId: Int)
@@ -46,7 +46,7 @@ enum CalendarAPI {
    
    - targets 필드는 회원 식별자 배열을 주세요
    */
-  case putTeamCalendar(TeamCalendarRequestModel)
+  case updateTeamCalendar(TeamCalendarRequestModel)
   
   /**
    [팀/외박] 일정 삭제
@@ -61,7 +61,7 @@ enum CalendarAPI {
    
    - targets 필드는 회원 식별자 배열을 주세요,
    */
-  case postTeamCalendar(TeamCalendarRequestModel)
+  case createTeamCalendar(TeamCalendarRequestModel)
   
   /**
    팀 나가기
@@ -82,7 +82,7 @@ enum CalendarAPI {
    
    - 외박일정은 본인의 것만 생성 가능합니다.
    */
-  case postSleepoverCalendar(startDate: String, endDate: String)
+  case createSleepoverCalendar(startDate: String, endDate: String)
   
   /**
    [외박] 일정 월별 조회
@@ -91,7 +91,7 @@ enum CalendarAPI {
    - 종료일이 지난 일정은 빼고 응답합니다.
    - 예시 성공 응답이 리스트로 파바박- 담겨서 응답합니다.
    */
-  case postSleepoverCalendars(memberID: Int, yearMonth: String)
+  case getSleepoverCalendars(memberID: Int, yearMonth: String)
   
   /**
    룸메이트 초대 수락
@@ -102,14 +102,9 @@ enum CalendarAPI {
 }
 
 extension CalendarAPI: BaseTargetType {
-  func getHeader() -> NetworkHeaderType {
-    return .normalJson
-  }
-  
   var baseURL: URL { self.getBaseURL() }
   var path: String { self.getPath() }
   var method: Moya.Method { self.getMethod() }
   var task: Moya.Task { self.getTask() }
-  var headers: [String : String]? { self.getJsonHeader() }
+  var headers: [String : String]? { self.getHeader().header }
 }
-

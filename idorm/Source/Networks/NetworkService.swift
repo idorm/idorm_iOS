@@ -60,13 +60,20 @@ final class NetworkService<targetType: BaseTargetType> {
           switch rawError {
           case NetworkError.timeout:
             os_log(.error, "❌ 요청에 실패했습니다. 실패요인: TimeOut")
-            if withAlert { AlertManager.shared.showAlertPopup("요청 시간이 초과되었습니다.") }
+            if withAlert {
+              ModalManager.presentPopupVC(.alert(.oneButton(contents: "요청 시간이 초과되었습니다.")))
+            }
           case NetworkError.internetConnection:
             os_log(.error, "❌ 요청에 실패했습니다. 실패요인: 인터넷 연결 끊김")
-            if withAlert { AlertManager.shared.showAlertPopup("인터넷 연결을 확인해주세요.") }
+            if withAlert {
+              ModalManager.presentPopupVC(.alert(.oneButton(contents: "인터넷 연결을 확인해주세요.")))
+            }
           case let NetworkError.restError(errorCode, errorMessage):
             os_log(.error, "❌ 요청에 실패했습니다. 실패요인: \(errorCode ?? "500")")
-            if withAlert { AlertManager.shared.showAlertPopup(errorMessage) }
+            if withAlert {
+              guard let errorMessage = errorMessage else { return }
+              ModalManager.presentPopupVC(.alert(.oneButton(contents: errorMessage)))
+            }
           default:
             os_log(.error, "❌ 알수없는 에러가 발생했습니다. 실패요인: \(rawError.localizedDescription)")
             break
@@ -79,7 +86,7 @@ final class NetworkService<targetType: BaseTargetType> {
 
 // MARK: - Error Handling
 
-extension NetworkService {
+private extension NetworkService {
   /// 인터넷 연결 상태를 확인하고 에러 종류를 반환합니다.
   func handleInternetConnection<T: Any>(_ error: Error) throws -> Single<T> {
     guard

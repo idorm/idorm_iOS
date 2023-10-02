@@ -26,9 +26,15 @@ final class iDormButton: UIButton, BaseViewProtocol {
   /// 버튼의 타이틀 `String`
   var title: String = "" {
     willSet {
+      let paragraphStyle = NSMutableParagraphStyle()
+      paragraphStyle.alignment = .center
+      paragraphStyle.lineBreakStrategy = .hangulWordPriority
       self.configuration?.attributedTitle = AttributedString(
         newValue,
-        attributes: .init([.font: self.font])
+        attributes: .init([
+          .font: self.font,
+          .paragraphStyle: paragraphStyle
+        ])
       )
     }
   }
