@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class CalendarListCell: UICollectionViewCell, BaseViewProtocol {
+final class CalendarListCell: BaseCollectionViewCell {
   
   // MARK: - UI Components
   
@@ -77,24 +77,11 @@ final class CalendarListCell: UICollectionViewCell, BaseViewProtocol {
     return sv
   }()
   
-  // MARK: - Initializer
-  
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    self.setupStyles()
-    self.setupLayouts()
-    self.setupConstraints()
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
   // MARK: - Setup
   
-  func setupStyles() {}
-  
-  func setupLayouts() {
+  override func setupLayouts() {
+    super.setupLayouts()
+    
     [
       self.rightButton,
       self.dateLabel,
@@ -106,7 +93,9 @@ final class CalendarListCell: UICollectionViewCell, BaseViewProtocol {
     }
   }
   
-  func setupConstraints() {
+  override func setupConstraints() {
+    super.setupConstraints()
+    
     self.dateLabel.snp.makeConstraints { make in
       make.top.equalToSuperview()
       make.leading.equalToSuperview().inset(26)
@@ -144,7 +133,7 @@ final class CalendarListCell: UICollectionViewCell, BaseViewProtocol {
   ///
   /// - Parameters:
   ///  - teamCalendar: 팀 일정
-  func configure(_ teamCalendar: TeamCalendarResponseDTO, isEditing: Bool) {
+  func configure(_ teamCalendar: TeamCalendar, isEditing: Bool) {
     self.removeButton.isHidden = true
     self.rightButton.isHidden = true
     if isEditing {
@@ -154,17 +143,11 @@ final class CalendarListCell: UICollectionViewCell, BaseViewProtocol {
     }
     self.dotViews.forEach { $0.isHidden = true }
     self.contentLabel.text = teamCalendar.title
-    self.dateLabel.text = teamCalendar.startDate.toDateString(from: "yyyy-MM-dd", to: "M월 d일")
-    self.dateLabel.text?.append(
-      " ~ \(teamCalendar.endDate.toDateString(from: "yyyy-MM-dd", to: "M월 d일"))"
-    )
-    teamCalendar.targets.forEach {
+    self.dateLabel.text = teamCalendar.startDate
+    self.dateLabel.text?.append(" ~ \(teamCalendar.endDate)")
+    teamCalendar.members.forEach {
       self.dotViews[$0.order].isHidden = false
     }
-  }
-  
-  func configure(with teamCalendar: TeamCalendar, isEditing: Bool) {
-    
   }
 }
 
@@ -182,4 +165,3 @@ private extension CalendarListCell {
     return view
   }
 }
-

@@ -13,5 +13,5 @@ struct TeamCalendarSingleMemberResponseDTO: Codable, Hashable {
   let nickname: String
   let order: Int
   let profilePhotoUrl: String?
-  let sleepoverYn: Bool?
+  let sleepoverYn: Bool
 }

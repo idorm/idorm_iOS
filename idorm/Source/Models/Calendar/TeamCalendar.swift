@@ -10,6 +10,9 @@ import Foundation
 /// `CommunityAPI`에서 응답으로 받은 데이터를
 /// 로컬에서 사용할 `TeamCalendar`로 변환하여 사용할 구조체입니다.
 struct TeamCalendar: Hashable {
+  static let dateFormat = "M월 d일"
+  static let timeFormat = "a h:mm"
+  
   /// 일정의 식별자
   var identifier: Int = -1
   var content: String = ""
@@ -29,8 +32,10 @@ struct TeamCalendar: Hashable {
     guard
       let endDate = Calendar.current.date(byAdding: dateComponents, to: Date())
     else { fatalError("날짜 변환에 실패했습니다!") }
-    self.endDate = endDate.toString("yyyy-MM-dd")
-    self.startDate = Date().toString("yyyy-MM-dd")
+    self.endDate = endDate.toString(TeamCalendar.dateFormat)
+    self.startDate = Date().toString(TeamCalendar.dateFormat)
+    self.startTime = Date().toString(TeamCalendar.timeFormat)
+    self.endDate = Date().addingTimeInterval(3600).toString(TeamCalendar.timeFormat)
   }
   
   init(_ responseDTO: TeamCalendarSleepoverResponseDTO) {

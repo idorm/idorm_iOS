@@ -194,6 +194,11 @@ final class MatchingMateViewController: BaseViewController, View {
       .bind(to: reactor.action)
       .disposed(by: self.disposeBag)
     
+    UserStorage.shared.matchingMateFilter
+      .map { _ in Reactor.Action.matchingInfofilterDidChange }
+      .bind(to: reactor.action)
+      .disposed(by: self.disposeBag)
+    
     // State
     
     reactor.pulse(\.$quotationType)

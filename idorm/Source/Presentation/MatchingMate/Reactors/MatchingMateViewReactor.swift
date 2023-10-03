@@ -24,6 +24,7 @@ final class MatchingMateViewReactor: Reactor {
     case filterButtonDidTap
     case makeMatchingInfoButtonDidTap
     case optionButtonDidTap
+    case matchingInfofilterDidChange
   }
   
   enum Mutation {
@@ -167,6 +168,8 @@ final class MatchingMateViewReactor: Reactor {
         }
         return .empty()
       }
+    case .matchingInfofilterDidChange:
+      return self.requestMatchingMates()
     }
   }
   
@@ -194,7 +197,7 @@ final class MatchingMateViewReactor: Reactor {
 
 private extension MatchingMateViewReactor {
   func requestMatchingMates() -> Observable<Mutation> {
-    if let matchingInfoFilter = UserStorage.shared.matchingMateFilter {
+    if let matchingInfoFilter = UserStorage.shared.matchingMateFilter.value {
       return self.matchingMateService
         .requestAPI(to: .getFilteredMembers(.init(matchingInfoFilter)))
         .map(ResponseDTO<[MatchingMateResponseDTO]>.self)

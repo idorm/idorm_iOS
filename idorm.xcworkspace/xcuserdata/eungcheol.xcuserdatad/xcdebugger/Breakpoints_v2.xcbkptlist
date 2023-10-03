@@ -148,5 +148,53 @@
             landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AA0836B5-D32E-4520-9BD7-2C594F611BDC"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "idorm/Source/Presentation/MatchingMate/Reactors/MatchingMateViewReactor.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
+            landmarkName = "reduce(state:mutation:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "AA0836B5-D32E-4520-9BD7-2C594F611BDC - 2bb34cc047a70d34"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "idorm.MatchingMateViewReactor.reduce(state: idorm.MatchingMateViewReactor.State, mutation: idorm.MatchingMateViewReactor.Mutation) -&gt; idorm.MatchingMateViewReactor.State"
+                  moduleName = "idorm"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/eungcheol/Desktop/PROJECT/idorm/idorm/Source/Presentation/MatchingMate/Reactors/MatchingMateViewReactor.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "177"
+                  endingLineNumber = "177"
+                  offsetFromSymbolStart = "328">
+               </Location>
+               <Location
+                  uuid = "AA0836B5-D32E-4520-9BD7-2C594F611BDC - 2bb34cc047a70d34"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "idorm.MatchingMateViewReactor.reduce(state: idorm.MatchingMateViewReactor.State, mutation: idorm.MatchingMateViewReactor.Mutation) -&gt; idorm.MatchingMateViewReactor.State"
+                  moduleName = "idorm"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/eungcheol/Desktop/PROJECT/idorm/idorm/Source/Presentation/MatchingMate/Reactors/MatchingMateViewReactor.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "177"
+                  endingLineNumber = "177"
+                  offsetFromSymbolStart = "376">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

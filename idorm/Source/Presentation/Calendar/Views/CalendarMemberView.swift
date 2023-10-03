@@ -12,7 +12,7 @@ import RxSwift
 import RxCocoa
 import RxGesture
 
-final class CalendarMemberView: UIView, BaseViewProtocol {
+final class CalendarMemberView: BaseView {
   
   // MARK: - UI Components
   
@@ -53,6 +53,7 @@ final class CalendarMemberView: UIView, BaseViewProtocol {
     imageView.image = .iDormIcon(.trashcan)?
       .resize(newSize: 18.0)?
       .withTintColor(.white)
+    imageView.isHidden = true
     return imageView
   }()
   
@@ -71,55 +72,55 @@ final class CalendarMemberView: UIView, BaseViewProtocol {
     let view = UIView()
     view.backgroundColor = .black.withAlphaComponent(0.5)
     view.layer.cornerRadius = 22.5
+    view.isHidden = true
     return view
   }()
   
   // MARK: - Properties
   
-  private var disposeBag = DisposeBag()
-  private var teamMember: TeamCalendarSingleMemberResponseDTO?
+  var teamMember: TeamMember = .init() {
+    willSet {
+      self.profileImageView.image = .iDormImage(.human)
+      if let urlString = newValue.profilePhotoURL {
+        self.profileImageView.kf.setImage(with: URL(string: urlString)!)
+      }
+      self.nicknameLabel.text = teamMember.nickname
+      let borderColor: UIColor
+      switch teamMember.order {
+      case 0: borderColor = .iDormColor(.firstUser)
+      case 1: borderColor = .iDormColor(.secondUser)
+      case 2: borderColor = .iDormColor(.thirdUser)
+      case 3: borderColor = .iDormColor(.fourthUser)
+      default: borderColor = .iDormColor(.firstUser)
+      }
+      self.profileImageView.layer.borderColor = borderColor.cgColor
+      if newValue.isSleepover {
+        self.alphaView.isHidden = false
+        self.sleepoverLabel.isHidden = false
+      }
+    }
+  }
   
-  /// 현재 선택 버튼이 선택 되었는지 판별해주는 `BehaviorRealy<Bool>`
-  let isSelected = BehaviorRelay<Bool>(value: false)
+  var isEditing: Bool = false {
+    willSet {
+      self.trashcanImageView.isHidden = !newValue
+      self.sleepoverLabel.isHidden = newValue
+      guard !self.teamMember.isSleepover else { return }
+      self.alphaView.isHidden = !newValue
+    }
+  }
   
-  /// 현재 팀 멤버에 대한 `memberId`
-  var memberId: Int { self.teamMember?.memberId ?? 0 }
-  
-  /// 선택 버튼의 숨김 처리의 유무를 판별해주는 `Bool`
   var isHiddenSelectionButton: Bool = true {
     willSet { self.memberSelectionButton.isHidden = newValue }
   }
   
-  // MARK: - Initializer
-  
-  /// 이 `View`를 생성하기 위해서는
-  /// `TeamMember` 모델이 필요합니다.
-  ///
-  /// - Parameters:
-  ///  - teamMember: `TeamMember` Model
-  convenience init(_ teamMember: TeamCalendarSingleMemberResponseDTO, isEditing: Bool) {
-    self.init(frame: .zero)
-    self.teamMember = teamMember
-    self.configure(with: teamMember, isEditing: isEditing)
-  }
-  
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    self.setupStyles()
-    self.setupLayouts()
-    self.setupConstraints()
-    self.bind()
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
+  var isSelected = BehaviorRelay<Bool>(value: false)
   
   // MARK: - Setup
   
-  func setupStyles() {}
-  
-  func setupLayouts() {
+  override func setupLayouts() {
+    super.setupLayouts()
+    
     [
       self.profileImageView,
       self.nicknameLabel,
@@ -132,7 +133,9 @@ final class CalendarMemberView: UIView, BaseViewProtocol {
     }
   }
   
-  func setupConstraints() {
+  override func setupConstraints() {
+    super.setupConstraints()
+    
     self.snp.makeConstraints { make in
       make.width.equalTo(48.0)
       make.height.equalTo(80.0)
@@ -169,7 +172,9 @@ final class CalendarMemberView: UIView, BaseViewProtocol {
   
   // MARK: - Bind
   
-  private func bind() {
+  override func bind() {
+    super.bind()
+    
     /// `View` 터치
     self.rx.tapGesture { gesture, _ in
       gesture.cancelsTouchesInView = false
@@ -181,53 +186,9 @@ final class CalendarMemberView: UIView, BaseViewProtocol {
       }
       .disposed(by: self.disposeBag)
     
-    /// 버튼의 `isSelected`상태를 변경합니다.
     self.isSelected
       .distinctUntilChanged()
       .bind(to: self.memberSelectionButton.rx.isSelected)
       .disposed(by: self.disposeBag)
-  }
-  
-  // MARK: - Configure
-  
-  /// 데이터를 가지고 UI를 업데이트합니다.
-  ///
-  /// - Parameters:
-  ///  - teamMember: 업데이트할 `TeamMember` 모델
-  func configure(with teamMember: TeamCalendarSingleMemberResponseDTO, isEditing: Bool) {
-    // 멤버 사진
-    self.profileImageView.image = .iDormImage(.human)
-    if let urlString = teamMember.profilePhotoUrl {
-      self.profileImageView.kf.setImage(with: URL(string: urlString)!)
-    }
-    // 멤버 닉네임
-    self.nicknameLabel.text = teamMember.nickname
-    
-    // 멤버 이미지 테두리 색상
-    let borderColor: UIColor
-    switch teamMember.order {
-    case 0: borderColor = .iDormColor(.firstUser)
-    case 1: borderColor = .iDormColor(.secondUser)
-    case 2: borderColor = .iDormColor(.thirdUser)
-    case 3: borderColor = .iDormColor(.fourthUser)
-    default: borderColor = .iDormColor(.firstUser)
-    }
-    self.profileImageView.layer.borderColor = borderColor.cgColor
-    
-    self.alphaView.isHidden = true
-    self.trashcanImageView.isHidden = true
-    self.sleepoverLabel.isHidden = true
-    
-    if isEditing {
-      // 수정중
-      self.alphaView.isHidden = false
-      self.trashcanImageView.isHidden = false
-    } else {
-      if teamMember.sleepoverYn ?? false {
-        // 외박 중
-        self.alphaView.isHidden = false
-        self.sleepoverLabel.isHidden = false
-      }
-    }
   }
 }

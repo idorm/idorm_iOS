@@ -9,12 +9,7 @@ import UIKit
 
 import SnapKit
 
-@objc protocol CalendarDateSelectionCellDelegate: AnyObject {
-  @objc optional func calendarDidSelect(_ currentDateString: String)
-  @objc optional func pickerViewDidChangeRow(_ currentTimeString: String)
-}
-
-final class CalendarDateSelectionCell: UICollectionViewCell, BaseViewProtocol {
+final class CalendarDateSelectionCell: BaseCollectionViewCell {
   
   enum CellType {
     case teamCalendar(date: String, time: String)
@@ -37,27 +32,15 @@ final class CalendarDateSelectionCell: UICollectionViewCell, BaseViewProtocol {
   
   // MARK: - Properties
   
-  weak var delegate: CalendarDateSelectionCellDelegate?
   private var bottomInset: Constraint?
-  
-  // MARK: - Initializer
-  
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    self.setupStyles()
-    self.setupLayouts()
-    self.setupConstraints()
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
+  var calendarHandler: ((String) -> Void)?
+  var pickerViewHandler: ((String) -> Void)?
   
   // MARK: - Setup
   
-  func setupStyles() {}
-
-  func setupLayouts() {
+  override func setupLayouts() {
+    super.setupLayouts()
+    
     [
       self.calendarView,
       self.pickerView
@@ -66,7 +49,9 @@ final class CalendarDateSelectionCell: UICollectionViewCell, BaseViewProtocol {
     }
   }
   
-  func setupConstraints() {
+  override func setupConstraints() {
+    super.setupConstraints()
+    
     self.calendarView.snp.makeConstraints { make in
       make.top.directionalHorizontalEdges.equalToSuperview()
       make.height.equalTo(280.0)
@@ -79,7 +64,7 @@ final class CalendarDateSelectionCell: UICollectionViewCell, BaseViewProtocol {
     }
   }
   
-  // MARK: - Functions
+  // MARK: - Configure
   
   /// 초기에 셀의 데이터를 주입할 때
   /// `Calendar`와 `PickerView`의 값을 업데이트합니다.
@@ -105,7 +90,7 @@ final class CalendarDateSelectionCell: UICollectionViewCell, BaseViewProtocol {
 
 extension CalendarDateSelectionCell: iDormCalendarViewDelegate {
   func calendarDidSelect(_ currentDateString: String) {
-    self.delegate?.calendarDidSelect?(currentDateString)
+    self.calendarHandler?(currentDateString)
   }
 }
 
@@ -113,6 +98,6 @@ extension CalendarDateSelectionCell: iDormCalendarViewDelegate {
 
 extension CalendarDateSelectionCell: CalendarDatePickerViewDelegate {
   func pickerViewDidChangeRow(_ timeString: String) {
-    self.delegate?.pickerViewDidChangeRow?(timeString)
+    self.pickerViewHandler?(timeString)
   }
 }

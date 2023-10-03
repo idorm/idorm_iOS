@@ -72,8 +72,8 @@ final class MatchingInfoFilterSetupViewController: BaseViewController, View {
           }
           let matchingInfoFilter = UserStorage.shared.matchingMateFilter
           cell.configure(
-            minAge: matchingInfoFilter?.minAge ?? 20,
-            maxAge: matchingInfoFilter?.minAge ?? 30
+            minAge: matchingInfoFilter.value?.minAge ?? 20,
+            maxAge: matchingInfoFilter.value?.maxAge ?? 30
           )
           cell.sliderHandler = {
             self.reactor?.action.onNext(.sliderDidChange(minValue: $0, maxValue: $1))

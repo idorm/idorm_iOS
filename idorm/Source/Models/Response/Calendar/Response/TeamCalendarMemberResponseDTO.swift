@@ -13,4 +13,3 @@ struct TeamCalendarMemberResponseDTO: Codable, Hashable {
   let isNeedToConfirmDeleted: Bool
   let members: [TeamCalendarSingleMemberResponseDTO]
 }
-

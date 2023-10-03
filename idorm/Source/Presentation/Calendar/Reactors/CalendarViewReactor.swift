@@ -29,10 +29,10 @@ final class CalendarViewReactor: Reactor {
   
   enum Mutation {
     case setTeamMembers(TeamCalendarMemberResponseDTO)
-    case setTeamCalendars([TeamCalendarResponseDTO])
-    case setDormCalendars([DormCalendarResponseDTO])
+    case setTeamCalendars([TeamCalendar])
+    case setDormCalendars([DormCalendar])
     case setCurrentDate(String)
-    case setCalendarManagementVC(TeamCalendarSingleResponseDTO?)
+    case setCalendarManagementVC(TeamCalendar?)
     case setCalendarSleepoverListVC([TeamCalendar], memberID: Int)
     case setEditingMode(isMemberSection: Bool?)
   }
@@ -43,15 +43,15 @@ final class CalendarViewReactor: Reactor {
     var isEditingMemberSection: Bool = false
     var isEditingTeamCalendarSection: Bool = false
     var currentDate: String = Date().toString("yyyy-MM")
-    var members: [TeamCalendarSingleMemberResponseDTO] = []
-    var teamCalendars: [TeamCalendarResponseDTO] = []
-    var dormCalendars: [DormCalendarResponseDTO] = []
+    var members: [TeamMember] = []
+    var teamCalendars: [TeamCalendar] = []
+    var dormCalendars: [DormCalendar] = []
     var sections: [CalendarSection] = []
     var items: [[CalendarSectionItem]] = []
     
     // Presentation
-    @Pulse var navigateToCalendarMaanagementVC: (
-      (CalendarManagementViewReactor.ViewState, [TeamCalendarSingleMemberResponseDTO])
+    @Pulse var navigateToCalendarManagementVC: (
+      (CalendarManagementViewReactor.ViewState, [TeamMember])
     ) = (.new, [])
     @Pulse var presentToCalendarSleepoverListVC: (
       teamCalendars: [TeamCalendar],
@@ -85,11 +85,10 @@ final class CalendarViewReactor: Reactor {
           self.requestGetTeamMembers()
         ])
       }
-      
     case .itemSelected(let item):
       switch item {
       case let .teamMember(teamMember, _):
-        let memberID = teamMember.memberId
+        let memberID = teamMember.identifier
         let yearMonth = self.currentState.currentDate
         return self.apiManager.requestAPI(to: .getSleepoverCalendars(memberID: memberID, yearMonth: yearMonth))
           .map(ResponseDTO<[TeamCalendarSleepoverResponseDTO]>.self)
@@ -97,11 +96,9 @@ final class CalendarViewReactor: Reactor {
             let teamCalendars = $0.data.map { TeamCalendar($0) }
             return Observable<Mutation>.just(.setCalendarSleepoverListVC(teamCalendars, memberID: memberID))
           }
-        
-      case let .teamCalendar(teamCalendars, isEditing):
-        if !isEditing { return self.requestTeamCalendar(with: teamCalendars.teamCalendarId) }
+      case let .teamCalendar(teamCalendar, isEditing):
+        if !isEditing { return self.requestTeamCalendar(with: teamCalendar.identifier) }
         return .empty()
-        
       case .dormCalendar(let dormCalendar):
         // 브라우저에서 해당 URL로 이동합니다.
         guard let urlString = dormCalendar.url,
@@ -161,24 +158,19 @@ final class CalendarViewReactor: Reactor {
     case .setTeamMembers(let teamMembers):
       newState.isNeedToConfirmDeleted = teamMembers.isNeedToConfirmDeleted
       newState.teamId = teamMembers.teamId
-      newState.members = teamMembers.members
-      
+      newState.members = teamMembers.members.map { TeamMember($0) }
     case .setTeamCalendars(let teamCalendars):
       newState.teamCalendars = teamCalendars
-      
     case .setDormCalendars(let dormCalendars):
       newState.dormCalendars = dormCalendars
-      
     case .setCurrentDate(let dateString):
       newState.currentDate = dateString
-      
     case .setCalendarManagementVC(let teamCalendar):
       if let teamCalendar {
-        newState.navigateToCalendarMaanagementVC = (.edit(teamCalendar), state.members)
+        newState.navigateToCalendarManagementVC = (.edit(teamCalendar), state.members)
       } else {
-        newState.navigateToCalendarMaanagementVC = (.new, state.members)
+        newState.navigateToCalendarManagementVC = (.new, state.members)
       }
-      
     case .setEditingMode(let isMemberSection):
       if isMemberSection == nil {
         newState.isEditingMemberSection = false
@@ -257,7 +249,7 @@ private extension CalendarViewReactor {
       .map(ResponseDTO<[DormCalendarResponseDTO]>.self)
       .flatMap { response -> Observable<Mutation> in
         return .concat([
-          .just(.setDormCalendars(response.data)),
+          .just(.setDormCalendars(response.data.map { DormCalendar($0) })),
           self.requestTeamCalendars()
         ])
       }
@@ -269,7 +261,7 @@ private extension CalendarViewReactor {
     return self.apiManager.requestAPI(to: .getTeamCalendars(yearMonth: self.currentState.currentDate))
       .map(ResponseDTO<[TeamCalendarResponseDTO]>.self)
       .flatMap { response -> Observable<Mutation> in
-        return .just(.setTeamCalendars(response.data))
+        return .just(.setTeamCalendars(response.data.map { TeamCalendar($0) }))
       }
   }
   
@@ -279,7 +271,7 @@ private extension CalendarViewReactor {
     return self.apiManager.requestAPI(to: .getTeamCalendar(teamCalendarId: teamCalendarId))
       .map(ResponseDTO<TeamCalendarSingleResponseDTO>.self)
       .flatMap { response -> Observable<Mutation> in
-        return .just(.setCalendarManagementVC(response.data))
+        return .just(.setCalendarManagementVC(TeamCalendar(response.data)))
       }
   }
 }

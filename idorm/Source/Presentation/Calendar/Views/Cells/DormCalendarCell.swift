@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 /// 기숙사 공식 일정 리스트의 `Cell`입니다.
-final class DormCalendarCell: UICollectionViewCell, BaseViewProtocol {
+final class DormCalendarCell: BaseCollectionViewCell {
   
   // MARK: - UI Components
   
@@ -141,29 +141,19 @@ final class DormCalendarCell: UICollectionViewCell, BaseViewProtocol {
   private var height: CGFloat = 150.0 {
     didSet { self.heightConstraint?.update(offset: self.height) }
   }
-  
-  // MARK: - Initializer
-  
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    self.setupStyles()
-    self.setupLayouts()
-    self.setupConstraints()
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
+
   // MARK: - Setup
   
-  func setupStyles() {
-    contentView.backgroundColor = .white
+  override func setupStyles() {
+    super.setupStyles()
+    
+    self.contentView.backgroundColor = .white
   }
   
-  func setupLayouts() {
-    self.contentView.addSubview(self.containerView)
+  override func setupLayouts() {
+    super.setupLayouts()
     
+    self.contentView.addSubview(self.containerView)
     [
       self.dateLabel,
       self.contentLabel,
@@ -175,7 +165,9 @@ final class DormCalendarCell: UICollectionViewCell, BaseViewProtocol {
     ].forEach { self.containerView.addSubview($0) }
   }
   
-  func setupConstraints() {
+  override func setupConstraints() {
+    super.setupConstraints()
+    
     self.containerView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
       self.heightConstraint = make.height.equalTo(150.0).constraint

@@ -38,7 +38,7 @@ final class MatchingInfoFilterSetupViewReactor: Reactor {
   // MARK: - Initializer
   
   init() {
-    if let matchingInfoFilter = UserStorage.shared.matchingMateFilter {
+    if let matchingInfoFilter = UserStorage.shared.matchingMateFilter.value {
       self.initialState = State(matchingInfoFilter: matchingInfoFilter)
     } else {
       self.initialState = State(matchingInfoFilter: .init(
@@ -58,10 +58,10 @@ final class MatchingInfoFilterSetupViewReactor: Reactor {
       return .just(.setAge(minValue: minValue, maxValue: maxValue))
     case .resetButtonDidTap:
       // 필터 초기화
-      UserStorage.shared.matchingMateFilter = nil
+      UserStorage.shared.matchingMateFilter.accept(nil)
       return .just(.setPopping)
     case .confirmButtonDidTap:
-      UserStorage.shared.matchingMateFilter = self.currentState.matchingInfoFilter
+      UserStorage.shared.matchingMateFilter.accept(self.currentState.matchingInfoFilter)
       return .just(.setPopping)
     }
   }

@@ -13,10 +13,6 @@ import ReactorKit
 import PanModal
 import SnapKit
 
-protocol CalendarDateSelectionViewControllerDelegate: AnyObject {
-  func dateDidChange(startDate: String, startTime: String, endDate: String, endTime: String)
-}
-
 /// 자세한 일정 날짜와 시간을 선택할 수 있는 `ViewController`
 final class CalendarDateSelectionViewController: BaseViewController, View {
   
@@ -116,15 +112,16 @@ final class CalendarDateSelectionViewController: BaseViewController, View {
         else {
           return UICollectionViewCell()
         }
-        cell.delegate = self
-        cell.configure(.teamCalendar(date: date, time: time))        
+        cell.calendarHandler = { self.reactor?.action.onNext(.calendarDidSelect($0)) }
+        cell.pickerViewHandler = { self.reactor?.action.onNext(.pickerViewDidChangeRow($0)) }
+        cell.configure(.teamCalendar(date: date, time: time))
         return cell
       }
     )
     return dataSource
   }()
   
-  weak var delegate: CalendarDateSelectionViewControllerDelegate?
+  var dateHandler: ((String, String, String, String) -> Void)?
   
   // MARK: - Setup
   
@@ -190,7 +187,9 @@ final class CalendarDateSelectionViewController: BaseViewController, View {
   // MARK: - Bind
   
   func bind(reactor: CalendarDateSelectionViewReactor) {
+    
     // Action
+    
     Observable.merge(
       self.rx.viewWillAppear,
       self.rx.viewDidAppear
@@ -236,16 +235,10 @@ final class CalendarDateSelectionViewController: BaseViewController, View {
       }
       .disposed(by: self.disposeBag)
     
-    reactor.pulse(\.$isDismissing)
-      .compactMap { $0 }
+    reactor.pulse(\.$isDismissing).compactMap { $0 }
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, data in
-        owner.delegate?.dateDidChange(
-          startDate: data.startDate,
-          startTime: data.startTime,
-          endDate: data.endDate,
-          endTime: data.endTime
-        )
+        owner.dateHandler?(data)
         owner.dismiss(animated: true)
       }
       .disposed(by: self.disposeBag)
@@ -281,16 +274,4 @@ extension CalendarDateSelectionViewController: PanModalPresentable {
   var shortFormHeight: PanModalHeight { .contentHeight(609.0) }
 
   var cornerRadius: CGFloat { 15.5 }
-}
-
-// MARK: - CalendarDateSelectionCellDelegate
-
-extension CalendarDateSelectionViewController: CalendarDateSelectionCellDelegate {
-  func calendarDidSelect(_ currentDateString: String) {
-    self.reactor?.action.onNext(.calendarDidSelect(currentDateString))
-  }
-  
-  func pickerViewDidChangeRow(_ currentTimeString: String) {
-    self.reactor?.action.onNext(.pickerViewDidChangeRow(currentTimeString))
-  }
 }

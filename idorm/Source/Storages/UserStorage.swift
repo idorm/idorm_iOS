@@ -8,6 +8,7 @@
 import Foundation
 
 import RxSwift
+import RxCocoa
 
 /// 이메일, 비밀번호, 토큰을 보관하는 영구적으로 보관하는 싱글톤 객체입니다.
 final class UserStorage {
@@ -34,7 +35,7 @@ final class UserStorage {
   @UserDefaultsWrapper<MatchingInfo?>(key: "MATCHINGINFO", defaultValue: nil)
   var matchingInfo: MatchingInfo?
   
-  var matchingMateFilter: MatchingInfoFilter?
+  var matchingMateFilter = BehaviorRelay<MatchingInfoFilter?>(value: nil)
   
   // MARK: - Initializer
   

@@ -29,12 +29,7 @@ final class CalendarDateSelectionViewReactor: Reactor {
   
   struct State {
     var isStartDate: Bool
-    var startDate: String
-    var startTime: String
-    var endDate: String
-    var endTime: String
-    
-    // UI
+    var teamCalendar: TeamCalendar
     var scrollCollectionView: Int = 0
     var items: [[String]] = []
     @Pulse var isDismissing: (
@@ -51,20 +46,8 @@ final class CalendarDateSelectionViewReactor: Reactor {
   
   // MARK: - Initializer
   
-  init(
-    isStartDate: Bool,
-    startDate: String,
-    startTime: String,
-    endDate: String,
-    endTime: String
-  ) {
-    self.initialState = State(
-      isStartDate: isStartDate,
-      startDate: startDate,
-      startTime: startTime,
-      endDate: endDate,
-      endTime: endTime
-    )
+  init(isStartDate: Bool, teamCalendar: TeamCalendar) {
+    self.initialState = State(isStartDate: isStartDate, teamCalendar: teamCalendar)
   }
   
   // MARK: - Functions
@@ -73,19 +56,19 @@ final class CalendarDateSelectionViewReactor: Reactor {
     switch action {
     case .viewDidAppear:
       return .just(.setScrollCollectionView(self.currentState.isStartDate ? 0 : 1))
-      
     case .tabButtonDidTap(let isStartDate):
       return .concat([
         .just(.setStartDate(isStartDate)),
         .just(.setScrollCollectionView(isStartDate ? 0 : 1))
       ])
-      
-    case .calendarDidSelect(let dateString):
+    case .calendarDidSelect(let date):
+      var date = date
+      dateString.toDateString(from: "yyyy-MM-dd", to: "M월 d일")
       return .just(.setDate(dateString))
-      
-    case .pickerViewDidChangeRow(let timeString):
+    case .pickerViewDidChangeRow(let time):
+      var time = time
+      time.toDateString(from: "HH:mm:ss", to: "")
       return .just(.setTime(timeString))
-      
     case .doneButtonDidTap:
       return .just(.setDismissing)
     }
@@ -97,25 +80,22 @@ final class CalendarDateSelectionViewReactor: Reactor {
     switch mutation {
     case .setStartDate(let isStartDate):
       newState.isStartDate = isStartDate
-      
-    case .setDate(let dateString):
+    case .setDate(let date):
       if state.isStartDate {
-        newState.startDate = dateString
+        newState.teamCalendar.startDate = date
       } else {
-        newState.endDate = dateString
+        newState.teamCalendar.endDate = date
       }
-      
-    case .setTime(let timeString):
+    case .setTime(let time):
       if state.isStartDate {
-        newState.startTime = timeString
+        newState.teamCalendar.startTime = time
       } else {
-        newState.endTime = timeString
+        newState.teamCalendar.endTime = time
       }
-      
     case .setScrollCollectionView(let indexPath):
       newState.scrollCollectionView = indexPath
-      
     case .setDismissing:
+      let teamCalendar = state.teamCalendar
       newState.isDismissing = (state.startDate, state.startTime, state.endDate, state.endTime)
     }
     
@@ -125,9 +105,10 @@ final class CalendarDateSelectionViewReactor: Reactor {
   func transform(state: Observable<State>) -> Observable<State> {
     return state.map { state in
       var newState = state
+      var teamCalendar = state.teamCalendar
       
-      newState.items.append([state.startDate, state.startTime])
-      newState.items.append([state.endDate, state.endTime])
+      newState.items.append([teamCalendar.startDate, teamCalendar.startTime])
+      newState.items.append([teamCalendar.endDate, teamCalendar.endTime])
       
       return newState
     }

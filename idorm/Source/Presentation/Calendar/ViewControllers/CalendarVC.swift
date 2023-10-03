@@ -35,7 +35,6 @@ final class CalendarViewController: BaseViewController, View {
           }
           cell.configure(with: member, isEditing: isEditing)
           return cell
-          
         case let .teamCalendar(teamCalendar, isEditing):
           guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: CalendarListCell.identifier,
@@ -45,7 +44,6 @@ final class CalendarViewController: BaseViewController, View {
           }
           cell.configure(teamCalendar, isEditing: isEditing)
           return cell
-          
         case .dormCalendar(let dormCalendar):
           guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: DormCalendarCell.identifier,
@@ -55,7 +53,6 @@ final class CalendarViewController: BaseViewController, View {
           }
           cell.configure(with: dormCalendar)
           return cell
-          
         case .dormEmpty:
           guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: DormCalendarEmptyCell.identifier,
@@ -327,7 +324,7 @@ final class CalendarViewController: BaseViewController, View {
       .disposed(by: self.disposeBag)
     
     /// `CalendarManagement`로 이동합니다.
-    reactor.pulse(\.$navigateToCalendarMaanagementVC)
+    reactor.pulse(\.$navigateToCalendarManagementVC)
       .compactMap { $0 }
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, calendarData in

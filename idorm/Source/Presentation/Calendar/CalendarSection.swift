@@ -10,9 +10,9 @@ import UIKit
 /// `Header`를 기준으로 나누어진 섹션입니다.
 enum CalendarSection: Hashable {
   /// 팀 멤버들의 사진과 닉네임이 들어있는 섹션입니다.
-  case teamMembers([TeamCalendarSingleMemberResponseDTO], isEditing: Bool)
+  case teamMembers([TeamMember], isEditing: Bool)
   /// 메인 달력이 있는 섹션입니다.
-  case calendar(teamCalenars: [TeamCalendarResponseDTO], dormCalendars: [DormCalendarResponseDTO])
+  case calendar(teamCalenars: [TeamCalendar], dormCalendars: [DormCalendar])
   /// 우리 방 일정
   case teamCalendar
   /// 기숙사 일정
@@ -144,8 +144,8 @@ enum CalendarSection: Hashable {
 
 /// `Item`을 기준으로 나누어진 섹션입니다.
 enum CalendarSectionItem: Hashable {
-  case teamMember(TeamCalendarSingleMemberResponseDTO, isEditing: Bool)
-  case teamCalendar(TeamCalendarResponseDTO, isEditing: Bool)
-  case dormCalendar(DormCalendarResponseDTO)
+  case teamMember(TeamMember, isEditing: Bool)
+  case teamCalendar(TeamCalendar, isEditing: Bool)
+  case dormCalendar(DormCalendar)
   case dormEmpty
 }

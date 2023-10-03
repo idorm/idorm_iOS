@@ -11,7 +11,7 @@ import SnapKit
 import Kingfisher
 
 /// 멤버의 프로필사진과 닉네임이  노출되는 `Cell`입니다.
-final class CalendarMemberCell: UICollectionViewCell, BaseViewProtocol {
+final class CalendarMemberCell: BaseCollectionViewCell {
   
   // MARK: - UI Components
   
@@ -20,31 +20,24 @@ final class CalendarMemberCell: UICollectionViewCell, BaseViewProtocol {
     return view
   }()
   
-  // MARK: - Initializer
-  
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    self.setupStyles()
-    self.setupLayouts()
-    self.setupConstraints()
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
   // MARK: - Setup
   
-  func setupStyles() {
+  override func setupStyles() {
+    super.setupStyles()
+    
     self.contentView.backgroundColor = .clear
     self.isUserInteractionEnabled = true
   }
   
-  func setupLayouts() {
+  override func setupLayouts() {
+    super.setupLayouts()
+    
     self.contentView.addSubview(self.calendarMemberView)
   }
   
-  func setupConstraints() {
+  override func setupConstraints() {
+    super.setupConstraints()
+    
     self.calendarMemberView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
     }
@@ -52,7 +45,7 @@ final class CalendarMemberCell: UICollectionViewCell, BaseViewProtocol {
   
   // MARK: - Configure
   
-  func configure(with member: TeamCalendarSingleMemberResponseDTO, isEditing: Bool) {
+  func configure(with member: TeamMember, isEditing: Bool) {
     self.calendarMemberView.configure(with: member, isEditing: isEditing)
   }
 }
