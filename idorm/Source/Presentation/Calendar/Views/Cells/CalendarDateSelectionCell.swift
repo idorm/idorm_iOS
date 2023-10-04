@@ -66,19 +66,17 @@ final class CalendarDateSelectionCell: BaseCollectionViewCell {
   
   // MARK: - Configure
   
-  /// 초기에 셀의 데이터를 주입할 때
-  /// `Calendar`와 `PickerView`의 값을 업데이트합니다.
-  ///
-  /// - Parameters:
-  ///  - cellType: 이 셀에 적용할 분기값
   func configure(_ cellType: CellType) {
     self.pickerView.isHidden = false
     switch cellType {
     case let .teamCalendar(date, time):
+      let date = date.convertToDateString(DateFormat.DTO)
+      let time = time.convertToDateString(TimeFormat.DTO)
       self.calendarView.updateSelectedDate(date)
       self.pickerView.updateSelectedRow(time)
       self.bottomInset?.update(inset: 24.0)
     case .sleepover(let date):
+      let date = date.convertToDateString(DateFormat.DTO)
       self.calendarView.updateSelectedDate(date)
       self.pickerView.isHidden = true
       self.bottomInset?.update(inset: 0)

@@ -46,6 +46,7 @@ final class CalendarMemberCell: BaseCollectionViewCell {
   // MARK: - Configure
   
   func configure(with member: TeamMember, isEditing: Bool) {
-    self.calendarMemberView.configure(with: member, isEditing: isEditing)
+    self.calendarMemberView.teamMember = member
+    self.calendarMemberView.isEditing = isEditing
   }
 }

@@ -48,6 +48,15 @@ extension String {
     }
   }
   
+  func convertToDateString(_ format: String) -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd"
+    formatter.locale = Locale(identifier: "ko_KR")
+    guard let date = formatter.date(from: self) else { return "" }
+    formatter.dateFormat = format
+    return formatter.string(from: date)
+  }
+  
   /// 날짜 형식의 `String`을 다른 날짜 형식의 `String` 값으로 변환합니다.
   ///
   /// - Parameters:

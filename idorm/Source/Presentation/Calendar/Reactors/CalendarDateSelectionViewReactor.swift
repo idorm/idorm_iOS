@@ -32,17 +32,13 @@ final class CalendarDateSelectionViewReactor: Reactor {
     var teamCalendar: TeamCalendar
     var scrollCollectionView: Int = 0
     var items: [[String]] = []
-    @Pulse var isDismissing: (
-      startDate: String,
-      startTime: String,
-      endDate: String,
-      endTime: String
-    )?
+    @Pulse var isDismissing: Bool = false
   }
   
   // MARK: - Properties
   
   var initialState: State
+  var dismissCompletion: ((TeamCalendar) -> Void)?
   
   // MARK: - Initializer
   
@@ -62,13 +58,9 @@ final class CalendarDateSelectionViewReactor: Reactor {
         .just(.setScrollCollectionView(isStartDate ? 0 : 1))
       ])
     case .calendarDidSelect(let date):
-      var date = date
-      dateString.toDateString(from: "yyyy-MM-dd", to: "M월 d일")
-      return .just(.setDate(dateString))
+      return .just(.setDate(date))
     case .pickerViewDidChangeRow(let time):
-      var time = time
-      time.toDateString(from: "HH:mm:ss", to: "")
-      return .just(.setTime(timeString))
+      return .just(.setTime(time))
     case .doneButtonDidTap:
       return .just(.setDismissing)
     }
@@ -95,8 +87,8 @@ final class CalendarDateSelectionViewReactor: Reactor {
     case .setScrollCollectionView(let indexPath):
       newState.scrollCollectionView = indexPath
     case .setDismissing:
-      let teamCalendar = state.teamCalendar
-      newState.isDismissing = (state.startDate, state.startTime, state.endDate, state.endTime)
+      newState.isDismissing = true
+      self.dismissCompletion?(newState.teamCalendar)
     }
     
     return newState

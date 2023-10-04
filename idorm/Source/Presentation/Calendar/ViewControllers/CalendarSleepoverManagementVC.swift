@@ -112,8 +112,8 @@ final class CalendarSleepoverManagementViewController: BaseViewController, View 
         else {
           return UICollectionViewCell()
         }
-        cell.delegate = self
         cell.configure(.sleepover(date: item))
+        cell.calendarHandler = { self.reactor?.action.onNext(.calendarDidSelect(date: $0)) }
         return cell
       }
     )
@@ -247,15 +247,6 @@ private extension CalendarSleepoverManagementViewController {
     self.endButton.isSelected = indexPath.item == 0 ? false : true
   }
 }
-
-extension CalendarSleepoverManagementViewController: CalendarDateSelectionCellDelegate {
-  func calendarDidSelect(_ currentDateString: String) {
-    guard let reactor = self.reactor else { return }
-    reactor.action.onNext(.calendarDidSelect(date: currentDateString))
-  }
-}
-
-// MARK: - UICollectionViewDelegate
 
 extension CalendarSleepoverManagementViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(

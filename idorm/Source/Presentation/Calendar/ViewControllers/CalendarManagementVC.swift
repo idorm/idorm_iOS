@@ -374,7 +374,7 @@ final class CalendarManagementViewController: BaseViewController, View {
       .drive(with: self) { owner, reactor in
         let viewController = CalendarDateSelectionViewController()
         viewController.reactor = reactor
-        viewController.delegate = owner
+        reactor.dismissCompletion = { owner.reactor?.action.onNext(.dateDidChange($0)) }
         owner.presentPanModal(viewController)
       }
       .disposed(by: self.disposeBag)
@@ -386,19 +386,5 @@ final class CalendarManagementViewController: BaseViewController, View {
         owner.delegate?.shouldRequestData()
       }
       .disposed(by: self.disposeBag)
-  }
-}
-
-// MARK: - CalendarDateSelectionViewControllerDelegate
-
-extension CalendarManagementViewController: CalendarDateSelectionViewControllerDelegate {
-  /// `CalendarDateSelectionVC`에서 날짜 선택을 완료하면 불려지는 메서드입니다.
-  func dateDidChange(startDate: String, startTime: String, endDate: String, endTime: String) {
-    self.reactor?.action.onNext(.dateDidChange(
-      startDate: startDate,
-      startTime: startTime,
-      endDate: endDate,
-      endTime: endTime
-    ))
   }
 }

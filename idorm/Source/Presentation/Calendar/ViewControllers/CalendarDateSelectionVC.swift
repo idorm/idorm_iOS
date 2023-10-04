@@ -214,16 +214,14 @@ final class CalendarDateSelectionViewController: BaseViewController, View {
       .disposed(by: self.disposeBag)
     
     // State
-    reactor.state.map { $0.scrollCollectionView }
-      .skip(1)
+    reactor.state.map { $0.scrollCollectionView }.skip(1)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, indexPath in
         owner.updateCollectionViewRect(indexPath)
       }
       .disposed(by: self.disposeBag)
     
-    reactor.state.map { $0.items }
-      .take(1)
+    reactor.state.map { $0.items }.take(1)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, items in
         var snapshot = NSDiffableDataSourceSnapshot<Int, [String]>()
@@ -235,10 +233,9 @@ final class CalendarDateSelectionViewController: BaseViewController, View {
       }
       .disposed(by: self.disposeBag)
     
-    reactor.pulse(\.$isDismissing).compactMap { $0 }
+    reactor.pulse(\.$isDismissing).skip(1)
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, data in
-        owner.dateHandler?(data)
         owner.dismiss(animated: true)
       }
       .disposed(by: self.disposeBag)

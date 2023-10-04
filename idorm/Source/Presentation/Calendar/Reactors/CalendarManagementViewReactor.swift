@@ -22,7 +22,7 @@ final class CalendarManagementViewReactor: Reactor {
     case titleTextFieldDidChange(String)
     case memoTextViewDidChange(String)
     case membersDidChange([TeamMember])
-    case dateDidChange(startDate: String, startTime: String, endDate: String, endTime: String)
+    case dateDidChange(TeamCalendar)
     case dateButtonDidTap(isStartDate: Bool)
     case doneButtonDidTap
     case deleteButtonDidTap
@@ -32,7 +32,7 @@ final class CalendarManagementViewReactor: Reactor {
     case setTitle(String)
     case setContent(String)
     case setMembers([TeamMember])
-    case setDate(startDate: String, startTime: String, endDate: String, endTime: String)
+    case setDate(TeamCalendar)
     case setCalendarDateSelectionVC(isStartDate: Bool)
     case setPop(Bool)
   }
@@ -68,13 +68,8 @@ final class CalendarManagementViewReactor: Reactor {
       return .just(.setMembers(members))
     case .dateButtonDidTap(let isStartDate):
       return .just(.setCalendarDateSelectionVC(isStartDate: isStartDate))
-    case let .dateDidChange(startDate, startTime, endDate, endTime):
-      return .just(.setDate(
-        startDate: startDate,
-        startTime: startTime,
-        endDate: endDate,
-        endTime: endTime
-      ))
+    case .dateDidChange(let teamCalendar):
+      return .just(.setDate(teamCalendar))
     case .doneButtonDidTap:
       switch self.currentState.viewState {
       case .new:
@@ -111,16 +106,13 @@ final class CalendarManagementViewReactor: Reactor {
     case .setCalendarDateSelectionVC(let isStartDate):
       newState.presentToCalendarDateSelectionVC = CalendarDateSelectionViewReactor(
         isStartDate: isStartDate,
-        startDate: state.startDate,
-        startTime: state.startTime,
-        endDate: state.endDate,
-        endTime: state.endTime
+        teamCalendar: state.teamCalendar
       )
-    case let .setDate(startDate, startTime, endDate, endTime):
-      newState.startDate = startDate
-      newState.startTime = startTime
-      newState.endDate = endDate
-      newState.endTime = endTime
+    case let .setDate(teamCalendar):
+      newState.teamCalendar.startDate = teamCalendar.startDate
+      newState.teamCalendar.startTime = teamCalendar.startTime
+      newState.teamCalendar.endDate = teamCalendar.endDate
+      newState.teamCalendar.endTime = teamCalendar.endTime
     case .setPop(let isPopping):
       newState.isPopping = isPopping
     }
@@ -145,10 +137,10 @@ final class CalendarManagementViewReactor: Reactor {
         newState.isEnabledDoneButon = false
       }
       
-      teamCalendar.startDate = teamCalendar.startDate.toDateString(from: "M월 d일", to: "MM월 dd일 (E)")
-      teamCalendar.endDate = teamCalendar.endDate.toDateString(from: "M월 d일", to: "MM월 dd일 (E)")
-      teamCalendar.startTime = teamCalendar.startTime.toDateString(from: "a h:mm", to: "a h시~")
-      teamCalendar.endTime = teamCalendar.endTime.toDateString(from: "a h:mm", to: "a h시~")
+      teamCalendar.startDate = teamCalendar.startDate.convertToDateString(DateFormat.calendarManagement)
+      teamCalendar.endDate = teamCalendar.endDate.convertToDateString(DateFormat.calendarManagement)
+      teamCalendar.startTime = teamCalendar.startTime.convertToDateString(TimeFormat.calendarManagement)
+      teamCalendar.endTime = teamCalendar.endTime.convertToDateString(TimeFormat.calendarManagement)
       
       newState.teamCalendar = teamCalendar
       

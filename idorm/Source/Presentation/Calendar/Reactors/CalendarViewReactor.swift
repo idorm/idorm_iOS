@@ -51,8 +51,8 @@ final class CalendarViewReactor: Reactor {
     
     // Presentation
     @Pulse var navigateToCalendarManagementVC: (
-      (CalendarManagementViewReactor.ViewState, [TeamMember])
-    ) = (.new, [])
+      (CalendarManagementViewReactor.ViewState, TeamCalendar)
+    ) = (.new, .init())
     @Pulse var presentToCalendarSleepoverListVC: (
       teamCalendars: [TeamCalendar],
       yearMonth: String,
@@ -167,9 +167,9 @@ final class CalendarViewReactor: Reactor {
       newState.currentDate = dateString
     case .setCalendarManagementVC(let teamCalendar):
       if let teamCalendar {
-        newState.navigateToCalendarManagementVC = (.edit(teamCalendar), state.members)
+        newState.navigateToCalendarManagementVC = (.edit, teamCalendar)
       } else {
-        newState.navigateToCalendarManagementVC = (.new, state.members)
+        newState.navigateToCalendarManagementVC = (.new, .init())
       }
     case .setEditingMode(let isMemberSection):
       if isMemberSection == nil {

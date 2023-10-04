@@ -104,10 +104,10 @@ final class iDormCalendarView: UIView, BaseViewProtocol {
   private let viewType: ViewType
   
   /// 현재 저장되어 있는 팀 일정입니다.
-  private var teamCalendars: [TeamCalendarResponseDTO]?
+  private var teamCalendars: [TeamCalendar]?
   
   /// 현재 저장되어 있는 기숙사 공식 일정입니다.
-  private var dormCalendars: [DormCalendarResponseDTO]?
+  private var dormCalendars: [DormCalendar]?
   
   /// 현재 저장되어 있는 날짜입니다.
   private var currentDate: Date?
@@ -217,8 +217,8 @@ final class iDormCalendarView: UIView, BaseViewProtocol {
   ///  - dormCalendars: 기숙사 공식 일정
   func configure(
     _ currentDate: Date,
-    teamCalendars: [TeamCalendarResponseDTO],
-    dormCalendars: [DormCalendarResponseDTO]
+    teamCalendars: [TeamCalendar],
+    dormCalendars: [DormCalendar]
   ) {
     // 인자들 전역 변수에 저장
     self.currentDate = currentDate
@@ -274,7 +274,7 @@ private extension iDormCalendarView {
         // 팀 일정 배열에서 하나의 셀에 맞는 날짜를 찾습니다.
         teamCalendars
           .filter { $0.startDate.elementsEqual(cellDateString) }
-          .map { $0.targets }
+          .map { $0.members }
           .forEach { $0.forEach { orders.insert($0.order) } }
         
         // 고유한 값을 받아서 셀을 최종 업데이트합니다.

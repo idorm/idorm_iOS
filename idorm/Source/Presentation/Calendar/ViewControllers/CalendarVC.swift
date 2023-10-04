@@ -254,12 +254,12 @@ final class CalendarViewController: BaseViewController, View {
         switch items[indexPath.item] {
         case let .teamMember(teamMember, isEditing):
           if isEditing {
-            owner.presentRemovalMemberAlertPopup(teamMember.memberId)
+            owner.presentRemovalMemberAlertPopup(teamMember.identifier)
             return .nothing
           }
         case let .teamCalendar(teamCalendar, isEditing):
           if isEditing {
-            owner.presentRemovalTeamCalendarAlertPopup(teamCalendar.teamCalendarId)
+            owner.presentRemovalTeamCalendarAlertPopup(teamCalendar.identifier)
             return .nothing
           }
         default: break
@@ -329,13 +329,10 @@ final class CalendarViewController: BaseViewController, View {
       .asDriver(onErrorRecover: { _ in return .empty() })
       .drive(with: self) { owner, calendarData in
         let viewController = CalendarManagementViewController()
-        let reactor = CalendarManagementViewReactor(
-          with: calendarData.0,
-          teamMembers: calendarData.1
-        )
+        let reactor = CalendarManagementViewReactor(with: calendarData.0, teamCalendar: calendarData.1)
         viewController.hidesBottomBarWhenPushed = true
         viewController.reactor = reactor
-        viewController.delegate = owner
+//        viewController.delegate = owner
         owner.navigationController?.pushViewController(viewController, animated: true)
       }
       .disposed(by: self.disposeBag)

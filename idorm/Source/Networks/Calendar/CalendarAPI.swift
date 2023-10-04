@@ -46,7 +46,7 @@ enum CalendarAPI {
    
    - targets 필드는 회원 식별자 배열을 주세요
    */
-  case updateTeamCalendar(TeamCalendarRequestModel)
+  case updateTeamCalendar(TeamCalendarRequestDTO)
   
   /**
    [팀/외박] 일정 삭제
@@ -61,7 +61,7 @@ enum CalendarAPI {
    
    - targets 필드는 회원 식별자 배열을 주세요,
    */
-  case createTeamCalendar(TeamCalendarRequestModel)
+  case createTeamCalendar(TeamCalendarRequestDTO)
   
   /**
    팀 나가기

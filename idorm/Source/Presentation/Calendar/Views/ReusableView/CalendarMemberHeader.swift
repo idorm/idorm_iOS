@@ -127,7 +127,7 @@ final class CalendarMemberHeader: UICollectionReusableView, BaseViewProtocol {
   
   // MARK: - Bind
   
-  func configure(with members: [TeamCalendarSingleMemberResponseDTO], isEditing: Bool) {
+  func configure(with members: [TeamMember], isEditing: Bool) {
     self.doneButton.isHidden = true
     self.inviteButton.isHidden = true
     self.optionButton.isHidden = true
